@@ -1,6 +1,8 @@
 # Swagger-php
 
-This is very new and not ready for consumption; it's not even ready to be looked at.
+This is very new and not ready for consumption. Please note it is very much in initial stages of development.
+
+For more info on swagger see: http://swagger.wordnik.com/
 
 
 Current Sample is Generating the following output with models being next on my list:
