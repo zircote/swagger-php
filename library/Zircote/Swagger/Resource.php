@@ -17,16 +17,43 @@ class Zircote_Swagger_Resource
 {
     protected $_path;
     public $apis = array();
+    public $results = array(
+        'apis' => array(),
+        'basePath' => 'http://org.local/v1',
+        'swagrVersion' => '0.1a',
+        'apiVersion' => '1.0.1a'
+    );
+    /**
+     *
+     * @param string $path
+     */
     public function __construct($path)
     {
         $this->_path = $path;
         $this->_getFiles($this->_path);
+        $this->buildResource();
     }
+    /**
+     * @return array
+     */
     public function buildResource()
     {
-
+        /* @var $api Zircote_Swagger_Api */
+        foreach ($this->apis as $api) {
+            $api = array(
+                'path' => $api->results['path'],
+                'value' => $api->results['value'],
+                'description' => $api->results['description']
+            );
+            array_push($this->results['apis'],$api);
+        }
+        return $this->results;
     }
-
+    /**
+     *
+     * @param string|null $path
+     * @return array[Zircote_Swagger_Api]
+     */
     protected function _getFiles($path = null)
     {
         if(!$path){

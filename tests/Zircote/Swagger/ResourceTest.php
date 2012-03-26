@@ -40,9 +40,9 @@ class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testBuildResource()
     {
-        $this->resource;
+        echo Zend_Json::prettyPrint(Zend_Json::encode(($this->resource->results))), PHP_EOL;
         foreach ($this->resource->apis as $api) {
-            print_r(Zend_Json::prettyPrint(Zend_Json::encode(($api->results))));
+            echo Zend_Json::prettyPrint(Zend_Json::encode(($api->results)));
         }
     }
 }

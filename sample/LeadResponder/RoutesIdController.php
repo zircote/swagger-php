@@ -10,15 +10,20 @@
 /**
  *
  * @Path /v1/leadresponder
- * @Api /leadresponder
- * @Produces ('application/json',
+ * @Api (
+ *     path="/leadresponder",
+ *     value="Gets collection of leadresponders",
+ *     description="This is a long description of what it does"
+ *     )
+ * @Produces (
+ *     'application/json',
  *     'application/json+hal',
  *     'application/json-p',
  *     'application/json-p+hal',
  *     'application/xml',
  *     'application/xml',
  *     'application/xml+hal'
- * )
+ *     )
  *
  * @category   Organic
  * @package    Organic_V1

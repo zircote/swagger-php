@@ -20,19 +20,30 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
      * @var ReflectionMethod
      */
     protected $_operation;
+    /**
+     *
+     * @var string
+     */
     protected $_docComment;
+    /**
+     *
+     * @var array
+     */
     public $results = array(
-        'Method' => null,
-        'Path' => null,
-        'ApiOperation' => array(
-            'value' => null,
-            'responseClass' => null,
-            'multiValueResponse' => false,
-            'tags' => array()
-        ),
-        'ApiError' => array(),
-        'ApiParam' => array()
+        'httpMethod' => null,
+        'open' => false,
+        'deprecated' => false,
+        'tags' => array(),
+        'path' => null,
+        'summary' => null,
+        'errorResponses' => array(),
+        'parameters' => array()
     );
+    /**
+     *
+     * @param Reflector|string $operation
+     * @throws Exception
+     */
     public function __construct($operation)
     {
         if($operation instanceof Reflector){
@@ -47,6 +58,9 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         }
         $this->_parse();
     }
+    /**
+     *
+     */
     protected function _parse()
     {
         $this->_docComment = $this->_parseDocComment(
@@ -58,51 +72,59 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
             ->_getApiError()
             ->_getParam();
     }
+    /**
+     * @return Zircote_Swagger_Operation
+     */
     protected function _getMethod()
     {
         if(preg_match(self::PATTERN_METHOD, $this->_docComment, $match)){
-            $this->results['Method'] = str_replace('@', null, $match[1]);
+            $this->results['httpMethod'] = str_replace('@', null, $match[1]);
         }
         return $this;
     }
+    /**
+     * @return Zircote_Swagger_Operation
+     */
     protected function _getPath()
     {
         if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
-            $this->results['Path'] = $matches[1];
+            $this->results['path'] = $matches[1];
         }
         return $this;
     }
+    /**
+     * @return Zircote_Swagger_Operation
+     */
     protected function _getOperation()
     {
         if(preg_match_all(self::PATTERN_OPERATION,  $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
-                foreach (explode(',', $match) as $value) {
-                    $part = explode('=',preg_replace(self::STRIP_WHITESPACE_APOST,null,$value));
-                    $this->results['ApiOperation'][$part[0]] = trim($part[1], ' "');
-                }
+                $this->results = array_merge_recursive($this->results, $this->_parseParts($match));
             }
         }
         return $this;
     }
+    /**
+     * @return Zircote_Swagger_Operation
+     */
     protected function _getApiError()
     {
         if(preg_match_all(self::PATTERN_APIERROR,  $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
-                foreach (explode(',', $match) as $value) {
-                    $part = explode('=',preg_replace(self::STRIP_WHITESPACE_APOST,null,$value));
-                    $error[$part[0]] = trim($part[1], ' "');
-                }
-                $this->results['ApiError'][] = $error;
+                array_push($this->results['errorResponses'],$this->_parseParts($match));
             }
         }
         return $this;
     }
+    /**
+     * @return Zircote_Swagger_Operation
+     */
     protected function _getParam()
     {
         if(preg_match_all(self::PATTERN_APIPARAM, $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
                 $apiOperation = new Zircote_Swagger_Param($match);
-                array_push($this->results['ApiParam'],$apiOperation->results);
+                array_push($this->results['parameters'],$apiOperation->results);
             }
         }
         return $this;

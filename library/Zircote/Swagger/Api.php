@@ -21,14 +21,27 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
      * @var ReflectionClass
      */
     protected $_class;
+    /**
+     *
+     * @var string
+     */
     protected $_docComment;
+    /**
+     *
+     * @var array
+     */
     public $results = array(
-        'Path' => null,
-        'Api' => null,
-        'Produces' => null,
-        'Operations' => array()
+        'path' => null,
+        'value' => null,
+        'description' => null,
+        'produces' => null,
+        'operations' => array()
     );
-
+    /**
+     *
+     * @param Reflector|string $class
+     * @throws Exception
+     */
     public function __construct($class)
     {
         if(is_object($class)){
@@ -43,30 +56,34 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         } else {
             throw new Exception('Incompatable Type attempted to reflect');
         }
-        $this->_parseApi();
-        $this->_getApi();
-        $this->_getPath();
-        $this->_getProduces();
-        $this->_getMethods();
+        $this->_parseApi()
+            ->_getApi()
+            ->_getProduces()
+            ->_getMethods();
     }
+    /**
+     * @return Zircote_Swagger_Api
+     */
     protected function _parseApi()
     {
         $this->_docComment = $this->_parseDocComment(
             $this->_class->getDocComment()
         );
-        $this->_getPath();
+        return $this;
     }
-    protected function _getPath()
-    {
-        if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
-            $this->results['Path'] = $matches[1];
-        }
-    }
+    /**
+     * @return Zircote_Swagger_Api
+     */
     protected function _getApi()
     {
-        preg_match(self::PATTERN_API, $this->_docComment, $matches);
-        $this->results['Api'] = $matches[1];
+        $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
+        preg_match(self::PATTERN_API,  $comment, $matches);
+        $this->results = array_merge_recursive($this->results, $this->_parseParts($matches[1]));
+        return $this;
     }
+    /**
+     * @return Zircote_Swagger_Api
+     */
     protected function _getProduces()
     {
         $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
@@ -74,16 +91,21 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         foreach (explode(',', $matches[1]) as $value) {
             $result[] = preg_replace(self::STRIP_WHITESPACE_APOST,null,$value);
         }
-        $this->results['Produces'] = $result;
+        $this->results['produces'] = $result;
+        return $this;
     }
+    /**
+     * @return Zircote_Swagger_Api
+     */
     protected function _getMethods()
     {
         /* @var $reflectedMethod ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $methodName => $reflectedMethod) {
             if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Zircote_Swagger_Operation($reflectedMethod);
-                array_push($this->results['Operations'],$operation->results);
+                array_push($this->results['operations'],$operation->results);
             }
         }
+        return $this;
     }
 }
