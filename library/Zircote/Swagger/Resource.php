@@ -66,7 +66,7 @@ class Zircote_Swagger_Resource
                 $ns = str_replace($this->_path . '/', null, $path);
                 $class = str_replace('.php', null, $fileInfo->getFileName());
                 require_once $path . DIRECTORY_SEPARATOR . $fileInfo->getFileName();
-                array_push($this->apis, new Zircote_Swagger_Api($ns. '_' . $class));
+                array_push($this->apis, new Zircote_Swagger_Api($ns. '_' . $class, $this->results));
             } elseif(!$fileInfo->isDot() && $fileInfo->isDir()){
                 $files = array_merge(
                     $files,

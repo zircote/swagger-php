@@ -31,10 +31,6 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
      * @var array
      */
     public $results = array(
-        'path' => null,
-        'value' => null,
-        'description' => null,
-        'produces' => null,
         'operations' => array()
     );
     /**
@@ -42,8 +38,9 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
      * @param Reflector|string $class
      * @throws Exception
      */
-    public function __construct($class)
+    public function __construct($class, $resource)
     {
+        $this->_resource = $resource;
         if(is_object($class)){
             $this->_class = new ReflectionClass($class);
         } elseif($class instanceof Reflector){
@@ -79,6 +76,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
         preg_match(self::PATTERN_API,  $comment, $matches);
         $this->results = array_merge_recursive($this->results, $this->_parseParts($matches[1]));
+        $this->results['path'] = $this->_resource['basePath'] . $this->results['path'];
         return $this;
     }
     /**
@@ -102,7 +100,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         /* @var $reflectedMethod ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $methodName => $reflectedMethod) {
             if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
-                $operation = new Zircote_Swagger_Operation($reflectedMethod);
+                $operation = new Zircote_Swagger_Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);
             }
         }

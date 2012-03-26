@@ -22,7 +22,7 @@ class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $path = dirname(dirname(dirname(__DIR__))) . '/sample';
+        $path = dirname(dirname(dirname(__DIR__))) . '/sample/controllers';
         $this->resource = new Zircote_Swagger_Resource($path);
     }
 

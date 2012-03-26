@@ -44,8 +44,9 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
      * @param Reflector|string $operation
      * @throws Exception
      */
-    public function __construct($operation)
+    public function __construct($operation, $resource)
     {
+        $this->_resource = $resource;
         if($operation instanceof Reflector){
             if(!method_exists($operation, 'getDocComment')){
                 throw new Exception('Reflector does not possess a getDocComment method');
@@ -87,9 +88,11 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
      */
     protected function _getPath()
     {
+        $path = null;
         if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
-            $this->results['path'] = $matches[1];
+            $path = $matches[1];
         }
+        $this->results['path'] = $this->_resource['path'] . $path;
         return $this;
     }
     /**
@@ -101,6 +104,12 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
             foreach ($matches[1] as $match) {
                 $this->results = array_merge_recursive($this->results, $this->_parseParts($match));
             }
+            if(isset($this->results['multiValueResponse']) &&
+                strtolower($this->results['multiValueResponse']) == 'true'){
+                $this->results['responseClass'] = 'List['.$this->results['responseClass'].']';
+            }
+            $this->results['summary'] = $this->results['value'];
+            unset($this->results['value'],$this->results['multiValueResponse']);
         }
         return $this;
     }

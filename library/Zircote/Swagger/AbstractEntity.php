@@ -23,6 +23,8 @@ class Zircote_Swagger_AbstractEntity
     const PATTERN_OPERATION      = '/@ApiOperation \(([^)]*)\)/ix';
     const PATTERN_APIERROR       = '/@ApiError \(([^)]*)\)/ix';
     const PATTERN_APIPARAM       = '/@ApiParam \(([^)]*)\)/ix';
+
+    protected $_resource;
     /**
      *
      * @param string $docComment
