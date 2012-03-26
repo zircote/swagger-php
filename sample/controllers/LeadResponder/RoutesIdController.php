@@ -66,9 +66,7 @@ class LeadResponder_RoutesIdController
      *     multiValueResponse=true,
      *     tags="MLR"
      * )
-     * @ApiError(code=400,reason="Invalid ID Provided")
      * @ApiError(code=403,reason="User Not Authorized")
-     * @ApiError(code=404,reason="Lead Responder Not Found")
      * @see Ifbyphone_Rest_AbstractController::getAction()
      */
     public function getAction()
@@ -83,9 +81,7 @@ class LeadResponder_RoutesIdController
      *     multiValueResponse=false,
      *     tags="MLR"
      * )
-     * @ApiError(code=400,reason="Invalid ID Provided")
      * @ApiError(code=403,reason="User Not Authorized")
-     * @ApiError(code=404,reason="Lead Responder Not Found")
      *
      * @ApiParam(
      *     description="leadresponder_route being created",

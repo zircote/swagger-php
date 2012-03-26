@@ -31,16 +31,8 @@ Current Sample is Generating the following output with models being next on my l
             "summary":"Fetches the leadresponder corresponding the the provided ID",
             "errorResponses":[
                 {
-                    "code":"400",
-                    "reason":"Invalid ID Provided"
-                },
-                {
                     "code":"403",
                     "reason":"User Not Authorized"
-                },
-                {
-                    "code":"404",
-                    "reason":"Lead Responder Not Found"
                 }
             ],
             "parameters":[
@@ -59,16 +51,8 @@ Current Sample is Generating the following output with models being next on my l
             "summary":"Creates a new leadresponder",
             "errorResponses":[
                 {
-                    "code":"400",
-                    "reason":"Invalid ID Provided"
-                },
-                {
                     "code":"403",
                     "reason":"User Not Authorized"
-                },
-                {
-                    "code":"404",
-                    "reason":"Lead Responder Not Found"
                 }
             ],
             "parameters":[
