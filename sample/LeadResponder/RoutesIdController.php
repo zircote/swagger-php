@@ -9,7 +9,7 @@
  */
 /**
  *
- * @Path /leadresponder
+ * @Path /v1/leadresponder
  * @Api /leadresponder
  * @Produces ('application/json',
  *     'application/json+hal',

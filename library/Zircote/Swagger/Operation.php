@@ -3,6 +3,7 @@
  * filecomment
  * package_declaration
  */
+require_once 'Zircote/Swagger/AbstractEntity.php';
 require_once 'Zircote/Swagger/Param.php';
 /**
  *
@@ -12,7 +13,7 @@ require_once 'Zircote/Swagger/Param.php';
  * @package
  * @subpackage
  */
-class Zircote_Swagger_Operation
+class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
 {
     /**
      *
@@ -48,36 +49,35 @@ class Zircote_Swagger_Operation
     }
     protected function _parse()
     {
-        $this->_docComment = preg_replace(
-            '/\n\s*\* /', null, $this->_operation->getDocComment()
+        $this->_docComment = $this->_parseDocComment(
+            $this->_operation->getDocComment()
         );
-        $this->_docComment = preg_replace('/\s{2}/', null, $this->_docComment);
-        $this->_docComment = substr($this->_docComment, 3, -2);
-        $this->_getMethod();
-        $this->_getPath();
-        $this->_getOperation()
-            ->_getApiError();
+        $this->_getMethod()
+            ->_getPath()
+            ->_getOperation()
+            ->_getApiError()
+            ->_getParam();
     }
     protected function _getMethod()
     {
-        if(preg_match('/(@GET|@PUT|@POST|@DELETE)/', $this->_docComment, $match)){
+        if(preg_match(self::PATTERN_METHOD, $this->_docComment, $match)){
             $this->results['Method'] = str_replace('@', null, $match[1]);
         }
         return $this;
     }
     protected function _getPath()
     {
-        if(preg_match('/@Path ([^@]*)/i', $this->_docComment, $matches)){
+        if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
             $this->results['Path'] = $matches[1];
         }
         return $this;
     }
     protected function _getOperation()
     {
-        if(preg_match_all('/@ApiOperation \(([^)]*)\)/ix',  $this->_docComment, $matches)){
+        if(preg_match_all(self::PATTERN_OPERATION,  $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
                 foreach (explode(',', $match) as $value) {
-                    $part = explode('=',preg_replace("/(\s{2}|')/",null,$value));
+                    $part = explode('=',preg_replace(self::STRIP_WHITESPACE_APOST,null,$value));
                     $this->results['ApiOperation'][$part[0]] = trim($part[1], ' "');
                 }
             }
@@ -86,13 +86,23 @@ class Zircote_Swagger_Operation
     }
     protected function _getApiError()
     {
-        if(preg_match_all('/@ApiError \(([^)]*)\)/ix',  $this->_docComment, $matches)){
+        if(preg_match_all(self::PATTERN_APIERROR,  $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
                 foreach (explode(',', $match) as $value) {
-                    $part = explode('=',preg_replace("/(\s{2}|')/",null,$value));
+                    $part = explode('=',preg_replace(self::STRIP_WHITESPACE_APOST,null,$value));
                     $error[$part[0]] = trim($part[1], ' "');
                 }
                 $this->results['ApiError'][] = $error;
+            }
+        }
+        return $this;
+    }
+    protected function _getParam()
+    {
+        if(preg_match_all(self::PATTERN_APIPARAM, $this->_docComment, $matches)){
+            foreach ($matches[1] as $match) {
+                $apiOperation = new Zircote_Swagger_Param($match);
+                array_push($this->results['ApiParam'],$apiOperation->results);
             }
         }
         return $this;

@@ -4,6 +4,7 @@
  * @package    Swagger
  * @subpackage Api
  */
+require_once 'Zircote/Swagger/AbstractEntity.php';
 require_once 'Zircote/Swagger/Operation.php';
 /**
  *
@@ -13,7 +14,7 @@ require_once 'Zircote/Swagger/Operation.php';
  * @package    Swagger
  * @subpackage Api
  */
-class Zircote_Swagger_Api
+class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
 {
     /**
      *
@@ -50,26 +51,28 @@ class Zircote_Swagger_Api
     }
     protected function _parseApi()
     {
-        $this->_docComment = $this->_class->getDocComment();
+        $this->_docComment = $this->_parseDocComment(
+            $this->_class->getDocComment()
+        );
         $this->_getPath();
     }
     protected function _getPath()
     {
-        if(preg_match('/@Path (.*)\n/', $this->_docComment, $matches)){
+        if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
             $this->results['Path'] = $matches[1];
         }
     }
     protected function _getApi()
     {
-        preg_match('/@Api (.*)\n/', $this->_docComment, $matches);
+        preg_match(self::PATTERN_API, $this->_docComment, $matches);
         $this->results['Api'] = $matches[1];
     }
     protected function _getProduces()
     {
-        $comment = preg_replace('/\n \* /', null, $this->_docComment);
-        preg_match('/@Produces \((.*)\)/',  $comment, $matches);
+        $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
+        preg_match(self::PATTERN_PRODUCES,  $comment, $matches);
         foreach (explode(',', $matches[1]) as $value) {
-            $result[] = preg_replace("/(\s|')/",null,$value);
+            $result[] = preg_replace(self::STRIP_WHITESPACE_APOST,null,$value);
         }
         $this->results['Produces'] = $result;
     }
@@ -77,7 +80,7 @@ class Zircote_Swagger_Api
     {
         /* @var $reflectedMethod ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $methodName => $reflectedMethod) {
-            if(preg_match('/@ApiOperation/', $reflectedMethod->getDocComment())){
+            if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Zircote_Swagger_Operation($reflectedMethod);
                 array_push($this->results['Operations'],$operation->results);
             }
