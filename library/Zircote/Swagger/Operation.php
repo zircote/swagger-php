@@ -30,12 +30,7 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
      * @var array
      */
     public $results = array(
-        'httpMethod' => null,
-        'open' => false,
-        'deprecated' => false,
         'tags' => array(),
-        'path' => null,
-        'summary' => null,
         'errorResponses' => array(),
         'parameters' => array()
     );

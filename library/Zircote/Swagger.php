@@ -76,14 +76,16 @@ class Zircote_Swagger
     {
         $models = array();
         $resources = $this->resources->getResource($basePath);
-        $result = array_merge(array('models' => array()),$resources[$api]);
-        foreach ($resources[$api]['operations'] as $op) {
+        foreach ($resources[$api]['operations'] as $k => $op) {
+            $path = @$resources[$api]['operations'][$k]['path'] ?: null;
+            $resources[$api]['operations'][$k]['path'] = $basePath. $resources[$api]['path'] . $path;
             $responseClass = $op['responseClass'];
             if(preg_match('/List\[(\w+)\]/i', $responseClass, $match)){
                 $responseClass = $match[1];
             }
             $models[$responseClass] = $responseClass;
         }
+        $result = array_merge(array('models' => array()),$resources[$api]);
         foreach (array_keys($models) as $model) {
             array_push($result['models'], $this->models->results[$model]);
         }

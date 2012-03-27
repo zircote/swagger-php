@@ -18,15 +18,7 @@ class Zircote_Swagger_Param extends Zircote_Swagger_AbstractEntity
      *
      * @var array
      */
-    public $results = array(
-        'description' => '',
-        'required' => false,
-        'allowMultiple' => false,
-        'allowedValues' => array(),
-        'dataType' => null,
-        'name' => null,
-        'paramType' => null
-    );
+    public $results = array();
     /**
      *
      * @var string
