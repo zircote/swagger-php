@@ -46,10 +46,12 @@ class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
         $path = realpath(dirname(dirname(dirname(__DIR__))) . '/sample');
         $swagger = Zircote_Swagger::discover($path);
 
-        echo Zend_Json::prettyPrint(Zend_Json::encode(($swagger->resources)));
+        echo $swagger->getResource('http://org.local/v1');
 
         echo PHP_EOL,PHP_EOL;
-        echo Zend_Json::prettyPrint(Zend_Json::encode(($swagger->models)));
+
+        echo $swagger->getApi('http://org.local/v1', '/leadresponder');
+//         print_r($swagger->models->results);
     }
 
 }

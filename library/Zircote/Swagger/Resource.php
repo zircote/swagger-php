@@ -40,4 +40,19 @@ class Zircote_Swagger_Resource extends Zircote_Swagger_AbstractEntity
         }
         return $this;
     }
+    /**
+     *
+     * @return multitype:
+     */
+    public function getResources()
+    {
+        return array_keys($this->results);
+    }
+    public function getResource($basePath)
+    {
+        if(!isset($this->results[$basePath])){
+            throw new Exception(sprintf('Resource [%s] is not found',$basePath));
+        }
+        return $this->results[$basePath];
+    }
 }

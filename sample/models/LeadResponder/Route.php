@@ -5,7 +5,7 @@
  */
 /**
  * @ApiModel(
- *     id="leadresponder_route",
+ *     id="leadresonder_route",
  *     description="some long description of the model"
  * )
  * @ApiModelProp(
