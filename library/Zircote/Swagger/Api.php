@@ -98,7 +98,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
     protected function _getMethods()
     {
         /* @var $reflectedMethod ReflectionMethod */
-        foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $methodName => $reflectedMethod) {
+        foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
             if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Zircote_Swagger_Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);
