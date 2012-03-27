@@ -9,13 +9,17 @@
  */
 /**
  *
- * @Path /v1/leadresponder
+ * @ApiResource (
+ *     basePath="http://org.local/v1",
+ *     swaggerVersion="0.1a",
+ *     apiVersion="1"
+ * )
  * @Api (
  *     path="/leadresponder",
  *     value="Gets collection of leadresponders",
  *     description="This is a long description of what it does"
  *     )
- * @Produces (
+ * @ApiProduces (
  *     'application/json',
  *     'application/json+hal',
  *     'application/json-p',
@@ -99,7 +103,7 @@ class LeadResponder_RoutesIdController
     /**
      *
      * @PUT
-     * @Path /{leadresponder_id}
+     * @ApiPath /{leadresponder_id}
      * @ApiOperation(
      *     value="Updates the existing leadresponder designated by the {leadresponder_id}",
      *     responseClass="leadresonder_route",

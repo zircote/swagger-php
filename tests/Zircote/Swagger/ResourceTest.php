@@ -7,6 +7,7 @@ set_include_path(
     ':/Users/zircote/zend/Swagger-PHP/library'.
     ':/Users/zircote/zend/Swagger-PHP/sample'
 );
+require_once 'Zircote/Swagger.php';
 require_once 'Zircote/Swagger/Resource.php';
 require_once 'Zend/Json.php';
 class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
@@ -22,8 +23,6 @@ class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $path = dirname(dirname(dirname(__DIR__))) . '/sample/controllers';
-        $this->resource = new Zircote_Swagger_Resource($path);
     }
 
     /**
@@ -40,9 +39,17 @@ class Zircote_Swagger_ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testBuildResource()
     {
-        echo Zend_Json::prettyPrint(Zend_Json::encode(($this->resource->results))), PHP_EOL;
-        foreach ($this->resource->apis as $api) {
-            echo Zend_Json::prettyPrint(Zend_Json::encode(($api->results)));
-        }
+//         echo Zend_Json::prettyPrint(Zend_Json::encode(($this->resource->results))), PHP_EOL;
+//         foreach ($this->resource->apis as $api) {
+//             echo Zend_Json::prettyPrint(Zend_Json::encode(($api->results)));
+//         }
+        $path = realpath(dirname(dirname(dirname(__DIR__))) . '/sample');
+        $swagger = Zircote_Swagger::discover($path);
+
+        echo Zend_Json::prettyPrint(Zend_Json::encode(($swagger->resources)));
+
+        echo PHP_EOL,PHP_EOL;
+        echo Zend_Json::prettyPrint(Zend_Json::encode(($swagger->models)));
     }
+
 }

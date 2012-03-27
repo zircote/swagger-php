@@ -4,21 +4,50 @@
  * package_declaration
  */
 /**
- * @ApiModelId leadresponder_route
  * @ApiModel(
- *     usr_mlr_route_id=integer,
- *     route=string,
- *     createdDate=Date,
- *     description=string
+ *     id="leadresponder_route",
+ *     description="some long description of the model"
+ * )
+ * @ApiModelProp(
+ *     name=usr_mlr_route_id,
+ *     type=integer,
+ *     description="some long winded description"
+ * )
+ * @ApiModelProp(
+ *     name=route,
+ *     type=string
+ * )
+ * @ApiModelProp(
+ *     name=createdDate,
+ *     type=Date
+ * )
+ * @ApiModelProp(
+ *     name=tag,
+ *     type=string
+ * )
+ * @ApiModelProp(
+ *     name=enumVal,
+ *     type=string,
+ *     enum="item1,item2,item"
+ * )
+ * @ApiModelProp(
+ *     name=arrayItem,
+ *     type=array,
+ *     items=type:string
+ * )
+ * @ApiModelProp(
+ *     name=refArr,
+ *     type=array,
+ *     items=$ref:ref_item
  * )
  * @category
  * @package
  * @subpackage
  *
- * @param integer $usr_mlr_route_id
- * @param string  $route
- * @param string  $createdDate
- * @param string  $description
+ * @property integer $usr_mlr_route_id
+ * @property string  $route
+ * @property string  $createdDate
+ * @property string  $tag
  *
  */
 class Model_LeadResponder_Route

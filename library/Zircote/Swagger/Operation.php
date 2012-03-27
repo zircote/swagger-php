@@ -91,8 +91,8 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         $path = null;
         if(preg_match(self::PATTERN_PATH, $this->_docComment, $matches)){
             $path = $matches[1];
+            $this->results['path'] = $path;
         }
-        $this->results['path'] = $this->_resource['path'] . $path;
         return $this;
     }
     /**
