@@ -96,7 +96,7 @@ class LeadResponder_RoutesController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
-     * @see Ifbyphone_Rest_AbstractController::postAction()
+     * @see Zircote_Rest_AbstractController::putAction()
      */
     public function putAction()
     {
