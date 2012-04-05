@@ -14,14 +14,39 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Param
  */
+require_once 'Swagger/AbstractEntity.php';
 /**
  *
- * @category Organic
- * @package Organic
- * @subpackage Model
+ *
+ *
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Param
  */
-class Model_LeadResponder_RouteCollection
+class Swagger_Param extends Swagger_AbstractEntity
 {
-
+    /**
+     *
+     * @var array
+     */
+    public $results = array();
+    /**
+     *
+     * @var string
+     */
+    protected $_rawComment;
+    /**
+     *
+     * @param string $apiParam
+     */
+    public function __construct($apiParam)
+    {
+        $this->_rawComment = $apiParam;
+        $this->results = $this->_parseParts($this->_rawComment);
+    }
 }
