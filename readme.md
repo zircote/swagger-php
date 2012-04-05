@@ -166,7 +166,7 @@ class Model_LeadResponder_Route
 
 ```php
 <?php
-$swagger = Zircote_Swagger::discover($projectPath);
+$swagger = Swagger::discover($projectPath);
 echo $swagger->getResource('http://org.local/v1');
 
 ```
@@ -189,7 +189,7 @@ _Outputs:_
 
 ```php
 <?php
-$swagger = Zircote_Swagger::discover($projectPath);
+$swagger = Swagger::discover($projectPath);
 echo $swagger->getApi('http://org.local/v1', '/leadresponder');
 
 ```
