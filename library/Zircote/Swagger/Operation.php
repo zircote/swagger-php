@@ -3,17 +3,17 @@
  * filecomment
  * package_declaration
  */
-require_once 'Zircote/Swagger/AbstractEntity.php';
-require_once 'Zircote/Swagger/Param.php';
+require_once 'Swagger/AbstractEntity.php';
+require_once 'Swagger/Param.php';
 /**
  *
  *
  *
- * @category
- * @package
- * @subpackage
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Operation
  */
-class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
+class Swagger_Operation extends Swagger_AbstractEntity
 {
     /**
      *
@@ -69,7 +69,7 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
             ->_getParam();
     }
     /**
-     * @return Zircote_Swagger_Operation
+     * @return Swagger_Operation
      */
     protected function _getMethod()
     {
@@ -79,7 +79,7 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Operation
+     * @return Swagger_Operation
      */
     protected function _getPath()
     {
@@ -91,7 +91,7 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Operation
+     * @return Swagger_Operation
      */
     protected function _getOperation()
     {
@@ -109,7 +109,7 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Operation
+     * @return Swagger_Operation
      */
     protected function _getApiError()
     {
@@ -121,13 +121,13 @@ class Zircote_Swagger_Operation extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Operation
+     * @return Swagger_Operation
      */
     protected function _getParam()
     {
         if(preg_match_all(self::PATTERN_APIPARAM, $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
-                $apiOperation = new Zircote_Swagger_Param($match);
+                $apiOperation = new Swagger_Param($match);
                 array_push($this->results['parameters'],$apiOperation->results);
             }
         }

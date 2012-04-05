@@ -3,16 +3,16 @@
  * filecomment
  * package_declaration
  */
-require_once 'Zircote/Swagger/AbstractEntity.php';
+require_once 'Swagger/AbstractEntity.php';
 /**
  *
  *
  *
- * @category
- * @package
- * @subpackage
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Param
  */
-class Zircote_Swagger_Param extends Zircote_Swagger_AbstractEntity
+class Swagger_Param extends Swagger_AbstractEntity
 {
     /**
      *

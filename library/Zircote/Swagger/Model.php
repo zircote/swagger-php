@@ -1,18 +1,20 @@
 <?php
 /**
- * filecomment
- * package_declaration
+ *
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Model
  */
-require_once 'Zircote/Swagger/AbstractEntity.php';
+require_once 'Swagger/AbstractEntity.php';
 /**
  *
  *
  *
- * @category
- * @package
- * @subpackage
+ * @category Swagger
+ * @package Swagger
+ * @subpackage Model
  */
-class Zircote_Swagger_Model extends Zircote_Swagger_AbstractEntity
+class Swagger_Model extends Swagger_AbstractEntity
 {
     /**
      *
@@ -52,7 +54,7 @@ class Zircote_Swagger_Model extends Zircote_Swagger_AbstractEntity
     }
 
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _parseComment()
     {

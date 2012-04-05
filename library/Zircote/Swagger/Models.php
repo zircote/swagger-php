@@ -1,19 +1,19 @@
 <?php
 /**
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Resource
  */
-require_once 'Zircote/Swagger/Model.php';
+require_once 'Swagger/Model.php';
 /**
  *
  *
  *
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Resource
  */
-class Zircote_Swagger_Models extends Zircote_Swagger_AbstractEntity
+class Swagger_Models extends Swagger_AbstractEntity
 {
     public $results = array();
     protected $_classList;
@@ -28,12 +28,12 @@ class Zircote_Swagger_Models extends Zircote_Swagger_AbstractEntity
     }
     /**
      *
-     * @return Zircote_Swagger_Models
+     * @return Swagger_Models
      */
     protected function _introSpec()
     {
         foreach ($this->_classList as $reflectedClass) {
-            $ref = new Zircote_Swagger_Model($reflectedClass);
+            $ref = new Swagger_Model($reflectedClass);
             if(isset($ref->results['id'])){
                 $this->results[$ref->results['id']] = $ref->results;
             }

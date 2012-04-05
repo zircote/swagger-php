@@ -1,18 +1,18 @@
 <?php
 /**
- * filecomment
- * package_declaration
+ * @category   Swagger
+ * @package    Swagger
  */
-require_once 'Zircote/Swagger/Resource.php';
-require_once 'Zircote/Swagger/Models.php';
+require_once 'Swagger/Resource.php';
+require_once 'Swagger/Models.php';
 /**
  *
  *
  *
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  */
-class Zircote_Swagger
+class Swagger
 {
     /**
      *
@@ -26,12 +26,12 @@ class Zircote_Swagger
     protected $_fileList;
     /**
      *
-     * @var Zircote_Swagger_Resources
+     * @var Swagger_Resources
      */
     public $resources;
     /**
      *
-     * @var Zircote_Swagger_Models
+     * @var Swagger_Models
      */
     public $models;
     /**
@@ -70,7 +70,7 @@ class Zircote_Swagger
                 )
             );
         }
-        return Zend_Json::prettyPrint(Zend_Json::encode($result));
+        return json_encode($result);
     }
     public function getApi($basePath, $api)
     {
@@ -89,7 +89,7 @@ class Zircote_Swagger
         foreach (array_keys($models) as $model) {
             array_push($result['models'], $this->models->results[$model]);
         }
-        return Zend_Json::prettyPrint(Zend_Json::encode($result));
+        return json_encode($result);
     }
     /**
      *
@@ -116,7 +116,7 @@ class Zircote_Swagger
     /**
      *
      * @param array $classList
-     * @return Zircote_Swagger
+     * @return Swagger
      */
     public function setClassList(array $classList)
     {
@@ -137,7 +137,7 @@ class Zircote_Swagger
     /**
      *
      * @param  array $fileList
-     * @return Zircote_Swagger
+     * @return Swagger
      */
     public function setFileList($fileList)
     {
@@ -194,7 +194,7 @@ class Zircote_Swagger
     }
     /**
      *
-     * @return Zircote_Swagger
+     * @return Swagger
      */
     protected function _discoverServices()
     {
@@ -204,26 +204,26 @@ class Zircote_Swagger
                 array_push($this->_classList,new ReflectionClass($class));
             }
         }
-        $this->setResources(new Zircote_Swagger_Resource($this->_classList))
-            ->setModels(new Zircote_Swagger_Models($this->_classList));
+        $this->setResources(new Swagger_Resource($this->_classList))
+            ->setModels(new Swagger_Models($this->_classList));
         return $this;
     }
     /**
      *
-     * @param Zircote_Swagger_Resource $resources
-     * @return Zircote_Swagger
+     * @param Swagger_Resource $resources
+     * @return Swagger
      */
-    public function setResources(Zircote_Swagger_Resource $resources)
+    public function setResources(Swagger_Resource $resources)
     {
         $this->resources = $resources;
         return $this;
     }
     /**
      *
-     * @param Zircote_Swagger_Models $models
-     * @return Zircote_Swagger
+     * @param Swagger_Models $models
+     * @return Swagger
      */
-    public function setModels(Zircote_Swagger_Models $models)
+    public function setModels(Swagger_Models $models)
     {
         $this->models = $models;
         return $this;

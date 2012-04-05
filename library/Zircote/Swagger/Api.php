@@ -1,20 +1,20 @@
 <?php
 /**
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Api
  */
-require_once 'Zircote/Swagger/AbstractEntity.php';
-require_once 'Zircote/Swagger/Operation.php';
+require_once 'Swagger/AbstractEntity.php';
+require_once 'Swagger/Operation.php';
 /**
  *
  *
  *
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Api
  */
-class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
+class Swagger_Api extends Swagger_AbstractEntity
 {
     /**
      *
@@ -59,7 +59,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
             ->_getMethods();
     }
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _parseApi()
     {
@@ -69,7 +69,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _getResource()
     {
@@ -83,7 +83,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _getApi()
     {
@@ -95,7 +95,7 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _getProduces()
     {
@@ -109,14 +109,14 @@ class Zircote_Swagger_Api extends Zircote_Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Zircote_Swagger_Api
+     * @return Swagger_Api
      */
     protected function _getMethods()
     {
         /* @var $reflectedMethod ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
             if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
-                $operation = new Zircote_Swagger_Operation($reflectedMethod, $this->results);
+                $operation = new Swagger_Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);
             }
         }

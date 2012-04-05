@@ -1,19 +1,19 @@
 <?php
 /**
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Resource
  */
-require_once 'Zircote/Swagger/Api.php';
+require_once 'Swagger/Api.php';
 /**
  *
  *
  *
- * @category   Zircote
+ * @category   Swagger
  * @package    Swagger
  * @subpackage Resource
  */
-class Zircote_Swagger_Resource extends Zircote_Swagger_AbstractEntity
+class Swagger_Resource extends Swagger_AbstractEntity
 {
     public $results = array();
     protected $_classList;
@@ -28,12 +28,12 @@ class Zircote_Swagger_Resource extends Zircote_Swagger_AbstractEntity
     }
     /**
      *
-     * @return Zircote_Swagger_Resource
+     * @return Swagger_Resource
      */
     protected function _introSpec()
     {
         foreach ($this->_classList as $reflectedClass) {
-            $res = new Zircote_Swagger_Api($reflectedClass);
+            $res = new Swagger_Api($reflectedClass);
             if(isset($res->results['basePath'])){
                 $this->results[$res->results['basePath']][$res->results['path']] = $res->results;
             }

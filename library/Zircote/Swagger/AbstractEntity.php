@@ -1,17 +1,16 @@
 <?php
 /**
- * filecomment
- * package_declaration
+ * @category Swagger
+ * @package Swagger
  */
 /**
  *
  *
  *
- * @category
- * @package
- * @subpackage
+ * @category Swagger
+ * @package Swagger
  */
-class Zircote_Swagger_AbstractEntity
+class Swagger_AbstractEntity
 {
     const PATTERN_PATH           = '/@ApiPath\s{0,}([^@]*)/i';
     const STRIP_LINE_PREAMBLE    = '/\n\s*\* /';
