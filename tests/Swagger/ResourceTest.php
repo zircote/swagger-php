@@ -26,7 +26,6 @@ use \Swagger\Swagger;
  * @package Swagger
  * @subpackage UnitTests
  */
-require_once '/Users/zircote/zend/Swagger-PHP/library/Swagger.php';
 /**
  *
  *
