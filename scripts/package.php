@@ -88,7 +88,7 @@ $package->setOptions(
     )
 );
 
-$package->setPackage('Swagger');
+$package->setPackage('Hal');
 $package->setSummary($summary);
 $package->setDescription($description);
 $package->setChannel('zircote.github.com/pear');
