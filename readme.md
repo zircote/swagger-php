@@ -46,7 +46,7 @@ _Examples:_
  * @package    Organic_V1
  * @subpackage Controller
  */
-class LeadResponder_RoutesController
+class \LeadResponder_RoutesController
 {
 }
 ```
@@ -67,7 +67,7 @@ class LeadResponder_RoutesController
 ```php
 <?php
 // ....
-class LeadResponder_RoutesController
+class \LeadResponder_RoutesController
 {
     /**
      *
@@ -98,7 +98,7 @@ class LeadResponder_RoutesController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
-     * @see Zircote_Rest_AbstractController::putAction()
+     * @see \Zircote_Rest_AbstractController::putAction()
      */
     public function putAction()
     {
@@ -157,7 +157,7 @@ class LeadResponder_RoutesController
  * @property string  $tag
  *
  */
-class Model_LeadResponder_Route
+class \Model_LeadResponder_Route
 {
 // .....
 }
@@ -168,13 +168,13 @@ class Model_LeadResponder_Route
 
 ```php
 <?php
-$swagger = Swagger::discover($projectPath);
+$swagger = \Swagger\Swagger::discover($projectPath);
 echo $swagger->getResource('http://org.local/v1');
 
 ```
 _Outputs:_
 
-```javascript
+```json
 {
     "apis":[
         {
@@ -191,14 +191,14 @@ _Outputs:_
 
 ```php
 <?php
-$swagger = Swagger::discover($projectPath);
+$swagger = \Swagger\Swagger::discover($projectPath);
 echo $swagger->getApi('http://org.local/v1', '/leadresponder');
 
 ```
 
 _Outputs:_
 
-```javascript
+```json
 {
     "models":[
         {
