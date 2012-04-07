@@ -1,12 +1,14 @@
 # Swagger-php
 
-This is very new and not ready for consumption. Please note it is very much in initial stages of development.
+Swagger-PHP library implementing the swagger.wordnik.com specification to describe 
+web services, operations/actions and models enabling a uniform means of producing, 
+consuming, and visualizing RESTful web services. 
 
-For more info on swagger see: http://swagger.wordnik.com/
-
-Still cleaning alot up woth the result and how it will produce that result but I expect something usable soon.
-
-Current Sample is Generating the following output with models being next on my list:
+ More on Swagger:
+  * http://swagger.wordnik.com/
+  
+ 
+_Examples:_
 
 ## Tags:
 ### Resource Tags:
