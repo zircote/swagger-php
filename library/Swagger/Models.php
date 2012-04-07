@@ -1,7 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\AbstractEntity;
-use \Swagger\Model;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -22,6 +19,9 @@ use \Swagger\Model;
  * @package    Swagger
  * @subpackage Resource
  */
+namespace Swagger;
+use \Swagger\AbstractEntity;
+use \Swagger\Model;
 /**
  *
  *

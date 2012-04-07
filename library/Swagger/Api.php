@@ -1,7 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\AbstractEntity;
-use \Swagger\Operation;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -22,6 +19,13 @@ use \Swagger\Operation;
  * @package    Swagger
  * @subpackage Api
  */
+namespace Swagger;
+use \Exception;
+use \Reflector;
+use \ReflectionClass;
+use \ReflectionMethod;
+use \Swagger\AbstractEntity;
+use \Swagger\Operation;
 /**
  *
  *
@@ -56,15 +60,15 @@ class Api extends AbstractEntity
      */
     public function __construct($class)
     {
-        if(is_object($class) && !$class instanceof \Reflector){
-            $this->_class = new \ReflectionClass($class);
-        } elseif($class instanceof \Reflector){
+        if(is_object($class) && !$class instanceof Reflector){
+            $this->_class = new ReflectionClass($class);
+        } elseif($class instanceof Reflector){
             if(!method_exists($class, 'getDocComment')){
                 throw new \Exception('Reflector does not possess a getDocComment method');
             }
             $this->_class = $class;
         } elseif(is_string($class)){
-            $this->_class = new \ReflectionClass($class);
+            $this->_class = new ReflectionClass($class);
         } else {
             throw new \Exception('Incompatable Type attempted to reflect');
         }
@@ -129,8 +133,8 @@ class Api extends AbstractEntity
      */
     protected function _getMethods()
     {
-        /* @var $reflectedMethod ReflectionMethod */
-        foreach ($this->_class->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
+        /* @var $reflectedMethod \ReflectionMethod */
+        foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
             if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);

@@ -1,7 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\AbstractEntity;
-use \Swagger\Param;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -22,8 +19,12 @@ use \Swagger\Param;
  * @package Swagger
  * @subpackage Operation
  */
-// use \Swagger\AbstractEntity;
-// use \Swagger\Param;
+namespace Swagger;
+use \Exception;
+use \Reflector;
+use \ReflectionClass;
+use \Swagger\AbstractEntity;
+use \Swagger\Param;
 /**
  *
  *
@@ -61,15 +62,15 @@ class Operation extends AbstractEntity
     public function __construct($operation, $resource)
     {
         $this->_resource = $resource;
-        if($operation instanceof \Reflector){
+        if($operation instanceof Reflector){
             if(!method_exists($operation, 'getDocComment')){
-                throw new \Exception('Reflector does not possess a getDocComment method');
+                throw new Exception('Reflector does not possess a getDocComment method');
             }
             $this->_operation = $operation;
         } elseif(is_string($operation)){
-            $this->_operation = new \ReflectionClass($operation);
+            $this->_operation = new ReflectionClass($operation);
         } else {
-            throw new \Exception('Incompatable Type attempted to reflect');
+            throw new Exception('Incompatable Type attempted to reflect');
         }
         $this->_parse();
     }

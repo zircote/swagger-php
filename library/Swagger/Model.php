@@ -1,6 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\AbstractEntity;
 
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -22,6 +20,11 @@ use \Swagger\AbstractEntity;
  * @package Swagger
  * @subpackage Model
  */
+namespace Swagger;
+use \Exception;
+use \Reflector;
+use \ReflectionClass;
+use \Swagger\AbstractEntity;
 /**
  *
  *
@@ -55,14 +58,14 @@ class Model extends AbstractEntity
     public function __construct($class)
     {
         if(is_object($class) && !$class instanceof \Reflector){
-            $this->_class = new \ReflectionClass($class);
-        } elseif($class instanceof \Reflector){
+            $this->_class = new ReflectionClass($class);
+        } elseif($class instanceof Reflector){
             if(!method_exists($class, 'getDocComment')){
-                throw new \Exception('Reflector does not possess a getDocComment method');
+                throw new Exception('Reflector does not possess a getDocComment method');
             }
             $this->_class = $class;
         } elseif(is_string($class)){
-            $this->_class = new \ReflectionClass($class);
+            $this->_class = new ReflectionClass($class);
         } else {
             throw new \Exception('Incompatable Type attempted to reflect');
         }

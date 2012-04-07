@@ -1,7 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\Api;
-use \Swagger\AbstractEntity;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -21,6 +18,10 @@ use \Swagger\AbstractEntity;
  * @package    Swagger
  * @subpackage Resource
  */
+namespace Swagger;
+use \Exception;
+use \Swagger\Api;
+use \Swagger\AbstractEntity;
 /**
  *
  *
@@ -67,7 +68,7 @@ class Resource extends AbstractEntity
     public function getResource($basePath)
     {
         if(!isset($this->results[$basePath])){
-            throw new \Exception(sprintf('Resource [%s] is not found',$basePath));
+            throw new Exception(sprintf('Resource [%s] is not found',$basePath));
         }
         return $this->results[$basePath];
     }

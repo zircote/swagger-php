@@ -1,5 +1,4 @@
 <?php
-namespace Swagger;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -19,6 +18,7 @@ namespace Swagger;
  * @category Swagger
  * @package Swagger
  */
+namespace Swagger;
 /**
  *
  *

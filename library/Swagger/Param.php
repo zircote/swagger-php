@@ -1,6 +1,4 @@
 <?php
-namespace Swagger;
-use \Swagger\AbstractEntity;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -21,7 +19,8 @@ use \Swagger\AbstractEntity;
  * @package Swagger
  * @subpackage Param
  */
-// use \Swagger\AbstractEntity;
+namespace Swagger;
+use \Swagger\AbstractEntity;
 /**
  *
  *
