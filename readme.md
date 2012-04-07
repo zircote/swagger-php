@@ -7,16 +7,6 @@ consuming, and visualizing RESTful web services.
  More on Swagger:
   * http://swagger.wordnik.com/
   
- ## Installation:
- 
- ```sh
- pear channel-discover zircote.github.com/pear
- pear install zircote/Swagger 
-# Downloading Swagger-0.1.0.tgz ...
-# Starting to download Swagger-X.X.X.tgz (13,663 bytes)
-# .....done: 13,663 bytes
-# install ok: channel://zircote.github.com/pear/Swagger-0.1.0
- ```
  
 _Examples:_
 

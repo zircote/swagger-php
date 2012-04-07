@@ -1,4 +1,11 @@
 <?php
+set_include_path('/Users/zircote/zend/Swagger-PHP/library/:' . get_include_path());
+spl_autoload_register(function($className)
+{
+    require_once(str_replace(array('_','\\'), '/', ltrim($className, '\\')) . '.php');
+});
+
+use \Swagger\Swagger;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -19,8 +26,7 @@
  * @package Swagger
  * @subpackage UnitTests
  */
-require_once 'Swagger.php';
-require_once 'Swagger/Resource.php';
+require_once '/Users/zircote/zend/Swagger-PHP/library/Swagger.php';
 /**
  *
  *
@@ -29,10 +35,10 @@ require_once 'Swagger/Resource.php';
  * @package    Swagger
  * @subpackage UnitTests
  */
-class Swagger_ResourceTest extends PHPUnit_Framework_TestCase
+class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Swagger_Resource
+     * @var Resource
      */
     protected $resource;
 
@@ -53,12 +59,12 @@ class Swagger_ResourceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Swagger_Resource::buildResource
+     * @covers Resource::buildResource
      * @todo   Implement testBuildResource().
      */
     public function testBuildResource()
     {
-        $path = realpath(dirname(dirname(dirname(__DIR__))) . '/sample');
+        $path = realpath(dirname(dirname(__DIR__)) . '/examples');
         $swagger = Swagger::discover($path);
 
         echo $swagger->getResource('http://org.local/v1');
@@ -66,7 +72,6 @@ class Swagger_ResourceTest extends PHPUnit_Framework_TestCase
         echo PHP_EOL,PHP_EOL;
 
         echo $swagger->getApi('http://org.local/v1', '/leadresponder');
-//         print_r($swagger->models->results);
     }
 
 }

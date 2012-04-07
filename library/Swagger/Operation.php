@@ -1,4 +1,7 @@
 <?php
+namespace Swagger;
+use \Swagger\AbstractEntity;
+use \Swagger\Param;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -19,8 +22,8 @@
  * @package Swagger
  * @subpackage Operation
  */
-require_once 'Swagger/AbstractEntity.php';
-require_once 'Swagger/Param.php';
+// use \Swagger\AbstractEntity;
+// use \Swagger\Param;
 /**
  *
  *
@@ -29,11 +32,11 @@ require_once 'Swagger/Param.php';
  * @package Swagger
  * @subpackage Operation
  */
-class Swagger_Operation extends Swagger_AbstractEntity
+class Operation extends AbstractEntity
 {
     /**
      *
-     * @var ReflectionMethod
+     * @var \ReflectionMethod
      */
     protected $_operation;
     /**
@@ -52,21 +55,21 @@ class Swagger_Operation extends Swagger_AbstractEntity
     );
     /**
      *
-     * @param Reflector|string $operation
-     * @throws Exception
+     * @param \Reflector|string $operation
+     * @throws \Exception
      */
     public function __construct($operation, $resource)
     {
         $this->_resource = $resource;
-        if($operation instanceof Reflector){
+        if($operation instanceof \Reflector){
             if(!method_exists($operation, 'getDocComment')){
-                throw new Exception('Reflector does not possess a getDocComment method');
+                throw new \Exception('Reflector does not possess a getDocComment method');
             }
             $this->_operation = $operation;
         } elseif(is_string($operation)){
-            $this->_operation = new ReflectionClass($operation);
+            $this->_operation = new \ReflectionClass($operation);
         } else {
-            throw new Exception('Incompatable Type attempted to reflect');
+            throw new \Exception('Incompatable Type attempted to reflect');
         }
         $this->_parse();
     }
@@ -85,7 +88,7 @@ class Swagger_Operation extends Swagger_AbstractEntity
             ->_getParam();
     }
     /**
-     * @return Swagger_Operation
+     * @return \Swagger\Operation
      */
     protected function _getMethod()
     {
@@ -95,7 +98,7 @@ class Swagger_Operation extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Operation
+     * @return \Swagger\Operation
      */
     protected function _getPath()
     {
@@ -107,7 +110,7 @@ class Swagger_Operation extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Operation
+     * @return \Swagger\Operation
      */
     protected function _getOperation()
     {
@@ -125,7 +128,7 @@ class Swagger_Operation extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Operation
+     * @return \Swagger\Operation
      */
     protected function _getApiError()
     {
@@ -137,13 +140,13 @@ class Swagger_Operation extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Operation
+     * @return \Swagger\Operation
      */
     protected function _getParam()
     {
         if(preg_match_all(self::PATTERN_APIPARAM, $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
-                $apiOperation = new Swagger_Param($match);
+                $apiOperation = new Param($match);
                 array_push($this->results['parameters'],$apiOperation->results);
             }
         }

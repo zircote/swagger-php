@@ -1,4 +1,7 @@
 <?php
+namespace Swagger;
+use \Swagger\Resource;
+use \Swagger\Models;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -17,8 +20,6 @@
  * @category   Swagger
  * @package    Swagger
  */
-require_once 'Swagger/Resource.php';
-require_once 'Swagger/Models.php';
 /**
  *
  *
@@ -30,22 +31,22 @@ class Swagger
 {
     /**
      *
-     * @var Array
+     * @var array
      */
     protected $_classList = array();
     /**
      *
-     * @var Array
+     * @var array
      */
     protected $_fileList;
     /**
      *
-     * @var Swagger_Resources
+     * @var \Swagger\Resources
      */
     public $resources;
     /**
      *
-     * @var Swagger_Models
+     * @var \Swagger\Models
      */
     public $models;
     /**
@@ -86,6 +87,12 @@ class Swagger
         }
         return json_encode($result);
     }
+    /**
+     *
+     * @param string $basePath
+     * @param string $api
+     * @return string
+     */
     public function getApi($basePath, $api)
     {
         $models = array();
@@ -130,7 +137,7 @@ class Swagger
     /**
      *
      * @param array $classList
-     * @return Swagger
+     * @return \Swagger\Swagger
      */
     public function setClassList(array $classList)
     {
@@ -151,7 +158,7 @@ class Swagger
     /**
      *
      * @param  array $fileList
-     * @return Swagger
+     * @return \Swagger\Swagger
      */
     public function setFileList($fileList)
     {
@@ -169,7 +176,7 @@ class Swagger
             $path = $this->_path;
         }
         $files = array();
-        $dir = new DirectoryIterator($path);
+        $dir = new \DirectoryIterator($path);
         /* @var $fileInfo DirectoryIterator */
         foreach ($dir as $fileInfo) {
             if(!$fileInfo->isDot() && !$fileInfo->isDir()){
@@ -208,36 +215,37 @@ class Swagger
     }
     /**
      *
-     * @return Swagger
+     * @return \Swagger\Swagger
      */
     protected function _discoverServices()
     {
+
         foreach ($this->getFileList() as $filename) {
             require_once $filename;
             foreach ($this->_getClasses($filename) as $class) {
-                array_push($this->_classList,new ReflectionClass($class));
+                array_push($this->_classList,new \ReflectionClass($class));
             }
         }
-        $this->setResources(new Swagger_Resource($this->_classList))
-            ->setModels(new Swagger_Models($this->_classList));
+        $this->setResources(new Resource($this->_classList))
+            ->setModels(new Models($this->_classList));
         return $this;
     }
     /**
      *
-     * @param Swagger_Resource $resources
-     * @return Swagger
+     * @param \Swagger\Resource $resources
+     * @return \Swagger\Swagger
      */
-    public function setResources(Swagger_Resource $resources)
+    public function setResources(Resource $resources)
     {
         $this->resources = $resources;
         return $this;
     }
     /**
      *
-     * @param Swagger_Models $models
-     * @return Swagger
+     * @param \Swagger\Models $models
+     * @return \Swagger\Swagger
      */
-    public function setModels(Swagger_Models $models)
+    public function setModels(Models $models)
     {
         $this->models = $models;
         return $this;

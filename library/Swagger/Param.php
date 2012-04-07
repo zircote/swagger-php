@@ -1,4 +1,6 @@
 <?php
+namespace Swagger;
+use \Swagger\AbstractEntity;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -19,7 +21,7 @@
  * @package Swagger
  * @subpackage Param
  */
-require_once 'Swagger/AbstractEntity.php';
+// use \Swagger\AbstractEntity;
 /**
  *
  *
@@ -28,7 +30,7 @@ require_once 'Swagger/AbstractEntity.php';
  * @package Swagger
  * @subpackage Param
  */
-class Swagger_Param extends Swagger_AbstractEntity
+class Param extends AbstractEntity
 {
     /**
      *

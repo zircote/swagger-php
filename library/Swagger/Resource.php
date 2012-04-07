@@ -1,4 +1,7 @@
 <?php
+namespace Swagger;
+use \Swagger\Api;
+use \Swagger\AbstractEntity;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -18,7 +21,6 @@
  * @package    Swagger
  * @subpackage Resource
  */
-require_once 'Swagger/Api.php';
 /**
  *
  *
@@ -27,13 +29,13 @@ require_once 'Swagger/Api.php';
  * @package    Swagger
  * @subpackage Resource
  */
-class Swagger_Resource extends Swagger_AbstractEntity
+class Resource extends AbstractEntity
 {
     public $results = array();
     protected $_classList;
     /**
      *
-     * @param Reflector $path
+     * @param \Reflector $path
      */
     public function __construct($classList)
     {
@@ -42,12 +44,12 @@ class Swagger_Resource extends Swagger_AbstractEntity
     }
     /**
      *
-     * @return Swagger_Resource
+     * @return \Swagger\Resource
      */
     protected function _introSpec()
     {
         foreach ($this->_classList as $reflectedClass) {
-            $res = new Swagger_Api($reflectedClass);
+            $res = new Api($reflectedClass);
             if(isset($res->results['basePath'])){
                 $this->results[$res->results['basePath']][$res->results['path']] = $res->results;
             }
@@ -56,7 +58,7 @@ class Swagger_Resource extends Swagger_AbstractEntity
     }
     /**
      *
-     * @return multitype:
+     * @return array
      */
     public function getResources()
     {
@@ -65,7 +67,7 @@ class Swagger_Resource extends Swagger_AbstractEntity
     public function getResource($basePath)
     {
         if(!isset($this->results[$basePath])){
-            throw new Exception(sprintf('Resource [%s] is not found',$basePath));
+            throw new \Exception(sprintf('Resource [%s] is not found',$basePath));
         }
         return $this->results[$basePath];
     }

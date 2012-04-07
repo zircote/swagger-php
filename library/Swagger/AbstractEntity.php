@@ -1,4 +1,5 @@
 <?php
+namespace Swagger;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -25,7 +26,7 @@
  * @category Swagger
  * @package Swagger
  */
-class Swagger_AbstractEntity
+class AbstractEntity
 {
     const PATTERN_PATH           = '/@ApiPath\s{0,}([^@]*)/i';
     const STRIP_LINE_PREAMBLE    = '/\n\s*\* /';
