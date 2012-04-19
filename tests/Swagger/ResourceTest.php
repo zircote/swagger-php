@@ -20,7 +20,8 @@
  * @subpackage UnitTests
  */
 
-set_include_path('/Users/zircote/zend/Swagger-PHP/library:' . get_include_path());
+set_include_path(dirname(__DIR__) . '/library:' . get_include_path());
+
 require_once 'Swagger.php';
 require_once 'Swagger/Resource.php';
 /**
