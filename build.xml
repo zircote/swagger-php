@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Hal" default="build" basedir=".">
+    <property name="source" value="." />
+    <target name="clean" description="Clean up and create artifact directories">
+        <exec executable="git" failonerror="true">
+            <arg line="submodule init" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="submodule update" />
+        </exec>
+    </target>
+    <target name="phpunit"
+        description="Run unit tests using PHPUnit">
+        <exec executable="phpunit" failonerror="true">
+            <arg line="-c tests/phpunit.xml" />
+        </exec>
+    </target>
+    <target name="build" depends="clean,phpunit" />
+</project>

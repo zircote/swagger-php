@@ -1,0 +1,8 @@
+<phpunit bootstrap="bootstrap.php">
+    <testsuite name="Swagger-PHP Library Test Suite">
+        <directory>library</directory>
+    </testsuite>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+</phpunit>
