@@ -22,17 +22,17 @@
  * @subpackage Controller
  */
 /**
- * @apiresource(
+ * @SwaggerResource(
  *     basePath="http://org.local/v1",
  *     swaggerVersion="0.1a",
  *     apiVersion="1"
  * )
- * @Api (
- *     path="/leadresponder",
- *     value="Gets collection of leadresponders",
+ * @Swagger (
+ *     path="/organic",
+ *     value="Gets collection of organics",
  *     description="This is a long description of what it does"
  *     )
- * @ApiProduces (
+ * @SwaggerProduces (
  *     'application/json',
  *     'application/json+hal',
  *     'application/json-p',
@@ -46,7 +46,7 @@
  * @package    Organic_V1
  * @subpackage Controller
  */
-class LeadResponder_RoutesController
+class organic_RoutesController
 {
     /**
      *
@@ -57,10 +57,10 @@ class LeadResponder_RoutesController
      *
      * @var string
      */
-    protected $_resource = 'leadresponder';
-    /**
+    protected $_resource = 'organic';
+    /**  
      *
-     * @var V1_Service_LeadResponder_Routes
+     * @var V1_Service_Organic_Routes
      */
     protected $_service;
     /**
@@ -70,7 +70,7 @@ class LeadResponder_RoutesController
     protected $_allow = array('GET','POST', 'OPTIONS', 'HEAD');
     /**
      *
-     * @see Ifbyphone_Rest_AbstractController::init()
+     * @see Organic_Rest_AbstractController::init()
      */
     public function init()
     {
@@ -78,33 +78,33 @@ class LeadResponder_RoutesController
     /**
      *
      * @PUT
-     * @ApiPath /{leadresponder_id}
-     * @ApiOperation(
-     *     value="Updates the existing leadresponder designated by the {leadresponder_id}",
-     *     responseClass="leadresonder_route",
+     * @SwaggerPath /{organic_id}
+     * @SwaggerOperation(
+     *     value="Updates the existing organic designated by the {organic_id}",
+     *     responseClass="organic_route",
      *     multiValueResponse=false,
      *     tags="MLR"
      * )
-     * @ApiError(code=400,reason="Invalid ID Provided")
-     * @ApiError(code=403,reason="User Not Authorized")
-     * @ApiError(code=404,reason="Lead Responder Not Found")
-     * @ApiParam(
-     *     description="ID of the leadresponder being requested",
+     * @SwaggerError(code=400,reason="Invalid ID Provided")
+     * @SwaggerError(code=403,reason="User Not Authorized")
+     * @SwaggerError(code=404,reason="Lead Responder Not Found")
+     * @SwaggerParam(
+     *     description="ID of the route being requested",
      *     required=true,
      *     allowMultiple=false,
      *     dataType="integer",
-     *     name="leadresponder_id",
+     *     name="organic_id",
      *     paramType="path"
-     * )
-     * @ApiParam(
-     *     description="leadresponder_route being updated",
+     * ) 
+     * @SwaggerParam(
+     *     description="organic_route being updated",
      *     required=true,
      *     allowMultiple=false,
-     *     dataType="leadresponder_route",
-     *     name="leadresponder_route",
+     *     dataType="organic_route",
+     *     name="organic_route",
      *     paramType="body"
      * )
-     * @see Ifbyphone_Rest_AbstractController::postAction()
+     * @see Organic_Rest_AbstractController::postAction()
      */
     public function putAction()
     {
