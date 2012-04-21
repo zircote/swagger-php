@@ -4,7 +4,10 @@
     "version": "0.1.0",
     "time" : "2012-04-01",
     "license" : "Apache2",
-    "description": "Swagger-PHP library implementing the swagger.wordnik.com specification to describe web services, operations/actions and models enabling a uniform means of producing, consuming, and visualizing RESTful web services.",
+    "description": "Swagger-PHP library implementing the swagger.wordnik.com 
+    specification to describe web services, operations/actions and models 
+    enabling a uniform means of producing, consuming, and visualizing RESTful 
+    web services.",
     "keywords": ["json", "api", "service discovery"],
     "homepage": "https://github.com/zircote/swagger-php/",
     "authors": [
@@ -18,6 +21,6 @@
         "php": ">=5.2.4"
     },
     "autoload": {
-        "psr-0": {"Swagger": "library/Hal"}
+        "psr-0": {"Swagger": "library/Swagger"}
     }
 }
