@@ -28,19 +28,19 @@ namespace Swagger;
  */
 class AbstractEntity
 {
-    const PATTERN_PATH           = '/@ApiPath\s{0,}([^@]*)/i';
+    const PATTERN_PATH           = '/@SwaggerPath\s{0,}([^@]*)/i';
     const STRIP_LINE_PREAMBLE    = '/\n\s*\* /';
     const STRIP_WHITESPACE_APOST = "/(\s{2}|')/";
     const STRIP_WHITESPACE       = '/\s{2}/';
     const PATTERN_METHOD         = '/(@GET|@PUT|@POST|@DELETE)/';
-    const PATTERN_OPERATION      = '/@ApiOperation\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_APIERROR       = '/@ApiError\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_APIPARAM       = '/@ApiParam\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_API            = '/@Api\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_PRODUCES       = '/@ApiProduces\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_RESOURCE       = '/@ApiResource\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_APIMODEL       = '/@ApiModel\s{0,}\(([^@|)]*)\)/i';
-    const PATTERN_APIMODELPARAM  = '/@ApiModelProp\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_OPERATION      = '/@SwaggerOperation\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_APIERROR       = '/@SwaggerError\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_APIPARAM       = '/@SwaggerParam\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_API            = '/@Swagger\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_PRODUCES       = '/@SwaggerProduces\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_RESOURCE       = '/@SwaggerResource\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_APIMODEL       = '/@SwaggerModel\s{0,}\(([^@|)]*)\)/i';
+    const PATTERN_APIMODELPARAM  = '/@property\s{0,}([^@|)]*)/i';
 
     protected $_resource;
     /**

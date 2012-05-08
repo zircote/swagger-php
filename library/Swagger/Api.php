@@ -135,7 +135,7 @@ class Api extends AbstractEntity
     {
         /* @var $reflectedMethod \ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
-            if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
+            if(preg_match('/@SwaggerOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);
             }

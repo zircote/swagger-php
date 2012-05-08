@@ -19,17 +19,8 @@
  * @package    Swagger
  * @subpackage UnitTests
  */
-namespace Swagger;
-set_include_path(
-    dirname(dirname(__DIR__)) . '/library' .
-    DIRECTORY_SEPARATOR . get_include_path()
-);
-spl_autoload_register(function($className)
-{
-    require_once(str_replace(array('_','\\'), '/', ltrim($className, '\\')) . '.php');
-});
-use \Swagger\Swagger;
-use PHPUnit_Framework_TestCase;
+namespace SwaggerTests;
+use Swagger\Swagger;
 /**
  *
  *
@@ -38,7 +29,7 @@ use PHPUnit_Framework_TestCase;
  * @package    Swagger
  * @subpackage UnitTests
  */
-class ResourceTest extends PHPUnit_Framework_TestCase
+class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Resource
@@ -67,13 +58,13 @@ class ResourceTest extends PHPUnit_Framework_TestCase
      */
     public function testBuildResource()
     {
-        $path = realpath(dirname(dirname(__DIR__)) . '/examples');
+        $path = realpath(dirname(__DIR__) . '/fixtures');
         $swagger = Swagger::discover($path);
 
         echo $swagger->getResource('http://org.local/v1');
 
         echo PHP_EOL,PHP_EOL;
-
+//     print_r($swagger); exit;
         echo $swagger->getApi('http://org.local/v1', '/leadresponder');
     }
 
