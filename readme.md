@@ -46,7 +46,7 @@ _Examples:_
  * @package    Organic_V1
  * @subpackage Controller
  */
-class \LeadResponder_RoutesController
+class LeadResponder_RoutesController
 {
 }
 ```
