@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -19,7 +20,11 @@
  * @package Swagger
  * @subpackage Model
  */
-require_once 'Swagger/AbstractEntity.php';
+namespace Swagger;
+use \Exception;
+use \Reflector;
+use \ReflectionClass;
+use \Swagger\AbstractEntity;
 /**
  *
  *
@@ -28,7 +33,7 @@ require_once 'Swagger/AbstractEntity.php';
  * @package Swagger
  * @subpackage Model
  */
-class Swagger_Model extends Swagger_AbstractEntity
+class Model extends AbstractEntity
 {
     /**
      *
@@ -47,12 +52,12 @@ class Swagger_Model extends Swagger_AbstractEntity
     public $results = array();
     /**
      *
-     * @param Reflector|string $class
-     * @throws Exception
+     * @param \Reflector|string $class
+     * @throws \Exception
      */
     public function __construct($class)
     {
-        if(is_object($class) && !$class instanceof Reflector){
+        if(is_object($class) && !$class instanceof \Reflector){
             $this->_class = new ReflectionClass($class);
         } elseif($class instanceof Reflector){
             if(!method_exists($class, 'getDocComment')){
@@ -62,13 +67,13 @@ class Swagger_Model extends Swagger_AbstractEntity
         } elseif(is_string($class)){
             $this->_class = new ReflectionClass($class);
         } else {
-            throw new Exception('Incompatable Type attempted to reflect');
+            throw new \Exception('Incompatable Type attempted to reflect');
         }
         $this->_parseComment()->_getModelId()->_getModelProperties();
     }
 
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Model
      */
     protected function _parseComment()
     {
@@ -77,6 +82,9 @@ class Swagger_Model extends Swagger_AbstractEntity
         );
         return $this;
     }
+    /**
+     * @return \Swagger\Model
+     */
     protected function _getModelId()
     {
         if(preg_match(self::PATTERN_APIMODEL, $this->_docComment, $matches)){
@@ -86,24 +94,56 @@ class Swagger_Model extends Swagger_AbstractEntity
         }
         return $this;
     }
+    /**
+     * @return \Swagger\Model
+     */
     protected function _getModelProperties()
     {
         $this->results['properties'] = array();
         if(preg_match_all(self::PATTERN_APIMODELPARAM, $this->_docComment, $matches)){
             foreach ($matches[1] as $match) {
-                $prop = array();
-                foreach ($this->_parseParts($match) as $key => $value) {
-                    $prop[$key] = $value;
+                preg_match('/(\w+)\s{1,}(\$\w+)(.*)/', $match, $prop);
+                if($prop){
+                    if(isset($prop[2])){
+                        $result['name'] = str_replace('$','',$prop[2]);
+                    }
+                    if(isset($prop[1])){
+                        $result['type'] = $prop[1];
+                    }
+                    if(isset($prop[3])){
+                        $result['desc'] = $prop[3];
+                    }
+                    $this->results['properties'][] = $result;
                 }
-                array_push($this->results['properties'], $prop);
             }
         }
+        foreach ($this->_class->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+            $result = $this->_parsePublicProps($property);
+            if($result){
+                $this->results['properties'][] = $result;
+            }
+        }
+
         return $this;
     }
-    protected function _parseType($value)
+    /**
+     *
+     * @param \ReflectionProperty $value
+     */
+    protected function _parsePublicProps(\ReflectionProperty $property)
     {
-
+        $comment = $this->_parseDocComment($property->getDocComment());
+        preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment,$match);
+        $result['desc'] = $match[0];
+        preg_match('/@var (\w+)/i', $comment, $match);
+        $result['type'] = $match[1];
+        $result['name'] = $property->getName();
+        return $result;
     }
+    /**
+     *
+     * @param string $value
+     */
     protected function _isRef($value)
     {
         if(preg_match('/$ref:(\w+)$/i', $value, $match)){

@@ -19,7 +19,8 @@
  * @package Swagger
  * @subpackage Param
  */
-require_once 'Swagger/AbstractEntity.php';
+namespace Swagger;
+use \Swagger\AbstractEntity;
 /**
  *
  *
@@ -28,7 +29,7 @@ require_once 'Swagger/AbstractEntity.php';
  * @package Swagger
  * @subpackage Param
  */
-class Swagger_Param extends Swagger_AbstractEntity
+class Param extends AbstractEntity
 {
     /**
      *

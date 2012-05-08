@@ -17,8 +17,11 @@
  * @category   Swagger
  * @package    Swagger
  */
-require_once 'Swagger/Resource.php';
-require_once 'Swagger/Models.php';
+namespace Swagger;
+use DirectoryIterator,
+    ReflectionClass,
+    Swagger\Models,
+    Swagger\Model;
 /**
  *
  *
@@ -40,14 +43,25 @@ class Swagger
     protected $_fileList;
     /**
      *
-     * @var Swagger_Resources
+     * @var Resources
      */
     public $resources;
     /**
      *
-     * @var Swagger_Models
+     * @var Models
      */
     public $models;
+    /**
+     *
+     * @param string $path
+     */
+    public function __construct($path = null)
+    {
+        if($path){
+            $this->_path = $path;
+            $this->_discoverServices();
+        }
+    }
     /**
      *
      * @param string $path
@@ -104,17 +118,6 @@ class Swagger
             array_push($result['models'], $this->models->results[$model]);
         }
         return json_encode($result);
-    }
-    /**
-     *
-     * @param string $path
-     */
-    public function __construct($path = null)
-    {
-        if($path){
-            $this->_path = $path;
-            $this->_discoverServices();
-        }
     }
     /**
      *
@@ -218,26 +221,26 @@ class Swagger
                 array_push($this->_classList,new ReflectionClass($class));
             }
         }
-        $this->setResources(new Swagger_Resource($this->_classList))
-            ->setModels(new Swagger_Models($this->_classList));
+        $this->setResources(new Resource($this->_classList))
+            ->setModels(new Models($this->_classList));
         return $this;
     }
     /**
      *
-     * @param Swagger_Resource $resources
+     * @param Resource $resources
      * @return Swagger
      */
-    public function setResources(Swagger_Resource $resources)
+    public function setResources(Resource $resources)
     {
         $this->resources = $resources;
         return $this;
     }
     /**
      *
-     * @param Swagger_Models $models
+     * @param Models $models
      * @return Swagger
      */
-    public function setModels(Swagger_Models $models)
+    public function setModels(Models $models)
     {
         $this->models = $models;
         return $this;

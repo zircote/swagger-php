@@ -19,8 +19,13 @@
  * @package    Swagger
  * @subpackage Api
  */
-require_once 'Swagger/AbstractEntity.php';
-require_once 'Swagger/Operation.php';
+namespace Swagger;
+use \Exception;
+use \Reflector;
+use \ReflectionClass;
+use \ReflectionMethod;
+use \Swagger\AbstractEntity;
+use \Swagger\Operation;
 /**
  *
  *
@@ -29,11 +34,11 @@ require_once 'Swagger/Operation.php';
  * @package    Swagger
  * @subpackage Api
  */
-class Swagger_Api extends Swagger_AbstractEntity
+class Api extends AbstractEntity
 {
     /**
      *
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     protected $_class;
     /**
@@ -50,8 +55,8 @@ class Swagger_Api extends Swagger_AbstractEntity
     );
     /**
      *
-     * @param Reflector|string $class
-     * @throws Exception
+     * @param \Reflector|string $class
+     * @throws \Exception
      */
     public function __construct($class)
     {
@@ -59,13 +64,13 @@ class Swagger_Api extends Swagger_AbstractEntity
             $this->_class = new ReflectionClass($class);
         } elseif($class instanceof Reflector){
             if(!method_exists($class, 'getDocComment')){
-                throw new Exception('Reflector does not possess a getDocComment method');
+                throw new \Exception('Reflector does not possess a getDocComment method');
             }
             $this->_class = $class;
         } elseif(is_string($class)){
             $this->_class = new ReflectionClass($class);
         } else {
-            throw new Exception('Incompatable Type attempted to reflect');
+            throw new \Exception('Incompatable Type attempted to reflect');
         }
         $this->_parseApi()
             ->_getResource()
@@ -74,7 +79,7 @@ class Swagger_Api extends Swagger_AbstractEntity
             ->_getMethods();
     }
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Api
      */
     protected function _parseApi()
     {
@@ -84,7 +89,7 @@ class Swagger_Api extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Api
      */
     protected function _getResource()
     {
@@ -98,7 +103,7 @@ class Swagger_Api extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Api
      */
     protected function _getApi()
     {
@@ -110,7 +115,7 @@ class Swagger_Api extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Api
      */
     protected function _getProduces()
     {
@@ -124,14 +129,14 @@ class Swagger_Api extends Swagger_AbstractEntity
         return $this;
     }
     /**
-     * @return Swagger_Api
+     * @return \Swagger\Api
      */
     protected function _getMethods()
     {
-        /* @var $reflectedMethod ReflectionMethod */
+        /* @var $reflectedMethod \ReflectionMethod */
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
-            if(preg_match('/@ApiOperation/i', $reflectedMethod->getDocComment())){
-                $operation = new Swagger_Operation($reflectedMethod, $this->results);
+            if(preg_match('/@SwaggerOperation/i', $reflectedMethod->getDocComment())){
+                $operation = new Operation($reflectedMethod, $this->results);
                 array_push($this->results['operations'],$operation->results);
             }
         }

@@ -13,26 +13,26 @@ _Examples:_
 ## Tags:
 ### Resource Tags:
 
-   * `@ApiResource`
-   * `@Api`
-   * `@ApiProduces`
+   * `@SwaggerResource`
+   * `@Swagger`
+   * `@SwaggerProduces`
 
 #### Example Use:
 
 ```php
 <?php
 /**
- * @apiresource(
+ *@Swaggerresource(
  *     basePath="http://org.local/v1",
  *     swaggerVersion="0.1a",
  *     apiVersion="1"
  * )
- * @Api (
+ *@Swagger (
  *     path="/leadresponder",
  *     value="Gets collection of leadresponders",
  *     description="This is a long description of what it does"
  *     )
- * @ApiProduces (
+ *@SwaggerProduces (
  *     'application/json',
  *     'application/json+hal',
  *     'application/json-p',
@@ -57,10 +57,10 @@ class LeadResponder_RoutesController
    * `@PUT`
    * `@POST`
    * `@DELETE`
-   * `@ApiPath`
-   * `@ApiOperation`
-   * `@ApiError`
-   * `@ApiParam`
+   * `@SwaggerPath`
+   * `@SwaggerOperation`
+   * `@SwaggerError`
+   * `@SwaggerParam`
 
 #### Example Use:
 
@@ -72,17 +72,17 @@ class LeadResponder_RoutesController
     /**
      *
      * @PUT
-     * @ApiPath /{leadresponder_id}
-     * @ApiOperation(
+     *@SwaggerPath /{leadresponder_id}
+     *@SwaggerOperation(
      *     value="Updates the existing leadresponder designated by the {leadresponder_id}",
      *     responseClass="leadresonder_route",
      *     multiValueResponse=false,
      *     tags="MLR"
      * )
-     * @ApiError(code=400,reason="Invalid ID Provided")
-     * @ApiError(code=403,reason="User Not Authorized")
-     * @ApiError(code=404,reason="Lead Responder Not Found")
-     * @ApiParam(
+     *@SwaggerError(code=400,reason="Invalid ID Provided")
+     *@SwaggerError(code=403,reason="User Not Authorized")
+     *@SwaggerError(code=404,reason="Lead Responder Not Found")
+     *@SwaggerParam(
      *     description="ID of the leadresponder being requested",
      *     required=true,
      *     allowMultiple=false,
@@ -90,7 +90,7 @@ class LeadResponder_RoutesController
      *     name="leadresponder_id",
      *     paramType="path"
      * )
-     * @ApiParam(
+     *@SwaggerParam(
      *     description="leadresponder_route being updated",
      *     required=true,
      *     allowMultiple=false,
@@ -98,7 +98,6 @@ class LeadResponder_RoutesController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
-     * @see Zircote_Rest_AbstractController::putAction()
      */
     public function putAction()
     {
@@ -107,57 +106,24 @@ class LeadResponder_RoutesController
 ```
 ### Model Tags:
 
- * `@ApiModel`
- * `@ApiModelProp`
+ * `@SwaggerModel`
 
 #### Example Use:
 
 ```php
 <?php
 /**
- * @ApiModel(
+ *@SwaggerModel(
  *     id="leadresonder_route",
  *     description="some long description of the model"
  * )
- * @ApiModelProp(
- *     name=usr_mlr_route_id,
- *     type=integer,
- *     description="some long winded description"
- * )
- * @ApiModelProp(
- *     name=route,
- *     type=string
- * )
- * @ApiModelProp(
- *     name=createdDate,
- *     type=Date
- * )
- * @ApiModelProp(
- *     name=tag,
- *     type=string
- * )
- * @ApiModelProp(
- *     name=enumVal,
- *     type=string,
- *     enum="item1,item2,item"
- * )
- * @ApiModelProp(
- *     name=arrayItem,
- *     type=array,
- *     items=type:string
- * )
- * @ApiModelProp(
- *     name=refArr,
- *     type=array,
- *     items=$ref:ref_item
- * )
- * @property integer $usr_mlr_route_id
+ * @property integer $usr_mlr_route_id description of blah
  * @property string  $route
  * @property string  $createdDate
  * @property string  $tag
  *
  */
-class Model_LeadResponder_Route
+class \Model_LeadResponder_Route
 {
 // .....
 }
@@ -168,13 +134,13 @@ class Model_LeadResponder_Route
 
 ```php
 <?php
-$swagger = Swagger::discover($projectPath);
+$swagger = \Swagger\Swagger::discover($projectPath);
 echo $swagger->getResource('http://org.local/v1');
 
 ```
 _Outputs:_
 
-```javascript
+```json
 {
     "apis":[
         {
@@ -191,14 +157,14 @@ _Outputs:_
 
 ```php
 <?php
-$swagger = Swagger::discover($projectPath);
+$swagger = \Swagger\Swagger::discover($projectPath);
 echo $swagger->getApi('http://org.local/v1', '/leadresponder');
 
 ```
 
 _Outputs:_
 
-```javascript
+```json
 {
     "models":[
         {

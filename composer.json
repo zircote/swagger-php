@@ -18,9 +18,9 @@
         }
     ],
     "require": {
-        "php": ">=5.2.4"
+        "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-0": {"Swagger": "library/Swagger"}
+        "psr-0": {"Swagger": "library"}
     }
 }

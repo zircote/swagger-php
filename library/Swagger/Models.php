@@ -19,7 +19,9 @@
  * @package    Swagger
  * @subpackage Resource
  */
-require_once 'Swagger/Model.php';
+namespace Swagger;
+use \Swagger\AbstractEntity;
+use \Swagger\Model;
 /**
  *
  *
@@ -28,7 +30,7 @@ require_once 'Swagger/Model.php';
  * @package    Swagger
  * @subpackage Resource
  */
-class Swagger_Models extends Swagger_AbstractEntity
+class Models extends AbstractEntity
 {
     public $results = array();
     protected $_classList;
@@ -43,12 +45,12 @@ class Swagger_Models extends Swagger_AbstractEntity
     }
     /**
      *
-     * @return Swagger_Models
+     * @return Models
      */
     protected function _introSpec()
     {
         foreach ($this->_classList as $reflectedClass) {
-            $ref = new Swagger_Model($reflectedClass);
+            $ref = new Model($reflectedClass);
             if(isset($ref->results['id'])){
                 $this->results[$ref->results['id']] = $ref->results;
             }

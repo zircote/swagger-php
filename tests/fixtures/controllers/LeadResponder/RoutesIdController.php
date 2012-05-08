@@ -23,17 +23,17 @@
  */
 /**
  *
- * @ApiResource (
+ * @SwaggerResource (
  *     basePath="http://org.local/v1",
  *     swaggerVersion="0.1a",
  *     apiVersion="1"
  * )
- * @Api (
+ * @Swagger (
  *     path="/leadresponder",
  *     value="Gets collection of leadresponders",
  *     description="This is a long description of what it does"
  *     )
- * @ApiProduces (
+ * @SwaggerProduces (
  *     'application/json',
  *     'application/json+hal',
  *     'application/json-p',
@@ -78,13 +78,13 @@ class LeadResponder_RoutesIdController
     }
     /**
      * @GET
-     * @ApiOperation(
+     * @SwaggerOperation(
      *     value="Fetches the leadresponder corresponding the the provided ID",
      *     responseClass="leadresonder_route",
      *     multiValueResponse=true,
      *     tags="MLR"
      * )
-     * @ApiError(code=403,reason="User Not Authorized")
+     * @SwaggerError(code=403,reason="User Not Authorized")
      * @see Ifbyphone_Rest_AbstractController::getAction()
      */
     public function getAction()
@@ -93,15 +93,15 @@ class LeadResponder_RoutesIdController
     /**
      *
      * @POST
-     * @ApiOperation(
+     * @SwaggerOperation(
      *     value="Creates a new leadresponder",
      *     responseClass="leadresonder_route",
      *     multiValueResponse=false,
      *     tags="MLR"
      * )
-     * @ApiError(code=403,reason="User Not Authorized")
+     * @SwaggerError(code=403,reason="User Not Authorized")
      *
-     * @ApiParam(
+     * @SwaggerParam(
      *     description="leadresponder_route being created",
      *     required=true,
      *     allowMultiple=false,
@@ -117,17 +117,17 @@ class LeadResponder_RoutesIdController
     /**
      *
      * @PUT
-     * @ApiPath /{leadresponder_id}
-     * @ApiOperation(
+     * @SwaggerPath /{leadresponder_id}
+     * @SwaggerOperation(
      *     value="Updates the existing leadresponder designated by the {leadresponder_id}",
      *     responseClass="leadresonder_route",
      *     multiValueResponse=false,
      *     tags="MLR"
      * )
-     * @ApiError(code=400,reason="Invalid ID Provided")
-     * @ApiError(code=403,reason="User Not Authorized")
-     * @ApiError(code=404,reason="Lead Responder Not Found")
-     * @ApiParam(
+     * @SwaggerError(code=400,reason="Invalid ID Provided")
+     * @SwaggerError(code=403,reason="User Not Authorized")
+     * @SwaggerError(code=404,reason="Lead Responder Not Found")
+     * @SwaggerParam(
      *     description="ID of the leadresponder being requested",
      *     required=true,
      *     allowMultiple=false,
@@ -135,7 +135,7 @@ class LeadResponder_RoutesIdController
      *     name="leadresponder_id",
      *     paramType="path"
      * )
-     * @ApiParam(
+     * @SwaggerParam(
      *     description="leadresponder_route being updated",
      *     required=true,
      *     allowMultiple=false,
