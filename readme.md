@@ -6,6 +6,7 @@ consuming, and visualizing RESTful web services.
 
  More on Swagger:
   * http://swagger.wordnik.com/
+  * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
   
  
 _Examples:_
@@ -123,7 +124,7 @@ class LeadResponder_RoutesController
  * @property string  $tag
  *
  */
-class \Model_LeadResponder_Route
+class Model_LeadResponder_Route
 {
 // .....
 }
