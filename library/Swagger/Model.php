@@ -105,22 +105,22 @@ class Model extends AbstractEntity
                 preg_match('/(\w+)\s{1,}(\$\w+)(.*)/', $match, $prop);
                 if($prop){
                     if(isset($prop[2])){
-                        $result['name'] = str_replace('$','',$prop[2]);
+                        $name = str_replace('$','',$prop[2]);
+                        if(isset($prop[1])){
+                            $result['type'] = $prop[1];
+                        }
+                        if(isset($prop[3])){
+                            $result['description'] = trim($prop[3]);
+                        }
+                        $this->results['properties'][$name] = $result;
                     }
-                    if(isset($prop[1])){
-                        $result['type'] = $prop[1];
-                    }
-                    if(isset($prop[3])){
-                        $result['desc'] = $prop[3];
-                    }
-                    $this->results['properties'][$result['name']] = $result;
                 }
             }
         }
         foreach ($this->_class->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $result = $this->_parsePublicProps($property);
             if($result){
-                $this->results['properties'][] = $result;
+                $this->results['properties'][$property->getName()] = $result;
             }
         }
 
@@ -133,11 +133,10 @@ class Model extends AbstractEntity
     protected function _parsePublicProps(\ReflectionProperty $property)
     {
         $comment = $this->_parseDocComment($property->getDocComment());
-        preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment,$match);
-        $result['desc'] = $match[0];
+        preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment, $match);
+        $result['description'] = trim($match[0]);
         preg_match('/@var (\w+)/i', $comment, $match);
         $result['type'] = $match[1];
-        $result['name'] = $property->getName();
         return $result;
     }
     /**
