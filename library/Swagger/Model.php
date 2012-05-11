@@ -113,7 +113,7 @@ class Model extends AbstractEntity
                     if(isset($prop[3])){
                         $result['desc'] = $prop[3];
                     }
-                    $this->results['properties'][] = $result;
+                    $this->results['properties'][$result['name']] = $result;
                 }
             }
         }

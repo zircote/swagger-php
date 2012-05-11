@@ -29,7 +29,7 @@ namespace Swagger;
 class AbstractEntity
 {
     const PATTERN_PATH           = '/@SwaggerPath\s{0,}([^@]*)/i';
-    const STRIP_LINE_PREAMBLE    = '/\n\s*\* /';
+    const STRIP_LINE_PREAMBLE    = '/\n\s*\t*\* ?/';
     const STRIP_WHITESPACE_APOST = "/(\s{2}|')/";
     const STRIP_WHITESPACE       = '/\s{2}/';
     const PATTERN_METHOD         = '/(@GET|@PUT|@POST|@DELETE)/';
