@@ -103,22 +103,22 @@ class Swagger
     public function getApi($basePath, $api)
     {
         $resources = $this->resources->getResource($basePath);
-		$apiResource = $resources[$api];
-		$apis = array();
-		$models = array();	
-		foreach ($apiResource['apis'] as $api) {
-			foreach ($api['operations'] as $op) {
-				$responseClass = $op['responseClass'];
-				if(preg_match('/List\[(\w+)\]/i', $responseClass, $match)){
-					$responseClass = $match[1];
-				}
-				$models[$responseClass] = $this->models->results[$responseClass];
-			}
-			$apis[] = $api;			
-		}
-		$apiResource['apis'] = $apis;
-		$apiResource['models'] = $models;
-		return json_encode($apiResource);
+        $apiResource = $resources[$api];
+        $apis = array();
+        $models = array();	
+        foreach ($apiResource['apis'] as $api) {
+            foreach ($api['operations'] as $op) {
+                $responseClass = $op['responseClass'];
+                if(preg_match('/List\[(\w+)\]/i', $responseClass, $match)){
+                    $responseClass = $match[1];
+                }
+            $models[$responseClass] = $this->models->results[$responseClass];
+            }
+            $apis[] = $api;			
+        }
+        $apiResource['apis'] = $apis;
+        $apiResource['models'] = $models;
+        return json_encode($apiResource);
     }
     /**
      *
