@@ -51,7 +51,7 @@ class Api extends AbstractEntity
      * @var array
      */
     public $results = array(
-        'apis' => array()
+        'operations' => array()
     );
     /**
      *
@@ -137,9 +137,7 @@ class Api extends AbstractEntity
         foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
             if(preg_match('/@SwaggerOperation/i', $reflectedMethod->getDocComment())){
                 $operation = new Operation($reflectedMethod, $this->results);
-				$path = isset($operation->results['path']) ? $this->results['path'] . $operation->results['path'] : $this->results['path'];
-				$this->results['apis'][$path]['operations'][] = $operation->results;
-				$this->results['apis'][$path]['path'] = $path;
+                array_push($this->results['operations'],$operation->results);
             }
         }
         return $this;

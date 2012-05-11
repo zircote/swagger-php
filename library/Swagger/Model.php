@@ -113,7 +113,7 @@ class Model extends AbstractEntity
                     if(isset($prop[3])){
                         $result['desc'] = $prop[3];
                     }
-                    $this->results['properties'][$result['name']] = $result;
+                    $this->results['properties'][] = $result;
                 }
             }
         }
@@ -133,17 +133,12 @@ class Model extends AbstractEntity
     protected function _parsePublicProps(\ReflectionProperty $property)
     {
         $comment = $this->_parseDocComment($property->getDocComment());
-		if(preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment,$match)) {
-			$result['desc'] = $match[0];
-		}
-		if(preg_match('/@var (\w+)/i', $comment, $match)) {
-			$result['type'] = $match[1];
-			$result['name'] = $property->getName();
-		}
-		if(empty($result)) {
-			return;
-		}
-		return $result;		
+        preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment,$match);
+        $result['desc'] = $match[0];
+        preg_match('/@var (\w+)/i', $comment, $match);
+        $result['type'] = $match[1];
+        $result['name'] = $property->getName();
+        return $result;
     }
     /**
      *
