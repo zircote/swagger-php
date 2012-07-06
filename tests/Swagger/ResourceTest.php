@@ -104,7 +104,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
           "summary":"Creates a new leadresponder"
         }
       ],
-      "path":"\/leadresponder"
+      "path":"/leadresponder"
     },
     {
       "operations":[
@@ -145,28 +145,28 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             }
           ],
           "httpMethod":"PUT",
-          "path":"\/{leadresponder_id}",
+          "path":"/{leadresponder_id}",
           "responseClass":"leadresonder_route",
           "summary":"Updates the existing leadresponder designated by the {leadresponder_id}"
         }
       ],
-      "path":"\/leadresponder\/{leadresponder_id}"
+      "path":"/leadresponder/{leadresponder_id}"
     }
   ],
-  "basePath":"http:\/\/org.local\/v1",
+  "basePath":"http://org.local/v1",
   "swaggerVersion":"0.1a",
   "apiVersion":"1",
-  "path":"\/leadresponder",
+  "path":"/leadresponder",
   "value":"Gets collection of leadresponders",
   "description":"This is a long description of what it does",
   "produces":[
-    "application\/json",
-    "application\/json+hal",
-    "application\/json-p",
-    "application\/json-p+hal",
-    "application\/xml",
-    "application\/xml",
-    "application\/xml+hal"
+    "application/json",
+    "application/json+hal",
+    "application/json-p",
+    "application/json-p+hal",
+    "application/xml",
+    "application/xml",
+    "application/xml+hal"
   ],
   "models":{
     "leadresonder_route":{
@@ -234,6 +234,7 @@ JSON;
         $this->assertEquals($this->_resourceFixture, json_decode((string) $resource, true));
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
         $this->assertEquals($this->_apiFixture, json_decode((string) $api, true));
+        echo $api;
 //         print_r($swagger->models->results);
     }
 

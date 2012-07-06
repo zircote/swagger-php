@@ -43,7 +43,7 @@ class Swagger
     protected $_fileList;
     /**
      *
-     * @var Resources
+     * @var \Swagger\Resource
      */
     public $resources;
     /**
@@ -98,14 +98,14 @@ class Swagger
                 )
             );
         }
-        return json_encode($result);
+        return str_replace('\/','/',json_encode($result));
     }
     public function getApi($basePath, $api)
     {
         $resources = $this->resources->getResource($basePath);
         $apiResource = $resources[$api];
         $apis = array();
-        $models = array();	
+        $models = array();    
         foreach ($apiResource['apis'] as $api) {
             foreach ($api['operations'] as $op) {
                 $responseClass = $op['responseClass'];
@@ -118,7 +118,7 @@ class Swagger
         }
         $apiResource['apis'] = $apis;
         $apiResource['models'] = $models;
-        return json_encode($apiResource);
+        return str_replace('\/','/',json_encode($apiResource));
     }
     /**
      *

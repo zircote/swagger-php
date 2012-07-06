@@ -83,12 +83,13 @@ $package->setOptions(
             '.buildpath',
             'releases',
             '.settings',
+            'vendor/*',
             '*.tgz'
         )
     )
 );
 
-$package->setPackage('Hal');
+$package->setPackage('Swagger');
 $package->setSummary($summary);
 $package->setDescription($description);
 $package->setChannel('zircote.github.com/pear');
@@ -159,7 +160,7 @@ foreach ($files as $file) {
 }
 
 
-$package->setPhpDep('5.2.1');
+$package->setPhpDep('5.3.3');
 
 $package->setPearInstallerDep('1.7.0');
 $package->generateContents();
