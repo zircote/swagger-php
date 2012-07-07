@@ -1,0 +1,93 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @license  http://www.apache.org/licenses/LICENSE-2.0
+ *           Copyright [2012] [Robert Allen]
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This is more intended as an example than anything else however it does
+ * provide functionality to generate the json files as static entities as part
+ * of a deployment process etc.
+ */
+$shortopts = 'p:ho:';
+
+$longopts = array(
+    'project-dir:',
+    'output-dir'
+);
+try {
+    $options = getopt($shortopts, $longopts);
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+    if(isset($options['h']) || isset($options['help'])){
+    echo <<<EOF
+
+Usage: swagger --project-path PATH [--output-path PATH]...
+    Generate Swagger JSON documents for a project.
+        Mandatory argument[s]:
+            -p, --project-path    base path of the project to perform swagger discovery
+        Optional arguments:
+            -o, --output-path     directory to store the generated json documents
+            -h, --help            generates this help message
+
+
+EOF;
+        exit;
+    }
+    if (!isset($options['p']) && !isset($options['project-dir'])) {
+        throw new RuntimeException('--project-dir must be provided');
+    } else {
+        $projectPath = getcwd() . DIRECTORY_SEPARATOR;
+        if (isset($options['project-dir']) && !empty($options['project-dir'])) {
+            $projectPath .= $options['project-dir'];
+        } else {
+            $projectPath .= $options['p'];
+        }
+    }
+    $outputPath = null;
+    if (!isset($options['output-dir']) && !empty($options['output-dir'])) {
+        $outputPath .= $options['output-dir'] . DIRECTORY_SEPARATOR;
+    } elseif (isset($options['o']) && !empty($options['o'])) {
+        $outputPath .= $options['o'] . DIRECTORY_SEPARATOR;
+    } else {
+        $outputPath = getcwd() . DIRECTORY_SEPARATOR;
+    }
+    $swagger = \Swagger\Swagger::discover($projectPath);
+    foreach ($swagger->getResourceNames() as $resourceName) {
+        $output['resources'] = $swagger->getResource($resourceName);
+    }
+    $apis = $swagger->getApis($resourceName);
+    foreach ($apis as $name => $data) {
+        $name          = str_replace('/', null, $name);
+        $output[$name] = str_replace('\/', null, json_encode($data));
+    }
+    if (file_exists($outputPath) && !is_dir($outputPath)) {
+        throw new RuntimeException(
+            sprintf('[%s] is not a directory', $outputPath)
+        );
+    } else {
+        if (!file_exists($outputPath) && !mkdir($outputPath, 0777, true)) {
+            throw new RuntimeException(
+                sprintf('[%s] is not writeable', $outputPath)
+            );
+        }
+    }
+    foreach ($output as $name => $json) {
+        echo $outputPath . $name . '.json created', PHP_EOL;
+        file_put_contents($outputPath . $name . '.json', $json);
+    }
+}
+catch (Exception $e) {
+    echo 'An Error has occured:', PHP_EOL;
+    echo (string)$e->getMessage(), PHP_EOL;
+}

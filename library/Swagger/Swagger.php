@@ -68,7 +68,7 @@ class Swagger
     /**
      *
      * @param string $path
-     * @return array
+     * @return Swagger
      */
     public static function discover($path)
     {
@@ -147,6 +147,15 @@ class Swagger
         }
     }
 
+    /**
+     * @param $resource
+     * @return array
+     */
+    public function getApis($resource)
+    {
+        $resources = $this->resources->getResource($resource);
+        return $resources;
+    }
     /**
      *
      * @return array

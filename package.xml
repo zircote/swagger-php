@@ -15,11 +15,11 @@ consuming, and visualizing RESTful web services.</description>
   <email>zircote@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2012-05-18</date>
- <time>20:50:51</time>
+ <date>2012-07-07</date>
+ <time>13:09:57</time>
  <version>
-  <release>0.2.1</release>
-  <api>0.2.1</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -31,6 +31,9 @@ This is an alpha release, see readme.md for examples.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
+   <dir name="bin">
+    <file baseinstalldir="/" name="swagger" role="script" />
+   </dir> <!-- /bin -->
    <dir name="library">
     <dir name="Swagger">
      <file baseinstalldir="/" name="AbstractEntity.php" role="php">
@@ -93,6 +96,18 @@ This is an alpha release, see readme.md for examples.
        </file>
       </dir> <!-- /tests/fixtures/models/LeadResponder -->
      </dir> <!-- /tests/fixtures/models -->
+     <file baseinstalldir="/" name="pet.json" role="test">
+      <tasks:replace from="@name@" to="name" type="package-info" />
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="resources.json" role="test">
+      <tasks:replace from="@name@" to="name" type="package-info" />
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="user.json" role="test">
+      <tasks:replace from="@name@" to="name" type="package-info" />
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir> <!-- /tests/fixtures -->
     <dir name="Swagger">
      <file baseinstalldir="/" name="ApiTest.php" role="test">
@@ -134,8 +149,6 @@ This is an alpha release, see readme.md for examples.
     </file>
    </dir> <!-- /tests -->
    <file baseinstalldir="/" name="CHANGELOG" role="doc" />
-   <file baseinstalldir="/" name="composer.json" role="data" />
-   <file baseinstalldir="/" name="composer.lock" role="data" />
    <file baseinstalldir="/" name="LICENSE-2.0.txt" role="doc" />
    <file baseinstalldir="/" name="readme.md" role="doc" />
    <file baseinstalldir="/" name="VERSION" role="doc" />
@@ -167,14 +180,14 @@ This is an alpha release, see readme.md for examples.
  <changelog>
   <release>
    <version>
-    <release>0.2.1</release>
-    <api>0.2.1</api>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2012-05-18</date>
+   <date>2012-07-07</date>
    <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
    <notes>
 This is an alpha release, see readme.md for examples.

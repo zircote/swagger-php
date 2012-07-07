@@ -7,8 +7,28 @@ consuming, and visualizing RESTful web services.
  More on Swagger:
   * http://swagger.wordnik.com/
   * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
-  
- 
+
+_Installation_
+
+### Composer:
+
+#### Outside of a project:
+```sh
+git clone git@github.com:zircote/swagger-php.git swagger
+cd swagger
+php composer.phar install
+```
+#### As a project depenency:
+
+Add the following snippet to your require section of you `composer.json` and
+run composer install|update
+
+**Get Composer: http://getcomposer.org**
+
+```json
+    {"zircote/swagger-php": "master-dev"}
+```
+
 _Examples:_
 
 ## Tags:
@@ -19,6 +39,17 @@ _Examples:_
    * `@SwaggerProduces`
 
 #### Example Use:
+
+Generating static `json` documents:
+
+```sh
+$ ./bin/swagger --project-path /my/project/ --output-path /tmp/swagger
+$ /tmp/swagger/resources.json created
+$ /tmp/swagger/pets.json created
+$ /tmp/swagger/users.json created
+```
+
+Dynamic examples:
 
 ```php
 <?php
