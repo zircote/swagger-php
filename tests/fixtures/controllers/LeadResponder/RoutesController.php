@@ -1,4 +1,5 @@
 <?php
+namespace Organic;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -46,7 +47,7 @@
  * @package    Organic_V1
  * @subpackage Controller
  */
-class Organic_RoutesController
+class RoutesController
 {
     /**
      *

@@ -235,19 +235,39 @@ class Swagger
         $classes = array();
         if (file_exists($filename)) {
             $tokens = token_get_all(file_get_contents($filename));
-            $count  = count($tokens);
+            $count = count($tokens);
+            $ns = $this->_getNamespace($filename);
             for ($i = 2; $i < $count; $i++) {
                 if ($tokens[$i - 2][0] == T_CLASS &&
                     $tokens[$i - 1][0] == T_WHITESPACE &&
-                    $tokens[$i][0] == T_STRING
-                ) {
-                    $classes[] = $tokens[$i][1];
+                    $tokens[$i][0] == T_STRING) {
+                    $classes[] = $ns . $tokens[$i][1];
                 }
             }
         }
         return $classes;
     }
 
+    /**
+     *
+     * @param string $filename
+     */
+    protected function _getNamespace($filename) {
+        $ns = '\\';
+        if(file_exists($filename)){
+            $tokens = token_get_all(file_get_contents($filename));
+            $count = count($tokens);
+            if ($tokens[1][0] == T_NAMESPACE) {
+                $i = 3;
+                while (isset($tokens[$i][2]) && $tokens[$i][2] == 2) {
+                    $ns .= $tokens[$i][1] ;
+                    $i++;
+                }
+                $ns .= '\\';
+            }
+        }
+        return $ns;
+    }
     /**
      *
      * @return Swagger

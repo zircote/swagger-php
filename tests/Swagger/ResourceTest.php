@@ -235,16 +235,13 @@ JSON;
         $resource = $swagger->getResource('http://org.local/v1');
 //        echo $resource, PHP_EOL, PHP_EOL;
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
-        echo $api, PHP_EOL, PHP_EOL;
+//        echo $api, PHP_EOL, PHP_EOL;
         $this->assertEquals(
             $this->_apiFixture, json_decode((string)$api, true)
         );
         $this->assertEquals(
             $this->_resourceFixture, json_decode((string)$resource, true)
         );
-        //print_r($swagger); exit;
-        //        echo $swagger->getResource('/leadresponder'), PHP_EOL, PHP_EOL;
-        //         print_r($swagger->models->results);
     }
 
 }

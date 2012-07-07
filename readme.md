@@ -62,6 +62,7 @@ class LeadResponder_RoutesController
    * `@SwaggerOperation`
    * `@SwaggerError`
    * `@SwaggerParam`
+   * `@ResponseTypeInternal`
 
 #### Example Use:
 
@@ -99,6 +100,7 @@ class LeadResponder_RoutesController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
+     * @responseTypeInternal Model_LeadResponder_Route
      */
     public function putAction()
     {
@@ -145,11 +147,11 @@ _Outputs:_
 {
     "apis":[
         {
-            "path":"http:\/\/org.local\/v1\/leadresponder",
+            "path":"http://org.local/v1/leadresponder",
             "description":"Gets collection of leadresponders"
         }
     ],
-    "basePath":"http:\/\/org.local\/v1",
+    "basePath":"http://org.local/v1",
     "swaggerVersion":"1.0",
     "apiVersion":"1"
 }
@@ -232,7 +234,8 @@ _Outputs:_
             "httpMethod":"GET",
             "responseClass":"List[leadresonder_route]",
             "summary":"Fetches the leadresponder corresponding the the provided ID",
-            "path":"http:\/\/org.local\/v1\/leadresponder"
+            "path":"http://org.local/v1/leadresponder",
+            "responseTypeInternal": "Model_LeadResponder_RouteCollection"
         },
         {
             "tags":[
@@ -257,7 +260,7 @@ _Outputs:_
             "httpMethod":"POST",
             "responseClass":"leadresonder_route",
             "summary":"Creates a new leadresponder",
-            "path":"http:\/\/org.local\/v1\/leadresponder"
+            "path":"http://org.local/v1/leadresponder"
         },
         {
             "tags":[
@@ -296,25 +299,26 @@ _Outputs:_
                 }
             ],
             "httpMethod":"PUT",
-            "path":"http:\/\/org.local\/v1\/leadresponder\/{leadresponder_id}",
+            "path":"http://org.local/v1/leadresponder/{leadresponder_id}",
             "responseClass":"leadresonder_route",
+            "responseTypeInternal" : "Model_LeadResponder_Route",
             "summary":"Updates the existing leadresponder designated by the {leadresponder_id}"
         }
     ],
-    "basePath":"http:\/\/org.local\/v1",
+    "basePath":"http://org.local/v1",
     "swaggerVersion":"1.0",
     "apiVersion":"1",
-    "path":"\/leadresponder",
+    "path":"/leadresponder",
     "value":"Gets collection of leadresponders",
     "description":"This is a long description of what it does",
     "produces":[
-        "application\/json",
-        "application\/json+hal",
-        "application\/json-p",
-        "application\/json-p+hal",
-        "application\/xml",
-        "application\/xml",
-        "application\/xml+hal"
+        "application/json",
+        "application/json+hal",
+        "application/json-p",
+        "application/json-p+hal",
+        "application/xml",
+        "application/xml",
+        "application/xml+hal"
     ]
 }
 ```
