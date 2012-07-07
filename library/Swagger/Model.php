@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category Swagger
- * @package Swagger
+ * @category   Swagger
+ * @package    Swagger
  * @subpackage Model
  */
 namespace Swagger;
@@ -25,12 +25,13 @@ use \Exception;
 use \Reflector;
 use \ReflectionClass;
 use \Swagger\AbstractEntity;
+
 /**
  *
  *
  *
- * @category Swagger
- * @package Swagger
+ * @category   Swagger
+ * @package    Swagger
  * @subpackage Model
  */
 class Model extends AbstractEntity
@@ -50,6 +51,7 @@ class Model extends AbstractEntity
      * @var array
      */
     public $results = array();
+
     /**
      *
      * @param \Reflector|string $class
@@ -57,19 +59,22 @@ class Model extends AbstractEntity
      */
     public function __construct($class)
     {
-        if(is_object($class) && !$class instanceof \Reflector){
+        if (is_object($class) && !$class instanceof \Reflector) {
             $this->_class = new ReflectionClass($class);
-        } elseif($class instanceof Reflector){
-            if(!method_exists($class, 'getDocComment')){
+        } elseif ($class instanceof Reflector) {
+            if (!method_exists($class, 'getDocComment')) {
                 throw new Exception('Reflector does not possess a getDocComment method');
             }
             $this->_class = $class;
-        } elseif(is_string($class)){
+        } elseif (is_string($class)) {
             $this->_class = new ReflectionClass($class);
         } else {
             throw new \Exception('Incompatable Type attempted to reflect');
         }
-        $this->_parseComment()->_getModelId()->_getModelProperties();
+        $this
+            ->_parseComment()
+            ->_getModelId()
+            ->_getModelProperties();
     }
 
     /**
@@ -82,34 +87,39 @@ class Model extends AbstractEntity
         );
         return $this;
     }
+
     /**
      * @return \Swagger\Model
      */
     protected function _getModelId()
     {
-        if(preg_match(self::PATTERN_APIMODEL, $this->_docComment, $matches)){
+        if (preg_match(self::PATTERN_APIMODEL, $this->_docComment, $matches)) {
             foreach ($this->_parseParts($matches[1]) as $key => $value) {
                 $this->results[$key] = $value;
             }
         }
         return $this;
     }
+
     /**
      * @return \Swagger\Model
      */
     protected function _getModelProperties()
     {
         $this->results['properties'] = array();
-        if(preg_match_all(self::PATTERN_APIMODELPARAM, $this->_docComment, $matches)){
+        if (preg_match_all(
+            self::PATTERN_APIMODELPARAM, $this->_docComment, $matches
+        )
+        ) {
             foreach ($matches[1] as $match) {
                 preg_match('/(\w+)\s{1,}(\$\w+)(.*)/', $match, $prop);
-                if($prop){
-                    if(isset($prop[2])){
-                        $name = str_replace('$','',$prop[2]);
-                        if(isset($prop[1])){
+                if ($prop) {
+                    if (isset($prop[2])) {
+                        $name = str_replace('$', '', $prop[2]);
+                        if (isset($prop[1])) {
                             $result['type'] = $prop[1];
                         }
-                        if(isset($prop[3])){
+                        if (isset($prop[3])) {
                             $result['description'] = trim($prop[3]);
                         }
                         $this->results['properties'][$name] = $result;
@@ -117,15 +127,19 @@ class Model extends AbstractEntity
                 }
             }
         }
-        foreach ($this->_class->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+        foreach (
+            $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC) as
+            $property
+        ) {
             $result = $this->_parsePublicProps($property);
-            if($result){
+            if ($result) {
                 $this->results['properties'][$property->getName()] = $result;
             }
         }
 
         return $this;
     }
+
     /**
      *
      * @param \ReflectionProperty $value
@@ -139,13 +153,14 @@ class Model extends AbstractEntity
         $result['type'] = $match[1];
         return $result;
     }
+
     /**
      *
      * @param string $value
      */
     protected function _isRef($value)
     {
-        if(preg_match('/$ref:(\w+)$/i', $value, $match)){
+        if (preg_match('/$ref:(\w+)$/i', $value, $match)) {
             $value = array('$ref' => $match[1]);
         }
         return $value;

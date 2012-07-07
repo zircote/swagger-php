@@ -1,7 +1,7 @@
 <?php
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license  http://www.apache.org/licenses/LICENSE-2.0
+ *           Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  * @category Swagger
- * @package Swagger
+ * @package  Swagger
  */
 namespace Swagger;
 /**
@@ -24,7 +24,7 @@ namespace Swagger;
  *
  *
  * @category Swagger
- * @package Swagger
+ * @package  Swagger
  */
 class AbstractEntity
 {
@@ -41,8 +41,10 @@ class AbstractEntity
     const PATTERN_RESOURCE       = '/@SwaggerResource\s{0,}\(([^@|)]*)\)/i';
     const PATTERN_APIMODEL       = '/@SwaggerModel\s{0,}\(([^@|)]*)\)/i';
     const PATTERN_APIMODELPARAM  = '/@property\s{0,}([^@|)]*)/i';
+    const PATTERN_INTERNAL_RESP  = '/@ResponseTypeInternal\s{0,}([^@|)]*)/i';
 
     protected $_resource;
+
     /**
      *
      * @param string $docComment
@@ -51,10 +53,12 @@ class AbstractEntity
     protected function _parseDocComment($docComment)
     {
         $docComment = substr($docComment, 3, -2);
-        $docComment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $docComment);
+        $docComment =
+            preg_replace(self::STRIP_LINE_PREAMBLE, null, $docComment);
         $docComment = preg_replace(self::STRIP_WHITESPACE, null, $docComment);
         return $docComment;
     }
+
     /**
      *
      * @param string $parameter
@@ -65,21 +69,24 @@ class AbstractEntity
         $results = array();
 
         foreach ($this->_getParts($parameter) as $value) {
-            $part = explode('=',preg_replace(self::STRIP_WHITESPACE_APOST,null,$value));
-            if(isset($part[1])){
-            if(strstr($part[1], ';')){
-                $value = array();
-                foreach (explode(';', $part[1]) as $each) {
-                    $value[] = trim($each, ' "');
+            $part = explode(
+                '=', preg_replace(self::STRIP_WHITESPACE_APOST, null, $value)
+            );
+            if (isset($part[1])) {
+                if (strstr($part[1], ';')) {
+                    $value = array();
+                    foreach (explode(';', $part[1]) as $each) {
+                        $value[] = trim($each, ' "');
+                    }
+                } else {
+                    $value = trim($part[1], ' "');
                 }
-            } else {
-                $value = trim($part[1], ' "');
-            }
-            $result[$part[0]] = $value;
+                $result[$part[0]] = $value;
             }
         }
         return $this->_parseItems($result);
     }
+
     /**
      *
      * @param string $string
@@ -87,23 +94,32 @@ class AbstractEntity
      */
     protected function _getParts($string)
     {
-        if(preg_match_all('/="\w+,\w+"/i',$string, $match)){
+        if (preg_match_all('/="\w+,\w+"/i', $string, $match)) {
             foreach ($match[0] as $parsed) {
-                $string = str_replace($parsed, str_replace(',',';', $parsed) , $string);
+                $string = str_replace(
+                    $parsed, str_replace(',', ';', $parsed), $string
+                );
             }
         }
-        if(preg_match_all('/enum="(.*)"/ixu',$string, $match)){
+        if (preg_match_all('/enum="(.*)"/ixu', $string, $match)) {
             foreach ($match[0] as $parsed) {
-                $string = str_replace($parsed, str_replace(',',';', $parsed) , $string);
+                $string = str_replace(
+                    $parsed, str_replace(',', ';', $parsed), $string
+                );
             }
         }
         return explode(',', $string);
     }
+
+    /**
+     * @param $items
+     * @return array
+     */
     protected function _parseItems($items)
     {
-        if(key_exists('items', $items)){
-            if(preg_match('/(\$ref:|type:)/', $items['items'])){
-                $parts = explode(':', $items['items']);
+        if (array_key_exists('items', $items)) {
+            if (preg_match('/(\$ref:|type:)/', $items['items'])) {
+                $parts          = explode(':', $items['items']);
                 $items['items'] = array($parts[0] => $parts[1]);
             }
         }

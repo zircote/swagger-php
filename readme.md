@@ -25,7 +25,7 @@ _Examples:_
 /**
  *@Swaggerresource(
  *     basePath="http://org.local/v1",
- *     swaggerVersion="0.1a",
+ *     swaggerVersion="1.0",
  *     apiVersion="1"
  * )
  *@Swagger (
@@ -150,7 +150,7 @@ _Outputs:_
         }
     ],
     "basePath":"http:\/\/org.local\/v1",
-    "swaggerVersion":"0.1a",
+    "swaggerVersion":"1.0",
     "apiVersion":"1"
 }
 ```
@@ -302,7 +302,7 @@ _Outputs:_
         }
     ],
     "basePath":"http:\/\/org.local\/v1",
-    "swaggerVersion":"0.1a",
+    "swaggerVersion":"1.0",
     "apiVersion":"1",
     "path":"\/leadresponder",
     "value":"Gets collection of leadresponders",

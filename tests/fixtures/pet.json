@@ -1,174 +1,154 @@
 {
-    "apiVersion":"0.2",
-    "swaggerVersion":"1.0",
-    "basePath":"http://petstore.swagger.wordnik.com/api",
-    "resourcePath":"/pet",
     "apis":[
         {
-            "path":"/pet.{format}/{petId}",
-            "description":"Operations about pets",
             "operations":[
                 {
-                    "parameters":[
-                        {
-                            "name":"petId",
-                            "description":"ID of pet that needs to be fetched",
-                            "dataType":"string",
-                            "allowableValues":{
-                                "valueType":"RANGE",
-                                "max":10.0,
-                                "min":0.0,
-                                "valueType":"RANGE"
-                            },
-                            "required":true,
-                            "allowMultiple":false,
-                            "paramType":"path"
-                        }
+                    "tags":[
+                        "MLR"
                     ],
-                    "httpMethod":"GET",
-                    "notes":"Returns a pet when ID < 10. ID > 10 or nonintegers will simulate API error conditions",
-                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
                     "errorResponses":[
                         {
-                            "reason":"Invalid ID supplied",
-                            "code":400
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        }
+                    ],
+                    "parameters":[
+
+                    ],
+                    "httpMethod":"GET",
+                    "responseClass":"List[leadresonder_route]",
+                    "responseTypeInternal":"Model_LeadResponder_RouteCollection",
+                    "summary":"Fetches the leadresponder corresponding the the provided ID"
+                },
+                {
+                    "tags":[
+                        "MLR"
+                    ],
+                    "errorResponses":[
+                        {
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        }
+                    ],
+                    "parameters":[
+                        {
+                            "description":"leadresponder_route being created",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"leadresponder_route",
+                            "name":"leadresponder_route",
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"POST",
+                    "responseClass":"leadresonder_route",
+                    "responseTypeInternal":"Model_LeadResponder_Route",
+                    "summary":"Creates a new leadresponder"
+                }
+            ],
+            "path":"/leadresponder"
+        },
+        {
+            "operations":[
+                {
+                    "tags":[
+                        "MLR"
+                    ],
+                    "errorResponses":[
+                        {
+                            "code":"400",
+                            "reason":"Invalid ID Provided"
                         },
                         {
-                            "reason":"Pet not found",
-                            "code":404
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        },
+                        {
+                            "code":"404",
+                            "reason":"Lead Responder Not Found"
                         }
                     ],
-                    "nickname":"getPetById",
-                    "responseClass":"pet",
-                    "summary":"Find pet by ID"
-                }
-            ]
-        },
-        {
-            "path":"/pet.{format}/findByStatus",
-            "description":"Operations about pets",
-            "operations":[
-                {
                     "parameters":[
                         {
-                            "name":"status",
-                            "defaultValue":"available",
-                            "description":"Status values that need to be considered for filter",
-                            "dataType":"string",
-                            "allowableValues":{
-                                "valueType":"LIST",
-                                "values":["available", "pending", "sold"],
-                                "valueType":"LIST"
-                            },
-                            "required":true,
-                            "allowMultiple":true,
-                            "paramType":"query"
-                        }
-                    ],
-                    "httpMethod":"GET",
-                    "notes":"Multiple status values can be provided with comma seperated strings",
-                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
-                    "errorResponses":[
+                            "description":"ID of the leadresponder being requested",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"integer",
+                            "name":"leadresponder_id",
+                            "paramType":"path"
+                        },
                         {
-                            "reason":"Invalid status value",
-                            "code":400
+                            "description":"leadresponder_route being updated",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"leadresponder_route",
+                            "name":"leadresponder_route",
+                            "paramType":"body"
                         }
                     ],
-                    "nickname":"findPetsByStatus",
-                    "responseClass":"List[pet]",
-                    "summary":"Finds Pets by status"
+                    "httpMethod":"PUT",
+                    "path":"/{leadresponder_id}",
+                    "responseTypeInternal":"Model_LeadResponder_Route",
+                    "responseClass":"leadresonder_route",
+                    "summary":"Updates the existing leadresponder designated by the {leadresponder_id}"
                 }
-            ]
-        },
-        {
-            "path":"/pet.{format}/findByTags",
-            "description":"Operations about pets",
-            "operations":[
-                {
-                    "parameters":[
-                        {
-                            "name":"tags",
-                            "description":"Tags to filter by",
-                            "dataType":"string",
-                            "required":true,
-                            "allowMultiple":true,
-                            "paramType":"query"
-                        }
-                    ],
-                    "httpMethod":"GET",
-                    "notes":"Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
-                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
-                    "errorResponses":[
-                        {
-                            "reason":"Invalid tag value",
-                            "code":400
-                        }
-                    ],
-                    "nickname":"findPetsByTags",
-                    "responseClass":"List[pet]",
-                    "deprecated":true,
-                    "summary":"Finds Pets by tags"
-                }
-            ]
+            ],
+            "path":"/leadresponder/{leadresponder_id}"
         }
     ],
+    "basePath":"http://org.local/v1",
+    "swaggerVersion":"1.0",
+    "apiVersion":"1",
+    "path":"/leadresponder",
+    "value":"Gets collection of leadresponders",
+    "description":"This is a long description of what it does",
+    "produces":[
+        "application/json",
+        "application/json+hal",
+        "application/json-p",
+        "application/json-p+hal",
+        "application/xml",
+        "application/xml",
+        "application/xml+hal"
+    ],
     "models":{
-        "Category":{
+        "leadresonder_route":{
+            "id":"leadresonder_route",
+            "description":"some long description of the model",
             "properties":{
-                "id":{
-                    "type":"long"
+                "usr_mlr_route_id":{
+                    "type":"integer",
+                    "description":"some long winded description."
                 },
-                "name":{
-                    "type":"string"
-                }
-            },
-            "id":"category"
-        },
-        "Pet":{
-            "properties":{
-                "tags":{
-                    "type":"array",
-                    "items":{
-                        "$ref":"tag"
-                    }
-                },
-                "id":{
-                    "type":"long"
-                },
-                "category":{
-                    "type":"category"
-                },
-                "status":{
+                "route":{
                     "type":"string",
-                    "description":"pet status in the store",
-                    "allowableValues":{
-                        "valueType":"LIST",
-                        "values":["available", "pending", "sold"],
-                        "valueType":"LIST"
-                    }
+                    "description":"some long description of the model."
                 },
-                "name":{
-                    "type":"string"
+                "createdDate":{
+                    "type":"string",
+                    "description":""
                 },
-                "photoUrls":{
+                "tag":{
+                    "type":"string",
+                    "description":""
+                },
+                "arrayItem":{
                     "type":"array",
-                    "items":{
-                        "type":"string"
-                    }
-                }
-            },
-            "id":"pet"
-        },
-        "Tag":{
-            "properties":{
-                "id":{
-                    "type":"long"
+                    "description":""
                 },
-                "name":{
-                    "type":"string"
+                "refArr":{
+                    "type":"array",
+                    "description":""
+                },
+                "enumVal":{
+                    "type":"array",
+                    "description":""
+                },
+                "integerParam":{
+                    "description":"This is an integer Param",
+                    "type":"integer"
                 }
-            },
-            "id":"tag"
+            }
         }
     }
 }

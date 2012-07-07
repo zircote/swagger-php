@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category Swagger
- * @package Swagger
+ * @category   Swagger
+ * @package    Swagger
  * @subpackage UnitTests
  */
 namespace SwaggerTests;
@@ -44,169 +44,174 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_resourceFixture = array(
-        'apis' => array(array(
-                'path' => '/leadresponder',
-                'description' => 'Gets collection of leadresponders'
+            'apis' => array(
+                array(
+                    'path'        => '/leadresponder',
+                    'description' => 'Gets collection of leadresponders'
                 )
             ),
-            'basePath' => 'http://org.local/v1',
-            'swaggerVersion' => '0.1a',
-            'apiVersion' => 1
+            'basePath'       => 'http://org.local/v1',
+            'swaggerVersion' => '1.0',
+            'apiVersion'     => 1
         );
-        $api =<<<JSON
+        $api = <<<JSON
 {
-  "apis":[
-    {
-      "operations":[
+    "apis":[
         {
-          "tags":[
-            "MLR"
-          ],
-          "errorResponses":[
-            {
-              "code":"403",
-              "reason":"User Not Authorized"
-            }
-          ],
-          "parameters":[
+            "operations":[
+                {
+                    "tags":[
+                        "MLR"
+                    ],
+                    "errorResponses":[
+                        {
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        }
+                    ],
+                    "parameters":[
 
-          ],
-          "httpMethod":"GET",
-          "responseClass":"List[leadresonder_route]",
-          "summary":"Fetches the leadresponder corresponding the the provided ID"
+                    ],
+                    "httpMethod":"GET",
+                    "responseClass":"List[leadresonder_route]",
+                    "responseTypeInternal":"Model_LeadResponder_RouteCollection",
+                    "summary":"Fetches the leadresponder corresponding the the provided ID"
+                },
+                {
+                    "tags":[
+                        "MLR"
+                    ],
+                    "errorResponses":[
+                        {
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        }
+                    ],
+                    "parameters":[
+                        {
+                            "description":"leadresponder_route being created",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"leadresponder_route",
+                            "name":"leadresponder_route",
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"POST",
+                    "responseClass":"leadresonder_route",
+                    "responseTypeInternal":"Model_LeadResponder_Route",
+                    "summary":"Creates a new leadresponder"
+                }
+            ],
+            "path":"/leadresponder"
         },
         {
-          "tags":[
-            "MLR"
-          ],
-          "errorResponses":[
-            {
-              "code":"403",
-              "reason":"User Not Authorized"
-            }
-          ],
-          "parameters":[
-            {
-              "description":"leadresponder_route being created",
-              "required":"true",
-              "allowMultiple":"false",
-              "dataType":"leadresponder_route",
-              "name":"leadresponder_route",
-              "paramType":"body"
-            }
-          ],
-          "httpMethod":"POST",
-          "responseClass":"leadresonder_route",
-          "summary":"Creates a new leadresponder"
+            "operations":[
+                {
+                    "tags":[
+                        "MLR"
+                    ],
+                    "errorResponses":[
+                        {
+                            "code":"400",
+                            "reason":"Invalid ID Provided"
+                        },
+                        {
+                            "code":"403",
+                            "reason":"User Not Authorized"
+                        },
+                        {
+                            "code":"404",
+                            "reason":"Lead Responder Not Found"
+                        }
+                    ],
+                    "parameters":[
+                        {
+                            "description":"ID of the leadresponder being requested",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"integer",
+                            "name":"leadresponder_id",
+                            "paramType":"path"
+                        },
+                        {
+                            "description":"leadresponder_route being updated",
+                            "required":"true",
+                            "allowMultiple":"false",
+                            "dataType":"leadresponder_route",
+                            "name":"leadresponder_route",
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"PUT",
+                    "path":"/{leadresponder_id}",
+                    "responseTypeInternal":"Model_LeadResponder_Route",
+                    "responseClass":"leadresonder_route",
+                    "summary":"Updates the existing leadresponder designated by the {leadresponder_id}"
+                }
+            ],
+            "path":"/leadresponder/{leadresponder_id}"
         }
-      ],
-      "path":"/leadresponder"
-    },
-    {
-      "operations":[
-        {
-          "tags":[
-            "MLR"
-          ],
-          "errorResponses":[
-            {
-              "code":"400",
-              "reason":"Invalid ID Provided"
-            },
-            {
-              "code":"403",
-              "reason":"User Not Authorized"
-            },
-            {
-              "code":"404",
-              "reason":"Lead Responder Not Found"
+    ],
+    "basePath":"http://org.local/v1",
+    "swaggerVersion":"1.0",
+    "apiVersion":"1",
+    "path":"/leadresponder",
+    "value":"Gets collection of leadresponders",
+    "description":"This is a long description of what it does",
+    "produces":[
+        "application/json",
+        "application/json+hal",
+        "application/json-p",
+        "application/json-p+hal",
+        "application/xml",
+        "application/xml",
+        "application/xml+hal"
+    ],
+    "models":{
+        "leadresonder_route":{
+            "id":"leadresonder_route",
+            "description":"some long description of the model",
+            "properties":{
+                "usr_mlr_route_id":{
+                    "type":"integer",
+                    "description":"some long winded description."
+                },
+                "route":{
+                    "type":"string",
+                    "description":"some long description of the model."
+                },
+                "createdDate":{
+                    "type":"string",
+                    "description":""
+                },
+                "tag":{
+                    "type":"string",
+                    "description":""
+                },
+                "arrayItem":{
+                    "type":"array",
+                    "description":""
+                },
+                "refArr":{
+                    "type":"array",
+                    "description":""
+                },
+                "enumVal":{
+                    "type":"array",
+                    "description":""
+                },
+                "integerParam":{
+                    "description":"This is an integer Param",
+                    "type":"integer"
+                }
             }
-          ],
-          "parameters":[
-            {
-              "description":"ID of the leadresponder being requested",
-              "required":"true",
-              "allowMultiple":"false",
-              "dataType":"integer",
-              "name":"leadresponder_id",
-              "paramType":"path"
-            },
-            {
-              "description":"leadresponder_route being updated",
-              "required":"true",
-              "allowMultiple":"false",
-              "dataType":"leadresponder_route",
-              "name":"leadresponder_route",
-              "paramType":"body"
-            }
-          ],
-          "httpMethod":"PUT",
-          "path":"/{leadresponder_id}",
-          "responseClass":"leadresonder_route",
-          "summary":"Updates the existing leadresponder designated by the {leadresponder_id}"
         }
-      ],
-      "path":"/leadresponder/{leadresponder_id}"
     }
-  ],
-  "basePath":"http://org.local/v1",
-  "swaggerVersion":"0.1a",
-  "apiVersion":"1",
-  "path":"/leadresponder",
-  "value":"Gets collection of leadresponders",
-  "description":"This is a long description of what it does",
-  "produces":[
-    "application/json",
-    "application/json+hal",
-    "application/json-p",
-    "application/json-p+hal",
-    "application/xml",
-    "application/xml",
-    "application/xml+hal"
-  ],
-  "models":{
-    "leadresonder_route":{
-      "id":"leadresonder_route",
-      "description":"some long description of the model",
-      "properties":{
-        "usr_mlr_route_id":{
-          "type":"integer",
-          "description":"some long winded description."
-        },
-        "route":{
-          "type":"string",
-          "description":"some long description of the model."
-        },
-        "createdDate":{
-          "type":"string",
-          "description":""
-        },
-        "tag":{
-          "type":"string",
-          "description":""
-        },
-        "arrayItem":{
-          "type":"array",
-          "description":""
-        },
-        "refArr":{
-          "type":"array",
-          "description":""
-        },
-        "enumVal":{
-          "type":"array",
-          "description":""
-        },
-        "integerParam":{
-          "description":"This is an integer Param",
-          "type":"integer"
-        }
-      }
-    }
-  }
 }
+
 JSON;
-        $this->_apiFixture = json_decode($api, true);
+        $this->_apiFixture      = json_decode($api, true);
     }
 
     /**
@@ -220,6 +225,7 @@ JSON;
     /**
      * @covers Swagger_Resource::buildResource
      * @todo   Implement testBuildResource().
+     * @group Resource
      */
     public function testBuildResource()
     {
@@ -227,15 +233,18 @@ JSON;
         $swagger = Swagger::discover($path);
 
         $resource = $swagger->getResource('http://org.local/v1');
-        echo $resource, PHP_EOL, PHP_EOL;
-        $this->assertEquals($this->_resourceFixture, json_decode((string) $resource, true));
+//        echo $resource, PHP_EOL, PHP_EOL;
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
-        $this->assertEquals($this->_apiFixture, json_decode((string) $api, true));
         echo $api, PHP_EOL, PHP_EOL;
-//print_r($swagger); exit;
-//        echo $swagger->getResource('/leadresponder'), PHP_EOL, PHP_EOL;
-//         print_r($swagger->models->results);
-        exit;
+        $this->assertEquals(
+            $this->_apiFixture, json_decode((string)$api, true)
+        );
+        $this->assertEquals(
+            $this->_resourceFixture, json_decode((string)$resource, true)
+        );
+        //print_r($swagger); exit;
+        //        echo $swagger->getResource('/leadresponder'), PHP_EOL, PHP_EOL;
+        //         print_r($swagger->models->results);
     }
 
 }

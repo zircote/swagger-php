@@ -24,7 +24,7 @@
 /**
  * @SwaggerResource(
  *     basePath="http://org.local/v1",
- *     swaggerVersion="0.1a",
+ *     swaggerVersion="1.0",
  *     apiVersion="1"
  * )
  * @Swagger (
@@ -104,6 +104,9 @@ class Organic_RoutesController
      *     name="organic_route",
      *     paramType="body"
      * )
+     *
+     * @ResponseTypeInternal Model_LeadResponder_Route
+     *
      * @see Organic_Rest_AbstractController::postAction()
      */
     public function putAction()

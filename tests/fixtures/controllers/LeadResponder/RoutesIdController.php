@@ -25,7 +25,7 @@
  *
  * @SwaggerResource (
  *     basePath="http://org.local/v1",
- *     swaggerVersion="0.1a",
+ *     swaggerVersion="1.0",
  *     apiVersion="1"
  * )
  * @Swagger (
@@ -85,6 +85,7 @@ class LeadResponder_RoutesIdController
      *     tags="MLR"
      * )
      * @SwaggerError(code=403,reason="User Not Authorized")
+     * @ResponseTypeInternal Model_LeadResponder_RouteCollection
      * @see Ifbyphone_Rest_AbstractController::getAction()
      */
     public function getAction()
@@ -109,6 +110,8 @@ class LeadResponder_RoutesIdController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
+     * @ResponseTypeInternal Model_LeadResponder_Route
+     *
      * @see Ifbyphone_Rest_AbstractController::postAction()
      */
     public function postAction()
@@ -143,6 +146,9 @@ class LeadResponder_RoutesIdController
      *     name="leadresponder_route",
      *     paramType="body"
      * )
+     *
+     * @ResponseTypeInternal Model_LeadResponder_Route
+     *
      * @see Ifbyphone_Rest_AbstractController::postAction()
      */
     public function putAction()
