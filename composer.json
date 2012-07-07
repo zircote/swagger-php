@@ -1,7 +1,7 @@
 {
     "name": "zircote/swagger-php",
     "type": "library",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "time" : "2012-04-01",
     "license" : "Apache2",
     "description": "Swagger-PHP library implementing the swagger.wordnik.com specification to describe web services, operations/actions and models enabling a uniform means of producing, consuming, and visualizing RESTful web services.",
@@ -14,6 +14,9 @@
             "homepage": "http://www.zircote.com"
         }
     ],
+    "config": {
+        "bin-dir": "bin"
+    },
     "require": {
         "php": ">=5.3.3"
     },

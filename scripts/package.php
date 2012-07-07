@@ -31,7 +31,7 @@ function readDirectory($path)
 
 $outsideDir = realpath(dirname(dirname(__FILE__)));
 
-$version = file_get_contents($outsideDir . '/VERSION');
+$version = trim(file_get_contents($outsideDir . '/VERSION'));
 
 $api_version     = $version;
 $api_state       = 'alpha';
@@ -59,6 +59,7 @@ $package->setOptions(
         'packagedirectory'        => $outsideDir,
         'dir_roles'               => array(
             'benchmarks'          => 'doc',
+            'bin'                 => 'script',
             'examples'            => 'doc',
             'library'             => 'php',
             'library/Swagger'     => 'php',
@@ -84,6 +85,8 @@ $package->setOptions(
             'releases',
             '.settings',
             'vendor/*',
+            '*.iml',
+            'composer.*',
             '*.tgz'
         )
     )

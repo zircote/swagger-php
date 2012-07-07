@@ -1,4 +1,5 @@
 <?php
+namespace Organic;
 /**
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * Copyright [2012] [Robert Allen]
@@ -24,11 +25,11 @@
 /**
  * @SwaggerResource(
  *     basePath="http://org.local/v1",
- *     swaggerVersion="0.1a",
+ *     swaggerVersion="1.0",
  *     apiVersion="1"
  * )
  * @Swagger (
- *     path="/organic",
+ *     path="/leadresponder",
  *     value="Gets collection of organics",
  *     description="This is a long description of what it does"
  *     )
@@ -46,7 +47,7 @@
  * @package    Organic_V1
  * @subpackage Controller
  */
-class organic_RoutesController
+class RoutesController
 {
     /**
      *
@@ -78,7 +79,7 @@ class organic_RoutesController
     /**
      *
      * @PUT
-     * @SwaggerPath /{organic_id}
+     * @SwaggerPath /{leadresponder_id}
      * @SwaggerOperation(
      *     value="Updates the existing organic designated by the {organic_id}",
      *     responseClass="organic_route",
@@ -104,6 +105,9 @@ class organic_RoutesController
      *     name="organic_route",
      *     paramType="body"
      * )
+     *
+     * @ResponseTypeInternal Model_LeadResponder_Route
+     *
      * @see Organic_Rest_AbstractController::postAction()
      */
     public function putAction()
