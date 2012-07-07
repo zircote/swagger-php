@@ -1,0 +1,174 @@
+{
+    "apiVersion":"0.2",
+    "swaggerVersion":"1.0",
+    "basePath":"http://petstore.swagger.wordnik.com/api",
+    "resourcePath":"/pet",
+    "apis":[
+        {
+            "path":"/pet.{format}/{petId}",
+            "description":"Operations about pets",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "name":"petId",
+                            "description":"ID of pet that needs to be fetched",
+                            "dataType":"string",
+                            "allowableValues":{
+                                "valueType":"RANGE",
+                                "max":10.0,
+                                "min":0.0,
+                                "valueType":"RANGE"
+                            },
+                            "required":true,
+                            "allowMultiple":false,
+                            "paramType":"path"
+                        }
+                    ],
+                    "httpMethod":"GET",
+                    "notes":"Returns a pet when ID < 10. ID > 10 or nonintegers will simulate API error conditions",
+                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
+                    "errorResponses":[
+                        {
+                            "reason":"Invalid ID supplied",
+                            "code":400
+                        },
+                        {
+                            "reason":"Pet not found",
+                            "code":404
+                        }
+                    ],
+                    "nickname":"getPetById",
+                    "responseClass":"pet",
+                    "summary":"Find pet by ID"
+                }
+            ]
+        },
+        {
+            "path":"/pet.{format}/findByStatus",
+            "description":"Operations about pets",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "name":"status",
+                            "defaultValue":"available",
+                            "description":"Status values that need to be considered for filter",
+                            "dataType":"string",
+                            "allowableValues":{
+                                "valueType":"LIST",
+                                "values":["available", "pending", "sold"],
+                                "valueType":"LIST"
+                            },
+                            "required":true,
+                            "allowMultiple":true,
+                            "paramType":"query"
+                        }
+                    ],
+                    "httpMethod":"GET",
+                    "notes":"Multiple status values can be provided with comma seperated strings",
+                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
+                    "errorResponses":[
+                        {
+                            "reason":"Invalid status value",
+                            "code":400
+                        }
+                    ],
+                    "nickname":"findPetsByStatus",
+                    "responseClass":"List[pet]",
+                    "summary":"Finds Pets by status"
+                }
+            ]
+        },
+        {
+            "path":"/pet.{format}/findByTags",
+            "description":"Operations about pets",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "name":"tags",
+                            "description":"Tags to filter by",
+                            "dataType":"string",
+                            "required":true,
+                            "allowMultiple":true,
+                            "paramType":"query"
+                        }
+                    ],
+                    "httpMethod":"GET",
+                    "notes":"Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
+                    "responseTypeInternal":"com.wordnik.swagger.sample.model.Pet",
+                    "errorResponses":[
+                        {
+                            "reason":"Invalid tag value",
+                            "code":400
+                        }
+                    ],
+                    "nickname":"findPetsByTags",
+                    "responseClass":"List[pet]",
+                    "deprecated":true,
+                    "summary":"Finds Pets by tags"
+                }
+            ]
+        }
+    ],
+    "models":{
+        "Category":{
+            "properties":{
+                "id":{
+                    "type":"long"
+                },
+                "name":{
+                    "type":"string"
+                }
+            },
+            "id":"category"
+        },
+        "Pet":{
+            "properties":{
+                "tags":{
+                    "type":"array",
+                    "items":{
+                        "$ref":"tag"
+                    }
+                },
+                "id":{
+                    "type":"long"
+                },
+                "category":{
+                    "type":"category"
+                },
+                "status":{
+                    "type":"string",
+                    "description":"pet status in the store",
+                    "allowableValues":{
+                        "valueType":"LIST",
+                        "values":["available", "pending", "sold"],
+                        "valueType":"LIST"
+                    }
+                },
+                "name":{
+                    "type":"string"
+                },
+                "photoUrls":{
+                    "type":"array",
+                    "items":{
+                        "type":"string"
+                    }
+                }
+            },
+            "id":"pet"
+        },
+        "Tag":{
+            "properties":{
+                "id":{
+                    "type":"long"
+                },
+                "name":{
+                    "type":"string"
+                }
+            },
+            "id":"tag"
+        }
+    }
+}

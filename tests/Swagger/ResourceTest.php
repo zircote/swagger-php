@@ -44,11 +44,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_resourceFixture = array(
-        'apis' => array(
-            array(
-                'path' => '/organic',
-                'description' => 'Gets collection of organics'
-             ),array(
+        'apis' => array(array(
                 'path' => '/leadresponder',
                 'description' => 'Gets collection of leadresponders'
                 )
@@ -231,11 +227,15 @@ JSON;
         $swagger = Swagger::discover($path);
 
         $resource = $swagger->getResource('http://org.local/v1');
+        echo $resource, PHP_EOL, PHP_EOL;
         $this->assertEquals($this->_resourceFixture, json_decode((string) $resource, true));
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
         $this->assertEquals($this->_apiFixture, json_decode((string) $api, true));
-        echo $api;
+        echo $api, PHP_EOL, PHP_EOL;
+//print_r($swagger); exit;
+//        echo $swagger->getResource('/leadresponder'), PHP_EOL, PHP_EOL;
 //         print_r($swagger->models->results);
+        exit;
     }
 
 }

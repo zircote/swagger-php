@@ -28,7 +28,7 @@
  *     apiVersion="1"
  * )
  * @Swagger (
- *     path="/organic",
+ *     path="/leadresponder",
  *     value="Gets collection of organics",
  *     description="This is a long description of what it does"
  *     )
@@ -46,7 +46,7 @@
  * @package    Organic_V1
  * @subpackage Controller
  */
-class organic_RoutesController
+class Organic_RoutesController
 {
     /**
      *
@@ -78,7 +78,7 @@ class organic_RoutesController
     /**
      *
      * @PUT
-     * @SwaggerPath /{organic_id}
+     * @SwaggerPath /{leadresponder_id}
      * @SwaggerOperation(
      *     value="Updates the existing organic designated by the {organic_id}",
      *     responseClass="organic_route",
