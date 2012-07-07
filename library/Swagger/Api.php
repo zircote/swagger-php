@@ -1,7 +1,7 @@
 <?php
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ use \ReflectionClass;
 use \ReflectionMethod;
 use \Swagger\AbstractEntity;
 use \Swagger\Operation;
+
 /**
  *
  *
@@ -53,6 +54,7 @@ class Api extends AbstractEntity
     public $results = array(
         'apis' => array()
     );
+
     /**
      *
      * @param \Reflector|string $class
@@ -60,24 +62,26 @@ class Api extends AbstractEntity
      */
     public function __construct($class)
     {
-        if(is_object($class) && !$class instanceof Reflector){
+        if (is_object($class) && !$class instanceof Reflector) {
             $this->_class = new ReflectionClass($class);
-        } elseif($class instanceof Reflector){
-            if(!method_exists($class, 'getDocComment')){
+        } elseif ($class instanceof Reflector) {
+            if (!method_exists($class, 'getDocComment')) {
                 throw new \Exception('Reflector does not possess a getDocComment method');
             }
             $this->_class = $class;
-        } elseif(is_string($class)){
+        } elseif (is_string($class)) {
             $this->_class = new ReflectionClass($class);
         } else {
             throw new \Exception('Incompatable Type attempted to reflect');
         }
-        $this->_parseApi()
+        $this
+            ->_parseApi()
             ->_getResource()
             ->_getApi()
             ->_getProduces()
             ->_getMethods();
     }
+
     /**
      * @return \Swagger\Api
      */
@@ -88,13 +92,15 @@ class Api extends AbstractEntity
         );
         return $this;
     }
+
     /**
      * @return \Swagger\Api
      */
     protected function _getResource()
     {
-        $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
-        if(preg_match(self::PATTERN_RESOURCE,  $comment, $matches)){
+        $comment =
+            preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
+        if (preg_match(self::PATTERN_RESOURCE, $comment, $matches)) {
             foreach ($this->_parseParts($matches[1]) as $key => $value) {
                 $this->results[$key] = $value;
             }
@@ -102,45 +108,65 @@ class Api extends AbstractEntity
         }
         return $this;
     }
+
     /**
      * @return \Swagger\Api
      */
     protected function _getApi()
     {
-        $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
-        if(preg_match(self::PATTERN_API,  $comment, $matches)){
-            $this->results = array_merge_recursive($this->results, $this->_parseParts($matches[1]));
+        $comment =
+            preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
+        if (preg_match(self::PATTERN_API, $comment, $matches)) {
+            $this->results         = array_merge_recursive(
+                $this->results, $this->_parseParts($matches[1])
+            );
             $this->results['path'] = $this->results['path'];
         }
         return $this;
     }
+
     /**
      * @return \Swagger\Api
      */
     protected function _getProduces()
     {
-        $comment = preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
-        if(preg_match(self::PATTERN_PRODUCES,  $comment, $matches)){
+        $comment =
+            preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
+        if (preg_match(self::PATTERN_PRODUCES, $comment, $matches)) {
             foreach (explode(',', $matches[1]) as $value) {
-                $result[] = preg_replace(self::STRIP_WHITESPACE_APOST,null,$value);
+                $result[] =
+                    preg_replace(self::STRIP_WHITESPACE_APOST, null, $value);
             }
             $this->results['produces'] = $result;
         }
         return $this;
     }
+
     /**
      * @return \Swagger\Api
      */
     protected function _getMethods()
     {
         /* @var $reflectedMethod \ReflectionMethod */
-        foreach ($this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectedMethod) {
-            if(preg_match('/@SwaggerOperation/i', $reflectedMethod->getDocComment())){
-                $operation = new Operation($reflectedMethod, $this->results);
-                $path = isset($this->results['resourcePath']) ? $this->results['resourcePath'] : $this->results['path'];
-                $path = isset($operation->results['path']) ? $path . $operation->results['path'] : $path;
-				$this->results['apis'][$path]['operations'][] = $operation->results;
-				$this->results['apis'][$path]['path'] = $path;
+        foreach (
+            $this->_class->getMethods(ReflectionMethod::IS_PUBLIC) as
+            $reflectedMethod
+        ) {
+            if (preg_match(
+                '/@SwaggerOperation/i', $reflectedMethod->getDocComment()
+            )
+            ) {
+                $operation                                    =
+                    new Operation($reflectedMethod, $this->results);
+                $path                                         =
+                    isset($this->results['resourcePath']) ?
+                        $this->results['resourcePath'] : $this->results['path'];
+                $path                                         =
+                    isset($operation->results['path']) ?
+                        $path . $operation->results['path'] : $path;
+                $this->results['apis'][$path]['operations'][] =
+                    $operation->results;
+                $this->results['apis'][$path]['path']         = $path;
             }
         }
         return $this;

@@ -1,0 +1,196 @@
+{
+    "apiVersion":"0.2",
+    "swaggerVersion":"1.0",
+    "basePath":"http://petstore.swagger.wordnik.com/api",
+    "resourcePath":"/user",
+    "apis":[
+        {
+            "path":"/user.{format}/createWithArray",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "description":"List of user object",
+                            "dataType":"Array[User]",
+                            "required":true,
+                            "valueTypeInternal":"com.wordnik.swagger.sample.model.User",
+                            "allowMultiple":false,
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"POST",
+                    "responseTypeInternal":"ok",
+                    "nickname":"createUsersWithArrayInput",
+                    "responseClass":"ok",
+                    "summary":"Creates list of users with given input array"
+                }
+            ]
+        },
+        {
+            "path":"/user.{format}",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "description":"Created user object",
+                            "dataType":"user",
+                            "required":true,
+                            "valueTypeInternal":"com.wordnik.swagger.sample.model.User",
+                            "allowMultiple":false,
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"POST",
+                    "notes":"This can only be done by the logged in user.",
+                    "responseTypeInternal":"ok",
+                    "nickname":"createUser",
+                    "responseClass":"ok",
+                    "summary":"Create user"
+                }
+            ]
+        },
+        {
+            "path":"/user.{format}/createWithList",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "description":"List of user object",
+                            "dataType":"List[user]",
+                            "required":true,
+                            "valueTypeInternal":"com.wordnik.swagger.sample.model.User",
+                            "allowMultiple":false,
+                            "paramType":"body"
+                        }
+                    ],
+                    "httpMethod":"POST",
+                    "responseTypeInternal":"ok",
+                    "nickname":"createUsersWithListInput",
+                    "responseClass":"ok",
+                    "summary":"Creates list of users with given list input"
+                }
+            ]
+        },
+        {
+            "path":"/user.{format}/{username}",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "name":"username",
+                            "description":"The name that needs to be fetched. Use user1 for testing.",
+                            "dataType":"string",
+                            "required":true,
+                            "allowMultiple":false,
+                            "paramType":"path"
+                        }
+                    ],
+                    "httpMethod":"GET",
+                    "responseTypeInternal":"com.wordnik.swagger.sample.model.User",
+                    "errorResponses":[
+                        {
+                            "reason":"Invalid username supplied",
+                            "code":400
+                        },
+                        {
+                            "reason":"User not found",
+                            "code":404
+                        }
+                    ],
+                    "nickname":"getUserByName",
+                    "responseClass":"user",
+                    "summary":"Get user by user name"
+                }
+            ]
+        },
+        {
+            "path":"/user.{format}/login",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "parameters":[
+                        {
+                            "name":"username",
+                            "description":"The user name for login",
+                            "dataType":"string",
+                            "required":true,
+                            "allowMultiple":false,
+                            "paramType":"query"
+                        },
+                        {
+                            "name":"password",
+                            "description":"The password for login in clear text",
+                            "dataType":"string",
+                            "required":true,
+                            "allowMultiple":false,
+                            "paramType":"query"
+                        }
+                    ],
+                    "httpMethod":"GET",
+                    "responseTypeInternal":"String",
+                    "errorResponses":[
+                        {
+                            "reason":"Invalid username and password combination",
+                            "code":400
+                        }
+                    ],
+                    "nickname":"loginUser",
+                    "responseClass":"String",
+                    "summary":"Logs user into the system"
+                }
+            ]
+        },
+        {
+            "path":"/user.{format}/logout",
+            "description":"Operations about user",
+            "operations":[
+                {
+                    "httpMethod":"GET",
+                    "responseTypeInternal":"ok",
+                    "nickname":"logoutUser",
+                    "responseClass":"ok",
+                    "summary":"Logs out current logged in user session"
+                }
+            ]
+        }
+    ], "models":{
+    "User":{
+        "properties":{
+            "id":{
+                "type":"long"
+            },
+            "lastName":{
+                "type":"string"
+            },
+            "phone":{
+                "type":"string"
+            },
+            "username":{
+                "type":"string"
+            },
+            "email":{
+                "type":"string"
+            },
+            "userStatus":{
+                "type":"int",
+                "description":"User Status",
+                "allowableValues":{
+                    "valueType":"LIST",
+                    "values":["1-registered", "2-active", "3-closed"],
+                    "valueType":"LIST"
+                }
+            },
+            "firstName":{
+                "type":"string"
+            },
+            "password":{
+                "type":"string"
+            }
+        },
+        "id":"user"
+    }
+}}

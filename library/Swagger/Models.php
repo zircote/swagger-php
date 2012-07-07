@@ -1,7 +1,7 @@
 <?php
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 namespace Swagger;
 use \Swagger\AbstractEntity;
 use \Swagger\Model;
+
 /**
  *
  *
@@ -34,6 +35,7 @@ class Models extends AbstractEntity
 {
     public $results = array();
     protected $_classList;
+
     /**
      *
      * @param Reflector $path
@@ -43,6 +45,7 @@ class Models extends AbstractEntity
         $this->_classList = $classList;
         $this->_introSpec();
     }
+
     /**
      *
      * @return Models
@@ -51,7 +54,7 @@ class Models extends AbstractEntity
     {
         foreach ($this->_classList as $reflectedClass) {
             $ref = new Model($reflectedClass);
-            if(isset($ref->results['id'])){
+            if (isset($ref->results['id'])) {
                 $this->results[$ref->results['id']] = $ref->results;
             }
         }
