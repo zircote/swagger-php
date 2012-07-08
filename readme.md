@@ -142,19 +142,47 @@ class LeadResponder_RoutesController
 
  * `@SwaggerModel`
 
+### Complex Types via Annotations:
+
+Besides the basic primitive type definitions in models you may also define the following:
+
+
+**Javascript Reference**
+
+ - `@property array<ref:tag> $tags this is a reference to tag`
+
+
+**Array Member Types**
+
+ - __string__
+
+   - `@property array<string> $arrayItem This is an array of strings`
+
+ - __integer__
+
+   - `@property array<integer> $refArr This is an array of integers.`
+
+**enum**
+
+ - `@property string<'Two Pigs','Duck', 'And 1 Cow'> $enumVal This is an enum value.`
+
 #### Example Use:
 
 ```php
 <?php
 /**
- *@SwaggerModel(
+ * @SwaggerModel(
  *     id="leadresonder_route",
  *     description="some long description of the model"
  * )
- * @property integer $usr_mlr_route_id description of blah
- * @property string  $route
- * @property string  $createdDate
- * @property string  $tag
+ *
+ * @property integer $usr_mlr_route_id some long winded description.
+ * @property string $route some long description of the model.
+ * @property string $createdDate
+ * @property array<ref:tag> $tags this is a reference to `tag`
+ * @property array<string> $arrayItem This is an array of strings
+ * @property array<integer> $refArr This is an array of integers.
+ * @property string<'Two Pigs','Duck', 'And 1 Cow'> $enumVal This is an enum value.
  *
  */
 class Model_LeadResponder_Route
@@ -204,48 +232,50 @@ _Outputs:_
         {
             "id":"leadresonder_route",
             "description":"some long description of the model",
-            "properties":[
-                {
-                    "name":"usr_mlr_route_id",
+            "properties":{
+                "usr_mlr_route_id":{
                     "type":"integer",
-                    "description":"some long winded description"
+                    "description":"some long winded description."
                 },
-                {
-                    "name":"route",
-                    "type":"string"
-                },
-                {
-                    "name":"createdDate",
-                    "type":"Date"
-                },
-                {
-                    "name":"tag",
-                    "type":"string"
-                },
-                {
-                    "name":"enumVal",
+                "route":{
                     "type":"string",
-                    "enum":[
-                        "item1",
-                        "item2",
-                        "item"
-                    ]
+                    "description":"some long description of the model."
                 },
-                {
-                    "name":"arrayItem",
+                "createdDate":{
+                    "type":"string",
+                    "description":""
+                },
+                "tags":{
                     "type":"array",
-                    "items":{
-                        "type":"string"
+                    "description":"this is a reference to `tag`",
+                    "items" : {
+                        "$ref": "tag"
                     }
                 },
-                {
-                    "name":"refArr",
+                "arrayItem":{
                     "type":"array",
-                    "items":{
-                        "$ref":"ref_item"
+                    "description":"This is an array of strings",
+                    "items" : {
+                        "type": "string"
                     }
+                },
+                "refArr":{
+                    "type":"array",
+                    "description":"This is an array of integers.",
+                    "items" : {
+                        "type": "integer"
+                    }
+                },
+                "enumVal":{
+                    "type":"string",
+                    "description":"This is an enum value.",
+                    "enum": ["Two Pigs","Duck","And 1 Cow"]
+                },
+                "integerParam":{
+                    "description":"This is an integer Param",
+                    "type":"integer"
                 }
-            ]
+            }
         }
     ],
     "operations":[

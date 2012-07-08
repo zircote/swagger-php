@@ -54,7 +54,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
             'swaggerVersion' => '1.0',
             'apiVersion'     => 1
         );
-        $api = <<<JSON
+        $api = <<<'JSON'
 {
     "apis":[
         {
@@ -185,21 +185,31 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
                     "type":"string",
                     "description":""
                 },
-                "tag":{
-                    "type":"string",
-                    "description":""
+                "tags":{
+                    "type":"array",
+                    "description":"this is a reference to `tag`",
+                    "items" : {
+                        "$ref": "tag"
+                    }
                 },
                 "arrayItem":{
                     "type":"array",
-                    "description":""
+                    "description":"This is an array of strings",
+                    "items" : {
+                        "type": "string"
+                    }
                 },
                 "refArr":{
                     "type":"array",
-                    "description":""
+                    "description":"This is an array of integers.",
+                    "items" : {
+                        "type": "integer"
+                    }
                 },
                 "enumVal":{
-                    "type":"array",
-                    "description":""
+                    "type":"string",
+                    "description":"This is an enum value.",
+                    "enum": ["Two Pigs","Duck","And 1 Cow"]
                 },
                 "integerParam":{
                     "description":"This is an integer Param",

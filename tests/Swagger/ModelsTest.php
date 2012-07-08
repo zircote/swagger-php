@@ -22,7 +22,7 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
     protected function setUp ()
     {
         parent::setUp();
-        $this->fixture = <<<EOF
+        $this->fixture = <<<'EOF'
 {
     "leadresonder_route":{
         "id":"leadresonder_route",
@@ -40,21 +40,31 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
                 "type":"string",
                 "description":""
             },
-            "tag":{
-                "type":"string",
-                "description":""
+            "tags":{
+                "type":"array",
+                "description":"this is a reference to `tag`",
+                "items" : {
+                    "$ref": "tag"
+                }
             },
             "arrayItem":{
                 "type":"array",
-                "description":""
+                "description":"This is an array of strings",
+                "items" : {
+                    "type": "string"
+                }
             },
             "refArr":{
                 "type":"array",
-                "description":""
+                "description":"This is an array of integers.",
+                "items" : {
+                    "type": "integer"
+                }
             },
             "enumVal":{
-                "type":"array",
-                "description":""
+                "type":"string",
+                "description":"This is an enum value.",
+                "enum": ["Two Pigs","Duck","And 1 Cow"]
             },
             "integerParam":{
                 "description":"This is an integer Param",
@@ -63,12 +73,8 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
         }
     }
 }
-
 EOF;
 
-         $this->Models = new Models(
-             array('Model_Organic_Route','Model_LeadResponder_RouteCollection')
-         );
 
     }
 
@@ -83,10 +89,13 @@ EOF;
     }
 
     /**
-     * Tests Models->__construct()
+     *
      */
-    public function test__construct ()
+    public function testModels ()
     {
+         $this->Models = new Models(
+             array('Model_Organic_Route','Model_LeadResponder_RouteCollection')
+         );
         $this->assertEquals(json_decode($this->fixture, true), $this->Models->results);
 
     }
