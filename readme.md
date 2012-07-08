@@ -1,5 +1,7 @@
 # Swagger-php
 
+[![Build Status](https://secure.travis-ci.org/zircote/swagger-php.png)](http://travis-ci.org/zircote/swagger-php)
+
 Swagger-PHP library implementing the swagger.wordnik.com specification to describe 
 web services, operations/actions and models enabling a uniform means of producing, 
 consuming, and visualizing RESTful web services. 
