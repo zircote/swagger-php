@@ -87,7 +87,7 @@ class Swagger
     /**
      * @return array
      */
-    public function getResource($basePath)
+    public function getResource($basePath, $prettyPrint = false)
     {
         $resources = $this->resources->getResource($basePath);
         $result    = array();
@@ -96,22 +96,16 @@ class Swagger
                 'path'        => $resource['path'],
                 'description' => $resource['value']
             );
-            $result = array_merge(
+            $result           = array_merge(
                 $result,
                 array(
-                    'basePath'       => $resource['basePath'],
-                    'swaggerVersion' => $resource['swaggerVersion'],
-                    'apiVersion'     => $resource['apiVersion']
-                 )
+                     'basePath'       => $resource['basePath'],
+                     'swaggerVersion' => $resource['swaggerVersion'],
+                     'apiVersion'     => $resource['apiVersion']
+                )
             );
         }
-        if (version_compare(PHP_VERSION, '5.4', '>=')) {
-            return json_encode(
-                $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-            );
-        } else {
-            return str_replace('\/', '/', json_encode($result));
-        }
+        return $this->jsonEncode($result, $prettyPrint);
     }
 
     /**
@@ -119,7 +113,7 @@ class Swagger
      * @param $api
      * @return mixed|string
      */
-    public function getApi($basePath, $api)
+    public function getApi($basePath, $api, $prettyPrint = false)
     {
         $resources   = $this->resources->getResource($basePath);
         $apiResource = $resources[$api];
@@ -138,13 +132,7 @@ class Swagger
         }
         $apiResource['apis']   = $apis;
         $apiResource['models'] = $models;
-        if (version_compare(PHP_VERSION, '5.4', '>=')) {
-            return json_encode(
-                $apiResource, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-            );
-        } else {
-            return str_replace('\/', '/', json_encode($apiResource));
-        }
+        return $this->jsonEncode($apiResource, $prettyPrint);
     }
 
     /**
@@ -156,6 +144,7 @@ class Swagger
         $resources = $this->resources->getResource($resource);
         return $resources;
     }
+
     /**
      *
      * @return array
@@ -243,14 +232,15 @@ class Swagger
     {
         $classes = array();
         if (file_exists($filename)) {
-            $tokens = token_get_all(file_get_contents($filename));
-            $count = count($tokens);
-            $ns = $this->_getNamespace($filename);
+            $toks = token_get_all(file_get_contents($filename));
+            $count  = count($toks);
+            $ns     = $this->_getNamespace($filename);
             for ($i = 2; $i < $count; $i++) {
-                if ($tokens[$i - 2][0] == T_CLASS &&
-                    $tokens[$i - 1][0] == T_WHITESPACE &&
-                    $tokens[$i][0] == T_STRING) {
-                    $classes[] = $ns . $tokens[$i][1];
+                if ($toks[$i - 2][0] == T_CLASS &&
+                    $toks[$i - 1][0] == T_WHITESPACE &&
+                    $toks[$i][0] == T_STRING
+                ) {
+                    $classes[] = $ns . $toks[$i][1];
                 }
             }
         }
@@ -261,15 +251,16 @@ class Swagger
      *
      * @param string $filename
      */
-    protected function _getNamespace($filename) {
+    protected function _getNamespace($filename)
+    {
         $ns = '\\';
-        if(file_exists($filename)){
-            $tokens = token_get_all(file_get_contents($filename));
-            $count = count($tokens);
-            if ($tokens[1][0] == T_NAMESPACE) {
+        if (file_exists($filename)) {
+            $toks = token_get_all(file_get_contents($filename));
+            $count  = count($toks);
+            if ($toks[1][0] == T_NAMESPACE) {
                 $i = 3;
-                while (isset($tokens[$i][2]) && $tokens[$i][2] == 2) {
-                    $ns .= $tokens[$i][1] ;
+                while (isset($toks[$i][2]) && $toks[$i][2] == 2) {
+                    $ns .= $toks[$i][1];
                     $i++;
                 }
                 $ns .= '\\';
@@ -277,6 +268,7 @@ class Swagger
         }
         return $ns;
     }
+
     /**
      *
      * @return Swagger
@@ -315,5 +307,51 @@ class Swagger
     {
         $this->models = $models;
         return $this;
+    }
+
+    public function jsonEncode($data, $prettyPrint = false)
+    {
+        if (version_compare(PHP_VERSION, '5.4', '>=')) {
+            $json = json_encode(
+                $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
+        } else {
+            $json = str_replace('\/', '/', json_encode($data));
+        }
+        if (!$prettyPrint) {
+            return $json;
+        }
+        /* @see Zend_Json::prettyPrint */
+        $toks = preg_split('|([\{\}\]\[,])|', $json, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $result = null;
+        $idt = 0;
+        $lb = "\n";
+        $ind = '    ';
+        $il = false;
+        foreach($toks as $tok) {
+            if($tok == '') {
+                continue;
+            }
+            $pr = str_repeat($ind, $idt);
+            if (!$il && ($tok == '{' || $tok == '[')) {
+                $idt++;
+                if (($result != '') && ($result[(strlen($result)-1)] == $lb)) {
+                    $result .= $pr;
+                }
+                $result .= $tok . $lb;
+            } elseif (!$il && ($tok == '}' || $tok == ']')) {
+                $idt--;
+                $pr = str_repeat($ind, $idt);
+                $result .= $lb . $pr . $tok;
+            } elseif (!$il && $tok == ',') {
+                $result .= $tok . $lb;
+            } else {
+                $result .= ( $il ? '' : $pr ) . $tok;
+                if ((substr_count($tok, '"')-substr_count($tok, '\"')) % 2 != 0) {
+                    $il = !$il;
+                }
+            }
+        }
+        return $result;
     }
 }

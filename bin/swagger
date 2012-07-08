@@ -20,12 +20,14 @@
  * provide functionality to generate the json files as static entities as part
  * of a deployment process etc.
  */
-$shortopts = 'p:ho:';
+$shortopts = 'fp:ho:';
 
 $longopts = array(
     'project-dir:',
-    'output-dir'
+    'output-dir',
+    'format'
 );
+$prettyPrint = false;
 try {
     $options = getopt($shortopts, $longopts);
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -38,6 +40,7 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -p, --project-path    base path of the project to perform swagger discovery
         Optional arguments:
             -o, --output-path     directory to store the generated json documents
+            -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
 
 
@@ -62,14 +65,16 @@ EOF;
     } else {
         $outputPath = getcwd() . DIRECTORY_SEPARATOR;
     }
+    if(isset($options['f']) || isset($options['format'])){
+        $prettyPrint = true;
+    }
     $swagger = \Swagger\Swagger::discover($projectPath);
     foreach ($swagger->getResourceNames() as $resourceName) {
-        $output['resources'] = $swagger->getResource($resourceName);
+        $output['resources'] = $swagger->getResource($resourceName, $prettyPrint);
     }
     $apis = $swagger->getApis($resourceName);
     foreach ($apis as $name => $data) {
-        $name          = str_replace('/', null, $name);
-        $output[$name] = str_replace('\/', null, json_encode($data));
+        $output[$name] = $swagger->getApi($resourceName, $name, $prettyPrint);
     }
     if (file_exists($outputPath) && !is_dir($outputPath)) {
         throw new RuntimeException(
