@@ -9,20 +9,21 @@
         <directory>Swagger</directory>
     </testsuite>
     <logging>
-        <log type="coverage-text" target="php://stdout"
-             showUncoveredFiles="true"/>
+        <!--<log type="coverage-text" target="php://stdout"-->
+             <!--showUncoveredFiles="true"/>-->
         <log type="coverage-html" target="/tmp/report" charset="UTF-8"
              yui="true" highlight="false"
              lowUpperBound="35" highLowerBound="70"/>
+        <log type="testdox-html" target="/tmp/testdox.html"/>
     </logging>
     <filter>
         <blacklist>
             <directory suffix=".php">../</directory>
         </blacklist>
         <whitelist>
-            <directory suffix=".php">../library</directory>
+            <directory suffix=".php">../library/Swagger</directory>
             <exclude>
-                <directory suffix=".phtml">../library</directory>
+                <directory suffix=".phtml">../</directory>
                 <file>./bootstrap.php</file>
             </exclude>
         </whitelist>

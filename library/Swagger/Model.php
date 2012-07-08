@@ -112,17 +112,24 @@ class Model extends AbstractEntity
         )
         ) {
             foreach ($matches[1] as $match) {
-                preg_match('/(\w+)\s{1,}(\$\w+)(.*)/', $match, $prop);
+                preg_match('/(\w+)(<.*>|)\s{1,}(\$\w+)(.*)/i', $match, $prop);
                 if ($prop) {
-                    if (isset($prop[2])) {
-                        $name = str_replace('$', '', $prop[2]);
+                    if (isset($prop[3])) {
+                        $name = str_replace('$', '', $prop[3]);
                         if (isset($prop[1])) {
                             $result['type'] = $prop[1];
                         }
-                        if (isset($prop[3])) {
-                            $result['description'] = trim($prop[3]);
+                        if (isset($prop[4])) {
+                            $result['description'] = trim($prop[4]);
                         }
                         $this->results['properties'][$name] = $result;
+                    }
+                    if (!empty($prop[2])) {
+                        $this->results['properties'][$name] =
+                            array_merge(
+                                $this->results['properties'][$name],
+                                $this->_parseComplexTypes($prop[2])
+                            );
                     }
                 }
             }
@@ -138,6 +145,39 @@ class Model extends AbstractEntity
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $complexType
+     * @return array
+     */
+    protected function _parseComplexTypes($complexType)
+    {
+        $primitives = array(
+            '<boolean>' => array('items' => array('type' => 'boolean')),
+            '<bool>'    => array('items' => array('type' => 'boolean')),
+            '<int>'     => array('items' => array('type' => 'integer')),
+            '<integer>' => array('items' => array('type' => 'integer')),
+            '<string>'  => array('items' => array('type' => 'string')),
+            '<float>'   => array('items' => array('type' => 'float'))
+        );
+        if (array_key_exists(strtolower($complexType), $primitives)) {
+            return $primitives[strtolower($complexType)];
+        }
+        if(preg_match('/<ref:(\w+)>/i', $complexType, $match)){
+            return array('items' => array('$ref' => $match[1]));
+        }
+        if(preg_match_all('/([a-zA-Z0-9 ]+)/i', $complexType, $matches)){
+            $enum = array('enum' => array());
+            foreach ($matches[1] as $match) {
+                $match = trim($match);
+                if(!empty($match)){
+                    $enum['enum'][] = $match;
+                }
+            }
+            return $enum;
+        }
+        return array();
     }
 
     /**

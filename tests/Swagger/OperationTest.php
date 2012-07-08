@@ -38,9 +38,6 @@ class OperationTest extends \PHPUnit_Framework_TestCase
 }
 EOF;
 
-        $reflect = new \ReflectionClass('LeadResponder_RoutesIdController');
-        $rm = $reflect->getMethod('getAction');
-         $this->Operation = new Operation($rm, null);
 
     }
 
@@ -55,10 +52,13 @@ EOF;
     }
 
     /**
-     * Tests Operation->__construct()
+     * Tests Operation
      */
-    public function test__construct ()
+    public function testOperation ()
     {
+        $reflect = new \ReflectionClass('LeadResponder_RoutesIdController');
+        $rm = $reflect->getMethod('getAction');
+        $this->Operation = new Operation($rm, null);
         $this->assertEquals(json_decode($this->fixture, true), $this->Operation->results);
 
     }

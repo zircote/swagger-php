@@ -35,10 +35,6 @@ class ParamTest extends \PHPUnit_Framework_TestCase
 
 EOF;
 
-         $this->Param = new Param(
-             'description="ID of the route being requested",required=true,'.
-             'allowMultiple=false,dataType="integer",name="organic_id",paramType="path"'
-         );
 
     }
 
@@ -53,10 +49,14 @@ EOF;
     }
 
     /**
-     * Tests Param->__construct()
+     * Tests Param
      */
-    public function test__construct ()
+    public function testParam ()
     {
+         $this->Param = new Param(
+             'description="ID of the route being requested",required=true,'.
+             'allowMultiple=false,dataType="integer",name="organic_id",paramType="path"'
+         );
         $this->assertEquals(json_decode($this->fixture, true), $this->Param->results) ;
 
     }

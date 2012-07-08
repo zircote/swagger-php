@@ -88,7 +88,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 }
 EOF;
 
-        $this->Api = new \Swagger\Api('\\Organic\\RoutesController');
 
     }
 
@@ -97,7 +96,6 @@ EOF;
      */
     protected function tearDown ()
     {
-        // TODO Auto-generated ApiTest::tearDown()
 
         $this->Api = null;
 
@@ -105,10 +103,11 @@ EOF;
     }
 
     /**
-     * Tests Api->__construct()
+     *
      */
-    public function testResults ()
+    public function testApi ()
     {
+        $this->Api = new \Swagger\Api('\\Organic\\RoutesController');
         $actual = $this->Api->results;
         $this->assertEquals(json_decode($this->fixture, true), $actual);
 

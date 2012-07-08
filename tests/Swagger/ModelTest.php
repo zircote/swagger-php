@@ -23,10 +23,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // TODO Auto-generated ModelTest::setUp()
-
-         $this->Model = new Model('Model_Organic_Route');
-        $this->fixture = <<<EOF
+        $this->fixture = <<<'EOF'
 {
     "id":"leadresonder_route",
     "description":"some long description of the model",
@@ -43,21 +40,31 @@ class ModelTest extends \PHPUnit_Framework_TestCase
             "type":"string",
             "description":""
         },
-        "tag":{
-            "type":"string",
-            "description":""
+        "tags":{
+            "type":"array",
+            "description":"this is a reference to `tag`",
+            "items" : {
+                "$ref": "tag"
+            }
         },
         "arrayItem":{
             "type":"array",
-            "description":""
+            "description":"This is an array of strings",
+            "items" : {
+                "type": "string"
+            }
         },
         "refArr":{
             "type":"array",
-            "description":""
+            "description":"This is an array of integers.",
+            "items" : {
+                "type": "integer"
+            }
         },
         "enumVal":{
-            "type":"array",
-            "description":""
+            "type":"string",
+            "description":"This is an enum value.",
+            "enum": ["Two Pigs","One Duck","And a Cow"]
         },
         "integerParam":{
             "description":"This is an integer Param",
@@ -82,11 +89,13 @@ EOF;
     }
 
     /**
-     * Tests Model->__construct()
+     *
      */
-    public function test__construct ()
+    public function testModel ()
     {
+        $this->Model = new Model('Model_Organic_Route');
         $actual = $this->Model->results;
+//        print_r($actual);
         $this->assertEquals(json_decode($this->fixture, true), $actual);
 
     }
