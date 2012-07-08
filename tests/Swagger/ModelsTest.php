@@ -5,6 +5,7 @@ use Swagger\Models;
 
 /**
  * Models test case.
+ * @group Models
  */
 class ModelsTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,10 +22,53 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
     protected function setUp ()
     {
         parent::setUp();
+        $this->fixture = <<<EOF
+{
+    "leadresonder_route":{
+        "id":"leadresonder_route",
+        "description":"some long description of the model",
+        "properties":{
+            "usr_mlr_route_id":{
+                "type":"integer",
+                "description":"some long winded description."
+            },
+            "route":{
+                "type":"string",
+                "description":"some long description of the model."
+            },
+            "createdDate":{
+                "type":"string",
+                "description":""
+            },
+            "tag":{
+                "type":"string",
+                "description":""
+            },
+            "arrayItem":{
+                "type":"array",
+                "description":""
+            },
+            "refArr":{
+                "type":"array",
+                "description":""
+            },
+            "enumVal":{
+                "type":"array",
+                "description":""
+            },
+            "integerParam":{
+                "description":"This is an integer Param",
+                "type":"integer"
+            }
+        }
+    }
+}
 
-        // TODO Auto-generated ModelsTest::setUp()
+EOF;
 
-//         $this->Models = new Models(/* parameters */);
+         $this->Models = new Models(
+             array('Model_Organic_Route','Model_LeadResponder_RouteCollection')
+         );
 
     }
 
@@ -33,19 +77,9 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown ()
     {
-        // TODO Auto-generated ModelsTest::tearDown()
-
         $this->Models = null;
 
         parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct ()
-    {
-        // TODO Auto-generated constructor
     }
 
     /**
@@ -53,10 +87,7 @@ class ModelsTest extends \PHPUnit_Framework_TestCase
      */
     public function test__construct ()
     {
-        // TODO Auto-generated ModelsTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->Models->__construct(/* parameters */);
+        $this->assertEquals(json_decode($this->fixture, true), $this->Models->results);
 
     }
 

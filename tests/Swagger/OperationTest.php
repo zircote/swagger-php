@@ -5,6 +5,7 @@ use Swagger\Operation;
 
 /**
  * Operation test case.
+ * @group Operation
  */
 class OperationTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,10 +22,25 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     protected function setUp ()
     {
         parent::setUp();
+        $this->fixture = <<<EOF
+{
+    "tags":["MLR"],
+    "errorResponses":[
+        {
+            "code":"403",
+            "reason":"User Not Authorized"
+        }
+    ], "parameters":[],
+    "httpMethod":"GET",
+    "responseClass":"List[leadresonder_route]",
+    "summary":"Fetches the leadresponder corresponding the the provided ID",
+    "responseTypeInternal":"Model_LeadResponder_RouteCollection"
+}
+EOF;
 
-        // TODO Auto-generated OperationTest::setUp()
-
-//         $this->Operation = new Operation(/* parameters */);
+        $reflect = new \ReflectionClass('LeadResponder_RoutesIdController');
+        $rm = $reflect->getMethod('getAction');
+         $this->Operation = new Operation($rm, null);
 
     }
 
@@ -33,19 +49,9 @@ class OperationTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown ()
     {
-        // TODO Auto-generated OperationTest::tearDown()
-
         $this->Operation = null;
 
         parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct ()
-    {
-        // TODO Auto-generated constructor
     }
 
     /**
@@ -53,10 +59,7 @@ class OperationTest extends \PHPUnit_Framework_TestCase
      */
     public function test__construct ()
     {
-        // TODO Auto-generated OperationTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->Operation->__construct(/* parameters */);
+        $this->assertEquals(json_decode($this->fixture, true), $this->Operation->results);
 
     }
 

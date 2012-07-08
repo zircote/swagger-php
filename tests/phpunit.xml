@@ -1,8 +1,30 @@
-<phpunit bootstrap="bootstrap.php">
+<phpunit bootstrap="./bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false"
+         syntaxCheck="true">
     <testsuite name="Swagger Library Test Suite">
         <directory>Swagger</directory>
     </testsuite>
     <logging>
-        <!--<log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>-->
+        <log type="coverage-text" target="php://stdout"
+             showUncoveredFiles="true"/>
+        <log type="coverage-html" target="/tmp/report" charset="UTF-8"
+             yui="true" highlight="false"
+             lowUpperBound="35" highLowerBound="70"/>
     </logging>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../</directory>
+        </blacklist>
+        <whitelist>
+            <directory suffix=".php">../library</directory>
+            <exclude>
+                <directory suffix=".phtml">../library</directory>
+                <file>./bootstrap.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

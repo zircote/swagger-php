@@ -63,6 +63,7 @@ class Operation extends AbstractEntity
      */
     public function __construct($operation, $resource)
     {
+//        print_r(func_get_args());
         $this->_resource = $resource;
         if ($operation instanceof Reflector) {
             if (!method_exists($operation, 'getDocComment')) {

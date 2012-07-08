@@ -223,8 +223,6 @@ JSON;
     }
 
     /**
-     * @covers Swagger_Resource::buildResource
-     * @todo   Implement testBuildResource().
      * @group Resource
      */
     public function testBuildResource()
@@ -232,7 +230,7 @@ JSON;
         $path = realpath(dirname(__DIR__) . '/fixtures');
         $swagger = Swagger::discover($path);
 
-        $resource = $swagger->getResource('http://org.local/v1');
+        $resource = $swagger->getResource('http://org.local/v1', true);
 //        echo $resource, PHP_EOL, PHP_EOL;
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
 //        echo $api, PHP_EOL, PHP_EOL;

@@ -5,6 +5,7 @@ use Swagger\Param;
 
 /**
  * Param test case.
+ * @group Param
  */
 class ParamTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,9 +23,22 @@ class ParamTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // TODO Auto-generated ParamTest::setUp()
+        $this->fixture = <<<EOF
+{
+    "description":"ID of the route being requested",
+    "required":"true",
+    "allowMultiple":"false",
+    "dataType":"integer",
+    "name":"organic_id",
+    "paramType":"path"
+}
 
-//         $this->Param = new Param(/* parameters */);
+EOF;
+
+         $this->Param = new Param(
+             'description="ID of the route being requested",required=true,'.
+             'allowMultiple=false,dataType="integer",name="organic_id",paramType="path"'
+         );
 
     }
 
@@ -33,19 +47,9 @@ class ParamTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown ()
     {
-        // TODO Auto-generated ParamTest::tearDown()
-
         $this->Param = null;
 
         parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct ()
-    {
-        // TODO Auto-generated constructor
     }
 
     /**
@@ -53,10 +57,7 @@ class ParamTest extends \PHPUnit_Framework_TestCase
      */
     public function test__construct ()
     {
-        // TODO Auto-generated ParamTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->Param->__construct(/* parameters */);
+        $this->assertEquals(json_decode($this->fixture, true), $this->Param->results) ;
 
     }
 
