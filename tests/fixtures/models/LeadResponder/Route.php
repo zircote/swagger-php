@@ -31,10 +31,10 @@
  * @property integer $usr_mlr_route_id some long winded description.
  * @property string $route some long description of the model.
  * @property string $createdDate
- * @property string $tag
- * @property array $arrayItem
- * @property array $refArr
- * @property array $enumVal
+ * @property array<ref:tag> $tags this is a reference to `tag`
+ * @property array<string> $arrayItem This is an array of strings
+ * @property array<integer> $refArr This is an array of integers.
+ * @property string<'Two Pigs','One Duck', 'And a Cow'> $enumVal This is an enum value.
  *
  */
 class Model_Organic_Route
