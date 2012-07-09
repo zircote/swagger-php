@@ -25,7 +25,9 @@ defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 
 //require_once dirname(__DIR__) . '/vendor/autoload.php';
+
 set_include_path(get_include_path() . PATH_SEPARATOR . APPLICATION_PATH . '/library');
+
 require_once 'Swagger/Swagger.php';
 require_once 'Swagger/AbstractEntity.php';
 require_once 'Swagger/Resource.php';

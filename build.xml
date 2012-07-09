@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Hal" default="build" basedir=".">
+<project name="Swagger" default="build" basedir=".">
     <property name="source" value="." />
-    <target name="clean" description="Clean up and create artifact directories">
-        <exec executable="git" failonerror="true">
-            <arg line="submodule init" />
+    <target name="clean" description="Cleans the Jobs targets">
+        <exec executable="rm" failonerror="false">
+            <arg line="-rfv" />
+            <arg line="composer.phar"/>
+            <arg line="composer.lock"/>
+            <arg line="vendor"/>
         </exec>
-        <exec executable="git" failonerror="true">
-            <arg line="submodule update" />
+    </target>
+    <target name="setup" description="Clean up and create artifact directories">
+        <exec executable="wget" failonerror="true">
+            <arg line="http://getcomposer.org/composer.phar" />
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg line="composer.phar install" />
         </exec>
     </target>
     <target name="phpunit"
@@ -15,5 +23,5 @@
             <arg line="-c tests/phpunit.xml" />
         </exec>
     </target>
-    <target name="build" depends="clean,phpunit" />
+    <target name="build" depends="setup,phpunit,clean" />
 </project>
