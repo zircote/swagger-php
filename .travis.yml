@@ -4,4 +4,4 @@ php:
   - 5.3
   - 5.4
 
-script: ant build.xml
+script: ant build
