@@ -8,6 +8,7 @@ consuming, and visualizing RESTful web services.
 
  More on Swagger:
   * http://swagger.wordnik.com/
+  * https://github.com/wordnik/swagger-core/wiki
   * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
 
 _Installation_
