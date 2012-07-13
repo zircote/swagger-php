@@ -37,16 +37,19 @@ use \Swagger\Operation;
  */
 class Api extends AbstractEntity
 {
+
     /**
      *
      * @var \ReflectionClass
      */
     protected $_class;
+
     /**
      *
      * @var string
      */
     protected $_docComment;
+
     /**
      *
      * @var array
@@ -58,6 +61,7 @@ class Api extends AbstractEntity
     /**
      *
      * @param \Reflector|string $class
+     *
      * @throws \Exception
      */
     public function __construct($class)
@@ -101,10 +105,9 @@ class Api extends AbstractEntity
         $comment =
             preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
         if (preg_match(self::PATTERN_RESOURCE, $comment, $matches)) {
-            foreach ($this->_parseParts($matches[1]) as $key => $value) {
-                $this->results[$key] = $value;
+            foreach ($this->_parseParts($matches[ 1 ]) as $key => $value) {
+                $this->results[ $key ] = $value;
             }
-
         }
         return $this;
     }
@@ -117,10 +120,12 @@ class Api extends AbstractEntity
         $comment =
             preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
         if (preg_match(self::PATTERN_API, $comment, $matches)) {
-            $this->results         = array_merge_recursive(
-                $this->results, $this->_parseParts($matches[1])
+            $this->results = array_merge_recursive(
+                $this->results, $this->_parseParts($matches[ 1 ])
             );
-            $this->results['path'] = $this->results['path'];
+            if (isset($this->results[ 'path' ])) {
+                $this->results[ 'path' ] = $this->results[ 'path' ];
+            }
         }
         return $this;
     }
@@ -133,11 +138,11 @@ class Api extends AbstractEntity
         $comment =
             preg_replace(self::STRIP_LINE_PREAMBLE, null, $this->_docComment);
         if (preg_match(self::PATTERN_PRODUCES, $comment, $matches)) {
-            foreach (explode(',', $matches[1]) as $value) {
-                $result[] =
+            foreach (explode(',', $matches[ 1 ]) as $value) {
+                $result[ ] =
                     preg_replace(self::STRIP_WHITESPACE_APOST, null, $value);
             }
-            $this->results['produces'] = $result;
+            $this->results[ 'produces' ] = $result;
         }
         return $this;
     }
@@ -156,17 +161,19 @@ class Api extends AbstractEntity
                 '/@SwaggerOperation/i', $reflectedMethod->getDocComment()
             )
             ) {
-                $operation                                    =
+                $operation =
                     new Operation($reflectedMethod, $this->results);
-                $path                                         =
-                    isset($this->results['resourcePath']) ?
-                        $this->results['resourcePath'] : $this->results['path'];
-                $path                                         =
-                    isset($operation->results['path']) ?
-                        $path . $operation->results['path'] : $path;
-                $this->results['apis'][$path]['operations'][] =
+                $resPath = @$this->results['path'] ?: null;
+                $path =
+                    isset($this->results[ 'resourcePath' ]) ?
+                        $this->results[ 'resourcePath' ] :
+                        $resPath;
+                $path =
+                    isset($operation->results[ 'path' ]) ?
+                        $path . $operation->results[ 'path' ] : $path;
+                $this->results[ 'apis' ][ $path ][ 'operations' ][ ] =
                     $operation->results;
-                $this->results['apis'][$path]['path']         = $path;
+                $this->results[ 'apis' ][ $path ][ 'path' ] = $path;
             }
         }
         return $this;

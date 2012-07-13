@@ -153,8 +153,10 @@ class Operation extends AbstractEntity
                 $this->results['responseClass'] =
                     'List[' . $this->results['responseClass'] . ']';
             }
-            $this->results['summary'] = $this->results['value'];
-            unset($this->results['value'], $this->results['multiValueResponse']);
+            if(isset($this->results['value'])){
+                $this->results['summary'] = $this->results['value'];
+                unset($this->results['value'], $this->results['multiValueResponse']);
+            }
         }
         return $this;
     }

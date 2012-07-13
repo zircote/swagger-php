@@ -187,11 +187,13 @@ class Model extends AbstractEntity
     protected function _parsePublicProps(\ReflectionProperty $property)
     {
         $comment = $this->_parseDocComment($property->getDocComment());
-        preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment, $match);
-        $result['description'] = trim($match[0]);
-        preg_match('/@var (\w+)/i', $comment, $match);
-        $result['type'] = $match[1];
-        return $result;
+        if(preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment, $match)){
+            $result['description'] = trim($match[0]);
+            preg_match('/@var (\w+)/i', $comment, $match);
+            $result['type'] = $match[1];
+            return $result;
+        }
+        return false;
     }
 
     /**
