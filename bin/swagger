@@ -28,7 +28,8 @@ function includeIfExists($file)
 }
 
 if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php')) &&
-    (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php'))
+    (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php')) &&
+    (!$loader = includeIfExists('vendor/autoload.php'))
 ) {
     die(<<<'EOT'
 You must set up the project dependencies, run the following commands:

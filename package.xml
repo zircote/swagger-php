@@ -15,11 +15,11 @@ consuming, and visualizing RESTful web services.</description>
   <email>zircote@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2012-07-07</date>
- <time>13:09:57</time>
+ <date>2012-07-13</date>
+ <time>20:10:16</time>
  <version>
-  <release>0.3.0</release>
-  <api>0.3.0</api>
+  <release>0.3.1</release>
+  <api>0.3.1</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -134,14 +134,6 @@ This is an alpha release, see readme.md for examples.
       <tasks:replace from="@name@" to="name" type="package-info" />
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="ResourceTest1.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="SwaggerTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
     </dir> <!-- /tests/Swagger -->
     <file baseinstalldir="/" name="bootstrap.php" role="test">
      <tasks:replace from="@name@" to="name" type="package-info" />
@@ -151,6 +143,7 @@ This is an alpha release, see readme.md for examples.
    <file baseinstalldir="/" name="CHANGELOG" role="doc" />
    <file baseinstalldir="/" name="LICENSE-2.0.txt" role="doc" />
    <file baseinstalldir="/" name="readme.md" role="doc" />
+   <file baseinstalldir="/" name="swagger.phar" role="data" />
    <file baseinstalldir="/" name="VERSION" role="doc" />
   </dir> <!-- / -->
  </contents>
@@ -180,14 +173,14 @@ This is an alpha release, see readme.md for examples.
  <changelog>
   <release>
    <version>
-    <release>0.3.0</release>
-    <api>0.3.0</api>
+    <release>0.3.1</release>
+    <api>0.3.1</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2012-07-07</date>
+   <date>2012-07-13</date>
    <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
    <notes>
 This is an alpha release, see readme.md for examples.
