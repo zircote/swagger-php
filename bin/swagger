@@ -39,11 +39,11 @@ php composer.phar install
 EOT
     );
 }
-$shortopts = 'fp:ho:b';
+$shortopts = 'fp:ho:i:';
 
 $longopts = array(
     'project-dir:',
-    'bootstrap',
+    'include-path:',
     'output-dir',
     'format'
 );
@@ -58,7 +58,8 @@ Usage: swagger --project-path PATH [--output-path PATH]...
         Mandatory argument[s]:
             -p, --project-path    base path of the project to perform swagger discovery
         Optional arguments:
-            -b, --bootstrap       Optional bootstrap file for additional include path support
+            -i, --include-path    Optional bootstrap file for additional include path support
+                                    ex: --include-path Zend:/usr/local/share/pear
             -o, --output-path     directory to store the generated json documents
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
@@ -67,10 +68,14 @@ Usage: swagger --project-path PATH [--output-path PATH]...
 EOF;
         exit;
     }
-    if (isset($options[ 'b' ]) || isset($options[ 'bootstrap' ])) {
-        include @$options[ 'b' ] ? : $options[ 'bootstrap' ];
+    if ((isset($options['i']) && ($bootstrap = $options['i'])) ||
+        (isset($options[ 'include-path' ]) && ($bootstrap = $options[ 'include-path' ]))) {
+        /* @var  \Composer\Autoload\ClassLoader $loader */
+        foreach (explode(',',$bootstrap) as $incPath) {
+            @list($namespace, $inclusionPath) = explode(':', $incPath);
+            $loader->add($namespace, array($inclusionPath ?: '.'));
+        }
     }
-
     if (!isset($options[ 'p' ]) && !isset($options[ 'project-dir' ])) {
         throw new RuntimeException('--project-dir must be provided');
     } else {
