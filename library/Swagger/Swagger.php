@@ -254,18 +254,35 @@ class Swagger
     protected function _getNamespace($filename)
     {
         $ns = '\\';
+        
         if (file_exists($filename)) {
-            $toks = token_get_all(file_get_contents($filename));
-            $count  = count($toks);
-            if ($toks[1][0] == T_NAMESPACE) {
-                $i = 3;
-                while (isset($toks[$i][2]) && $toks[$i][2] == 2) {
-                    $ns .= $toks[$i][1];
-                    $i++;
+            $content = file_get_contents($filename);
+            
+            if (strpos($content, 'namespace') !== false) {
+                $toks = token_get_all($content);
+                $startIndex = null;
+                $lineNumber = null;
+                
+                foreach ($toks as $index => $tok) {
+                    if (isset($tok[0]) && T_NAMESPACE == $tok[0]) {
+                        $startIndex = $index + 1;
+                        $lineNumber = $tok[2];
+                        continue;
+                    }
+                    
+                    if (null !== $startIndex && $index > $startIndex) {
+                        if (T_STRING === $tok[0] || T_NS_SEPARATOR === $tok[0]) {
+                            if (T_NS_SEPARATOR !== $tok[0]) {
+                                $ns .= $tok[1] . '\\';
+                            }
+                        } else {
+                            break;
+                        }
+                    }
                 }
-                $ns .= '\\';
             }
         }
+        
         return $ns;
     }
 
