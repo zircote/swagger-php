@@ -56,23 +56,26 @@ class Swagger
     /**
      *
      * @param string $path
+     * @param string $excludePath
      */
-    public function __construct($path = null)
+    public function __construct($path = null, $excludePath = null)
     {
         if ($path) {
             $this->_path = $path;
-            $this->_discoverServices();
+            $this->_excludePath = $excludePath;
+            $this->_discoverServices();            
         }
     }
 
     /**
      *
      * @param string $path
+     * @param string $excludePath
      * @return Swagger
      */
-    public static function discover($path)
+    public static function discover($path, $excludePath = null)
     {
-        $swagger = new self($path);
+        $swagger = new self($path, $excludePath);
         return $swagger;
     }
 
@@ -201,10 +204,24 @@ class Swagger
         if (!$path) {
             $path = $this->_path;
         }
+        $excludePaths = isset($this->_excludePath) ? explode(':', $this->_excludePath) : array();
         $files = array();
         $dir   = new DirectoryIterator($path);
         /* @var $fileInfo DirectoryIterator */
         foreach ($dir as $fileInfo) {
+            if (!$fileInfo->isDot()) {
+                $skip = false;
+                foreach ($excludePaths as $excludePath) {
+                    if (strpos(realpath($fileInfo->getPathname()), $excludePath) === 0) {
+                        $skip = true;
+                        break;
+                    }
+                }
+                if (true === $skip) {
+                    continue;
+                }
+            }
+            
             if (!$fileInfo->isDot() && !$fileInfo->isDir()) {
                 if (preg_match('/\.php$/i', $fileInfo->getFilename())) {
                     array_push(
