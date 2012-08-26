@@ -69,6 +69,7 @@ Usage: swagger --project-path PATH [--output-path PATH]...
 
 
 EOF;
+        exit;
     }
     if (isset($options['e']) || isset($options['exclude-path'])) {
         $excludePath = isset($options['e']) ? $options['e'] : $options['exclude-path'];
