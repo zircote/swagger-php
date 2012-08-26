@@ -39,10 +39,11 @@ php composer.phar install
 EOT
     );
 }
-$shortopts = 'fp:ho:i:';
+$shortopts = 'fp:ho:i:e:';
 
 $longopts = array(
     'project-dir:',
+    'exclude-path:',
     'include-path:',
     'output-dir',
     'format'
@@ -58,6 +59,8 @@ Usage: swagger --project-path PATH [--output-path PATH]...
         Mandatory argument[s]:
             -p, --project-path    base path of the project to perform swagger discovery
         Optional arguments:
+            -e, --exclude-path    Optional exclude path
+                                    ex: --exclude-path vendor:library/Zend:library/Foo
             -i, --include-path    Optional bootstrap file for additional include path support
                                     ex: --include-path Zend:/usr/local/share/pear
             -o, --output-path     directory to store the generated json documents
@@ -67,6 +70,16 @@ Usage: swagger --project-path PATH [--output-path PATH]...
 
 EOF;
         exit;
+    }
+    if (isset($options['e']) || isset($options['exclude-path'])) {
+        $excludePath = isset($options['e']) ? $options['e'] : $options['exclude-path'];
+        $excludePaths = explode(':', $excludePath);
+        foreach ($excludePaths as $index => $excludePath) {
+            if ('/' != substr($excludePath, 0, 1)) {
+                $excludePaths[$index] = getcwd() . DIRECTORY_SEPARATOR . $excludePath;
+            }
+        }
+        $excludePath = implode(':', $excludePaths);
     }
     if ((isset($options['i']) && ($bootstrap = $options['i'])) ||
         (isset($options[ 'include-path' ]) && ($bootstrap = $options[ 'include-path' ]))) {
@@ -99,7 +112,7 @@ EOF;
     if (isset($options[ 'f' ]) || isset($options[ 'format' ])) {
         $prettyPrint = true;
     }
-    $swagger = \Swagger\Swagger::discover($projectPath);
+    $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
     $resourceName = false;
     foreach ($swagger->getResourceNames() as $resourceName) {
         $output[ 'resources' ] =
@@ -122,6 +135,7 @@ EOF;
             }
         }
         foreach ($output as $name => $json) {
+            $name = str_replace('.{format}', '', $name);
             echo $outputPath . $name . '.json created', PHP_EOL;
             file_put_contents($outputPath . $name . '.json', $json);
         }
