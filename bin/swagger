@@ -122,6 +122,7 @@ EOF;
             }
         }
         foreach ($output as $name => $json) {
+            $name = str_replace('.{format}', '', $name);
             echo $outputPath . $name . '.json created', PHP_EOL;
             file_put_contents($outputPath . $name . '.json', $json);
         }
