@@ -1,5 +1,5 @@
 <?php
-
+namespace SwaggerTests;
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  *             Copyright [2012] [Robert Allen]
@@ -16,24 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category   Swagger
+ * @category   SwaggerTests
  * @package    Swagger
  * @subpackage UnitTests
  */
-namespace SwaggerTests;
 use Swagger\Swagger;
 
 /*
  *
  *
- * @category   Swagger
+ * @category   SwaggerTests
  * @package    Swagger
  * @subpackage UnitTests
  */
 class ResourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Swagger_Resource
+     * @var \Swagger\Resource
      */
     protected $resource;
 
@@ -241,9 +240,8 @@ JSON;
         $swagger = Swagger::discover($path);
 
         $resource = $swagger->getResource('http://org.local/v1', true);
-//        echo $resource, PHP_EOL, PHP_EOL;
         $api = $swagger->getApi('http://org.local/v1', '/leadresponder');
-//        echo $api, PHP_EOL, PHP_EOL;
+
         $this->assertEquals(
             $this->_apiFixture, json_decode((string)$api, true)
         );
