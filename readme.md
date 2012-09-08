@@ -22,7 +22,6 @@ cd swagger
 php composer.phar install
 ```
 #### As a project depenency:
-
 Add the following snippet to your require section of you `composer.json` and
 run composer install|update
 
@@ -32,8 +31,37 @@ run composer install|update
     {"zircote/swagger-php": "master-dev"}
 ```
 
-_Examples:_
+#### Example Use:
 
+### CLI
+
+```
+php swagger.phar -h
+
+ Usage: swagger --project-path PATH [--output-path PATH]...
+     Generate Swagger JSON documents for a project.
+         Mandatory argument[s]:
+             -p, --project-path    base path of the project to perform swagger discovery
+         Optional arguments:
+             -i, --include-path    Optional bootstrap file for additional include path support
+                                     ex: --include-path Zend:/usr/local/share/pear
+             -o, --output-path     directory to store the generated json documents
+             -f, --format          format JSON output in readable formatting.
+             -h, --help            generates this help message
+
+php swagger.phar -p <project-path> \
+  -o <output-path> -f \
+  --include-path Zend:/usr/local/shar/pear,Rediska:/usr/local/share/pear
+  
+ > /tmp/swagger/resources.json created
+ > /tmp/swagger/pets.json created
+ > /tmp/swagger/users.json created
+ 
+bin/swagger --project-path /my/project/ --output-path /tmp/swagger -f
+> /tmp/swagger/resources.json created
+> /tmp/swagger/pets.json created
+> /tmp/swagger/users.json created
+```
 ## Tags:
 ### Resource Tags:
 
@@ -41,16 +69,6 @@ _Examples:_
    * `@Swagger`
    * `@SwaggerProduces`
 
-#### Example Use:
-
-Generating static `json` documents:
-
-```sh
-$ ./bin/swagger --project-path /my/project/ --output-path /tmp/swagger
-$ /tmp/swagger/resources.json created
-$ /tmp/swagger/pets.json created
-$ /tmp/swagger/users.json created
-```
 
 Dynamic examples:
 
