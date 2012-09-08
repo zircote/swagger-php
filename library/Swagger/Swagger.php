@@ -63,7 +63,7 @@ class Swagger
         if ($path) {
             $this->_path = $path;
             $this->_excludePath = $excludePath;
-            $this->_discoverServices();            
+            $this->_discoverServices();
         }
     }
 
@@ -93,18 +93,18 @@ class Swagger
     public function getResource($basePath, $prettyPrint = false)
     {
         $resources = $this->resources->getResource($basePath);
-        $result    = array();
+        $result = array();
         foreach ($resources as $key => $resource) {
             $result['apis'][] = array(
-                'path'        => $resource['path'],
+                'path' => $resource['path'],
                 'description' => $resource['value']
             );
-            $result           = array_merge(
+            $result = array_merge(
                 $result,
                 array(
-                     'basePath'       => $resource['basePath'],
+                     'basePath' => $resource['basePath'],
                      'swaggerVersion' => $resource['swaggerVersion'],
-                     'apiVersion'     => $resource['apiVersion']
+                     'apiVersion' => $resource['apiVersion']
                 )
             );
         }
@@ -118,22 +118,24 @@ class Swagger
      */
     public function getApi($basePath, $api, $prettyPrint = false)
     {
-        $resources   = $this->resources->getResource($basePath);
+        $resources = $this->resources->getResource($basePath);
         $apiResource = $resources[$api];
-        $apis        = array();
-        $models      = array();
+        $apis = array();
+        $models = array();
         foreach ($apiResource['apis'] as $api) {
             foreach ($api['operations'] as $op) {
                 $responseClass = $op['responseClass'];
                 if (preg_match('/List\[(\w+)\]/i', $responseClass, $match)) {
                     $responseClass = $match[1];
                 }
-                $models[$responseClass] =
-                    $this->models->results[$responseClass];
+                if (array_key_exists($responseClass, $this->models->results)) {
+                    $models[$responseClass] =
+                        $this->models->results[$responseClass];
+                }
             }
             $apis[] = $api;
         }
-        $apiResource['apis']   = $apis;
+        $apiResource['apis'] = $apis;
         $apiResource['models'] = $models;
         return $this->jsonEncode($apiResource, $prettyPrint);
     }
@@ -204,15 +206,20 @@ class Swagger
         if (!$path) {
             $path = $this->_path;
         }
-        $excludePaths = isset($this->_excludePath) ? explode(':', $this->_excludePath) : array();
+        $excludePaths =
+            isset($this->_excludePath) ? explode(':', $this->_excludePath) :
+                array();
         $files = array();
-        $dir   = new DirectoryIterator($path);
+        $dir = new DirectoryIterator($path);
         /* @var $fileInfo DirectoryIterator */
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
                 $skip = false;
                 foreach ($excludePaths as $excludePath) {
-                    if (strpos(realpath($fileInfo->getPathname()), $excludePath) === 0) {
+                    if (strpos(
+                            realpath($fileInfo->getPathname()), $excludePath
+                        ) === 0
+                    ) {
                         $skip = true;
                         break;
                     }
@@ -221,7 +228,7 @@ class Swagger
                     continue;
                 }
             }
-            
+
             if (!$fileInfo->isDot() && !$fileInfo->isDir()) {
                 if (preg_match('/\.php$/i', $fileInfo->getFilename())) {
                     array_push(
@@ -250,8 +257,8 @@ class Swagger
         $classes = array();
         if (file_exists($filename)) {
             $toks = token_get_all(file_get_contents($filename));
-            $count  = count($toks);
-            $ns     = $this->_getNamespace($filename);
+            $count = count($toks);
+            $ns = $this->_getNamespace($filename);
             for ($i = 2; $i < $count; $i++) {
                 if ($toks[$i - 2][0] == T_CLASS &&
                     $toks[$i - 1][0] == T_WHITESPACE &&
@@ -271,24 +278,25 @@ class Swagger
     protected function _getNamespace($filename)
     {
         $ns = '\\';
-        
+
         if (file_exists($filename)) {
             $content = file_get_contents($filename);
-            
+
             if (strpos($content, 'namespace') !== false) {
                 $toks = token_get_all($content);
                 $startIndex = null;
                 $lineNumber = null;
-                
+
                 foreach ($toks as $index => $tok) {
                     if (isset($tok[0]) && T_NAMESPACE == $tok[0]) {
                         $startIndex = $index + 1;
                         $lineNumber = $tok[2];
                         continue;
                     }
-                    
+
                     if (null !== $startIndex && $index > $startIndex) {
-                        if (T_STRING === $tok[0] || T_NS_SEPARATOR === $tok[0]) {
+                        if (T_STRING === $tok[0] || T_NS_SEPARATOR === $tok[0]
+                        ) {
                             if (T_NS_SEPARATOR !== $tok[0]) {
                                 $ns .= $tok[1] . '\\';
                             }
@@ -299,7 +307,7 @@ class Swagger
                 }
             }
         }
-        
+
         return $ns;
     }
 
@@ -356,20 +364,22 @@ class Swagger
             return $json;
         }
         /* @see Zend_Json::prettyPrint */
-        $toks = preg_split('|([\{\}\]\[,])|', $json, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $toks =
+            preg_split('|([\{\}\]\[,])|', $json, -1, PREG_SPLIT_DELIM_CAPTURE);
         $result = null;
         $idt = 0;
         $lb = "\n";
         $ind = '    ';
         $il = false;
-        foreach($toks as $tok) {
-            if($tok == '') {
+        foreach ($toks as $tok) {
+            if ($tok == '') {
                 continue;
             }
             $pr = str_repeat($ind, $idt);
             if (!$il && ($tok == '{' || $tok == '[')) {
                 $idt++;
-                if (($result != '') && ($result[(strlen($result)-1)] == $lb)) {
+                if (($result != '') && ($result[(strlen($result) - 1)] == $lb)
+                ) {
                     $result .= $pr;
                 }
                 $result .= $tok . $lb;
@@ -380,8 +390,10 @@ class Swagger
             } elseif (!$il && $tok == ',') {
                 $result .= $tok . $lb;
             } else {
-                $result .= ( $il ? '' : $pr ) . $tok;
-                if ((substr_count($tok, '"')-substr_count($tok, '\"')) % 2 != 0) {
+                $result .= ($il ? '' : $pr) . $tok;
+                if ((substr_count($tok, '"') - substr_count($tok, '\"')) % 2 !=
+                    0
+                ) {
                     $il = !$il;
                 }
             }
