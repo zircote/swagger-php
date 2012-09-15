@@ -24,20 +24,6 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 
-//require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-set_include_path(get_include_path() . PATH_SEPARATOR . APPLICATION_PATH . '/library');
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-require_once 'Swagger/Swagger.php';
-require_once 'Swagger/AbstractEntity.php';
-require_once 'Swagger/Resource.php';
-require_once 'Swagger/Api.php';
-require_once 'Swagger/Models.php';
-require_once 'Swagger/Model.php';
-require_once 'Swagger/Operation.php';
-require_once 'Swagger/Param.php';
-
-require_once 'fixtures/controllers/LeadResponder/RoutesController.php';
-require_once 'fixtures/controllers/LeadResponder/RoutesIdController.php';
-require_once 'fixtures/models/LeadResponder/Route.php';
-require_once 'fixtures/models/LeadResponder/RouteCollection.php';

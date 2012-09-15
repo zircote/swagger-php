@@ -1,8 +1,12 @@
 {
     "apiVersion":"0.2",
-    "swaggerVersion":"1.0",
+    "swaggerVersion":"1.1",
     "basePath":"http://petstore.swagger.wordnik.com/api",
     "apis":[
+        {
+            "path":"/store.{format}",
+            "description":"Operations about store"
+        },
         {
             "path":"/pet.{format}",
             "description":"Operations about pets"
