@@ -19,10 +19,10 @@ class ErrorResponse extends AbstractAnnotation
     /**
      * @var int
      */
-    protected $code;
+    public $code;
     /**
      * @var string
      */
-    protected $reason;
+    public $reason;
 }
 

@@ -18,6 +18,6 @@ class Items extends AbstractAnnotation
     /**
      * @var string
      */
-    protected $type;
+    public $type;
 }
 

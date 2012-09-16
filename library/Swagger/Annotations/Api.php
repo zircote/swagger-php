@@ -6,6 +6,8 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Annotations\Operations;
+
 /**
  * @package
  * @category
@@ -18,13 +20,41 @@ class Api extends AbstractAnnotation
     /**
      * @var string
      */
-    protected $path;
+    public $path;
     /**
      * @var string
      */
-    protected $value;
+    public $operations;
     /**
      * @var string
      */
-    protected $description;
+    public $description;
+
+    /**
+     * @var string
+     */
+    public $resourcePath;
+
+    public function __construct($values)
+    {
+        parent::__construct($values);
+        if (isset($values['value'])) {
+            switch ($values['value']) {
+                case ($values['value'] instanceof Operations):
+                    $this->operations[] = $values['value'];
+                    break;
+            }
+        }
+    }
+
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $members = parent::toArray();
+        return $members;
+    }
 }
+

@@ -16,8 +16,23 @@ namespace Swagger\Annotations;
 class Property extends AbstractAnnotation
 {
     /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string
+     */
+    public $description;
+
+    /**
+     * @var mixed
+     */
+    public $value;
+
+    /**
      * @var array
      */
-    protected $properties = array();
+    public $items;
 }
 

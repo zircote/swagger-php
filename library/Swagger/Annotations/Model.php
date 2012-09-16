@@ -18,10 +18,15 @@ class Model extends AbstractAnnotation
     /**
      * @var string
      */
-    protected $id;
+    public $id;
     /**
      * @var string
      */
-    protected $description;
+    public $description;
+
+    /**
+     * @var array
+     */
+    public $properties = array();
 }
 

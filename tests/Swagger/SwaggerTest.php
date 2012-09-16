@@ -1,5 +1,6 @@
 <?php
 namespace SwaggerTests;
+
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  *             Copyright [2012] [Robert Allen]
@@ -60,7 +61,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
-        print_r($swagger->result);
+        echo $swagger->jsonEncode($swagger->registry, true);
     }
 }
 
