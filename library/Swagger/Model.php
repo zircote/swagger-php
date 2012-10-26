@@ -190,8 +190,10 @@ class Model extends AbstractEntity
         if(preg_match('/^\w+\s{1,}([^@|)]*)/i', $comment, $match)){
             $result['description'] = trim($match[0]);
             preg_match('/@var (\w+)/i', $comment, $match);
-            $result['type'] = $match[1];
-            return $result;
+    		if(isset($match[1])){
+				$result['type'] = $match[1];
+				return $result;
+			}
         }
         return false;
     }
