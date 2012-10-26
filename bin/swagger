@@ -87,6 +87,10 @@ EOF;
         foreach (explode(',',$bootstrap) as $incPath) {
             @list($namespace, $inclusionPath) = explode(':', $incPath);
             $loader->add($namespace, array($inclusionPath ?: '.'));
+
+			if(!$inclusionPath && is_file($incPath)){
+				require_once($incPath);
+			}
         }
     }
     if (!isset($options[ 'p' ]) && !isset($options[ 'project-dir' ])) {
