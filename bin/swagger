@@ -112,7 +112,7 @@ EOF;
     if (isset($options[ 'f' ]) || isset($options[ 'format' ])) {
         $prettyPrint = true;
     }
-    $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
+    $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
     $resourceName = false;
     foreach ($swagger->getResourceNames() as $resourceName) {
         $output[ 'resources' ] =
