@@ -132,15 +132,19 @@ class Swagger
             foreach ($resource['apis'] as $api) {
                 $api = array_pop($api);
                 unset($api['operations']);
-                if (count($result[$api['path']]) == 1) {
-                    $op = array_pop($result[$api['path']]);
-                } else {
-                    $op = (array) @$result[$api['path']];
-                }
+                $op = (array) @$result[$api['path']];
                 $api['operations'] = $op;
-                $registry[$index]['apis'][] = $api;
+                $registry[$index]['apis'][$api['path']][] = $api;
             }
         }
+        foreach ($registry as $index => $reg) {
+            foreach ($reg['apis'] as $k => $api) {
+                unset($registry[$index]['apis'][$k]);
+                $registry[$index]['apis'][] = array_pop($api);
+            }
+
+        }
+
         $this->registry = $registry;
     }
 

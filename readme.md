@@ -3,9 +3,9 @@ swagger-php
 
 [![Build Status](https://secure.travis-ci.org/zircote/swagger-php.png)](http://travis-ci.org/zircote/swagger-php)
 
-Swagger-PHP library implementing the swagger.wordnik.com specification to describe 
-web services, operations/actions and models enabling a uniform means of producing, 
-consuming, and visualizing RESTful web services. 
+Swagger-PHP library implementing the swagger.wordnik.com specification to describe
+web services, operations/actions and models enabling a uniform means of producing,
+consuming, and visualizing RESTful web services.
 
  More on Swagger:
   * http://swagger.wordnik.com/
@@ -33,7 +33,7 @@ run composer install|update
 ```json
 
     {"zircote/swagger-php": "master-dev"}
-    
+
 ```
 
 #### Example Use:
@@ -57,11 +57,11 @@ php swagger.phar -h
 php swagger.phar -p <project-path> \
   -o <output-path> -f \
   --include-path Zend:/usr/local/shar/pear,Rediska:/usr/local/share/pear
-  
+
  > /tmp/swagger/resources.json created
  > /tmp/swagger/pets.json created
  > /tmp/swagger/users.json created
- 
+
 bin/swagger --project-path /my/project/ --output-path /tmp/swagger -f
 > /tmp/swagger/resources.json created
 > /tmp/swagger/pets.json created
@@ -131,7 +131,7 @@ class Pet
     public function getPetById()
     {
     }
-    
+
 ```
 
 
@@ -265,7 +265,7 @@ __Output__
                         "allowMultiple":true,
                         "nickname":"addPet",
                         "responseClass":"void",
-                        "summary":"dd a new pet to the store",
+                        "summary":"Add a new pet to the store",
                         "httpMethod":"GET",
                         "parameters":{
                             "description":"Pet object that needs to be added to the store",
@@ -309,5 +309,5 @@ __Output__
 }
 ```
 
- 
+
 

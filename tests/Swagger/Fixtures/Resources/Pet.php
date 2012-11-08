@@ -111,49 +111,6 @@ class Pet
     /**
      *
      * @Api(
-     *   resourcePath="/pet",
-     *   path="/pet.{format}",
-     *   description="Operations about pets",
-     *   @operations(
-     *     @operation(
-     *       httpMethod="PUT",
-     *       summary="Update an existing pet",
-     *       responseClass="void",
-     *       nickname="updatePet",
-     *       @parameters(
-     *         @parameter(
-     *           description="Pet object that needs to be updated to the store",
-     *           paramType="body",
-     *           required="true",
-     *           allowMultiple="false",
-     *           dataType="Pet"
-     *         )
-     *       ),
-     *       @errorResponses(
-     *          @errorResponse(
-     *            code="405",
-     *            reason="Invalid input"
-     *          ),
-     *          @errorResponse(
-     *            code="400",
-     *            reason="Invalid ID supplied"
-     *          ),
-     *          @errorResponse(
-     *            code="404",
-     *            reason="Pet not found"
-     *          )
-     *       )
-     *     )
-     *   )
-     * )
-     */
-    public function updatePet()
-    {
-    }
-
-    /**
-     *
-     * @Api(
      *   basePath="http://petstore.swagger.wordnik.com/api",
      *   resourcePath="/pet",
      *   path="/pet.{format}/findByStatus",
@@ -204,7 +161,7 @@ class Pet
      *       notes="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
      *       deprecated=true,
      *       responseClass="List[Pet]",
-     *       nickname="List[Pet]",
+     *       nickname="findPetsByTags",
      *       @parameters(
      *         @parameter(
      *           name="tags",
@@ -218,7 +175,7 @@ class Pet
      *       @errorResponses(
      *          @errorResponse(
      *            code="400",
-     *            reason="Invalid status value"
+     *            reason="Invalid tag value"
      *          )
      *       )
      *     )
@@ -228,5 +185,49 @@ class Pet
     public function findPetsByTags()
     {
     }
+    /**
+     *
+     * @Api(
+     *   resourcePath="/pet",
+     *   path="/pet.{format}",
+     *   description="Operations about pets",
+     *   @operations(
+     *     @operation(
+     *       httpMethod="PUT",
+     *       summary="Update an existing pet",
+     *       responseClass="void",
+     *       nickname="updatePet",
+     *       @parameters(
+     *         @parameter(
+     *           description="Pet object that needs to be updated in the store",
+     *           paramType="body",
+     *           required="true",
+     *           allowMultiple="false",
+     *           dataType="Pet"
+     *         )
+     *       ),
+     *       @errorResponses(
+     *          @errorResponse(
+     *            code="400",
+     *            reason="Invalid ID supplied"
+     *          ),
+     *          @errorResponse(
+     *            code="404",
+     *            reason="Pet not found"
+     *          ),
+     *          @errorResponse(
+     *            code="405",
+     *            reason="Validation exception"
+     *          )
+     *       )
+     *     )
+     *   )
+     * )
+     */
+    public function updatePet()
+    {
+    }
+
+
 }
 

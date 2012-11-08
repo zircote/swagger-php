@@ -23,10 +23,6 @@ class Operation extends AbstractAnnotation
      */
     public $description;
     /**
-     * @var bool
-     */
-    public $require = false;
-    /**
      * @var string
      */
     public $dataType;

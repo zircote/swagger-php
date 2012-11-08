@@ -27,16 +27,17 @@ class ErrorResponses extends AbstractAnnotation
     public function toArray()
     {
         $result = array();
-        if (is_array($this->value) && count($this->value) > 1) {
+        if (is_array($this->value)) {
             /* @var AbstractAnnotation $v */
-            foreach ($this->value as $v) {
+            foreach ($this->value as $k => $v) {
                 $result[] = $v->toArray();
             }
-        } elseif(is_array($this->value) && count($this->value) == 1) {
-            $this->value = array_pop($this->value);
         }
         if ($this->value instanceof ErrorResponse) {
             $result = $this->value->toArray();
+        }
+        if(isset($result['code'])){
+            $result = array($result);
         }
         return $result;
     }

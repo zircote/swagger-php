@@ -32,9 +32,9 @@ class Parameters extends AbstractAnnotation
                 $result[] = $v->toArray();
             }
         } elseif ($this->value instanceof Operation) {
-            $result = $this->value->toArray();
+            $result[] = $this->value->toArray();
         } elseif ($this->value) {
-            $result = array_filter($this->value->toArray());
+            $result[] = array_filter($this->value->toArray(), array($this, 'arrayFilter'));
         }
         return $result;
     }

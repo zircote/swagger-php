@@ -165,7 +165,7 @@ class User
      *   path="/user.{format}/{username}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="GETE", summary="Get user by user name",
+     *       httpMethod="GET", summary="Get user by user name",
      *       notes="This can only be done by the logged in user.",
      *       responseClass="User", nickname="getUserByName",
      *       @parameters(

@@ -22,10 +22,6 @@ class Parameter extends AbstractAnnotation
     /**
      * @var bool
      */
-    public $require = false;
-    /**
-     * @var bool
-     */
     public $allowMultiple = true;
     /**
      * @var string
@@ -65,7 +61,7 @@ class Parameter extends AbstractAnnotation
      */
     public function toArray()
     {
-        $members =  array_filter((array) $this);
+        $members =  array_filter((array) $this, array($this, 'arrayFilter'));
         $result = array();
         foreach ($members as $k => $m) {
             if ($m instanceof AllowableValues) {

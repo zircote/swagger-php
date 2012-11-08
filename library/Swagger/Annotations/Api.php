@@ -30,11 +30,6 @@ class Api extends AbstractAnnotation
      */
     public $description;
 
-    /**
-     * @var string
-     */
-    public $resourcePath;
-
     public function __construct($values)
     {
         parent::__construct($values);
@@ -45,16 +40,6 @@ class Api extends AbstractAnnotation
                     break;
             }
         }
-    }
-
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        $members = parent::toArray();
-        return $members;
     }
 }
 

@@ -35,12 +35,23 @@ abstract class AbstractAnnotation
         }
     }
 
+    protected function arrayFilter(&$v)
+    {
+        if(is_string($v) && in_array($v, array('true', 'false')))
+        {
+            $v = ($v == 'true') ? true : false;
+        }
+        if(empty($v) && $v !== false){
+            return false;
+        }
+        return true;
+    }
     /**
      * @return array
      */
     public function toArray()
     {
-        $members =  array_filter((array) $this);
+        $members =  array_filter((array) $this, array($this, 'arrayFilter'));
         $result = array();
         foreach ($members as $k => $m) {
             if ($m instanceof AbstractAnnotation) {
