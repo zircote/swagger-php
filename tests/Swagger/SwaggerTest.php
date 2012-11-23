@@ -116,5 +116,16 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
             $this->assertJsonEqualToExpectedArray($swagger->registry["/{$record}"], $json);
         }
     }
+    public function testCaching()
+    {
+        $path = __DIR__ . '/Fixtures';
+        $swagger = Swagger::discover($path);
+        $cacheKey = sha1($path);
+        $this->assertTrue($swagger->getCache()->contains($cacheKey));
+        $swag1 = new Swagger();
+        $swag1->unserialize($swagger->getCache()->fetch($cacheKey));
+        $this->assertEquals($swagger->models, $swag1->models);
+        $this->assertEquals($swagger->registry['/user'], $swag1->registry['/user']);
+    }
 }
 

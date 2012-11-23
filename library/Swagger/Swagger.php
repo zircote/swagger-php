@@ -23,6 +23,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\Reader;
+use \Doctrine\Common\Cache\CacheProvider;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
 
@@ -38,6 +39,10 @@ class Swagger implements \Serializable
      * @var Array
      */
     protected $fileList = array();
+    /**
+     * @var string
+     */
+    protected $path;
     /**
      * @var null|string
      */
@@ -60,17 +65,36 @@ class Swagger implements \Serializable
      * @var Reader
      */
     protected $reader;
+    /**
+     * @var \Doctrine\Common\Cache\CacheProvider
+     */
+    protected $cache;
+    /**
+     * @var string
+     */
+    protected $cacheKey;
 
     /**
      * @param null $path
      * @param null $excludePath
+     * @param \Doctrine\Common\Cache\CacheProvider $cache
      */
-    public function __construct($path = null, $excludePath = null)
+    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null)
     {
+        if (null == $cache) {
+            $this->setCache(new \Doctrine\Common\Cache\ArrayCache());
+        } else {
+            $this->setCache($cache);
+        }
         if ($path) {
             $this->path = $path;
             $this->excludePath = $excludePath;
-            $this->discoverServices();
+            $this->cacheKey = sha1($this->path . $this->excludePath);
+            if ($this->cache->contains($this->cacheKey)) {
+                $this->unserialize($this->cache->fetch($this->cacheKey));
+            } else {
+                $this->discoverServices();
+            }
         }
     }
 
@@ -85,9 +109,9 @@ class Swagger implements \Serializable
         $this->fileList = array();
         $this->registry = array();
         $this->models = array();
+        $this->cacheKey = null;
         return $this;
     }
-
     /**
      * @return Swagger
      */
@@ -100,6 +124,10 @@ class Swagger implements \Serializable
         return $this;
     }
 
+    /**
+     * @param $test
+     * @return bool|mixed
+     */
     protected function modelType($test)
     {
         if (preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $test, $matches)) {
@@ -109,7 +137,9 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @todo clean me up
+     * @todo clean me please...
+     *
+     * @return Swagger
      */
     protected function discoverClassAnnotations()
     {
@@ -194,8 +224,10 @@ class Swagger implements \Serializable
             }
 
         }
-
         $this->registry = $registry;
+        if ($this->getCache()) {
+            $this->getCache()->save($this->cacheKey, $this->serialize());
+        }
         return $this;
     }
 
@@ -583,6 +615,38 @@ class Swagger implements \Serializable
         return $this->path;
     }
 
+    /**
+     * @return Swagger
+     */
+    public function flushCache()
+    {
+        $this->getCache()->delete($this->cacheKey);
+        $this->discoverServices();
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Cache\CacheProvider
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param \Doctrine\Common\Cache\CacheProvider $cache
+     * @return Swagger
+     */
+    public function setCache(\Doctrine\Common\Cache\CacheProvider $cache)
+    {
+        $this->cache = $cache;
+        $this->cache->save($this->cacheKey, $this->serialize());
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function serialize()
     {
         return serialize(
@@ -596,6 +660,10 @@ class Swagger implements \Serializable
 
     }
 
+    /**
+     * @param string $serialized
+     * @return Swagger
+     */
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
