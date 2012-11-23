@@ -61,10 +61,9 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
-        //echo $swagger->jsonEncode($swagger->registry['/pet'], true);
+//        echo $swagger->jsonEncode($swagger->registry['/pet'], true);
+//        print_r($swagger->registry['/pet']);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/pet.json'), true);
-        unset($expected['models']);
-        unset($swagger->registry['/pet']['models']);
         $this->assertEquals($expected, $swagger->registry['/pet']);
     }
 }

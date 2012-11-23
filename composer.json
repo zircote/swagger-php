@@ -20,9 +20,11 @@
     },
     "require":{
         "php":">=5.3.3",
-        "symfony/finder":"*",
-        "symfony/process":"*",
         "doctrine/common": "*"
+    },
+    "require-dev": {
+        "symfony/finder":"*",
+        "symfony/process":"*"
     },
     "autoload":{
         "psr-0":{

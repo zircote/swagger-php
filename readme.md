@@ -14,9 +14,13 @@ consuming, and visualizing RESTful web services.
 
 __Installation__
 
-### Composer:
+=============================
+Composer:
+=============================
 
-#### Outside of a project:
+---------------------
+Outside of a project:
+---------------------
 
 ```sh
 git clone git@github.com:zircote/swagger-php.git swagger
@@ -24,7 +28,20 @@ cd swagger
 php composer.phar install
 ```
 
-#### As a project depenency:
+=============================
+External Dependencies:
+=============================
+ - Doctrine/Common
+ - PHP 5.3/ PHP 5.4
+ 
+Dev Dependencies (For building the phar):
+ - Symfony/Finder
+ - Symfony/Process
+
+---------------------------
+As a project depenency:
+---------------------------
+
 Add the following snippet to your require section of you `composer.json` and
 run composer install|update
 
@@ -36,9 +53,12 @@ run composer install|update
 
 ```
 
-#### Example Use:
-
-### CLI
+=============================
+Example Use:
+=============================
+---------
+CLI
+--------
 
 ```
 php swagger.phar -h
@@ -68,13 +88,115 @@ bin/swagger --project-path /my/project/ --output-path /tmp/swagger -f
 > /tmp/swagger/users.json created
 ```
 
-## Tags:
+=============================
+Tags:
+=============================
 
-
-Dynamic examples:
+--------------
+Example Model:
+--------------
 
 ```php
 <?php
+namespace SwaggerTests\Fixtures\Models;
+
+/**
+ *
+ * @package
+ * @category
+ * @subpackage
+ */
+use Swagger\Annotations\Property;
+use Swagger\Annotations\AllowableValues;
+use Swagger\Annotations\Model;
+use Swagger\Annotations\Items;
+
+/**
+ * @package
+ * @category
+ * @subpackage
+ *
+ * @Model(id="Pet")
+ */
+class Pet
+{
+    /**
+     * @var array<Tags>
+     *
+     * @Property(name="tags",type="array", items="$ref:Tag")
+     */
+    protected $tags = array();
+
+    /**
+     * @var int
+     *
+     * @Property(name="id",type="long")
+     */
+    protected $id;
+
+    /**
+     * @var Category
+     *
+     * @Property(name="category",type="Category")
+     */
+    protected $category;
+
+    /**
+     *
+     *
+     * @var string
+     *
+     * @Property(
+     *      name="status",type="string",
+     *      @allowableValues(
+     *          valueType="LIST",
+     *          values="['available', 'pending', 'sold']"
+     *      ),
+     *      description="pet status in the store")
+     */
+    protected $status;
+
+    /**
+     * @var string
+     *
+     * @Property(name="name",type="string")
+     */
+    protected $name;
+
+    /**
+     * @var array<string>
+     *
+     * @Property(name="photoUrls",type="array", @items(type="string"))
+     */
+    protected $photoUrls = array();
+}
+
+
+```
+
+-----------------------
+Example Resource:
+-----------------------
+
+```php
+<?php
+namespace SwaggerTests\Fixtures\Resources;
+
+/**
+ * @package
+ * @category
+ * @subpackage
+ */
+use Swagger\Annotations\Operation;
+use Swagger\Annotations\Operations;
+use Swagger\Annotations\Parameter;
+use Swagger\Annotations\Parameters;
+use Swagger\Annotations\Api;
+use Swagger\Annotations\ErrorResponse;
+use Swagger\Annotations\ErrorResponses;
+use Swagger\Annotations\Resource;
+use Swagger\Annotations\AllowableValues;
+
 /**
  * @package
  * @category
@@ -93,116 +215,47 @@ class Pet
     /**
      *
      * @Api(
-     *   basePath="http://petstore.swagger.wordnik.com/api",
-     *   resourcePath="/pet",
-     *   path="/pet.{format}/{petId}",
+     *   path="/pet.{format}/findByTags",
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
      *       httpMethod="GET",
-     *       summary="Find pet by ID",
-     *       notes="Returns a pet based on ID",
-     *       responseClass="Pet",
-     *       nickname="getPetById",
+     *       summary="Finds Pets by tags",
+     *       notes="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
+     *       deprecated=true,
+     *       responseClass="List[Pet]",
+     *       nickname="findPetsByTags",
      *       @parameters(
      *         @parameter(
-     *           name="petId",
-     *           description="ID of pet that needs to be fetched",
-     *           paramType="path",
-     *           required="true",
-     *           allowMultiple=false,
+     *           name="tags",
+     *           description="Tags to filter by",
+     *           paramType="query",
+     *           required=true,
+     *           allowMultiple=true,
      *           dataType="string"
      *         )
      *       ),
      *       @errorResponses(
      *          @errorResponse(
      *            code="400",
-     *            reason="Invalid ID supplied"
-     *          ),
-     *          @errorResponse(
-     *            code="404",
-     *            reason="Pet not found"
+     *            reason="Invalid tag value"
      *          )
      *       )
      *     )
      *   )
      * )
      */
-    public function getPetById()
+    public function findPetsByTags()
     {
     }
-
-```
-
-
-#### Example Use:
-
-```php
-<?php
-/**
- * @package
- * @category
- * @subpackage
- *
- * @Model(id="Pet")
- */
-class Pet
-{
-    /**
-     * @var array<Tags>
-     *
-     * @Property(type="array", items="$ref:Tag")
-     */
-    protected $tags = array();
-
-    /**
-     * @var int
-     *
-     * @Property(type="long")
-     */
-    protected $id;
-
-    /**
-     * @var Category
-     *
-     * @Property(type="Category")
-     */
-    protected $category;
-
-    /**
-     *
-     *
-     * @var string
-     *
-     * @Property(
-     *      type="string",
-     *      @allowableValues(
-     *          valueType="LIST",
-     *          values="['available', 'pending', 'sold']"
-     *      ),
-     *      description="pet status in the store")
-     */
-    protected $status;
-
-    /**
-     * @var string
-     *
-     * @Property(type="string")
-     */
-    protected $name;
-
-    /**
-     * @var array<string>
-     *
-     * @Property(type="array", @items(type="string"))
-     */
-    protected $photoUrls = array();
 }
 
 ```
 
 
-### Resource Listing:
+=============================
+Resource Listing:
+=============================
 
 ```php
 <?php

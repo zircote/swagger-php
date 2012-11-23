@@ -84,6 +84,7 @@ class Swagger
         $this->classList   = array();
         $this->fileList    = array();
         $this->registry    = array();
+        $this->models    = array();
         return $this;
     }
 
@@ -98,7 +99,13 @@ class Swagger
         }
         return $this;
     }
-
+    protected function modelType($test)
+    {
+        if(preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $test, $matches)){
+            return array_pop($matches);
+        }
+        return false;
+    }
     /**
      * @todo clean me up
      */
@@ -129,12 +136,48 @@ class Swagger
                     $registry[$index][$k] = $v;
                 }
             }
+            $models = array();
             foreach ($resource['apis'] as $api) {
                 $api = array_pop($api);
                 unset($api['operations']);
                 $op = (array) @$result[$api['path']];
                 $api['operations'] = $op;
+                foreach ($op as $operation) {
+                    if(array_key_exists($operation['responseClass'], $this->models)){
+                        array_push($models, $operation['responseClass']);
+                    } elseif(($model = $this->modelType($operation['responseClass'])) && in_array($model, $this->models)){
+                        array_push($models, $model);
+                    }
+                    if(isset($operation['parameters'])){
+                        foreach ($operation['parameters'] as $parameter) {
+                            if(array_key_exists($parameter['dataType'], $this->models)){
+                                array_push($models, $parameter['dataType']);
+                            } elseif(($model = $this->modelType($parameter['dataType'])) && in_array($model, $this->models)){
+                                array_push($models, $model);
+                            }
+                        }
+                    }
+                }
+                foreach ($models as $v) {
+                    foreach ($this->models[$v]['properties'] as $property) {
+                        if($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))){
+                            if(isset($property['items']['$ref'])){
+                                $type = $property['items']['$ref'];
+                            }
+                        } else {
+                            $type = $property['type'];
+                        }
+                        if($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))){
+                            if(array_key_exists($type, $this->models)){
+                                array_push($models, $type);
+                            }
+                        }
+                    }
+                }
                 $registry[$index]['apis'][$api['path']][] = $api;
+                foreach (array_unique($models) as $model) {
+                    $registry[$index]['models'][$model] = $this->models[$model];
+                }
             }
         }
         foreach ($registry as $index => $reg) {
