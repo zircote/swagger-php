@@ -2,12 +2,46 @@
 Annotations
 ******************
 
+Annotation Hierarchy
+*********************
+
+.. code-block:: text
+
+ - ``@Resource``
+    -``Api``
+      - ``@Operations``
+        - ``@Operation``
+          - ``@ErrorResponses``
+            - ``@ErrorResponse``
+          - ``@Parameters``
+            - ``@Parameter``
+              - ``@AllowableValues``
+ - ``@Model``
+   - ``@Property``
+     - ``@AllowableValues``
+     - ``@Items``
+
 
 AllowableValues
 ******************
-The `AllowableValues` annotation provides support for Enumerations as well as Range limits. This annotation may exist
-in either `Parameter`_ definitions the exists within an `Operation`_ definition or as an augmentation to the
-`Property`_ annotation with in models.
+
+.. note:: The `AllowableValues` annotation provides support for Enumerations as well as Range limits. This annotation may exist in either `Parameter`_ definitions the exists within an `Operation`_ definition or as an augmentation to the `Property`_ annotation with in models.
+
+**Attributes**
+Types Supported: ``LIST`` || ``RANGE``
+``LIST`` attributes:
+
+- ``valueType``
+- ``values=[json encoded enumerations]``
+
+  - non-indexed values as a json array: ``['one','two','three']``
+  - indexed values as a json object: ``{'1': 'one', '2': 'two', '3': 'three'}``
+
+``RANGE`` attributes:
+
+- ``valueType=RANGE``
+- ``min``
+- ``max``
 
 **Example Annotations**
 
@@ -40,6 +74,12 @@ in either `Parameter`_ definitions the exists within an `Operation`_ definition 
 
 Api
 ******************
+
+**Attributes**
+
+- ``Path``
+- ``description``
+- `Operations`_
 
 **Example Annotations**
 
@@ -77,6 +117,11 @@ Api
 ErrorResponse
 ******************
 
+**Attributes**
+
+- ``code``
+- ``reason``
+
 **Example Annotations**
 
 .. code-block:: php
@@ -107,6 +152,10 @@ ErrorResponse
 ErrorResponses
 ******************
 
+**Attributes**
+
+- `ErrorResponse`_
+
 **Example Annotations**
 
 .. code-block:: php
@@ -130,6 +179,12 @@ ErrorResponses
 Items
 ******************
 
+.. note:: The ``Items`` annotation defines an array type i.e. an array of integers, strings or ``$ref`` to another model type. References are defined with a **$ref:** preamble followed by the model ID name as defined within a `Model`_ annotation. The ``@Items`` annotation resides within a `Property`_ declaration.
+
+**Attributes**
+
+- ``Type``
+
 **Example Annotations**
 
 .. code-block:: php
@@ -137,35 +192,9 @@ Items
     class Pet
     {
         /**
-         * @Property(name="tags",type="array", items="$ref:Tag")
+         * @Property(name="tags",type="array", @items="$ref:Tag")
          */
         protected $tags = array();
-
-        /**
-         * @Property(name="id",type="long")
-         */
-        protected $id;
-
-        /**
-         * @Property(name="category",type="Category")
-         */
-        protected $category;
-
-        /**
-         * @Property(
-         *      name="status",type="string",
-         *      @allowableValues(
-         *          valueType="LIST",
-         *          values="['available', 'pending', 'sold']"
-         *      ),
-         *      description="pet status in the store")
-         */
-        protected $status;
-
-        /**
-         * @Property(name="name",type="string")
-         */
-        protected $name;
 
         /**
          * @Property(name="photoUrls",type="array", @items(type="string"))
@@ -216,6 +245,10 @@ Items
 Model
 ******************
 
+**Attributes**
+
+- ``id`` the formal name of the Model being described.
+
 **Example Annotations**
 
 .. code-block:: php
@@ -244,6 +277,18 @@ Model
 Operation
 ******************
 
+**Attributes**
+
+- ``httpMethod`` GET|POST|DELETE|PUT|PATCH etc
+- ``summary`` string
+- ``notes`` string
+- ``responseClass`` the `Model`_ ID returned
+- ``nickname`` string
+- ``deprecated`` boolean
+- ``dataType``
+- `ErrorResponses``
+- `Parameters`_
+
 **Example Annotations**
 
 .. code-block:: php
@@ -270,10 +315,17 @@ Operation
     }
 
 **Allowable Use:**
+
     - Enclosed within: `Operations`_
 
 Operations
 ******************
+
+A container of one or more `Operation`_ s
+
+**Attributes**
+
+- `Operation`_
 
 **Example Annotations**
 
@@ -296,6 +348,16 @@ Operations
 
 Parameter
 ******************
+
+**Attributes**
+
+- ``name``
+- ``description``
+- ``paramType`` body|query|path
+- ``required`` bool
+- ``allowMultiple`` bool
+- ``dataType`` scalar or Model|object
+- ``defaultValue``
 
 **Example Annotations**
 
@@ -326,10 +388,17 @@ Parameter
     }
 
 **Allowable Use:**
+
     - `Parameters`_
 
 Parameters
 ******************
+
+A colleciton of one or more `Parameter`_ s
+
+**Attributes**
+
+- `Parameter`_
 
 **Example Annotations**
 
@@ -346,10 +415,18 @@ Parameters
     "parameters":[...]
 
 **Allowable Use:**
+
     - `Operation`_
 
 Property
 ******************
+
+**Attributes**
+
+- ``name``
+- ``type``
+- ``description``
+- `Items`_
 
 **Example Annotations**
 
@@ -390,6 +467,13 @@ Property
 
 Resource
 ******************
+
+**Attributes**
+
+- ``apiVersion`` the version this api is being rendered as
+- ``swaggerVersion`` the swagger-docs version being rendered ``2.0``
+- ``resourcePath`` the HTTP URI path for the resource
+- ``basePath`` the service root HTTP URI path
 
 **Example Annotations**
 

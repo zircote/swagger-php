@@ -25,8 +25,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Swagger-PHP 0.4.0-RC1 documentation" href="index.html" />
-    <link rel="next" title="Installation" href="installation.html" />
-    <link rel="prev" title="Welcome to Swagger-PHP’s documentation!" href="index.html" />
+    <link rel="prev" title="Caching" href="caching.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -43,10 +42,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="installation.html" title="Installation"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to Swagger-PHP’s documentation!"
+          <a href="caching.html" title="Caching"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
       </ul>
@@ -59,11 +55,47 @@
             
   <div class="section" id="annotations">
 <h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="annotation-hierarchy">
+<h2>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>- ``@Resource``
+   -``Api``
+     - ``@Operations``
+       - ``@Operation``
+         - ``@ErrorResponses``
+           - ``@ErrorResponse``
+         - ``@Parameters``
+           - ``@Parameter``
+             - ``@AllowableValues``
+- ``@Model``
+  - ``@Property``
+    - ``@AllowableValues``
+    - ``@Items``
+</pre></div>
+</div>
+</div>
 <div class="section" id="allowablevalues">
 <h2>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h2>
-<p>The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist
-in either <a class="reference internal" href="#parameter">Parameter</a> definitions the exists within an <a class="reference internal" href="#operation">Operation</a> definition or as an augmentation to the
-<a class="reference internal" href="#property">Property</a> annotation with in models.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions the exists within an <a class="reference internal" href="#operation">Operation</a> definition or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation with in models.</p>
+</div>
+<p><strong>Attributes</strong>
+Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt> || <tt class="docutils literal"><span class="pre">RANGE</span></tt>
+<tt class="docutils literal"><span class="pre">LIST</span></tt> attributes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">valueType</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">values=[json</span> <span class="pre">encoded</span> <span class="pre">enumerations]</span></tt><ul>
+<li>non-indexed values as a json array: <tt class="docutils literal"><span class="pre">['one','two','three']</span></tt></li>
+<li>indexed values as a json object: <tt class="docutils literal"><span class="pre">{'1':</span> <span class="pre">'one',</span> <span class="pre">'2':</span> <span class="pre">'two',</span> <span class="pre">'3':</span> <span class="pre">'three'}</span></tt></li>
+</ul>
+</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">RANGE</span></tt> attributes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">valueType=RANGE</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">min</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">max</span></tt></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @allowableValues(valueType=&quot;LIST&quot;,values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;)</span>
@@ -96,6 +128,12 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="api">
 <h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Path</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">description</span></tt></li>
+<li><a class="reference internal" href="#operations">Operations</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> *</span>
@@ -132,6 +170,11 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="errorresponse">
 <h2>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">code</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">reason</span></tt></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @errorResponse(code=&quot;404&quot;, reason=&quot;Pet not found&quot;)</span>
@@ -161,6 +204,10 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="errorresponses">
 <h2>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @errorResponses(@errorResponse(...)[ @errorResponse(...), ])</span>
@@ -184,39 +231,21 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="items">
 <h2>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">Items</span></tt> annotation defines an array type i.e. an array of integers, strings or <tt class="docutils literal"><span class="pre">$ref</span></tt> to another model type. References are defined with a <strong>$ref:</strong> preamble followed by the model ID name as defined within a <a class="reference internal" href="#model">Model</a> annotation. The <tt class="docutils literal"><span class="pre">&#64;Items</span></tt> annotation resides within a <a class="reference internal" href="#property">Property</a> declaration.</p>
+</div>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Type</span></tt></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
-<span class="sd">     * @Property(name=&quot;tags&quot;,type=&quot;array&quot;, items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @Property(name=&quot;tags&quot;,type=&quot;array&quot;, @items=&quot;$ref:Tag&quot;)</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @Property(name=&quot;id&quot;,type=&quot;long&quot;)</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$id</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @Property(name=&quot;category&quot;,type=&quot;Category&quot;)</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$category</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @Property(</span>
-<span class="sd">     *      name=&quot;status&quot;,type=&quot;string&quot;,</span>
-<span class="sd">     *      @allowableValues(</span>
-<span class="sd">     *          valueType=&quot;LIST&quot;,</span>
-<span class="sd">     *          values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;</span>
-<span class="sd">     *      ),</span>
-<span class="sd">     *      description=&quot;pet status in the store&quot;)</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$status</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @Property(name=&quot;name&quot;,type=&quot;string&quot;)</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
 
     <span class="sd">/**</span>
 <span class="sd">     * @Property(name=&quot;photoUrls&quot;,type=&quot;array&quot;, @items(type=&quot;string&quot;))</span>
@@ -269,6 +298,10 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">id</span></tt> the formal name of the Model being described.</li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @Model(id=&quot;Pet&quot;)</span>
@@ -297,6 +330,18 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="operation">
 <h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">httpMethod</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
+<li><tt class="docutils literal"><span class="pre">summary</span></tt> string</li>
+<li><tt class="docutils literal"><span class="pre">notes</span></tt> string</li>
+<li><tt class="docutils literal"><span class="pre">responseClass</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
+<li><tt class="docutils literal"><span class="pre">nickname</span></tt> string</li>
+<li><tt class="docutils literal"><span class="pre">deprecated</span></tt> boolean</li>
+<li><tt class="docutils literal"><span class="pre">dataType</span></tt></li>
+<li><cite>ErrorResponses`</cite></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @operation(</span>
@@ -318,16 +363,20 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 <span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
+<p><strong>Allowable Use:</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li>Enclosed within: <a class="reference internal" href="#operations">Operations</a></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <div class="section" id="operations">
 <h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<p>A container of one or more <a class="reference internal" href="#operation">Operation</a> s</p>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="#operation">Operation</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @operations(@operation()[, @operation()])</span>
@@ -350,6 +399,16 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="parameter">
 <h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">description</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">paramType</span></tt> body|query|path</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt> bool</li>
+<li><tt class="docutils literal"><span class="pre">allowMultiple</span></tt> bool</li>
+<li><tt class="docutils literal"><span class="pre">dataType</span></tt> scalar or Model|object</li>
+<li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @parameter(</span>
@@ -374,16 +433,20 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 <span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
+<p><strong>Allowable Use:</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <div class="section" id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>A colleciton of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="#parameter">Parameter</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @parameters(@parameter()[, @parameter()])</span>
@@ -394,16 +457,22 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 <div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;parameters&quot;</span><span class="o">:</span><span class="p">[...]</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
+<p><strong>Allowable Use:</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><a class="reference internal" href="#operation">Operation</a></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <div class="section" id="property">
 <h2>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">name</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">type</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">description</span></tt></li>
+<li><a class="reference internal" href="#items">Items</a></li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @Property(name=&quot;category&quot;,type=&quot;Category&quot;)</span>
@@ -444,6 +513,13 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </div>
 <div class="section" id="resource">
 <h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apiVersion</span></tt> the version this api is being rendered as</li>
+<li><tt class="docutils literal"><span class="pre">swaggerVersion</span></tt> the swagger-docs version being rendered <tt class="docutils literal"><span class="pre">2.0</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">resourcePath</span></tt> the HTTP URI path for the resource</li>
+<li><tt class="docutils literal"><span class="pre">basePath</span></tt> the service root HTTP URI path</li>
+</ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @Resource(</span>
@@ -485,6 +561,7 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
+<li><a class="reference internal" href="#annotation-hierarchy">Annotation Hierarchy</a></li>
 <li><a class="reference internal" href="#allowablevalues">AllowableValues</a></li>
 <li><a class="reference internal" href="#api">Api</a></li>
 <li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
@@ -502,11 +579,8 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to Swagger-PHP&#8217;s documentation!</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="next chapter">Installation</a></p>
+  <p class="topless"><a href="caching.html"
+                        title="previous chapter">Caching</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -531,10 +605,7 @@ in either <a class="reference internal" href="#parameter">Parameter</a> definiti
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="installation.html" title="Installation"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to Swagger-PHP’s documentation!"
+          <a href="caching.html" title="Caching"
              >previous</a> |</li>
         <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
       </ul>

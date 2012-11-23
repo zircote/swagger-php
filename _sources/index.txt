@@ -11,6 +11,7 @@ Contents:
 .. toctree::
     installation
     using_swagger
+    caching
     annotations
 
 About Swagger-PHP
