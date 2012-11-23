@@ -1,0 +1,166 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; Swagger-PHP 0.4.0-RC1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.0-RC1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swagger-PHP 0.4.0-RC1 documentation" href="index.html" />
+    <link rel="next" title="Workflow" href="workflow.html" />
+    <link rel="prev" title="Annotations" href="annotations.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="workflow.html" title="Workflow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="annotations.html" title="Annotations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="composer">
+<h2>Composer<a class="headerlink" href="#composer" title="Permalink to this headline">¶</a></h2>
+<p>First acquire Composer at <a class="reference external" href="http://getcomposer.org">http://getcomposer.org</a> following the installation instructions. Finally add the composer
+details for swagger-php to your projects <em>composer.json</em></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;zircote/swagger-php&quot;</span><span class="o">:</span> <span class="s2">&quot;master-dev&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Finally run <em>composer install</em> to update the composer dependencies and implement the <em>vendor/autoload.php</em> in your</dt>
+<dd>projects bootstrap.</dd>
+</dl>
+</div>
+<div class="section" id="git">
+<h2>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h2>
+<p>You may also install <em>swagger-php</em> with git; this installation method will however require that you manually install
+the <a class="reference external" href="http://www.doctrine-project.org/projects/common.html">Doctine Common</a> library following the procedure they have
+documented on the project page.</p>
+<p>Add <em>swagger-php/library</em> to your include path.</p>
+<div class="highlight-bash"><div class="highlight"><pre>% git clone git@github.com:zircote/swagger-php.git swagger-php
+</pre></div>
+</div>
+</div>
+<div class="section" id="notes-on-use">
+<h2>Notes on use:<a class="headerlink" href="#notes-on-use" title="Permalink to this headline">¶</a></h2>
+<p>For classes you with to implement <em>swagger-php</em> annotations, you must declare the annotation class in your <em>use</em> statements
+such as:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">namespace</span> <span class="nx">Tardis\Models</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Model</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Sidekick</span>
+<span class="p">{</span>
+<span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Unless <em>use</em> statements are declared the annotations will go ignored and unparsed.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#composer">Composer</a></li>
+<li><a class="reference internal" href="#git">git</a></li>
+<li><a class="reference internal" href="#notes-on-use">Notes on use:</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="annotations.html"
+                        title="previous chapter">Annotations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="workflow.html"
+                        title="next chapter">Workflow</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="workflow.html" title="Workflow"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="annotations.html" title="Annotations"
+             >previous</a> |</li>
+        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Robert Allen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

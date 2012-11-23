@@ -1,387 +1,157 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Swagger-php by zircote</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Swagger-PHP’s documentation! &mdash; Swagger-PHP 0.4.0-RC1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.0-RC1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swagger-PHP 0.4.0-RC1 documentation" href="#" />
+    <link rel="next" title="Installation" href="installation.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Swagger-php</h1>
-        <p>A php swagger annotation and parsing library</p>
 
-        <p class="view"><a href="https://github.com/zircote/swagger-php">View the Project on GitHub <small>zircote/swagger-php</small></a></p>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
 
-
-        <ul>
-          <li><a href="https://github.com/zircote/swagger-php/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/zircote/swagger-php/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/zircote/swagger-php">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>swagger-php</h1>
-
-<p><a href="http://travis-ci.org/zircote/swagger-php"><img src="https://secure.travis-ci.org/zircote/swagger-php.png" alt="Build Status"></a></p>
-
-<p>Swagger-PHP library implementing the swagger.wordnik.com specification to describe
-web services, operations/actions and models enabling a uniform means of producing,
-consuming, and visualizing RESTful web services.</p>
-
-<p>More on Swagger:</p>
-
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-swagger-php-s-documentation">
+<h1>Welcome to Swagger-PHP&#8217;s documentation!<a class="headerlink" href="#welcome-to-swagger-php-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
 <ul>
-<li><a href="http://swagger.wordnik.com/">http://swagger.wordnik.com/</a></li>
-<li><a href="https://github.com/wordnik/swagger-core/wiki">https://github.com/wordnik/swagger-core/wiki</a></li>
-<li>
-<a href="https://github.com/outeredge/SwaggerModule">https://github.com/outeredge/SwaggerModule</a> a ZF2 Module implementing swagger-php</li>
-</ul><p><strong>Installation</strong></p>
-
-<h1></h1>
-
-<h1>Composer:</h1>
-
-<hr><h2>Outside of a project:</h2>
-
-<div class="highlight"><pre>git clone git@github.com:zircote/swagger-php.git swagger
-<span class="nb">cd </span>swagger
-php composer.phar install
-</pre></div>
-
-<h1></h1>
-
-<h1>External Dependencies:</h1>
-
-<ul>
-<li>Doctrine/Common</li>
-<li>PHP 5.3/ PHP 5.4</li>
-</ul><p>Dev Dependencies (For building the phar):</p>
-
-<ul>
-<li>Symfony/Finder</li>
-<li>Symfony/Process</li>
-</ul><hr><h2>As a project depenency:</h2>
-
-<p>Add the following snippet to your require section of you <code>composer.json</code> and
-run composer install|update</p>
-
-<p><strong>Get Composer: <a href="http://getcomposer.org">http://getcomposer.org</a></strong></p>
-
-<div class="highlight"><pre>
-    <span class="p">{</span><span class="nt">"zircote/swagger-php"</span><span class="p">:</span> <span class="s2">"master-dev"</span><span class="p">}</span>
-
-</pre></div>
-
-<h1></h1>
-
-<h1>Example Use:</h1>
-
-<hr><h2>CLI</h2>
-
-<pre><code>php swagger.phar -h
-
- Usage: swagger --project-path PATH [--output-path PATH]...
-     Generate Swagger JSON documents for a project.
-         Mandatory argument[s]:
-             -p, --project-path    base path of the project to perform swagger discovery
-         Optional arguments:
-             -i, --include-path    Optional bootstrap file for additional include path support
-                                     ex: --include-path Zend:/usr/local/share/pear
-             -o, --output-path     directory to store the generated json documents
-             -f, --format          format JSON output in readable formatting.
-             -h, --help            generates this help message
-
-php swagger.phar -p &lt;project-path&gt; \
-  -o &lt;output-path&gt; -f \
-  --include-path Zend:/usr/local/shar/pear,Rediska:/usr/local/share/pear
-
- &gt; /tmp/swagger/resources.json created
- &gt; /tmp/swagger/pets.json created
- &gt; /tmp/swagger/users.json created
-
-bin/swagger --project-path /my/project/ --output-path /tmp/swagger -f
-&gt; /tmp/swagger/resources.json created
-&gt; /tmp/swagger/pets.json created
-&gt; /tmp/swagger/users.json created
-</code></pre>
-
-<h1></h1>
-
-<h1>Tags:</h1>
-
-<hr><h2>Example Model:</h2>
-
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">namespace</span> <span class="nx">SwaggerTests\Fixtures\Models</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> *</span>
-<span class="sd"> * @package</span>
-<span class="sd"> * @category</span>
-<span class="sd"> * @subpackage</span>
-<span class="sd"> */</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Model</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Items</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @package</span>
-<span class="sd"> * @category</span>
-<span class="sd"> * @subpackage</span>
-<span class="sd"> *</span>
-<span class="sd"> * @Model(id="Pet")</span>
-<span class="sd"> */</span>
-<span class="k">class</span> <span class="nc">Pet</span>
-<span class="p">{</span>
-    <span class="sd">/**</span>
-<span class="sd">     * @var array&lt;Tags&gt;</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(name="tags",type="array", items="$ref:Tag")</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @var int</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(name="id",type="long")</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$id</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @var Category</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(name="category",type="Category")</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$category</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     *</span>
-<span class="sd">     *</span>
-<span class="sd">     * @var string</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(</span>
-<span class="sd">     *      name="status",type="string",</span>
-<span class="sd">     *      @allowableValues(</span>
-<span class="sd">     *          valueType="LIST",</span>
-<span class="sd">     *          values="['available', 'pending', 'sold']"</span>
-<span class="sd">     *      ),</span>
-<span class="sd">     *      description="pet status in the store")</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$status</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @var string</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(name="name",type="string")</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @var array&lt;string&gt;</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Property(name="photoUrls",type="array", @items(type="string"))</span>
-<span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$photoUrls</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-<span class="p">}</span>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#composer">Composer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#git">git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#notes-on-use">Notes on use:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_swagger.html">Using Swagger-PHP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using_swagger.html#cli">CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_swagger.html#swaggerswagger">SwaggerSwagger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="annotations.html">Annotations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#allowablevalues">AllowableValues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#api">Api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#errorresponse">ErrorResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#errorresponses">ErrorResponses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#items">Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#operation">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#operations">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#parameter">Parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#property">Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html#resource">Resource</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="about-swagger-php">
+<h2>About Swagger-PHP<a class="headerlink" href="#about-swagger-php" title="Permalink to this headline">¶</a></h2>
+<p>Swagger-PHP is a PHP annotations library for generating <a class="reference external" href="http://swagger.wordnik.com">Swagger</a> compatable JSON documentation
+for your API. The resulting JSON documentation may then be utulized for internal and external user friendly documentation,
+API portal sandbox with <a class="reference external" href="https://github.com/wordnik/swagger-ui">Swagger UI</a> as well as client code generation with the
+<a class="reference external" href="https://github.com/wordnik/swagger-codegen">Swagger Code Generation tooling</a>.</p>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
 
 
-</pre></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Swagger-PHP&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#about-swagger-php">About Swagger-PHP</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
 
-<hr><h2>Example Resource:</h2>
-
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">namespace</span> <span class="nx">SwaggerTests\Fixtures\Resources</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @package</span>
-<span class="sd"> * @category</span>
-<span class="sd"> * @subpackage</span>
-<span class="sd"> */</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Operation</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Operations</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameter</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameters</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Api</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponse</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponses</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\Resource</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @package</span>
-<span class="sd"> * @category</span>
-<span class="sd"> * @subpackage</span>
-<span class="sd"> *</span>
-<span class="sd"> * @Resource(</span>
-<span class="sd"> *  apiVersion="0.2",</span>
-<span class="sd"> *  swaggerVersion="1.1",</span>
-<span class="sd"> *  resourcePath="/pet",</span>
-<span class="sd"> *  basePath="http://petstore.swagger.wordnik.com/api"</span>
-<span class="sd"> * )</span>
-<span class="sd"> */</span>
-<span class="k">class</span> <span class="nc">Pet</span>
-<span class="p">{</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     *</span>
-<span class="sd">     * @Api(</span>
-<span class="sd">     *   path="/pet.{format}/findByTags",</span>
-<span class="sd">     *   description="Operations about pets",</span>
-<span class="sd">     *   @operations(</span>
-<span class="sd">     *     @operation(</span>
-<span class="sd">     *       httpMethod="GET",</span>
-<span class="sd">     *       summary="Finds Pets by tags",</span>
-<span class="sd">     *       notes="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",</span>
-<span class="sd">     *       deprecated=true,</span>
-<span class="sd">     *       responseClass="List[Pet]",</span>
-<span class="sd">     *       nickname="findPetsByTags",</span>
-<span class="sd">     *       @parameters(</span>
-<span class="sd">     *         @parameter(</span>
-<span class="sd">     *           name="tags",</span>
-<span class="sd">     *           description="Tags to filter by",</span>
-<span class="sd">     *           paramType="query",</span>
-<span class="sd">     *           required=true,</span>
-<span class="sd">     *           allowMultiple=true,</span>
-<span class="sd">     *           dataType="string"</span>
-<span class="sd">     *         )</span>
-<span class="sd">     *       ),</span>
-<span class="sd">     *       @errorResponses(</span>
-<span class="sd">     *          @errorResponse(</span>
-<span class="sd">     *            code="400",</span>
-<span class="sd">     *            reason="Invalid tag value"</span>
-<span class="sd">     *          )</span>
-<span class="sd">     *       )</span>
-<span class="sd">     *     )</span>
-<span class="sd">     *   )</span>
-<span class="sd">     * )</span>
-<span class="sd">     */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">findPetsByTags</span><span class="p">()</span>
-    <span class="p">{</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-</pre></div>
-
-<h1></h1>
-
-<h1>Resource Listing:</h1>
-
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$path</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">jsonEncode</span><span class="p">(</span><span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">registry</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
-
-<span class="c1">// Alternate</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">jsonEncode</span><span class="p">(</span><span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">registry</span><span class="p">[</span><span class="s1">'/pet'</span><span class="p">],</span> <span class="k">true</span><span class="p">);</span>
-
-</pre></div>
-
-<p><strong>Output</strong></p>
-
-<div class="highlight"><pre><span class="p">{</span>
-    <span class="nt">"/pet"</span><span class="p">:{</span>
-        <span class="nt">"apiVersion"</span><span class="p">:</span><span class="s2">"0.2"</span><span class="p">,</span>
-        <span class="nt">"swaggerVersion"</span><span class="p">:</span><span class="s2">"1.1"</span><span class="p">,</span>
-        <span class="nt">"basePath"</span><span class="p">:</span><span class="s2">"http://petstore.swagger.wordnik.com/api"</span><span class="p">,</span>
-        <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
-        <span class="nt">"apis"</span><span class="p">:[</span>
-            <span class="p">{</span>
-                <span class="nt">"path"</span><span class="p">:</span><span class="s2">"/pet.{format}/{petId}"</span><span class="p">,</span>
-                <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Operations about pets"</span><span class="p">,</span>
-                <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
-                <span class="nt">"operations"</span><span class="p">:{</span>
-                    <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
-                    <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"getPetById"</span><span class="p">,</span>
-                    <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
-                    <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Find pet by ID"</span><span class="p">,</span>
-                    <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"GET"</span><span class="p">,</span>
-                    <span class="nt">"parameters"</span><span class="p">:{</span>
-                        <span class="nt">"description"</span><span class="p">:</span><span class="s2">"ID of pet that needs to be fetched"</span><span class="p">,</span>
-                        <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"string"</span><span class="p">,</span>
-                        <span class="nt">"name"</span><span class="p">:</span><span class="s2">"petId"</span><span class="p">,</span>
-                        <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"path"</span><span class="p">,</span>
-                        <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
-                    <span class="p">},</span>
-                    <span class="nt">"errorResponses"</span><span class="p">:[</span>
-                        <span class="p">{</span>
-                            <span class="nt">"code"</span><span class="p">:</span><span class="s2">"400"</span><span class="p">,</span>
-                            <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid ID supplied"</span>
-                        <span class="p">},</span>
-                        <span class="p">{</span>
-                            <span class="nt">"code"</span><span class="p">:</span><span class="s2">"404"</span><span class="p">,</span>
-                            <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Pet not found"</span>
-                        <span class="p">}</span>
-                    <span class="p">],</span>
-                    <span class="nt">"notes"</span><span class="p">:</span><span class="s2">"Returns a pet based on ID"</span>
-                <span class="p">}</span>
-            <span class="p">},</span>
-            <span class="p">{</span>
-                <span class="nt">"path"</span><span class="p">:</span><span class="s2">"/pet.{format}"</span><span class="p">,</span>
-                <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Operations about pets"</span><span class="p">,</span>
-                <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
-                <span class="nt">"operations"</span><span class="p">:[</span>
-                    <span class="p">{</span>
-                        <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
-                        <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"addPet"</span><span class="p">,</span>
-                        <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"void"</span><span class="p">,</span>
-                        <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Add a new pet to the store"</span><span class="p">,</span>
-                        <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"GET"</span><span class="p">,</span>
-                        <span class="nt">"parameters"</span><span class="p">:{</span>
-                            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Pet object that needs to be added to the store"</span><span class="p">,</span>
-                            <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
-                            <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span><span class="p">,</span>
-                            <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
-                        <span class="p">},</span>
-                        <span class="nt">"notes"</span><span class="p">:</span><span class="s2">"&lt;pre&gt;\nsome inline html note\n\n&lt;/pre&gt;"</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
-                        <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"updatePet"</span><span class="p">,</span>
-                        <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"void"</span><span class="p">,</span>
-                        <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Update an existing pet"</span><span class="p">,</span>
-                        <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"PUT"</span><span class="p">,</span>
-                        <span class="nt">"parameters"</span><span class="p">:{</span>
-                            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Pet object that needs to be updated to the store"</span><span class="p">,</span>
-                            <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
-                            <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span><span class="p">,</span>
-                            <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
-                        <span class="p">},</span>
-                        <span class="nt">"errorResponses"</span><span class="p">:[</span>
-                            <span class="p">{</span>
-                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"405"</span><span class="p">,</span>
-                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid input"</span>
-                            <span class="p">},</span>
-                            <span class="p">{</span>
-                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"400"</span><span class="p">,</span>
-                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid ID supplied"</span>
-                            <span class="p">},</span>
-                            <span class="p">{</span>
-                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"404"</span><span class="p">,</span>
-                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Pet not found"</span>
-                            <span class="p">}</span>
-                        <span class="p">]</span>
-                    <span class="p">}</span>
-                <span class="p">]</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/zircote">zircote</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li><a href="#">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Robert Allen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
   </body>
 </html>
