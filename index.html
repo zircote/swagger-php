@@ -1,375 +1,387 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
     <title>Swagger-php by zircote</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
-
-    <header>
-      <div class="container">
+    <div class="wrapper">
+      <header>
         <h1>Swagger-php</h1>
-        <h2>A php swagger annotation and parsing library</h2>
+        <p>A php swagger annotation and parsing library</p>
 
-        <section id="downloads">
-          <a href="https://github.com/zircote/swagger-php/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/zircote/swagger-php/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/zircote/swagger-php" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
+        <p class="view"><a href="https://github.com/zircote/swagger-php">View the Project on GitHub <small>zircote/swagger-php</small></a></p>
 
-    <div class="container">
-      <section id="main_content">
-        <h1>Swagger-php</h1>
 
-<p>Swagger-PHP library implementing the swagger.wordnik.com specification to describe 
-web services, operations/actions and models enabling a uniform means of producing, 
-consuming, and visualizing RESTful web services. </p>
+        <ul>
+          <li><a href="https://github.com/zircote/swagger-php/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/zircote/swagger-php/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/zircote/swagger-php">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>swagger-php</h1>
+
+<p><a href="http://travis-ci.org/zircote/swagger-php"><img src="https://secure.travis-ci.org/zircote/swagger-php.png" alt="Build Status"></a></p>
+
+<p>Swagger-PHP library implementing the swagger.wordnik.com specification to describe
+web services, operations/actions and models enabling a uniform means of producing,
+consuming, and visualizing RESTful web services.</p>
 
 <p>More on Swagger:</p>
 
 <ul>
 <li><a href="http://swagger.wordnik.com/">http://swagger.wordnik.com/</a></li>
+<li><a href="https://github.com/wordnik/swagger-core/wiki">https://github.com/wordnik/swagger-core/wiki</a></li>
 <li>
 <a href="https://github.com/outeredge/SwaggerModule">https://github.com/outeredge/SwaggerModule</a> a ZF2 Module implementing swagger-php</li>
-</ul><p><em>Examples:</em></p>
+</ul><p><strong>Installation</strong></p>
 
-<h2>Tags:</h2>
+<h1></h1>
 
-<h3>Resource Tags:</h3>
+<h1>Composer:</h1>
+
+<hr><h2>Outside of a project:</h2>
+
+<div class="highlight"><pre>git clone git@github.com:zircote/swagger-php.git swagger
+<span class="nb">cd </span>swagger
+php composer.phar install
+</pre></div>
+
+<h1></h1>
+
+<h1>External Dependencies:</h1>
 
 <ul>
-<li><code>@SwaggerResource</code></li>
-<li><code>@Swagger</code></li>
-<li><code>@SwaggerProduces</code></li>
-</ul><h4>Example Use:</h4>
+<li>Doctrine/Common</li>
+<li>PHP 5.3/ PHP 5.4</li>
+</ul><p>Dev Dependencies (For building the phar):</p>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
+<ul>
+<li>Symfony/Finder</li>
+<li>Symfony/Process</li>
+</ul><hr><h2>As a project depenency:</h2>
+
+<p>Add the following snippet to your require section of you <code>composer.json</code> and
+run composer install|update</p>
+
+<p><strong>Get Composer: <a href="http://getcomposer.org">http://getcomposer.org</a></strong></p>
+
+<div class="highlight"><pre>
+    <span class="p">{</span><span class="nt">"zircote/swagger-php"</span><span class="p">:</span> <span class="s2">"master-dev"</span><span class="p">}</span>
+
+</pre></div>
+
+<h1></h1>
+
+<h1>Example Use:</h1>
+
+<hr><h2>CLI</h2>
+
+<pre><code>php swagger.phar -h
+
+ Usage: swagger --project-path PATH [--output-path PATH]...
+     Generate Swagger JSON documents for a project.
+         Mandatory argument[s]:
+             -p, --project-path    base path of the project to perform swagger discovery
+         Optional arguments:
+             -i, --include-path    Optional bootstrap file for additional include path support
+                                     ex: --include-path Zend:/usr/local/share/pear
+             -o, --output-path     directory to store the generated json documents
+             -f, --format          format JSON output in readable formatting.
+             -h, --help            generates this help message
+
+php swagger.phar -p &lt;project-path&gt; \
+  -o &lt;output-path&gt; -f \
+  --include-path Zend:/usr/local/shar/pear,Rediska:/usr/local/share/pear
+
+ &gt; /tmp/swagger/resources.json created
+ &gt; /tmp/swagger/pets.json created
+ &gt; /tmp/swagger/users.json created
+
+bin/swagger --project-path /my/project/ --output-path /tmp/swagger -f
+&gt; /tmp/swagger/resources.json created
+&gt; /tmp/swagger/pets.json created
+&gt; /tmp/swagger/users.json created
+</code></pre>
+
+<h1></h1>
+
+<h1>Tags:</h1>
+
+<hr><h2>Example Model:</h2>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">namespace</span> <span class="nx">SwaggerTests\Fixtures\Models</span><span class="p">;</span>
+
 <span class="sd">/**</span>
-<span class="sd"> *@Swaggerresource(</span>
-<span class="sd"> *     basePath="http://org.local/v1",</span>
-<span class="sd"> *     swaggerVersion="0.1a",</span>
-<span class="sd"> *     apiVersion="1"</span>
-<span class="sd"> * )</span>
-<span class="sd"> *@Swagger (</span>
-<span class="sd"> *     path="/leadresponder",</span>
-<span class="sd"> *     value="Gets collection of leadresponders",</span>
-<span class="sd"> *     description="This is a long description of what it does"</span>
-<span class="sd"> *     )</span>
-<span class="sd"> *@SwaggerProduces (</span>
-<span class="sd"> *     'application/json',</span>
-<span class="sd"> *     'application/json+hal',</span>
-<span class="sd"> *     'application/json-p',</span>
-<span class="sd"> *     'application/json-p+hal',</span>
-<span class="sd"> *     'application/xml',</span>
-<span class="sd"> *     'application/xml',</span>
-<span class="sd"> *     'application/xml+hal'</span>
-<span class="sd"> *     )</span>
 <span class="sd"> *</span>
-<span class="sd"> * @category   Organic</span>
-<span class="sd"> * @package    Organic_V1</span>
-<span class="sd"> * @subpackage Controller</span>
+<span class="sd"> * @package</span>
+<span class="sd"> * @category</span>
+<span class="sd"> * @subpackage</span>
 <span class="sd"> */</span>
-<span class="k">class</span> <span class="nc">LeadResponder_RoutesController</span>
-<span class="p">{</span>
-<span class="p">}</span>
-</pre>
-</div>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Model</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Items</span><span class="p">;</span>
 
-
-<h3>Operation Tags:</h3>
-
-<ul>
-<li><code>@GET</code></li>
-<li><code>@PUT</code></li>
-<li><code>@POST</code></li>
-<li><code>@DELETE</code></li>
-<li><code>@SwaggerPath</code></li>
-<li><code>@SwaggerOperation</code></li>
-<li><code>@SwaggerError</code></li>
-<li><code>@SwaggerParam</code></li>
-</ul><h4>Example Use:</h4>
-
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
-<span class="c1">// ....</span>
-<span class="k">class</span> <span class="nc">LeadResponder_RoutesController</span>
+<span class="sd">/**</span>
+<span class="sd"> * @package</span>
+<span class="sd"> * @category</span>
+<span class="sd"> * @subpackage</span>
+<span class="sd"> *</span>
+<span class="sd"> * @Model(id="Pet")</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
+<span class="sd">     * @var array&lt;Tags&gt;</span>
 <span class="sd">     *</span>
-<span class="sd">     * @PUT</span>
-<span class="sd">     *@SwaggerPath /{leadresponder_id}</span>
-<span class="sd">     *@SwaggerOperation(</span>
-<span class="sd">     *     value="Updates the existing leadresponder designated by the {leadresponder_id}",</span>
-<span class="sd">     *     responseClass="leadresonder_route",</span>
-<span class="sd">     *     multiValueResponse=false,</span>
-<span class="sd">     *     tags="MLR"</span>
-<span class="sd">     * )</span>
-<span class="sd">     *@SwaggerError(code=400,reason="Invalid ID Provided")</span>
-<span class="sd">     *@SwaggerError(code=403,reason="User Not Authorized")</span>
-<span class="sd">     *@SwaggerError(code=404,reason="Lead Responder Not Found")</span>
-<span class="sd">     *@SwaggerParam(</span>
-<span class="sd">     *     description="ID of the leadresponder being requested",</span>
-<span class="sd">     *     required=true,</span>
-<span class="sd">     *     allowMultiple=false,</span>
-<span class="sd">     *     dataType="integer",</span>
-<span class="sd">     *     name="leadresponder_id",</span>
-<span class="sd">     *     paramType="path"</span>
-<span class="sd">     * )</span>
-<span class="sd">     *@SwaggerParam(</span>
-<span class="sd">     *     description="leadresponder_route being updated",</span>
-<span class="sd">     *     required=true,</span>
-<span class="sd">     *     allowMultiple=false,</span>
-<span class="sd">     *     dataType="leadresponder_route",</span>
-<span class="sd">     *     name="leadresponder_route",</span>
-<span class="sd">     *     paramType="body"</span>
+<span class="sd">     * @Property(name="tags",type="array", items="$ref:Tag")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var int</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(name="id",type="long")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var Category</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(name="category",type="Category")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$category</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *</span>
+<span class="sd">     *</span>
+<span class="sd">     * @var string</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(</span>
+<span class="sd">     *      name="status",type="string",</span>
+<span class="sd">     *      @allowableValues(</span>
+<span class="sd">     *          valueType="LIST",</span>
+<span class="sd">     *          values="['available', 'pending', 'sold']"</span>
+<span class="sd">     *      ),</span>
+<span class="sd">     *      description="pet status in the store")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$status</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var string</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(name="name",type="string")</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$name</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @var array&lt;string&gt;</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(name="photoUrls",type="array", @items(type="string"))</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$photoUrls</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+</pre></div>
+
+<hr><h2>Example Resource:</h2>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">namespace</span> <span class="nx">SwaggerTests\Fixtures\Resources</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @package</span>
+<span class="sd"> * @category</span>
+<span class="sd"> * @subpackage</span>
+<span class="sd"> */</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Operation</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Operations</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameter</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameters</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Api</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponse</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponses</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Resource</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @package</span>
+<span class="sd"> * @category</span>
+<span class="sd"> * @subpackage</span>
+<span class="sd"> *</span>
+<span class="sd"> * @Resource(</span>
+<span class="sd"> *  apiVersion="0.2",</span>
+<span class="sd"> *  swaggerVersion="1.1",</span>
+<span class="sd"> *  resourcePath="/pet",</span>
+<span class="sd"> *  basePath="http://petstore.swagger.wordnik.com/api"</span>
+<span class="sd"> * )</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Pet</span>
+<span class="p">{</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Api(</span>
+<span class="sd">     *   path="/pet.{format}/findByTags",</span>
+<span class="sd">     *   description="Operations about pets",</span>
+<span class="sd">     *   @operations(</span>
+<span class="sd">     *     @operation(</span>
+<span class="sd">     *       httpMethod="GET",</span>
+<span class="sd">     *       summary="Finds Pets by tags",</span>
+<span class="sd">     *       notes="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",</span>
+<span class="sd">     *       deprecated=true,</span>
+<span class="sd">     *       responseClass="List[Pet]",</span>
+<span class="sd">     *       nickname="findPetsByTags",</span>
+<span class="sd">     *       @parameters(</span>
+<span class="sd">     *         @parameter(</span>
+<span class="sd">     *           name="tags",</span>
+<span class="sd">     *           description="Tags to filter by",</span>
+<span class="sd">     *           paramType="query",</span>
+<span class="sd">     *           required=true,</span>
+<span class="sd">     *           allowMultiple=true,</span>
+<span class="sd">     *           dataType="string"</span>
+<span class="sd">     *         )</span>
+<span class="sd">     *       ),</span>
+<span class="sd">     *       @errorResponses(</span>
+<span class="sd">     *          @errorResponse(</span>
+<span class="sd">     *            code="400",</span>
+<span class="sd">     *            reason="Invalid tag value"</span>
+<span class="sd">     *          )</span>
+<span class="sd">     *       )</span>
+<span class="sd">     *     )</span>
+<span class="sd">     *   )</span>
 <span class="sd">     * )</span>
 <span class="sd">     */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">putAction</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">findPetsByTags</span><span class="p">()</span>
     <span class="p">{</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-</div>
 
+</pre></div>
 
-<h3>Model Tags:</h3>
+<h1></h1>
 
-<ul>
-<li><code>@SwaggerModel</code></li>
-</ul><h4>Example Use:</h4>
+<h1>Resource Listing:</h1>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
-<span class="sd">/**</span>
-<span class="sd"> *@SwaggerModel(</span>
-<span class="sd"> *     id="leadresonder_route",</span>
-<span class="sd"> *     description="some long description of the model"</span>
-<span class="sd"> * )</span>
-<span class="sd"> * @property integer $usr_mlr_route_id description of blah</span>
-<span class="sd"> * @property string  $route</span>
-<span class="sd"> * @property string  $createdDate</span>
-<span class="sd"> * @property string  $tag</span>
-<span class="sd"> *</span>
-<span class="sd"> */</span>
-<span class="k">class</span> <span class="nc">Model_LeadResponder_Route</span>
-<span class="p">{</span>
-<span class="c1">// .....</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$path</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">jsonEncode</span><span class="p">(</span><span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">registry</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
 
-</pre>
-</div>
+<span class="c1">// Alternate</span>
+<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">jsonEncode</span><span class="p">(</span><span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">registry</span><span class="p">[</span><span class="s1">'/pet'</span><span class="p">],</span> <span class="k">true</span><span class="p">);</span>
 
+</pre></div>
 
-<h3>Resource Listing:</h3>
+<p><strong>Output</strong></p>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
-<span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">\Swagger\Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$projectPath</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">'http://org.local/v1'</span><span class="p">);</span>
-
-</pre>
-</div>
-
-
-<p><em>Outputs:</em></p>
-
-<div class="highlight">
-<pre><span class="p">{</span>
-    <span class="nt">"apis"</span><span class="p">:[</span>
-        <span class="p">{</span>
-            <span class="nt">"path"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1\/leadresponder"</span><span class="p">,</span>
-            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Gets collection of leadresponders"</span>
-        <span class="p">}</span>
-    <span class="p">],</span>
-    <span class="nt">"basePath"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1"</span><span class="p">,</span>
-    <span class="nt">"swaggerVersion"</span><span class="p">:</span><span class="s2">"0.1a"</span><span class="p">,</span>
-    <span class="nt">"apiVersion"</span><span class="p">:</span><span class="s2">"1"</span>
-<span class="p">}</span>
-</pre>
-</div>
-
-
-<h3>Operations Listing:</h3>
-
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
-<span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">\Swagger\Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$projectPath</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getApi</span><span class="p">(</span><span class="s1">'http://org.local/v1'</span><span class="p">,</span> <span class="s1">'/leadresponder'</span><span class="p">);</span>
-
-</pre>
-</div>
-
-
-<p><em>Outputs:</em></p>
-
-<div class="highlight">
-<pre><span class="p">{</span>
-    <span class="nt">"models"</span><span class="p">:[</span>
-        <span class="p">{</span>
-            <span class="nt">"id"</span><span class="p">:</span><span class="s2">"leadresonder_route"</span><span class="p">,</span>
-            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"some long description of the model"</span><span class="p">,</span>
-            <span class="nt">"properties"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"usr_mlr_route_id"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"integer"</span><span class="p">,</span>
-                    <span class="nt">"description"</span><span class="p">:</span><span class="s2">"some long winded description"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"route"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"string"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"createdDate"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"Date"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"tag"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"string"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"enumVal"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"string"</span><span class="p">,</span>
-                    <span class="nt">"enum"</span><span class="p">:[</span>
-                        <span class="s2">"item1"</span><span class="p">,</span>
-                        <span class="s2">"item2"</span><span class="p">,</span>
-                        <span class="s2">"item"</span>
-                    <span class="p">]</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"arrayItem"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"array"</span><span class="p">,</span>
-                    <span class="nt">"items"</span><span class="p">:{</span>
-                        <span class="nt">"type"</span><span class="p">:</span><span class="s2">"string"</span>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">"/pet"</span><span class="p">:{</span>
+        <span class="nt">"apiVersion"</span><span class="p">:</span><span class="s2">"0.2"</span><span class="p">,</span>
+        <span class="nt">"swaggerVersion"</span><span class="p">:</span><span class="s2">"1.1"</span><span class="p">,</span>
+        <span class="nt">"basePath"</span><span class="p">:</span><span class="s2">"http://petstore.swagger.wordnik.com/api"</span><span class="p">,</span>
+        <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
+        <span class="nt">"apis"</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">"path"</span><span class="p">:</span><span class="s2">"/pet.{format}/{petId}"</span><span class="p">,</span>
+                <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Operations about pets"</span><span class="p">,</span>
+                <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
+                <span class="nt">"operations"</span><span class="p">:{</span>
+                    <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                    <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"getPetById"</span><span class="p">,</span>
+                    <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
+                    <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Find pet by ID"</span><span class="p">,</span>
+                    <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"GET"</span><span class="p">,</span>
+                    <span class="nt">"parameters"</span><span class="p">:{</span>
+                        <span class="nt">"description"</span><span class="p">:</span><span class="s2">"ID of pet that needs to be fetched"</span><span class="p">,</span>
+                        <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"string"</span><span class="p">,</span>
+                        <span class="nt">"name"</span><span class="p">:</span><span class="s2">"petId"</span><span class="p">,</span>
+                        <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"path"</span><span class="p">,</span>
+                        <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
+                    <span class="p">},</span>
+                    <span class="nt">"errorResponses"</span><span class="p">:[</span>
+                        <span class="p">{</span>
+                            <span class="nt">"code"</span><span class="p">:</span><span class="s2">"400"</span><span class="p">,</span>
+                            <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid ID supplied"</span>
+                        <span class="p">},</span>
+                        <span class="p">{</span>
+                            <span class="nt">"code"</span><span class="p">:</span><span class="s2">"404"</span><span class="p">,</span>
+                            <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Pet not found"</span>
+                        <span class="p">}</span>
+                    <span class="p">],</span>
+                    <span class="nt">"notes"</span><span class="p">:</span><span class="s2">"Returns a pet based on ID"</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">"path"</span><span class="p">:</span><span class="s2">"/pet.{format}"</span><span class="p">,</span>
+                <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Operations about pets"</span><span class="p">,</span>
+                <span class="nt">"resourcePath"</span><span class="p">:</span><span class="s2">"/pet"</span><span class="p">,</span>
+                <span class="nt">"operations"</span><span class="p">:[</span>
+                    <span class="p">{</span>
+                        <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"addPet"</span><span class="p">,</span>
+                        <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"void"</span><span class="p">,</span>
+                        <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Add a new pet to the store"</span><span class="p">,</span>
+                        <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"GET"</span><span class="p">,</span>
+                        <span class="nt">"parameters"</span><span class="p">:{</span>
+                            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Pet object that needs to be added to the store"</span><span class="p">,</span>
+                            <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
+                            <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span><span class="p">,</span>
+                            <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
+                        <span class="p">},</span>
+                        <span class="nt">"notes"</span><span class="p">:</span><span class="s2">"&lt;pre&gt;\nsome inline html note\n\n&lt;/pre&gt;"</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">"nickname"</span><span class="p">:</span><span class="s2">"updatePet"</span><span class="p">,</span>
+                        <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"void"</span><span class="p">,</span>
+                        <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Update an existing pet"</span><span class="p">,</span>
+                        <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"PUT"</span><span class="p">,</span>
+                        <span class="nt">"parameters"</span><span class="p">:{</span>
+                            <span class="nt">"description"</span><span class="p">:</span><span class="s2">"Pet object that needs to be updated to the store"</span><span class="p">,</span>
+                            <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"Pet"</span><span class="p">,</span>
+                            <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span><span class="p">,</span>
+                            <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span>
+                        <span class="p">},</span>
+                        <span class="nt">"errorResponses"</span><span class="p">:[</span>
+                            <span class="p">{</span>
+                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"405"</span><span class="p">,</span>
+                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid input"</span>
+                            <span class="p">},</span>
+                            <span class="p">{</span>
+                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"400"</span><span class="p">,</span>
+                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid ID supplied"</span>
+                            <span class="p">},</span>
+                            <span class="p">{</span>
+                                <span class="nt">"code"</span><span class="p">:</span><span class="s2">"404"</span><span class="p">,</span>
+                                <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Pet not found"</span>
+                            <span class="p">}</span>
+                        <span class="p">]</span>
                     <span class="p">}</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"refArr"</span><span class="p">,</span>
-                    <span class="nt">"type"</span><span class="p">:</span><span class="s2">"array"</span><span class="p">,</span>
-                    <span class="nt">"items"</span><span class="p">:{</span>
-                        <span class="nt">"$ref"</span><span class="p">:</span><span class="s2">"ref_item"</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">],</span>
-    <span class="nt">"operations"</span><span class="p">:[</span>
-        <span class="p">{</span>
-            <span class="nt">"tags"</span><span class="p">:[</span>
-                <span class="s2">"MLR"</span>
-            <span class="p">],</span>
-            <span class="nt">"errorResponses"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"code"</span><span class="p">:</span><span class="s2">"403"</span><span class="p">,</span>
-                    <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"User Not Authorized"</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">"parameters"</span><span class="p">:[</span>
-
-            <span class="p">],</span>
-            <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"GET"</span><span class="p">,</span>
-            <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"List[leadresonder_route]"</span><span class="p">,</span>
-            <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Fetches the leadresponder corresponding the the provided ID"</span><span class="p">,</span>
-            <span class="nt">"path"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1\/leadresponder"</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="nt">"tags"</span><span class="p">:[</span>
-                <span class="s2">"MLR"</span>
-            <span class="p">],</span>
-            <span class="nt">"errorResponses"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"code"</span><span class="p">:</span><span class="s2">"403"</span><span class="p">,</span>
-                    <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"User Not Authorized"</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">"parameters"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"description"</span><span class="p">:</span><span class="s2">"leadresponder_route being created"</span><span class="p">,</span>
-                    <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span><span class="p">,</span>
-                    <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>
-                    <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"leadresponder_route"</span><span class="p">,</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"leadresponder_route"</span><span class="p">,</span>
-                    <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"POST"</span><span class="p">,</span>
-            <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"leadresonder_route"</span><span class="p">,</span>
-            <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Creates a new leadresponder"</span><span class="p">,</span>
-            <span class="nt">"path"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1\/leadresponder"</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="nt">"tags"</span><span class="p">:[</span>
-                <span class="s2">"MLR"</span>
-            <span class="p">],</span>
-            <span class="nt">"errorResponses"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"code"</span><span class="p">:</span><span class="s2">"400"</span><span class="p">,</span>
-                    <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Invalid ID Provided"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"code"</span><span class="p">:</span><span class="s2">"403"</span><span class="p">,</span>
-                    <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"User Not Authorized"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"code"</span><span class="p">:</span><span class="s2">"404"</span><span class="p">,</span>
-                    <span class="nt">"reason"</span><span class="p">:</span><span class="s2">"Lead Responder Not Found"</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">"parameters"</span><span class="p">:[</span>
-                <span class="p">{</span>
-                    <span class="nt">"description"</span><span class="p">:</span><span class="s2">"ID of the leadresponder being requested"</span><span class="p">,</span>
-                    <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span><span class="p">,</span>
-                    <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>
-                    <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"integer"</span><span class="p">,</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"leadresponder_id"</span><span class="p">,</span>
-                    <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"path"</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">"description"</span><span class="p">:</span><span class="s2">"leadresponder_route being updated"</span><span class="p">,</span>
-                    <span class="nt">"required"</span><span class="p">:</span><span class="s2">"true"</span><span class="p">,</span>
-                    <span class="nt">"allowMultiple"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>
-                    <span class="nt">"dataType"</span><span class="p">:</span><span class="s2">"leadresponder_route"</span><span class="p">,</span>
-                    <span class="nt">"name"</span><span class="p">:</span><span class="s2">"leadresponder_route"</span><span class="p">,</span>
-                    <span class="nt">"paramType"</span><span class="p">:</span><span class="s2">"body"</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">"httpMethod"</span><span class="p">:</span><span class="s2">"PUT"</span><span class="p">,</span>
-            <span class="nt">"path"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1\/leadresponder\/{leadresponder_id}"</span><span class="p">,</span>
-            <span class="nt">"responseClass"</span><span class="p">:</span><span class="s2">"leadresonder_route"</span><span class="p">,</span>
-            <span class="nt">"summary"</span><span class="p">:</span><span class="s2">"Updates the existing leadresponder designated by the {leadresponder_id}"</span>
-        <span class="p">}</span>
-    <span class="p">],</span>
-    <span class="nt">"basePath"</span><span class="p">:</span><span class="s2">"http:\/\/org.local\/v1"</span><span class="p">,</span>
-    <span class="nt">"swaggerVersion"</span><span class="p">:</span><span class="s2">"0.1a"</span><span class="p">,</span>
-    <span class="nt">"apiVersion"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span>
-    <span class="nt">"path"</span><span class="p">:</span><span class="s2">"\/leadresponder"</span><span class="p">,</span>
-    <span class="nt">"value"</span><span class="p">:</span><span class="s2">"Gets collection of leadresponders"</span><span class="p">,</span>
-    <span class="nt">"description"</span><span class="p">:</span><span class="s2">"This is a long description of what it does"</span><span class="p">,</span>
-    <span class="nt">"produces"</span><span class="p">:[</span>
-        <span class="s2">"application\/json"</span><span class="p">,</span>
-        <span class="s2">"application\/json+hal"</span><span class="p">,</span>
-        <span class="s2">"application\/json-p"</span><span class="p">,</span>
-        <span class="s2">"application\/json-p+hal"</span><span class="p">,</span>
-        <span class="s2">"application\/xml"</span><span class="p">,</span>
-        <span class="s2">"application\/xml"</span><span class="p">,</span>
-        <span class="s2">"application\/xml+hal"</span>
-    <span class="p">]</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-</div>
-
+</pre></div>
       </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/zircote">zircote</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
