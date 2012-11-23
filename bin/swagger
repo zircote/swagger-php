@@ -96,13 +96,12 @@ EOF;
     if (!isset($options['p']) && !isset($options['project-dir'])) {
         throw new RuntimeException('--project-dir must be provided');
     } else {
-        $projectPath = getcwd() . DIRECTORY_SEPARATOR;
         if (isset($options['project-dir'])
             && !empty($options['project-dir'])
         ) {
-            $projectPath .= $options['project-dir'];
+            $projectPath = $options['project-dir'];
         } else {
-            $projectPath .= $options['p'];
+            $projectPath = $options['p'];
         }
     }
     $outputPath = null;
@@ -120,8 +119,9 @@ EOF;
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
+        $json = $swagger->getResource($resourceName, $prettyPrint);
         $resourceName = str_replace('/', null, $resourceName);
-        $output[$resourceName] = $swagger->getResource($resourceName, $prettyPrint);
+        $output[$resourceName] = $json;
     }
     if ($output) {
         if (file_exists($outputPath) && !is_dir($outputPath)) {
