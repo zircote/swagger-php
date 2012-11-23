@@ -33,7 +33,7 @@ External Dependencies:
 =============================
  - Doctrine/Common
  - PHP 5.3/ PHP 5.4
- 
+
 Dev Dependencies (For building the phar):
  - Symfony/Finder
  - Symfony/Process
