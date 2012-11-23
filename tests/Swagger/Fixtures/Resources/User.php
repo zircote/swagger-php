@@ -43,6 +43,7 @@ use Swagger\Annotations\Resource;
  */
 class User
 {
+
     /**
      * @Api(
      *   path="/user.{format}/createWithArray", description="Operations about user",
@@ -70,7 +71,7 @@ class User
      *   path="/user.{format}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST", summary="Creates user",
+     *       httpMethod="POST", summary="Create user",
      *       notes="This can only be done by the logged in user.",
      *       responseClass="void", nickname="createUser",
      *       @parameters(
@@ -94,7 +95,7 @@ class User
      *   @operations(
      *     @operation(
      *       httpMethod="POST", summary="Creates list of users with given list input",
-     *       responseClass="void", nickname="createUser",
+     *       responseClass="void", nickname="createUsersWithListInput",
      *       @parameters(
      *         @parameter(
      *           description="List of user object", paramType="body",
@@ -116,7 +117,7 @@ class User
      *     @operation(
      *       httpMethod="PUT", summary="Updated user",
      *       notes="This can only be done by the logged in user.",
-     *       responseClass="void", nickname="createUser",
+     *       responseClass="void", nickname="updateUser",
      *       @parameters(
      *         @parameter(
      *           name="username", description="name that need to be updated",
@@ -147,7 +148,7 @@ class User
      *       notes="This can only be done by the logged in user.",
      *       responseClass="void", nickname="deleteUser",
      *       @parameters(
-     *         @parameter(
+     *         @parameter(name="username",
      *           description="The name that needs to be deleted", paramType="path",
      *           required="true", allowMultiple=false, dataType="string"
      *         )
@@ -170,10 +171,9 @@ class User
      *   @operations(
      *     @operation(
      *       httpMethod="GET", summary="Get user by user name",
-     *       notes="This can only be done by the logged in user.",
      *       responseClass="User", nickname="getUserByName",
      *       @parameters(
-     *         @parameter(
+     *         @parameter(name="username",
      *           description="The name that needs to be fetched. Use user1 for testing.",
      *           paramType="path", required="true", allowMultiple=false, dataType="string"
      *         )

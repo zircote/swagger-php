@@ -91,6 +91,14 @@ class AllowableValues extends AbstractAnnotation
     {
         $this->valueType = self::TYPE_LIST;
         $this->values = $this->decode($values['values']);
+        if( $this->values instanceof \stdClass){
+            $newValues = array();
+            foreach ((array) $this->values as $key => $value) {
+                $value = "{$key}-{$value}";
+                array_push($newValues, $value);
+            }
+            $this->values = $newValues;
+        }
     }
 
     /**

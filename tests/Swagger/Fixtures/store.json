@@ -105,7 +105,7 @@
                 "status":{
                     "allowableValues":{
                         "valueType":"LIST",
-                        "values":["placed", " approved", " delivered"]
+                        "values":["placed", "approved", "delivered"]
                     },
                     "description":"Order Status",
                     "type":"string"

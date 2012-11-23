@@ -30,7 +30,7 @@ use Swagger\Annotations\Resource;
  * @category   Swagger
  * @package    Swagger
  */
-class Swagger
+class Swagger implements \Serializable
 {
 
     /**
@@ -70,8 +70,8 @@ class Swagger
         if ($path) {
             $this->path = $path;
             $this->excludePath = $excludePath;
+            $this->discoverServices();
         }
-        $this->discoverServices();
     }
 
     /**
@@ -159,6 +159,7 @@ class Swagger
                     }
                 }
                 foreach ($models as $v) {
+                    $type = false;
                     foreach ($this->models[$v]['properties'] as $property) {
                         if($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))){
                             if(isset($property['items']['$ref'])){
@@ -189,6 +190,7 @@ class Swagger
         }
 
         $this->registry = $registry;
+        return $this;
     }
 
     /**
@@ -478,7 +480,18 @@ class Swagger
         }
         return $result;
     }
+    public function getResourceNames()
+    {
+        return array_keys($this->registry);
+    }
 
+    public function getResource($resourceName, $prettyPrint = true)
+    {
+        if(array_key_exists($resourceName, $this->registry)){
+            return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
+        }
+        return false;
+    }
     /**
      *
      * @param \Doctrine\Common\Annotations\Reader $reader
@@ -574,6 +587,25 @@ class Swagger
     public function getPath()
     {
         return $this->path;
+    }
+    public function serialize()
+    {
+        return serialize(array(
+            'registry' => $this->registry,
+            'models' => $this->models,
+            'path' => $this->path,
+            'excludePath' => $this->excludePath
+        ));
+
+    }
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+        $this->registry = $data['registry'];
+        $this->models = $data['models'];
+        $this->path = $data['path'];
+        $this->excludePath = $data['excludePath'];
+        return $this;
     }
 }
 

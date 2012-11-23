@@ -52,8 +52,7 @@ abstract class AbstractAnnotation
 
     protected function arrayFilter(&$v)
     {
-        if(is_string($v) && in_array($v, array('true', 'false')))
-        {
+        if(is_string($v) && in_array($v, array('true', 'false'))) {
             $v = ($v == 'true') ? true : false;
         }
         if(empty($v) && $v !== false){
@@ -83,10 +82,6 @@ abstract class AbstractAnnotation
                 $result[] = $members['value']->toArray();
             }
         }
-//        if (isset($members['value'])) {
-//            print_r($members['value']);
-//            $members['value'] = $result;
-//        }
         return $members;
     }
     /**

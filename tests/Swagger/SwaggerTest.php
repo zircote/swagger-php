@@ -61,10 +61,39 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
-//        echo $swagger->jsonEncode($swagger->registry['/pet'], true);
-//        print_r($swagger->registry['/pet']);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/pet.json'), true);
         $this->assertEquals($expected, $swagger->registry['/pet']);
+    }
+
+    public function testRangeValueType()
+    {
+        $path = __DIR__ . '/Fixtures';
+        $swagger = Swagger::discover($path);
+        $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/sidekick.json'), true);
+        $this->assertEquals($expected, $swagger->models['Sidekick']);
+    }
+
+    public function testSerializeUnserialize()
+    {
+        $path = __DIR__ . '/Fixtures';
+        $swagger = Swagger::discover($path);
+        $serialized = $swagger->serialize();
+        $newSwagger = new Swagger();
+        $newSwagger->unserialize($serialized);
+        $this->assertEquals($swagger->models, $newSwagger->models);
+        $this->assertEquals($swagger->registry, $newSwagger->registry);
+        $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/user.json'), true);
+        $actual =  $swagger->registry['/user'];
+        $this->assertEquals($expected,$actual);
+    }
+    
+    public function testStore()
+    {
+        $path = __DIR__ . '/Fixtures';
+        $swagger = Swagger::discover($path);
+        $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/store.json'), true);
+        $actual =  $swagger->registry['/store'];
+        $this->assertEquals($expected,$actual);
     }
 }
 

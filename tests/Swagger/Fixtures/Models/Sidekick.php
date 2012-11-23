@@ -30,62 +30,19 @@ use Swagger\Annotations\Model;
  * @category
  * @subpackage
  *
- * @Model(id="User")
+ * @Model(id="Sidekick")
  */
-class User
+class Sidekick
 {
     /**
      * @var int
-     * @Property(name="id",type="Long")
+     * @Property(name="id",type="long")
      */
     protected $id;
-
-    /**
-     * @var string
-     * @Property(name="lastName",type="string")
-     */
-    protected $lastName;
-
-    /**
-     * @var string
-     * @Property(name="phone",type="string")
-     */
-    protected $phone;
-
-    /**
-     * @var string
-     * @Property(name="username",type="string")
-     */
-    protected $username;
-
-    /**
-     * @var string
-     * @Property(name="email",type="string")
-     */
-    protected $email;
-
     /**
      * @var int
-     * @Property(name="userStatus",type="int",
-     *      @allowableValues(
-     *          valueType="LIST",
-     *          values="{'1': 'registered', '2': 'active', '3': 'closed'}"
-     *      ),
-     *      description="User Status"
-     * )
+     * @property(name="age", type="integer", @allowableValues(valueType="RANGE", min=18,max=60))
      */
-    protected $userStatus;
+    protected $age;
 
-    /**
-     * @var string
-     * @Property(name="firstName",type="string")
-     */
-    protected $firstName;
-
-    /**
-     * @var string
-     * @Property(name="password",type="string")
-     */
-    protected $password;
 }
-

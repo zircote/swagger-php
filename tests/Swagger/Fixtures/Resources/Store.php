@@ -90,12 +90,12 @@ class Store
      *       httpMethod="DELETE",
      *       summary="Delete purchase order by ID",
      *       notes="For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
-     *       responseClass="Order",
-     *       nickname="getOrderById",
+     *       responseClass="void",
+     *       nickname="deleteOrder",
      *       @parameters(
      *         @parameter(
      *           name="orderId",
-     *           description="ID of pet that needs to be deleted",
+     *           description="ID of the order that needs to be deleted",
      *           paramType="path",
      *           required="true",
      *           allowMultiple=false,
@@ -143,7 +143,7 @@ class Store
      *       @errorResponses(
      *          @errorResponse(
      *            code="400",
-     *            reason="Invalid Order"
+     *            reason="Invalid order"
      *          )
      *       )
      *     )

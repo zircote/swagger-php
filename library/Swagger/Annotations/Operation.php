@@ -102,6 +102,9 @@ class Operation extends AbstractAnnotation
                     case ($value instanceof Parameters):
                         $this->parameters = $value->toArray();
                         break;
+                    case ($value instanceof Parameter):
+                        $this->parameters[] = $value->toArray();
+                        break;
                     case ($value instanceof ErrorResponses):
                         $this->errorResponses = $value->toArray();
                         break;

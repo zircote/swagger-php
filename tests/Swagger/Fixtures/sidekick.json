@@ -1,0 +1,16 @@
+{
+    "id":"Sidekick",
+    "properties":{
+        "id":{
+            "type":"long"
+        },
+        "age":{
+            "type":"integer",
+            "allowableValues":{
+                "valueType":"RANGE",
+                "min":18,
+                "max":60
+            }
+        }
+    }
+}
