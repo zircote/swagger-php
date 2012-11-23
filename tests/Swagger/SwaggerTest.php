@@ -54,6 +54,10 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+    /**
+     * @param $expectedArray
+     * @param $json
+     */
     public function assertJsonEqualToExpectedArray($expectedArray, $json)
     {
         $json = json_decode($json, true);
@@ -89,7 +93,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($swagger->registry, $newSwagger->registry);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/user.json'), true);
         $actual =  $swagger->registry['/user'];
-        $this->assertEquals($expected,$actual);
+        $this->assertEquals($expected, $actual);
     }
 
     public function testStore()
@@ -98,7 +102,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $swagger = Swagger::discover($path);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/store.json'), true);
         $actual =  $swagger->registry['/store'];
-        $this->assertEquals($expected,$actual);
+        $this->assertEquals($expected, $actual);
     }
     public function testCliTool()
     {
@@ -107,7 +111,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $output = sys_get_temp_dir();
         $pathToCli = dirname(dirname(__DIR__)) . '/bin/swagger';
         `$pathToCli -o $output -p $path`;
-        foreach( array('user','pet','store') as $record) {
+        foreach (array('user','pet','store') as $record) {
             $json = file_get_contents($output . "/$record.json");
             $this->assertJsonEqualToExpectedArray($swagger->registry["/{$record}"], $json);
         }

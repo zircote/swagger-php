@@ -44,5 +44,5 @@ class Sidekick
      * @property(name="age", type="integer", @allowableValues(valueType="RANGE", min=18,max=60))
      */
     protected $age;
-
 }
+

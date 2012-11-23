@@ -51,7 +51,7 @@ class ErrorResponses extends AbstractAnnotation
         if ($this->value instanceof ErrorResponse) {
             $result = $this->value->toArray();
         }
-        if(isset($result['code'])){
+        if (isset($result['code'])) {
             $result['code'] = (int) $result['code'];
             $result = array($result);
         }

@@ -43,6 +43,10 @@ class Model extends AbstractAnnotation
      * @var array
      */
     public $properties = array();
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $result = parent::toArray();

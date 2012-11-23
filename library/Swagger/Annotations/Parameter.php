@@ -93,9 +93,6 @@ class Parameter extends AbstractAnnotation
         if (isset($members['value'])) {
             $members['value'] = $result;
         }
-        if($this->paramType == 'body'){
-//            print_r($members);
-        }
         return $members;
     }
 }

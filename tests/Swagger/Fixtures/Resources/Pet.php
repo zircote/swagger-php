@@ -235,7 +235,5 @@ class Pet
     public function updatePet()
     {
     }
-
-
 }
 

@@ -60,13 +60,13 @@ class Property extends AbstractAnnotation
         if (isset($result['items'])) {
             if (preg_match('/\$ref:(\w+)/', $result['items'], $matches)) {
                 $result['items'] = array('$ref' => array_pop($matches));
+            }
         }
-        }
-        if(isset($result['type']) && $result['type'] == 'array'){
+        if (isset($result['type']) && $result['type'] == 'array') {
             $result['type'] = 'Array';
         }
-        if (isset($result['value'])){
-            if(isset($result['value']['type'])){
+        if (isset($result['value'])) {
+            if (isset($result['value']['type'])) {
                 $result['items']['type'] = $result['value']['type'];
                 unset($result['value']);
             } else {

@@ -79,12 +79,12 @@ class Swagger implements \Serializable
      */
     public function reset()
     {
-        $this->reader      = null;
+        $this->reader = null;
         $this->excludePath = null;
-        $this->classList   = array();
-        $this->fileList    = array();
-        $this->registry    = array();
-        $this->models    = array();
+        $this->classList = array();
+        $this->fileList = array();
+        $this->registry = array();
+        $this->models = array();
         return $this;
     }
 
@@ -99,13 +99,15 @@ class Swagger implements \Serializable
         }
         return $this;
     }
+
     protected function modelType($test)
     {
-        if(preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $test, $matches)){
+        if (preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $test, $matches)) {
             return array_pop($matches);
         }
         return false;
     }
+
     /**
      * @todo clean me up
      */
@@ -117,10 +119,9 @@ class Swagger implements \Serializable
         $this->initializeAnnotations();
         /* @var \ReflectionClass $class */
         foreach ($this->classList as $class) {
-            if ($result = $this->getClassAnnotations($class)) {
-                if ($result = $this->parseResource($result)) {
-                    $this->registry[$result['resourcePath']] = $result;
-                }
+            $result = $this->getClassAnnotations($class);
+            if ($result) {
+                $this->registry[$result['resourcePath']] = $result;
             }
         }
         foreach ($this->registry as $res) {
@@ -140,19 +141,23 @@ class Swagger implements \Serializable
             foreach ($resource['apis'] as $api) {
                 $api = array_pop($api);
                 unset($api['operations']);
-                $op = (array) @$result[$api['path']];
+                $op = (array)@$result[$api['path']];
                 $api['operations'] = $op;
                 foreach ($op as $operation) {
-                    if(array_key_exists($operation['responseClass'], $this->models)){
+                    if (array_key_exists($operation['responseClass'], $this->models)) {
                         array_push($models, $operation['responseClass']);
-                    } elseif(($model = $this->modelType($operation['responseClass'])) && in_array($model, $this->models)){
+                    } elseif (
+                        ($model = $this->modelType($operation['responseClass'])) && in_array($model, $this->models)
+                    ) {
                         array_push($models, $model);
                     }
-                    if(isset($operation['parameters'])){
+                    if (isset($operation['parameters'])) {
                         foreach ($operation['parameters'] as $parameter) {
-                            if(array_key_exists($parameter['dataType'], $this->models)){
+                            if (array_key_exists($parameter['dataType'], $this->models)) {
                                 array_push($models, $parameter['dataType']);
-                            } elseif(($model = $this->modelType($parameter['dataType'])) && in_array($model, $this->models)){
+                            } elseif (
+                                ($model = $this->modelType($parameter['dataType'])) && in_array($model, $this->models)
+                            ) {
                                 array_push($models, $model);
                             }
                         }
@@ -161,15 +166,16 @@ class Swagger implements \Serializable
                 foreach ($models as $v) {
                     $type = false;
                     foreach ($this->models[$v]['properties'] as $property) {
-                        if($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))){
-                            if(isset($property['items']['$ref'])){
+                        if ($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))
+                        ) {
+                            if (isset($property['items']['$ref'])) {
                                 $type = $property['items']['$ref'];
                             }
                         } else {
                             $type = $property['type'];
                         }
-                        if($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))){
-                            if(array_key_exists($type, $this->models)){
+                        if ($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))) {
+                            if (array_key_exists($type, $this->models)) {
                                 array_push($models, $type);
                             }
                         }
@@ -193,25 +199,6 @@ class Swagger implements \Serializable
         return $this;
     }
 
-    /**
-     * @param $resource
-     *
-     * @return mixed
-     */
-    protected function parseResource($resource)
-    {
-        if (isset($resource['apis']) && is_array($resource['apis'])) {
-            foreach ($resource['apis'] as $api) {
-
-                if (isset($api['operations']) && is_array($api['operations'])) {
-                    foreach ($api['operations'] as $operation) {
-
-                    }
-                }
-            }
-        }
-        return $resource;
-    }
     /**
      * @param \ReflectionClass $class
      *
@@ -340,7 +327,7 @@ class Swagger implements \Serializable
                 }
             }
             if (!$fileInfo->isDot() && !$fileInfo->isDir()) {
-                if (in_array($fileInfo->getExtension(), array('php','phtml'))) {
+                if (in_array($fileInfo->getExtension(), array('php', 'phtml'))) {
                     array_push($files, $path . DIRECTORY_SEPARATOR . $fileInfo->getFileName());
                 }
             } elseif (!$fileInfo->isDot() && $fileInfo->isDir()) {
@@ -363,9 +350,7 @@ class Swagger implements \Serializable
             $count = count($tokens);
             $namespace = $this->getNamespace($filename);
             for ($i = 2; $i < $count; $i++) {
-                if ($tokens[$i - 2][0] == T_CLASS &&
-                    $tokens[$i - 1][0] == T_WHITESPACE &&
-                    $tokens[$i][0] == T_STRING
+                if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING
                 ) {
                     $classes[] = $namespace . $tokens[$i][1];
                 }
@@ -394,7 +379,6 @@ class Swagger implements \Serializable
                 foreach ($tokens as $index => $token) {
                     if (isset($token[0]) && T_NAMESPACE == $token[0]) {
                         $startIndex = $index + 1;
-                        $lineNumber = $token[2];
                         continue;
                     }
 
@@ -480,18 +464,28 @@ class Swagger implements \Serializable
         }
         return $result;
     }
+
+    /**
+     * @return array
+     */
     public function getResourceNames()
     {
         return array_keys($this->registry);
     }
 
+    /**
+     * @param $resourceName
+     * @param bool $prettyPrint
+     * @return bool|mixed|null|string
+     */
     public function getResource($resourceName, $prettyPrint = true)
     {
-        if(array_key_exists($resourceName, $this->registry)){
+        if (array_key_exists($resourceName, $this->registry)) {
             return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
         }
         return false;
     }
+
     /**
      *
      * @param \Doctrine\Common\Annotations\Reader $reader
@@ -588,16 +582,20 @@ class Swagger implements \Serializable
     {
         return $this->path;
     }
+
     public function serialize()
     {
-        return serialize(array(
-            'registry' => $this->registry,
-            'models' => $this->models,
-            'path' => $this->path,
-            'excludePath' => $this->excludePath
-        ));
+        return serialize(
+            array(
+                 'registry' => $this->registry,
+                 'models' => $this->models,
+                 'path' => $this->path,
+                 'excludePath' => $this->excludePath
+            )
+        );
 
     }
+
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
