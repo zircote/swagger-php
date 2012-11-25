@@ -39,7 +39,7 @@ php composer.phar install
 EOT
     );
 }
-$shortopts = 'fp:ho:i:e:';
+$shortopts = 'fp:hvo:i:e:';
 
 $longopts = array(
     'project-dir:',
@@ -51,6 +51,14 @@ $longopts = array(
 $prettyPrint = false;
 try {
     $options = getopt($shortopts, $longopts);
+
+    if (isset($options['v']) || isset($options['version'])) {
+        echo <<<EOF
+Swagger-PHP Version: 0.4.0
+
+EOF;
+        exit;
+    }
     if (isset($options['h']) || isset($options['help'])) {
         echo <<<EOF
 
@@ -66,6 +74,7 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -o, --output-path     directory to store the generated json documents
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
+            -v, --version         Swagger-PHP version
 
 
 EOF;
