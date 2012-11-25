@@ -153,7 +153,8 @@ class Compiler
             if (is_string($token)) {
                 $output .= $token;
             } elseif (in_array(
-                $token[ 0 ], array( T_COMMENT, T_DOC_COMMENT )
+                $token[ 0 ],
+                array( T_COMMENT, T_DOC_COMMENT)
             )
             ) {
                 $output .= str_repeat("\n", substr_count($token[ 1 ], "\n"));

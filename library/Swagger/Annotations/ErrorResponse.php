@@ -1,7 +1,9 @@
 <?php
+namespace Swagger\Annotations;
+
 /**
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +16,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * @package
+ * @category
+ * @subpackage
  */
 /**
+ * @package
+ * @category
+ * @subpackage
  *
- * @category Organic
- * @package Organic
- * @subpackage Model
+ * @Annotation
+ *
  */
-class Model_LeadResponder_RouteCollection
+class ErrorResponse extends AbstractAnnotation
 {
-
+    /**
+     * @var int
+     */
+    public $code;
+    /**
+     * @var string
+     */
+    public $reason;
 }
+

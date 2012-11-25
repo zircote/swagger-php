@@ -27,9 +27,9 @@ function includeIfExists($file)
     }
 }
 
-if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php')) &&
-    (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php')) &&
-    (!$loader = includeIfExists('vendor/autoload.php'))
+if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
+    && (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php'))
+    && (!$loader = includeIfExists('vendor/autoload.php'))
 ) {
     die(<<<'EOT'
 You must set up the project dependencies, run the following commands:
@@ -39,7 +39,7 @@ php composer.phar install
 EOT
     );
 }
-$shortopts = 'fp:ho:i:e:';
+$shortopts = 'fp:hvo:i:e:';
 
 $longopts = array(
     'project-dir:',
@@ -51,7 +51,15 @@ $longopts = array(
 $prettyPrint = false;
 try {
     $options = getopt($shortopts, $longopts);
-    if (isset($options[ 'h' ]) || isset($options[ 'help' ])) {
+
+    if (isset($options['v']) || isset($options['version'])) {
+        echo <<<EOF
+Swagger-PHP Version: 0.4.0
+
+EOF;
+        exit;
+    }
+    if (isset($options['h']) || isset($options['help'])) {
         echo <<<EOF
 
 Usage: swagger --project-path PATH [--output-path PATH]...
@@ -66,6 +74,7 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -o, --output-path     directory to store the generated json documents
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
+            -v, --version         Swagger-PHP version
 
 
 EOF;
@@ -81,69 +90,68 @@ EOF;
         }
         $excludePath = implode(':', $excludePaths);
     }
-    if ((isset($options['i']) && ($bootstrap = $options['i'])) ||
-        (isset($options[ 'include-path' ]) && ($bootstrap = $options[ 'include-path' ]))) {
+    if ((isset($options['i']) && ($bootstrap = $options['i']))
+        || (isset($options['include-path']) && ($bootstrap = $options['include-path']))
+    ) {
         /* @var  \Composer\Autoload\ClassLoader $loader */
-        foreach (explode(',',$bootstrap) as $incPath) {
+        foreach (explode(',', $bootstrap) as $incPath) {
             @list($namespace, $inclusionPath) = explode(':', $incPath);
-            $loader->add($namespace, array($inclusionPath ?: '.'));
+            $loader->add($namespace, array($inclusionPath ? : '.'));
+            if (!$inclusionPath && is_file($incPath)) {
+                require_once($incPath);
+            }
         }
     }
-    if (!isset($options[ 'p' ]) && !isset($options[ 'project-dir' ])) {
+    if (!isset($options['p']) && !isset($options['project-dir'])) {
         throw new RuntimeException('--project-dir must be provided');
     } else {
-        $projectPath = getcwd() . DIRECTORY_SEPARATOR;
-        if (isset($options[ 'project-dir' ]) &&
-            !empty($options[ 'project-dir' ])
+        if (isset($options['project-dir'])
+            && !empty($options['project-dir'])
         ) {
-            $projectPath .= $options[ 'project-dir' ];
+            $projectPath = $options['project-dir'];
         } else {
-            $projectPath .= $options[ 'p' ];
+            $projectPath = $options['p'];
         }
     }
     $outputPath = null;
-    if (!isset($options[ 'output-dir' ]) && !empty($options[ 'output-dir' ])) {
-        $outputPath .= $options[ 'output-dir' ] . DIRECTORY_SEPARATOR;
-    } elseif (isset($options[ 'o' ]) && !empty($options[ 'o' ])) {
-        $outputPath .= $options[ 'o' ] . DIRECTORY_SEPARATOR;
+    if (!isset($options['output-dir']) && !empty($options['output-dir'])) {
+        $outputPath .= $options['output-dir'] . DIRECTORY_SEPARATOR;
+    } elseif (isset($options['o']) && !empty($options['o'])) {
+        $outputPath .= $options['o'] . DIRECTORY_SEPARATOR;
     } else {
         $outputPath = getcwd() . DIRECTORY_SEPARATOR;
     }
-    if (isset($options[ 'f' ]) || isset($options[ 'format' ])) {
+    if (isset($options['f']) || isset($options['format'])) {
         $prettyPrint = true;
     }
-    $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
+    $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
     $resourceName = false;
+    $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
-        $output[ 'resources' ] =
-            $swagger->getResource($resourceName, $prettyPrint);
+        $json = $swagger->getResource($resourceName, $prettyPrint);
+        $resourceName = str_replace('/', null, $resourceName);
+        $output[$resourceName] = $json;
     }
-    if($resourceName){
-        $apis = $swagger->getApis($resourceName);
-        foreach ($apis as $name => $data) {
-            $output[ $name ] = $swagger->getApi($resourceName, $name, $prettyPrint);
-        }
+    if ($output) {
         if (file_exists($outputPath) && !is_dir($outputPath)) {
             throw new RuntimeException(
                 sprintf('[%s] is not a directory', $outputPath)
             );
         } else {
-            if (!file_exists($outputPath) && !mkdir($outputPath, 0777, true)) {
+            if (!file_exists($outputPath) && !mkdir($outputPath, '0755', true)) {
                 throw new RuntimeException(
                     sprintf('[%s] is not writeable', $outputPath)
                 );
             }
         }
         foreach ($output as $name => $json) {
-            $name = str_replace('.{format}', '', $name);
             echo $outputPath . $name . '.json created', PHP_EOL;
             file_put_contents($outputPath . $name . '.json', $json);
         }
     } else {
         echo 'no valid resources found', PHP_EOL;
     }
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     echo 'An Error has occured:', PHP_EOL;
     echo (string)$e->getMessage(), PHP_EOL;
 }

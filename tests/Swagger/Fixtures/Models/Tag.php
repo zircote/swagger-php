@@ -1,8 +1,9 @@
 <?php
+namespace SwaggerTests\Fixtures\Models;
+
 /**
- *
- * @license http://www.apache.org/licenses/LICENSE-2.0
- * Copyright [2012] [Robert Allen]
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ *             Copyright [2012] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +17,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
+ * @package
+ * @category
+ * @subpackage
  */
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
+use Swagger\Annotations\Property;
+use Swagger\Annotations\AllowableValues;
+use Swagger\Annotations\Model;
 
-
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+/**
+ * @package
+ * @category
+ * @subpackage
+ *
+ * @Model(id="Tag")
+ */
+class Tag
+{
+    /**
+     * @var int
+     * @Property(name="id",type="long")
+     */
+    protected $id;
+    /**
+     * @var string
+     *
+     * @Property(name="name",type="string")
+     */
+    protected $name;
+}
 

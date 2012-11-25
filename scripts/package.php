@@ -33,16 +33,17 @@ $outsideDir = realpath(dirname(dirname(__FILE__)));
 
 $version = trim(file_get_contents($outsideDir . '/VERSION'));
 
-$api_version     = $version;
-$api_state       = 'alpha';
+$api_version = $version;
+$api_state = 'alpha';
 
 $release_version = $version;
-$release_state   = 'alpha';
-$release_notes   = "This is an alpha release, see readme.md for examples.";
+$release_state = 'alpha';
+$release_notes = "This is an alpha release, see readme.md for examples.";
 
-$summary     = "A PHP library for swagger resource generation";
+$summary = "A PHP library for swagger resource generation";
 
-$description =<<<EOF
+$description
+    = <<<EOF
 Swagger-PHP library implementing the swagger.wordnik.com specification to describe
 web services, operations/actions and models enabling a uniform means of producing,
 consuming, and visualizing RESTful web services.
@@ -52,43 +53,43 @@ $package = new PEAR_PackageFileManager2();
 
 $package->setOptions(
     array(
-        'filelistgenerator'       => 'file',
-        'outputdirectory'         => dirname(dirname(__FILE__)),
-        'simpleoutput'            => true,
-        'baseinstalldir'          => '/',
-        'packagedirectory'        => $outsideDir,
-        'dir_roles'               => array(
-            'benchmarks'          => 'doc',
-            'bin'                 => 'script',
-            'examples'            => 'doc',
-            'library'             => 'php',
-            'library/Swagger'     => 'php',
-            'tests'               => 'test',
-        ),
-        'exceptions'              => array(
-            'CHANGELOG'           => 'doc',
-            'readme.md'           => 'doc',
-            'VERSION'             => 'doc',
-            'LICENSE-2.0.txt'     => 'doc',
-        ),
-        'ignore'                  => array(
-            'build/*',
-            'package.xml',
-            'build.xml',
-            'scripts/*',
-            '.git',
-            '.gitignore',
-            'tests/phpunit.xml',
-            'tests/build*',
-            '.project',
-            '.buildpath',
-            'releases',
-            '.settings',
-            'vendor/*',
-            '*.iml',
-            'composer.*',
-            '*.tgz'
-        )
+         'filelistgenerator' => 'file',
+         'outputdirectory' => dirname(dirname(__FILE__)),
+         'simpleoutput' => true,
+         'baseinstalldir' => '/',
+         'packagedirectory' => $outsideDir,
+         'dir_roles' => array(
+             'benchmarks' => 'doc',
+             'bin' => 'script',
+             'examples' => 'doc',
+             'library' => 'php',
+             'library/Swagger' => 'php',
+             'tests' => 'test',
+         ),
+         'exceptions' => array(
+             'CHANGELOG' => 'doc',
+             'readme.md' => 'doc',
+             'VERSION' => 'doc',
+             'LICENSE-2.0.txt' => 'doc',
+         ),
+         'ignore' => array(
+             'build/*',
+             'package.xml',
+             'build.xml',
+             'scripts/*',
+             '.git',
+             '.gitignore',
+             'tests/phpunit.xml',
+             'tests/build*',
+             '.project',
+             '.buildpath',
+             'releases',
+             '.settings',
+             'vendor/*',
+             '*.iml',
+             'composer.*',
+             '*.tgz'
+         )
     )
 );
 
@@ -113,10 +114,10 @@ $package->setAPIStability($api_state);
 
 $maintainers = array(
     array(
-        'name'  => 'Robert Allen',
-        'user'  => 'zircote',
+        'name' => 'Robert Allen',
+        'user' => 'zircote',
         'email' => 'zircote@gmail.com',
-        'role'  => 'lead',
+        'role' => 'lead',
     )
 );
 
@@ -169,7 +170,7 @@ $package->setPearInstallerDep('1.7.0');
 $package->generateContents();
 $package->addRelease();
 
-if (   isset($_GET['make'])
+if (isset($_GET['make'])
     || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')
 ) {
     $package->writePackageFile();

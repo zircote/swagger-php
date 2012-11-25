@@ -1,4 +1,6 @@
 <?php
+namespace Swagger\Annotations;
+
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  *             Copyright [2012] [Robert Allen]
@@ -15,41 +17,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category   Swagger
- * @package    Swagger
- * @subpackage Param
+ * @package
+ * @category
+ * @subpackage
  */
-namespace Swagger;
-use \Swagger\AbstractEntity;
-
 /**
+ * @package
+ * @category
+ * @subpackage
  *
- *
- *
- * @category   Swagger
- * @package    Swagger
- * @subpackage Param
+ * @Annotation
  */
-class Param extends AbstractEntity
+class Items extends AbstractAnnotation
 {
     /**
-     *
-     * @var array
-     */
-    public $results = array();
-    /**
-     *
      * @var string
      */
-    protected $_rawComment;
-
-    /**
-     *
-     * @param string $apiParam
-     */
-    public function __construct($apiParam)
-    {
-        $this->_rawComment = $apiParam;
-        $this->results     = $this->_parseParts($this->_rawComment);
-    }
+    public $type;
 }
+
