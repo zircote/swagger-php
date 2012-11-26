@@ -5,6 +5,11 @@ swagger-php
 
 [Documentation](http://zircote.com/swagger-php)
 
+Download:
+ - http://zircote.com/pear
+ - tarball: https://github.com/zircote/swagger-php/downloads
+ - Clone Via git: https://github.com/zircote/swagger-php.git
+
 Swagger-PHP is a PHP library that servers as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
 it makes extensive use of the [Doctine Common library](http://www.doctrine-project.org/projects/common.html) for
 annotations support and caching.

@@ -4,7 +4,7 @@
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Swagger</name>
- <channel>zircote.github.com/pear</channel>
+ <channel>zircote.com/pear</channel>
  <summary>A PHP library for swagger resource generation</summary>
  <description>Swagger-PHP library implementing the swagger.wordnik.com specification to describe
 web services, operations/actions and models enabling a uniform means of producing,
@@ -15,11 +15,11 @@ consuming, and visualizing RESTful web services.</description>
   <email>zircote@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2012-07-13</date>
- <time>20:10:16</time>
+ <date>2012-11-25</date>
+ <time>21:49:47</time>
  <version>
-  <release>0.3.1</release>
-  <api>0.3.1</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -36,34 +36,60 @@ This is an alpha release, see readme.md for examples.
    </dir> <!-- /bin -->
    <dir name="library">
     <dir name="Swagger">
-     <file baseinstalldir="/" name="AbstractEntity.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Api.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Model.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Models.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Operation.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Param.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Resource.php" role="php">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
+     <dir name="Annotations">
+      <file baseinstalldir="/" name="AbstractAnnotation.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="AllowableValues.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Api.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="ErrorResponse.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="ErrorResponses.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Items.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Model.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Operation.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Operations.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Parameter.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Parameters.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Property.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Resource.php" role="php">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /library/Swagger/Annotations -->
      <file baseinstalldir="/" name="Swagger.php" role="php">
       <tasks:replace from="@name@" to="name" type="package-info" />
       <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -71,66 +97,70 @@ This is an alpha release, see readme.md for examples.
     </dir> <!-- /library/Swagger -->
    </dir> <!-- /library -->
    <dir name="tests">
-    <dir name="fixtures">
-     <dir name="controllers">
-      <dir name="LeadResponder">
-       <file baseinstalldir="/" name="RoutesController.php" role="test">
-        <tasks:replace from="@name@" to="name" type="package-info" />
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="RoutesIdController.php" role="test">
-        <tasks:replace from="@name@" to="name" type="package-info" />
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir> <!-- /tests/fixtures/controllers/LeadResponder -->
-     </dir> <!-- /tests/fixtures/controllers -->
-     <dir name="models">
-      <dir name="LeadResponder">
-       <file baseinstalldir="/" name="Route.php" role="test">
-        <tasks:replace from="@name@" to="name" type="package-info" />
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="RouteCollection.php" role="test">
-        <tasks:replace from="@name@" to="name" type="package-info" />
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir> <!-- /tests/fixtures/models/LeadResponder -->
-     </dir> <!-- /tests/fixtures/models -->
-     <file baseinstalldir="/" name="pet.json" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="resources.json" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="user.json" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-    </dir> <!-- /tests/fixtures -->
     <dir name="Swagger">
-     <file baseinstalldir="/" name="ApiTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="ModelsTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="ModelTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="OperationTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="ParamTest.php" role="test">
-      <tasks:replace from="@name@" to="name" type="package-info" />
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="ResourceTest.php" role="test">
+     <dir name="Fixtures">
+      <dir name="Models">
+       <file baseinstalldir="/" name="Category.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Order.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Pet.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Sidekick.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Tag.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="User.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /tests/Swagger/Fixtures/Models -->
+      <dir name="Resources">
+       <file baseinstalldir="/" name="Pet.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Store.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="User.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /tests/Swagger/Fixtures/Resources -->
+      <file baseinstalldir="/" name="pet.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="resources.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="sidekick.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="store.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="user.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /tests/Swagger/Fixtures -->
+     <file baseinstalldir="/" name="SwaggerTest.php" role="test">
       <tasks:replace from="@name@" to="name" type="package-info" />
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -140,6 +170,20 @@ This is an alpha release, see readme.md for examples.
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir> <!-- /tests -->
+   <dir name="_static">
+    <file baseinstalldir="/" name="in_progress.png" role="data" />
+    <file baseinstalldir="/" name="pixel" role="data" />
+    <file baseinstalldir="/" name="pylons-latex.png" role="data" />
+    <file baseinstalldir="/" name="pylons-small.png" role="data" />
+    <file baseinstalldir="/" name="pylons.css" role="data" />
+    <file baseinstalldir="/" name="pylons.ico" role="data" />
+    <file baseinstalldir="/" name="pylons.png" role="data" />
+    <file baseinstalldir="/" name="pylonsfw-small.png" role="data" />
+    <file baseinstalldir="/" name="pyramid-latex.png" role="data" />
+    <file baseinstalldir="/" name="pyramid-small.png" role="data" />
+    <file baseinstalldir="/" name="pyramid.ico" role="data" />
+    <file baseinstalldir="/" name="pyramid.png" role="data" />
+   </dir> <!-- /_static -->
    <file baseinstalldir="/" name="CHANGELOG" role="doc" />
    <file baseinstalldir="/" name="LICENSE-2.0.txt" role="doc" />
    <file baseinstalldir="/" name="readme.md" role="doc" />
@@ -159,13 +203,19 @@ This is an alpha release, see readme.md for examples.
  </dependencies>
  <phprelease>
   <filelist>
-   <install as="Swagger/AbstractEntity.php" name="library/Swagger/AbstractEntity.php" />
-   <install as="Swagger/Api.php" name="library/Swagger/Api.php" />
-   <install as="Swagger/Model.php" name="library/Swagger/Model.php" />
-   <install as="Swagger/Models.php" name="library/Swagger/Models.php" />
-   <install as="Swagger/Operation.php" name="library/Swagger/Operation.php" />
-   <install as="Swagger/Param.php" name="library/Swagger/Param.php" />
-   <install as="Swagger/Resource.php" name="library/Swagger/Resource.php" />
+   <install as="Swagger/Annotations/AbstractAnnotation.php" name="library/Swagger/Annotations/AbstractAnnotation.php" />
+   <install as="Swagger/Annotations/AllowableValues.php" name="library/Swagger/Annotations/AllowableValues.php" />
+   <install as="Swagger/Annotations/Api.php" name="library/Swagger/Annotations/Api.php" />
+   <install as="Swagger/Annotations/ErrorResponse.php" name="library/Swagger/Annotations/ErrorResponse.php" />
+   <install as="Swagger/Annotations/ErrorResponses.php" name="library/Swagger/Annotations/ErrorResponses.php" />
+   <install as="Swagger/Annotations/Items.php" name="library/Swagger/Annotations/Items.php" />
+   <install as="Swagger/Annotations/Model.php" name="library/Swagger/Annotations/Model.php" />
+   <install as="Swagger/Annotations/Operation.php" name="library/Swagger/Annotations/Operation.php" />
+   <install as="Swagger/Annotations/Operations.php" name="library/Swagger/Annotations/Operations.php" />
+   <install as="Swagger/Annotations/Parameter.php" name="library/Swagger/Annotations/Parameter.php" />
+   <install as="Swagger/Annotations/Parameters.php" name="library/Swagger/Annotations/Parameters.php" />
+   <install as="Swagger/Annotations/Property.php" name="library/Swagger/Annotations/Property.php" />
+   <install as="Swagger/Annotations/Resource.php" name="library/Swagger/Annotations/Resource.php" />
    <install as="Swagger/Swagger.php" name="library/Swagger/Swagger.php" />
   </filelist>
  </phprelease>
@@ -173,14 +223,14 @@ This is an alpha release, see readme.md for examples.
  <changelog>
   <release>
    <version>
-    <release>0.3.1</release>
-    <api>0.3.1</api>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2012-07-13</date>
+   <date>2012-11-25</date>
    <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
    <notes>
 This is an alpha release, see readme.md for examples.

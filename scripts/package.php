@@ -96,7 +96,7 @@ $package->setOptions(
 $package->setPackage('Swagger');
 $package->setSummary($summary);
 $package->setDescription($description);
-$package->setChannel('zircote.github.com/pear');
+$package->setChannel('zircote.com/pear');
 $package->setPackageType('php');
 $package->setLicense(
     'Apache 2.0',
