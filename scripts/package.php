@@ -44,9 +44,31 @@ $summary = "A PHP library for swagger resource generation";
 
 $description
     = <<<EOF
-Swagger-PHP library implementing the swagger.wordnik.com specification to describe
-web services, operations/actions and models enabling a uniform means of producing,
-consuming, and visualizing RESTful web services.
+Swagger-PHP is a PHP library that servers as an annotations toolkit to produce Swagger Doc it makes extensive use of the Doctine Common library for annotations support and caching.
+
+Download:
+ - http://zircote.com/pear
+ - tarball: https://github.com/zircote/swagger-php/downloads
+ - Clone Via git: https://github.com/zircote/swagger-php.git
+
+
+Documentation http://zircote.com/swagger-php
+
+To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and submit a pull request. Documentation resides within the gh-pages branch.
+
+To report issues, ask questions please feel free to submit to Github Isses
+
+Features:
+ - Fully compatible with the full swagger documented proposal.
+ - Cacheing layer using the \Doctrine\Common\Cache library
+ - Full project discovery
+ - standalone CLI phar implementation
+ - Free
+
+More on Swagger:
+ - http://swagger.wordnik.com/
+ - https://github.com/wordnik/swagger-core/wiki
+ - https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
 EOF;
 
 $package = new PEAR_PackageFileManager2();
