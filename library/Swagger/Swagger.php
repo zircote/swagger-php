@@ -224,6 +224,7 @@ class Swagger implements \Serializable
             }
 
         }
+        ksort($registry, SORT_ASC);
         $this->registry = $registry;
         if ($this->getCache()) {
             $this->getCache()->save($this->cacheKey, $this->serialize());
