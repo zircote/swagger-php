@@ -2,6 +2,36 @@
 Annotations
 ******************
 
+Important Notes:
+--------------------
+
+.. warning:: Any annotation you intend to implement in your resources and or models must be declared with a ``use`` statement. The ``use`` statement does not require a namespace be declared.
+
+.. code-block:: php
+
+    <?php
+
+    use Swagger\Annotations\Property;
+    use Swagger\Annotations\AllowableValues;
+    use Swagger\Annotations\Model;
+    use Swagger\Annotations\Items;
+
+    /**
+     *
+     * @Model(id="Pet")
+     */
+    class Pet
+    {
+        /**
+         * @var array<Tags>
+         *
+         * @Property(name="tags",type="array", @items="$ref:Tag")
+         */
+        protected $tags = array();
+    }
+
+
+
 Annotation Hierarchy
 *********************
 
@@ -47,6 +77,8 @@ Types Supported: ``LIST`` || ``RANGE``
 
 .. code-block:: php
 
+    use Swagger\Annotations\AllowableValues;
+
     /**
      * @allowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
      *
@@ -84,6 +116,14 @@ Api
 **Example Annotations**
 
 .. code-block:: php
+
+    use Swagger\Annotations\Api;
+    use Swagger\Annotations\Operations;
+    use Swagger\Annotations\Operation;
+    use Swagger\Annotations\Parameters;
+    use Swagger\Annotations\Parameter;
+    use Swagger\Annotations\ErrorResponses;
+    use Swagger\Annotations\ErrorResponse;
 
     /**
      *
@@ -126,6 +166,8 @@ ErrorResponse
 
 .. code-block:: php
 
+    use Swagger\Annotations\ErrorResponse;
+
     /**
      * @errorResponse(code="404", reason="Pet not found")
      */
@@ -160,6 +202,9 @@ ErrorResponses
 
 .. code-block:: php
 
+    use Swagger\Annotations\ErrorReponses;
+    use Swagger\Annotations\ErrorResponse;
+
     /**
      * @errorResponses(@errorResponse(...)[ @errorResponse(...), ])
      */
@@ -188,6 +233,9 @@ Items
 **Example Annotations**
 
 .. code-block:: php
+
+    use Swagger\Annotations\Property;
+    use Swagger\Annotations\Items;
 
     class Pet
     {
@@ -253,6 +301,8 @@ Model
 
 .. code-block:: php
 
+    use Swagger\Annotations\Model;
+
     /**
      * @Model(id="Pet")
      */
@@ -293,6 +343,8 @@ Operation
 
 .. code-block:: php
 
+    use Swagger\Annotations\Operations;
+
     /**
      * @operation(
      *     httpMethod="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
@@ -331,6 +383,9 @@ A container of one or more `Operation`_ s
 
 .. code-block:: php
 
+    use Swagger\Annotations\Operations;
+    use Swagger\Annotations\Operation;
+
     /**
      * @operations(@operation()[, @operation()])
      */
@@ -362,6 +417,8 @@ Parameter
 **Example Annotations**
 
 .. code-block:: php
+
+    use Swagger\Annotations\Parameter;
 
     /**
      * @parameter(
@@ -404,6 +461,9 @@ A colleciton of one or more `Parameter`_ s
 
 .. code-block:: php
 
+    use Swagger\Annotations\Parameters;
+    use Swagger\Annotations\Parameter;
+
     /**
      * @parameters(@parameter()[, @parameter()])
      */
@@ -431,6 +491,9 @@ Property
 **Example Annotations**
 
 .. code-block:: php
+
+    use Swagger\Annotations\Property;
+    use Swagger\Annotations\AllowableValues;
 
     /**
      * @Property(name="category",type="Category")
@@ -478,6 +541,8 @@ Resource
 **Example Annotations**
 
 .. code-block:: php
+
+    use Swagger\Annotations\Resource;
 
     /**
      * @Resource(

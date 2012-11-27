@@ -55,8 +55,36 @@
             
   <div class="section" id="annotations">
 <h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="important-notes">
+<h2>Important Notes:<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Any annotation you intend to implement in your resources and or models must be declared with a <tt class="docutils literal"><span class="pre">use</span></tt> statement. The <tt class="docutils literal"><span class="pre">use</span></tt> statement does not require a namespace be declared.</p>
+</div>
+<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Model</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Items</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> *</span>
+<span class="sd"> * @Model(id=&quot;Pet&quot;)</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Pet</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @var array&lt;Tags&gt;</span>
+<span class="sd">     *</span>
+<span class="sd">     * @Property(name=&quot;tags&quot;,type=&quot;array&quot;, @items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="section" id="annotation-hierarchy">
-<h2>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h2>
+<h3>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-text"><div class="highlight"><pre>- ``@Resource``
    -``Api``
      - ``@Operations``
@@ -74,7 +102,7 @@
 </div>
 </div>
 <div class="section" id="allowablevalues">
-<h2>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h2>
+<h3>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions the exists within an <a class="reference internal" href="#operation">Operation</a> definition or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation with in models.</p>
@@ -97,7 +125,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">max</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @allowableValues(valueType=&quot;LIST&quot;,values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;)</span>
 <span class="sd"> *</span>
 <span class="sd"> * @allowableValues(valueType=&quot;RANGE&quot;,min=&quot;0&quot;, max=&quot;5&quot;)</span>
@@ -127,7 +157,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="api">
-<h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<h3>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">Path</span></tt></li>
@@ -135,7 +165,15 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><a class="reference internal" href="#operations">Operations</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Api</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Operations</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Operation</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameters</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameter</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponses</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponse</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> *</span>
 <span class="sd"> * @Api(</span>
 <span class="sd"> *   path=&quot;/pet.{format}/{petId}&quot;,</span>
@@ -169,14 +207,16 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="errorresponse">
-<h2>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h2>
+<h3>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">code</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">reason</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponse</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @errorResponse(code=&quot;404&quot;, reason=&quot;Pet not found&quot;)</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -203,13 +243,16 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="errorresponses">
-<h2>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h2>
+<h3>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorReponses</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\ErrorResponse</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @errorResponses(@errorResponse(...)[ @errorResponse(...), ])</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -230,7 +273,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="items">
-<h2>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h2>
+<h3>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <tt class="docutils literal"><span class="pre">Items</span></tt> annotation defines an array type i.e. an array of integers, strings or <tt class="docutils literal"><span class="pre">$ref</span></tt> to another model type. References are defined with a <strong>$ref:</strong> preamble followed by the model ID name as defined within a <a class="reference internal" href="#model">Model</a> annotation. The <tt class="docutils literal"><span class="pre">&#64;Items</span></tt> annotation resides within a <a class="reference internal" href="#property">Property</a> declaration.</p>
@@ -240,7 +283,10 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">Type</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Pet</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Items</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
 <span class="sd">     * @Property(name=&quot;tags&quot;,type=&quot;array&quot;, @items=&quot;$ref:Tag&quot;)</span>
@@ -297,13 +343,15 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">id</span></tt> the formal name of the Model being described.</li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Model</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @Model(id=&quot;Pet&quot;)</span>
 <span class="sd"> */</span>
  <span class="k">class</span> <span class="nc">Pet</span>
@@ -329,7 +377,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="operation">
-<h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
+<h3>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">httpMethod</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
@@ -343,7 +391,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Operations</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @operation(</span>
 <span class="sd"> *     httpMethod=&quot;GET&quot;, summary=&quot;Find pet by ID&quot;, notes=&quot;Returns a pet based on ID&quot;,</span>
 <span class="sd"> *     responseClass=&quot;Pet&quot;, nickname=&quot;getPetById&quot;</span>
@@ -371,14 +421,17 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="operations">
-<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<h3>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h3>
 <p>A container of one or more <a class="reference internal" href="#operation">Operation</a> s</p>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><a class="reference internal" href="#operation">Operation</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Operations</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Operation</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @operations(@operation()[, @operation()])</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -398,7 +451,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="parameter">
-<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
+<h3>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">name</span></tt></li>
@@ -410,7 +463,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Parameter</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @parameter(</span>
 <span class="sd"> *           name=&quot;petId&quot;,</span>
 <span class="sd"> *           description=&quot;ID of pet that needs to be fetched&quot;,</span>
@@ -441,14 +496,17 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
 <p>A colleciton of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><a class="reference internal" href="#parameter">Parameter</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Parameters</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\Parameter</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @parameters(@parameter()[, @parameter()])</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -465,7 +523,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="property">
-<h2>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h2>
+<h3>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">name</span></tt></li>
@@ -474,7 +532,10 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><a class="reference internal" href="#items">Items</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Property</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Swagger\Annotations\AllowableValues</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @Property(name=&quot;category&quot;,type=&quot;Category&quot;)</span>
 <span class="sd"> */</span>
  <span class="k">public</span> <span class="nv">$category</span><span class="p">;</span>
@@ -512,7 +573,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="resource">
-<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<h3>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h3>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">apiVersion</span></tt> the version this api is being rendered as</li>
@@ -521,7 +582,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">basePath</span></tt> the service root HTTP URI path</li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations\Resource</span><span class="p">;</span>
+
+<span class="sd">/**</span>
 <span class="sd"> * @Resource(</span>
 <span class="sd"> *     apiVersion=&quot;0.2&quot;,</span>
 <span class="sd"> *     swaggerVersion=&quot;1.1&quot;,</span>
@@ -551,6 +614,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -561,6 +625,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
+<li><a class="reference internal" href="#important-notes">Important Notes:</a><ul>
 <li><a class="reference internal" href="#annotation-hierarchy">Annotation Hierarchy</a></li>
 <li><a class="reference internal" href="#allowablevalues">AllowableValues</a></li>
 <li><a class="reference internal" href="#api">Api</a></li>
@@ -574,6 +639,8 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 <li><a class="reference internal" href="#property">Property</a></li>
 <li><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
