@@ -151,14 +151,19 @@ class Swagger implements \Serializable
         foreach ($this->classList as $class) {
             $result = $this->getClassAnnotations($class);
             if ($result) {
-                $this->registry[$result['resourcePath']] = $result;
+                $this->addRegistryAnnotations($result);
             }
         }
         foreach ($this->registry as $res) {
             foreach ($res['apis'] as $apis) {
-                $apis = array_pop($apis);
-                $op = array_pop($apis['operations'])->toArray();
-                $result[$apis['path']][] = $op;
+                if (empty($apis) ) {
+                    unset($this->registry[$i]['apis'][$j]);
+                }
+                else {
+                    $apis = array_pop($apis);
+                    $op = array_pop($apis['operations'])->toArray();
+                    $result[$apis['path']][] = $op;
+                }
             }
         }
         foreach ($this->registry as $index => $resource) {
@@ -673,6 +678,22 @@ class Swagger implements \Serializable
         $this->path = $data['path'];
         $this->excludePath = $data['excludePath'];
         return $this;
+    }
+
+    /**
+     * Enable to define several ressources for the same registry
+     * @param array $result Registry Annotation Discover
+     */
+    protected function addRegistryAnnotations($result)
+    {
+        if (array_key_exists($result['resourcePath'], $this->registry) ) {
+            foreach ($result['apis'] as $operation) {
+                $this->registry[$result['resourcePath']]['apis'][] = $operation;
+            }
+        }
+        else {
+            $this->registry[$result['resourcePath']] = $result;
+        }
     }
 }
 
