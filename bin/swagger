@@ -129,7 +129,7 @@ EOF;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
         $json = $swagger->getResource($resourceName, $prettyPrint);
-        $resourceName = str_replace('/', null, $resourceName);
+        $resourceName = str_replace('/', '-', ltrim($resourceName, '/'));
         $output[$resourceName] = $json;
     }
     if ($output) {
