@@ -154,8 +154,8 @@ class Swagger implements \Serializable
                 $this->addRegistryAnnotations($result);
             }
         }
-        foreach ($this->registry as $res) {
-            foreach ($res['apis'] as $apis) {
+        foreach ($this->registry as $i => $res) {
+            foreach ($res['apis'] as $j => $apis) {
                 if (empty($apis) ) {
                     unset($this->registry[$i]['apis'][$j]);
                 }
