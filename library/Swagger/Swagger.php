@@ -293,8 +293,10 @@ class Swagger implements \Serializable
     {
         $result = array();
         /* @var \Swagger\Annotations\AbstractAnnotation $property */
-        foreach ($this->reader->getPropertyAnnotations($property) as $property) {
-            array_push($result, $property->toArray());
+        foreach ($this->reader->getPropertyAnnotations($property) as $property) {            
+            if ($property instanceof \Swagger\Annotations\Property) {
+                array_push($result, $property->toArray());
+            }
         }
         return $result;
     }
