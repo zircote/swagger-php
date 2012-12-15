@@ -144,6 +144,9 @@ EOF;
                 );
             }
         }
+        if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($prettyPrint))) {
+            echo $outputPath . 'api-docs.json created', PHP_EOL;
+        }
         foreach ($output as $name => $json) {
             echo $outputPath . $name . '.json created', PHP_EOL;
             file_put_contents($outputPath . $name . '.json', $json);

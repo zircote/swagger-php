@@ -1,0 +1,55 @@
+{
+    "apiVersion":"0.2",
+    "swaggerVersion":"1.1",
+    "basePath":"http://petstore.swagger.wordnik.com/api",
+    "apis":[
+        {
+            "path":"/pet.{format}/{petId}",
+            "description":"Operations about pets"
+        },
+        {
+            "path":"/pet.{format}",
+            "description":"Operations about pets"
+        },
+        {
+            "path":"/pet.{format}/findByStatus",
+            "description":"Operations about pets"
+        },
+        {
+            "path":"/pet.{format}/findByTags",
+            "description":"Operations about pets"
+        },
+        {
+            "path":"/store.{format}/order/{orderId}",
+            "description":"Operations about store"
+        },
+        {
+            "path":"/store.{format}/order",
+            "description":"Operations about store"
+        },
+        {
+            "path":"/user.{format}/createWithArray",
+            "description":"Operations about user"
+        },
+        {
+            "path":"/user.{format}",
+            "description":"Operations about user"
+        },
+        {
+            "path":"/user.{format}/createWithList",
+            "description":"Operations about user"
+        },
+        {
+            "path":"/user.{format}/{username}",
+            "description":"Operations about user"
+        },
+        {
+            "path":"/user.{format}/login",
+            "description":"Operations about user"
+        },
+        {
+            "path":"/user.{format}/logout",
+            "description":"Operations about user"
+        }
+    ]
+}
