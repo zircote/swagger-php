@@ -135,7 +135,9 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures1';
         $swagger = Swagger::discover($path);
-        print_r($swagger->registry['/facet']['models']);
+        $expected = json_decode(file_get_contents($path . '/facet.json'), true);
+        $this->assertEquals($expected, $swagger->registry['/facet']);
+        
     }
 }
 

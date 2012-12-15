@@ -14,7 +14,7 @@ use Swagger\Annotations as SWG;
  *  apiVersion="0.2",
  *  swaggerVersion="1.1",
  *  resourcePath="/facet",
- *  basePath="http://facetstore.swagger.wordnik.com/api"
+ *  basePath="http://facetstore.zircote.com/swagger-php/api"
  * )
  */
 class FacetResource

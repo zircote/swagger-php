@@ -24,8 +24,10 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\CacheProvider;
+use Doctrine\Common\Cache\ArrayCache;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
+use Swagger\Annotations\Property;
 
 /**
  * @category   Swagger
@@ -82,7 +84,7 @@ class Swagger implements \Serializable
     public function __construct($path = null, $excludePath = null, CacheProvider $cache = null)
     {
         if (null == $cache) {
-            $this->setCache(new \Doctrine\Common\Cache\ArrayCache());
+            $this->setCache(new ArrayCache());
         } else {
             $this->setCache($cache);
         }
@@ -197,24 +199,7 @@ class Swagger implements \Serializable
                         }
                     }
                 }
-                foreach ($models as $v) {
-                    $type = false;
-                    foreach ($this->models[$v]['properties'] as $property) {
-                        if ($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))
-                        ) {
-                            if (isset($property['items']['$ref'])) {
-                                $type = $property['items']['$ref'];
-                            }
-                        } else {
-                            $type = $property['type'];
-                        }
-                        if ($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))) {
-                            if (array_key_exists($type, $this->models)) {
-                                array_push($models, $type);
-                            }
-                        }
-                    }
-                }
+                $models = array_merge($models, $this->parseModels($models));
                 $registry[$index]['apis'][$api['path']][] = $api;
                 foreach (array_unique($models) as $model) {
                     $registry[$index]['models'][$model] = $this->models[$model];
@@ -236,6 +221,34 @@ class Swagger implements \Serializable
         return $this;
     }
 
+    /**
+     * @param $input
+     * @return array
+     */
+    protected function parseModels($input)
+    {
+        $models = array();
+        foreach ($input as $v) {
+            $type = false;
+            foreach ($this->models[$v]['properties'] as $property) {
+                if ($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))
+                ) {
+                    if (isset($property['items']['$ref'])) {
+                        $type = $property['items']['$ref'];
+                    }
+                } else {
+                    $type = $property['type'];
+                }
+                if ($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))) {
+                    if (array_key_exists($type, $this->models) && !in_array($type, $models)) {
+                        array_push($models, $type);
+                        $models = array_merge($models, $this->parseModels($models));
+                    }
+                }
+            }
+        }
+        return $models;
+    }
     /**
      * @param \ReflectionClass $class
      *
@@ -292,8 +305,8 @@ class Swagger implements \Serializable
     {
         $result = array();
         /* @var \Swagger\Annotations\AbstractAnnotation $property */
-        foreach ($this->reader->getPropertyAnnotations($property) as $property) {            
-            if ($property instanceof \Swagger\Annotations\Property) {
+        foreach ($this->reader->getPropertyAnnotations($property) as $property) {
+            if ($property instanceof Property) {
                 array_push($result, $property->toArray());
             }
         }
