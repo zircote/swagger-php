@@ -52,7 +52,10 @@ class Swagger implements \Serializable
      * @var array
      */
     protected $classList = array();
-
+    /**
+     * @var array
+     */
+    public $resourceList = array();
     /**
      * @var array
      */
@@ -454,6 +457,37 @@ class Swagger implements \Serializable
         }
         $this->discoverClassAnnotations();
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResourceList($prettyPrint = true)
+    {
+        if ($this->registry) {
+            $result = array();
+            foreach ($this->registry as $val) {
+                if (!$result) {
+                    $result = array(
+                        'apiVersion' => $val['apiVersion'],
+                        'swaggerVersion' => $val['swaggerVersion'],
+                        'basePath' => $val['basePath'],
+                        'apis' => array()
+                    );
+                }
+                foreach ($val['apis'] as $v) {
+                    if (isset($v['path'])) {
+                        $api['path'] = $v['path'];
+                    }
+                    if (isset($api['path']) && isset($v['description'])) {
+                        $api['description'] = $v['description'];
+                    }
+                    array_push($result['apis'], $api);
+                }
+            }
+            $this->resourceList = $result;
+        }
+        return $this->jsonEncode($this->resourceList, $prettyPrint);
     }
 
     /**
