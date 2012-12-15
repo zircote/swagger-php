@@ -127,5 +127,19 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($swagger->models, $swag1->models);
         $this->assertEquals($swagger->registry['/user'], $swag1->registry['/user']);
     }
+
+    /**
+     * @group listing
+     */
+    public function testResourcelist()
+    {
+        
+        $path = __DIR__ . '/Fixtures';
+        $swagger = Swagger::discover($path);
+        $this->assertEquals(
+            json_decode(file_get_contents($path . '/api-docs.json'), true),
+            json_decode($swagger->getResourceList(), true)
+        );
+    }
 }
 
