@@ -127,5 +127,15 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($swagger->models, $swag1->models);
         $this->assertEquals($swagger->registry['/user'], $swag1->registry['/user']);
     }
+
+    /**
+     * @group Facets
+     */
+    public function testFacets()
+    {
+        $path = __DIR__ . '/Fixtures1';
+        $swagger = Swagger::discover($path);
+        print_r($swagger->registry['/facet']['models']);
+    }
 }
 

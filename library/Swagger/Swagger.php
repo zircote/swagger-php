@@ -23,7 +23,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\Reader;
-use \Doctrine\Common\Cache\CacheProvider;
+use Doctrine\Common\Cache\CacheProvider;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
 
@@ -158,8 +158,7 @@ class Swagger implements \Serializable
             foreach ($res['apis'] as $j => $apis) {
                 if (empty($apis) ) {
                     unset($this->registry[$i]['apis'][$j]);
-                }
-                else {
+                } else {
                     $apis = array_pop($apis);
                     $op = array_pop($apis['operations'])->toArray();
                     $result[$apis['path']][] = $op;
