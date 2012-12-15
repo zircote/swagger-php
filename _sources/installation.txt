@@ -40,9 +40,7 @@ such as:
     <?php
     namespace Tardis\Models;
 
-    use Swagger\Annotations\Property;
-    use Swagger\Annotations\AllowableValues;
-    use Swagger\Annotations\Model;
+    use Swagger\Annotations as SWG;
 
     class Sidekick
     {

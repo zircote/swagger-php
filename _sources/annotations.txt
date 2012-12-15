@@ -11,21 +11,18 @@ Important Notes:
 
     <?php
 
-    use Swagger\Annotations\Property;
-    use Swagger\Annotations\AllowableValues;
-    use Swagger\Annotations\Model;
-    use Swagger\Annotations\Items;
+    use Swagger\Annotations as SWG;
 
     /**
      *
-     * @Model(id="Pet")
+     * @SWG\Model(id="Pet")
      */
     class Pet
     {
         /**
          * @var array<Tags>
          *
-         * @Property(name="tags",type="array", @items="$ref:Tag")
+         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
          */
         protected $tags = array();
     }
@@ -37,19 +34,19 @@ Annotation Hierarchy
 
 .. code-block:: text
 
- - ``@Resource``
+ - ``@SWG\Resource``
     -``Api``
-      - ``@Operations``
-        - ``@Operation``
-          - ``@ErrorResponses``
-            - ``@ErrorResponse``
-          - ``@Parameters``
-            - ``@Parameter``
-              - ``@AllowableValues``
- - ``@Model``
-   - ``@Property``
-     - ``@AllowableValues``
-     - ``@Items``
+      - ``@SWG\Operations``
+        - ``@SWG\Operation``
+          - ``@SWG\ErrorResponses``
+            - ``@SWG\ErrorResponse``
+          - ``@SWG\Parameters``
+            - ``@SWG\Parameter``
+              - ``@SWG\AllowableValues``
+ - ``@SWG\Model``
+   - ``@SWG\Property``
+     - ``@SWG\AllowableValues``
+     - ``@SWG\Items``
 
 
 AllowableValues
@@ -77,12 +74,12 @@ Types Supported: ``LIST`` || ``RANGE``
 
 .. code-block:: php
 
-    use Swagger\Annotations\AllowableValues;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @allowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
+     * @SWG\allowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
      *
-     * @allowableValues(valueType="RANGE",min="0", max="5")
+     * @SWG\allowableValues(valueType="RANGE",min="0", max="5")
      */
 
 **Derived JSON**
@@ -117,22 +114,16 @@ Api
 
 .. code-block:: php
 
-    use Swagger\Annotations\Api;
-    use Swagger\Annotations\Operations;
-    use Swagger\Annotations\Operation;
-    use Swagger\Annotations\Parameters;
-    use Swagger\Annotations\Parameter;
-    use Swagger\Annotations\ErrorResponses;
-    use Swagger\Annotations\ErrorResponse;
+    use Swagger\Annotations as SWG;
 
     /**
      *
-     * @Api(
+     * @SWG\Api(
      *   path="/pet.{format}/{petId}",
      *   description="Operations about pets",
-     *   @operations(@operation(@parameters(@parameter(...)),
-     *       @errorResponses(
-     *          @errorResponse(@errorResponse(...)
+     *   @SWG\operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),
+     *       @SWG\errorResponses(
+     *          @SWG\errorResponse(@SWG\errorResponse(...)
      *       )
      *     )
      *   )
@@ -166,10 +157,10 @@ ErrorResponse
 
 .. code-block:: php
 
-    use Swagger\Annotations\ErrorResponse;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @errorResponse(code="404", reason="Pet not found")
+     * @SWG\errorResponse(code="404", reason="Pet not found")
      */
 
 **Derived JSON**
@@ -202,11 +193,10 @@ ErrorResponses
 
 .. code-block:: php
 
-    use Swagger\Annotations\ErrorReponses;
-    use Swagger\Annotations\ErrorResponse;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @errorResponses(@errorResponse(...)[ @errorResponse(...), ])
+     * @SWG\errorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])
      */
 
 **Derived JSON**
@@ -224,7 +214,7 @@ ErrorResponses
 Items
 ******************
 
-.. note:: The ``Items`` annotation defines an array type i.e. an array of integers, strings or ``$ref`` to another model type. References are defined with a **$ref:** preamble followed by the model ID name as defined within a `Model`_ annotation. The ``@Items`` annotation resides within a `Property`_ declaration.
+.. note:: The ``Items`` annotation defines an array type i.e. an array of integers, strings or ``$ref`` to another model type. References are defined with a **$ref:** preamble followed by the model ID name as defined within a `Model`_ annotation. The ``@SWG\Items`` annotation resides within a `Property`_ declaration.
 
 **Attributes**
 
@@ -234,18 +224,17 @@ Items
 
 .. code-block:: php
 
-    use Swagger\Annotations\Property;
-    use Swagger\Annotations\Items;
+    use Swagger\Annotations as SWG;
 
     class Pet
     {
         /**
-         * @Property(name="tags",type="array", @items="$ref:Tag")
+         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
          */
         protected $tags = array();
 
         /**
-         * @Property(name="photoUrls",type="array", @items(type="string"))
+         * @SWG\Property(name="photoUrls",type="array", @SWG\Items(type="string"))
          */
         protected $photoUrls = array();
     }
@@ -301,10 +290,10 @@ Model
 
 .. code-block:: php
 
-    use Swagger\Annotations\Model;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @Model(id="Pet")
+     * @SWG\Model(id="Pet")
      */
      class Pet
      {
@@ -343,10 +332,10 @@ Operation
 
 .. code-block:: php
 
-    use Swagger\Annotations\Operations;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @operation(
+     * @SWG\Operation(
      *     httpMethod="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
      *     responseClass="Pet", nickname="getPetById"
      * )
@@ -383,11 +372,10 @@ A container of one or more `Operation`_ s
 
 .. code-block:: php
 
-    use Swagger\Annotations\Operations;
-    use Swagger\Annotations\Operation;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @operations(@operation()[, @operation()])
+     * @SWG\Operations(@SWG\Operation()[, @SWG\Operation()])
      */
 
 **Derived JSON**
@@ -418,10 +406,10 @@ Parameter
 
 .. code-block:: php
 
-    use Swagger\Annotations\Parameter;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @parameter(
+     * @SWG\Parameter(
      *           name="petId",
      *           description="ID of pet that needs to be fetched",
      *           paramType="path",
@@ -461,11 +449,10 @@ A colleciton of one or more `Parameter`_ s
 
 .. code-block:: php
 
-    use Swagger\Annotations\Parameters;
-    use Swagger\Annotations\Parameter;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @parameters(@parameter()[, @parameter()])
+     * @SWG\Parameters(@SWG\Parameter()[, @SWG\Parameter()])
      */
 
 **Derived JSON**
@@ -492,16 +479,15 @@ Property
 
 .. code-block:: php
 
-    use Swagger\Annotations\Property;
-    use Swagger\Annotations\AllowableValues;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @Property(name="category",type="Category")
+     * @SWG\Property(name="category",type="Category")
      */
      public $category;
-     * @Property(
+     * @SWG\Property(
      *      name="status",type="string",
-     *      @allowableValues(
+     *      @SWG\AllowableValues(
      *          valueType="LIST",
      *          values="['available', 'pending', 'sold']"
      *      ),
@@ -542,10 +528,10 @@ Resource
 
 .. code-block:: php
 
-    use Swagger\Annotations\Resource;
+    use Swagger\Annotations as SWG;
 
     /**
-     * @Resource(
+     * @SWG\Resource(
      *     apiVersion="0.2",
      *     swaggerVersion="1.1",
      *     resourcePath="/pet",
