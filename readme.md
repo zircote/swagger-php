@@ -1,7 +1,8 @@
 swagger-php
 ============
 
-[![Build Status](https://secure.travis-ci.org/zircote/swagger-php.png)](http://travis-ci.org/zircote/swagger-php)
+ - [![Master Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
+ - [![0.5.0 Development Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=0.5.0)](http://travis-ci.org/zircote/swagger-php) `0.5.0-dev`
 
 [Documentation](http://zircote.com/swagger-php)
 
@@ -22,7 +23,7 @@ annotations support and caching.
 Features
 -------------------
  - Fully compatible with the full swagger documented proposal.
- - Cacheing layer using the `\Doctrine\Common\Cache` library
+ - Caching layer using the `\Doctrine\Common\Cache` library
  - Full project discovery
  - standalone CLI phar implementation
  - Free
