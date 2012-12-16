@@ -34,42 +34,16 @@ $outsideDir = realpath(dirname(dirname(__FILE__)));
 $version = trim(file_get_contents($outsideDir . '/VERSION'));
 
 $api_version = $version;
-$api_state = 'alpha';
+$api_state = 'beta';
 
 $release_version = $version;
-$release_state = 'alpha';
+$release_state = 'beta';
 $release_notes = "This is an alpha release, see readme.md for examples.";
 
 $summary = "A PHP library for swagger resource generation";
 
-$description
-    = <<<EOF
-Swagger-PHP is a PHP library that servers as an annotations toolkit to produce Swagger Doc it makes extensive use of the Doctine Common library for annotations support and caching.
-
-Download:
- - http://zircote.com/pear
- - tarball: https://github.com/zircote/swagger-php/downloads
- - Clone Via git: https://github.com/zircote/swagger-php.git
-
-
-Documentation http://zircote.com/swagger-php
-
-To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and submit a pull request. Documentation resides within the gh-pages branch.
-
-To report issues, ask questions please feel free to submit to Github Isses
-
-Features:
- - Fully compatible with the full swagger documented proposal.
- - Cacheing layer using the \Doctrine\Common\Cache library
- - Full project discovery
- - standalone CLI phar implementation
- - Free
-
-More on Swagger:
- - http://swagger.wordnik.com/
- - https://github.com/wordnik/swagger-core/wiki
- - https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
-EOF;
+$readme = dirname(__DIR__) . '/readme.md';
+$description = file_get_contents($readme);
 
 $package = new PEAR_PackageFileManager2();
 
@@ -189,12 +163,14 @@ foreach ($files as $file) {
 $package->setPhpDep('5.3.3');
 
 $package->setPearInstallerDep('1.7.0');
+
+$package->addPackageDepWithChannel('required', 'DoctrineCommon', 'pear.doctrine-project.org');
+$package->addPackageDepWithChannel('optional', 'symfony', 'pear.symfony-project.com');
+
 $package->generateContents();
 $package->addRelease();
 
-if (isset($_GET['make'])
-    || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')
-) {
+if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
     $package->writePackageFile();
 } else {
     $package->debugPackageFile();

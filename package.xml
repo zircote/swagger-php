@@ -6,46 +6,57 @@
  <name>Swagger</name>
  <channel>zircote.com/pear</channel>
  <summary>A PHP library for swagger resource generation</summary>
- <description>Swagger-PHP is a PHP library that servers as an annotations toolkit to produce Swagger Doc it makes extensive use of the Doctine Common library for annotations support and caching.
+ <description>swagger-php
+============
+
+[![Build Status](https://secure.travis-ci.org/zircote/swagger-php.png)](http://travis-ci.org/zircote/swagger-php)
+
+[Documentation](http://zircote.com/swagger-php)
 
 Download:
  - http://zircote.com/pear
  - tarball: https://github.com/zircote/swagger-php/downloads
  - Clone Via git: https://github.com/zircote/swagger-php.git
 
+Swagger-PHP is a PHP library that servers as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
+it makes extensive use of the [Doctine Common library](http://www.doctrine-project.org/projects/common.html) for
+annotations support and caching.
 
-Documentation http://zircote.com/swagger-php
+ - Documentation http://zircote.com/swagger-php
+    - To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and
+    submit a pull request. Documentation resides within the `gh-pages` branch.
+ - To report issues, ask questions please feel free to submit to [Github Isses](https://github.com/zircote/swagger-php/issues)
 
-To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and submit a pull request. Documentation resides within the gh-pages branch.
-
-To report issues, ask questions please feel free to submit to Github Isses
-
-Features:
+Features
+-------------------
  - Fully compatible with the full swagger documented proposal.
- - Cacheing layer using the \Doctrine\Common\Cache library
+ - Cacheing layer using the `\Doctrine\Common\Cache` library
  - Full project discovery
  - standalone CLI phar implementation
  - Free
 
-More on Swagger:
- - http://swagger.wordnik.com/
- - https://github.com/wordnik/swagger-core/wiki
- - https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php</description>
+ More on Swagger:
+  * http://swagger.wordnik.com/
+  * https://github.com/wordnik/swagger-core/wiki
+  * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
+
+
+ </description>
  <lead>
   <name>Robert Allen</name>
   <user>zircote</user>
   <email>zircote@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2012-11-26</date>
- <time>01:58:22</time>
+ <date>2012-12-15</date>
+ <time>21:26:07</time>
  <version>
-  <release>0.4.0</release>
-  <api>0.4.0</api>
+  <release>0.4.1</release>
+  <api>0.4.1</api>
  </version>
  <stability>
-  <release>alpha</release>
-  <api>alpha</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
  <notes>
@@ -161,6 +172,10 @@ This is an alpha release, see readme.md for examples.
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir> <!-- /tests/Swagger/Fixtures/Resources -->
+      <file baseinstalldir="/" name="api-docs.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="pet.json" role="test">
        <tasks:replace from="@name@" to="name" type="package-info" />
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -182,6 +197,32 @@ This is an alpha release, see readme.md for examples.
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir> <!-- /tests/Swagger/Fixtures -->
+     <dir name="Fixtures1">
+      <dir name="Models">
+       <file baseinstalldir="/" name="Facet.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="FacetResult.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="FacetSet.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /tests/Swagger/Fixtures1/Models -->
+      <dir name="Resources">
+       <file baseinstalldir="/" name="FacetResource.php" role="test">
+        <tasks:replace from="@name@" to="name" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /tests/Swagger/Fixtures1/Resources -->
+      <file baseinstalldir="/" name="facet.json" role="test">
+       <tasks:replace from="@name@" to="name" type="package-info" />
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /tests/Swagger/Fixtures1 -->
      <file baseinstalldir="/" name="SwaggerTest.php" role="test">
       <tasks:replace from="@name@" to="name" type="package-info" />
       <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -192,24 +233,11 @@ This is an alpha release, see readme.md for examples.
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir> <!-- /tests -->
-   <dir name="_static">
-    <file baseinstalldir="/" name="in_progress.png" role="data" />
-    <file baseinstalldir="/" name="pixel" role="data" />
-    <file baseinstalldir="/" name="pylons-latex.png" role="data" />
-    <file baseinstalldir="/" name="pylons-small.png" role="data" />
-    <file baseinstalldir="/" name="pylons.css" role="data" />
-    <file baseinstalldir="/" name="pylons.ico" role="data" />
-    <file baseinstalldir="/" name="pylons.png" role="data" />
-    <file baseinstalldir="/" name="pylonsfw-small.png" role="data" />
-    <file baseinstalldir="/" name="pyramid-latex.png" role="data" />
-    <file baseinstalldir="/" name="pyramid-small.png" role="data" />
-    <file baseinstalldir="/" name="pyramid.ico" role="data" />
-    <file baseinstalldir="/" name="pyramid.png" role="data" />
-   </dir> <!-- /_static -->
    <file baseinstalldir="/" name="CHANGELOG" role="doc" />
    <file baseinstalldir="/" name="LICENSE-2.0.txt" role="doc" />
    <file baseinstalldir="/" name="readme.md" role="doc" />
    <file baseinstalldir="/" name="swagger.phar" role="data" />
+   <file baseinstalldir="/" name="Vagrantfile" role="data" />
    <file baseinstalldir="/" name="VERSION" role="doc" />
   </dir> <!-- / -->
  </contents>
@@ -221,7 +249,17 @@ This is an alpha release, see readme.md for examples.
    <pearinstaller>
     <min>1.7.0</min>
    </pearinstaller>
+   <package>
+    <name>DoctrineCommon</name>
+    <channel>pear.doctrine-project.org</channel>
+   </package>
   </required>
+  <optional>
+   <package>
+    <name>symfony</name>
+    <channel>pear.symfony-project.com</channel>
+   </package>
+  </optional>
  </dependencies>
  <phprelease>
   <filelist>
@@ -245,14 +283,14 @@ This is an alpha release, see readme.md for examples.
  <changelog>
   <release>
    <version>
-    <release>0.4.0</release>
-    <api>0.4.0</api>
+    <release>0.4.1</release>
+    <api>0.4.1</api>
    </version>
    <stability>
-    <release>alpha</release>
-    <api>alpha</api>
+    <release>beta</release>
+    <api>beta</api>
    </stability>
-   <date>2012-11-26</date>
+   <date>2012-12-15</date>
    <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</license>
    <notes>
 This is an alpha release, see readme.md for examples.
