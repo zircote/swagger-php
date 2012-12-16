@@ -23,7 +23,7 @@ namespace SwaggerTests;
  */
 use Swagger\Swagger;
 
-/*
+/**
  *
  *
  * @category   SwaggerTests
@@ -140,6 +140,16 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
             json_decode(file_get_contents($path . '/api-docs.json'), true),
             json_decode($swagger->getResourceList(), true)
         );
+    }
+    /**
+     * @group Facets
+     */
+    public function testFacets()
+    {
+        $path = __DIR__ . '/Fixtures1';
+        $swagger = Swagger::discover($path);
+        $expected = json_decode(file_get_contents($path . '/facet.json'), true);
+        $this->assertEquals($expected, $swagger->registry['/facet']);
     }
 }
 
