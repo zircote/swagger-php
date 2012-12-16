@@ -292,9 +292,9 @@ class Swagger implements \Serializable
     protected function discoverMethodAnnotations(\ReflectionMethod $method)
     {
         $result = array();
-        /* @var \Swagger\Annotations\AbstractAnnotation $method */
-        foreach ($this->reader->getMethodAnnotations($method) as $method) {
-            array_push($result, $method->toArray());
+        /* @var \Swagger\Annotations\AbstractAnnotation $meth */
+        foreach ($this->reader->getMethodAnnotations($method) as $meth) {
+            array_push($result, $meth->toArray());
         }
         return $result;
     }
@@ -307,10 +307,11 @@ class Swagger implements \Serializable
     protected function discoverPropertyAnnotations(\ReflectionProperty $property)
     {
         $result = array();
-        /* @var \Swagger\Annotations\AbstractAnnotation $property */
-        foreach ($this->reader->getPropertyAnnotations($property) as $property) {
-            if ($property instanceof Property) {
-                array_push($result, $property->toArray());
+        /* @var \Swagger\Annotations\AbstractAnnotation $prop */
+        foreach ($this->reader->getPropertyAnnotations($property) as $prop) {
+            if ($prop instanceof Property) {
+                $prop->setReflector($property);
+                array_push($result, $prop->toArray());
             }
         }
         return $result;
@@ -472,7 +473,8 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @return array
+     * @param bool $prettyPrint
+     * @return mixed|null|string
      */
     public function getResourceList($prettyPrint = true)
     {
