@@ -52,8 +52,10 @@ class Model extends AbstractAnnotation
         $result = parent::toArray();
         $properties = array();
         foreach ($result['properties'] as $property) {
-            $properties[$property['name']] = $property;
-            unset($properties[$property['name']]['name']);
+            if (isset($property['name'])) {
+                $properties[$property['name']] = $property;
+                unset($properties[$property['name']]['name']);
+            }
         }
         $result['properties'] = $properties;
         return $result;

@@ -52,10 +52,10 @@ abstract class AbstractAnnotation
 
     protected function arrayFilter(&$v)
     {
-        if(is_string($v) && in_array($v, array('true', 'false'))) {
+        if (is_string($v) && in_array($v, array('true', 'false'))) {
             $v = ($v == 'true') ? true : false;
         }
-        if(empty($v) && $v !== false){
+        if (empty($v) && $v !== false) {
             return false;
         }
         return true;
@@ -81,6 +81,9 @@ abstract class AbstractAnnotation
             if ($members['value'] instanceof AbstractAnnotation) {
                 $result[] = $members['value']->toArray();
             }
+        }
+        if (isset($this->reflector) && !$this->reflector instanceof \ReflectionProperty) {
+            unset($this->reflecor);
         }
         return $members;
     }
