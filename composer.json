@@ -1,34 +1,39 @@
 {
-    "name":"zircote/swagger-php",
-    "type":"library",
-    "version":"0.4.1",
-    "time":"2012-12-15",
-    "license":"Apache2",
-    "bin":["bin/swagger"],
-    "description":"Swagger-PHP library implementing the swagger.wordnik.com specification to describe web services, operations/actions and models enabling a uniform means of producing, consuming, and visualizing RESTful web services.",
-    "keywords":["json", "api", "service discovery"],
-    "homepage":"https://github.com/zircote/swagger-php/",
-    "authors":[
+    "name": "zircote/swagger-php",
+    "type": "library",
+    "version": "0.5.0",
+    "time": "2012-12-15",
+    "license": "Apache2",
+    "bin": ["bin/swagger"],
+    "description": "Swagger-PHP library implementing the swagger.wordnik.com specification to describe web services, operations/actions and models enabling a uniform means of producing, consuming, and visualizing RESTful web services.",
+    "keywords": ["json", "api", "service discovery"],
+    "homepage": "https://github.com/zircote/swagger-php/",
+    "authors": [
         {
-            "name":"Robert Allen",
-            "email":"zircote@gmail.com",
-            "homepage":"http://www.zircote.com"
+            "name": "Robert Allen",
+            "email": "zircote@gmail.com",
+            "homepage": "http://www.zircote.com"
         }
     ],
-    "config":{
-        "bin-dir":"bin"
+    "config": {
+        "bin-dir": "bin"
     },
-    "require":{
-        "php":">=5.3.3",
+    "require": {
+        "php": ">=5.3.3",
         "doctrine/common": "*"
     },
     "require-dev": {
-        "symfony/finder":"*",
-        "symfony/process":"*"
+        "symfony/finder": "*",
+        "symfony/process": "*"
     },
-    "autoload":{
-        "psr-0":{
-            "Swagger":"library"
+    "autoload": {
+        "psr-0": {
+            "Swagger": "library"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5.0-dev"
         }
     }
 }
