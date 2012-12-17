@@ -115,9 +115,9 @@ EOF;
     }
     $outputPath = null;
     if (!isset($options['output-dir']) && !empty($options['output-dir'])) {
-        $outputPath .= $options['output-dir'] . DIRECTORY_SEPARATOR;
+        $outputPath .= rtrim($options['output-dir'], '/') . DIRECTORY_SEPARATOR;
     } elseif (isset($options['o']) && !empty($options['o'])) {
-        $outputPath .= $options['o'] . DIRECTORY_SEPARATOR;
+        $outputPath .= rtrim($options['o'], '/') . DIRECTORY_SEPARATOR;
     } else {
         $outputPath = getcwd() . DIRECTORY_SEPARATOR;
     }
@@ -148,7 +148,7 @@ EOF;
             echo $outputPath . 'api-docs.json created', PHP_EOL;
         }
         foreach ($output as $name => $json) {
-            $name = '/' . str_replace('/', '-', ltrim($name, '/'));
+            $name = str_replace('/', '-', ltrim($name, '/'));
             echo $outputPath . $name . '.json created', PHP_EOL;
             file_put_contents($outputPath . $name . '.json', $json);
         }
