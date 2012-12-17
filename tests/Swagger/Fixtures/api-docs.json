@@ -4,15 +4,15 @@
     "basePath":"http://petstore.swagger.wordnik.com/api",
     "apis":[
         {
-            "path":"/pet",
+            "path":"/resources/pet.json",
             "description":"Operations about pets"
         },
         {
-            "path":"/store",
+            "path":"/resources/store.json",
             "description":"Operations about store"
         },
         {
-            "path":"/user",
+            "path":"/resources/user.json",
             "description":"Operations about user"
         }
     ]
