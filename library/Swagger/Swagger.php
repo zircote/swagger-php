@@ -488,8 +488,9 @@ class Swagger implements \Serializable
                         'basePath' => $val['basePath'],
                         'apis' => array()
                     );
-                }
-                $api = array('path' => '/resources'.$val['resourcePath'] . '.json');
+                }                
+                $api = array('path' => '/resources/'
+                    . str_replace('/', '-', ltrim($val['resourcePath'], '/')) . '.json');
                 foreach ($val['apis'] as $v) {
                     if (isset($api['path']) && isset($v['description'])) {
                         $api['description'] = $v['description'];
