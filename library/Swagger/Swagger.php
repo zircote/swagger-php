@@ -488,9 +488,12 @@ class Swagger implements \Serializable
                         'basePath' => $val['basePath'],
                         'apis' => array()
                     );
-                }                
-                $api = array('path' => '/resources/'
-                    . str_replace('/', '-', ltrim($val['resourcePath'], '/')) . '.json');
+                }
+                $api = array('path' => '/resources/' . str_replace(
+                    '/',
+                    '-',
+                    ltrim($val['resourcePath'], '/')
+                ) . '.{format}');
                 foreach ($val['apis'] as $v) {
                     if (isset($api['path']) && isset($v['description'])) {
                         $api['description'] = $v['description'];
@@ -731,7 +734,7 @@ class Swagger implements \Serializable
     }
 
     /**
-     * Enable to define several ressources for the same registry
+     * Enable to define several resources for the same registry
      * @param array $result Registry Annotation Discover
      */
     protected function addRegistryAnnotations($result)
@@ -740,8 +743,7 @@ class Swagger implements \Serializable
             foreach ($result['apis'] as $operation) {
                 $this->registry[$result['resourcePath']]['apis'][] = $operation;
             }
-        }
-        else {
+        } else {
             $this->registry[$result['resourcePath']] = $result;
         }
     }
