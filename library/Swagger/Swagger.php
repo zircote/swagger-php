@@ -490,7 +490,7 @@ class Swagger implements \Serializable
                     );
                 }                
                 $api = array('path' => '/resources/'
-                    . str_replace('/', '-', ltrim($val['resourcePath'], '/')) . '.json');
+                    . str_replace('/', '-', ltrim($val['resourcePath'], '/')) . '.{format}');
                 foreach ($val['apis'] as $v) {
                     if (isset($api['path']) && isset($v['description'])) {
                         $api['description'] = $v['description'];
