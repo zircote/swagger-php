@@ -489,14 +489,13 @@ class Swagger implements \Serializable
                         'apis' => array()
                     );
                 }
+                $api = array('path' => $val['resourcePath']);
                 foreach ($val['apis'] as $v) {
-                    if (isset($v['path'])) {
-                        $api['path'] = $v['path'];
-                    }
                     if (isset($api['path']) && isset($v['description'])) {
                         $api['description'] = $v['description'];
+                        array_push($result['apis'], $api);
+                        break;
                     }
-                    array_push($result['apis'], $api);
                 }
             }
             $this->resourceList = $result;
