@@ -183,10 +183,12 @@ class Swagger implements \Serializable
                 $op = (array)@$result[$api['path']];
                 $api['operations'] = $op;
                 foreach ($op as $operation) {
-                    if (array_key_exists($operation['responseClass'], $this->models)) {
+                    if (isset($operation['responseClass']) &&
+                        array_key_exists($operation['responseClass'], $this->models)) {
                         array_push($models, $operation['responseClass']);
                     } elseif (
-                        ($model = $this->modelType($operation['responseClass'])) && in_array($model, $this->models)
+                        isset($operation['responseClass']) && ($model = $this->modelType($operation['responseClass']))
+                        && in_array($model, $this->models)
                     ) {
                         array_push($models, $model);
                     }
