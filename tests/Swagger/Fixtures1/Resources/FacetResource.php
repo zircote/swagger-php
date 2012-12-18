@@ -58,4 +58,42 @@ class FacetResource
     public function getAction()
     {
     }
+    /**
+     *
+     * @SWG\Api(
+     *   path="/facet.{format}/{facetId}",
+     *   description="Operations about facets",
+     *   @SWG\operations(
+     *     @SWG\operation(
+     *       httpMethod="DELETE",
+     *       summary="Find facet by ID",
+     *       notes="Returns a facet based on ID",
+     *       nickname="getfacetById",
+     *       @SWG\parameters(
+     *         @SWG\parameter(
+     *           name="facetId",
+     *           description="ID of facet that needs to be fetched",
+     *           paramType="path",
+     *           required="true",
+     *           allowMultiple="false",
+     *           dataType="string"
+     *         )
+     *       ),
+     *       @SWG\errorResponses(
+     *          @SWG\errorResponse(
+     *            code="400",
+     *            reason="Invalid ID supplied"
+     *          ),
+     *          @SWG\errorResponse(
+     *            code="404",
+     *            reason="facet not found"
+     *          )
+     *       )
+     *     )
+     *   )
+     * )
+     */
+    public function deleteAction()
+    {
+    }
 }
