@@ -21,6 +21,8 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Annotations\Properties;
+
 /**
  * @package
  * @category
@@ -43,6 +45,20 @@ class Model extends AbstractAnnotation
      * @var array
      */
     public $properties = array();
+
+    public function __construct($values)
+    {
+        parent::__construct($values);
+
+        // If @Properties declared
+        if (isset($values['value'])) {
+            switch ($values['value']) {
+                case ($values['value'] instanceof Properties):
+                    $this->properties = $values['value']->toArray();
+                    break;
+            }
+        }
+    }
 
     /**
      * @return array

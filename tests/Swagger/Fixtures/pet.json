@@ -12,7 +12,7 @@
                     "httpMethod":"GET",
                     "summary":"Find pet by ID",
                     "notes":"Returns a pet based on ID",
-                    "responseClass":"Pet",
+                    "responseClass":"PetResponse",
                     "nickname":"getPetById",
                     "parameters":[
                         {
@@ -201,6 +201,23 @@
                         "type":"string"
                     },
                     "type":"Array"
+                }
+            }
+        },
+        "PetResponse": {
+            "id": "PetResponse",
+            "properties": {
+                "status": {
+                    "type": "int"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "Array",
+                    "items": {
+                        "$ref": "Tag"
+                    }
                 }
             }
         },
