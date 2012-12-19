@@ -21,8 +21,6 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Annotations\Properties;
-
 /**
  * @package
  * @category
@@ -30,48 +28,29 @@ use Swagger\Annotations\Properties;
  *
  * @Annotation
  */
-class Model extends AbstractAnnotation
+class Properties extends AbstractAnnotation
 {
-    /**
-     * @var string
-     */
-    public $id;
-    /**
-     * @var string
-     */
-    public $description;
-
     /**
      * @var array
      */
-    public $properties = array();
-
-    public function __construct($values)
-    {
-        parent::__construct($values);
-
-        // If @Properties declared
-        if (isset($values['value'])) {
-            switch ($values['value']) {
-                case ($values['value'] instanceof Properties):
-                    $this->properties = $values['value']->toArray();
-                    break;
-            }
-        }
-    }
+    public $value = array();
 
     /**
-     * @return array
+     * @return array|AbstractAnnotation
      */
     public function toArray()
     {
-        $result = parent::toArray();
-        $properties = array();
-        foreach ($result['properties'] as $property) {
-            $properties[$property['name']] = $property;
-            unset($properties[$property['name']]['name']);
+        $result = array();
+        if (is_array($this->value)) {
+            /* @var AbstractAnnotation $v */
+            foreach ($this->value as $v) {
+                $result[] = $v->toArray();
+            }
+        } elseif ($this->value instanceof Property) {
+            $result[] = $this->value->toArray();
+        } elseif ($this->value) {
+            $result[] = array_filter($this->value->toArray(), array($this, 'arrayFilter'));
         }
-        $result['properties'] = $properties;
         return $result;
     }
 }
