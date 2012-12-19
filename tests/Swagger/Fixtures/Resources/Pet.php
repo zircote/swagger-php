@@ -31,6 +31,11 @@ use Swagger\Annotations\ErrorResponses;
 use Swagger\Annotations\Resource;
 use Swagger\Annotations\AllowableValues;
 
+use Swagger\Annotations\Properties;
+use Swagger\Annotations\Property;
+use Swagger\Annotations\Model;
+use Swagger\Annotations\Items;
+
 /**
  * @package
  * @category
@@ -42,10 +47,18 @@ use Swagger\Annotations\AllowableValues;
  *  resourcePath="/pet",
  *  basePath="http://petstore.swagger.wordnik.com/api"
  * )
+ *
+ * @Model(
+ *   id="PetResponse",
+ *   @Properties(
+ *     @Property(name="status",type="int"),
+ *     @Property(name="statusName",type="string"),
+ *     @Property(name="tags",type="array", items="$ref:Tag")
+ *   )
+ * )
  */
 class Pet
 {
-
     /**
      *
      * @Api(
@@ -56,7 +69,7 @@ class Pet
      *       httpMethod="GET",
      *       summary="Find pet by ID",
      *       notes="Returns a pet based on ID",
-     *       responseClass="Pet",
+     *       responseClass="PetResponse",
      *       nickname="getPetById",
      *       @parameters(
      *         @parameter(
