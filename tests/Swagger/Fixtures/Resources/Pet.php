@@ -56,6 +56,15 @@ use Swagger\Annotations\Items;
  *     @Property(name="tags",type="array", items="$ref:Tag")
  *   )
  * )
+ *
+ * @Model(
+ *   id="OtherPetResponse",
+ *   @Properties(
+ *     @Property(name="status",type="int"),
+ *     @Property(name="statusName",type="string"),
+ *     @Property(name="pet",type="Pet")
+ *   )
+ * )
  */
 class Pet
 {
@@ -108,7 +117,7 @@ class Pet
      *     @operation(
      *       httpMethod="POST",
      *       summary="Add a new pet to the store",
-     *       responseClass="void",
+     *       responseClass="OtherPetResponse",
      *       nickname="addPet",
      *       @parameters(
      *         @parameter(

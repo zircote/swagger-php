@@ -44,7 +44,7 @@
                 {
                     "httpMethod":"POST",
                     "summary":"Add a new pet to the store",
-                    "responseClass":"void",
+                    "responseClass":"OtherPetResponse",
                     "nickname":"addPet",
                     "parameters":[
                         {
@@ -167,6 +167,20 @@
                 },
                 "name":{
                     "type":"string"
+                }
+            }
+        },
+        "OtherPetResponse": {
+            "id": "OtherPetResponse",
+            "properties": {
+                "status": {
+                    "type": "int"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "pet": {
+                    "type": "Pet"
                 }
             }
         },

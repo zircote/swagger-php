@@ -19,11 +19,12 @@ namespace Swagger;
  * @category   Swagger
  * @package    Swagger
  */
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\Reader;
 use \Doctrine\Common\Cache\CacheProvider;
+use Swagger\Annotations\IndexedReader;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
 
@@ -246,24 +247,27 @@ class Swagger implements \Serializable
     {
         /* @var \Swagger\Annotations\Resource|Model $resource */
         $resource = null;
-        foreach ($this->reader->getClassAnnotations($class) as $result) {
-            if ($result instanceof Model) {
-                /* @var Model $result */
-                /* @var \ReflectionProperty $property */
-                foreach ($class->getProperties() as $property) {
-                    $result->properties = array_merge(
-                        $result->properties,
-                        $this->discoverPropertyAnnotations($property)
-                    );
+
+        foreach ($this->reader->getClassAnnotations($class) as $results) {
+            foreach ($results as $result) {
+                if ($result instanceof Model) {
+                    /* @var Model $result */
+                    /* @var \ReflectionProperty $property */
+                    foreach ($class->getProperties() as $property) {
+                        $result->properties = array_merge(
+                            $result->properties,
+                            $this->discoverPropertyAnnotations($property)
+                        );
+                    }
+                    $this->models[$result->id] = $result->toArray();
+                } elseif ($result instanceof Resource) {
+                    $resource = $result;
+                    /* @var \ReflectionMethod $method */
+                    foreach ($class->getMethods() as $method) {
+                        $resource->apis[] = $this->discoverMethodAnnotations($method);
+                    }
+                    $resource = $resource->toArray();
                 }
-                $this->models[$result->id] = $result->toArray();
-            } elseif ($result instanceof Resource) {
-                $resource = $result;
-                /* @var \ReflectionMethod $method */
-                foreach ($class->getMethods() as $method) {
-                    $resource->apis[] = $this->discoverMethodAnnotations($method);
-                }
-                $resource = $resource->toArray();
             }
         }
         return $resource;
