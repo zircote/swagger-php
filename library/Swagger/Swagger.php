@@ -385,7 +385,8 @@ class Swagger implements \Serializable
                 }
             }
             if (!$fileInfo->isDot() && !$fileInfo->isDir()) {
-                if (in_array($fileInfo->getExtension(), array('php', 'phtml'))) {
+                $extension = pathinfo($fileInfo->getFilename(), PATHINFO_EXTENSION);
+                if (in_array($extension, array('php', 'phtml'))) {
                     array_push($files, $path . DIRECTORY_SEPARATOR . $fileInfo->getFileName());
                 }
             } elseif (!$fileInfo->isDot() && $fileInfo->isDir()) {
