@@ -35,7 +35,6 @@ use Swagger\Annotations\Property;
  */
 class Swagger implements \Serializable
 {
-
     /**
      *
      * @var Array
@@ -117,6 +116,7 @@ class Swagger implements \Serializable
         $this->cacheKey = null;
         return $this;
     }
+
     /**
      * @return Swagger
      */
@@ -254,6 +254,7 @@ class Swagger implements \Serializable
         }
         return $models;
     }
+
     /**
      * @param \ReflectionClass $class
      *
@@ -477,9 +478,10 @@ class Swagger implements \Serializable
 
     /**
      * @param bool $prettyPrint
+     * @param bool $serialize
      * @return mixed|null|string
      */
-    public function getResourceList($prettyPrint = true)
+    public function getResourceList($prettyPrint = true, $serialize = true)
     {
         if ($this->registry) {
             $result = array();
@@ -507,7 +509,12 @@ class Swagger implements \Serializable
             }
             $this->resourceList = $result;
         }
-        return $this->jsonEncode($this->resourceList, $prettyPrint);
+
+        if ($serialize) {
+            return $this->jsonEncode($this->resourceList, $prettyPrint);
+        }
+
+        return $this->resourceList;
     }
 
     /**
@@ -572,10 +579,14 @@ class Swagger implements \Serializable
      * @param bool $prettyPrint
      * @return bool|mixed|null|string
      */
-    public function getResource($resourceName, $prettyPrint = true)
+    public function getResource($resourceName, $prettyPrint = true, $serialize = true)
     {
         if (array_key_exists($resourceName, $this->registry)) {
-            return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
+            if ($serialize) {
+                return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
+            }
+
+            return $this->registry[$resourceName];
         }
         return false;
     }
