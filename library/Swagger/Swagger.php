@@ -166,7 +166,11 @@ class Swagger implements \Serializable
                 } else {
                     $apis = array_pop($apis);
                     $op = array_pop($apis['operations'])->toArray();
-                    $result[$apis['path']][] = $op;
+					if (key($op) === 0) {
+						$result[$apis['path']] = $op;
+					} else {
+						$result[$apis['path']][] = $op;
+					}
                 }
             }
         }
