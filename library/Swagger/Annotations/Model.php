@@ -21,6 +21,8 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Annotations\Properties;
+
 /**
  * @package
  * @category
@@ -65,7 +67,8 @@ class Model extends AbstractAnnotation
 		return true;
 	}
 
-	/**
+
+    /**
      * @return array
      */
     public function jsonSerialize()

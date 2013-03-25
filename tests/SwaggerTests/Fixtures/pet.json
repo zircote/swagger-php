@@ -12,7 +12,7 @@
                     "httpMethod":"GET",
                     "summary":"Find pet by ID",
                     "notes":"Returns a pet based on ID",
-                    "responseClass":"Pet",
+                    "responseClass":"PetResponse",
                     "nickname":"getPetById",
                     "parameters":[
                         {
@@ -44,7 +44,7 @@
                 {
                     "httpMethod":"POST",
                     "summary":"Add a new pet to the store",
-                    "responseClass":"void",
+                    "responseClass":"OtherPetResponse",
                     "nickname":"addPet",
                     "parameters":[
                         {
@@ -170,6 +170,20 @@
                 }
             }
         },
+        "OtherPetResponse": {
+            "id": "OtherPetResponse",
+            "properties": {
+                "status": {
+                    "type": "int"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "pet": {
+                    "type": "Pet"
+                }
+            }
+        },
         "Pet":{
             "id":"Pet",
             "properties":{
@@ -201,6 +215,23 @@
                         "type":"string"
                     },
                     "type":"Array"
+                }
+            }
+        },
+        "PetResponse": {
+            "id": "PetResponse",
+            "properties": {
+                "status": {
+                    "type": "int"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "Array",
+                    "items": {
+                        "$ref": "Tag"
+                    }
                 }
             }
         },

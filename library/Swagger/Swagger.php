@@ -19,12 +19,13 @@ namespace Swagger;
  * @category   Swagger
  * @package    Swagger
  */
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\CacheProvider;
+use Swagger\Annotations\IndexedReader;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
 use Swagger\Annotations\Property;
@@ -264,32 +265,35 @@ class Swagger implements \Serializable
      *
      * @return array
      */
-//    protected function getClassAnnotations(\ReflectionClass $class)
-//    {
-//        /* @var \Swagger\Annotations\Resource|Model $resource */
-//        $resource = null;
-//        foreach ($this->reader->getClassAnnotations($class) as $result) {
-//            if ($result instanceof Model) {
-//                /* @var Model $result */
-//                /* @var \ReflectionProperty $property */
-//                foreach ($class->getProperties() as $property) {
-//                    $result->properties = array_merge(
-//                        $result->properties,
-//                        $this->discoverPropertyAnnotations($property)
-//                    );
-//                }
-//                $this->models[$result->id] = $result->toArray();
-//            } elseif ($result instanceof Resource) {
-//                $resource = $result;
-//                /* @var \ReflectionMethod $method */
-//                foreach ($class->getMethods() as $method) {
-//                    $resource->apis[] = $this->discoverMethodAnnotations($method);
-//                }
-//                $resource = $resource->toArray();
-//            }
-//        }
-//        return $resource;
-//    }
+    // protected function getClassAnnotations(\ReflectionClass $class)
+    // {
+    //     /* @var \Swagger\Annotations\Resource|Model $resource */
+    //     $resource = null;
+
+    //     foreach ($this->reader->getClassAnnotations($class) as $results) {
+    //         foreach ($results as $result) {
+    //             if ($result instanceof Model) {
+    //                 /* @var Model $result */
+    //                 /* @var \ReflectionProperty $property */
+    //                 foreach ($class->getProperties() as $property) {
+    //                     $result->properties = array_merge(
+    //                         $result->properties,
+    //                         $this->discoverPropertyAnnotations($property)
+    //                     );
+    //                 }
+    //                 $this->models[$result->id] = $result->toArray();
+    //             } elseif ($result instanceof Resource) {
+    //                 $resource = $result;
+    //                 /* @var \ReflectionMethod $method */
+    //                 foreach ($class->getMethods() as $method) {
+    //                     $resource->apis[] = $this->discoverMethodAnnotations($method);
+    //                 }
+    //                 $resource = $resource->toArray();
+    //             }
+    //         }
+    //     }
+    //     return $resource;
+    // }
 
     /**
      * @param \ReflectionMethod $method
@@ -632,11 +636,18 @@ class Swagger implements \Serializable
     public function getResource($resourceName, $prettyPrint = true, $serialize = true)
     {
         if (array_key_exists($resourceName, $this->registry)) {
-            if ($serialize) {
-                return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
-            }
+            // Sort operation paths alphabetically with shortest first
+            $apis = $this->registry[$resourceName]->apis;
 
-            return $this->registry[$resourceName];
+            $paths = array();
+            foreach ($apis as $key => $api)
+            {
+                $paths[$key] = str_replace('.{format}', '', $api->path);
+            }
+            array_multisort($paths, SORT_ASC, $apis);
+
+            $this->registry[$resourceName]->apis = $apis;
+            return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
         }
         return false;
     }

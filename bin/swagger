@@ -84,7 +84,7 @@ EOF;
         $excludePath = isset($options['e']) ? $options['e'] : $options['exclude-path'];
         $excludePaths = explode(':', $excludePath);
         foreach ($excludePaths as $index => $excludePath) {
-            if ('/' != substr($excludePath, 0, 1)) {
+            if (DIRECTORY_SEPARATOR != substr($excludePath, 0, 1)) {
                 $excludePaths[$index] = getcwd() . DIRECTORY_SEPARATOR . $excludePath;
             }
         }
@@ -129,7 +129,7 @@ EOF;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
         $json = $swagger->getResource($resourceName, $prettyPrint);
-        $resourceName = str_replace('/', '-', ltrim($resourceName, '/'));
+        $resourceName = str_replace(DIRECTORY_SEPARATOR, '-', ltrim($resourceName, DIRECTORY_SEPARATOR));
         $output[$resourceName] = $json;
     }
     if ($output) {
@@ -143,14 +143,23 @@ EOF;
                     sprintf('[%s] is not writeable', $outputPath)
                 );
             }
+            if (!file_exists($outputPath . DIRECTORY_SEPARATOR . 'resources') &&
+                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', '0755', true)) {
+                throw new RuntimeException(
+                    sprintf('[%s] is not writeable', $outputPath . DIRECTORY_SEPARATOR . 'resources')
+                );
+            }
         }
         if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($prettyPrint))) {
             echo $outputPath . 'api-docs.json created', PHP_EOL;
         }
         foreach ($output as $name => $json) {
-            $name = '/' . str_replace('/', '-', ltrim($name, '/'));
+            $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
             echo $outputPath . $name . '.json created', PHP_EOL;
-            file_put_contents($outputPath . $name . '.json', $json);
+            file_put_contents(
+                $outputPath . DIRECTORY_SEPARATOR . 'resources'. DIRECTORY_SEPARATOR . $name . '.json',
+                $json
+            );
         }
     } else {
         echo 'no valid resources found', PHP_EOL;
