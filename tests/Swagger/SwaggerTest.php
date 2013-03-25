@@ -116,7 +116,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $pathToCli = dirname(dirname(__DIR__)) . '/bin/swagger';
         `$pathToCli -o $output -p $path`;
         foreach (array('user','pet','store') as $record) {
-            $json = file_get_contents($output . "/$record.json");
+            $json = file_get_contents($output . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . "$record.json");
             $this->assertJsonEqualToExpectedArray(json_decode($swagger->getResource("/{$record}"), true), $json);
         }
     }
