@@ -1,8 +1,8 @@
 {
-    "apiVersion": "0.2", 
-    "swaggerVersion": "1.1", 
+    "apiVersion": "0.2",
+    "swaggerVersion": "1.1",
     "basePath": "http:\/\/f2.zircote.com\/swagger-php\/api",
-    "resourcePath": "\/facet", 
+    "resourcePath": "\/facet",
     "apis": [
     {
         "path": "\/users",
@@ -20,12 +20,10 @@
                 "httpMethod": "POST",
                 "parameters": [
                     {
-                        "allowMultiple": true,
                         "dataType": "String",
                         "name": "email"
                     },
                     {
-                        "allowMultiple": true,
                         "dataType": "String",
                         "name": "phone"
                     }

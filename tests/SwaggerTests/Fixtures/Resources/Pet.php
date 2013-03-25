@@ -53,7 +53,7 @@ use Swagger\Annotations\Items;
  *   @Properties(
  *     @Property(name="status",type="int"),
  *     @Property(name="statusName",type="string"),
- *     @Property(name="tags",type="array", items="$ref:Tag")
+ *     @Property(name="tags",type="Array", items="$ref:Tag")
  *   )
  * )
  *

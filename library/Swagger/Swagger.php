@@ -20,12 +20,8 @@ namespace Swagger;
  * @package    Swagger
  */
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\CacheProvider;
-use Swagger\Annotations\IndexedReader;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
 use Swagger\Annotations\Property;
@@ -153,39 +149,11 @@ class Swagger implements \Serializable
 			}
 		}
 
-//        $registry = array();
-//        $result = array();
-
 		/* @var Resource $resource */
         foreach ($this->registry as $i => $resource) {
-//		}
-//            foreach ($resource->api as $j => $apis) {
-//                if (empty($apis) ) {
-//                    unset($this->registry[$i]['apis'][$j]);
-//                } else {
-//                    $apis = array_pop($apis);
-//                    $op = array_pop($apis['operations'])->toArray();
-//					if (key($op) === 0) {
-//						$result[$apis['path']] = $op;
-//					} else {
-//						$result[$apis['path']][] = $op;
-//					}
-//                }
-//            }
-//        }
-//        foreach ($this->registry as $index => $resource) {
-//            foreach ($resource as $k => $v) {
-//                if ($k != 'apis') {
-//                    $registry[$index][$k] = $v;
-//                }
-//            }
             $models = array();
 			/* @var Api $api */
             foreach ($resource->apis as $api) {
-//                $api = array_pop($api);
-//                unset($api['operations']);
-//                $op = (array)@$result[$api['path']];
-//                $api['operations'] = $op;
 				/* @var Annotations\Operation $operation */
                 foreach ($api->operations as $operation) {
                     if (isset($operation->responseClass) &&
@@ -209,21 +177,13 @@ class Swagger implements \Serializable
                     }
                 }
                 $models = array_merge($models, $this->resolveModels($models));
-//                $registry[$index]['apis'][$api['path']][] = $api;
                 foreach (array_unique($models) as $model) {
 					$resource->models[$model] = $this->models[$model];
                 }
             }
         }
-//        foreach ($registry as $index => $reg) {
-//            foreach ($reg['apis'] as $k => $api) {
-//                unset($registry[$index]['apis'][$k]);
-//                $registry[$index]['apis'][] = array_pop($api);
-//            }
-//
-//        }
+
         ksort($this->registry, SORT_ASC);
-//        $this->registry = $registry;
         if ($this->getCache()) {
             $this->getCache()->save($this->cacheKey, $this->serialize());
         }
@@ -260,75 +220,7 @@ class Swagger implements \Serializable
         return $models;
     }
 
-    /**
-     * @param \ReflectionClass $class
-     *
-     * @return array
-     */
-    // protected function getClassAnnotations(\ReflectionClass $class)
-    // {
-    //     /* @var \Swagger\Annotations\Resource|Model $resource */
-    //     $resource = null;
-
-    //     foreach ($this->reader->getClassAnnotations($class) as $results) {
-    //         foreach ($results as $result) {
-    //             if ($result instanceof Model) {
-    //                 /* @var Model $result */
-    //                 /* @var \ReflectionProperty $property */
-    //                 foreach ($class->getProperties() as $property) {
-    //                     $result->properties = array_merge(
-    //                         $result->properties,
-    //                         $this->discoverPropertyAnnotations($property)
-    //                     );
-    //                 }
-    //                 $this->models[$result->id] = $result->toArray();
-    //             } elseif ($result instanceof Resource) {
-    //                 $resource = $result;
-    //                 /* @var \ReflectionMethod $method */
-    //                 foreach ($class->getMethods() as $method) {
-    //                     $resource->apis[] = $this->discoverMethodAnnotations($method);
-    //                 }
-    //                 $resource = $resource->toArray();
-    //             }
-    //         }
-    //     }
-    //     return $resource;
-    // }
-
-    /**
-     * @param \ReflectionMethod $method
-     *
-     * @return array
-     */
-//    protected function discoverMethodAnnotations(\ReflectionMethod $method)
-//    {
-//        $result = array();
-//        /* @var \Swagger\Annotations\AbstractAnnotation $meth */
-//        foreach ($this->reader->getMethodAnnotations($method) as $meth) {
-//            array_push($result, $meth->toArray());
-//        }
-//        return $result;
-//    }
-
-    /**
-     * @param \ReflectionProperty $property
-     *
-     * @return array
-     */
-//    protected function discoverPropertyAnnotations(\ReflectionProperty $property)
-//    {
-//        $result = array();
-//        /* @var \Swagger\Annotations\AbstractAnnotation $prop */
-//        foreach ($this->reader->getPropertyAnnotations($property) as $prop) {
-//            if ($prop instanceof Property) {
-//                $prop->setReflector($property);
-//                array_push($result, $prop->toArray());
-//            }
-//        }
-//        return $result;
-//    }
-
-    /**
+	/**
      * @static
      *
      * @param      $path
@@ -649,27 +541,8 @@ class Swagger implements \Serializable
             $this->registry[$resourceName]->apis = $apis;
             return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
         }
+		Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
         return false;
-    }
-
-    /**
-     *
-     * @param \Doctrine\Common\Annotations\Reader $reader
-     *
-     * @return Swagger
-     */
-    public function setReader($reader)
-    {
-        $this->reader = $reader;
-        return $this;
-    }
-
-    /**
-     * @return \Doctrine\Common\Annotations\Reader
-     */
-    public function getReader()
-    {
-        return $this->reader;
     }
 
     /**

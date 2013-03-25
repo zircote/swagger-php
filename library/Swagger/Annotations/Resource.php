@@ -102,5 +102,14 @@ class Resource extends AbstractAnnotation
 		$this->apis = $apis;
 		return true;
 	}
+
+	public function jsonSerialize()
+	{
+		$data = parent::jsonSerialize();
+		if (count($this->models) === 0) {
+			unset($data['models']);
+		}
+		return $data;
+	}
 }
 

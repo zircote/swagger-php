@@ -51,6 +51,8 @@ class Model extends AbstractAnnotation
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof Property) {
 				$this->properties[] = $annotation;
+			} elseif ($annotation instanceof Properties) {
+				$this->setNestedAnnotations($annotation->value);
 			}
 		}
 	}
