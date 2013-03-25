@@ -586,11 +586,20 @@ class Swagger implements \Serializable
     public function getResource($resourceName, $prettyPrint = true, $serialize = true)
     {
         if (array_key_exists($resourceName, $this->registry)) {
-            if ($serialize) {
-                return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
-            }
+            // Sort operation paths alphabetically with shortest first
+            if (isset($this->registry[$resourceName]['apis'])) {
+                $apis = $this->registry[$resourceName]['apis'];
 
-            return $this->registry[$resourceName];
+                $paths = array();
+                foreach ($apis as $key => $row)
+                {
+                    $paths[$key] = str_replace('.{format}', '', $row['path']);
+                }
+                array_multisort($paths, SORT_ASC, $apis);
+
+                $this->registry[$resourceName]['apis'] = $apis;
+            }            
+            return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
         }
         return false;
     }

@@ -104,6 +104,10 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $actual =  $swagger->registry['/store'];
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @group cli
+     */
     public function testCliTool()
     {
         $path = __DIR__ . '/Fixtures';
@@ -113,7 +117,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         `$pathToCli -o $output -p $path`;
         foreach (array('user','pet','store') as $record) {
             $json = file_get_contents($output . "/$record.json");
-            $this->assertJsonEqualToExpectedArray($swagger->registry["/{$record}"], $json);
+            $this->assertJsonEqualToExpectedArray(json_decode($swagger->getResource("/{$record}"), true), $json);
         }
     }
     public function testCaching()
