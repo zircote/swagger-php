@@ -24,6 +24,9 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 
-
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) { // Use local vendor-dir?
+	$loader = require_once(dirname(__DIR__) . '/vendor/autoload.php');
+} else {
+	$loader = require_once(__DIR__ . '/../../../autoload.php');
+}
+$loader->add('SwaggerTests', __DIR__.'/');

@@ -65,10 +65,11 @@ class Swagger implements \Serializable
      * @var array
      */
     public $models = array();
-    /**
-     * @var Reader
-     */
-    protected $reader;
+
+	/**
+	 * @var Parser
+	 */
+	protected $parser;
     /**
      * @var \Doctrine\Common\Cache\CacheProvider
      */
@@ -97,6 +98,7 @@ class Swagger implements \Serializable
             if ($this->cache->contains($this->cacheKey)) {
                 $this->unserialize($this->cache->fetch($this->cacheKey));
             } else {
+				$this->parser = new Parser();
                 $this->discoverServices();
             }
         }
@@ -107,25 +109,12 @@ class Swagger implements \Serializable
      */
     public function reset()
     {
-        $this->reader = null;
         $this->excludePath = null;
         $this->classList = array();
         $this->fileList = array();
         $this->registry = array();
         $this->models = array();
         $this->cacheKey = null;
-        return $this;
-    }
-
-    /**
-     * @return Swagger
-     */
-    protected function initializeAnnotations()
-    {
-        if (!$this->reader) {
-            AnnotationRegistry::registerAutoloadNamespace(__NAMESPACE__, dirname(__DIR__));
-            $this->reader = new IndexedReader(new AnnotationReader());
-        }
         return $this;
     }
 
@@ -142,116 +131,127 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @todo clean me please...
      *
      * @return Swagger
      */
     protected function discoverClassAnnotations()
     {
-        $this->registry = array();
-        $registry = array();
-        $result = array();
-        $this->initializeAnnotations();
-        /* @var \ReflectionClass $class */
-        foreach ($this->classList as $class) {
-            $result = $this->getClassAnnotations($class);
-            if ($result) {
-                $this->addRegistryAnnotations($result);
-            }
-        }
-        foreach ($this->registry as $i => $res) {
-            foreach ($res['apis'] as $j => $apis) {
-                if (empty($apis) ) {
-                    unset($this->registry[$i]['apis'][$j]);
-                } else {
-                    $apis = array_pop($apis);
-                    $op = array_pop($apis['operations'])->toArray();
-					if (key($op) === 0) {
-						$result[$apis['path']] = $op;
-					} else {
-						$result[$apis['path']][] = $op;
-					}
-                }
-            }
-        }
-        foreach ($this->registry as $index => $resource) {
-            foreach ($resource as $k => $v) {
-                if ($k != 'apis') {
-                    $registry[$index][$k] = $v;
-                }
-            }
+		$this->registry = array();
+		// Add resoures to the registry and collect models
+		foreach ($this->classList as $class) {
+			$result = $this->parser->parseClass($class);
+			if ($result) {
+				/* @var Resource $resource */
+				foreach ($result['resources'] as $resource) {
+					$this->registry[$resource->resourcePath] = $resource;
+				}
+				/* @var Model $model */
+				foreach ($result['models'] as $model) {
+					$this->models[$model->id] = $model;
+				}
+			}
+		}
+
+//        $registry = array();
+//        $result = array();
+
+		/* @var Resource $resource */
+        foreach ($this->registry as $i => $resource) {
+//		}
+//            foreach ($resource->api as $j => $apis) {
+//                if (empty($apis) ) {
+//                    unset($this->registry[$i]['apis'][$j]);
+//                } else {
+//                    $apis = array_pop($apis);
+//                    $op = array_pop($apis['operations'])->toArray();
+//					if (key($op) === 0) {
+//						$result[$apis['path']] = $op;
+//					} else {
+//						$result[$apis['path']][] = $op;
+//					}
+//                }
+//            }
+//        }
+//        foreach ($this->registry as $index => $resource) {
+//            foreach ($resource as $k => $v) {
+//                if ($k != 'apis') {
+//                    $registry[$index][$k] = $v;
+//                }
+//            }
             $models = array();
-            foreach ($resource['apis'] as $api) {
-                $api = array_pop($api);
-                unset($api['operations']);
-                $op = (array)@$result[$api['path']];
-                $api['operations'] = $op;
-                foreach ($op as $operation) {
-                    if (isset($operation['responseClass']) &&
-                        array_key_exists($operation['responseClass'], $this->models)) {
-                        array_push($models, $operation['responseClass']);
+			/* @var Api $api */
+            foreach ($resource->apis as $api) {
+//                $api = array_pop($api);
+//                unset($api['operations']);
+//                $op = (array)@$result[$api['path']];
+//                $api['operations'] = $op;
+				/* @var Annotations\Operation $operation */
+                foreach ($api->operations as $operation) {
+                    if (isset($operation->responseClass) &&
+                        array_key_exists($operation->responseClass, $this->models)) {
+                        array_push($models, $operation->responseClass);
                     } elseif (
-                        isset($operation['responseClass']) && ($model = $this->modelType($operation['responseClass']))
+                        isset($operation->responseClass) && ($model = $this->modelType($operation->responseClass))
                         && in_array($model, $this->models)
                     ) {
                         array_push($models, $model);
                     }
-                    if (isset($operation['parameters'])) {
-                        foreach ($operation['parameters'] as $parameter) {
-                            if (array_key_exists($parameter['dataType'], $this->models)) {
-                                array_push($models, $parameter['dataType']);
-                            } elseif (
-                                ($model = $this->modelType($parameter['dataType'])) && in_array($model, $this->models)
-                            ) {
-                                array_push($models, $model);
-                            }
-                        }
+					/* @var Annotations\Parameter $parameter */
+					foreach ($operation->parameters as $parameter) {
+						if (array_key_exists($parameter->dataType, $this->models)) {
+							array_push($models, $parameter->dataType);
+						} elseif (
+							($model = $this->modelType($parameter->dataType)) && in_array($model, $this->models)
+						) {
+							array_push($models, $model);
+						}
                     }
                 }
-                $models = array_merge($models, $this->parseModels($models));
-                $registry[$index]['apis'][$api['path']][] = $api;
+                $models = array_merge($models, $this->resolveModels($models));
+//                $registry[$index]['apis'][$api['path']][] = $api;
                 foreach (array_unique($models) as $model) {
-                    $registry[$index]['models'][$model] = $this->models[$model];
+					$resource->models[$model] = $this->models[$model];
                 }
             }
         }
-        foreach ($registry as $index => $reg) {
-            foreach ($reg['apis'] as $k => $api) {
-                unset($registry[$index]['apis'][$k]);
-                $registry[$index]['apis'][] = array_pop($api);
-            }
-
-        }
-        ksort($registry, SORT_ASC);
-        $this->registry = $registry;
+//        foreach ($registry as $index => $reg) {
+//            foreach ($reg['apis'] as $k => $api) {
+//                unset($registry[$index]['apis'][$k]);
+//                $registry[$index]['apis'][] = array_pop($api);
+//            }
+//
+//        }
+        ksort($this->registry, SORT_ASC);
+//        $this->registry = $registry;
         if ($this->getCache()) {
             $this->getCache()->save($this->cacheKey, $this->serialize());
         }
         return $this;
     }
 
+
     /**
-     * @param $input
+	 * Append all models to that used inside the $input models
+     * @param array $input models
      * @return array
      */
-    protected function parseModels($input)
+    protected function resolveModels($input)
     {
         $models = array();
         foreach ($input as $v) {
             $type = false;
-            foreach ($this->models[$v]['properties'] as $property) {
-                if ($property['type'] == 'Array' && (isset($property['items']) && is_array($property['items']))
-                ) {
-                    if (isset($property['items']['$ref'])) {
-                        $type = $property['items']['$ref'];
+            foreach ($this->models[$v]->properties as $property) {
+                if ($property->items !== null && self::isPrimitive($property->items->type) === false) {
+                    if (isset($property->items->type)) {
+                        $type = $property->items->type;
                     }
                 } else {
-                    $type = $property['type'];
+                    $type = $property->type;
                 }
                 if ($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))) {
                     if (array_key_exists($type, $this->models) && !in_array($type, $models)) {
                         array_push($models, $type);
-                        $models = array_merge($models, $this->parseModels($models));
+                        $models = array_merge($models, $this->resolveModels($models));
                     }
                 }
             }
@@ -264,65 +264,65 @@ class Swagger implements \Serializable
      *
      * @return array
      */
-    protected function getClassAnnotations(\ReflectionClass $class)
-    {
-        /* @var \Swagger\Annotations\Resource|Model $resource */
-        $resource = null;
-        foreach ($this->reader->getClassAnnotations($class) as $result) {
-            if ($result instanceof Model) {
-                /* @var Model $result */
-                /* @var \ReflectionProperty $property */
-                foreach ($class->getProperties() as $property) {
-                    $result->properties = array_merge(
-                        $result->properties,
-                        $this->discoverPropertyAnnotations($property)
-                    );
-                }
-                $this->models[$result->id] = $result->toArray();
-            } elseif ($result instanceof Resource) {
-                $resource = $result;
-                /* @var \ReflectionMethod $method */
-                foreach ($class->getMethods() as $method) {
-                    $resource->apis[] = $this->discoverMethodAnnotations($method);
-                }
-                $resource = $resource->toArray();
-            }
-        }
-        return $resource;
-    }
+//    protected function getClassAnnotations(\ReflectionClass $class)
+//    {
+//        /* @var \Swagger\Annotations\Resource|Model $resource */
+//        $resource = null;
+//        foreach ($this->reader->getClassAnnotations($class) as $result) {
+//            if ($result instanceof Model) {
+//                /* @var Model $result */
+//                /* @var \ReflectionProperty $property */
+//                foreach ($class->getProperties() as $property) {
+//                    $result->properties = array_merge(
+//                        $result->properties,
+//                        $this->discoverPropertyAnnotations($property)
+//                    );
+//                }
+//                $this->models[$result->id] = $result->toArray();
+//            } elseif ($result instanceof Resource) {
+//                $resource = $result;
+//                /* @var \ReflectionMethod $method */
+//                foreach ($class->getMethods() as $method) {
+//                    $resource->apis[] = $this->discoverMethodAnnotations($method);
+//                }
+//                $resource = $resource->toArray();
+//            }
+//        }
+//        return $resource;
+//    }
 
     /**
      * @param \ReflectionMethod $method
      *
      * @return array
      */
-    protected function discoverMethodAnnotations(\ReflectionMethod $method)
-    {
-        $result = array();
-        /* @var \Swagger\Annotations\AbstractAnnotation $meth */
-        foreach ($this->reader->getMethodAnnotations($method) as $meth) {
-            array_push($result, $meth->toArray());
-        }
-        return $result;
-    }
+//    protected function discoverMethodAnnotations(\ReflectionMethod $method)
+//    {
+//        $result = array();
+//        /* @var \Swagger\Annotations\AbstractAnnotation $meth */
+//        foreach ($this->reader->getMethodAnnotations($method) as $meth) {
+//            array_push($result, $meth->toArray());
+//        }
+//        return $result;
+//    }
 
     /**
      * @param \ReflectionProperty $property
      *
      * @return array
      */
-    protected function discoverPropertyAnnotations(\ReflectionProperty $property)
-    {
-        $result = array();
-        /* @var \Swagger\Annotations\AbstractAnnotation $prop */
-        foreach ($this->reader->getPropertyAnnotations($property) as $prop) {
-            if ($prop instanceof Property) {
-                $prop->setReflector($property);
-                array_push($result, $prop->toArray());
-            }
-        }
-        return $result;
-    }
+//    protected function discoverPropertyAnnotations(\ReflectionProperty $property)
+//    {
+//        $result = array();
+//        /* @var \Swagger\Annotations\AbstractAnnotation $prop */
+//        foreach ($this->reader->getPropertyAnnotations($property) as $prop) {
+//            if ($prop instanceof Property) {
+//                $prop->setReflector($property);
+//                array_push($result, $prop->toArray());
+//            }
+//        }
+//        return $result;
+//    }
 
     /**
      * @static
@@ -468,13 +468,16 @@ class Swagger implements \Serializable
      */
     protected function discoverServices()
     {
+		$this->classList = array();
+		// Collect classnames
         foreach ($this->getFileList() as $filename) {
-            if ($filename) {
-                include_once $filename;
+            $classes = $this->getClasses($filename);
+            foreach ($classes as $class) {
+                $this->classList[] = $class;
             }
-            foreach ($this->getClasses($filename) as $class) {
-                array_push($this->classList, new \ReflectionClass($class));
-            }
+			if ($classes) {
+				include_once($filename);
+			}
         }
         $this->discoverClassAnnotations();
         return $this;
@@ -489,27 +492,24 @@ class Swagger implements \Serializable
     {
         if ($this->registry) {
             $result = array();
-            foreach ($this->registry as $val) {
+            foreach ($this->registry as $resource) {
                 if (!$result) {
                     $result = array(
-                        'apiVersion' => $val['apiVersion'],
-                        'swaggerVersion' => $val['swaggerVersion'],
-                        'basePath' => $val['basePath'],
+                        'apiVersion' => $resource->apiVersion,
+                        'swaggerVersion' => $resource->swaggerVersion,
+                        'basePath' => $resource->basePath,
                         'apis' => array()
                     );
                 }
-                $api = array('path' => '/resources/' . str_replace(
-                    '/',
-                    '-',
-                    ltrim($val['resourcePath'], '/')
-                ) . '.{format}');
-                foreach ($val['apis'] as $v) {
-                    if (isset($api['path']) && isset($v['description'])) {
-                        $api['description'] = $v['description'];
-                        array_push($result['apis'], $api);
-                        break;
-                    }
-                }
+                $result['apis'][] = array(
+					'path' => '/resources/' . str_replace(
+						'/',
+						'-',
+						ltrim($resource->resourcePath, '/')
+					) . '.{format}',
+					'description' => $resource->apis[0]->description
+				);
+
             }
             $this->resourceList = $result;
         }
@@ -521,14 +521,60 @@ class Swagger implements \Serializable
         return $this->resourceList;
     }
 
+	/**
+	 * Checks if the type is a Swagger primitive (case-insensitive)
+	 * @param string $type
+	 * @var bool
+	 */
+	static function isPrimitive($type)
+	{
+		$primitiveTypes = array('byte', 'boolean', 'int', 'long', 'float', 'double', 'string', 'date');
+		$primitiveTypes[] = 'integer'; // Should be int
+		$primitiveTypes[] = 'bool';
+		return in_array(strtolower($type), $primitiveTypes);
+	}
+
+	/**
+	 * @param string $type
+	 * @var bool
+	 */
+	static function isContainer($type)
+	{
+		return in_array(strtolower($type), array('array', 'set', 'list'));
+	}
+
+
+	/**
+	 * Build the array to be used in the json.
+	 * @param mixed $data
+	 */
+	static function export($data) {
+		if (is_object($data)) {
+			if (method_exists($data, 'jsonSerialize')) {
+				$data = $data->jsonSerialize();
+			} else {
+				$data = get_object_vars($data);
+			}
+		}
+		if (is_array($data) === false) {
+			return $data;
+		}
+		$output = array();
+		foreach($data as $key => $value) {
+			$output[$key] = self::export($value);
+		}
+		return $output;
+	}
+
     /**
      * @param      $data
      * @param bool $prettyPrint
      *
      * @return mixed|null|string
      */
-    public function jsonEncode($data, $prettyPrint = false)
+    public function jsonEncode($resource, $prettyPrint = false)
     {
+		$data = self::export($resource);
         if (version_compare(PHP_VERSION, '5.4', '>=')) {
             $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         } else {

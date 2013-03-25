@@ -71,7 +71,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/pet.json'), true);
-        $this->assertEquals($expected, $swagger->registry['/pet']);
+		$this->assertEquals($expected, Swagger::export($swagger->registry['/pet']));
     }
 
     public function testRangeValueType()
@@ -79,7 +79,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/sidekick.json'), true);
-        $this->assertEquals($expected, $swagger->models['Sidekick']);
+        $this->assertEquals($expected, Swagger::export($swagger->models['Sidekick']));
     }
 
     public function testSerializeUnserialize()
@@ -92,7 +92,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($swagger->models, $newSwagger->models);
         $this->assertEquals($swagger->registry, $newSwagger->registry);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/user.json'), true);
-        $actual =  $swagger->registry['/user'];
+        $actual = Swagger::export($swagger->registry['/user']);
         $this->assertEquals($expected, $actual);
     }
 
@@ -101,7 +101,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/store.json'), true);
-        $actual =  $swagger->registry['/store'];
+        $actual = Swagger::export($swagger->registry['/store']);
         $this->assertEquals($expected, $actual);
     }
     public function testCliTool()
@@ -113,7 +113,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         `$pathToCli -o $output -p $path`;
         foreach (array('user','pet','store') as $record) {
             $json = file_get_contents($output . "/$record.json");
-            $this->assertJsonEqualToExpectedArray($swagger->registry["/{$record}"], $json);
+            $this->assertJsonEqualToExpectedArray(Swagger::export($swagger->registry["/{$record}"]), $json);
         }
     }
     public function testCaching()
@@ -133,7 +133,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testResourcelist()
     {
-        
+
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
         $this->assertEquals(
@@ -149,7 +149,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '/Fixtures1';
         $swagger = Swagger::discover($path);
         $expected = json_decode(file_get_contents($path . '/facet.json'), true);
-        $this->assertEquals($expected, $swagger->registry['/facet']);
+        $this->assertEquals($expected, Swagger::export($swagger->registry['/facet']));
     }
 }
 

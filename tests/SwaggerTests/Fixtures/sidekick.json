@@ -5,7 +5,7 @@
             "type":"long"
         },
         "age":{
-            "type":"integer",
+            "type":"int",
             "allowableValues":{
                 "valueType":"RANGE",
                 "min":18,

@@ -44,21 +44,39 @@ class Model extends AbstractAnnotation
      */
     public $properties = array();
 
-    /**
+	protected function setNestedAnnotations($annotations)
+	{
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Property) {
+				$this->properties[] = $annotation;
+			}
+		}
+	}
+
+	public function validate()
+	{
+		$properties = array();
+		foreach ($this->properties as $property) {
+			if ($property->validate()) {
+				$properties[] = $property;
+			}
+		}
+		$this->properties = $properties;
+		return true;
+	}
+
+	/**
      * @return array
      */
-    public function toArray()
+    public function jsonSerialize()
     {
-        $result = parent::toArray();
-        $properties = array();
-        foreach ($result['properties'] as $property) {
-            if (isset($property['name'])) {
-                $properties[$property['name']] = $property;
-                unset($properties[$property['name']]['name']);
-            }
+        $data = parent::jsonSerialize($this);
+        $data['properties'] = array();
+        foreach ($this->properties as $property) {
+			$data['properties'][$property->name] = $property;
         }
-        $result['properties'] = $properties;
-        return $result;
+        return $data;
     }
+
 }
 

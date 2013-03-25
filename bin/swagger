@@ -54,12 +54,12 @@ try {
 
     if (isset($options['v']) || isset($options['version'])) {
         echo <<<EOF
-Swagger-PHP Version: 0.4.0
+Swagger-PHP Version: 0.6.0
 
 EOF;
         exit;
     }
-    if (isset($options['h']) || isset($options['help'])) {
+    if ($argc === 1 || isset($options['h']) || isset($options['help'])) {
         echo <<<EOF
 
 Usage: swagger --project-path PATH [--output-path PATH]...

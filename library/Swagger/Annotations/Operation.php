@@ -25,6 +25,7 @@ use Swagger\Annotations\Parameters;
 use Swagger\Annotations\ErrorResponses;
 
 /**
+ * The Operation is what is shown as a bar-like container in the interactive UI.
  * @package
  * @category
  * @subpackage
@@ -33,22 +34,24 @@ use Swagger\Annotations\ErrorResponses;
  */
 class Operation extends AbstractAnnotation
 {
+	/**
+	 * The http verb of the operation
+     * @var string
+     */
+    public $httpMethod;
+
+	/**
+	 * The summary of the operation, the text that is displayed on the bar-like container,
+	 * it is advisable to be short otherwise will not fit.
+     * @var string (max 60 characters)
+     */
+    public $summary;
+
     /**
+	 * The description is displayed once the bar-like container is clicked.
      * @var string
      */
     public $description;
-    /**
-     * @var string
-     */
-    public $dataType;
-    /**
-     * @var string
-     */
-    public $name;
-    /**
-     * @var string
-     */
-    public $paramType;
 
     /**
      * @var string
@@ -61,24 +64,16 @@ class Operation extends AbstractAnnotation
     public $responseClass;
 
     /**
-     * @var string
+	 * Parameters of the operation.
+     * @var array|Parameter
      */
-    public $summary;
+    public $parameters = array();
 
     /**
-     * @var string
+	 * ErrorResponses of the operation.
+     * @var array|ErrorResponse
      */
-    public $httpMethod;
-
-    /**
-     * @var Parameters
-     */
-    public $parameters;
-
-    /**
-     * @var ErrorResponses
-     */
-    public $errorResponses;
+    public $errorResponses = array();
 
     /**
      * @var string
@@ -96,22 +91,34 @@ class Operation extends AbstractAnnotation
     public function __construct($values)
     {
         parent::__construct($values);
-        if (isset($values['value'])) {
-            foreach ($values['value'] as $value) {
-                switch ($value) {
-                    case ($value instanceof Parameters):
-                        $this->parameters = $value->toArray();
-                        break;
-                    case ($value instanceof Parameter):
-                        $this->parameters[] = $value->toArray();
-                        break;
-                    case ($value instanceof ErrorResponses):
-                        $this->errorResponses = $value->toArray();
-                        break;
-                }
-            }
-        }
         $this->notes = $this->removePreamble($this->notes);
     }
+
+	function setNestedAnnotations($annotations) {
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Parameter) {
+				$this->parameters[] = $annotation;
+			} elseif ($annotation instanceof Parameters) {
+				$parameters = is_array($annotation->value) ? $annotation->value : array($annotation->value);
+				$this->setNestedAnnotations($parameters);
+			} elseif ($annotation instanceof ErrorResponse) {
+				$this->errorResponses[] = $annotation;
+			} elseif ($annotation instanceof ErrorResponses) {
+				$errors = is_array($annotation->value) ? $annotation->value : array($annotation->value);
+				$this->setNestedAnnotations($errors);
+			}
+		}
+	}
+
+	public function jsonSerialize() {
+		$data = parent::jsonSerialize();
+		if (count($this->errorResponses) === 0) {
+			unset($data['errorResponses']);
+		}
+		if (count($this->parameters) === 0) {
+			unset($data['parameters']);
+		}
+		return $data;
+	}
 }
 

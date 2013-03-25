@@ -30,20 +30,19 @@ use Swagger\Annotations\Model;
  * @category
  * @subpackage
  *
- * @Model(id="Category", description="")
+ * @Model(id="Sidekick")
  */
-class Category
+class Sidekick
 {
     /**
      * @var int
      * @Property(name="id",type="long")
      */
     protected $id;
-
     /**
-     * @var string
-     * @Property(name="name",type="string")
+     * @var int
+     * @property(name="age", type="int", @allowableValues(valueType="RANGE", min=18,max=60))
      */
-    protected $name;
+    protected $age;
 }
 

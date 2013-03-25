@@ -37,24 +37,33 @@ class Api extends AbstractAnnotation
      */
     public $path;
     /**
-     * @var string
+     * @var string|Operation
      */
-    public $operations;
+    public $operations = array();
+
     /**
      * @var string
      */
     public $description;
 
-    public function __construct($values)
-    {
-        parent::__construct($values);
-        if (isset($values['value'])) {
-            switch ($values['value']) {
-                case ($values['value'] instanceof Operations):
-                    $this->operations[] = $values['value'];
-                    break;
-            }
-        }
+    protected function setNestedAnnotations($annotations) {
+        foreach ($annotations as $annotation) {
+			if ($annotation instanceof Operation) {
+				$this->operations[] = $annotation;
+			}
+			if ($annotation instanceof Operations) {
+				$operations = is_array($annotation->value) ? $annotation->value : array($annotation->value);
+				$this->setNestedAnnotations($operations);
+			}
+		}
     }
-}
 
+	public function validate() {
+		// @todo validate and remove invalid operations
+		if (count($this->operations) == 0) {
+			Logger::log(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
+			return false;
+		}
+		return true;
+	}
+}

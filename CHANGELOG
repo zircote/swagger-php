@@ -1,3 +1,34 @@
+0.6
+
+* New architecture
+  * Split Swagger class into Swagger & Parser.
+    Parser focuses on extracting swagger comments and converting them into a valid Resource or Model objects.
+    Swagger provides the public api and crawls the project folder.
+
+  * Add Logger, instead of crashing with an Exception, Swagger now reports the error and skips entries that are invalid or incomplete.
+
+  * Split the Annotation->toArray into:
+    * __contruct() import the data extracted by doctrine. (Parser might augement this data)
+    * validate() tries to create a optimal valid data-structure and returns false if the annotation can't be used.
+    * jsonSerialize() serializing the Annotation to the format expected by swagger-ui.
+
+  * The Swagger->repository now consists of a more predictable object-tree instead of errror prone array struct.
+
+
+* User features
+  * Running bin/swagger without arguments now shows the help.
+
+  * All encapsulation annotations are now optional, and might be deprecated in the future.
+	@Api(@Operations(@Operation(), @Operation())) is the same as @Api(@Operation(), @Operation())
+
+  * Show human readable hints/notices instead of "undefined index xxxx" notices.
+
+  * Augment Swagger comments with available data from class/property/method or remaining data in the doc-comment.
+    * Example @Model() used the classname as id
+
+  * An @Api can be nested inside a @Resource and @Property can be nested inside a @Model.
+
+
 commit 6c0e2d95da9dc648d4affb8e3cc89ddb6dfd075e
 Author: Robert Allen <zircote@gmail.com>
 Date:   Thu Apr 5 13:07:37 2012 -0500
