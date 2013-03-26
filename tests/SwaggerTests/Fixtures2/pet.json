@@ -1,0 +1,34 @@
+{
+	"id":"Pet",
+	"properties":{
+		"tags":{
+			"items":{
+				"$ref":"Tag"
+			},
+			"type":"Array"
+		},
+		"id":{
+			"type":"int"
+		},
+		"category":{
+			"type":"Category"
+		},
+		"status":{
+			"allowableValues":{
+				"valueType":"LIST",
+				"values":["available", "pending", "sold"]
+			},
+			"description":"pet status in the store",
+			"type":"string"
+		},
+		"name":{
+			"type":"string"
+		},
+		"photoUrls":{
+			"items":{
+				"type":"string"
+			},
+			"type":"Array"
+		}
+	}
+}

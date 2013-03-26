@@ -12,7 +12,7 @@ class FacetSet
 {
     /**
      * @var array
-     * @SWG\Property(name="facets", type="array", items="$ref:Facet")
+     * @SWG\Property(name="facets", type="Array", items="$ref:Facet")
      */
     public $facets;
 }

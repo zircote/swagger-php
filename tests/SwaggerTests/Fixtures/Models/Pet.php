@@ -24,68 +24,65 @@ namespace SwaggerTests\Fixtures\Models;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
+use Swagger\Annotations\Items;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Model(id="User")
+ * @Model(id="Pet")
  */
-class User
+class Pet
 {
     /**
+     * @var array<Tags>
+     *
+     * @Property(name="tags",type="Array", items="$ref:Tag")
+     */
+    protected $tags = array();
+
+    /**
      * @var int
-     * @Property(name="id",type="Long")
+     *
+     * @Property(name="id",type="long")
      */
     protected $id;
 
     /**
-     * @var string
-     * @Property(name="lastName",type="string")
+     * @var Category
+     *
+     * @Property(name="category",type="Category")
      */
-    protected $lastName;
+    protected $category;
 
     /**
+     *
+     *
      * @var string
-     * @Property(name="phone",type="string")
-     */
-    protected $phone;
-
-    /**
-     * @var string
-     * @Property(name="username",type="string")
-     */
-    protected $username;
-
-    /**
-     * @var string
-     * @Property(name="email",type="string")
-     */
-    protected $email;
-
-    /**
-     * @var int
-     * @Property(name="userStatus",type="int",
+     *
+     * @Property(
+     *      name="status",type="string",
      *      @allowableValues(
      *          valueType="LIST",
-     *          values="{'1': 'registered', '2': 'active', '3': 'closed'}"
+     *          values="['available', 'pending', 'sold']"
      *      ),
-     *      description="User Status"
-     * )
+     *      description="pet status in the store")
      */
-    protected $userStatus;
+    protected $status;
 
     /**
      * @var string
-     * @Property(name="firstName",type="string")
+     *
+     * @Property(name="name",type="string")
      */
-    protected $firstName;
+    protected $name;
 
     /**
-     * @var string
-     * @Property(name="password",type="string")
+     * @var array<string>
+     *
+     * @Property(name="photoUrls",type="Array", @items(type="string"))
      */
-    protected $password;
+    protected $photoUrls = array();
 }
 
