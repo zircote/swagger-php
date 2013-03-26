@@ -179,10 +179,28 @@ class Parser
 		}
 		if ($property->type === null) {
 			if (preg_match('/@var\s+(\w+)/i', $rProperty->getDocComment(), $matches)) {
-	            $property->type = (string)array_pop($matches);
-				if ($property->type === 'array') {
-					$property->type = 'Array';
+	            $type = (string)array_pop($matches);
+				$map = array(
+					'array' => 'Array',
+					'byte' => 'byte',
+					'boolean' => 'boolean',
+					'bool' => 'boolean',
+					'int' => 'int',
+					'integer' => 'int',
+					'long' => 'long',
+					'float' => 'float',
+					'double' => 'double',
+					'string' => 'string',
+					'date' => 'Date',
+					'datetime' => 'Date',
+					'\\datetime' => 'Date',
+					'list' => 'List',
+					'set' => 'Set',
+				);
+				if (array_key_exists(strtolower($type), $map)) {
+					$type = $map[strtolower($type)];
 				}
+				$property->type = $type;
 			}
 		}
 		// @todo Extract description

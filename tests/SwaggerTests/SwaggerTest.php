@@ -166,5 +166,15 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $expected = json_decode(file_get_contents($path . '/multi-op.json'), true);
         $this->assertEquals($expected, Swagger::export($swagger->registry['/facet']));
     }
+
+	/**
+	 * @group Type-detection
+	 */
+	public function testRobustTypeDetection() {
+		$path = __DIR__ . '/Fixtures2';
+        $swagger = Swagger::discover($path);
+        $expected = json_decode(file_get_contents($path . '/pet.json'), true);
+        $this->assertEquals($expected, Swagger::export($swagger->models['Pet']));
+	}
 }
 
