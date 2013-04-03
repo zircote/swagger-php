@@ -129,7 +129,11 @@ class Swagger implements \Serializable
 		foreach ($this->getFileList() as $filename) {
 			$parser = new Parser($filename);
 			foreach ($parser->getResources() as $resource) {
-				$this->registry[$resource->resourcePath] = $resource;
+				if (array_key_exists($resource->resourcePath, $this->registry)) {
+					$this->registry[$resource->resourcePath]->merge($resource);
+				} else {
+					$this->registry[$resource->resourcePath] = $resource;
+				}
 			}
 			foreach ($parser->getModels() as $model) {
 				$this->models[$model->id] = $model;

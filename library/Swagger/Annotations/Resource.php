@@ -68,7 +68,8 @@ class Resource extends AbstractAnnotation
      */
     public $models = array();
 
-	protected function setNestedAnnotations($annotations) {
+	protected function setNestedAnnotations($annotations)
+	{
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof Api) {
 				$this->apis[] = $annotation;
@@ -76,7 +77,8 @@ class Resource extends AbstractAnnotation
 		}
 	}
 
-	public function validate() {
+	public function validate()
+	{
 		$apis = array();
 		foreach ($this->apis as $api) {
 			if ($api->validate()) {
@@ -111,5 +113,17 @@ class Resource extends AbstractAnnotation
 		}
 		return $data;
 	}
+
+	/**
+	 * @param Resource $resource
+	 */
+	public function merge($resource)
+	{
+		foreach ($resource->apis as $api) {
+		   $this->apis[] = $api;
+		}
+		$this->validate();
+	}
+
 }
 
