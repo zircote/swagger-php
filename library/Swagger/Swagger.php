@@ -49,10 +49,6 @@ class Swagger implements \Serializable
     /**
      * @var array
      */
-    protected $classList = array();
-    /**
-     * @var array
-     */
     public $resourceList = array();
     /**
      * @var array
@@ -63,10 +59,6 @@ class Swagger implements \Serializable
      */
     public $models = array();
 
-	/**
-	 * @var Parser
-	 */
-	protected $parser;
     /**
      * @var \Doctrine\Common\Cache\CacheProvider
      */
@@ -95,7 +87,6 @@ class Swagger implements \Serializable
             if ($this->cache->contains($this->cacheKey)) {
                 $this->unserialize($this->cache->fetch($this->cacheKey));
             } else {
-				$this->parser = new Parser();
                 $this->discoverServices();
             }
         }
@@ -131,21 +122,17 @@ class Swagger implements \Serializable
      *
      * @return Swagger
      */
-    protected function discoverClassAnnotations()
+    protected function discoverServices()
     {
 		$this->registry = array();
 		// Add resoures to the registry and collect models
-		foreach ($this->classList as $class) {
-			$result = $this->parser->parseClass($class);
-			if ($result) {
-				/* @var Resource $resource */
-				foreach ($result['resources'] as $resource) {
-					$this->registry[$resource->resourcePath] = $resource;
-				}
-				/* @var Model $model */
-				foreach ($result['models'] as $model) {
-					$this->models[$model->id] = $model;
-				}
+		foreach ($this->getFileList() as $filename) {
+			$parser = new Parser($filename);
+			foreach ($parser->getResources() as $resource) {
+				$this->registry[$resource->resourcePath] = $resource;
+			}
+			foreach ($parser->getModels() as $model) {
+				$this->models[$model->id] = $model;
 			}
 		}
 
@@ -295,88 +282,6 @@ class Swagger implements \Serializable
             }
         }
         return $files;
-    }
-
-    /**
-     * @param $filename
-     *
-     * @return array
-     */
-    protected function getClasses($filename)
-    {
-        $classes = array();
-        if (file_exists($filename)) {
-            $tokens = token_get_all(file_get_contents($filename));
-            $count = count($tokens);
-            $namespace = $this->getNamespace($filename);
-            for ($i = 2; $i < $count; $i++) {
-                if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING
-                ) {
-                    $classes[] = $namespace . $tokens[$i][1];
-                }
-            }
-        }
-        return $classes;
-    }
-
-    /**
-     * @param $filename
-     *
-     * @return string
-     */
-    protected function getNamespace($filename)
-    {
-        $namespace = '\\';
-
-        if (file_exists($filename)) {
-            $content = file_get_contents($filename);
-
-            if (strpos($content, 'namespace') !== false) {
-                $tokens = token_get_all($content);
-                $startIndex = null;
-                $lineNumber = null;
-
-                foreach ($tokens as $index => $token) {
-                    if (isset($token[0]) && T_NAMESPACE == $token[0]) {
-                        $startIndex = $index + 1;
-                        continue;
-                    }
-
-                    if (null !== $startIndex && $index > $startIndex) {
-                        if (T_STRING === $token[0] || T_NS_SEPARATOR === $token[0]) {
-                            if (T_NS_SEPARATOR !== $token[0]) {
-                                $namespace .= $token[1] . '\\';
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $namespace;
-    }
-
-    /**
-     *
-     * @return Swagger
-     */
-    protected function discoverServices()
-    {
-		$this->classList = array();
-		// Collect classnames
-        foreach ($this->getFileList() as $filename) {
-            $classes = $this->getClasses($filename);
-            foreach ($classes as $class) {
-                $this->classList[] = $class;
-            }
-			if ($classes) {
-				include_once($filename);
-			}
-        }
-        $this->discoverClassAnnotations();
-        return $this;
     }
 
     /**
@@ -562,26 +467,6 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @return array
-     */
-    public function getClassList()
-    {
-        return $this->classList;
-    }
-
-    /**
-     *
-     * @param array $classlist
-     *
-     * @return Swagger
-     */
-    public function setClassList($classlist)
-    {
-        $this->classList = $classlist;
-        return $this;
-    }
-
-    /**
      *
      * @param null $excludePath
      * @return Swagger
@@ -679,21 +564,6 @@ class Swagger implements \Serializable
         $this->path = $data['path'];
         $this->excludePath = $data['excludePath'];
         return $this;
-    }
-
-    /**
-     * Enable to define several resources for the same registry
-     * @param array $result Registry Annotation Discover
-     */
-    protected function addRegistryAnnotations($result)
-    {
-        if (array_key_exists($result['resourcePath'], $this->registry) ) {
-            foreach ($result['apis'] as $operation) {
-                $this->registry[$result['resourcePath']]['apis'][] = $operation;
-            }
-        } else {
-            $this->registry[$result['resourcePath']] = $result;
-        }
     }
 }
 

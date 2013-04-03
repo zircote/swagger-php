@@ -19,202 +19,337 @@ namespace Swagger;
  * @category   Swagger
  * @package    Swagger
  */
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\AnnotationException;
+use Doctrine\Common\Annotations\TokenParser;
+use Doctrine\Common\Annotations\DocParser;
 /**
  * @category   Swagger
  * @package    Swagger
  */
 class Parser
 {
+	/**
+	 * All detected resources
+	 * @var array|Annotations\Resource
+	 */
+	protected $resources = array();
+	/**
+	 * Current resource
+	 * @var Annotations\Resource
+	 */
+	protected $resource = false;
 
 	/**
-	 * Allows Annotation classes to know which property or method in which class is being processed.
+	 * All detected models
+	 * @var array|Annotations\Model
+	 */
+	protected $models = array();
+
+	/**
+	 * Current model
+	 * @var Annotations\Model
+	 */
+	protected $model = false;
+
+	/**
+	 * @var DocParser
+	 */
+	private $docParser;
+	/**
 	 * @var string
 	 */
-	public static $current;
+	private $filename;
 
 	/**
-	 * @var string
-	 */
-	private static $currentClass;
-	/**
-	 * @var AnnotationReader
-	 */
-	private $reader;
+     * A list with annotations that are not causing exceptions when not resolved to an annotation class.
+     * The names are case sensitive.
+	  * (Copied from Doctrine\Common\Annotations\AnnotationReader)
+     *
+     * @var array
+     */
+    private static $globalIgnoredNames = array(
+        'access'=> true, 'author'=> true, 'copyright'=> true, 'deprecated'=> true,
+        'example'=> true, 'ignore'=> true, 'internal'=> true, 'link'=> true, 'see'=> true,
+        'since'=> true, 'tutorial'=> true, 'version'=> true, 'package'=> true,
+        'subpackage'=> true, 'name'=> true, 'global'=> true, 'param'=> true,
+        'return'=> true, 'staticvar'=> true, 'category'=> true, 'staticVar'=> true,
+        'static'=> true, 'var'=> true, 'throws'=> true, 'inheritdoc'=> true,
+        'inheritDoc'=> true, 'license'=> true, 'todo'=> true,
+        'deprec'=> true, 'property' => true, 'method' => true,
+        'abstract'=> true, 'exception'=> true, 'magic' => true, 'api' => true,
+        'final'=> true, 'filesource'=> true, 'throw' => true, 'uses' => true,
+        'usedby'=> true, 'private' => true, 'Annotation' => true, 'override' => true,
+        'codeCoverageIgnore' => true, 'codeCoverageIgnoreStart' => true, 'codeCoverageIgnoreEnd' => true,
+        'Required' => true, 'Attribute' => true, 'Attributes' => true,
+        'Target' => true, 'SuppressWarnings' => true,
+        'ingroup' => true, 'code' => true, 'endcode' => true,
+        'package_version' => true,
+    );
 
-	function __construct()
+	function __construct($filename)
 	{
+		$this->filename = $filename;
+		$this->docParser = new DocParser();
+		$this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
+
 		AnnotationRegistry::registerAutoloadNamespace(__NAMESPACE__, dirname(__DIR__));
-		$this->reader = new AnnotationReader();
+		$this->parse();
+	}
+
+	/**
+	 * Get all valid resources.
+	 * @return array|Annotations\Resource
+	 */
+	function getResources()
+	{
+		$resources = array();
+		foreach ($this->resources as $resource) {
+			if ($resource->validate()) {
+				$resources[] = $resource;
+			}
+		}
+		$this->resources = $resources;
+		return $resources;
+	}
+
+	/**
+	 * Get all valid models.
+	 * @return array|Annotations\Model
+	 */
+	function getModels()
+	{
+		$models = array();
+		foreach ($this->models as $model) {
+			if ($model->validate()) {
+				$models[] = $model;
+			}
+		}
+		$this->models = $models;
+		return $models;
+	}
+
+
+	/**
+	 * Extract and process all doc-comments.
+	 */
+	protected function parse()
+	{
+		$tokenParser = new TokenParser(file_get_contents($this->filename));
+		$token = $tokenParser->next(false);
+		$namespace = '\\';
+		$class = false;
+
+		$imports = array();
+		$docComment = false;
+		while($token != null) {
+			$token = $tokenParser->next(false);
+			if (is_array($token) === false) { // Ignore tokens like "{", "}", etc
+				continue;
+			}
+			if ($token[0] === T_DOC_COMMENT) {
+				$location = ' in '.$this->filename.' on line '.$token[2];
+				Annotations\AbstractAnnotation::$context = $location;
+				if ($docComment) { // 2 Doc-comments in succession?
+					$this->parseDocComment($docComment);
+				}
+				$docComment = $token[1];
+				continue;
+			}
+			if ($docComment) {
+				if ($token[0] === T_CLASS) { // Doc-comment before a class?
+					$class = $tokenParser->parseClass();
+					// @todo detect end-of-class and reset $class
+					Annotations\AbstractAnnotation::$context = ' for '.$class.$location;
+					$annotations = $this->parseDocComment($docComment);
+					foreach ($annotations as $annotation) {
+						if ($annotation instanceof Annotations\Model) {
+							if ($annotation->id === null) {
+								$annotation->id = $class; // Auto-detect Model->id
+							}
+						}
+					}
+					$docComment = false;
+					continue;
+				}
+				if ($token[0] == T_STATIC) {
+					$token = $tokenParser->next(false);
+					if ($token[0] === T_VARIABLE) { // static property
+						Annotations\AbstractAnnotation::$context = ' for '.$class.'::'.$token[1].$location;
+						$this->parsePropery(substr($token[1], 1), $docComment);
+						$docComment = false;
+						continue;
+					}
+				}
+				if (in_array($token[0], array(T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR))) { // Scope
+					$token = $tokenParser->next(false);
+					if ($token[0] == T_STATIC) {
+						$token = $tokenParser->next(false);
+					}
+					if ($token[0] === T_VARIABLE) { // instance property
+						Annotations\AbstractAnnotation::$context = ' for '.$class.'->'.substr($token[1], 1).$location;
+						$this->parsePropery(substr($token[1], 1), $docComment);
+						$docComment = false;
+					} elseif ($token[0] === T_FUNCTION) {
+						$token = $tokenParser->next(false);
+						if ($token[0] === T_STRING) {
+							Annotations\AbstractAnnotation::$context = ' for '.$class.'->'.substr($token[1], 1).'(...)'.$location;
+							$this->parseMethod(substr($token[1], 1), $docComment);
+							$docComment = false;
+						}
+					}
+					continue;
+				}
+				if (in_array($token[0], array(T_NAMESPACE, T_USE)) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
+					// Not a doc-comment for a class, property or method?
+					$this->parseDocComment($docComment);
+					$docComment = false;
+				}
+			}
+			if ($token[0] === T_NAMESPACE) {
+				$namespace = $tokenParser->parseNamespace();
+				continue;
+			}
+			if ($token[0] === T_USE) {
+				$imports = array_merge($tokenParser->parseUseStatement(), $imports);
+				$this->docParser->setImports($imports);
+				continue;
+			}
+		}
 	}
 
 	/**
 	 *
-	 * @param string $class FQCN
-	 * @return array
+	 * @param string $docComment
+	 * @return array|AbstractAnnotation
 	 */
-	function parseClass($class)
-	{
-		self::$currentClass = $class;
-		self::$current = $class;
-		$resources = array();
-		$models = array();
+	protected function parseDocComment($docComment) {
 		try {
-			$reflectionClass = new \ReflectionClass($class);
-			$annotations = $this->reader->getClassAnnotations($reflectionClass);
-			foreach ($annotations as $annotation) {
-				if ($annotation instanceof Annotations\Resource) {
-					$resource = $this->parseResource($annotation, $reflectionClass);
-					if ($resource->validate()) {
-						$resources[] = $resource;
-					}
-				}
-				if ($annotation instanceof Annotations\Model) {
-					$model = $this->parseModel($annotation, $reflectionClass);
-					if ($model->validate()) {
-						$models[] = $model;
-					}
-				}
-			}
+			$annotations = $this->docParser->parse($docComment, Annotations\AbstractAnnotation::$context);
 		} catch (AnnotationException $e) {
 			Logger::warning($e);
-			self::$current = null;
-			self::$currentClass = null;
-			return false;
+			return array();
 		}
-		self::$currentClass = null;
-		self::$current = null;
-		if (count($resources) === 0 && count($models) === 0) {
-			return false;
-		}
-		return array(
-			'resources' => $resources,
-			'models' => $models
-		);
-	}
-
-	/**
-	 *
-	 * @param Annotations\Resource $resource
-	 * @param \ReflectionClass $rClass
-	 * @return Annotations\Resource
-	 */
-	protected function parseResource($resource, $rClass)
-	{
-		if ($resource->resourcePath === null) { // No resourcePath give?
-			// Assume Classname (without Controller suffix) matches the base route.
-			$resource->resourcePath = '/'.lcfirst($this->stripNamespace($rClass->name));
-			$resource->resourcePath = preg_replace('/Controller$/i', '', $resource->resourcePath);
-		}
-		foreach ($rClass->getMethods() as $rMethod) {
-			try {
-				self::$current = self::$currentClass.'->'.$rMethod->name.'()';
-				$annotations = $this->reader->getMethodAnnotations($rMethod);
-				foreach ($annotations as $annotation) {
-					$resource->apis[] = $this->parseApi($annotation, $rMethod, $resource->resourcePath);
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Annotations\Resource) {
+				$this->resource = $annotation;
+				$this->resources[] = $this->resource;
+			} elseif ($annotation instanceof Annotations\Model) {
+				$this->model = $annotation;
+				$this->models[] = $this->model;
+			} elseif ($annotation instanceof Annotations\Api) {
+				if ($this->resource) {
+					$this->resource->apis[] = $annotation;
+				} else {
+					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Resource" declaration'.Annotations\AbstractAnnotation::$context);
 				}
-			} catch (AnnotationException $e) {
-				Logger::warning($e);
+			} elseif ($annotation instanceof Annotations\Property) {
+				if ($this->model) {
+					$this->model->properties[] = $annotation;
+				} else {
+					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Model" declaration'.Annotations\AbstractAnnotation::$context);
+				}
+			} elseif ($annotation instanceof Annotations\AbstractAnnotation) { // A Swagger notation?
+				Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource" or "Model" for '.Annotations\AbstractAnnotation::$context);
 			}
 		}
-		return $resource;
+		return $annotations;
 	}
 
 	/**
-	 *
-	 * @param Annotations\Api $api
-	 * @param \ReflectionMethod $rMethod
-	 * @param string $resourcePath
+	 * @param string $class
+	 * @param string $docComment
+	 * @return array|AbstractAnnotation
 	 */
-	protected function parseApi($api, $rMethod, $resourcePath)
+	protected function parseClass($class, $docComment)
 	{
-		if ($api->path === null) { // No path given?
-			// Assume method (without Action suffix) on top the resourcePath
-			$api->path = $resourcePath.'/'.preg_replace('/Action$/i', '', $rMethod->name);
-		}
-		foreach ($api->operations as $operation) {
-			if ($operation->nickname === null) {
-				$operation->nickname = $rMethod->name;
+		$annotations = $this->parseDocComment($docComment);
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Annotations\Resource) {
+				// Resource
+				if ($annotation->resourcePath === null) { // No resourcePath give?
+					// Assume Classname (without Controller suffix) matches the base route.
+					$annotation->resourcePath = '/'.lcfirst($class);
+					$annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
+				}
+			} elseif ($annotation instanceof Annotations\Model) {
+				// Model
+				if ($annotation->id === null) {
+					$annotation->id = $class;
+				}
 			}
 		}
-		return $api;
+		return $annotations;
 	}
 
 	/**
-	 *
-	 * @param Annotations\Model $model
-	 * @param \ReflectionClass $rClass
+	 * @param string $method
+	 * @param string $docComment
+	 * @return array|AbstractAnnotation
 	 */
-	protected function parseModel($model, $rClass) {
-		if ($model->id === null) {
-			$model->id = $this->stripNamespace($rClass->name);
-		}
-		foreach ($rClass->getProperties() as $rProperty) {
-			try {
-				self::$current = self::$currentClass.'->'.$rProperty->name;
-				$annotations = $this->reader->getPropertyAnnotations($rProperty);
-				foreach ($annotations as $annotation) {
-					if ($annotation instanceof Annotations\Property) {
-						$model->properties[] = $this->parsePropery($annotation, $rProperty);
+	protected function parseMethod($method, $docComment)
+	{
+		$annotations = $this->parseDocComment($docComment);
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Annotations\Api) {
+				if ($annotation->path === null && $this->resource && $this->resource->resourcePath) { // No path given?
+					// Assume method (without Action suffix) on top the resourcePath
+					$annotation->path = $this->resource->resourcePath.'/'.preg_replace('/Action$/i', '', $method);
+				}
+				foreach ($annotation->operations as $operation) {
+					if ($operation->nickname === null) {
+						$operation->nickname = $method;
 					}
 				}
-			} catch (AnnotationException $e) {
-				Logger::warning($e);
 			}
 		}
-		return $model;
+		return $annotations;
 	}
 
+//
 	/**
-	 *
-	 * @param Annotations\Property $property
-	 * @param \ReflectionProperty $rProperty
+	 * @param string $property  Name of the property
+	 * @param string $docComment  The doc-comment above the property
+	 * @return array|AbstractAnnotation
 	 */
-	protected function parsePropery($property, $rProperty)
+	protected function parsePropery($property, $docComment)
 	{
-		if ($property->name === null) {
-			$property->name = $rProperty->name;
-		}
-		if ($property->type === null) {
-			if (preg_match('/@var\s+(\w+)/i', $rProperty->getDocComment(), $matches)) {
-	            $type = (string)array_pop($matches);
-				$map = array(
-					'array' => 'Array',
-					'byte' => 'byte',
-					'boolean' => 'boolean',
-					'bool' => 'boolean',
-					'int' => 'int',
-					'integer' => 'int',
-					'long' => 'long',
-					'float' => 'float',
-					'double' => 'double',
-					'string' => 'string',
-					'date' => 'Date',
-					'datetime' => 'Date',
-					'\\datetime' => 'Date',
-					'list' => 'List',
-					'set' => 'Set',
-				);
-				if (array_key_exists(strtolower($type), $map)) {
-					$type = $map[strtolower($type)];
+		$annotations = $this->parseDocComment($docComment);
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Annotations\Property) {
+				if ($annotation->name === null) {
+					$annotation->name = $property;
 				}
-				$property->type = $type;
+				if ($annotation->type === null) {
+					if (preg_match('/@var\s+(\w+)/i', $docComment, $matches)) {
+						$type = (string)array_pop($matches);
+						$map = array(
+							'array' => 'Array',
+							'byte' => 'byte',
+							'boolean' => 'boolean',
+							'bool' => 'boolean',
+							'int' => 'int',
+							'integer' => 'int',
+							'long' => 'long',
+							'float' => 'float',
+							'double' => 'double',
+							'string' => 'string',
+							'date' => 'Date',
+							'datetime' => 'Date',
+							'\\datetime' => 'Date',
+							'list' => 'List',
+							'set' => 'Set',
+						);
+						if (array_key_exists(strtolower($type), $map)) {
+							$type = $map[strtolower($type)];
+						}
+						$annotation->type = $type;
+					}
+				}
+				// @todo Extract description
 			}
 		}
-		// @todo Extract description
-		return $property;
-	}
-
-	/**
-	 * Remove the namespace from the fully qualified classname
-	 * @param  string $class
-	 * @return string
-	 */
-	private function stripNamespace($class)
-	{
-		return basename(str_replace('\\','/', $class));
+		return $annotations;
 	}
 }
 

@@ -77,7 +77,7 @@ class Property extends AbstractAnnotation
 		);
 		if (array_key_exists(strtolower($this->type), $map)  && array_search($this->type, $map) === false) {
 			// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-			Logger::notice('Encountered type "'.$this->type.'" for '.Parser::$current.', did you mean "'.$map[strtolower($this->type)].'"');
+			Logger::notice('Encountered type "'.$this->type.'" for '.AbstractAnnotation::$context.', did you mean "'.$map[strtolower($this->type)].'"');
 		}
 		// Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
 		if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {

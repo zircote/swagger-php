@@ -35,6 +35,12 @@ use Swagger\Parser;
  */
 abstract class AbstractAnnotation
 {
+	/**
+	 * Allows Annotation classes to know which property or method in which class is being processed.
+	 * @var string
+	 */
+	public static $context;
+
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';
     const NEWLINES = '/(?>\r\n|\n|\r|\f|\x0b|\x85|\x{2028}|\x{2029})/u';
@@ -49,7 +55,7 @@ abstract class AbstractAnnotation
             if (property_exists($this, $key)) {
                 $this->{$key} = $this->cast($value);
             } elseif ($key !== 'value') {
-				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).' in '.Parser::$current);
+				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).' in '.AbstractAnnotation::$context);
 			}
         }
 		if (isset($values['value'])) {
