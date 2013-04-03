@@ -30,28 +30,35 @@ namespace Swagger\Annotations;
  */
 class Parameter extends AbstractAnnotation
 {
+	/**
+	 * The name of the parameter name
+     * @var string
+     */
+    public $name;
     /**
+	 * Description of the parameter
      * @var string
      */
     public $description;
     /**
      * @var bool
      */
-    public $allowMultiple = true;
+    public $allowMultiple = null;
     /**
+	 * The dataType of the parameter
      * @var string
      */
     public $dataType;
+
     /**
-     * @var string
-     */
-    public $name;
-    /**
+	 * "path" is for when the parameter is part of the URL path (e.g /foo/{id}.xml)
+	 * "query" is for when the parameter is part of the query_string or a form
      * @var string
      */
     public $paramType;
 
     /**
+	 * If not present defaults to false.
      * @var bool
      */
     public $required;
@@ -61,16 +68,23 @@ class Parameter extends AbstractAnnotation
      */
     public $type;
 
-    /**
-     * @var mixed
-     */
-    public $value;
+	/**
+	 * @var AllowableValues
+	 */
+	public $allowableValues;
 
     /**
      * @var mixed
      */
     public $defaultValue;
 
+	protected function setNestedAnnotations($annotations) {
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof AllowableValues) {
+				$this->allowableValues = $annotation;
+			}
+		}
+	}
     /**
      * @return array
      */

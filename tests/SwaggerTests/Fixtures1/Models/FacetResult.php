@@ -12,7 +12,7 @@ class FacetResult
 {
     /**
      * @var array
-     * @SWG\Property(name="facetSets", type="array", items="$ref:FacetSet")
+     * @SWG\Property(name="facetSets", type="Array", items="$ref:FacetSet")
      */
     protected $facetSets;
 }

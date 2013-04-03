@@ -24,65 +24,26 @@ namespace SwaggerTests\Fixtures\Models;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
-use Swagger\Annotations\Items;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Model(id="Pet")
+ * @Model(id="Category")
  */
-class Pet
+class Category
 {
     /**
-     * @var array<Tags>
-     *
-     * @Property(name="tags",type="array", items="$ref:Tag")
-     */
-    protected $tags = array();
-
-    /**
      * @var int
-     *
      * @Property(name="id",type="long")
      */
     protected $id;
 
     /**
-     * @var Category
-     *
-     * @Property(name="category",type="Category")
-     */
-    protected $category;
-
-    /**
-     *
-     *
      * @var string
-     *
-     * @Property(
-     *      name="status",type="string",
-     *      @allowableValues(
-     *          valueType="LIST",
-     *          values="['available', 'pending', 'sold']"
-     *      ),
-     *      description="pet status in the store")
-     */
-    protected $status;
-
-    /**
-     * @var string
-     *
      * @Property(name="name",type="string")
      */
     protected $name;
-
-    /**
-     * @var array<string>
-     *
-     * @Property(name="photoUrls",type="array", @items(type="string"))
-     */
-    protected $photoUrls = array();
 }
 

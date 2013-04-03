@@ -22,6 +22,8 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Doctrine\Common\Annotations\AnnotationException;
+use Swagger\Logger;
+use Swagger\Parser;
 
 /**
  * @package
@@ -43,12 +45,58 @@ abstract class AbstractAnnotation
      */
     public function __construct(array $values = array())
     {
-        foreach ($values as $k => $v) {
-            if (property_exists($this, $k)) {
-                $this->{$k} = $v;
-            }
+        foreach ($values as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = $this->cast($value);
+            } elseif ($key !== 'value') {
+				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).' in '.Parser::$current);
+			}
         }
+		if (isset($values['value'])) {
+			$objecs = is_array($values['value']) ? $values['value'] : array($values['value']);
+			$this->setNestedAnnotations($objecs);
+		}
     }
+
+	/**
+	 * Log warning, correct errors where possible.
+	 * @return bool Return false when the annotation is invalid and can't be used.
+	 */
+	public function validate() {
+		Logger::warning(new AnnotationException(get_class($this).' doesn\'t implement the validate() method'));
+		return false;
+	}
+//	protected function validateProperties() {
+//		foreach ($this as $property) {
+//			if ($property instanceof AbstractAnnotation) {
+//				if ($property->validate() === false) {
+//					return false;
+//				}
+//			}
+//			if (is_array($property)) {
+//				foreach ($property as $value) {
+//					if ($property instanceof AbstractAnnotation) {
+//						if ($property->validate() === false) {
+//							return false;
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return true;
+//	}
+
+	protected function setNestedAnnotations($annotations)
+	{
+		// abstract method
+	}
+
+	private function cast($value) {
+		if (is_string($value) && in_array($value, array('true', 'false'))) {
+            return ($value == 'true') ? true : false;
+        }
+		return $value;
+	}
 
     protected function arrayFilter(&$v)
     {
@@ -60,6 +108,7 @@ abstract class AbstractAnnotation
         }
         return true;
     }
+
     /**
      * @return array
      */
@@ -87,6 +136,17 @@ abstract class AbstractAnnotation
         }
         return $members;
     }
+
+	function jsonSerialize()
+	{
+		$data = get_object_vars($this);
+		foreach ($data as $key => $value) {
+			if ($value === null) {
+				unset($data[$key]); // Skip undefined values
+			}
+		}
+		return $data;
+	}
     /**
      * @param $json
      * @throws \Doctrine\Common\Annotations\AnnotationException
@@ -110,6 +170,9 @@ abstract class AbstractAnnotation
      */
     public function removePreamble($string)
     {
+		if ($string === null) {
+			return null;
+		}
         $string = preg_replace(self::NEWLINES, PHP_EOL, $string);
         $values = explode(PHP_EOL, $string);
         foreach ($values as $key => $value) {

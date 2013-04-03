@@ -50,7 +50,7 @@ class AllowableValues extends AbstractAnnotation
     /**
      * @var array
      */
-    public $values = array();
+    public $values;
 
     /**
      * @var int|null
@@ -90,15 +90,15 @@ class AllowableValues extends AbstractAnnotation
     public function isList($values)
     {
         $this->valueType = self::TYPE_LIST;
-        $this->values = $this->decode($values['values']);
-        if( $this->values instanceof \stdClass){
-            $newValues = array();
-            foreach ((array) $this->values as $key => $value) {
-                $value = "{$key}-{$value}";
-                array_push($newValues, $value);
+        $list = $this->decode($values['values']);
+        if( $list instanceof \stdClass){
+            $this->values = array();
+            foreach ($list as $key => $value) {
+                array_push($this->values, "{$key}-{$value}");
             }
-            $this->values = $newValues;
-        }
+        } else {
+			$this->values = $list;
+		}
     }
 
     /**

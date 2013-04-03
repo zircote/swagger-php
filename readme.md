@@ -25,7 +25,7 @@ Features
  - Fully compatible with the full swagger documented proposal.
  - Caching layer using the `\Doctrine\Common\Cache` library
  - Full project discovery
- - standalone CLI phar implementation
+ - Standalone CLI phar implementation
  - Free
 
  More on Swagger:

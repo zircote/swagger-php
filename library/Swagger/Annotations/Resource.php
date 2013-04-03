@@ -21,6 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Doctrine\Common\Annotations\AnnotationException;
 /**
  * @package
  * @category
@@ -31,22 +32,26 @@ namespace Swagger\Annotations;
 
 class Resource extends AbstractAnnotation
 {
-    /**
-     * @var string
-     */
-    public $apiVersion;
+
 
     /**
+     * The basePath is the end-point of your API.
+	 * Not the Developer or the  Admin Portal but the endpoint that serves your API requests.
+     * @var string
+     */
+    public $basePath;
+
+	/**
+	 * the version of Swagger
      * @var string
      */
     public $swaggerVersion;
 
-    /**
-     * "http://petstore.swagger.wordnik.com/api"
-     *
+	/**
+	 * The version of your API
      * @var string
      */
-    public $basePath;
+    public $apiVersion;
 
     /**
      * @var "/store"
@@ -54,7 +59,7 @@ class Resource extends AbstractAnnotation
     public $resourcePath;
 
     /**
-     * @var array
+     * @var array|Api
      */
     public $apis = array();
 
@@ -62,5 +67,49 @@ class Resource extends AbstractAnnotation
      * @var array
      */
     public $models = array();
+
+	protected function setNestedAnnotations($annotations) {
+		foreach ($annotations as $annotation) {
+			if ($annotation instanceof Api) {
+				$this->apis[] = $annotation;
+			}
+		}
+	}
+
+	public function validate() {
+		$apis = array();
+		foreach ($this->apis as $api) {
+			if ($api->validate()) {
+				$append = true;
+				foreach ($apis as $validApi) {
+					if ($validApi->path === $api->path && $validApi->description === $api->description) { // A similar api call?
+						$append = false;
+						// merge operations
+						foreach ($api->operations as $operation) {
+							$validApi->operations[] = $operation;
+						}
+					}
+				}
+				if ($append) {
+					$apis[] = $api;
+				}
+			}
+		}
+		if (count($apis) == 0) {
+			Logger::log(new AnnotationException('Resource "'.$this->basePath.'" doesn\'t have any valid api calls'));
+			return false;
+		}
+		$this->apis = $apis;
+		return true;
+	}
+
+	public function jsonSerialize()
+	{
+		$data = parent::jsonSerialize();
+		if (count($this->models) === 0) {
+			unset($data['models']);
+		}
+		return $data;
+	}
 }
 
