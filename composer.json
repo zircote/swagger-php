@@ -1,7 +1,6 @@
 {
     "name": "zircote/swagger-php",
     "type": "library",
-    "time": "2012-12-17",
     "license": "Apache2",
     "bin": ["bin/swagger"],
     "description": "Swagger-PHP library implementing the swagger.wordnik.com specification to describe web services, operations/actions and models enabling a uniform means of producing, consuming, and visualizing RESTful web services.",
@@ -12,6 +11,10 @@
             "name": "Robert Allen",
             "email": "zircote@gmail.com",
             "homepage": "http://www.zircote.com"
+        },
+        {
+            "name": "Bob Fanger",
+            "homepage": "http://bfanger.nl"
         }
     ],
     "config": {
