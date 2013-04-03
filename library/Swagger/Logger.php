@@ -26,8 +26,11 @@ namespace Swagger;
  */
 class Logger {
 
-
-	static $logger;
+	/**
+	 * Singleton
+	 * @var Logger
+	 */
+	static $instance;
 
 	/**
 	 * @var Closure
@@ -48,10 +51,10 @@ class Logger {
 	}
 
 	static function getInstance() {
-		if (self::$logger === null) {
-			self::$logger = new Logger();
+		if (self::$instance === null) {
+			self::$instance = new Logger();
 		}
-		return self::$logger;
+		return self::$instance;
 	}
 
 	/**

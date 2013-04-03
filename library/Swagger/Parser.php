@@ -122,7 +122,7 @@ class Parser
 				continue;
 			}
 			if ($token[0] === T_DOC_COMMENT) {
-				$location = ' in '.$this->filename.' on line '.$token[2];
+				$location = $this->filename.' on line '.$token[2];
 				Annotations\AbstractAnnotation::$context = $location;
 				if ($docComment) { // 2 Doc-comments in succession?
 					$this->parseDocComment($docComment);
@@ -130,26 +130,21 @@ class Parser
 				$docComment = $token[1];
 				continue;
 			}
-			if ($docComment) {
-				if ($token[0] === T_CLASS) { // Doc-comment before a class?
-					$class = $tokenParser->parseClass();
+			if ($token[0] === T_CLASS) { // Doc-comment before a class?
+				$class = $tokenParser->parseClass();
+				if ($docComment) {
 					// @todo detect end-of-class and reset $class
-					Annotations\AbstractAnnotation::$context = ' for '.$class.$location;
-					$annotations = $this->parseDocComment($docComment);
-					foreach ($annotations as $annotation) {
-						if ($annotation instanceof Annotations\Model) {
-							if ($annotation->id === null) {
-								$annotation->id = $class; // Auto-detect Model->id
-							}
-						}
-					}
+					Annotations\AbstractAnnotation::$context = $class.' in '.$location;
+					$annotations = $this->parseClass($class, $docComment);
 					$docComment = false;
 					continue;
 				}
+			}
+			if ($docComment) {
 				if ($token[0] == T_STATIC) {
 					$token = $tokenParser->next(false);
 					if ($token[0] === T_VARIABLE) { // static property
-						Annotations\AbstractAnnotation::$context = ' for '.$class.'::'.$token[1].$location;
+						Annotations\AbstractAnnotation::$context = $class.'::'.$token[1].' in '.$location;
 						$this->parsePropery(substr($token[1], 1), $docComment);
 						$docComment = false;
 						continue;
@@ -161,14 +156,14 @@ class Parser
 						$token = $tokenParser->next(false);
 					}
 					if ($token[0] === T_VARIABLE) { // instance property
-						Annotations\AbstractAnnotation::$context = ' for '.$class.'->'.substr($token[1], 1).$location;
+						Annotations\AbstractAnnotation::$context = $class.'->'.substr($token[1], 1).' in '.$location;
 						$this->parsePropery(substr($token[1], 1), $docComment);
 						$docComment = false;
 					} elseif ($token[0] === T_FUNCTION) {
 						$token = $tokenParser->next(false);
 						if ($token[0] === T_STRING) {
-							Annotations\AbstractAnnotation::$context = ' for '.$class.'->'.substr($token[1], 1).'(...)'.$location;
-							$this->parseMethod(substr($token[1], 1), $docComment);
+							Annotations\AbstractAnnotation::$context = $class.'->'.$token[1].'(...)'.' in '.$location;
+							$this->parseMethod($token[1], $docComment);
 							$docComment = false;
 						}
 					}
@@ -200,7 +195,7 @@ class Parser
 	protected function parseDocComment($docComment) {
 		try {
 			$annotations = $this->docParser->parse($docComment, Annotations\AbstractAnnotation::$context);
-		} catch (AnnotationException $e) {
+		} catch (\Exception $e) {
 			Logger::warning($e);
 			return array();
 		}
@@ -215,16 +210,16 @@ class Parser
 				if ($this->resource) {
 					$this->resource->apis[] = $annotation;
 				} else {
-					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Resource" declaration'.Annotations\AbstractAnnotation::$context);
+					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Resource" declaration in '.Annotations\AbstractAnnotation::$context);
 				}
 			} elseif ($annotation instanceof Annotations\Property) {
 				if ($this->model) {
 					$this->model->properties[] = $annotation;
 				} else {
-					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Model" declaration'.Annotations\AbstractAnnotation::$context);
+					Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Model" declaration in '.Annotations\AbstractAnnotation::$context);
 				}
 			} elseif ($annotation instanceof Annotations\AbstractAnnotation) { // A Swagger notation?
-				Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource" or "Model" for '.Annotations\AbstractAnnotation::$context);
+				Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource" or "Model" in '.Annotations\AbstractAnnotation::$context);
 			}
 		}
 		return $annotations;
