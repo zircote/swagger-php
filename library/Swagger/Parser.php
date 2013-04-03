@@ -61,37 +61,11 @@ class Parser
 	 */
 	private $filename;
 
-	/**
-     * A list with annotations that are not causing exceptions when not resolved to an annotation class.
-     * The names are case sensitive.
-	  * (Copied from Doctrine\Common\Annotations\AnnotationReader)
-     *
-     * @var array
-     */
-    private static $globalIgnoredNames = array(
-        'access'=> true, 'author'=> true, 'copyright'=> true, 'deprecated'=> true,
-        'example'=> true, 'ignore'=> true, 'internal'=> true, 'link'=> true, 'see'=> true,
-        'since'=> true, 'tutorial'=> true, 'version'=> true, 'package'=> true,
-        'subpackage'=> true, 'name'=> true, 'global'=> true, 'param'=> true,
-        'return'=> true, 'staticvar'=> true, 'category'=> true, 'staticVar'=> true,
-        'static'=> true, 'var'=> true, 'throws'=> true, 'inheritdoc'=> true,
-        'inheritDoc'=> true, 'license'=> true, 'todo'=> true,
-        'deprec'=> true, 'property' => true, 'method' => true,
-        'abstract'=> true, 'exception'=> true, 'magic' => true, 'api' => true,
-        'final'=> true, 'filesource'=> true, 'throw' => true, 'uses' => true,
-        'usedby'=> true, 'private' => true, 'Annotation' => true, 'override' => true,
-        'codeCoverageIgnore' => true, 'codeCoverageIgnoreStart' => true, 'codeCoverageIgnoreEnd' => true,
-        'Required' => true, 'Attribute' => true, 'Attributes' => true,
-        'Target' => true, 'SuppressWarnings' => true,
-        'ingroup' => true, 'code' => true, 'endcode' => true,
-        'package_version' => true,
-    );
-
 	function __construct($filename)
 	{
 		$this->filename = $filename;
 		$this->docParser = new DocParser();
-		$this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
+		$this->docParser->setIgnoreNotImportedAnnotations(true);
 
 		AnnotationRegistry::registerAutoloadNamespace(__NAMESPACE__, dirname(__DIR__));
 		$this->parse();
