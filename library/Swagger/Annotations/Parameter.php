@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Swagger;
+use Swagger\Logger;
 /**
  * @package
  * @category
@@ -64,11 +65,6 @@ class Parameter extends AbstractAnnotation
      */
     public $required;
 
-    /**
-     * @var string
-     */
-    public $type;
-
 	/**
 	 * @var AllowableValues
 	 */
@@ -82,6 +78,9 @@ class Parameter extends AbstractAnnotation
 	public function __construct(array $values = array()) {
 		parent::__construct($values);
 		Swagger::checkDataType($this->dataType);
+		if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header'))) {
+			Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body" or "header" in '.AbstractAnnotation::$context);
+		}
 	}
 
 	protected function setNestedAnnotations($annotations) {

@@ -55,7 +55,8 @@ abstract class AbstractAnnotation
             if (property_exists($this, $key)) {
                 $this->{$key} = $this->cast($value);
             } elseif ($key !== 'value') {
-				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).' in '.AbstractAnnotation::$context);
+				$properties = array_keys(get_object_vars($this));
+				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).', expecting "'.implode('", "', $properties).'" in '.AbstractAnnotation::$context);
 			}
         }
 		if (isset($values['value'])) {
