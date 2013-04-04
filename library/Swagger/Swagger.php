@@ -267,7 +267,7 @@ class Swagger implements \Serializable
             if (!$fileInfo->isDot()) {
                 $skip = false;
                 foreach ($excludePaths as $excludePath) {
-                    if (strpos(realpath($fileInfo->getPathname()), $excludePath) === 0) {
+                    if (strpos(realpath($fileInfo->getPathname()), realpath($excludePath)) === 0) {
                         $skip = true;
                         break;
                     }
