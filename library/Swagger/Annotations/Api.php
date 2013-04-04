@@ -59,7 +59,13 @@ class Api extends AbstractAnnotation
     }
 
 	public function validate() {
-		// @todo validate and remove invalid operations
+		$operations = array();
+		foreach ($this->operations as $operation) {
+			if ($operation->validate()) {
+				$operations[] = $operation;
+			}
+		}
+		$this->operations = $operations;
 		if (count($this->operations) == 0) {
 			Logger::log(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
 			return false;

@@ -172,6 +172,13 @@ class Parser
 						}
 					}
 					continue;
+				} elseif ($token[0] === T_FUNCTION) {
+					$token = $tokenParser->next(false);
+					if ($token[0] === T_STRING) {
+						Annotations\AbstractAnnotation::$context = $class.'->'.$token[1].'(...)'.' in '.$location;
+						$this->parseMethod($token[1], $docComment);
+						$docComment = false;
+					}
 				}
 				if (in_array($token[0], array(T_NAMESPACE, T_USE)) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
 					// Not a doc-comment for a class, property or method?

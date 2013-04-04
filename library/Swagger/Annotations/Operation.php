@@ -23,6 +23,7 @@ namespace Swagger\Annotations;
  */
 use Swagger\Annotations\Parameters;
 use Swagger\Annotations\ErrorResponses;
+use Swagger\Logger;
 
 /**
  * The Operation is what is shown as a bar-like container in the interactive UI.
@@ -108,6 +109,13 @@ class Operation extends AbstractAnnotation
 				$this->setNestedAnnotations($errors);
 			}
 		}
+	}
+
+	public function validate() {
+		if (empty($this->nickname)) {
+			Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
+		}
+		return true;
 	}
 
 	public function jsonSerialize() {
