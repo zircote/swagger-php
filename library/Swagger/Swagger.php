@@ -272,6 +272,14 @@ class Swagger implements \Serializable
                         break;
                     }
                 }
+				if (realpath($fileInfo->getPathname()) === dirname(dirname(__DIR__)).'/tests') {
+					$skip = true;
+					Logger::notice('Skipping files in "'.realpath($fileInfo->getPathname()).'" add your "vendor" directory to the exclude paths');
+				}
+				if (realpath($fileInfo->getPathname()) === realpath(__DIR__.'/../../../../doctrine')) {
+					$skip = true;
+					Logger::notice('Skipping files in "'.realpath($fileInfo->getPathname()).'" add your "vendor" directory to the exclude paths');
+				}
                 if (true === $skip) {
                     continue;
                 }
@@ -381,7 +389,7 @@ class Swagger implements \Serializable
     {
 		$data = self::export($resource);
         if (version_compare(PHP_VERSION, '5.4', '>=')) {
-            $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         } else {
             $json = str_replace('\/', '/', json_encode($data));
         }
