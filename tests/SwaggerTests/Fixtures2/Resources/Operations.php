@@ -37,8 +37,8 @@ class Operations
      *       summary="Create user",
      *       httpMethod="POST",
      *       responseClass="User",
-     * @SWG\Parameter(name="email",dataType="String"),
-     * @SWG\Parameter(name="phone",dataType="String")
+     * @SWG\Parameter(name="email",dataType="string"),
+     * @SWG\Parameter(name="phone",dataType="string")
      *     )
      *   )
      * )

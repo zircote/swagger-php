@@ -21,6 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Swagger;
 /**
  * @package
  * @category
@@ -77,6 +78,11 @@ class Parameter extends AbstractAnnotation
      * @var mixed
      */
     public $defaultValue;
+
+	public function __construct(array $values = array()) {
+		parent::__construct($values);
+		Swagger::checkDataType($this->dataType);
+	}
 
 	protected function setNestedAnnotations($annotations) {
 		foreach ($annotations as $annotation) {

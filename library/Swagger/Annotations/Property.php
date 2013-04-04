@@ -58,27 +58,13 @@ class Property extends AbstractAnnotation
      */
     public $items;
 
+	public function __construct(array $values = array()) {
+		parent::__construct($values);
+		Swagger::checkDataType($this->type);
+	}
+
 	public function validate()
 	{
-		$map = array(
-			'array' => 'Array',
-			'byte' => 'byte',
-			'boolean' => 'boolean',
-			'bool' => 'boolean',
-			'int' => 'int',
-			'integer' => 'int',
-			'long' => 'long',
-			'float' => 'float',
-			'double' => 'double',
-			'string' => 'string',
-			'date' => 'Date',
-			'list' => 'List',
-			'set' => 'Set',
-		);
-		if (array_key_exists(strtolower($this->type), $map)  && array_search($this->type, $map) === false) {
-			// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-			Logger::notice('Encountered type "'.$this->type.'" in '.AbstractAnnotation::$context.', did you mean "'.$map[strtolower($this->type)].'"');
-		}
 		// Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
 		if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
 			$this->items = new Items();
@@ -90,9 +76,8 @@ class Property extends AbstractAnnotation
 			if (Swagger::isContainer($this->type) === false) {
 				Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
 				$this->items = null;
-			} elseif (array_key_exists(strtolower($this->items->type), $map) && array_search($this->items->type, $map) === false) {
-				// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-				Logger::notice('Encountered "'.$this->items->type.'" as items->type for property "'.$this->name.'", did you mean "'.$map[strtolower($this->type)].'"');
+			} else {
+				Swagger::checkDataType($this->items->type);
 			}
 		}
 		return true;
@@ -109,7 +94,8 @@ class Property extends AbstractAnnotation
 		}
 		return $data;
 	}
-	public function setNestedAnnotations($annotations) {
+
+	protected function setNestedAnnotations($annotations) {
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof AllowableValues) {
 				$this->allowableValues = $annotation;

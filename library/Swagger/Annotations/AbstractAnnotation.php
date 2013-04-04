@@ -39,7 +39,7 @@ abstract class AbstractAnnotation
 	 * Allows Annotation classes to know which property or method in which class is being processed.
 	 * @var string
 	 */
-	public static $context;
+	public static $context = '';
 
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';

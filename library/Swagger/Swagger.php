@@ -356,6 +356,35 @@ class Swagger implements \Serializable
 		return in_array(strtolower($type), array('array', 'set', 'list'));
 	}
 
+	/**
+	 * Log a notice when the type doesn't exactly match the Swagger spec.
+	 * @link https://github.com/wordnik/swagger-core/wiki/Datatypes
+	 *
+	 * @param string $type
+	 * @return void
+	 */
+	static function checkDataType($type)
+	{
+		$map = array(
+			'array' => 'Array',
+			'byte' => 'byte',
+			'boolean' => 'boolean',
+			'bool' => 'boolean',
+			'int' => 'int',
+			'integer' => 'int',
+			'long' => 'long',
+			'float' => 'float',
+			'double' => 'double',
+			'string' => 'string',
+			'date' => 'Date',
+			'list' => 'List',
+			'set' => 'Set',
+		);
+		if (array_key_exists(strtolower($type), $map)  && array_search($type, $map) === false) {
+			// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
+			Logger::notice('Encountered type "'.$type.'" in '.Annotations\AbstractAnnotation::$context.', did you mean "'.$map[strtolower($type)].'"');
+		}
+	}
 
 	/**
 	 * Build the array to be used in the json.

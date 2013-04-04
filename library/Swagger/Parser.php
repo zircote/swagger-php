@@ -77,6 +77,7 @@ class Parser
 	 */
 	function getResources()
 	{
+		Annotations\AbstractAnnotation::$context = $this->filename;
 		$resources = array();
 		foreach ($this->resources as $resource) {
 			if ($resource->validate()) {
@@ -84,6 +85,7 @@ class Parser
 			}
 		}
 		$this->resources = $resources;
+		Annotations\AbstractAnnotation::$context = '';
 		return $resources;
 	}
 
@@ -93,6 +95,7 @@ class Parser
 	 */
 	function getModels()
 	{
+		Annotations\AbstractAnnotation::$context = $this->filename;
 		$models = array();
 		foreach ($this->models as $model) {
 			if ($model->validate()) {
@@ -100,6 +103,7 @@ class Parser
 			}
 		}
 		$this->models = $models;
+		Annotations\AbstractAnnotation::$context = '';
 		return $models;
 	}
 
@@ -135,7 +139,7 @@ class Parser
 				if ($docComment) {
 					// @todo detect end-of-class and reset $class
 					Annotations\AbstractAnnotation::$context = $class.' in '.$location;
-					$annotations = $this->parseClass($class, $docComment);
+					$this->parseClass($class, $docComment);
 					$docComment = false;
 					continue;
 				}
@@ -192,6 +196,7 @@ class Parser
 				continue;
 			}
 		}
+		Annotations\AbstractAnnotation::$context = '';
 	}
 
 	/**
