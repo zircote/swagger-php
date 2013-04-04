@@ -180,7 +180,14 @@ class Parser
 				continue;
 			}
 			if ($token[0] === T_USE) {
-				$imports = array_merge($tokenParser->parseUseStatement(), $imports);
+				$nsLength = strlen(__NAMESPACE__);
+				foreach ($tokenParser->parseUseStatement() as $alias => $target) {
+					if ($target[0] === '/' && substr($target, 1, $nsLength + 1) === __NAMESPACE__.'\\') {
+						$imports[$alias] = $target;
+					} elseif (substr($target, 0, $nsLength + 1) === __NAMESPACE__.'\\') {
+						$imports[$alias] = $target;
+					}
+				}
 				$this->docParser->setImports($imports);
 				continue;
 			}
