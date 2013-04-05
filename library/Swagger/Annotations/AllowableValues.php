@@ -68,7 +68,8 @@ class AllowableValues extends AbstractAnnotation
      */
     public function __construct($values = array())
     {
-        switch (strtoupper($values['valueType'])) {
+		parent::__construct($values);
+		switch (strtoupper($this->valueType)) {
             case self::TYPE_LIST:
                 $this->isList($values);
                 break;
@@ -77,7 +78,7 @@ class AllowableValues extends AbstractAnnotation
                 break;
             default:
                 throw new AnnotationException(
-                    'Acceptable Values are [LIST|RANGE] for [@AllowableValues]'
+                    'Unexpected AllowableValues->valueType: "'.$this->valueType.'", expecting "'.self::TYPE_LIST.'" or "'.self::TYPE_RANGE.'" in '.AbstractAnnotation::$context
                 );
         }
     }
@@ -112,12 +113,12 @@ class AllowableValues extends AbstractAnnotation
         if (isset($values['min'])) {
             $this->min = $values['min'];
         } else {
-            throw new AnnotationException('RANGE types must have min|max declared');
+            throw new AnnotationException('RANGE types must have min declared in '.AbstractAnnotation::$context);
         }
         if (isset($values['max'])) {
             $this->max = $values['max'];
         } else {
-            throw new AnnotationException('RANGE types must have min|max declared');
+            throw new AnnotationException('RANGE types must have min declared in '.AbstractAnnotation::$context);
         }
     }
 }

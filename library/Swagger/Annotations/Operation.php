@@ -95,7 +95,8 @@ class Operation extends AbstractAnnotation
         $this->notes = $this->removePreamble($this->notes);
     }
 
-	protected function setNestedAnnotations($annotations) {
+	protected function setNestedAnnotations($annotations)
+	{
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof Parameter) {
 				$this->parameters[] = $annotation;
@@ -115,14 +116,16 @@ class Operation extends AbstractAnnotation
 		}
 	}
 
-	public function validate() {
+	public function validate()
+	{
 		if (empty($this->nickname)) {
 			Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
 		}
 		return true;
 	}
 
-	public function jsonSerialize() {
+	public function jsonSerialize()
+	{
 		$data = parent::jsonSerialize();
 		if (count($this->errorResponses) === 0) {
 			unset($data['errorResponses']);
