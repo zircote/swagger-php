@@ -59,8 +59,18 @@ abstract class AbstractAnnotation
 			}
         }
 		if (isset($values['value'])) {
-			$objecs = is_array($values['value']) ? $values['value'] : array($values['value']);
-			$this->setNestedAnnotations($objecs);
+			$nested = is_array($values['value']) ? $values['value'] : array($values['value']);
+			$objects = array();
+			foreach ($nested as $value) {
+				if (is_object($value)) {
+					$objects[] = $value;
+				} else {
+					$this->setNestedValue($value);
+				}
+			}
+			if (count($objects)) {
+				$this->setNestedAnnotations($objects);
+			}
 		}
     }
 
@@ -92,11 +102,25 @@ abstract class AbstractAnnotation
 //		return true;
 //	}
 
+	/**
+	 * Example: @Annotation(@Nested) would call setNestedAnnotations with array(Nested)
+	 *
+	 * @param type $annotations
+	 */
 	protected function setNestedAnnotations($annotations)
 	{
 		foreach ($annotations as $annotation) {
 			Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 		}
+	}
+
+	/**
+	 * Example: @Annotation("hello", 124) would call setNestedValues with array("hello", 123)
+	 * @param array $values
+	 */
+	protected function setNestedValue($value)
+	{
+		Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.AbstractAnnotation::$context);
 	}
 
 	private function cast($value) {
