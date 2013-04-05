@@ -87,6 +87,8 @@ class Parameter extends AbstractAnnotation
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof AllowableValues) {
 				$this->allowableValues = $annotation;
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
 	}

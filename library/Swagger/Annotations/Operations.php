@@ -32,9 +32,20 @@ use Swagger\Annotations\Operation;
  */
 class Operations extends AbstractAnnotation
 {
-    /**
-     * @var array
-     */
-    public $value = array();
+	/**
+	 * @var array|Operation
+	 */
+	public $operations;
+
+	protected function setNestedAnnotations($annotations)
+	{
+        foreach ($annotations as $annotation) {
+			if ($annotation instanceof Operation) {
+				$this->operations[] = $annotation;
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+			}
+		}
+	}
 }
 

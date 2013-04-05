@@ -31,8 +31,19 @@ namespace Swagger\Annotations;
 class Parameters extends AbstractAnnotation
 {
     /**
-     * @var array
-     */
-    public $value = array();
+	 * @var array|Parameter
+	 */
+	public $parameters;
+
+	protected function setNestedAnnotations($annotations)
+	{
+        foreach ($annotations as $annotation) {
+			if ($annotation instanceof Parameter) {
+				$this->parameters[] = $annotation;
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+			}
+		}
+	}
 }
 

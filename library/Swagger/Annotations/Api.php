@@ -46,19 +46,23 @@ class Api extends AbstractAnnotation
      */
     public $description;
 
-    protected function setNestedAnnotations($annotations) {
+    protected function setNestedAnnotations($annotations)
+	{
         foreach ($annotations as $annotation) {
 			if ($annotation instanceof Operation) {
 				$this->operations[] = $annotation;
-			}
-			if ($annotation instanceof Operations) {
-				$operations = is_array($annotation->value) ? $annotation->value : array($annotation->value);
-				$this->setNestedAnnotations($operations);
+			} elseif ($annotation instanceof Operations) {
+				foreach ($annotation->operations as $operation) {
+					$this->operations[] = $operation;
+				}
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
     }
 
-	public function validate() {
+	public function validate()
+	{
 		$operations = array();
 		foreach ($this->operations as $operation) {
 			if ($operation->validate()) {

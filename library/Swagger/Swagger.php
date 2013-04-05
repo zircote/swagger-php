@@ -107,12 +107,12 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @param $test
+     * @param string $type
      * @return bool|mixed
      */
-    protected function modelType($test)
+    protected function modelType($type)
     {
-        if (preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $test, $matches)) {
+        if (preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $type, $matches)) {
             return array_pop($matches);
         }
         return false;

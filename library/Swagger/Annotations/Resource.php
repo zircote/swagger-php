@@ -73,6 +73,8 @@ class Resource extends AbstractAnnotation
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof Api) {
 				$this->apis[] = $annotation;
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
 	}

@@ -100,13 +100,17 @@ class Operation extends AbstractAnnotation
 			if ($annotation instanceof Parameter) {
 				$this->parameters[] = $annotation;
 			} elseif ($annotation instanceof Parameters) {
-				$parameters = is_array($annotation->value) ? $annotation->value : array($annotation->value);
-				$this->setNestedAnnotations($parameters);
+				foreach ($annotation->parameters as $parameter) {
+					$this->parameters[] = $parameter;
+				}
 			} elseif ($annotation instanceof ErrorResponse) {
 				$this->errorResponses[] = $annotation;
 			} elseif ($annotation instanceof ErrorResponses) {
-				$errors = is_array($annotation->value) ? $annotation->value : array($annotation->value);
-				$this->setNestedAnnotations($errors);
+				foreach ($annotation->errorResponses as $errorResponse) {
+					$this->errorResponses[] = $errorResponse;
+				}
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
 	}

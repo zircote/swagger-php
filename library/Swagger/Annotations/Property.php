@@ -23,7 +23,6 @@ namespace Swagger\Annotations;
  */
 use Swagger\Logger;
 use Swagger\Swagger;
-use Swagger\Parser;
 use Doctrine\Common\Annotations\AnnotationException;
 /**
  * @package
@@ -95,12 +94,15 @@ class Property extends AbstractAnnotation
 		return $data;
 	}
 
-	protected function setNestedAnnotations($annotations) {
+	protected function setNestedAnnotations($annotations)
+	{
 		foreach ($annotations as $annotation) {
 			if ($annotation instanceof AllowableValues) {
 				$this->allowableValues = $annotation;
 			} elseif ($annotation instanceof Items) {
 				$this->items = $annotation;
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
 	}

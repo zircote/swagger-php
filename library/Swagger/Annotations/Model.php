@@ -52,7 +52,11 @@ class Model extends AbstractAnnotation
 			if ($annotation instanceof Property) {
 				$this->properties[] = $annotation;
 			} elseif ($annotation instanceof Properties) {
-				$this->setNestedAnnotations($annotation->value);
+				foreach ($annotation->properties as $property) {
+					$this->properties[] = $property;
+				}
+			} else {
+				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
 			}
 		}
 	}

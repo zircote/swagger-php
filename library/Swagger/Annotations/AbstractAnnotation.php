@@ -23,7 +23,6 @@ namespace Swagger\Annotations;
  */
 use Doctrine\Common\Annotations\AnnotationException;
 use Swagger\Logger;
-use Swagger\Parser;
 
 /**
  * @package
@@ -95,7 +94,9 @@ abstract class AbstractAnnotation
 
 	protected function setNestedAnnotations($annotations)
 	{
-		// abstract method
+		foreach ($annotations as $annotation) {
+			Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+		}
 	}
 
 	private function cast($value) {
