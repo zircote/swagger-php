@@ -107,18 +107,6 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @param string $type
-     * @return bool|mixed
-     */
-    protected function modelType($type)
-    {
-        if (preg_match('/List\[(\w+)\]|\$ref:(\w+)/', $type, $matches)) {
-            return array_pop($matches);
-        }
-        return false;
-    }
-
-    /**
      *
      * @return Swagger
      */
@@ -140,30 +128,18 @@ class Swagger implements \Serializable
 			}
 		}
 
-		/* @var Resource $resource */
-        foreach ($this->registry as $i => $resource) {
+        foreach ($this->registry as $resource) {
             $models = array();
-			/* @var Api $api */
             foreach ($resource->apis as $api) {
-				/* @var Annotations\Operation $operation */
                 foreach ($api->operations as $operation) {
-                    if (isset($operation->responseClass) &&
-                        array_key_exists($operation->responseClass, $this->models)) {
-                        array_push($models, $operation->responseClass);
-                    } elseif (
-                        isset($operation->responseClass) && ($model = $this->modelType($operation->responseClass))
-                        && in_array($model, $this->models)
-                    ) {
-                        array_push($models, $model);
-                    }
-					/* @var Annotations\Parameter $parameter */
+					$model = $this->resolveModel($operation->responseClass);
+					if ($model) {
+						$models[] = $model;
+					}
 					foreach ($operation->parameters as $parameter) {
-						if (array_key_exists($parameter->dataType, $this->models)) {
-							array_push($models, $parameter->dataType);
-						} elseif (
-							($model = $this->modelType($parameter->dataType)) && in_array($model, $this->models)
-						) {
-							array_push($models, $model);
+						$model = $this->resolveModel($parameter->dataType);
+						if ($model) {
+							$models[] = $model;
 						}
                     }
                 }
@@ -181,10 +157,27 @@ class Swagger implements \Serializable
         return $this;
     }
 
+	/**
+	 *
+	 * @param string|null $model
+	 * @return string|false  false if $model doesn't contain a discoverd model.
+	 */
+	protected function resolveModel($model) {
+		if ($model === null) {
+			return false;
+		}
+		if (preg_match('/(List|Array|Set)\[(\w+)\]|\$ref:(\w+)/', $model, $matches)) {
+            $model = array_pop($matches);
+        }
+		if (array_key_exists($model, $this->models)) {
+			return $model;
+		}
+		return false;
+	}
 
     /**
-	 * Append all models to that used inside the $input models
-     * @param array $input models
+     * Append all models to that referenced inside the $input models
+     * @param array $input models  Example: array('Pet', 'Order')
      * @return array
      */
     protected function resolveModels($input)
@@ -200,11 +193,10 @@ class Swagger implements \Serializable
                 } else {
                     $type = $property->type;
                 }
-                if ($type && (array_key_exists($type, $this->models) || $type = $this->modelType($type))) {
-                    if (array_key_exists($type, $this->models) && !in_array($type, $models)) {
-                        array_push($models, $type);
-                        $models = array_merge($models, $this->resolveModels($models));
-                    }
+                $model = $this->resolveModel($type);
+                if ($model &&  !in_array($type, $models)) {
+                    array_push($models, $model);
+                    $models = array_merge($models, $this->resolveModels($models));
                 }
             }
         }
