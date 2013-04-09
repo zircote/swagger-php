@@ -26,10 +26,8 @@ function includeIfExists($file)
         return include $file;
     }
 }
-
-if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
-    && (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php'))
-    && (!$loader = includeIfExists('vendor/autoload.php'))
+if ( !($loader = includeIfExists(dirname(__DIR__) . '/vendor/autoload.php')) // Local vendor-dir (swagger-php/vendor/)
+    && !($loader = includeIfExists(__DIR__ . '/../../../autoload.php')) // Project vendor-dir (swagger installed as dependancy)
 ) {
     die(<<<'EOT'
 You must set up the project dependencies, run the following commands:
@@ -53,8 +51,9 @@ try {
     $options = getopt($shortopts, $longopts);
 
     if (isset($options['v']) || isset($options['version'])) {
+        $version = trim(file_get_contents(__DIR__.'/../VERSION'));
         echo <<<EOF
-Swagger-PHP Version: 0.6.0
+Swagger-PHP Version: $version
 
 EOF;
         exit;
@@ -75,7 +74,6 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
             -v, --version         Swagger-PHP version
-
 
 EOF;
         exit;
@@ -124,6 +122,13 @@ EOF;
     if (isset($options['f']) || isset($options['format'])) {
         $prettyPrint = true;
     }
+    \Swagger\Logger::getInstance()->log = function ($entry, $type) {
+        $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
+        if ($entry instanceof Exception) {
+            $entry = $entry->getMessage();
+        }
+        echo '[', $type, '] ', $entry, "\n";
+    };
     $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
     $resourceName = false;
     $output = array();
