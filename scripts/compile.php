@@ -25,6 +25,7 @@ use Symfony\Component\Finder\Finder;
 
 $compiler = new Compiler();
 $compiler->compile();
+chmod('swagger.phar', 0777);
 /**
  * Shamelessly copied and modified from the Composer project,
  * because it works well
@@ -62,17 +63,9 @@ class Compiler
             ->name('*.php')
             ->notName('Compiler.php')
             ->notName('ClassLoader.php')
+            ->notPath('vendor/symfony')
+            ->notPath('tests')
             ->in(dirname(__DIR__) . '/');
-
-        foreach ($finder as $file) {
-            $this->addFile($phar, $file);
-        }
-
-        $finder = new Finder();
-        $finder->files()
-            ->ignoreVCS(true)
-            ->name('*.php')
-            ->in(__DIR__ . '/../library');
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
@@ -96,7 +89,7 @@ class Compiler
                 dirname(__DIR__) . '/vendor/composer/ClassLoader.php'
              )
         );
-        $this->addComposerBin($phar);
+        $this->addSwaggerBin($phar);
 
         $phar->setStub($this->getStub());
 
@@ -106,6 +99,10 @@ class Compiler
             $phar, new \SplFileInfo(dirname(__DIR__) . '/LICENSE-2.0.txt'),
             false
         );
+        $this->addFile(
+            $phar, new \SplFileInfo(dirname(__DIR__) . '/VERSION'),
+            false
+        );
 
         unset($phar);
     }
@@ -113,7 +110,7 @@ class Compiler
     protected function addFile($phar, \SplFileInfo $file, $strip = true)
     {
         $path = str_replace(
-            dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR, '',
+            dirname(__DIR__) . DIRECTORY_SEPARATOR, '',
             $file->getRealPath()
         );
 
@@ -128,7 +125,7 @@ class Compiler
         $phar->addFromString($path, $content);
     }
 
-    protected function addComposerBin(\Phar $phar)
+    protected function addSwaggerBin(\Phar $phar)
     {
         $content = file_get_contents(dirname(__DIR__) . '/bin/swagger');
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
@@ -157,7 +154,11 @@ class Compiler
                 array( T_COMMENT, T_DOC_COMMENT)
             )
             ) {
-                $output .= str_repeat("\n", substr_count($token[ 1 ], "\n"));
+                if (strpos($token[1], '@Annotation') !== false) {
+                    $output .= $token[1]; // Don't strip comments with @Annotation.
+                } else {
+                    $output .= str_repeat("\n", substr_count($token[ 1 ], "\n"));
+                }
             } elseif (T_WHITESPACE === $token[ 0 ]) {
                 $whitespace = preg_replace('{[ \t]+}', ' ', $token[ 1 ]);
                 $whitespace =

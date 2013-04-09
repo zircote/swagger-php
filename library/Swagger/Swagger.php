@@ -374,7 +374,7 @@ class Swagger implements \Serializable
 		);
 		if (array_key_exists(strtolower($type), $map)  && array_search($type, $map) === false) {
 			// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-			Logger::notice('Encountered type "'.$type.'" in '.Annotations\AbstractAnnotation::$context.', did you mean "'.$map[strtolower($type)].'"');
+			Logger::notice('Encountered type "'.$type.'", did you mean "'.$map[strtolower($type)].'" in '.Annotations\AbstractAnnotation::$context);
 		}
 	}
 
