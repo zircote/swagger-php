@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Swagger;
+
 /**
  * @package
  * @category
@@ -36,14 +37,13 @@ class Items extends AbstractAnnotation
      */
     public $type;
 
-	function jsonSerialize()
-	{
-		if (Swagger::isPrimitive($this->type)) {
-			return parent::jsonSerialize();
-		}
-		return array(
-			'$ref' => $this->type
-		);
-	}
+    public function jsonSerialize()
+    {
+        if (Swagger::isPrimitive($this->type)) {
+            return parent::jsonSerialize();
+        }
+        return array(
+            '$ref' => $this->type
+        );
+    }
 }
-

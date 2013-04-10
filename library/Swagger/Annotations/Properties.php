@@ -31,19 +31,18 @@ namespace Swagger\Annotations;
 class Properties extends AbstractAnnotation
 {
     /**
-	 * @var array|Parameter
-	 */
-	public $properties;
+     * @var array|Parameter
+     */
+    public $properties;
 
-	protected function setNestedAnnotations($annotations)
-	{
+    protected function setNestedAnnotations($annotations)
+    {
         foreach ($annotations as $annotation) {
-			if ($annotation instanceof Property) {
-				$this->properties[] = $annotation;
-			} else {
-				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-			}
-		}
-	}
+            if ($annotation instanceof Property) {
+                $this->properties[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
 }
-

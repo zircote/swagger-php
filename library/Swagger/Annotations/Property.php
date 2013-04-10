@@ -24,6 +24,7 @@ namespace Swagger\Annotations;
 use Swagger\Logger;
 use Swagger\Swagger;
 use Doctrine\Common\Annotations\AnnotationException;
+
 /**
  * @package
  * @category
@@ -37,6 +38,7 @@ class Property extends AbstractAnnotation
      * @var string
      */
     public $name;
+
     /**
      * @var string
      */
@@ -47,7 +49,7 @@ class Property extends AbstractAnnotation
      */
     public $description;
 
-	/**
+    /**
      * @var AllowableValues
      */
     public $allowableValues;
@@ -57,57 +59,58 @@ class Property extends AbstractAnnotation
      */
     public $items;
 
-	public function __construct(array $values = array()) {
-		parent::__construct($values);
-		Swagger::checkDataType($this->type);
-	}
+    public function __construct(array $values = array())
+    {
+        parent::__construct($values);
+        Swagger::checkDataType($this->type);
+    }
 
-	public function validate()
-	{
-		// Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
-		if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
-			$this->items = new Items();
-			$this->items->type = array_pop($matches);
-		}
+    public function validate()
+    {
+        // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
+        if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
+            $this->items = new Items();
+            $this->items->type = array_pop($matches);
+        }
 
-		// Validate if items are inside a container type.
-		if ($this->items !== null) {
-			if (Swagger::isContainer($this->type) === false) {
-				Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
-				$this->items = null;
-			} else {
-				Swagger::checkDataType($this->items->type);
-			}
-		}
-		return true;
-	}
+        // Validate if items are inside a container type.
+        if ($this->items !== null) {
+            if (Swagger::isContainer($this->type) === false) {
+                Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
+                $this->items = null;
+            } else {
+                Swagger::checkDataType($this->items->type);
+            }
+        }
+        return true;
+    }
 
-	public function jsonSerialize()
-	{
-		$data = parent::jsonSerialize();
-		unset($data['name']);
-		foreach ($data as $key => $value) {
-			if ($value === null) {
-				unset($data[$key]);
-			}
-		}
-		return $data;
-	}
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        unset($data['name']);
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                unset($data[$key]);
+            }
+        }
+        return $data;
+    }
 
-	protected function setNestedAnnotations($annotations)
-	{
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof AllowableValues) {
-				$this->allowableValues = $annotation;
-			} elseif ($annotation instanceof Items) {
-				$this->items = $annotation;
-			} else {
-				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-			}
-		}
-	}
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof AllowableValues) {
+                $this->allowableValues = $annotation;
+            } elseif ($annotation instanceof Items) {
+                $this->items = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
 
-	public function toArray()
+    public function toArray()
     {
         $result = parent::toArray();
         if (isset($result['items'])) {
@@ -129,13 +132,11 @@ class Property extends AbstractAnnotation
         }
         if (!isset($result['type']) && $this->reflector instanceof \ReflectionProperty &&
             preg_match('/@var\s+(\w+)/i', $this->reflector->getDocComment(), $matches)) {
-            $this->type = (string)array_pop($matches);
-            $this->name = (string)$this->reflector->name;
+            $this->type = (string) array_pop($matches);
+            $this->name = (string) $this->reflector->name;
             $result = $this->toArray();
         }
         unset($result['reflector']);
         return $result;
     }
-
 }
-

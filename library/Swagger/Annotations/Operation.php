@@ -35,21 +35,21 @@ use Swagger\Logger;
  */
 class Operation extends AbstractAnnotation
 {
-	/**
-	 * The http verb of the operation
+    /**
+     * The http verb of the operation
      * @var string
      */
     public $httpMethod;
 
-	/**
-	 * The summary of the operation, the text that is displayed on the bar-like container,
-	 * it is advisable to be short otherwise will not fit.
+    /**
+     * The summary of the operation, the text that is displayed on the bar-like container,
+     * it is advisable to be short otherwise will not fit.
      * @var string (max 60 characters)
      */
     public $summary;
 
     /**
-	 * The description is displayed once the bar-like container is clicked.
+     * The description is displayed once the bar-like container is clicked.
      * @var string
      */
     public $description;
@@ -65,13 +65,13 @@ class Operation extends AbstractAnnotation
     public $responseClass;
 
     /**
-	 * Parameters of the operation.
+     * Parameters of the operation.
      * @var array|Parameter
      */
     public $parameters = array();
 
     /**
-	 * ErrorResponses of the operation.
+     * ErrorResponses of the operation.
      * @var array|ErrorResponse
      */
     public $errorResponses = array();
@@ -95,45 +95,44 @@ class Operation extends AbstractAnnotation
         $this->notes = $this->removePreamble($this->notes);
     }
 
-	protected function setNestedAnnotations($annotations)
-	{
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof Parameter) {
-				$this->parameters[] = $annotation;
-			} elseif ($annotation instanceof Parameters) {
-				foreach ($annotation->parameters as $parameter) {
-					$this->parameters[] = $parameter;
-				}
-			} elseif ($annotation instanceof ErrorResponse) {
-				$this->errorResponses[] = $annotation;
-			} elseif ($annotation instanceof ErrorResponses) {
-				foreach ($annotation->errorResponses as $errorResponse) {
-					$this->errorResponses[] = $errorResponse;
-				}
-			} else {
-				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-			}
-		}
-	}
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Parameter) {
+                $this->parameters[] = $annotation;
+            } elseif ($annotation instanceof Parameters) {
+                foreach ($annotation->parameters as $parameter) {
+                    $this->parameters[] = $parameter;
+                }
+            } elseif ($annotation instanceof ErrorResponse) {
+                $this->errorResponses[] = $annotation;
+            } elseif ($annotation instanceof ErrorResponses) {
+                foreach ($annotation->errorResponses as $errorResponse) {
+                    $this->errorResponses[] = $errorResponse;
+                }
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
 
-	public function validate()
-	{
-		if (empty($this->nickname)) {
-			Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
-		}
-		return true;
-	}
+    public function validate()
+    {
+        if (empty($this->nickname)) {
+            Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
+        }
+        return true;
+    }
 
-	public function jsonSerialize()
-	{
-		$data = parent::jsonSerialize();
-		if (count($this->errorResponses) === 0) {
-			unset($data['errorResponses']);
-		}
-		if (count($this->parameters) === 0) {
-			unset($data['parameters']);
-		}
-		return $data;
-	}
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        if (count($this->errorResponses) === 0) {
+            unset($data['errorResponses']);
+        }
+        if (count($this->parameters) === 0) {
+            unset($data['parameters']);
+        }
+        return $data;
+    }
 }
-

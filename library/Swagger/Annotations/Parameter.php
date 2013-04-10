@@ -23,6 +23,7 @@ namespace Swagger\Annotations;
  */
 use Swagger\Swagger;
 use Swagger\Logger;
+
 /**
  * @package
  * @category
@@ -32,72 +33,78 @@ use Swagger\Logger;
  */
 class Parameter extends AbstractAnnotation
 {
-	/**
-	 * The name of the parameter name
+    /**
+     * The name of the parameter name
      * @var string
      */
     public $name;
+
     /**
-	 * Description of the parameter
+     * Description of the parameter
      * @var string
      */
     public $description;
+
     /**
      * @var bool
      */
     public $allowMultiple = null;
+
     /**
-	 * The dataType of the parameter
+     * The dataType of the parameter
      * @var string
      */
     public $dataType;
 
     /**
-	 * "path" is for when the parameter is part of the URL path (e.g /foo/{id}.xml)
-	 * "query" is for when the parameter is part of the query_string or a form
+     * "path" is for when the parameter is part of the URL path (e.g /foo/{id}.xml)
+     * "query" is for when the parameter is part of the query_string or a form
      * @var string
      */
     public $paramType;
 
     /**
-	 * If not present defaults to false.
+     * If not present defaults to false.
      * @var bool
      */
     public $required;
 
-	/**
-	 * @var AllowableValues
-	 */
-	public $allowableValues;
+    /**
+     * @var AllowableValues
+     */
+    public $allowableValues;
 
     /**
      * @var mixed
      */
     public $defaultValue;
 
-	public function __construct(array $values = array()) {
-		parent::__construct($values);
-		Swagger::checkDataType($this->dataType);
-		if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header'))) {
-			Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body" or "header" in '.AbstractAnnotation::$context);
-		}
-	}
+    public function __construct(array $values = array())
+    {
+        parent::__construct($values);
+        Swagger::checkDataType($this->dataType);
+        if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header'))) {
+            Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body" or "header" in '.AbstractAnnotation::$context);
+        }
+    }
 
-	protected function setNestedAnnotations($annotations) {
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof AllowableValues) {
-				$this->allowableValues = $annotation;
-			} else {
-				Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-			}
-		}
-	}
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof AllowableValues) {
+                $this->allowableValues = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
+
     /**
      * @return array
      */
     public function toArray()
     {
-        $members =  array_filter((array) $this, array($this, 'arrayFilter'));
+        $members = array_filter((array) $this, array($this, 'arrayFilter'));
         $result = array();
         foreach ($members as $k => $m) {
             if ($m instanceof AllowableValues) {
@@ -117,4 +124,3 @@ class Parameter extends AbstractAnnotation
         return $members;
     }
 }
-

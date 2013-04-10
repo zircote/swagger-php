@@ -68,8 +68,8 @@ class AllowableValues extends AbstractAnnotation
      */
     public function __construct($values = array())
     {
-		parent::__construct($values);
-		switch (strtoupper($this->valueType)) {
+        parent::__construct($values);
+        switch (strtoupper($this->valueType)) {
             case self::TYPE_LIST:
                 $this->isList($values);
                 break;
@@ -77,9 +77,7 @@ class AllowableValues extends AbstractAnnotation
                 $this->isRange($values);
                 break;
             default:
-                throw new AnnotationException(
-                    'Unexpected AllowableValues->valueType: "'.$this->valueType.'", expecting "'.self::TYPE_LIST.'" or "'.self::TYPE_RANGE.'" in '.AbstractAnnotation::$context
-                );
+                throw new AnnotationException('Unexpected AllowableValues->valueType: "'.$this->valueType.'", expecting "'.self::TYPE_LIST.'" or "'.self::TYPE_RANGE.'" in '.AbstractAnnotation::$context);
         }
     }
 
@@ -92,14 +90,14 @@ class AllowableValues extends AbstractAnnotation
     {
         $this->valueType = self::TYPE_LIST;
         $list = $this->decode($values['values']);
-        if( $list instanceof \stdClass){
+        if ($list instanceof \stdClass) {
             $this->values = array();
             foreach ($list as $key => $value) {
                 array_push($this->values, "{$key}-{$value}");
             }
         } else {
-			$this->values = $list;
-		}
+            $this->values = $list;
+        }
     }
 
     /**
@@ -122,4 +120,3 @@ class AllowableValues extends AbstractAnnotation
         }
     }
 }
-

@@ -32,23 +32,22 @@ namespace Swagger\Annotations;
 class ErrorResponse extends AbstractAnnotation
 {
     /**
-	 *  The error description
+     *  The error description
      * @var string
      */
     public $reason;
 
-	/**
-	 * HTTP Status Response Code
+    /**
+     * HTTP Status Response Code
      * @var int
      */
     public $code;
 
-	public function __construct(array $values = array()) {
-		parent::__construct($values);
-		if ($this->code !== null) {
-			$this->code = (int) $this->code;
-		}
-	}
-
+    public function __construct(array $values = array())
+    {
+        parent::__construct($values);
+        if ($this->code !== null) {
+            $this->code = (int) $this->code;
+        }
+    }
 }
-

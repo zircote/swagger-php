@@ -34,11 +34,11 @@ use Swagger\Logger;
  */
 abstract class AbstractAnnotation
 {
-	/**
-	 * Allows Annotation classes to know which property or method in which class is being processed.
-	 * @var string
-	 */
-	public static $context = '';
+    /**
+     * Allows Annotation classes to know which property or method in which class is being processed.
+     * @var string
+     */
+    public static $context = '';
 
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';
@@ -54,81 +54,64 @@ abstract class AbstractAnnotation
             if (property_exists($this, $key)) {
                 $this->{$key} = $this->cast($value);
             } elseif ($key !== 'value') {
-				$properties = array_keys(get_object_vars($this));
-				Logger::notice('Skipping unsupported property: "'.$key.'" for @'.  get_class($this).', expecting "'.implode('", "', $properties).'" in '.AbstractAnnotation::$context);
-			}
+                $properties = array_keys(get_object_vars($this));
+                Logger::notice('Skipping unsupported property: "'.$key.'" for @'.get_class($this).', expecting "'.implode('", "', $properties).'" in '.AbstractAnnotation::$context);
+            }
         }
-		if (isset($values['value'])) {
-			$nested = is_array($values['value']) ? $values['value'] : array($values['value']);
-			$objects = array();
-			foreach ($nested as $value) {
-				if (is_object($value)) {
-					$objects[] = $value;
-				} else {
-					$this->setNestedValue($value);
-				}
-			}
-			if (count($objects)) {
-				$this->setNestedAnnotations($objects);
-			}
-		}
+        if (isset($values['value'])) {
+            $nested = is_array($values['value']) ? $values['value'] : array($values['value']);
+            $objects = array();
+            foreach ($nested as $value) {
+                if (is_object($value)) {
+                    $objects[] = $value;
+                } else {
+                    $this->setNestedValue($value);
+                }
+            }
+            if (count($objects)) {
+                $this->setNestedAnnotations($objects);
+            }
+        }
     }
 
-	/**
-	 * Log warning, correct errors where possible.
-	 * @return bool Return false when the annotation is invalid and can't be used.
-	 */
-	public function validate() {
-		Logger::warning(new AnnotationException(get_class($this).' doesn\'t implement the validate() method'));
-		return false;
-	}
-//	protected function validateProperties() {
-//		foreach ($this as $property) {
-//			if ($property instanceof AbstractAnnotation) {
-//				if ($property->validate() === false) {
-//					return false;
-//				}
-//			}
-//			if (is_array($property)) {
-//				foreach ($property as $value) {
-//					if ($property instanceof AbstractAnnotation) {
-//						if ($property->validate() === false) {
-//							return false;
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return true;
-//	}
+    /**
+     * Log warning, correct errors where possible.
+     * @return bool Return false when the annotation is invalid and can't be used.
+     */
+    public function validate()
+    {
+        Logger::warning(new AnnotationException(get_class($this).' doesn\'t implement the validate() method'));
+        return false;
+    }
 
-	/**
-	 * Example: @Annotation(@Nested) would call setNestedAnnotations with array(Nested)
-	 *
-	 * @param type $annotations
-	 */
-	protected function setNestedAnnotations($annotations)
-	{
-		foreach ($annotations as $annotation) {
-			Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-		}
-	}
+    /**
+     * Example: @Annotation(@Nested) would call setNestedAnnotations with array(Nested)
+     *
+     * @param type $annotations
+     */
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+        }
+    }
 
-	/**
-	 * Example: @Annotation("hello", 124) would call setNestedValues with array("hello", 123)
-	 * @param array $values
-	 */
-	protected function setNestedValue($value)
-	{
-		Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.AbstractAnnotation::$context);
-	}
+    /**
+     * Example: @Annotation("hello", 124) would call setNestedValues with array("hello", 123)
+     * @param array $values
+     */
+    protected function setNestedValue($value)
+    {
+        Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.AbstractAnnotation::$context);
+    }
 
-	private function cast($value) {
-		if (is_string($value) && in_array($value, array('true', 'false'))) {
+    private function cast($value)
+    {
+        if (is_string($value) && in_array($value, array('true', 'false'))) {
             return ($value == 'true') ? true : false;
         }
-		return $value;
-	}
+        return $value;
+    }
 
     protected function arrayFilter(&$v)
     {
@@ -146,7 +129,7 @@ abstract class AbstractAnnotation
      */
     public function toArray()
     {
-        $members =  array_filter((array) $this, array($this, 'arrayFilter'));
+        $members = array_filter((array) $this, array($this, 'arrayFilter'));
         $result = array();
         foreach ($members as $k => $m) {
             if ($m instanceof AbstractAnnotation) {
@@ -169,16 +152,17 @@ abstract class AbstractAnnotation
         return $members;
     }
 
-	function jsonSerialize()
-	{
-		$data = get_object_vars($this);
-		foreach ($data as $key => $value) {
-			if ($value === null) {
-				unset($data[$key]); // Skip undefined values
-			}
-		}
-		return $data;
-	}
+    public function jsonSerialize()
+    {
+        $data = get_object_vars($this);
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                unset($data[$key]); // Skip undefined values
+            }
+        }
+        return $data;
+    }
+
     /**
      * @param $json
      * @throws \Doctrine\Common\Annotations\AnnotationException
@@ -202,9 +186,9 @@ abstract class AbstractAnnotation
      */
     public function removePreamble($string)
     {
-		if ($string === null) {
-			return null;
-		}
+        if ($string === null) {
+            return null;
+        }
         $string = preg_replace(self::NEWLINES, PHP_EOL, $string);
         $values = explode(PHP_EOL, $string);
         foreach ($values as $key => $value) {
@@ -213,4 +197,3 @@ abstract class AbstractAnnotation
         return implode(PHP_EOL, $values);
     }
 }
-
