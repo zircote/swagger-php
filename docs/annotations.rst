@@ -121,7 +121,7 @@ Api
      * @SWG\Api(
      *   path="/pet.{format}/{petId}",
      *   description="Operations about pets",
-     *   @SWG\Operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),
+     *   @SWG\Operations(@SWG\Operation(@SWG\Parameters(@SWG\Parameter(...)),
      *       @SWG\ErrorResponses(
      *          @SWG\ErrorResponse(@SWG\errorResponse(...)
      *       )
@@ -196,7 +196,7 @@ ErrorResponses
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\ErrorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])
+     * @SWG\ErrorResponses(@SWG\ErrorResponse(...)[ @SWG\ErrorResponse(...), ])
      */
 
 **Derived JSON**
