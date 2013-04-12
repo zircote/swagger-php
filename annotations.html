@@ -125,9 +125,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\allowableValues(valueType=&quot;LIST&quot;,values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;)</span>
+<span class="sd"> * @SWG\AllowableValues(valueType=&quot;LIST&quot;,values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;)</span>
 <span class="sd"> *</span>
-<span class="sd"> * @SWG\allowableValues(valueType=&quot;RANGE&quot;,min=&quot;0&quot;, max=&quot;5&quot;)</span>
+<span class="sd"> * @SWG\AllowableValues(valueType=&quot;RANGE&quot;,min=&quot;0&quot;, max=&quot;5&quot;)</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
@@ -169,9 +169,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="sd"> * @SWG\Api(</span>
 <span class="sd"> *   path=&quot;/pet.{format}/{petId}&quot;,</span>
 <span class="sd"> *   description=&quot;Operations about pets&quot;,</span>
-<span class="sd"> *   @SWG\operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),</span>
-<span class="sd"> *       @SWG\errorResponses(</span>
-<span class="sd"> *          @SWG\errorResponse(@SWG\errorResponse(...)</span>
+<span class="sd"> *   @SWG\Operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),</span>
+<span class="sd"> *       @SWG\ErrorResponses(</span>
+<span class="sd"> *          @SWG\ErrorResponse(@SWG\errorResponse(...)</span>
 <span class="sd"> *       )</span>
 <span class="sd"> *     )</span>
 <span class="sd"> *   )</span>
@@ -208,7 +208,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\errorResponse(code=&quot;404&quot;, reason=&quot;Pet not found&quot;)</span>
+<span class="sd"> * @SWG\ErrorResponse(code=&quot;404&quot;, reason=&quot;Pet not found&quot;)</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
@@ -243,7 +243,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\errorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])</span>
+<span class="sd"> * @SWG\ErrorResponses(@SWG\ErrorResponse(...)[ @SWG\ErrorResponse(...), ])</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>

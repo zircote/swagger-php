@@ -77,9 +77,9 @@ Types Supported: ``LIST`` || ``RANGE``
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\allowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
+     * @SWG\AllowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
      *
-     * @SWG\allowableValues(valueType="RANGE",min="0", max="5")
+     * @SWG\AllowableValues(valueType="RANGE",min="0", max="5")
      */
 
 **Derived JSON**
@@ -121,9 +121,9 @@ Api
      * @SWG\Api(
      *   path="/pet.{format}/{petId}",
      *   description="Operations about pets",
-     *   @SWG\operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),
-     *       @SWG\errorResponses(
-     *          @SWG\errorResponse(@SWG\errorResponse(...)
+     *   @SWG\Operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),
+     *       @SWG\ErrorResponses(
+     *          @SWG\ErrorResponse(@SWG\errorResponse(...)
      *       )
      *     )
      *   )
@@ -160,7 +160,7 @@ ErrorResponse
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\errorResponse(code="404", reason="Pet not found")
+     * @SWG\ErrorResponse(code="404", reason="Pet not found")
      */
 
 **Derived JSON**
@@ -196,7 +196,7 @@ ErrorResponses
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\errorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])
+     * @SWG\ErrorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])
      */
 
 **Derived JSON**
