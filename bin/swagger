@@ -160,11 +160,9 @@ EOF;
         }
         foreach ($output as $name => $json) {
             $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
-            echo $outputPath . $name . '.json created', PHP_EOL;
-            file_put_contents(
-                $outputPath . DIRECTORY_SEPARATOR . 'resources'. DIRECTORY_SEPARATOR . $name . '.json',
-                $json
-            );
+            $filename = $outputPath . 'resources' . $name . '.json';
+            echo $filename . ' created', PHP_EOL;
+            file_put_contents($filename, $json);
         }
     } else {
         echo 'no valid resources found', PHP_EOL;
