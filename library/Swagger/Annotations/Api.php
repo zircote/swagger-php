@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Annotations\Operations;
+use Swagger\Logger;
 
 /**
  * @package
@@ -72,7 +73,7 @@ class Api extends AbstractAnnotation
         }
         $this->operations = $operations;
         if (count($this->operations) == 0) {
-            Logger::log(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
+            Logger::notice(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
             return false;
         }
         return true;
