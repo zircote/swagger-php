@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Doctrine\Common\Annotations\AnnotationException;
+use Swagger\Logger;
 
 /**
  * @package
@@ -98,7 +99,7 @@ class Resource extends AbstractAnnotation
             }
         }
         if (count($apis) == 0) {
-            Logger::log(new AnnotationException('Resource "'.$this->basePath.'" doesn\'t have any valid api calls'));
+            Logger::notice(new AnnotationException('Resource "'.$this->basePath.'" doesn\'t have any valid api calls'));
             return false;
         }
         $this->apis = $apis;
