@@ -48,6 +48,11 @@ class Swagger implements \Serializable
     protected $excludePath;
 
     /**
+     * @var null|string
+     */
+    protected $publicResourcePath;
+
+    /**
      * @var array
      */
     public $resourceList = array();
@@ -311,7 +316,7 @@ class Swagger implements \Serializable
                         'apis' => array()
                     );
                 }
-                $path = '/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
+                $path = $this->getPublicResourcePath().'/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
                 $result['apis'][] = array(
                     'path' => $path,
                     'description' => $resource->apis[0]->description
@@ -540,6 +545,25 @@ class Swagger implements \Serializable
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * @param $publicResourcePath
+     *
+     * @return Swagger
+     */
+    public function setPublicResourcePath($publicResourcePath)
+    {
+        $this->publicResourcePath = $publicResourcePath;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPublicResourcePath()
+    {
+        return $this->publicResourcePath;
     }
 
     /**

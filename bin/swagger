@@ -44,7 +44,8 @@ $longopts = array(
     'exclude-path:',
     'include-path:',
     'output-dir',
-    'format'
+    'public-resource-path:',
+    'format',
 );
 $prettyPrint = false;
 try {
@@ -71,6 +72,7 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -i, --include-path    Optional bootstrap file for additional include path support
                                     ex: --include-path Zend:/usr/local/share/pear
             -o, --output-path     directory to store the generated json documents
+            --public-resource-path prefix public resource path (used in api-docs.json)
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
             -v, --version         Swagger-PHP version
@@ -122,6 +124,12 @@ EOF;
     if (isset($options['f']) || isset($options['format'])) {
         $prettyPrint = true;
     }
+
+    $publicResourcePath = null;
+    if (isset($options['public-resource-path'])) {
+        $publicResourcePath = $options['public-resource-path'];
+    }
+
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
         if ($entry instanceof Exception) {
@@ -130,6 +138,11 @@ EOF;
         echo '[', $type, '] ', $entry, "\n";
     };
     $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
+
+    if( $publicResourcePath ) {
+      $swagger->setPublicResourcePath( $publicResourcePath );
+    }
+
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
@@ -160,11 +173,9 @@ EOF;
         }
         foreach ($output as $name => $json) {
             $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
-            echo $outputPath . $name . '.json created', PHP_EOL;
-            file_put_contents(
-                $outputPath . DIRECTORY_SEPARATOR . 'resources'. DIRECTORY_SEPARATOR . $name . '.json',
-                $json
-            );
+            $filename = $outputPath . 'resources' . $name . '.json';
+            echo $filename . ' created', PHP_EOL;
+            file_put_contents($filename, $json);
         }
     } else {
         echo 'no valid resources found', PHP_EOL;
