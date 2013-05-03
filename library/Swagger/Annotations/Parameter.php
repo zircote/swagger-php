@@ -83,8 +83,8 @@ class Parameter extends AbstractAnnotation
     {
         parent::__construct($values);
         Swagger::checkDataType($this->dataType);
-        if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header'))) {
-            Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body" or "header" in '.AbstractAnnotation::$context);
+        if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header', 'form'))) {
+            Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body", "header" or "form" in '.AbstractAnnotation::$context);
         }
     }
 
