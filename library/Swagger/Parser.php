@@ -57,7 +57,7 @@ class Parser
     /**
      * @var DocParser
      */
-    private $docParser;
+    private $docParser;  
 
     /**
      * @var string
