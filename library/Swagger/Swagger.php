@@ -140,7 +140,7 @@ class Swagger implements \Serializable
         $this->registry = array();
         // Add resoures to the registry and collect models
         foreach ($this->getFileList() as $filename) {
-            $parser = new Parser($this, $filename);
+            $parser = new Parser($filename);
             foreach ($parser->getResources() as $resource) {
                 if (array_key_exists($resource->resourcePath, $this->registry)) {
                     $this->registry[$resource->resourcePath]->merge($resource);
@@ -154,6 +154,7 @@ class Swagger implements \Serializable
         }
 
         foreach ($this->registry as $resource) {
+
             $models = array();
             foreach ($resource->apis as $api) {
                 foreach ($api->operations as $operation) {
@@ -172,6 +173,16 @@ class Swagger implements \Serializable
                 foreach (array_unique($models) as $model) {
                     $resource->models[$model] = $this->models[$model];
                 }
+            }
+
+            if($resource->basePath === null) {
+              $resource->basePath = $this->getApiBasePath();
+            }
+            if($resource->swaggerVersion === null) {
+              $resource->swaggerVersion = $this->getSwaggerVersion();
+            }
+            if($resource->apiVersion === null) {
+              $resource->apiVersion = $this->getApiVersion();
             }
         }
 
@@ -327,9 +338,9 @@ class Swagger implements \Serializable
             foreach ($this->registry as $resource) {
                 if (!$result) {
                     $result = array(
-                        'apiVersion' => $resource->apiVersion ?: $this->getApiVersion(),
-                        'swaggerVersion' => $resource->swaggerVersion ?: $this->getSwaggerVersion(),
-                        'basePath' => $resource->basePath ?: $this->getApiBasePath(),
+                        'apiVersion' => $resource->apiVersion,
+                        'swaggerVersion' => $resource->swaggerVersion,
+                        'basePath' => $resource->basePath,
                         'apis' => array()
                     );
                 }
