@@ -28,18 +28,18 @@ class ResolveController
      * @SWG\Api(
      *   path="/resolve",
      *   @SWG\Operation(
-     *     summary="Retrieve all pets",
+     *     summary="Retrieve all dogs",
      *     httpMethod="GET",
-     *     responseClass="List[Pet]"
+     *     responseClass="List[Dog]"
      *   )
      * )
 	 *
 	 * Auto-generated:
-     * nickname should resolve to "get_pets"
+     * nickname should resolve to "get_dogs"
 	 * Resolved:
-	 * The model "Pet" should be in the resource->models.
+	 * The model "Dog" should be in the resource->models.
      */
-    public function get_pets()
+    public function get_dogs()
     {
     }
 }

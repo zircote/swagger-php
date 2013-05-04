@@ -44,6 +44,11 @@ class Model extends AbstractAnnotation
     public $description;
 
     /**
+     * @var null|string
+     */
+    public $extends;
+
+    /**
      * @var array
      */
     public $properties = array();
@@ -81,6 +86,7 @@ class Model extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize($this);
+        unset($data['extends']);
         $data['properties'] = array();
         foreach ($this->properties as $property) {
             $data['properties'][$property->name] = $property;

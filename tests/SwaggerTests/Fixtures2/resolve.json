@@ -9,17 +9,20 @@
             "operations": [
                 {
                     "httpMethod": "GET",
-                    "summary": "Retrieve all pets",
-                    "nickname": "get_pets",
-                    "responseClass": "List[Pet]"
+                    "summary": "Retrieve all dogs",
+                    "nickname": "get_dogs",
+                    "responseClass": "List[Dog]"
                 }
             ]
         }
     ],
     "models": {
-        "Pet": {
-            "id": "Pet",
+        "Dog": {
+            "id": "Dog",
             "properties": {
+                "breed": {
+                    "type": "string"
+                },
                 "tags": {
                     "type": "Array",
                     "items": {

@@ -147,6 +147,10 @@ class Swagger implements \Serializable
             }
         }
 
+        foreach ($this->models as $model) {
+            $this->inheritProperties($model);
+        }
+
         foreach ($this->registry as $resource) {
 
             $models = array();
@@ -680,5 +684,26 @@ class Swagger implements \Serializable
         $this->path = $data['path'];
         $this->excludePath = $data['excludePath'];
         return $this;
+    }
+
+    protected function inheritProperties($model) {
+        if ($model->extends === null || array_key_exists($model->extends, $this->models) === false) {
+            return; // Superclass is not a swagger model.
+        }
+        $parent = $this->models[$model->extends];
+        $this->inheritProperties($parent);
+        foreach ($parent->properties as $parentProperty) {
+            $exists = false;
+            foreach ($model->properties as $property) {
+                if ($property->name == $parentProperty->name) {
+                    $exists = true;
+                    break;
+                }
+            }
+            if ($exists === false) {
+                $model->properties[] = clone $parentProperty; // Inherit property
+            }
+        }
+        $model->extends = null;
     }
 }

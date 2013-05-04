@@ -57,7 +57,7 @@ class Parser
     /**
      * @var DocParser
      */
-    private $docParser;  
+    private $docParser;
 
     /**
      * @var string
@@ -137,11 +137,17 @@ class Parser
                 continue;
             }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
-                $class = $tokenParser->parseClass();
+                $token = $tokenParser->next();
+                $class = $token[1];
+                // @todo detect end-of-class and reset $class
                 if ($docComment) {
-                    // @todo detect end-of-class and reset $class
+                    $extends = null;
+                    $token = $tokenParser->next(false);
+                    if ($token[0] === T_EXTENDS) {
+                        $extends = $tokenParser->parseClass();
+                    }
                     Annotations\AbstractAnnotation::$context = $class.' in '.$location;
-                    $this->parseClass($class, $docComment);
+                    $this->parseClass($class, $extends, $docComment);
                     $docComment = false;
                     continue;
                 }
@@ -249,10 +255,11 @@ class Parser
 
     /**
      * @param string $class
+     * @param string $extends
      * @param string $docComment
      * @return array|AbstractAnnotation
      */
-    protected function parseClass($class, $docComment)
+    protected function parseClass($class, $extends, $docComment)
     {
         $annotations = $this->parseDocComment($docComment);
         foreach ($annotations as $annotation) {
@@ -268,6 +275,7 @@ class Parser
                 if ($annotation->id === null) {
                     $annotation->id = $class;
                 }
+                $annotation->extends = $extends;
             }
         }
         return $annotations;
