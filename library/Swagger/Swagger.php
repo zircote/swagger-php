@@ -48,6 +48,21 @@ class Swagger implements \Serializable
     protected $excludePath;
 
     /**
+     * @var null|string
+     */
+    protected $apiBasePath;
+
+    /**
+     * @var null|string
+     */
+    protected $apiVersion;
+
+    /**
+     * @var null|string
+     */
+    protected $swaggerVersion;
+
+    /**
      * @var array
      */
     public $resourceList = array();
@@ -77,13 +92,19 @@ class Swagger implements \Serializable
      * @param null $excludePath
      * @param \Doctrine\Common\Cache\CacheProvider $cache
      */
-    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null)
+    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null,
+                                $apiBasePath = null, $apiVersion = null, $swaggerVersion = null)
     {
         if (null == $cache) {
             $this->setCache(new ArrayCache());
         } else {
             $this->setCache($cache);
         }
+
+        $this->apiBasePath = $apiBasePath;
+        $this->apiVersion = $apiVersion;
+        $this->swaggerVersion = $swaggerVersion;
+
         if ($path) {
             $this->path = $path;
             $this->excludePath = $excludePath;
@@ -133,6 +154,7 @@ class Swagger implements \Serializable
         }
 
         foreach ($this->registry as $resource) {
+
             $models = array();
             foreach ($resource->apis as $api) {
                 foreach ($api->operations as $operation) {
@@ -151,6 +173,16 @@ class Swagger implements \Serializable
                 foreach (array_unique($models) as $model) {
                     $resource->models[$model] = $this->models[$model];
                 }
+            }
+
+            if($resource->basePath === null) {
+              $resource->basePath = $this->getApiBasePath();
+            }
+            if($resource->swaggerVersion === null) {
+              $resource->swaggerVersion = $this->getSwaggerVersion();
+            }
+            if($resource->apiVersion === null) {
+              $resource->apiVersion = $this->getApiVersion();
             }
         }
 
@@ -216,9 +248,10 @@ class Swagger implements \Serializable
      *
      * @return Swagger
      */
-    public static function discover($path, $excludePath = null)
+    public static function discover($path, $excludePath = null, 
+                                    $apiBasePath = null, $apiVersion = null, $swaggerVersion = null)
     {
-        $swagger = new self($path, $excludePath);
+        $swagger = new self($path, $excludePath, null, $apiBasePath, $apiVersion, $swaggerVersion);
         return $swagger;
     }
 
@@ -539,6 +572,30 @@ class Swagger implements \Serializable
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getApiBasePath()
+    {
+        return $this->apiBasePath;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSwaggerVersion()
+    {
+        return $this->swaggerVersion;
     }
 
     /**
