@@ -340,7 +340,6 @@ class Swagger implements \Serializable
                     $result = array(
                         'apiVersion' => $resource->apiVersion,
                         'swaggerVersion' => $resource->swaggerVersion,
-                        'basePath' => $resource->basePath,
                         'apis' => array()
                     );
                 }
