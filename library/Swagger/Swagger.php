@@ -50,17 +50,17 @@ class Swagger implements \Serializable
     /**
      * @var null|string
      */
-    protected $apiBasePath;
+    protected $defaultBasePath;
 
     /**
      * @var null|string
      */
-    protected $apiVersion;
+    protected $defaultApiVersion;
 
     /**
      * @var null|string
      */
-    protected $swaggerVersion;
+    protected $defaultSwaggerVersion;
 
     /**
      * @var array
@@ -92,19 +92,13 @@ class Swagger implements \Serializable
      * @param null $excludePath
      * @param \Doctrine\Common\Cache\CacheProvider $cache
      */
-    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null,
-                                $apiBasePath = null, $apiVersion = null, $swaggerVersion = null)
+    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null)
     {
         if (null == $cache) {
             $this->setCache(new ArrayCache());
         } else {
             $this->setCache($cache);
         }
-
-        $this->apiBasePath = $apiBasePath;
-        $this->apiVersion = $apiVersion;
-        $this->swaggerVersion = $swaggerVersion;
-
         if ($path) {
             $this->path = $path;
             $this->excludePath = $excludePath;
@@ -174,16 +168,6 @@ class Swagger implements \Serializable
                     $resource->models[$model] = $this->models[$model];
                 }
             }
-
-            if($resource->basePath === null) {
-              $resource->basePath = $this->getApiBasePath();
-            }
-            if($resource->swaggerVersion === null) {
-              $resource->swaggerVersion = $this->getSwaggerVersion();
-            }
-            if($resource->apiVersion === null) {
-              $resource->apiVersion = $this->getApiVersion();
-            }
         }
 
         ksort($this->registry, SORT_ASC);
@@ -193,6 +177,21 @@ class Swagger implements \Serializable
         return $this;
     }
 
+    /**
+     * @param Resource $resource
+     */
+    protected function applyDefaults($resource)
+    {
+        if ($resource->basePath === null) {
+            $resource->basePath = $this->getDefaultBasePath();
+        }
+        if ($resource->swaggerVersion === null) {
+            $resource->swaggerVersion = $this->getDefaultSwaggerVersion();
+        }
+        if ($resource->apiVersion === null) {
+            $resource->apiVersion = $this->getDefaultApiVersion();
+        }
+    }
     /**
      *
      * @param string|null $model
@@ -248,10 +247,9 @@ class Swagger implements \Serializable
      *
      * @return Swagger
      */
-    public static function discover($path, $excludePath = null, 
-                                    $apiBasePath = null, $apiVersion = null, $swaggerVersion = null)
+    public static function discover($path, $excludePath = null)
     {
-        $swagger = new self($path, $excludePath, null, $apiBasePath, $apiVersion, $swaggerVersion);
+        $swagger = new self($path, $excludePath, null);
         return $swagger;
     }
 
@@ -338,8 +336,8 @@ class Swagger implements \Serializable
             foreach ($this->registry as $resource) {
                 if (!$result) {
                     $result = array(
-                        'apiVersion' => $resource->apiVersion,
-                        'swaggerVersion' => $resource->swaggerVersion,
+                        'apiVersion' => $this->getDefaultApiVersion() ?: $resource->apiVersion,
+                        'swaggerVersion' => $this->getDefaultSwaggerVersion() ?: $resource->swaggerVersion,
                         'apis' => array()
                     );
                 }
@@ -501,8 +499,10 @@ class Swagger implements \Serializable
     public function getResource($resourceName, $prettyPrint = true, $serialize = true)
     {
         if (array_key_exists($resourceName, $this->registry)) {
+            $resource = $this->registry[$resourceName];
+            $this->applyDefaults($resource);
             // Sort operation paths alphabetically with shortest first
-            $apis = $this->registry[$resourceName]->apis;
+            $apis = $resource->apis;
 
             $paths = array();
             foreach ($apis as $key => $api) {
@@ -510,8 +510,8 @@ class Swagger implements \Serializable
             }
             array_multisort($paths, SORT_ASC, $apis);
 
-            $this->registry[$resourceName]->apis = $apis;
-            return $this->jsonEncode($this->registry[$resourceName], $prettyPrint);
+            $resource->apis = $apis;
+            return $this->jsonEncode($resource, $prettyPrint);
         }
         Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
         return false;
@@ -575,27 +575,53 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @return null|string
+     * @param string $url
+     * @return Swagger fluent api
      */
-    public function getApiBasePath()
+    public function setDefaultBasePath($url)
     {
-        return $this->apiBasePath;
+        $this->defaultBasePath = $url;
+        return $this;
+    }
+
+    public function getDefaultBasePath()
+    {
+        return $this->defaultBasePath;
+    }
+
+    /**
+     * @param string $version
+     * @return Swagger fluent api
+     */
+    public function setDefaultApiVersion($version)
+    {
+        $this->defaultApiVersion = $version;
+        return $this;
     }
 
     /**
      * @return null|string
      */
-    public function getApiVersion()
+    public function getDefaultApiVersion()
     {
-        return $this->apiVersion;
+        return $this->defaultApiVersion;
     }
 
     /**
+     * @param string $version
+     * @return Swagger fluent api
+     */
+    public function setDefaultSwaggerVersion($version)
+    {
+        $this->defaultSwaggerVersion= $version;
+        return $this;
+    }
+    /**
      * @return null|string
      */
-    public function getSwaggerVersion()
+    public function getDefaultSwaggerVersion()
     {
-        return $this->swaggerVersion;
+        return $this->defaultSwaggerVersion;
     }
 
     /**

@@ -44,9 +44,9 @@ $longopts = array(
     'exclude-path:',
     'include-path:',
     'output-dir',
-    'api-base-path:',
-    'api-version:',
-    'swagger-version:',
+    'default-base-path:',
+    'default-api-version:',
+    'default-swagger-version:',
     'format',
 );
 $prettyPrint = false;
@@ -63,23 +63,25 @@ EOF;
     }
     if ($argc === 1 || isset($options['h']) || isset($options['help'])) {
         echo <<<EOF
+Generate Swagger JSON documents for a project.
 
 Usage: swagger --project-path PATH [--output-path PATH]...
-    Generate Swagger JSON documents for a project.
-        Mandatory argument[s]:
-            -p, --project-path    base path of the project to perform swagger discovery
-        Optional arguments:
-            -e, --exclude-path    Optional exclude path
-                                    ex: --exclude-path vendor:library/Zend:library/Foo
-            -i, --include-path    Optional bootstrap file for additional include path support
-                                    ex: --include-path Zend:/usr/local/share/pear
-            -o, --output-path     directory to store the generated json documents
-            --api-base-path       base-path for the api
-            --api-version         version of the api
-            --swagger-version     swagger-version of the api
-            -f, --format          format JSON output in readable formatting.
-            -h, --help            generates this help message
-            -v, --version         Swagger-PHP version
+
+  -p, --project-path     Path containing the php files with Swagger annotations
+
+  -e, --exclude-path     Exclude path.
+                           ex: --exclude-path vendor:library/Zend:library/Foo
+  -i, --include-path     Bootstrap file for additional include path support
+                           ex: --include-path Zend:/usr/local/share/pear
+  -o, --output-path      Directory to store the generated json documents
+  -f, --format           JSON output in readable formatting (Pretty Print)
+  -v, --version          Swagger-PHP version
+  -h, --help             This help message
+
+  --default-base-path        Provide a default basePath for the resources
+  --default-api-version      Provide a default apiVersion for the resources
+  --default-swagger-version  Provide a default swaggerVersion for the resources
+
 
 EOF;
         exit;
@@ -129,21 +131,6 @@ EOF;
         $prettyPrint = true;
     }
 
-    $apiBasePath = null;
-    if (isset($options['api-base-path'])) {
-        $apiBasePath = $options['api-base-path'];
-    }
-
-    $apiVersion = null;
-    if (isset($options['api-version'])) {
-        $apiVersion = $options['api-version'];
-    }
-
-    $swaggerVersion = null;
-    if (isset($options['swagger-version'])) {
-        $swaggerVersion = $options['swagger-version'];
-    }
-
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
         if ($entry instanceof Exception) {
@@ -153,12 +140,18 @@ EOF;
     };
     $swagger = \Swagger\Swagger::discover(
       $projectPath,
-      isset($excludePath) ? $excludePath : null,
-      $apiBasePath,
-      $apiVersion,
-      $swaggerVersion
+      isset($excludePath) ? $excludePath : null
     );
 
+    if (isset($options['default-base-path'])) {
+        $swagger->setDefaultBasePath($options['default-base-path']);
+    }
+    if (isset($options['default-api-version'])) {
+        $swagger->setDefaultApiVersion($options['default-api-version']);
+    }
+    if (isset($options['default-swagger-version'])) {
+        $swagger->setDefaultSwaggerVersion($options['default-swagger-version']);
+    }
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
