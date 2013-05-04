@@ -165,13 +165,13 @@ EOF;
                 sprintf('[%s] is not a directory', $outputPath)
             );
         } else {
-            if (!file_exists($outputPath) && !mkdir($outputPath, '0755', true)) {
+            if (!file_exists($outputPath) && !mkdir($outputPath, 0755, true)) {
                 throw new RuntimeException(
                     sprintf('[%s] is not writeable', $outputPath)
                 );
             }
             if (!file_exists($outputPath . DIRECTORY_SEPARATOR . 'resources') &&
-                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', '0755', true)) {
+                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', 0755, true)) {
                 throw new RuntimeException(
                     sprintf('[%s] is not writeable', $outputPath . DIRECTORY_SEPARATOR . 'resources')
                 );
