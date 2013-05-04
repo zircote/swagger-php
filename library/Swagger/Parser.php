@@ -60,12 +60,18 @@ class Parser
     private $docParser;
 
     /**
+     * @var Swagger
+     */
+    private $swagger;    
+
+    /**
      * @var string
      */
     private $filename;
 
-    public function __construct($filename)
+    public function __construct(Swagger $swagger, $filename)
     {
+        $this->swagger = $swagger;
         $this->filename = $filename;
         $this->docParser = new DocParser();
         $this->docParser->setIgnoreNotImportedAnnotations(true);
@@ -262,6 +268,18 @@ class Parser
                     // Assume Classname (without Controller suffix) matches the base route.
                     $annotation->resourcePath = '/'.lcfirst($class);
                     $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
+                }
+
+                if ($annotation->apiVersion === null) { 
+                    $annotation->apiVersion = $this->swagger->getApiVersion();
+                }
+
+                if ($annotation->swaggerVersion === null) { 
+                    $annotation->swaggerVersion = $this->swagger->getSwaggerVersion();
+                }
+
+                if ($annotation->basePath === null) { 
+                    $annotation->basePath = $this->swagger->getApiBasePath();
                 }
             } elseif ($annotation instanceof Annotations\Model) {
                 // Model

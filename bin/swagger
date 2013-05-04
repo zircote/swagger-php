@@ -44,7 +44,10 @@ $longopts = array(
     'exclude-path:',
     'include-path:',
     'output-dir',
-    'format'
+    'api-base-path:',
+    'api-version:',
+    'swagger-version:',
+    'format',
 );
 $prettyPrint = false;
 try {
@@ -71,6 +74,9 @@ Usage: swagger --project-path PATH [--output-path PATH]...
             -i, --include-path    Optional bootstrap file for additional include path support
                                     ex: --include-path Zend:/usr/local/share/pear
             -o, --output-path     directory to store the generated json documents
+            --api-base-path       base-path for the api
+            --api-version         version of the api
+            --swagger-version     swagger-version of the api
             -f, --format          format JSON output in readable formatting.
             -h, --help            generates this help message
             -v, --version         Swagger-PHP version
@@ -122,6 +128,22 @@ EOF;
     if (isset($options['f']) || isset($options['format'])) {
         $prettyPrint = true;
     }
+
+    $apiBasePath = null;
+    if (isset($options['api-base-path'])) {
+        $apiBasePath = $options['api-base-path'];
+    }
+
+    $apiVersion = null;
+    if (isset($options['api-version'])) {
+        $apiVersion = $options['api-version'];
+    }
+
+    $swaggerVersion = null;
+    if (isset($options['swagger-version'])) {
+        $swaggerVersion = $options['swagger-version'];
+    }
+
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
         if ($entry instanceof Exception) {
@@ -129,7 +151,14 @@ EOF;
         }
         echo '[', $type, '] ', $entry, "\n";
     };
-    $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
+    $swagger = \Swagger\Swagger::discover(
+      $projectPath,
+      isset($excludePath) ? $excludePath : null,
+      $apiBasePath,
+      $apiVersion,
+      $swaggerVersion
+    );
+
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
