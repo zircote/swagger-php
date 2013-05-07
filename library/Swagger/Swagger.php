@@ -691,6 +691,7 @@ class Swagger implements \Serializable
             return; // Superclass is not a swagger model.
         }
         $parent = $this->models[$model->extends];
+		$model->extends = null;
         $this->inheritProperties($parent);
         foreach ($parent->properties as $parentProperty) {
             $exists = false;
@@ -704,6 +705,5 @@ class Swagger implements \Serializable
                 $model->properties[] = clone $parentProperty; // Inherit property
             }
         }
-        $model->extends = null;
     }
 }
