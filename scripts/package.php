@@ -1,13 +1,16 @@
 #!/usr/bin/env php
 <?php
-
-error_reporting(error_reporting() ^ E_DEPRECATED);
-if (version_compare(PHP_VERSION, '5.3.2') >= 0) {
-    error_reporting(error_reporting() ^ E_DEPRECATED);
-}
+error_reporting(E_ALL ^ E_DEPRECATED ^ E_STRICT);
 date_default_timezone_set('America/Chicago');
-
-require_once 'PEAR/PackageFileManager2.php';
+include_once('PEAR/PackageFileManager2.php');
+if (class_exists('PEAR_PackageFileManager2') === false) {
+    echo "\n\n";
+    echo "PackageFileManager2 is not installed.\n\n";
+    echo "pear install XML_Serializer-0.20.2\n";
+    echo "pear install PEAR_PackageFileManager2\n";
+    echo "\n";
+    exit(1);
+}
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 /**
