@@ -2,23 +2,26 @@ swagger-php
 ============
 
  - [![Master Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
- - [![0.5.0 Development Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=0.5.0)](http://travis-ci.org/zircote/swagger-php) `0.5.0-dev`
+ - [![0.6.x Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=0.6)](http://travis-ci.org/zircote/swagger-php) `0.6.*@dev`
 
-[Documentation](http://zircote.com/swagger-php)
-
-Download:
- - http://zircote.com/pear
- - tarball: https://github.com/zircote/swagger-php/downloads
- - Clone Via git: https://github.com/zircote/swagger-php.git
-
-Swagger-PHP is a PHP library that servers as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
+Swagger-PHP is a PHP library that serves as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
 it makes extensive use of the [Doctine Common library](http://www.doctrine-project.org/projects/common.html) for
 annotations support and caching.
 
- - Documentation http://zircote.com/swagger-php
-    - To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and
-    submit a pull request. Documentation resides within the `gh-pages` branch.
- - To report issues, ask questions please feel free to submit to [Github Isses](https://github.com/zircote/swagger-php/issues)
+To report issues, ask questions please feel free to submit to [Github Isses](https://github.com/zircote/swagger-php/issues)
+
+Download / Installation
+------------------------
+ - pear: http://zircote.com/pear
+ - [composer](http://getcomposer.org/): [zircote/swagger-php](https://packagist.org/packages/zircote/swagger-php)
+ - tarball: https://github.com/zircote/swagger-php/downloads
+ - Clone via git: https://github.com/zircote/swagger-php.git
+
+Documentation
+--------------
+Documentation is available at http://zircote.com/swagger-php
+
+ To submit changes, additions or updates to the documentation or swagger-php itself please fork the project and submit a pull request. Documentation resides within the `gh-pages` branch.
 
 Features
 -------------------
@@ -32,5 +35,3 @@ Features
   * http://swagger.wordnik.com/
   * https://github.com/wordnik/swagger-core/wiki
   * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
-
-
