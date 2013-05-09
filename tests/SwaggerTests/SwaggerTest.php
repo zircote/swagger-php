@@ -163,8 +163,10 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures2';
         $swagger = Swagger::discover($path);
+        $swagger->setDefaultApiVersion('0.2');
+        $swagger->setDefaultSwaggerVersion('1.1');
         $expected = json_decode(file_get_contents($path . '/multi-op.json'), true);
-        $this->assertEquals($expected, Swagger::export($swagger->registry['/facet']));
+        $this->assertEquals($expected, json_decode($swagger->getResource('/facet'), true));
     }
 
 	/**
@@ -173,8 +175,10 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
 	public function testRobustTypeDetection() {
 		$path = __DIR__ . '/Fixtures2';
         $swagger = Swagger::discover($path);
-        $expected = json_decode(file_get_contents($path . '/pet.json'), true);
-        $this->assertEquals($expected, Swagger::export($swagger->models['Pet']));
+        $expectedModel = json_decode(file_get_contents($path . '/pet.json'), true);
+        $this->assertEquals($expectedModel, Swagger::export($swagger->models['Pet']));
+		$expectedResource = json_decode(file_get_contents($path . '/resolve.json'), true);
+        $this->assertEquals($expectedResource, Swagger::export($swagger->registry['/resolve']));
 	}
 }
 

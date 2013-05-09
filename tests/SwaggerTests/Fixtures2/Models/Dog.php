@@ -1,5 +1,5 @@
 <?php
-namespace Swagger\Annotations;
+namespace SwaggerTests\Fixtures2\Models;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
@@ -21,29 +21,22 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use Swagger\Annotations as SWG;
+
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Annotation
+ *
+ * @SWG\Model()
+ * Model() will use the classname "Dog" as id and inherit all swagger properties from Pet
  */
-class Properties extends AbstractAnnotation
+class Dog extends Pet
 {
     /**
-     * @var array|Parameter
+     * @SWG\Property()
+     * @var string
      */
-    public $properties;
-
-    protected function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Property) {
-                $this->properties[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
+    public $breed;
 }

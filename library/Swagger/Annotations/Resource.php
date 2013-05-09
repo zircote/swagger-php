@@ -22,6 +22,8 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Doctrine\Common\Annotations\AnnotationException;
+use Swagger\Logger;
+
 /**
  * @package
  * @category
@@ -29,26 +31,23 @@ use Doctrine\Common\Annotations\AnnotationException;
  *
  * @Annotation
  */
-
 class Resource extends AbstractAnnotation
 {
-
-
     /**
      * The basePath is the end-point of your API.
-	 * Not the Developer or the  Admin Portal but the endpoint that serves your API requests.
+     * Not the Developer or the  Admin Portal but the endpoint that serves your API requests.
      * @var string
      */
     public $basePath;
 
-	/**
-	 * the version of Swagger
+    /**
+     * the version of Swagger
      * @var string
      */
     public $swaggerVersion;
 
-	/**
-	 * The version of your API
+    /**
+     * The version of your API
      * @var string
      */
     public $apiVersion;
@@ -68,48 +67,62 @@ class Resource extends AbstractAnnotation
      */
     public $models = array();
 
-	protected function setNestedAnnotations($annotations) {
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof Api) {
-				$this->apis[] = $annotation;
-			}
-		}
-	}
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Api) {
+                $this->apis[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
 
-	public function validate() {
-		$apis = array();
-		foreach ($this->apis as $api) {
-			if ($api->validate()) {
-				$append = true;
-				foreach ($apis as $validApi) {
-					if ($validApi->path === $api->path && $validApi->description === $api->description) { // A similar api call?
-						$append = false;
-						// merge operations
-						foreach ($api->operations as $operation) {
-							$validApi->operations[] = $operation;
-						}
-					}
-				}
-				if ($append) {
-					$apis[] = $api;
-				}
-			}
-		}
-		if (count($apis) == 0) {
-			Logger::log(new AnnotationException('Resource "'.$this->basePath.'" doesn\'t have any valid api calls'));
-			return false;
-		}
-		$this->apis = $apis;
-		return true;
-	}
+    public function validate()
+    {
+        $apis = array();
+        foreach ($this->apis as $api) {
+            if ($api->validate()) {
+                $append = true;
+                foreach ($apis as $validApi) {
+                    if ($validApi->path === $api->path && $validApi->description === $api->description) { // A similar api call?
+                        $append = false;
+                        // merge operations
+                        foreach ($api->operations as $operation) {
+                            $validApi->operations[] = $operation;
+                        }
+                    }
+                }
+                if ($append) {
+                    $apis[] = $api;
+                }
+            }
+        }
+        if (count($apis) == 0) {
+            Logger::notice(new AnnotationException('Resource "'.$this->basePath.'" doesn\'t have any valid api calls'));
+            return false;
+        }
+        $this->apis = $apis;
+        return true;
+    }
 
-	public function jsonSerialize()
-	{
-		$data = parent::jsonSerialize();
-		if (count($this->models) === 0) {
-			unset($data['models']);
-		}
-		return $data;
-	}
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        if (count($this->models) === 0) {
+            unset($data['models']);
+        }
+        return $data;
+    }
+
+    /**
+     * @param Resource $resource
+     */
+    public function merge($resource)
+    {
+        foreach ($resource->apis as $api) {
+            $this->apis[] = $api;
+        }
+        $this->validate();
+    }
 }
-

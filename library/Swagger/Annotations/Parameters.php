@@ -21,6 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Logger;
 /**
  * @package
  * @category
@@ -31,8 +32,18 @@ namespace Swagger\Annotations;
 class Parameters extends AbstractAnnotation
 {
     /**
-     * @var array
+     * @var array|Parameter
      */
-    public $value = array();
-}
+    public $parameters;
 
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Parameter) {
+                $this->parameters[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
+}

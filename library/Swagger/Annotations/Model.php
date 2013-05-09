@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Annotations\Properties;
+use Swagger\Logger;
 
 /**
  * @package
@@ -36,39 +37,48 @@ class Model extends AbstractAnnotation
      * @var string
      */
     public $id;
+
     /**
      * @var string
      */
     public $description;
 
     /**
+     * @var null|string
+     */
+    public $extends;
+
+    /**
      * @var array
      */
     public $properties = array();
 
-	protected function setNestedAnnotations($annotations)
-	{
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof Property) {
-				$this->properties[] = $annotation;
-			} elseif ($annotation instanceof Properties) {
-				$this->setNestedAnnotations($annotation->value);
-			}
-		}
-	}
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Property) {
+                $this->properties[] = $annotation;
+            } elseif ($annotation instanceof Properties) {
+                foreach ($annotation->properties as $property) {
+                    $this->properties[] = $property;
+                }
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
 
-	public function validate()
-	{
-		$properties = array();
-		foreach ($this->properties as $property) {
-			if ($property->validate()) {
-				$properties[] = $property;
-			}
-		}
-		$this->properties = $properties;
-		return true;
-	}
-
+    public function validate()
+    {
+        $properties = array();
+        foreach ($this->properties as $property) {
+            if ($property->validate()) {
+                $properties[] = $property;
+            }
+        }
+        $this->properties = $properties;
+        return true;
+    }
 
     /**
      * @return array
@@ -76,12 +86,11 @@ class Model extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize($this);
+        unset($data['extends']);
         $data['properties'] = array();
         foreach ($this->properties as $property) {
-			$data['properties'][$property->name] = $property;
+            $data['properties'][$property->name] = $property;
         }
         return $data;
     }
-
 }
-

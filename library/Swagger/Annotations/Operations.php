@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Annotations\Operation;
+use Swagger\Logger;
 
 /**
  * @package
@@ -33,8 +34,18 @@ use Swagger\Annotations\Operation;
 class Operations extends AbstractAnnotation
 {
     /**
-     * @var array
+     * @var array|Operation
      */
-    public $value = array();
-}
+    public $operations;
 
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Operation) {
+                $this->operations[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
+}

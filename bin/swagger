@@ -26,10 +26,8 @@ function includeIfExists($file)
         return include $file;
     }
 }
-
-if ((!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
-    && (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php'))
-    && (!$loader = includeIfExists('vendor/autoload.php'))
+if ( !($loader = includeIfExists(dirname(__DIR__) . '/vendor/autoload.php')) // Local vendor-dir (swagger-php/vendor/)
+    && !($loader = includeIfExists(__DIR__ . '/../../../autoload.php')) // Project vendor-dir (swagger installed as dependancy)
 ) {
     die(<<<'EOT'
 You must set up the project dependencies, run the following commands:
@@ -46,35 +44,43 @@ $longopts = array(
     'exclude-path:',
     'include-path:',
     'output-dir',
-    'format'
+    'default-base-path:',
+    'default-api-version:',
+    'default-swagger-version:',
+    'format',
 );
 $prettyPrint = false;
 try {
     $options = getopt($shortopts, $longopts);
 
     if (isset($options['v']) || isset($options['version'])) {
+        $version = trim(file_get_contents(__DIR__.'/../VERSION'));
         echo <<<EOF
-Swagger-PHP Version: 0.6.0
+Swagger-PHP Version: $version
 
 EOF;
         exit;
     }
     if ($argc === 1 || isset($options['h']) || isset($options['help'])) {
         echo <<<EOF
+Generate Swagger JSON documents for a project.
 
 Usage: swagger --project-path PATH [--output-path PATH]...
-    Generate Swagger JSON documents for a project.
-        Mandatory argument[s]:
-            -p, --project-path    base path of the project to perform swagger discovery
-        Optional arguments:
-            -e, --exclude-path    Optional exclude path
-                                    ex: --exclude-path vendor:library/Zend:library/Foo
-            -i, --include-path    Optional bootstrap file for additional include path support
-                                    ex: --include-path Zend:/usr/local/share/pear
-            -o, --output-path     directory to store the generated json documents
-            -f, --format          format JSON output in readable formatting.
-            -h, --help            generates this help message
-            -v, --version         Swagger-PHP version
+
+  -p, --project-path     Path containing the php files with Swagger annotations
+
+  -e, --exclude-path     Exclude path.
+                           ex: --exclude-path vendor:library/Zend:library/Foo
+  -i, --include-path     Bootstrap file for additional include path support
+                           ex: --include-path Zend:/usr/local/share/pear
+  -o, --output-path      Directory to store the generated json documents
+  -f, --format           JSON output in readable formatting (Pretty Print)
+  -v, --version          Swagger-PHP version
+  -h, --help             This help message
+
+  --default-base-path        Provide a default basePath for the resources
+  --default-api-version      Provide a default apiVersion for the resources
+  --default-swagger-version  Provide a default swaggerVersion for the resources
 
 
 EOF;
@@ -124,7 +130,28 @@ EOF;
     if (isset($options['f']) || isset($options['format'])) {
         $prettyPrint = true;
     }
-    $swagger = \Swagger\Swagger::discover($projectPath, isset($excludePath) ? $excludePath : null);
+
+    \Swagger\Logger::getInstance()->log = function ($entry, $type) {
+        $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
+        if ($entry instanceof Exception) {
+            $entry = $entry->getMessage();
+        }
+        echo '[', $type, '] ', $entry, "\n";
+    };
+    $swagger = \Swagger\Swagger::discover(
+      $projectPath,
+      isset($excludePath) ? $excludePath : null
+    );
+
+    if (isset($options['default-base-path'])) {
+        $swagger->setDefaultBasePath($options['default-base-path']);
+    }
+    if (isset($options['default-api-version'])) {
+        $swagger->setDefaultApiVersion($options['default-api-version']);
+    }
+    if (isset($options['default-swagger-version'])) {
+        $swagger->setDefaultSwaggerVersion($options['default-swagger-version']);
+    }
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
@@ -138,13 +165,13 @@ EOF;
                 sprintf('[%s] is not a directory', $outputPath)
             );
         } else {
-            if (!file_exists($outputPath) && !mkdir($outputPath, '0755', true)) {
+            if (!file_exists($outputPath) && !mkdir($outputPath, 0755, true)) {
                 throw new RuntimeException(
                     sprintf('[%s] is not writeable', $outputPath)
                 );
             }
             if (!file_exists($outputPath . DIRECTORY_SEPARATOR . 'resources') &&
-                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', '0755', true)) {
+                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', 0755, true)) {
                 throw new RuntimeException(
                     sprintf('[%s] is not writeable', $outputPath . DIRECTORY_SEPARATOR . 'resources')
                 );
@@ -155,11 +182,9 @@ EOF;
         }
         foreach ($output as $name => $json) {
             $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
-            echo $outputPath . $name . '.json created', PHP_EOL;
-            file_put_contents(
-                $outputPath . DIRECTORY_SEPARATOR . 'resources'. DIRECTORY_SEPARATOR . $name . '.json',
-                $json
-            );
+            $filename = $outputPath . 'resources' . $name . '.json';
+            echo $filename . ' created', PHP_EOL;
+            file_put_contents($filename, $json);
         }
     } else {
         echo 'no valid resources found', PHP_EOL;

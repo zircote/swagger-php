@@ -23,8 +23,8 @@ namespace Swagger\Annotations;
  */
 use Swagger\Logger;
 use Swagger\Swagger;
-use Swagger\Parser;
 use Doctrine\Common\Annotations\AnnotationException;
+
 /**
  * @package
  * @category
@@ -38,6 +38,7 @@ class Property extends AbstractAnnotation
      * @var string
      */
     public $name;
+
     /**
      * @var string
      */
@@ -48,7 +49,7 @@ class Property extends AbstractAnnotation
      */
     public $description;
 
-	/**
+    /**
      * @var AllowableValues
      */
     public $allowableValues;
@@ -58,68 +59,58 @@ class Property extends AbstractAnnotation
      */
     public $items;
 
-	public function validate()
-	{
-		$map = array(
-			'array' => 'Array',
-			'byte' => 'byte',
-			'boolean' => 'boolean',
-			'bool' => 'boolean',
-			'int' => 'int',
-			'integer' => 'int',
-			'long' => 'long',
-			'float' => 'float',
-			'double' => 'double',
-			'string' => 'string',
-			'date' => 'Date',
-			'list' => 'List',
-			'set' => 'Set',
-		);
-		if (array_key_exists(strtolower($this->type), $map)  && array_search($this->type, $map) === false) {
-			// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-			Logger::notice('Encountered type "'.$this->type.'" for '.Parser::$current.', did you mean "'.$map[strtolower($this->type)].'"');
-		}
-		// Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
-		if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
-			$this->items = new Items();
-			$this->items->type = array_pop($matches);
-		}
+    public function __construct(array $values = array())
+    {
+        parent::__construct($values);
+        Swagger::checkDataType($this->type);
+    }
 
-		// Validate if items are inside a container type.
-		if ($this->items !== null) {
-			if (Swagger::isContainer($this->type) === false) {
-				Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
-				$this->items = null;
-			} elseif (array_key_exists(strtolower($this->items->type), $map) && array_search($this->items->type, $map) === false) {
-				// Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-				Logger::notice('Encountered "'.$this->items->type.'" as items->type for property "'.$this->name.'", did you mean "'.$map[strtolower($this->type)].'"');
-			}
-		}
-		return true;
-	}
+    public function validate()
+    {
+        // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
+        if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
+            $this->items = new Items();
+            $this->items->type = array_pop($matches);
+        }
 
-	public function jsonSerialize()
-	{
-		$data = parent::jsonSerialize();
-		unset($data['name']);
-		foreach ($data as $key => $value) {
-			if ($value === null) {
-				unset($data[$key]);
-			}
-		}
-		return $data;
-	}
-	public function setNestedAnnotations($annotations) {
-		foreach ($annotations as $annotation) {
-			if ($annotation instanceof AllowableValues) {
-				$this->allowableValues = $annotation;
-			} elseif ($annotation instanceof Items) {
-				$this->items = $annotation;
-			}
-		}
-	}
+        // Validate if items are inside a container type.
+        if ($this->items !== null) {
+            if (Swagger::isContainer($this->type) === false) {
+                Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
+                $this->items = null;
+            } else {
+                Swagger::checkDataType($this->items->type);
+            }
+        }
+        return true;
+    }
 
-	public function toArray()
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        unset($data['name']);
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                unset($data[$key]);
+            }
+        }
+        return $data;
+    }
+
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof AllowableValues) {
+                $this->allowableValues = $annotation;
+            } elseif ($annotation instanceof Items) {
+                $this->items = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
+
+    public function toArray()
     {
         $result = parent::toArray();
         if (isset($result['items'])) {
@@ -141,13 +132,11 @@ class Property extends AbstractAnnotation
         }
         if (!isset($result['type']) && $this->reflector instanceof \ReflectionProperty &&
             preg_match('/@var\s+(\w+)/i', $this->reflector->getDocComment(), $matches)) {
-            $this->type = (string)array_pop($matches);
-            $this->name = (string)$this->reflector->name;
+            $this->type = (string) array_pop($matches);
+            $this->name = (string) $this->reflector->name;
             $result = $this->toArray();
         }
         unset($result['reflector']);
         return $result;
     }
-
 }
-

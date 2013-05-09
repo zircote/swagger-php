@@ -21,6 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Logger;
 /**
  * @package
  * @category
@@ -32,8 +33,18 @@ namespace Swagger\Annotations;
 class ErrorResponses extends AbstractAnnotation
 {
     /**
-     * @var array|AbstractAnnotation
+     * @var array|ErrorResponse
      */
-    public $value = array();
-}
+    public $errorResponses;
 
+    protected function setNestedAnnotations($annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof ErrorResponse) {
+                $this->errorResponses[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
+    }
+}

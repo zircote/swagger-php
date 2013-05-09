@@ -20,11 +20,11 @@
                 "httpMethod": "POST",
                 "parameters": [
                     {
-                        "dataType": "String",
+                        "dataType": "string",
                         "name": "email"
                     },
                     {
-                        "dataType": "String",
+                        "dataType": "string",
                         "name": "phone"
                     }
                 ]

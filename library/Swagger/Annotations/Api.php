@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Annotations\Operations;
+use Swagger\Logger;
 
 /**
  * @package
@@ -36,6 +37,7 @@ class Api extends AbstractAnnotation
      * @var string
      */
     public $path;
+
     /**
      * @var string|Operation
      */
@@ -46,24 +48,34 @@ class Api extends AbstractAnnotation
      */
     public $description;
 
-    protected function setNestedAnnotations($annotations) {
+    protected function setNestedAnnotations($annotations)
+    {
         foreach ($annotations as $annotation) {
-			if ($annotation instanceof Operation) {
-				$this->operations[] = $annotation;
-			}
-			if ($annotation instanceof Operations) {
-				$operations = is_array($annotation->value) ? $annotation->value : array($annotation->value);
-				$this->setNestedAnnotations($operations);
-			}
-		}
+            if ($annotation instanceof Operation) {
+                $this->operations[] = $annotation;
+            } elseif ($annotation instanceof Operations) {
+                foreach ($annotation->operations as $operation) {
+                    $this->operations[] = $operation;
+                }
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
+        }
     }
 
-	public function validate() {
-		// @todo validate and remove invalid operations
-		if (count($this->operations) == 0) {
-			Logger::log(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
-			return false;
-		}
-		return true;
-	}
+    public function validate()
+    {
+        $operations = array();
+        foreach ($this->operations as $operation) {
+            if ($operation->validate()) {
+                $operations[] = $operation;
+            }
+        }
+        $this->operations = $operations;
+        if (count($this->operations) == 0) {
+            Logger::notice(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
+            return false;
+        }
+        return true;
+    }
 }
