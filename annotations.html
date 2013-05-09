@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Annotations &mdash; Swagger-PHP 0.4.0-RC1 documentation</title>
+    <title>Annotations &mdash; Swagger-PHP  documentation</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.4.0-RC1',
+        URL_ROOT:    './',
+        VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,8 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Swagger-PHP 0.4.0-RC1 documentation" href="index.html" />
-    <link rel="prev" title="Caching" href="caching.html" />
+    <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
+    <link rel="next" title="Caching" href="caching.html" />
+    <link rel="prev" title="Using Swagger-PHP" href="using_swagger.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -43,8 +43,11 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="caching.html" title="Caching"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="using_swagger.html" title="Using Swagger-PHP"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -55,8 +58,6 @@
             
   <div class="section" id="annotations">
 <h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="important-notes">
-<h2>Important Notes:<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Any annotation you intend to implement in your resources and or models must be declared with a <tt class="docutils literal"><span class="pre">use</span></tt> statement. The <tt class="docutils literal"><span class="pre">use</span></tt> statement does not require a namespace be declared.</p>
@@ -74,14 +75,14 @@
     <span class="sd">/**</span>
 <span class="sd">     * @var array&lt;Tags&gt;</span>
 <span class="sd">     *</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;, @SWG\Items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;Array&quot;, items=&quot;$ref:Tag&quot;)</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="section" id="annotation-hierarchy">
-<h3>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h3>
+<h2>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-text"><div class="highlight"><pre>- ``@SWG\Resource``
    -``Api``
      - ``@SWG\Operations``
@@ -99,7 +100,7 @@
 </div>
 </div>
 <div class="section" id="allowablevalues">
-<h3>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h3>
+<h2>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions the exists within an <a class="reference internal" href="#operation">Operation</a> definition or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation with in models.</p>
@@ -154,7 +155,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="api">
-<h3>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">Path</span></tt></li>
@@ -169,7 +170,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="sd"> * @SWG\Api(</span>
 <span class="sd"> *   path=&quot;/pet.{format}/{petId}&quot;,</span>
 <span class="sd"> *   description=&quot;Operations about pets&quot;,</span>
-<span class="sd"> *   @SWG\Operations(@SWG\Operation(@SWG\parameters(@SWG\Parameter(...)),</span>
+<span class="sd"> *   @SWG\Operations(@SWG\Operation(@SWG\Parameters(@SWG\Parameter(...)),</span>
 <span class="sd"> *       @SWG\ErrorResponses(</span>
 <span class="sd"> *          @SWG\ErrorResponse(@SWG\errorResponse(...)</span>
 <span class="sd"> *       )</span>
@@ -198,7 +199,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="errorresponse">
-<h3>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h3>
+<h2>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">code</span></tt></li>
@@ -234,7 +235,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="errorresponses">
-<h3>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h3>
+<h2>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
@@ -263,7 +264,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="items">
-<h3>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h3>
+<h2>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <tt class="docutils literal"><span class="pre">Items</span></tt> annotation defines an array type i.e. an array of integers, strings or <tt class="docutils literal"><span class="pre">$ref</span></tt> to another model type. References are defined with a <strong>$ref:</strong> preamble followed by the model ID name as defined within a <a class="reference internal" href="#model">Model</a> annotation. The <tt class="docutils literal"><span class="pre">&#64;SWG\Items</span></tt> annotation resides within a <a class="reference internal" href="#property">Property</a> declaration.</p>
@@ -278,12 +279,12 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;, @SWG\Items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;Array&quot;, items=&quot;$ref:Tag&quot;)</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;array&quot;, @SWG\Items(type=&quot;string&quot;))</span>
+<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;Array&quot;, @SWG\Items(type=&quot;string&quot;))</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$photoUrls</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="p">}</span>
@@ -332,7 +333,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="model">
-<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">id</span></tt> the formal name of the Model being described.</li>
@@ -366,7 +367,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="operation">
-<h3>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h3>
+<h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">httpMethod</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
@@ -410,7 +411,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="operations">
-<h3>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h3>
+<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
 <p>A container of one or more <a class="reference internal" href="#operation">Operation</a> s</p>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
@@ -439,7 +440,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="parameter">
-<h3>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h3>
+<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">name</span></tt></li>
@@ -484,7 +485,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <p>A colleciton of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
@@ -510,7 +511,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div></blockquote>
 </div>
 <div class="section" id="property">
-<h3>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
+<h2>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">name</span></tt></li>
@@ -559,7 +560,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 <div class="section" id="resource">
-<h3>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h3>
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">apiVersion</span></tt> the version this api is being rendered as</li>
@@ -600,7 +601,6 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </dl>
 </div>
 </div>
-</div>
 
 
           </div>
@@ -611,7 +611,6 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
-<li><a class="reference internal" href="#important-notes">Important Notes:</a><ul>
 <li><a class="reference internal" href="#annotation-hierarchy">Annotation Hierarchy</a></li>
 <li><a class="reference internal" href="#allowablevalues">AllowableValues</a></li>
 <li><a class="reference internal" href="#api">Api</a></li>
@@ -628,12 +627,13 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 
   <h4>Previous topic</h4>
+  <p class="topless"><a href="using_swagger.html"
+                        title="previous chapter">Using Swagger-PHP</a></p>
+  <h4>Next topic</h4>
   <p class="topless"><a href="caching.html"
-                        title="previous chapter">Caching</a></p>
+                        title="next chapter">Caching</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -659,13 +659,16 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
              >index</a></li>
         <li class="right" >
           <a href="caching.html" title="Caching"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="using_swagger.html" title="Using Swagger-PHP"
              >previous</a> |</li>
-        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2012, Robert Allen.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>

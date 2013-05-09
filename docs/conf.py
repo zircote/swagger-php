@@ -11,9 +11,9 @@ master_doc = 'index'
 project = u'Swagger-PHP'
 copyright = u'2012, Robert Allen'
 
-version = '0.4.0'
+version = '2013-05-09'
 
-release = '0.4.0-RC1'
+release = ''
 
 exclude_patterns = ['_build']
 

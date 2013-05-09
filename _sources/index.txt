@@ -4,15 +4,15 @@
    contain the root `toctree` directive.
 
 Welcome to Swagger-PHP's documentation!
-=======================================
+*****************************************
 
 Contents:
 
 .. toctree::
     installation
     using_swagger
-    caching
     annotations
+    caching
 
 About Swagger-PHP
 **********************
@@ -21,10 +21,3 @@ Swagger-PHP is a PHP annotations library for generating `Swagger <http://swagger
 for your API. The resulting JSON documentation may then be utulized for internal and external user friendly documentation,
 API portal sandbox with `Swagger UI <https://github.com/wordnik/swagger-ui>`_ as well as client code generation with the
 `Swagger Code Generation tooling <https://github.com/wordnik/swagger-codegen>`_.
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
-

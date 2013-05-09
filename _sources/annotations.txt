@@ -2,9 +2,6 @@
 Annotations
 ******************
 
-Important Notes:
---------------------
-
 .. warning:: Any annotation you intend to implement in your resources and or models must be declared with a ``use`` statement. The ``use`` statement does not require a namespace be declared.
 
 .. code-block:: php
@@ -22,7 +19,7 @@ Important Notes:
         /**
          * @var array<Tags>
          *
-         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
+         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
          */
         protected $tags = array();
     }
@@ -77,9 +74,9 @@ Types Supported: ``LIST`` || ``RANGE``
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\allowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
+     * @SWG\AllowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
      *
-     * @SWG\allowableValues(valueType="RANGE",min="0", max="5")
+     * @SWG\AllowableValues(valueType="RANGE",min="0", max="5")
      */
 
 **Derived JSON**
@@ -121,9 +118,9 @@ Api
      * @SWG\Api(
      *   path="/pet.{format}/{petId}",
      *   description="Operations about pets",
-     *   @SWG\operations(@SWG\operation(@SWG\parameters(@SWG\Parameter(...)),
-     *       @SWG\errorResponses(
-     *          @SWG\errorResponse(@SWG\errorResponse(...)
+     *   @SWG\Operations(@SWG\Operation(@SWG\Parameters(@SWG\Parameter(...)),
+     *       @SWG\ErrorResponses(
+     *          @SWG\ErrorResponse(@SWG\errorResponse(...)
      *       )
      *     )
      *   )
@@ -160,7 +157,7 @@ ErrorResponse
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\errorResponse(code="404", reason="Pet not found")
+     * @SWG\ErrorResponse(code="404", reason="Pet not found")
      */
 
 **Derived JSON**
@@ -196,7 +193,7 @@ ErrorResponses
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\errorResponses(@SWG\errorResponse(...)[ @SWG\errorResponse(...), ])
+     * @SWG\ErrorResponses(@SWG\ErrorResponse(...)[ @SWG\ErrorResponse(...), ])
      */
 
 **Derived JSON**
@@ -229,12 +226,12 @@ Items
     class Pet
     {
         /**
-         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
+         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
          */
         protected $tags = array();
 
         /**
-         * @SWG\Property(name="photoUrls",type="array", @SWG\Items(type="string"))
+         * @SWG\Property(name="photoUrls",type="Array", @SWG\Items(type="string"))
          */
         protected $photoUrls = array();
     }

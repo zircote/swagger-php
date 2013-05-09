@@ -2,9 +2,6 @@
 Annotations
 ******************
 
-Important Notes:
---------------------
-
 .. warning:: Any annotation you intend to implement in your resources and or models must be declared with a ``use`` statement. The ``use`` statement does not require a namespace be declared.
 
 .. code-block:: php
@@ -22,7 +19,7 @@ Important Notes:
         /**
          * @var array<Tags>
          *
-         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
+         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
          */
         protected $tags = array();
     }
@@ -229,12 +226,12 @@ Items
     class Pet
     {
         /**
-         * @SWG\Property(name="tags",type="array", @SWG\Items="$ref:Tag")
+         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
          */
         protected $tags = array();
 
         /**
-         * @SWG\Property(name="photoUrls",type="array", @SWG\Items(type="string"))
+         * @SWG\Property(name="photoUrls",type="Array", @SWG\Items(type="string"))
          */
         protected $photoUrls = array();
     }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using Swagger-PHP &mdash; Swagger-PHP 0.4.0-RC1 documentation</title>
+    <title>Using Swagger-PHP &mdash; Swagger-PHP  documentation</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.4.0-RC1',
+        URL_ROOT:    './',
+        VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,8 +23,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Swagger-PHP 0.4.0-RC1 documentation" href="index.html" />
-    <link rel="next" title="Caching" href="caching.html" />
+    <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
+    <link rel="next" title="Annotations" href="annotations.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -43,12 +42,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="caching.html" title="Caching"
+          <a href="annotations.html" title="Annotations"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -65,25 +64,24 @@ environment you may choose to generate on demand. Within these constraints there
 to produce the documents in your project, you may choose to create your own tooling that utilizes the SwaggerSwagger
 class and control your filtering options on demand. While finally the alternative to this is to utilize the CLI swagger.phar
 to produce your <em>swagger documentation</em>,</p>
-<div class="section" id="cli">
-<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="swaggerswagger">
-<h2>SwaggerSwagger<a class="headerlink" href="#swaggerswagger" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="swagger-swagger">
+<h2>Swagger\Swagger<a class="headerlink" href="#swagger-swagger" title="Permalink to this headline">¶</a></h2>
 <p>The following example will render the documentation to a web request.</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">use</span> <span class="nx">Swagger\Swagger</span><span class="p">;</span>
 <span class="nv">$path</span> <span class="o">=</span> <span class="s1">&#39;/project/root/top_level&#39;</span><span class="p">;</span>
 <span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$path</span><span class="p">);</span>
 <span class="nx">header</span><span class="p">(</span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="p">)</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">jsonEncode</span><span class="p">(</span><span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">registry</span><span class="p">[</span><span class="s1">&#39;/pet&#39;</span><span class="p">]);</span>
+<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;/pet&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>While the CLI example will create individual json documents for each resource discovered in your project, these file are
 then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool you wish to utilize against them.</p>
-<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar -p /project/root/top_level <span class="se">\</span>
-  -o /var/html/swagger-docs -f <span class="se">\</span>
-  --include-path Zend:/usr/local/shar/pear,Rediska:/usr/local/share/pear
+<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar -p /project/root/top_level -o /var/html/swagger-docs
+</pre></div>
+</div>
+<p>Check the help for additional options.</p>
+<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar --help
 </pre></div>
 </div>
 </div>
@@ -98,8 +96,7 @@ then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Using Swagger-PHP</a><ul>
-<li><a class="reference internal" href="#cli">CLI</a></li>
-<li><a class="reference internal" href="#swaggerswagger">SwaggerSwagger</a></li>
+<li><a class="reference internal" href="#swagger-swagger">Swagger\Swagger</a></li>
 </ul>
 </li>
 </ul>
@@ -108,8 +105,8 @@ then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool
   <p class="topless"><a href="installation.html"
                         title="previous chapter">Installation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="caching.html"
-                        title="next chapter">Caching</a></p>
+  <p class="topless"><a href="annotations.html"
+                        title="next chapter">Annotations</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -134,17 +131,17 @@ then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="caching.html" title="Caching"
+          <a href="annotations.html" title="Annotations"
              >next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li><a href="index.html">Swagger-PHP 0.4.0-RC1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2012, Robert Allen.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
   </body>
 </html>
