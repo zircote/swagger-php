@@ -73,7 +73,7 @@ class Api extends AbstractAnnotation
         }
         $this->operations = $operations;
         if (count($this->operations) == 0) {
-            Logger::notice(new AnnotationException('Api "'.$this->path.'" doesn\'t have any valid operations'));
+            Logger::notice('Api "'.$this->path.'" doesn\'t have any valid operations');
             return false;
         }
         return true;
