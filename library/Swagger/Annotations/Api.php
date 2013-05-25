@@ -21,6 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Doctrine\Common\Annotations\AnnotationException;
 use Swagger\Annotations\Operations;
 use Swagger\Logger;
 
