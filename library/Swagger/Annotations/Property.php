@@ -23,7 +23,6 @@ namespace Swagger\Annotations;
  */
 use Swagger\Logger;
 use Swagger\Swagger;
-use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @package
@@ -76,7 +75,7 @@ class Property extends AbstractAnnotation
         // Validate if items are inside a container type.
         if ($this->items !== null) {
             if (Swagger::isContainer($this->type) === false) {
-                Logger::warning(new AnnotationException('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"'));
+                Logger::warning('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting type "Array", "List" or "Set"');
                 $this->items = null;
             } else {
                 Swagger::checkDataType($this->items->type);

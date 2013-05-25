@@ -80,7 +80,7 @@ abstract class AbstractAnnotation
      */
     public function validate()
     {
-        Logger::warning(new AnnotationException(get_class($this).' doesn\'t implement the validate() method'));
+        Logger::warning(get_class($this).' doesn\'t implement the validate() method');
         return false;
     }
 
