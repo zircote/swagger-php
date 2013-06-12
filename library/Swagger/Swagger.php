@@ -686,12 +686,22 @@ class Swagger implements \Serializable
         return $this;
     }
 
-    protected function inheritProperties($model) {
-        if ($model->extends === null || array_key_exists($model->extends, $this->models) === false) {
-            return; // Superclass is not a swagger model.
+    protected function inheritProperties($model)
+    {
+        if ($model->phpExtends === null) {
+            return; // model doesn't have a superclass (or is already resolved)
         }
-        $parent = $this->models[$model->extends];
-		$model->extends = null;
+        $parent = false;
+        foreach ($this->models as $super) {
+            if ($model->phpExtends === $super->phpClass) {
+                $parent = $super;
+                break;
+            }
+        }
+        if ($parent === false) {
+            return; // Superclass not discoved or doesn't have annotations
+        }
+        $model->phpExtends = null;
         $this->inheritProperties($parent);
         foreach ($parent->properties as $parentProperty) {
             $exists = false;

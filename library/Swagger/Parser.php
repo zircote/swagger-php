@@ -117,10 +117,11 @@ class Parser
     {
         $tokenParser = new TokenParser(file_get_contents($this->filename));
         $token = $tokenParser->next(false);
-        $namespace = '\\';
+        $namespace = '';
         $class = false;
 
         $imports = array();
+        $uses = array();
         $docComment = false;
         while ($token != null) {
             $token = $tokenParser->next(false);
@@ -138,13 +139,13 @@ class Parser
             }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 $token = $tokenParser->next();
-                $class = $token[1];
+                $class = $namespace ? $namespace.'\\'.$token[1] : $token[1];
                 // @todo detect end-of-class and reset $class
                 if ($docComment) {
                     $extends = null;
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_EXTENDS) {
-                        $extends = $tokenParser->parseClass();
+                        $extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
                     }
                     Annotations\AbstractAnnotation::$context = $class.' in '.$location;
                     $this->parseClass($class, $extends, $docComment);
@@ -201,8 +202,12 @@ class Parser
             if ($token[0] === T_USE) {
                 $nsLength = strlen(__NAMESPACE__);
                 foreach ($tokenParser->parseUseStatement() as $alias => $target) {
-                    if ($target[0] === '/' && substr($target, 1, $nsLength + 1) === __NAMESPACE__.'\\') {
-                        $imports[$alias] = $target;
+                    $uses[$alias] = $target;
+                    if ($target[0] === '\\') {
+                        $uses[$alias] = substr($target, 1);
+                    }
+                    if ($target[0] === '\\' && substr($target, 1, $nsLength + 1) === __NAMESPACE__.'\\') {
+                        $imports[$alias] = substr($target, 1);
                     } elseif (substr($target, 0, $nsLength + 1) === __NAMESPACE__.'\\') {
                         $imports[$alias] = $target;
                     }
@@ -267,15 +272,16 @@ class Parser
                 // Resource
                 if ($annotation->resourcePath === null) { // No resourcePath give?
                     // Assume Classname (without Controller suffix) matches the base route.
-                    $annotation->resourcePath = '/'.lcfirst($class);
+                    $annotation->resourcePath = '/'.lcfirst(basename(str_replace('\\', '/', $class)));
                     $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
                 }
             } elseif ($annotation instanceof Annotations\Model) {
                 // Model
+                $annotation->phpClass = $class;
                 if ($annotation->id === null) {
-                    $annotation->id = $class;
+                    $annotation->id = basename(str_replace('\\', '/', $class));
                 }
-                $annotation->extends = $extends;
+                $annotation->phpExtends = $extends;
             }
         }
         return $annotations;
@@ -348,5 +354,42 @@ class Parser
             }
         }
         return $annotations;
+    }
+
+    /**
+     * Resolve the full classname.
+     *
+     * @param string $namespace  Active namespace
+     * @param string $class  The class name
+     * @param array $uses  Active USE statements.
+     * @return string
+     */
+    private function prefixNamespace($namespace, $class, $uses = array())
+    {
+        $pos = strpos($class, '\\');
+        if ($pos !== false) {
+            if ($pos === 0) {
+                // Fully qualified name (\Foo\Bar)
+                return substr($class, 1);
+            }
+            // Qualified name (Foo\Bar)
+            foreach ($uses as $alias => $aliasedNamespace) {
+                $alias .= '\\';
+                if (strtolower(substr($class, 0, strlen($alias))) === $alias) {
+                    // Aliased namespace (use \Long\Namespace as Foo)
+                    return $aliasedNamespace.substr($class, strlen($alias) - 1);
+                }
+            }
+        } else {
+            // Unqualified name (Foo)
+            $alias = strtolower($class);
+            if (isset($uses[$alias])) { // Is an alias?
+                return $uses[$alias];
+            }
+        }
+        if ($namespace == '') {
+            return $class;
+        }
+        return $namespace.'\\'.$class;
     }
 }

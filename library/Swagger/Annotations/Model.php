@@ -44,14 +44,22 @@ class Model extends AbstractAnnotation
     public $description;
 
     /**
-     * @var null|string
-     */
-    public $extends;
-
-    /**
      * @var array
      */
     public $properties = array();
+
+    /**
+     * The PHP class connected to this model
+     * @var null|string
+     */
+    public $phpClass;
+
+    /**
+     * The superclass connected to this model.
+     * @var null|string
+     */
+    public $phpExtends;
+
 
     protected function setNestedAnnotations($annotations)
     {
@@ -86,7 +94,7 @@ class Model extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize($this);
-        unset($data['extends']);
+        unset($data['phpClass'], $data['phpExtends']);
         $data['properties'] = array();
         foreach ($this->properties as $property) {
             $data['properties'][$property->name] = $property;

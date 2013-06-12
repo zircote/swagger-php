@@ -21,7 +21,7 @@ namespace SwaggerTests\Fixtures2\Models;
  * @category
  * @subpackage
  */
-use Swagger\Annotations as SWG;
+use \Swagger\Annotations as SWG;
 
 /**
  * @package
