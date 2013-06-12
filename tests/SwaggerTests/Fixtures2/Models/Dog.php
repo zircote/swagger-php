@@ -35,7 +35,7 @@ use Swagger\Annotations as SWG;
 class Dog extends Pet
 {
     /**
-     * @SWG\Property()
+     * @SWG\Property(required=true)
      * @var string
      */
     public $breed;

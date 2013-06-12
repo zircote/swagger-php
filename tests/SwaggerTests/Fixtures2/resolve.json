@@ -21,7 +21,8 @@
             "id": "Dog",
             "properties": {
                 "breed": {
-                    "type": "string"
+                    "type": "string",
+                    "required": true
                 },
                 "tags": {
                     "type": "Array",
