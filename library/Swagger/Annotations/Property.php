@@ -49,6 +49,12 @@ class Property extends AbstractAnnotation
     public $description;
 
     /**
+     * @var bool
+     */
+    public $required;
+
+
+    /**
      * @var AllowableValues
      */
     public $allowableValues;
