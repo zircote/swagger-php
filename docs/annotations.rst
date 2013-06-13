@@ -279,6 +279,8 @@ Items
 Model
 ******************
 
+.. note:: The annotations parser will follow any `extend` statements of the current model class and include annotations from the base class as well, as long as the ``Model`` annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the `use` statement and appropriate annotations.
+
 **Attributes**
 
 - ``id`` the formal name of the Model being described.
