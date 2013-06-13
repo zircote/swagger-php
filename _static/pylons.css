@@ -14,14 +14,14 @@
 /* -- page layout ----------------------------------------------------------- */
  
 body {
-    font-family: "Nobile", sans-serif;
-    font-size: 100%;
+    font-family: "NobileRegular", sans-serif;
+    font-size: 14px;
     background-color: #393939;
     color: #ffffff;
     margin: 0;
     padding: 0;
 }
-
+    
 div.documentwrapper {
     float: left;
     width: 100%;
@@ -39,25 +39,38 @@ div.document {
     background-color: #eee;
 }
 
-div.header {
+div.header{
     width:100%;
-    background: #f4ad32 url(headerbg.png) repeat-x 0 top;
+    height:230px;
+    background: #f98131 url(headerbg.png) repeat-x 0 top;
+    border-bottom: 2px solid #ffffff;
+}
+
+div.header-small{
+    width:100%;
+    height:60px;
+    background: #f98131 url(headerbg.png) repeat-x 0 top;
     border-bottom: 2px solid #ffffff;
 }
 
 div.logo {
     text-align: center;
-    padding-top: 10px;
+    padding-top: 50px;
+}
+
+div.logo-small {
+    text-align: left;
+    padding: 10px 0 0 250px;
 }
 
 div.body {
     background-color: #ffffff;
     color: #3E4349;
     padding: 0 30px 30px 30px;
-    font-size: 1em;
-    border: 2px solid #ddd;
-    border-right-style: none;
-    overflow: auto;
+    font-size: 14px;
+	border: 2px solid #ddd;
+	border-right-style: none;
+	overflow: auto;
 }
  
 div.footer {
@@ -83,8 +96,8 @@ div.footer a:hover {
 div.related {
     line-height: 30px;
     color: #373839;
-    font-size: 0.8em;
-    background-color: #eee;
+    font-size: 12px;
+	background-color: #eee;
 }
  
 div.related a {
@@ -92,11 +105,11 @@ div.related a {
 }
 
 div.related ul {
-    padding-left: 240px;
+	padding: 0 150px 0 240px;
 }
  
 div.sphinxsidebar {
-    font-size: 0.75em;
+    font-size: 12px;
     line-height: 1.5em;
 }
 
@@ -106,13 +119,13 @@ div.sphinxsidebarwrapper{
  
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: "Neuton", sans-serif;
+    font-family: "NeutonRegular", sans-serif;
     color: #373839;
     font-size: 1.4em;
     font-weight: normal;
     margin: 0;
     padding: 5px 10px;
-    border-bottom: 2px solid #ddd;
+	border-bottom: 2px solid #ddd;
 }
 
 div.sphinxsidebar h4{
@@ -160,9 +173,9 @@ div.sidebar {
     background-color: #e6efc2;
     width: 40%;
     float: right;
-    border-right-style: none;
-    border-left-style: none;
-    padding: 10px 20px;
+	border-right-style: none;
+	border-left-style: none;
+	padding: 10px 20px;
 }
 
 p.sidebar-title {
@@ -174,6 +187,7 @@ p.sidebar-title {
 a, a .pre {
     color: #1b61d6;
     text-decoration: none;
+    word-wrap: break-word;
 }
  
 a:hover, a:hover .pre {
@@ -186,33 +200,57 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: "Neuton", sans-serif;
+    font-family: "NeutonRegular", sans-serif;
     background-color: #ffffff;
     font-weight: normal;
-    color: #373839;
+    color: #222;
     margin: 30px 0px 10px 0px;
     padding: 5px 0;
 }
  
-div.body h1 { border-top: 20px solid white; margin-top: 0; font-size: 200%; }
-div.body h2 { font-size: 150%; background-color: #ffffff; }
-div.body h3 { font-size: 120%; background-color: #ffffff; }
-div.body h4 { font-size: 110%; background-color: #ffffff; }
-div.body h5 { font-size: 100%; background-color: #ffffff; }
-div.body h6 { font-size: 100%; background-color: #ffffff; }
+div.body h1 {
+    font-size: 2.5em;
+    line-height: 1;
+    margin-bottom: 0.50em;
+}
+div.body h2 {
+    font-size: 2.00em;
+    line-height: 1;
+    margin-bottom: 0.75em;
+}
+div.body h3 {
+    font-size: 1.5em;
+    line-height: 1;
+    margin-bottom: 1.00em;
+}
+div.body h4 {
+    font-size: 1.2em;
+    line-height: 1;
+    margin-bottom: 1.25em;
+}
+div.body h5 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 1.75em;
+}
+div.body h6 {
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 2.00em;
+}
  
 a.headerlink {
     color: #1b61d6;
-    font-size: 0.8em;
+    font-size: 12px;
     padding: 0 4px 0 4px;
     text-decoration: none;
 }
  
 a.headerlink:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
  
-div.body p, div.body dd, div.body li {
+div.body p, div.body dd, div.body dt, div.body li {
     line-height: 1.5em;
 }
  
@@ -226,34 +264,34 @@ div.highlight{
 
 div.note {
     border: 2px solid #7a9eec;
-    border-right-style: none;
-    border-left-style: none;
-    padding: 10px 20px 10px 60px;
-    background: #e1ecfe url(dialog-note.png) no-repeat 10px 8px;
+	border-right-style: none;
+	border-left-style: none;
+	padding: 10px 20px 10px 60px;
+	background: #e1ecfe url(dialog-note.png) no-repeat 10px 8px;
 }
  
 div.seealso {
     background: #fff6bf url(dialog-seealso.png) no-repeat 10px 8px;
     border: 2px solid #ffd324;
-    border-left-style: none;
-    border-right-style: none;
-    padding: 10px 20px 10px 60px;
+	border-left-style: none;
+	border-right-style: none;
+	padding: 10px 20px 10px 60px;
 }
  
 div.topic {
     background: #eeeeee;
     border: 2px solid #C6C9CB;
     padding: 10px 20px;
-    border-right-style: none;
-    border-left-style: none;
+	border-right-style: none;
+	border-left-style: none;
 }
  
 div.warning {
     background: #fbe3e4 url(dialog-warning.png) no-repeat 10px 8px;
     border: 2px solid #fbc2c4;
-    border-right-style: none;
-    border-left-style: none;
-    padding: 10px 20px 10px 60px;
+	border-right-style: none;
+	border-left-style: none;
+	padding: 10px 20px 10px 60px;
 }
  
 p.admonition-title {
@@ -263,44 +301,43 @@ p.admonition-title {
 p.admonition-title:after {
     content: ":";
 }
- 
-pre {
-    padding: 10px;
+
+pre, code {
+    font-family: Consolas, "andale mono", "lucida console", monospace;
+    font-size: 14px;
+    line-height: 17px;
     background-color: #fafafa;
-    color: #222;
-    line-height: 1.2em;
-    border: 2px solid #C6C9CB;
-    font-size: 1.1em;
-    margin: 1.5em 0 1.5em 0;
-    border-right-style: none;
-    border-left-style: none;
+    padding: 10px;
+    margin: 0;
+    border-top: 2px solid #c6c9cb;
+    border-bottom: 2px solid #c6c9cb;
 }
  
 tt {
     background-color: transparent;
     color: #222;
-    font-size: 1.1em;
-    font-family: monospace;
+    font-family: Consolas, "andale mono", "lucida console", monospace;
 }
 
 .viewcode-back {
-    font-family: "Nobile", sans-serif;
+    font-family: "NobileRegular", sans-serif;
 }
 
 div.viewcode-block:target {
     background-color: #fff6bf;
     border: 2px solid #ffd324;
-    border-left-style: none;
-    border-right-style: none;
-    padding: 10px 20px;
+	border-left-style: none;
+	border-right-style: none;
+	padding: 10px 20px;
 }
 
 table.highlighttable {
-    width: 100%;
+	width: 100%;
+	clear: both;
 }
 
 table.highlighttable td {
-    padding: 0;
+	padding: 0;
 }
 
 a em.std-term {
@@ -312,12 +349,24 @@ a:hover em.std-term {
 }
 
 .download {
-    font-family: "Nobile", sans-serif;
-    font-weight: normal;
-    font-style: normal;
+    font-family: "NobileRegular", sans-serif;
+	font-weight: normal;
+	font-style: normal;
 }
 
 tt.xref {
+	font-weight: normal;
+	font-style: normal;
+}
+
+span.methodcategory {
+    font-family: "NeutonRegular", sans-serif;
+    background-color: #ffffff;
     font-weight: normal;
-    font-style: normal;
+    color: #222;
+    margin: 30px 0px 10px 0px;
+    padding: 5px 0;
+    font-size: 2.00em;
+    line-height: 1;
+    margin-bottom: 0.75em;
 }
