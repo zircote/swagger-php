@@ -45,6 +45,14 @@ class ErrorResponse extends AbstractAnnotation
 
     public function __construct(array $values = array())
     {
+        if( isset( $values['exception'] ) )
+        {
+          $exception = new $values['exception'];
+          unset( $values['exception'] );
+          $values['code'] = $exception->getCode();
+          $values['reason'] = $exception->getMessage();
+        }
+        
         parent::__construct($values);
         if ($this->code !== null) {
             $this->code = (int) $this->code;
