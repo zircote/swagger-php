@@ -37,70 +37,112 @@ php composer.phar install
 EOT
     );
 }
-$shortopts = 'fp:hvo:i:e:';
-
-$longopts = array(
-    'project-dir:',
-    'exclude-path:',
-    'include-path:',
-    'output-dir',
-    'default-base-path:',
-    'default-api-version:',
-    'default-swagger-version:',
-    'format',
-);
-$prettyPrint = false;
 try {
-    $options = getopt($shortopts, $longopts);
+    // Possible options and their default values.
+    $options = array(
+        'output' => getcwd(),
+        'exclude' => null,
+        'bootstrap' => false,
+        'pretty-print' => false,
+        'default-base-path' => false,
+        'default-api-version' => false,
+        'default-swagger-version' => false,
+        'version' => false,
+        'help' => false,
+        'debug' => false,
+    );
+    $aliases = array(
+        'o' => 'output',
+        'e' => 'exclude',
+        'b' => 'bootstrap',
+        'v' => 'version',
+        'h' => 'help',
+    );
+    $needsArgument = array(
+        'output',
+        'exclude',
+        'bootstrap',
+        'default-base-path',
+        'default-api-version',
+        'default-swagger-version',
+    );
+    $paths = array();
+    // Parse cli arguments
+    for ($i = 1; $i < $argc; $i++) {
+        $arg = $argv[$i];
+        if (substr($arg, 0, 2) === '--') { // longopt
+            $option = substr($arg, 2);
 
-    if (isset($options['v']) || isset($options['version'])) {
-        $version = trim(file_get_contents(__DIR__.'/../VERSION'));
-        echo <<<EOF
-Swagger-PHP Version: $version
+        } elseif ($arg[0] === '-') { // shortopt
+            if (array_key_exists($arg[1], $aliases)) {
+                $option = $aliases[$arg[1]];
+            } else {
+                throw new RuntimeException('Unknown option: "'.$arg.'"');
+            }
+        } else {
+            $paths[] = $arg;
+            continue;
+        }
+        if (array_key_exists($option, $options) === false) {
+            throw new RuntimeException('Unknown option: "'.$arg.'"');
+        }
+        if (in_array($option, $needsArgument)) {
+            if (empty($argv[$i + 1]) || $argv[$i + 1][0] === '-') {
+                throw new RuntimeException('Missing argument for "'.$arg.'"');
+            }
+            $options[$option] = $argv[$i + 1];
+            $i++;
+        } else {
+            $options[$option] = true;
+        }
+    }
+    $version = trim(file_get_contents(__DIR__.'/../VERSION'));
+    if ($options['version']) {
 
-EOF;
+        echo $version, PHP_EOL;
         exit;
     }
-    if ($argc === 1 || isset($options['h']) || isset($options['help'])) {
+    echo 'Swagger-PHP ', $version, PHP_EOL;
+    echo '-----------------', PHP_EOL;
+
+    if ($argc === 1 || $options['help']) {
         echo <<<EOF
-Generate Swagger JSON documents for a project.
+Generate Swagger JSON documents for a PHP project.
 
-Usage: swagger --project-path PATH [--output-path PATH]...
+Usage: swagger /path/to/project [--output /path/to/docs] ...
 
-  -p, --project-path     Path containing the php files with Swagger annotations
-
-  -e, --exclude-path     Exclude path.
-                           ex: --exclude-path vendor:library/Zend:library/Foo
-  -i, --include-path     Bootstrap file for additional include path support
-                           ex: --include-path Zend:/usr/local/share/pear
-  -o, --output-path      Directory to store the generated json documents
-  -f, --format           JSON output in readable formatting (Pretty Print)
-  -v, --version          Swagger-PHP version
-  -h, --help             This help message
+  -o, --output        Directory to store the generated json documents.
+  -e, --exclude       Exclude path.
+                         ex: --exclude vendor:library/Zend:library/Foo
+  -b, --bootstrap     Bootstrap file for additional include path support
+                         ex: --bootstrap Zend:/usr/local/share/pear
+  --pretty-print      JSON output in readable formatting (Pretty Print)
 
   --default-base-path        Provide a default basePath for the resources
   --default-api-version      Provide a default apiVersion for the resources
   --default-swagger-version  Provide a default swaggerVersion for the resources
 
+  -v, --version       Swagger-PHP version
+  -h, --help          This help message
+
 
 EOF;
         exit;
     }
-    if (isset($options['e']) || isset($options['exclude-path'])) {
-        $excludePath = isset($options['e']) ? $options['e'] : $options['exclude-path'];
-        $excludePaths = explode(':', $excludePath);
+    if ($options['exclude']) {
+        $excludePaths = explode(':', $options['exclude']);
         foreach ($excludePaths as $index => $excludePath) {
             if (DIRECTORY_SEPARATOR != substr($excludePath, 0, 1)) {
                 $excludePaths[$index] = getcwd() . DIRECTORY_SEPARATOR . $excludePath;
             }
         }
         $excludePath = implode(':', $excludePaths);
+    } else {
+        $excludePath = null;
     }
-    if ((isset($options['i']) && ($bootstrap = $options['i']))
-        || (isset($options['include-path']) && ($bootstrap = $options['include-path']))
-    ) {
+    if ($options['bootstrap']) {
         /* @var  \Composer\Autoload\ClassLoader $loader */
-        foreach (explode(',', $bootstrap) as $incPath) {
+        foreach (explode(',', $option['bootstrap']) as $incPath) {
             @list($namespace, $inclusionPath) = explode(':', $incPath);
             $loader->add($namespace, array($inclusionPath ? : '.'));
             if (!$inclusionPath && is_file($incPath)) {
@@ -108,48 +150,34 @@ EOF;
             }
         }
     }
-    if (!isset($options['p']) && !isset($options['project-dir'])) {
-        throw new RuntimeException('--project-dir must be provided');
-    } else {
-        if (isset($options['project-dir'])
-            && !empty($options['project-dir'])
-        ) {
-            $projectPath = $options['project-dir'];
-        } else {
-            $projectPath = $options['p'];
-        }
+    if (count($paths) === 0) {
+        throw new RuntimeException('A path must be provided');
+    } elseif (count($paths) !== 1) {
+        throw new RuntimeException('multiple paths are not (yet) supported');
     }
-    $outputPath = null;
-    if (!isset($options['output-dir']) && !empty($options['output-dir'])) {
-        $outputPath .= $options['output-dir'] . DIRECTORY_SEPARATOR;
-    } elseif (isset($options['o']) && !empty($options['o'])) {
-        $outputPath .= $options['o'] . DIRECTORY_SEPARATOR;
-    } else {
-        $outputPath = getcwd() . DIRECTORY_SEPARATOR;
+    $projectPath = realpath($paths[0]);
+    if ($projectPath === false) {
+        throw new RuntimeException('Path "'.$paths[0].'" not found');
     }
-    if (isset($options['f']) || isset($options['format'])) {
-        $prettyPrint = true;
-    }
+    $outputPath = $options['output'].DIRECTORY_SEPARATOR;
+    $prettyPrint = $options['pretty-print'];
 
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
         if ($entry instanceof Exception) {
             $entry = $entry->getMessage();
         }
-        echo '[', $type, '] ', $entry, "\n";
+        echo '[', $type, '] ', $entry, PHP_EOL;
     };
-    $swagger = \Swagger\Swagger::discover(
-      $projectPath,
-      isset($excludePath) ? $excludePath : null
-    );
+    $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
 
-    if (isset($options['default-base-path'])) {
+    if ($options['default-base-path']) {
         $swagger->setDefaultBasePath($options['default-base-path']);
     }
-    if (isset($options['default-api-version'])) {
+    if ($options['default-api-version']) {
         $swagger->setDefaultApiVersion($options['default-api-version']);
     }
-    if (isset($options['default-swagger-version'])) {
+    if ($options['default-swagger-version']) {
         $swagger->setDefaultSwaggerVersion($options['default-swagger-version']);
     }
     $resourceName = false;
@@ -178,18 +206,23 @@ EOF;
             }
         }
         if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($prettyPrint))) {
-            echo $outputPath . 'api-docs.json created', PHP_EOL;
+            echo 'Created ', $outputPath, 'api-docs.json', PHP_EOL;
         }
         foreach ($output as $name => $json) {
             $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
             $filename = $outputPath . 'resources' . $name . '.json';
-            echo $filename . ' created', PHP_EOL;
+            echo 'Created ', $filename , PHP_EOL;
             file_put_contents($filename, $json);
         }
+        echo PHP_EOL;
     } else {
-        echo 'no valid resources found', PHP_EOL;
+        throw new RuntimeException('no valid resources found');
     }
 } catch (Exception $e) {
-    echo 'An Error has occured:', PHP_EOL;
-    echo (string)$e->getMessage(), PHP_EOL;
+    echo '[ERROR] ', $e->getMessage();
+    if ($options['debug']) {
+        echo ' in ', $e->getFile(), ' on line ', $e->getLine();
+    }
+    echo PHP_EOL, PHP_EOL;
+    exit(1);
 }
