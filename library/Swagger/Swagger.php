@@ -68,7 +68,7 @@ class Swagger implements \Serializable
     public $resourceList = array();
 
     /**
-     * @var array
+     * @var array|Resource
      */
     public $registry = array();
 

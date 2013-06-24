@@ -39,22 +39,6 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     protected $resource;
 
     /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
-    /**
      * @param $expectedArray
      * @param $json
      */
@@ -63,6 +47,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $json = json_decode($json, true);
         $this->assertEquals($expectedArray, $json);
     }
+
     /**
      * @group Resource
      */
@@ -114,12 +99,16 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $swagger = Swagger::discover($path);
         $output = sys_get_temp_dir();
         $pathToCli = dirname(dirname(__DIR__)) . '/bin/swagger';
-        `$pathToCli -o $output -p $path`;
+        `$pathToCli $path --output $output`;
         foreach (array('user','pet','store') as $record) {
-            $json = file_get_contents($output . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . "$record.json");
-            $this->assertJsonEqualToExpectedArray(json_decode($swagger->getResource("/{$record}"), true), $json);
+            $filename = $output . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . "$record.json";
+            $this->assertJsonEqualToExpectedArray(json_decode($swagger->getResource("/{$record}"), true), file_get_contents($filename));
+            unlink($filename);
         }
+        rmdir($output . DIRECTORY_SEPARATOR . 'resources');
+        unlink($output . DIRECTORY_SEPARATOR . 'api-docs.json');
     }
+
     public function testCaching()
     {
         $path = __DIR__ . '/Fixtures';
@@ -145,6 +134,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
             json_decode($swagger->getResourceList(), true)
         );
     }
+
     /**
      * @group Facets
      */
@@ -181,4 +171,3 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResource, Swagger::export($swagger->registry['/resolve']));
 	}
 }
-
