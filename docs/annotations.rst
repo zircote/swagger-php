@@ -32,7 +32,7 @@ Annotation Hierarchy
 .. code-block:: text
 
  - ``@SWG\Resource``
-    -``Api``
+    -``@SWG\Api``
       - ``@SWG\Operations``
         - ``@SWG\Operation``
           - ``@SWG\ErrorResponses``
@@ -49,7 +49,7 @@ Annotation Hierarchy
 AllowableValues
 ******************
 
-.. note:: The `AllowableValues` annotation provides support for Enumerations as well as Range limits. This annotation may exist in either `Parameter`_ definitions the exists within an `Operation`_ definition or as an augmentation to the `Property`_ annotation with in models.
+.. note:: The `AllowableValues` annotation provides support for Enumerations as well as Range limits. This annotation may exist in either `Parameter`_ definitions within an `Operation`_ definition, or as an augmentation to the `Property`_ annotation within models.
 
 **Attributes**
 Types Supported: ``LIST`` || ``RANGE``
@@ -103,7 +103,7 @@ Api
 
 **Attributes**
 
-- ``Path``
+- ``path``
 - ``description``
 - `Operations`_
 
@@ -323,8 +323,7 @@ Operation
 - ``responseClass`` the `Model`_ ID returned
 - ``nickname`` string
 - ``deprecated`` boolean
-- ``dataType``
-- `ErrorResponses``
+- `ErrorResponses`_
 - `Parameters`_
 
 **Example Annotations**
@@ -438,7 +437,7 @@ Parameter
 Parameters
 ******************
 
-A colleciton of one or more `Parameter`_ s
+A collection of one or more `Parameter`_ s
 
 **Attributes**
 

@@ -85,7 +85,7 @@
 <div class="section" id="annotation-hierarchy">
 <h2>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-text"><div class="highlight"><pre>- ``@SWG\Resource``
-   -``Api``
+   -``@SWG\Api``
      - ``@SWG\Operations``
        - ``@SWG\Operation``
          - ``@SWG\ErrorResponses``
@@ -104,7 +104,7 @@
 <h2>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions the exists within an <a class="reference internal" href="#operation">Operation</a> definition or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation with in models.</p>
+<p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions within an <a class="reference internal" href="#operation">Operation</a> definition, or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation within models.</p>
 </div>
 <p><strong>Attributes</strong>
 Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt> || <tt class="docutils literal"><span class="pre">RANGE</span></tt>
@@ -159,7 +159,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">Path</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">path</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">description</span></tt></li>
 <li><a class="reference internal" href="#operations">Operations</a></li>
 </ul>
@@ -381,8 +381,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">responseClass</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
 <li><tt class="docutils literal"><span class="pre">nickname</span></tt> string</li>
 <li><tt class="docutils literal"><span class="pre">deprecated</span></tt> boolean</li>
-<li><tt class="docutils literal"><span class="pre">dataType</span></tt></li>
-<li><cite>ErrorResponses`</cite></li>
+<li><a class="reference internal" href="#errorresponses">ErrorResponses</a></li>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
@@ -491,7 +490,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 </div>
 <div class="section" id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
-<p>A colleciton of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
+<p>A collection of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><a class="reference internal" href="#parameter">Parameter</a></li>

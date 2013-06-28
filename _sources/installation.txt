@@ -21,7 +21,7 @@ git
 *************
 
 You may also install *swagger-php* with git; this installation method will however require that you manually install
-the `Doctine Common <http://www.doctrine-project.org/projects/common.html>`_ library following the procedure they have
+the `Doctrine Common <http://www.doctrine-project.org/projects/common.html>`_ library following the procedure they have
 documented on the project page.
 
 Add *swagger-php/library* to your include path.
