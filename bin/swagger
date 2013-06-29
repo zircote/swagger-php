@@ -40,7 +40,7 @@ EOT
 $shortopts = 'fp:hvo:i:e:';
 
 $longopts = array(
-    'project-dir:',
+    'project-path:',
     'exclude-path:',
     'include-path:',
     'output-dir',
@@ -108,13 +108,13 @@ EOF;
             }
         }
     }
-    if (!isset($options['p']) && !isset($options['project-dir'])) {
-        throw new RuntimeException('--project-dir must be provided');
+    if (!isset($options['p']) && !isset($options['project-path'])) {
+        throw new RuntimeException('--project-path must be provided');
     } else {
-        if (isset($options['project-dir'])
-            && !empty($options['project-dir'])
+        if (isset($options['project-path'])
+            && !empty($options['project-path'])
         ) {
-            $projectPath = $options['project-dir'];
+            $projectPath = $options['project-path'];
         } else {
             $projectPath = $options['p'];
         }
