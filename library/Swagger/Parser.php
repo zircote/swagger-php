@@ -137,6 +137,9 @@ class Parser
                 $docComment = $token[1];
                 continue;
             }
+            if ($token[0] === T_ABSTRACT) {
+                $token = $tokenParser->next(false); // Skip "abstract" keyword
+            }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 $token = $tokenParser->next();
                 $class = $namespace ? $namespace.'\\'.$token[1] : $token[1];

@@ -32,7 +32,7 @@ use \Swagger\Annotations as SWG;
  * @SWG\Model()
  * Model() will use the classname "Dog" as id and inherit all swagger properties from Pet
  */
-class Dog extends Pet
+abstract class Dog extends Pet
 {
     /**
      * @SWG\Property(required=true)
