@@ -1,4 +1,4 @@
-<phpunit bootstrap="./bootstrap.php"
+<phpunit bootstrap="./tests/bootstrap.php"
          colors="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="false"
@@ -6,7 +6,7 @@
          stopOnFailure="false"
          syntaxCheck="true">
     <testsuite name="Swagger Library Test Suite">
-        <directory>SwaggerTests</directory>
+        <directory>tests/SwaggerTests</directory>
     </testsuite>
     <logging>
         <!--<log type="coverage-text" target="php://stdout"-->
@@ -18,13 +18,13 @@
     </logging>
     <filter>
         <blacklist>
-            <directory suffix=".php">../</directory>
+            <directory suffix=".php">./</directory>
         </blacklist>
         <whitelist>
-            <directory suffix=".php">../library/Swagger</directory>
+            <directory suffix=".php">./library/Swagger</directory>
             <exclude>
-                <directory suffix=".phtml">../</directory>
-                <file>./bootstrap.php</file>
+                <directory suffix=".phtml">./</directory>
+                <file>./tests/bootstrap.php</file>
             </exclude>
         </whitelist>
     </filter>

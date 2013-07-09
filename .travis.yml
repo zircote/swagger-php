@@ -8,4 +8,4 @@ php:
   - 5.4
   - 5.5
 
-script: phpunit -c tests/phpunit.xml
+script: phpunit
