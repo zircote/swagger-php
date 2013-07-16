@@ -8,7 +8,7 @@ Swagger-PHP is a PHP library that serves as an annotations toolkit to produce [S
 it makes extensive use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for
 annotations support and caching.
 
-To report issues, ask questions please feel free to submit to [Github Isses](https://github.com/zircote/swagger-php/issues)
+To report issues or ask questions please feel free to submit to [Github Issues](https://github.com/zircote/swagger-php/issues)
 
 Download / Installation
 ------------------------
