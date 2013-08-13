@@ -49,6 +49,12 @@ class Parser
     protected $models = array();
 
     /**
+     * All orphan operations; operations without parents (resolve by nickname)
+     * @var array|Annotations\Operation
+     */
+    protected $orphanOperations = array();
+
+    /**
      * Current model
      * @var Annotations\Model
      */
@@ -109,6 +115,16 @@ class Parser
         Annotations\AbstractAnnotation::$context = '';
         return $models;
     }
+
+    /**
+     * Gall all oprhan operations.
+     * @return  array|Annotations\Operations
+     */
+    public function getOrphanOperations()
+    {
+        return $this->orphanOperations;
+    }
+
 
     /**
      * Extract and process all doc-comments.
@@ -254,6 +270,8 @@ class Parser
                 } else {
                     Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Model" declaration in '.Annotations\AbstractAnnotation::$context);
                 }
+            } elseif ($annotation instanceof Annotations\Operation) {
+                $this->orphanOperations[] = $annotation;
             } elseif ($annotation instanceof Annotations\AbstractAnnotation) { // A Swagger notation?
                 Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource" or "Model" in '.Annotations\AbstractAnnotation::$context);
             }
