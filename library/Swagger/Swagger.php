@@ -215,31 +215,33 @@ class Swagger implements \Serializable
 
     /**
      * Reunite the orphan operation with it's resolvable sibling.
-     * @param $operation
+     * Allows multiple siblings to be overwritten if the nicknames are reused.
+     * @param $orphanOperation
      */
     protected function reuniteOrphanOperation( $orphanOperation )
     {
-        foreach ($this->registry as $resource)
-        {
-            foreach ($resource->apis as $api)
-            {
-                foreach ($api->operations as $operation)
-                {
-                    if ($operation->nickname == $orphanOperation->nickname)
-                    {
+        $resolved = false;
+
+        foreach ($this->registry as $resource) {
+            foreach ($resource->apis as $api) {
+                foreach ($api->operations as $operation) {
+                    if ($operation->nickname == $orphanOperation->nickname) {
+
+                        $resolved = true;
+
                         // Overwrite Orphan over Original where NOT NULL
-                        foreach($orphanOperation as $k => $v)
-                        {
-                            if ( !empty($v) )
-                            {
+                        foreach($orphanOperation as $k => $v) {
+                            if ( !empty($v) ) {
                                 $operation->$k = $v;
                             }
                         }
-
-                        break;
                     }
                 }
             }
+        }
+
+        if (!$resolved) {
+            Logger::notice('Unable to reunite orphan operation with nickname "'.$operation->nickname.'". Check your defined nicknames.');
         }
     }
 
