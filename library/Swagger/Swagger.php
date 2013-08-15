@@ -81,7 +81,7 @@ class Swagger implements \Serializable
     /**
      * @var array
      */
-    public $orphanOperations = array();
+    public $partials = array();
 
     /**
      * @var \Doctrine\Common\Cache\CacheProvider
@@ -127,7 +127,7 @@ class Swagger implements \Serializable
         $this->fileList = array();
         $this->registry = array();
         $this->models = array();
-        $this->orphanOperations = array();
+        $this->partials = array();
         $this->cacheKey = null;
         return $this;
     }
@@ -152,15 +152,21 @@ class Swagger implements \Serializable
             foreach ($parser->getModels() as $model) {
                 $this->models[$model->id] = $model;
             }
-            foreach ($parser->getOrphanOperations() as $orphanOp)
+            foreach ($parser->getPartials() as $id => $partial)
             {
-                $this->orphanOperations[] = $orphanOp;
+                if (isset($this->partials[$id])) {
+                    Logger::notice('partial="'.$id.'" is not unique.');
+                }
+                $this->partials[$id] = $partial;
             }
         }
 
-        foreach ($this->orphanOperations as $orphan)
-        {
-            $this->reuniteOrphanOperation( $orphan );
+        $this->applyPartials($this->registry);
+        $this->applyPartials($this->models);
+        foreach ($this->partials as $partial) {
+            if ($partial->_partialId !== null) {
+                Logger::notice('partial="'.$id.'" is was not used.');
+            }
         }
 
         foreach ($this->models as $model) {
@@ -214,34 +220,49 @@ class Swagger implements \Serializable
     }
 
     /**
-     * Reunite the orphan operation with it's resolvable sibling.
-     * Allows multiple siblings to be overwritten if the nicknames are reused.
-     * @param $orphanOperation
+     * Resolve and apply all partials in the given node.
+     * @param Annotations\AbstractAnnotation|array $node
      */
-    protected function reuniteOrphanOperation( $orphanOperation )
+    protected function applyPartials($node)
     {
-        $resolved = false;
-
-        foreach ($this->registry as $resource) {
-            foreach ($resource->apis as $api) {
-                foreach ($api->operations as $operation) {
-                    if ($operation->nickname == $orphanOperation->nickname) {
-
-                        $resolved = true;
-
-                        // Overwrite Orphan over Original where NOT NULL
-                        foreach($orphanOperation as $k => $v) {
-                            if ( !empty($v) ) {
-                                $operation->$k = $v;
-                            }
+        static $active = array();
+        if (is_array($node)) {
+            foreach ($node as $annotation) {
+                 $this->applyPartials($annotation);
+            }
+        } else if ($node instanceof Annotations\AbstractAnnotation) {
+            foreach ($node->_partials as $i => $id) {
+                unset($node->_partials[$i]);
+                if (empty($this->partials[$id])) {
+                    Logger::notice('Partial "'.$id.'" not found.');
+                    continue;
+                }
+                $partial = $this->partials[$id];
+                if (isset($active[$id])) {
+                    Logger::notice('Cyclic dependancy for partial "'.$id.'" detected.');
+                    return;
+                }
+                $active[$id] = true;
+                $this->applyPartials($partial); // Resolve any partials inside the partial
+                unset($active[$id]);
+                if ($partial instanceof $node) { // Same type?
+                    // Overwrite properties with the properties of the partial
+                    foreach ($partial as $property => $value) {
+                        if (!empty($value)) {
+                            $node->$property = $value;
                         }
                     }
+                } else {
+                    $node->setNestedAnnotations(array($partial));
+                }
+                $partial->_partialId = null; // Mark as resolved.
+            }
+
+            foreach ($node as $property => $value) {
+                if (is_array($value) || is_object($value)) {
+                    $this->applyPartials($value);
                 }
             }
-        }
-
-        if (!$resolved) {
-            Logger::notice('Unable to reunite orphan operation with nickname "'.$operation->nickname.'". Check your defined nicknames.');
         }
     }
 

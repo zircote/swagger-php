@@ -170,4 +170,11 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
 		$expectedResource = json_decode(file_get_contents($path . '/resolve.json'), true);
         $this->assertEquals($expectedResource, Swagger::export($swagger->registry['/resolve']));
 	}
+
+    public function testPartials() {
+        $path = __DIR__ . '/Fixtures3';
+        $swagger = Swagger::discover($path);
+        $expectedResource = json_decode(file_get_contents($path . '/logs.json'), true);
+        $this->assertEquals($expectedResource, Swagger::export($swagger->registry['/logs']));
+    }
 }

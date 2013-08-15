@@ -49,10 +49,10 @@ class Parser
     protected $models = array();
 
     /**
-     * All orphan operations; operations without parents (resolve by nickname)
-     * @var array|Annotations\Operation
+     * All detected annotation partials;
+     * @var array|Annotations\AbstractAnnotation
      */
-    protected $orphanOperations = array();
+    protected $partials = array();
 
     /**
      * Current model
@@ -117,12 +117,12 @@ class Parser
     }
 
     /**
-     * Gall all oprhan operations.
-     * @return  array|Annotations\Operations
+     * Get all annotation partials.
+     * @return  array|Annotations\AbstractAnnotation
      */
-    public function getOrphanOperations()
+    public function getPartials()
     {
-        return $this->orphanOperations;
+        return $this->partials;
     }
 
 
@@ -252,7 +252,12 @@ class Parser
             return array();
         }
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Annotations\Resource) {
+            if ($annotation->_partialId !== null) {
+                if (isset($this->partials[$annotation->_partialId])) {
+                    Logger::notice('partial="'.$annotation->_partialId.'" is not unique. another was found in '.Annotations\AbstractAnnotation::$context);
+                }
+                $this->partials[$annotation->_partialId] = $annotation;
+            } elseif ($annotation instanceof Annotations\Resource) {
                 $this->resource = $annotation;
                 $this->resources[] = $this->resource;
             } elseif ($annotation instanceof Annotations\Model) {
@@ -270,10 +275,8 @@ class Parser
                 } else {
                     Logger::notice('Unexpected "'.get_class($annotation).'", should be inside or after a "Model" declaration in '.Annotations\AbstractAnnotation::$context);
                 }
-            } elseif ($annotation instanceof Annotations\Operation) {
-                $this->orphanOperations[] = $annotation;
             } elseif ($annotation instanceof Annotations\AbstractAnnotation) { // A Swagger notation?
-                Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource" or "Model" in '.Annotations\AbstractAnnotation::$context);
+                Logger::notice('Unexpected "'.get_class($annotation).'", Expecting a "Resource", "Model" or partial declaration in '.Annotations\AbstractAnnotation::$context);
             }
         }
         return $annotations;

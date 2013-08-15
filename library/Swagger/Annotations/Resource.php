@@ -66,7 +66,7 @@ class Resource extends AbstractAnnotation
      */
     public $models = array();
 
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Api) {

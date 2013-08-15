@@ -35,6 +35,18 @@ use Swagger\Logger;
 abstract class AbstractAnnotation
 {
     /**
+     * This annotiation is a partial id, to be used in conjunction with @SWG\Partial()
+     * @var string|null
+     */
+    public $_partialId;
+
+    /**
+     * The partials that must be applied to this annotation.
+     * @var array
+     */
+    public $_partials = array();
+
+    /**
      * Allows Annotation classes to know which property or method in which class is being processed.
      * @var string
      */
@@ -53,6 +65,8 @@ abstract class AbstractAnnotation
         foreach ($values as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $this->cast($value);
+            } elseif ($key === 'partial') {
+                $this->_partialId = $value;
             } elseif ($key !== 'value') {
                 $properties = array_keys(get_object_vars($this));
                 Logger::notice('Skipping unsupported property: "'.$key.'" for @'.get_class($this).', expecting "'.implode('", "', $properties).'" in '.AbstractAnnotation::$context);
@@ -63,7 +77,11 @@ abstract class AbstractAnnotation
             $objects = array();
             foreach ($nested as $value) {
                 if (is_object($value)) {
-                    $objects[] = $value;
+                    if ($value instanceof Partial) {
+                        $this->_partials[] = $value->use;
+                    } else {
+                        $objects[] = $value;
+                    }
                 } else {
                     $this->setNestedValue($value);
                 }
@@ -87,12 +105,16 @@ abstract class AbstractAnnotation
     /**
      * Example: @Annotation(@Nested) would call setNestedAnnotations with array(Nested)
      *
-     * @param type $annotations
+     * @param array|AbstractAnnotation $annotations
      */
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
-            Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            if ($annotation instanceof Partial) {
+                $this->_partials[] = $annotation;
+            } else {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            }
         }
     }
 
@@ -155,6 +177,7 @@ abstract class AbstractAnnotation
     public function jsonSerialize()
     {
         $data = get_object_vars($this);
+        unset($data['_partialId'], $data['_partials']);
         foreach ($data as $key => $value) {
             if ($value === null) {
                 unset($data[$key]); // Skip undefined values

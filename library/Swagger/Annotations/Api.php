@@ -48,7 +48,7 @@ class Api extends AbstractAnnotation
      */
     public $description;
 
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Operation) {

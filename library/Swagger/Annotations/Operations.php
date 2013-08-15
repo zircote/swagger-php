@@ -38,7 +38,7 @@ class Operations extends AbstractAnnotation
      */
     public $operations;
 
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Operation) {

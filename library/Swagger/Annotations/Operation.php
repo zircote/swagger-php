@@ -95,7 +95,7 @@ class Operation extends AbstractAnnotation
         $this->notes = $this->removePreamble($this->notes);
     }
 
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Parameter) {

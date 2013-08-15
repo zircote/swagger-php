@@ -1,0 +1,15 @@
+{
+    "resourcePath": "/logs",
+    "apis": [
+        {
+            "path": "/",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "summary": "This function does some magic xyz",
+                    "nickname": "logidx"
+                }
+            ]
+        }
+    ]
+}

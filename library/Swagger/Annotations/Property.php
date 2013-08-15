@@ -102,7 +102,7 @@ class Property extends AbstractAnnotation
         return $data;
     }
 
-    protected function setNestedAnnotations($annotations)
+    public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof AllowableValues) {

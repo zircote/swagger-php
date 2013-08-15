@@ -21,7 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @package
@@ -30,21 +30,19 @@ use Swagger\Logger;
  *
  * @Annotation
  */
-class Parameters extends AbstractAnnotation
+class Partial
 {
     /**
-     * @var array|Parameter
+     * The id of the partial this annotation points to.
+     * @var string
      */
-    public $parameters;
+    public $use;
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Parameter) {
-                $this->parameters[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
+    function __construct($data) {
+        if (empty($data['value'])) {
+            throw new AnnotationException('Invalid @SWG\Partial declaration (example: @SWG\Partial("id of the partial"), in '.AbstractAnnotation::$context);
         }
+        $this->use = $data['value'];
     }
+
 }
