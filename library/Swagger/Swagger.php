@@ -19,6 +19,7 @@ namespace Swagger;
  * @category   Swagger
  * @package    Swagger
  */
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\CacheProvider;
 use Swagger\Annotations\Model;
@@ -78,6 +79,11 @@ class Swagger implements \Serializable
     public $models = array();
 
     /**
+     * @var array
+     */
+    public $orphanOperations = array();
+
+    /**
      * @var \Doctrine\Common\Cache\CacheProvider
      */
     protected $cache;
@@ -121,6 +127,7 @@ class Swagger implements \Serializable
         $this->fileList = array();
         $this->registry = array();
         $this->models = array();
+        $this->orphanOperations = array();
         $this->cacheKey = null;
         return $this;
     }
@@ -145,6 +152,15 @@ class Swagger implements \Serializable
             foreach ($parser->getModels() as $model) {
                 $this->models[$model->id] = $model;
             }
+            foreach ($parser->getOrphanOperations() as $orphanOp)
+            {
+                $this->orphanOperations[] = $orphanOp;
+            }
+        }
+
+        foreach ($this->orphanOperations as $orphan)
+        {
+            $this->reuniteOrphanOperation( $orphan );
         }
 
         foreach ($this->models as $model) {
@@ -196,6 +212,39 @@ class Swagger implements \Serializable
             $resource->apiVersion = $this->getDefaultApiVersion();
         }
     }
+
+    /**
+     * Reunite the orphan operation with it's resolvable sibling.
+     * Allows multiple siblings to be overwritten if the nicknames are reused.
+     * @param $orphanOperation
+     */
+    protected function reuniteOrphanOperation( $orphanOperation )
+    {
+        $resolved = false;
+
+        foreach ($this->registry as $resource) {
+            foreach ($resource->apis as $api) {
+                foreach ($api->operations as $operation) {
+                    if ($operation->nickname == $orphanOperation->nickname) {
+
+                        $resolved = true;
+
+                        // Overwrite Orphan over Original where NOT NULL
+                        foreach($orphanOperation as $k => $v) {
+                            if ( !empty($v) ) {
+                                $operation->$k = $v;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!$resolved) {
+            Logger::notice('Unable to reunite orphan operation with nickname "'.$operation->nickname.'". Check your defined nicknames.');
+        }
+    }
+
     /**
      *
      * @param string|null $model
