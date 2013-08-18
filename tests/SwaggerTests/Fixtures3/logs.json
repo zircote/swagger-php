@@ -10,6 +10,36 @@
                     "nickname": "logidx"
                 }
             ]
+        },
+        {
+            "path": "/logs/add",
+            "operations": [
+                {
+                    "httpMethod": "POST",
+                    "description": "Create or add new entries",
+                    "nickname": "partial"
+                }
+            ]
+        },
+        {
+            "path": "/logs/{id}",
+            "operations": [
+                {
+                    "httpMethod": "GET",
+                    "description": "View a log entry",
+                    "nickname": "read",
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "The unique ID",
+                            "allowMultiple": false,
+                            "dataType": "string",
+                            "paramType": "path",
+                            "required": true
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

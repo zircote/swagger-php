@@ -1,3 +1,19 @@
+0.7
+
+* Simplified CLI interface [#91](https://github.com/zircote/swagger-php/pull/91)
+  * Cleaner output.
+  * Cleaner consistent naming of the options.
+  * Detects invalid options.
+  * Example usage: `swagger.phar project/` scans all *.php files in the "project" folder and outputs the docs in the current directory.
+
+* Support for partials [#101](https://github.com/zircote/swagger-php/pull/101)
+  * Enables splitting an annotation.
+  * Reuse an Annotation (DRY).
+  * For examples see the tests/SwaggerTests/Fixtures3 folder.
+
+* Misc fixes
+
+
 0.6
 
 * New architecture

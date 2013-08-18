@@ -94,7 +94,7 @@ class Parser
             }
         }
         $this->resources = $resources;
-        Annotations\AbstractAnnotation::$context = '';
+        Annotations\AbstractAnnotation::$context = 'unknown';
         return $resources;
     }
 
@@ -112,7 +112,7 @@ class Parser
             }
         }
         $this->models = $models;
-        Annotations\AbstractAnnotation::$context = '';
+        Annotations\AbstractAnnotation::$context = 'unknown';
         return $models;
     }
 
@@ -235,7 +235,10 @@ class Parser
                 continue;
             }
         }
-        Annotations\AbstractAnnotation::$context = '';
+        if ($docComment) { // File ends with a T_DOC_COMMENT
+            $this->parseDocComment($docComment);
+        }
+        Annotations\AbstractAnnotation::$context = 'unknown';
     }
 
     /**
@@ -252,7 +255,9 @@ class Parser
             return array();
         }
         foreach ($annotations as $annotation) {
-            if ($annotation->_partialId !== null) {
+            if ($annotation instanceof Annotations\Partial) {
+                Logger::notice('Unexpected "'.get_class($annotation).'", @SWG\Partial is a pointer to a partial and should inside another annotation in '.Annotations\AbstractAnnotation::$context);
+            } elseif ($annotation->_partialId !== null) {
                 if (isset($this->partials[$annotation->_partialId])) {
                     Logger::notice('partial="'.$annotation->_partialId.'" is not unique. another was found in '.Annotations\AbstractAnnotation::$context);
                 }

@@ -97,7 +97,7 @@ class Resource extends AbstractAnnotation
                 }
             }
         }
-        if (count($apis) == 0) {
+        if (count($apis) === 0 && count($this->_partials) === 0) {
             Logger::notice('Resource "'.$this->basePath.'" doesn\'t have any valid api calls');
             return false;
         }

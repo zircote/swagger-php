@@ -165,7 +165,7 @@ class Swagger implements \Serializable
         $this->applyPartials($this->models);
         foreach ($this->partials as $partial) {
             if ($partial->_partialId !== null) {
-                Logger::notice('partial="'.$id.'" is was not used.');
+                Logger::notice('partial="'.$partial->_partialId.'" is was not used.');
             }
         }
 
@@ -220,15 +220,16 @@ class Swagger implements \Serializable
     }
 
     /**
-     * Resolve and apply all partials in the given node.
+     * Resolve and apply all partials in the given nodetree.
      * @param Annotations\AbstractAnnotation|array $node
      */
-    protected function applyPartials($node)
+    protected function applyPartials($node, $depth = 0)
     {
         static $active = array();
+
         if (is_array($node)) {
             foreach ($node as $annotation) {
-                 $this->applyPartials($annotation);
+                 $this->applyPartials($annotation, $depth + 1);
             }
         } else if ($node instanceof Annotations\AbstractAnnotation) {
             foreach ($node->_partials as $i => $id) {
@@ -238,30 +239,33 @@ class Swagger implements \Serializable
                     continue;
                 }
                 $partial = $this->partials[$id];
+                $partial->_partialId = null; // Mark as used.
                 if (isset($active[$id])) {
                     Logger::notice('Cyclic dependancy for partial "'.$id.'" detected.');
                     return;
                 }
                 $active[$id] = true;
-                $this->applyPartials($partial); // Resolve any partials inside the partial
+                $this->applyPartials($partial, $depth + 1); // Resolve any partials inside the partial
                 unset($active[$id]);
                 if ($partial instanceof $node) { // Same type?
-                    // Overwrite properties with the properties of the partial
+                    // Overwrite empty properties with the properties in the partial
                     foreach ($partial as $property => $value) {
-                        if (!empty($value)) {
+                        if (!empty($value) && empty($node->$property)) {
                             $node->$property = $value;
                         }
                     }
                 } else {
                     $node->setNestedAnnotations(array($partial));
                 }
-                $partial->_partialId = null; // Mark as resolved.
             }
 
             foreach ($node as $property => $value) {
                 if (is_array($value) || is_object($value)) {
-                    $this->applyPartials($value);
+                    $this->applyPartials($value, $depth + 1);
                 }
+            }
+            if ($node instanceof Annotations\Resource || $node instanceof Annotations\Model) {
+                $node->validate();
             }
         }
     }

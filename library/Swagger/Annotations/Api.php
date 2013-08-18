@@ -72,7 +72,7 @@ class Api extends AbstractAnnotation
             }
         }
         $this->operations = $operations;
-        if (count($this->operations) == 0) {
+        if (count($this->operations) === 0 && count($this->_partials) === 0) {
             Logger::notice('Api "'.$this->path.'" doesn\'t have any valid operations');
             return false;
         }

@@ -24,4 +24,28 @@ class LogsController
     public function index()
     {
     }
+    /**
+     * @SWG\Api(
+     *   partial="log_create",
+     *   path="/logs/add",
+     *   @SWG\Partial("crud/create")
+     * )
+     */
+    public function create() {
+
+    }
+
+    /**
+     * @SWG\Api(
+     *   partial="log_read",
+     *   path="/logs/{id}",
+     *   @SWG\Operation(
+     *     @SWG\Partial("crud/read"),
+     *     description="View a log entry"
+     *   )
+     * )
+     */
+    public function read() {
+        // Uses the crud/read partial, but overides the description.
+    }
 }

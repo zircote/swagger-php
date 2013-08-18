@@ -74,7 +74,7 @@ try {
             $option = substr($arg, 2);
 
         } elseif ($arg[0] === '-') { // shortopt
-            if (array_key_exists($arg[1], $aliases)) {
+            if (array_key_exists(substr($arg, 1), $aliases)) {
                 $option = $aliases[$arg[1]];
             } else {
                 throw new RuntimeException('Unknown option: "'.$arg.'"');
@@ -112,10 +112,10 @@ Generate Swagger JSON documents for a PHP project.
 Usage: swagger /path/to/project [--output /path/to/docs] ...
 
   -o, --output        Directory to store the generated json documents.
-  -e, --exclude       Exclude path.
+  -e, --exclude       Exclude path(s).
                          ex: --exclude vendor:library/Zend:library/Foo
-  -b, --bootstrap     Bootstrap file for additional include path support
-                         ex: --bootstrap Zend:/usr/local/share/pear
+  -b, --bootstrap     Bootstrap php file(s) for defining constants, etc.
+                         ex: --bootstrap autoload.php:config/contants.php
   --pretty-print      JSON output in readable formatting (Pretty Print)
 
   --default-base-path        Provide a default basePath for the resources

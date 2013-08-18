@@ -11,7 +11,9 @@ use Swagger\Annotations as SWG;
  *              nickname="logidx",
  *              @SWG\Partial("logs.index")
  *          )
- *      )
+ *      ),
+ *      @SWG\Partial("log_create"),
+ *      @SWG\Partial("log_read")
  * )
  */
 Router::route('/users/', array('controller' => 'Operations'));
