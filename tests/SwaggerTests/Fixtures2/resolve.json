@@ -24,6 +24,9 @@
                     "type": "string",
                     "required": true
                 },
+                "parent": {
+                    "type": "Dog"
+                },
                 "tags": {
                     "type": "Array",
                     "items": {

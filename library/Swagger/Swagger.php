@@ -297,9 +297,9 @@ class Swagger implements \Serializable
     protected function resolveModels($input)
     {
         $models = array();
-        foreach ($input as $v) {
+        foreach ($input as $name) {
             $type = false;
-            foreach ($this->models[$v]->properties as $property) {
+            foreach ($this->models[$name]->properties as $property) {
                 if ($property->items !== null && self::isPrimitive($property->items->type) === false) {
                     if (isset($property->items->type)) {
                         $type = $property->items->type;
@@ -308,7 +308,7 @@ class Swagger implements \Serializable
                     $type = $property->type;
                 }
                 $model = $this->resolveModel($type);
-                if ($model && !in_array($type, $models)) {
+                if ($model !== $name && $model && !in_array($type, $models)) {
                     array_push($models, $model);
                     $models = array_merge($models, $this->resolveModels($models));
                 }

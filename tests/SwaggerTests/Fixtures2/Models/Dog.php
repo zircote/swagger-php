@@ -39,4 +39,11 @@ abstract class Dog extends Pet
      * @var string
      */
     public $breed;
+
+    /**
+     * @var Dog
+     *
+     * @SWG\Property()
+     */
+    protected $parent;
 }
