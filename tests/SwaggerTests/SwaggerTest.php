@@ -177,4 +177,22 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $expectedResource = json_decode(file_get_contents($path . '/logs.json'), true);
         $this->assertEquals($expectedResource, Swagger::export($swagger->registry['/logs']));
     }
+
+    /**
+     * Verify that the jsonEncode method respects the prettyPrint flag.  This test assumes that JSON is considered
+     * "prettyPrint" if it consists of more than one line.
+     *
+     * @covers Swagger\Swagger::jsonEncode
+     */
+    public function testJsonEncodePrettyPrint() {
+        $swagger = new Swagger();
+
+        $data = json_decode(file_get_contents(__DIR__ . '/Fixtures/api-docs.json'), true);
+
+        $prettyJson = $swagger->jsonEncode($data, true);
+        $this->assertNotCount(1, explode("\n", $prettyJson));
+
+        $flatJson = $swagger->jsonEncode($data, false);
+        $this->assertCount(1, explode("\n", $flatJson));
+    }
 }

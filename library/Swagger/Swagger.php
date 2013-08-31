@@ -521,7 +521,12 @@ class Swagger implements \Serializable
     {
         $data = self::export($resource);
         if (version_compare(PHP_VERSION, '5.4', '>=')) {
-            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $options = JSON_UNESCAPED_SLASHES;
+            if ($prettyPrint) {
+                $options |= JSON_PRETTY_PRINT;
+            }
+
+            return json_encode($data, $options);
         } else {
             $json = str_replace('\/', '/', json_encode($data));
         }
