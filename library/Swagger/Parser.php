@@ -136,7 +136,10 @@ class Parser
         $namespace = '';
         $class = false;
 
-        $imports = array();
+        $imports = array(
+            'swg' => 'Swagger\Annotations' // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
+        );
+        $this->docParser->setImports($imports);
         $uses = array();
         $docComment = false;
         while ($token != null) {
