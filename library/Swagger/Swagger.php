@@ -30,38 +30,17 @@ use Swagger\Annotations\Property;
  * @category   Swagger
  * @package    Swagger
  */
-class Swagger implements \Serializable
+class Swagger
 {
-    /**
-     *
-     * @var Array
-     */
-    protected $fileList = array();
-
-    /**
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * @var null|string
-     */
-    protected $excludePath;
-
-    /**
-     * @var null|string
-     */
-    protected $defaultBasePath;
-
     /**
      * @var null|string
      */
     protected $defaultApiVersion;
 
     /**
-     * @var null|string
+     * @var string
      */
-    protected $defaultSwaggerVersion;
+    protected $defaultSwaggerVersion = '1.2';
 
     /**
      * @var array
@@ -83,64 +62,46 @@ class Swagger implements \Serializable
      */
     public $partials = array();
 
-    /**
-     * @var \Doctrine\Common\Cache\CacheProvider
-     */
-    protected $cache;
-
-    /**
-     * @var string
-     */
-    protected $cacheKey;
-
-    /**
-     * @param null $path
-     * @param null $excludePath
-     * @param \Doctrine\Common\Cache\CacheProvider $cache
-     */
-    public function __construct($path = null, $excludePath = null, CacheProvider $cache = null)
-    {
-        if (null == $cache) {
-            $this->setCache(new ArrayCache());
-        } else {
-            $this->setCache($cache);
-        }
-        if ($path) {
-            $this->path = $path;
-            $this->excludePath = $excludePath;
-            $this->cacheKey = sha1($this->path.$this->excludePath);
-            if ($this->cache->contains($this->cacheKey)) {
-                $this->unserialize($this->cache->fetch($this->cacheKey));
-            } else {
-                $this->discoverServices();
-            }
-        }
-    }
-
-    /**
-     * @return Swagger
-     */
-    public function reset()
-    {
-        $this->excludePath = null;
-        $this->classList = array();
-        $this->fileList = array();
-        $this->registry = array();
-        $this->models = array();
-        $this->partials = array();
-        $this->cacheKey = null;
-        return $this;
-    }
 
     /**
      *
+     * @param array $options array(
+     *   'path'
+     */
+    public function __construct($options = array()) {
+        $path = null;
+        $excludePaths = null;
+        foreach ($options as $option => $value) {
+            switch (strtolower($option)) {
+                case 'path':
+                    $path = $value;
+                    break;
+                case 'excludepath':
+                    $excludePath = $value;
+                    break;
+                case 'apiversion':
+                    $this->defaultApiVersion = $value;
+                    break;
+                case 'swaggerversion':
+                    $this->defaultSwaggerVersion = $value;
+                    break;
+                default:
+                    Logger::getInstance()->notice('Invalid option: "'.$option.'"');
+                    break;
+            }
+        }
+
+        if ($path !== null) {
+            $this->scan($path, $excludePath);
+        }
+    }
+
+    /**
+     * Add resources to the registry and collect models.
      * @return Swagger
      */
-    protected function discoverServices()
-    {
-        $this->registry = array();
-        // Add resoures to the registry and collect models
-        foreach ($this->getFileList() as $filename) {
+    public function scan($path, $excludePath = null) {
+        foreach ($this->getFiles($path, $excludePath) as $filename) {
             $parser = new Parser($filename);
             foreach ($parser->getResources() as $resource) {
                 if (array_key_exists($resource->resourcePath, $this->registry)) {
@@ -197,9 +158,6 @@ class Swagger implements \Serializable
         }
 
         ksort($this->registry, SORT_ASC);
-        if ($this->getCache()) {
-            $this->getCache()->save($this->cacheKey, $this->serialize());
-        }
         return $this;
     }
 
@@ -327,45 +285,27 @@ class Swagger implements \Serializable
      */
     public static function discover($path, $excludePath = null)
     {
-        $swagger = new self($path, $excludePath, null);
+        $swagger = new self(array(
+            'path' => $path,
+            'excludePath'=> $excludePath
+        ));
         return $swagger;
     }
 
     /**
+     * @param string $path
+     * @param string $excludePaths
      *
      * @return array
      */
-    public function getFileList()
+    protected function getFiles($path, $excludePaths = null)
     {
-        if (!$this->fileList) {
-            $this->setFileList($this->getFiles());
+        if (is_string($excludePaths)) {
+            $excludePaths = explode(':', $excludePaths);
+        } elseif (is_array($excludePaths) === false) {
+            $excludePaths = array();
         }
-        return $this->fileList;
-    }
 
-    /**
-     *
-     * @param  array $fileList
-     *
-     * @return Swagger
-     */
-    public function setFileList($fileList)
-    {
-        $this->fileList = $fileList;
-        return $this;
-    }
-
-    /**
-     * @param null $path
-     *
-     * @return array
-     */
-    protected function getFiles($path = null)
-    {
-        if (!$path) {
-            $path = $this->path;
-        }
-        $excludePaths = isset($this->excludePath) ? explode(':', $this->excludePath) : array();
         $files = array();
         $dir = new \DirectoryIterator($path);
         /* @var $fileInfo \DirectoryIterator */
@@ -415,7 +355,7 @@ class Swagger implements \Serializable
                 if (!$result) {
                     $result = array(
                         'apiVersion' => $this->getDefaultApiVersion() ?: $resource->apiVersion,
-                        'swaggerVersion' => $this->getDefaultSwaggerVersion() ?: $resource->swaggerVersion,
+                        'swaggerVersion' => $resource->swaggerVersion,
                         'apis' => array()
                     );
                 }
@@ -609,25 +549,6 @@ class Swagger implements \Serializable
     }
 
     /**
-     * @return null
-     */
-    public function getExcludePath()
-    {
-        return $this->excludePath;
-    }
-
-    /**
-     *
-     * @param null $excludePath
-     * @return Swagger
-     */
-    public function setExcludePath($excludePath)
-    {
-        $this->excludePath = $excludePath;
-        return $this;
-    }
-
-    /**
      *
      * @param array $registry
      * @return Swagger
@@ -636,40 +557,6 @@ class Swagger implements \Serializable
     {
         $this->registry = $registry;
         return $this;
-    }
-
-    /**
-     * @param $path
-     *
-     * @return Swagger
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $url
-     * @return Swagger fluent api
-     */
-    public function setDefaultBasePath($url)
-    {
-        $this->defaultBasePath = $url;
-        return $this;
-    }
-
-    public function getDefaultBasePath()
-    {
-        return $this->defaultBasePath;
     }
 
     /**
@@ -705,64 +592,6 @@ class Swagger implements \Serializable
     public function getDefaultSwaggerVersion()
     {
         return $this->defaultSwaggerVersion;
-    }
-
-    /**
-     * @return Swagger
-     */
-    public function flushCache()
-    {
-        $this->getCache()->delete($this->cacheKey);
-        $this->discoverServices();
-        return $this;
-    }
-
-    /**
-     * @return \Doctrine\Common\Cache\CacheProvider
-     */
-    public function getCache()
-    {
-        return $this->cache;
-    }
-
-    /**
-     * @param \Doctrine\Common\Cache\CacheProvider $cache
-     * @return Swagger
-     */
-    public function setCache(\Doctrine\Common\Cache\CacheProvider $cache)
-    {
-        $this->cache = $cache;
-        $this->cache->save($this->cacheKey, $this->serialize());
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize(
-            array(
-                'registry' => $this->registry,
-                'models' => $this->models,
-                'path' => $this->path,
-                'excludePath' => $this->excludePath
-            )
-        );
-    }
-
-    /**
-     * @param string $serialized
-     * @return Swagger
-     */
-    public function unserialize($serialized)
-    {
-        $data = unserialize($serialized);
-        $this->registry = $data['registry'];
-        $this->models = $data['models'];
-        $this->path = $data['path'];
-        $this->excludePath = $data['excludePath'];
-        return $this;
     }
 
     protected function inheritProperties($model)

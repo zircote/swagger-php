@@ -71,9 +71,8 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__ . '/Fixtures';
         $swagger = Swagger::discover($path);
-        $serialized = $swagger->serialize();
-        $newSwagger = new Swagger();
-        $newSwagger->unserialize($serialized);
+        $serialized = serialize($swagger);
+        $newSwagger = unserialize($serialized);
         $this->assertEquals($swagger->models, $newSwagger->models);
         $this->assertEquals($swagger->registry, $newSwagger->registry);
         $expected = json_decode(file_get_contents(__DIR__ . '/Fixtures/user.json'), true);
@@ -112,11 +111,11 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     public function testCaching()
     {
         $path = __DIR__ . '/Fixtures';
+        $cache = new \Doctrine\Common\Cache\ArrayCache();
         $swagger = Swagger::discover($path);
-        $cacheKey = sha1($path);
-        $this->assertTrue($swagger->getCache()->contains($cacheKey));
-        $swag1 = new Swagger();
-        $swag1->unserialize($swagger->getCache()->fetch($cacheKey));
+        $cache->save('swagger', serialize($swagger));
+        $swag1 = unserialize($cache->fetch('swagger'));
+        $this->assertInstanceOf('Swagger\Swagger', $swag1);
         $this->assertEquals($swagger->models, $swag1->models);
         $this->assertEquals($swagger->registry['/user'], $swag1->registry['/user']);
     }
