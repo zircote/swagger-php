@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger;
 
 /**
@@ -62,13 +63,13 @@ class Swagger
      */
     public $partials = array();
 
-
     /**
      *
      * @param array $options array(
      *   'path'
      */
-    public function __construct($options = array()) {
+    public function __construct($options = array())
+    {
         $path = null;
         $excludePaths = null;
         foreach ($options as $option => $value) {
@@ -80,13 +81,13 @@ class Swagger
                     $excludePath = $value;
                     break;
                 case 'apiversion':
-                    $this->defaultApiVersion = $value;
+                    $this->setDefaultApiVersion($value);
                     break;
                 case 'swaggerversion':
-                    $this->defaultSwaggerVersion = $value;
+                    $this->setDefaultSwaggerVersion($value);
                     break;
                 default:
-                    Logger::getInstance()->notice('Invalid option: "'.$option.'"');
+                    Logger::notice('Invalid option: "'.$option.'"');
                     break;
             }
         }
@@ -100,7 +101,8 @@ class Swagger
      * Add resources to the registry and collect models.
      * @return Swagger
      */
-    public function scan($path, $excludePath = null) {
+    public function scan($path, $excludePath = null)
+    {
         foreach ($this->getFiles($path, $excludePath) as $filename) {
             $parser = new Parser($filename);
             foreach ($parser->getResources() as $resource) {
@@ -113,8 +115,7 @@ class Swagger
             foreach ($parser->getModels() as $model) {
                 $this->models[$model->id] = $model;
             }
-            foreach ($parser->getPartials() as $id => $partial)
-            {
+            foreach ($parser->getPartials() as $id => $partial) {
                 if (isset($this->partials[$id])) {
                     Logger::notice('partial="'.$id.'" is not unique.');
                 }
@@ -139,7 +140,7 @@ class Swagger
             $models = array();
             foreach ($resource->apis as $api) {
                 foreach ($api->operations as $operation) {
-                    $model = $this->resolveModel($operation->responseClass);
+                    $model = $this->resolveModel($operation->type);
                     if ($model) {
                         $models[] = $model;
                     }
@@ -187,7 +188,7 @@ class Swagger
 
         if (is_array($node)) {
             foreach ($node as $annotation) {
-                 $this->applyPartials($annotation, $depth + 1);
+                $this->applyPartials($annotation, $depth + 1);
             }
         } else if ($node instanceof Annotations\AbstractAnnotation) {
             foreach ($node->_partials as $i => $id) {
@@ -287,7 +288,7 @@ class Swagger
     {
         $swagger = new self(array(
             'path' => $path,
-            'excludePath'=> $excludePath
+            'excludePath' => $excludePath
         ));
         return $swagger;
     }
@@ -354,7 +355,7 @@ class Swagger
             foreach ($this->registry as $resource) {
                 if (!$result) {
                     $result = array(
-                        'apiVersion' => $this->getDefaultApiVersion() ?: $resource->apiVersion,
+                        'apiVersion' => $this->getDefaultApiVersion() ? : $resource->apiVersion,
                         'swaggerVersion' => $resource->swaggerVersion,
                         'apis' => array()
                     );
@@ -583,9 +584,14 @@ class Swagger
      */
     public function setDefaultSwaggerVersion($version)
     {
-        $this->defaultSwaggerVersion= $version;
+        if (version_compare($version, '1.2', '<')) {
+            Logger::warning('swaggerVersion: '.$version.' not supported. Use a swagger-php older than 0.8');
+            return;
+        }
+        $this->defaultSwaggerVersion = $version;
         return $this;
     }
+
     /**
      * @return null|string
      */

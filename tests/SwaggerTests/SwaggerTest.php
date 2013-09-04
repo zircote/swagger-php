@@ -153,7 +153,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__ . '/Fixtures2';
         $swagger = Swagger::discover($path);
         $swagger->setDefaultApiVersion('0.2');
-        $swagger->setDefaultSwaggerVersion('1.1');
+        $swagger->setDefaultSwaggerVersion('1.3');
         $expected = json_decode(file_get_contents($path . '/multi-op.json'), true);
         $this->assertEquals($expected, json_decode($swagger->getResource('/facet'), true));
     }

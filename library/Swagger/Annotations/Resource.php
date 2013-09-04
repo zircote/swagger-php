@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger\Annotations;
 
 /**
@@ -79,6 +80,12 @@ class Resource extends AbstractAnnotation
 
     public function validate()
     {
+        if ($this->swaggerVersion) {
+            if (version_compare($this->swaggerVersion, '1.2', '<')) {
+                Logger::warning('swaggerVersion: '.$this->swaggerVersion.' not supported. Use a swagger-php older than 0.8');
+                $this->swaggerVersion = null;
+            }
+        }
         $apis = array();
         foreach ($this->apis as $api) {
             if ($api->validate()) {

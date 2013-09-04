@@ -1,6 +1,6 @@
 {
     "apiVersion":"0.2",
-    "swaggerVersion":"1.1",
+    "swaggerVersion":"1.2",
     "basePath":"http://facetstore.zircote.com/swagger-php/api",
     "resourcePath":"/facet",
     "apis":[
@@ -10,9 +10,9 @@
             "operations":[
                 {
                     "nickname":"getfacetById",
-                    "responseClass":"FacetResult",
+                    "type":"FacetResult",
                     "summary":"Find facet by ID",
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "parameters":[
                         {
                             "description":"ID of facet that needs to be fetched",
@@ -23,7 +23,7 @@
                             "required":true
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":"400",
                             "reason":"Invalid ID supplied"
@@ -38,7 +38,7 @@
                 {
                     "nickname":"getfacetById",
                     "summary":"Find facet by ID",
-                    "httpMethod":"DELETE",
+                    "method":"DELETE",
                     "parameters":[
                         {
                             "description":"ID of facet that needs to be fetched",
@@ -49,7 +49,7 @@
                             "required":true
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":"400",
                             "reason":"Invalid ID supplied"

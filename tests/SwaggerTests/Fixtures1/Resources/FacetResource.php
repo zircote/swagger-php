@@ -12,7 +12,7 @@ use Swagger\Annotations as SWG;
  *
  * @SWG\Resource(
  *  apiVersion="0.2",
- *  swaggerVersion="1.1",
+ *  swaggerVersion="1.2",
  *  resourcePath="/facet",
  *  basePath="http://facetstore.zircote.com/swagger-php/api"
  * )
@@ -26,10 +26,10 @@ class FacetResource
      *   description="Operations about facets",
      *   @SWG\operations(
      *     @SWG\operation(
-     *       httpMethod="GET",
+     *       method="GET",
      *       summary="Find facet by ID",
      *       notes="Returns a facet based on ID",
-     *       responseClass="FacetResult",
+     *       type="FacetResult",
      *       nickname="getfacetById",
      *       @SWG\parameters(
      *         @SWG\parameter(
@@ -41,12 +41,12 @@ class FacetResource
      *           dataType="string"
      *         )
      *       ),
-     *       @SWG\errorResponses(
-     *          @SWG\errorResponse(
+     *       @SWG\responseMessages(
+     *          @SWG\responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @SWG\errorResponse(
+     *          @SWG\responseMessage(
      *            code="404",
      *            reason="facet not found"
      *          )
@@ -65,7 +65,7 @@ class FacetResource
      *   description="Operations about facets",
      *   @SWG\operations(
      *     @SWG\operation(
-     *       httpMethod="DELETE",
+     *       method="DELETE",
      *       summary="Find facet by ID",
      *       notes="Returns a facet based on ID",
      *       nickname="getfacetById",
@@ -79,12 +79,12 @@ class FacetResource
      *           dataType="string"
      *         )
      *       ),
-     *       @SWG\errorResponses(
-     *          @SWG\errorResponse(
+     *       @SWG\responseMessages(
+     *          @SWG\responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @SWG\errorResponse(
+     *          @SWG\responseMessage(
      *            code="404",
      *            reason="facet not found"
      *          )

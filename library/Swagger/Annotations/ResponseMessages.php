@@ -31,18 +31,18 @@ use Swagger\Logger;
  * @Annotation
  *
  */
-class ErrorResponses extends AbstractAnnotation
+class ResponseMessages extends AbstractAnnotation
 {
     /**
-     * @var array|ErrorResponse
+     * @var array|ResponseMessage
      */
-    public $errorResponses;
+    public $responseMessages;
 
     public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof ErrorResponse) {
-                $this->errorResponses[] = $annotation;
+            if ($annotation instanceof ResponseMessage) {
+                $this->responseMessages[] = $annotation;
             } else {
                 Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
             }

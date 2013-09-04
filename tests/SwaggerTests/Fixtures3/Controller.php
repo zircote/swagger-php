@@ -41,7 +41,7 @@ class LogsController
      *   path="/logs/{id}",
      *   @SWG\Operation(
      *     @SWG\Partial("crud/read"),
-     *     description="View a log entry"
+     *     summary="View a log entry"
      *   )
      * )
      */

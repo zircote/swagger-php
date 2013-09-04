@@ -26,8 +26,8 @@ use Swagger\Annotations\Operations;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Parameters;
 use Swagger\Annotations\Api;
-use Swagger\Annotations\ErrorResponse;
-use Swagger\Annotations\ErrorResponses;
+use Swagger\Annotations\ResponseMessage;
+use Swagger\Annotations\ResponseMessages;
 use Swagger\Annotations\Resource;
 use Swagger\Annotations\AllowableValues;
 
@@ -43,7 +43,7 @@ use Swagger\Annotations\Items;
  *
  * @Resource(
  *  apiVersion="0.2",
- *  swaggerVersion="1.1",
+ *  swaggerVersion="1.2",
  *  resourcePath="/pet",
  *  basePath="http://petstore.swagger.wordnik.com/api"
  * )
@@ -75,10 +75,10 @@ class Pet
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET",
+     *       method="GET",
      *       summary="Find pet by ID",
      *       notes="Returns a pet based on ID",
-     *       responseClass="PetResponse",
+     *       type="PetResponse",
      *       nickname="getPetById",
      *       @parameters(
      *         @parameter(
@@ -90,12 +90,12 @@ class Pet
      *           dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @errorResponse(
+     *          @responseMessage(
      *            code="404",
      *            reason="Pet not found"
      *          )
@@ -115,9 +115,9 @@ class Pet
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST",
+     *       method="POST",
      *       summary="Add a new pet to the store",
-     *       responseClass="OtherPetResponse",
+     *       type="OtherPetResponse",
      *       nickname="addPet",
      *       @parameters(
      *         @parameter(
@@ -128,8 +128,8 @@ class Pet
      *           dataType="Pet"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="405",
      *            reason="Invalid input"
      *          )
@@ -149,10 +149,10 @@ class Pet
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET",
+     *       method="GET",
      *       summary="Finds Pets by status",
      *       notes="Multiple status values can be provided with comma seperated strings",
-     *       responseClass="List[Pet]",
+     *       type="List[Pet]",
      *       nickname="findPetsByStatus",
      *       @parameters(
      *         @parameter(
@@ -166,8 +166,8 @@ class Pet
      *           dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid status value"
      *          )
@@ -187,11 +187,10 @@ class Pet
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET",
+     *       method="GET",
      *       summary="Finds Pets by tags",
      *       notes="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
-     *       deprecated=true,
-     *       responseClass="List[Pet]",
+     *       type="List[Pet]",
      *       nickname="findPetsByTags",
      *       @parameters(
      *         @parameter(
@@ -203,8 +202,8 @@ class Pet
      *           dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid tag value"
      *          )
@@ -223,9 +222,9 @@ class Pet
      *   description="Operations about pets",
      *   @operations(
      *     @operation(
-     *       httpMethod="PUT",
+     *       method="PUT",
      *       summary="Update an existing pet",
-     *       responseClass="void",
+     *       type="void",
      *       nickname="updatePet",
      *       @parameters(
      *         @parameter(
@@ -236,16 +235,16 @@ class Pet
      *           dataType="Pet"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @errorResponse(
+     *          @responseMessage(
      *            code="404",
      *            reason="Pet not found"
      *          ),
-     *          @errorResponse(
+     *          @responseMessage(
      *            code="405",
      *            reason="Validation exception"
      *          )

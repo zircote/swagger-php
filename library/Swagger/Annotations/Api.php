@@ -39,14 +39,14 @@ class Api extends AbstractAnnotation
     public $path;
 
     /**
-     * @var string|Operation
-     */
-    public $operations = array();
-
-    /**
      * @var string
      */
     public $description;
+
+    /**
+     * @var string|Operation
+     */
+    public $operations = array();
 
     public function setNestedAnnotations($annotations)
     {

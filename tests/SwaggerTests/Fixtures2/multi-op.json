@@ -1,6 +1,6 @@
 {
     "apiVersion": "0.2",
-    "swaggerVersion": "1.1",
+    "swaggerVersion": "1.3",
     "basePath": "http:\/\/f2.zircote.com\/swagger-php\/api",
     "resourcePath": "\/facet",
     "apis": [
@@ -9,15 +9,15 @@
         "operations": [
             {
                 "nickname": "get_user",
-                "responseClass": "User",
+                "type": "User",
                 "summary": "Retrieve all users",
-                "httpMethod": "GET"
+                "method": "GET"
             },
             {
                 "nickname": "create_user",
-                "responseClass": "User",
+                "type": "User",
                 "summary": "Create user",
-                "httpMethod": "POST",
+                "method": "POST",
                 "parameters": [
                     {
                         "dataType": "string",

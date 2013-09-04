@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger\Annotations;
 
 /**
@@ -22,7 +23,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Annotations\Parameters;
-use Swagger\Annotations\ErrorResponses;
+use Swagger\Annotations\ResponseMessages;
 use Swagger\Logger;
 
 /**
@@ -36,55 +37,46 @@ use Swagger\Logger;
 class Operation extends AbstractAnnotation
 {
     /**
-     * The http verb of the operation
+     * This is the HTTP method required to invoke this operation--the allowable values are GET, POST, PUT, DELETE.
      * @var string
      */
-    public $httpMethod;
+    public $method;
 
     /**
-     * The summary of the operation, the text that is displayed on the bar-like container,
-     * it is advisable to be short otherwise will not fit.
+     * This is a short summary of what the operation does.
      * @var string (max 60 characters)
      */
     public $summary;
 
     /**
-     * The description is displayed once the bar-like container is clicked.
-     * @var string
-     */
-    public $description;
-
-    /**
+     * This is a required field provided by the server for the convenience of the UI and client code generator, and is used to provide a shebang in the swagger-ui.
      * @var string
      */
     public $nickname;
 
     /**
+     * This is what is returned from the method--in short, it's either void, a simple-type, a complex or a container return value.
      * @var string
      */
-    public $responseClass;
+    public $type;
 
     /**
-     * Parameters of the operation.
+     * These are the inputs to the operation.
      * @var array|Parameter
      */
     public $parameters = array();
 
     /**
-     * ErrorResponses of the operation.
-     * @var array|ErrorResponse
+     * An array describing the responseMessage cases returned by the operation.
+     * @var array|ResponseMessage
      */
-    public $errorResponses = array();
+    public $responseMessages = array();
 
     /**
+     * A longer text field to explain the behavior of the operation.
      * @var string
      */
     public $notes;
-
-    /**
-     * @var bool
-     */
-    public $deprecated;
 
     /**
      * @param array $values
@@ -104,11 +96,11 @@ class Operation extends AbstractAnnotation
                 foreach ($annotation->parameters as $parameter) {
                     $this->parameters[] = $parameter;
                 }
-            } elseif ($annotation instanceof ErrorResponse) {
-                $this->errorResponses[] = $annotation;
-            } elseif ($annotation instanceof ErrorResponses) {
-                foreach ($annotation->errorResponses as $errorResponse) {
-                    $this->errorResponses[] = $errorResponse;
+            } elseif ($annotation instanceof ResponseMessage) {
+                $this->responseMessages[] = $annotation;
+            } elseif ($annotation instanceof ResponseMessages) {
+                foreach ($annotation->responseMessages as $responseMessage) {
+                    $this->responseMessages[] = $responseMessage;
                 }
             } else {
                 Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
@@ -127,8 +119,8 @@ class Operation extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
-        if (count($this->errorResponses) === 0) {
-            unset($data['errorResponses']);
+        if (count($this->responseMessages) === 0) {
+            unset($data['responseMessages']);
         }
         if (count($this->parameters) === 0) {
             unset($data['parameters']);

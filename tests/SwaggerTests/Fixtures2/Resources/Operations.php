@@ -28,14 +28,14 @@ class Operations
      * @SWG\Operation(
      *       nickname="get_user",
      *       summary="Retrieve all users",
-     *       httpMethod="GET",
-     *       responseClass="User"
+     *       method="GET",
+     *       type="User"
      *     ),
      * @SWG\Operation(
      *       nickname="create_user",
      *       summary="Create user",
-     *       httpMethod="POST",
-     *       responseClass="User",
+     *       method="POST",
+     *       type="User",
      * @SWG\Parameter(name="email",dataType="string"),
      * @SWG\Parameter(name="phone",dataType="string")
      *     )

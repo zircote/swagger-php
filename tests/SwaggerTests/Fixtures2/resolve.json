@@ -1,6 +1,6 @@
 {
     "basePath": "http://example.com//api",
-    "swaggerVersion": "1.1",
+    "swaggerVersion": "1.2",
     "apiVersion": "0.2",
     "resourcePath": "/resolve",
     "apis": [
@@ -8,10 +8,10 @@
             "path": "/resolve",
             "operations": [
                 {
-                    "httpMethod": "GET",
+                    "method": "GET",
                     "summary": "Retrieve all dogs",
                     "nickname": "get_dogs",
-                    "responseClass": "List[Dog]"
+                    "type": "List[Dog]"
                 }
             ]
         }

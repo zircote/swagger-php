@@ -26,8 +26,8 @@ use Swagger\Annotations\Operations;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Parameters;
 use Swagger\Annotations\Api;
-use Swagger\Annotations\ErrorResponse;
-use Swagger\Annotations\ErrorResponses;
+use Swagger\Annotations\ResponseMessage;
+use Swagger\Annotations\ResponseMessages;
 use Swagger\Annotations\Resource;
 
 /**
@@ -36,7 +36,7 @@ use Swagger\Annotations\Resource;
  *
  * @Resource(
  *      apiVersion="0.2",
- *      swaggerVersion="1.1",
+ *      swaggerVersion="1.2",
  *      basePath="http://petstore.swagger.wordnik.com/api",
  *      resourcePath="/user"
  * )
@@ -49,8 +49,8 @@ class User
      *   path="/user.{format}/createWithArray", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST", summary="Creates list of users with given input array",
-     *       responseClass="void", nickname="createUsersWithArrayInput",
+     *       method="POST", summary="Creates list of users with given input array",
+     *       type="void", nickname="createUsersWithArrayInput",
      *       @parameters(
      *         @parameter(
      *           description="List of user object", paramType="body",
@@ -71,9 +71,9 @@ class User
      *   path="/user.{format}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST", summary="Create user",
+     *       method="POST", summary="Create user",
      *       notes="This can only be done by the logged in user.",
-     *       responseClass="void", nickname="createUser",
+     *       type="void", nickname="createUser",
      *       @parameters(
      *         @parameter(
      *           description="Created user object", paramType="body",
@@ -94,8 +94,8 @@ class User
      *   path="/user.{format}/createWithList", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST", summary="Creates list of users with given list input",
-     *       responseClass="void", nickname="createUsersWithListInput",
+     *       method="POST", summary="Creates list of users with given list input",
+     *       type="void", nickname="createUsersWithListInput",
      *       @parameters(
      *         @parameter(
      *           description="List of user object", paramType="body",
@@ -115,9 +115,9 @@ class User
      *   path="/user.{format}/{username}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="PUT", summary="Updated user",
+     *       method="PUT", summary="Updated user",
      *       notes="This can only be done by the logged in user.",
-     *       responseClass="void", nickname="updateUser",
+     *       type="void", nickname="updateUser",
      *       @parameters(
      *         @parameter(
      *           name="username", description="name that need to be updated",
@@ -127,9 +127,9 @@ class User
      *              required="true", allowMultiple=false, dataType="User"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(code="400", reason="Invalid username supplied"),
-     *          @errorResponse(code="404", reason="User not found")
+     *       @responseMessages(
+     *          @responseMessage(code="400", reason="Invalid username supplied"),
+     *          @responseMessage(code="404", reason="User not found")
      *       )
      *     )
      *   )
@@ -144,18 +144,18 @@ class User
      *   path="/user.{format}/{username}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="DELETE", summary="Delete user",
+     *       method="DELETE", summary="Delete user",
      *       notes="This can only be done by the logged in user.",
-     *       responseClass="void", nickname="deleteUser",
+     *       type="void", nickname="deleteUser",
      *       @parameters(
      *         @parameter(name="username",
      *           description="The name that needs to be deleted", paramType="path",
      *           required="true", allowMultiple=false, dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(code="400", reason="Invalid username supplied"),
-     *          @errorResponse(code="404", reason="User not found")
+     *       @responseMessages(
+     *          @responseMessage(code="400", reason="Invalid username supplied"),
+     *          @responseMessage(code="404", reason="User not found")
      *       )
      *     )
      *   )
@@ -170,17 +170,17 @@ class User
      *   path="/user.{format}/{username}", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET", summary="Get user by user name",
-     *       responseClass="User", nickname="getUserByName",
+     *       method="GET", summary="Get user by user name",
+     *       type="User", nickname="getUserByName",
      *       @parameters(
      *         @parameter(name="username",
      *           description="The name that needs to be fetched. Use user1 for testing.",
      *           paramType="path", required="true", allowMultiple=false, dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(code="400", reason="Invalid username supplied"),
-     *          @errorResponse(code="404", reason="User not found")
+     *       @responseMessages(
+     *          @responseMessage(code="400", reason="Invalid username supplied"),
+     *          @responseMessage(code="404", reason="User not found")
      *       )
      *     )
      *   )
@@ -195,8 +195,8 @@ class User
      *   path="/user.{format}/login", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET", summary="Logs user into the system",
-     *       responseClass="string", nickname="loginUser",
+     *       method="GET", summary="Logs user into the system",
+     *       type="string", nickname="loginUser",
      *       @parameters(
      *         @parameter(
      *           name="username", description="The user name for login", paramType="query",
@@ -207,8 +207,8 @@ class User
      *           required="true", allowMultiple=false, dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(code="400", reason="Invalid username and password combination")
+     *       @responseMessages(
+     *          @responseMessage(code="400", reason="Invalid username and password combination")
      *       )
      *     )
      *   )
@@ -223,8 +223,8 @@ class User
      *   path="/user.{format}/logout", description="Operations about user",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET", summary="Logs out current logged in user session",
-     *       responseClass="void", nickname="logoutUser"
+     *       method="GET", summary="Logs out current logged in user session",
+     *       type="void", nickname="logoutUser"
      *     )
      *   )
      * )

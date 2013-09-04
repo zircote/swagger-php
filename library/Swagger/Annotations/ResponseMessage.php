@@ -29,7 +29,7 @@ namespace Swagger\Annotations;
  * @Annotation
  *
  */
-class ErrorResponse extends AbstractAnnotation
+class ResponseMessage extends AbstractAnnotation
 {
     /**
      *  The error description

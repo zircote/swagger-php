@@ -26,15 +26,15 @@ use Swagger\Annotations\Operations;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Parameters;
 use Swagger\Annotations\Api;
-use Swagger\Annotations\ErrorResponse;
-use Swagger\Annotations\ErrorResponses;
+use Swagger\Annotations\ResponseMessage;
+use Swagger\Annotations\ResponseMessages;
 use Swagger\Annotations\Resource;
 
 /**
  * @package
  * @category
  * @subpackage
- * @Resource(apiVersion="0.2",swaggerVersion="1.1",
+ * @Resource(apiVersion="0.2",swaggerVersion="1.2",
  * basePath="http://petstore.swagger.wordnik.com/api",resourcePath="/store")
  */
 class Store
@@ -47,10 +47,10 @@ class Store
      *   description="Operations about store",
      *   @operations(
      *     @operation(
-     *       httpMethod="GET",
+     *       method="GET",
      *       summary="Find purchase order by ID",
      *       notes="For valid response try integer IDs with value <= 5. Anything above 5 or nonintegers will generate API errors",
-     *       responseClass="Order",
+     *       type="Order",
      *       nickname="getOrderById",
      *       @parameters(
      *         @parameter(
@@ -62,12 +62,12 @@ class Store
      *           dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @errorResponse(
+     *          @responseMessage(
      *            code="404",
      *            reason="Order not found"
      *          )
@@ -87,10 +87,10 @@ class Store
      *   description="Operations about store",
      *   @operations(
      *     @operation(
-     *       httpMethod="DELETE",
+     *       method="DELETE",
      *       summary="Delete purchase order by ID",
      *       notes="For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
-     *       responseClass="void",
+     *       type="void",
      *       nickname="deleteOrder",
      *       @parameters(
      *         @parameter(
@@ -102,12 +102,12 @@ class Store
      *           dataType="string"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid ID supplied"
      *          ),
-     *          @errorResponse(
+     *          @responseMessage(
      *            code="404",
      *            reason="Order not found"
      *          )
@@ -127,9 +127,9 @@ class Store
      *   description="Operations about store",
      *   @operations(
      *     @operation(
-     *       httpMethod="POST",
+     *       method="POST",
      *       summary="Place an order for a pet",
-     *       responseClass="void",
+     *       type="void",
      *       nickname="placeOrder",
      *       @parameters(
      *         @parameter(
@@ -140,8 +140,8 @@ class Store
      *           dataType="Order"
      *         )
      *       ),
-     *       @errorResponses(
-     *          @errorResponse(
+     *       @responseMessages(
+     *          @responseMessage(
      *            code="400",
      *            reason="Invalid order"
      *          )

@@ -5,8 +5,8 @@ use Swagger\Annotations as SWG;
 /**
  * @SWG\Operation(
  *   partial="crud/create",
- *   httpMethod="POST",
- *   description="Create or add new entries",
+ *   method="POST",
+ *   summary="Create or add new entries",
  *   nickname="partial"
  * )
  */
@@ -14,8 +14,8 @@ use Swagger\Annotations as SWG;
 /**
  * @SWG\Operation(
  *   partial="crud/read",
- *   httpMethod="GET",
- *   description="Read, retrieve, search, or view existing entries",
+ *   method="GET",
+ *   summary="Read, retrieve, search, or view existing entries",
  *   nickname="partial",
  *   @SWG\Partial("param_id")
  * )

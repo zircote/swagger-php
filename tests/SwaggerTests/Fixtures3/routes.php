@@ -7,7 +7,7 @@ use Swagger\Annotations as SWG;
  *      @SWG\Api(
  *          path="/",
  *          @SWG\Operation(
- *              httpMethod="GET",
+ *              method="GET",
  *              nickname="logidx",
  *              @SWG\Partial("logs.index")
  *          )

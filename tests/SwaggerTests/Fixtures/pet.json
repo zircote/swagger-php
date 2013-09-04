@@ -1,6 +1,6 @@
 {
     "apiVersion":"0.2",
-    "swaggerVersion":"1.1",
+    "swaggerVersion":"1.2",
     "basePath":"http://petstore.swagger.wordnik.com/api",
     "resourcePath":"/pet",
     "apis":[
@@ -9,10 +9,10 @@
             "description":"Operations about pets",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Find pet by ID",
                     "notes":"Returns a pet based on ID",
-                    "responseClass":"PetResponse",
+                    "type":"PetResponse",
                     "nickname":"getPetById",
                     "parameters":[
                         {
@@ -24,7 +24,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid ID supplied"
@@ -42,9 +42,9 @@
             "description":"Operations about pets",
             "operations":[
                 {
-                    "httpMethod":"POST",
+                    "method":"POST",
                     "summary":"Add a new pet to the store",
-                    "responseClass":"OtherPetResponse",
+                    "type":"OtherPetResponse",
                     "nickname":"addPet",
                     "parameters":[
                         {
@@ -55,7 +55,7 @@
                             "dataType":"Pet"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":405,
                             "reason":"Invalid input"
@@ -63,9 +63,9 @@
                     ]
                 },
                 {
-                    "httpMethod":"PUT",
+                    "method":"PUT",
                     "summary":"Update an existing pet",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"updatePet",
                     "parameters":[
                         {
@@ -76,7 +76,7 @@
                             "dataType":"Pet"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid ID supplied"
@@ -98,10 +98,10 @@
             "description":"Operations about pets",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Finds Pets by status",
                     "notes":"Multiple status values can be provided with comma seperated strings",
-                    "responseClass":"List[Pet]",
+                    "type":"List[Pet]",
                     "nickname":"findPetsByStatus",
                     "parameters":[
                         {
@@ -118,7 +118,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid status value"
@@ -132,11 +132,10 @@
             "description":"Operations about pets",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Finds Pets by tags",
                     "notes":"Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
-                    "deprecated":true,
-                    "responseClass":"List[Pet]",
+                    "type":"List[Pet]",
                     "nickname":"findPetsByTags",
                     "parameters":[
                         {
@@ -148,7 +147,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid tag value"

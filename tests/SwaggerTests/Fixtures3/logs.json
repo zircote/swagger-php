@@ -5,7 +5,7 @@
             "path": "/",
             "operations": [
                 {
-                    "httpMethod": "GET",
+                    "method": "GET",
                     "summary": "This function does some magic xyz",
                     "nickname": "logidx"
                 }
@@ -15,8 +15,8 @@
             "path": "/logs/add",
             "operations": [
                 {
-                    "httpMethod": "POST",
-                    "description": "Create or add new entries",
+                    "method": "POST",
+                    "summary": "Create or add new entries",
                     "nickname": "partial"
                 }
             ]
@@ -25,8 +25,8 @@
             "path": "/logs/{id}",
             "operations": [
                 {
-                    "httpMethod": "GET",
-                    "description": "View a log entry",
+                    "method": "GET",
+                    "summary": "View a log entry",
                     "nickname": "read",
                     "parameters": [
                         {

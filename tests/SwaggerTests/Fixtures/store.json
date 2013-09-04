@@ -1,6 +1,6 @@
 {
     "apiVersion":"0.2",
-    "swaggerVersion":"1.1",
+    "swaggerVersion":"1.2",
     "basePath":"http://petstore.swagger.wordnik.com/api",
     "resourcePath":"/store",
     "apis":[
@@ -9,10 +9,10 @@
             "description":"Operations about store",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Find purchase order by ID",
                     "notes":"For valid response try integer IDs with value <= 5. Anything above 5 or nonintegers will generate API errors",
-                    "responseClass":"Order",
+                    "type":"Order",
                     "nickname":"getOrderById",
                     "parameters":[
                         {
@@ -24,7 +24,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid ID supplied"
@@ -36,10 +36,10 @@
                     ]
                 },
                 {
-                    "httpMethod":"DELETE",
+                    "method":"DELETE",
                     "summary":"Delete purchase order by ID",
                     "notes":"For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"deleteOrder",
                     "parameters":[
                         {
@@ -51,7 +51,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid ID supplied"
@@ -69,9 +69,9 @@
             "description":"Operations about store",
             "operations":[
                 {
-                    "httpMethod":"POST",
+                    "method":"POST",
                     "summary":"Place an order for a pet",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"placeOrder",
                     "parameters":[
                         {
@@ -82,7 +82,7 @@
                             "dataType":"Order"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid order"

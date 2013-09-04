@@ -1,6 +1,6 @@
 {
     "apiVersion":"0.2",
-    "swaggerVersion":"1.1",
+    "swaggerVersion":"1.2",
     "basePath":"http://petstore.swagger.wordnik.com/api",
     "resourcePath":"/user",
     "apis":[
@@ -9,9 +9,9 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"POST",
+                    "method":"POST",
                     "summary":"Creates list of users with given input array",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"createUsersWithArrayInput",
                     "parameters":[
                         {
@@ -30,10 +30,10 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"POST",
+                    "method":"POST",
                     "summary":"Create user",
                     "notes":"This can only be done by the logged in user.",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"createUser",
                     "parameters":[
                         {
@@ -52,9 +52,9 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"POST",
+                    "method":"POST",
                     "summary":"Creates list of users with given list input",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"createUsersWithListInput",
                     "parameters":[
                         {
@@ -73,10 +73,10 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"PUT",
+                    "method":"PUT",
                     "summary":"Updated user",
                     "notes":"This can only be done by the logged in user.",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"updateUser",
                     "parameters":[
                         {
@@ -95,7 +95,7 @@
                             "dataType":"User"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid username supplied"
@@ -107,10 +107,10 @@
                     ]
                 },
                 {
-                    "httpMethod":"DELETE",
+                    "method":"DELETE",
                     "summary":"Delete user",
                     "notes":"This can only be done by the logged in user.",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"deleteUser",
                     "parameters":[
                         {
@@ -122,7 +122,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid username supplied"
@@ -134,9 +134,9 @@
                     ]
                 },
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Get user by user name",
-                    "responseClass":"User",
+                    "type":"User",
                     "nickname":"getUserByName",
                     "parameters":[
                         {
@@ -148,7 +148,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid username supplied"
@@ -166,9 +166,9 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Logs user into the system",
-                    "responseClass":"string",
+                    "type":"string",
                     "nickname":"loginUser",
                     "parameters":[
                         {
@@ -188,7 +188,7 @@
                             "dataType":"string"
                         }
                     ],
-                    "errorResponses":[
+                    "responseMessages":[
                         {
                             "code":400,
                             "reason":"Invalid username and password combination"
@@ -202,9 +202,9 @@
             "description":"Operations about user",
             "operations":[
                 {
-                    "httpMethod":"GET",
+                    "method":"GET",
                     "summary":"Logs out current logged in user session",
-                    "responseClass":"void",
+                    "type":"void",
                     "nickname":"logoutUser"
                 }
             ]

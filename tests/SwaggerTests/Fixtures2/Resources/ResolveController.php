@@ -15,7 +15,7 @@ use Swagger\Annotations as SWG;
  *
  * @SWG\Resource(
  *  apiVersion="0.2",
- *  swaggerVersion="1.1",
+ *  swaggerVersion="1.2",
  *  basePath="http://example.com//api"
  * )
  *
@@ -29,8 +29,8 @@ class ResolveController
      *   path="/resolve",
      *   @SWG\Operation(
      *     summary="Retrieve all dogs",
-     *     httpMethod="GET",
-     *     responseClass="List[Dog]"
+     *     method="GET",
+     *     type="List[Dog]"
      *   )
      * )
 	 *
