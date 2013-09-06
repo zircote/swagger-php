@@ -92,6 +92,11 @@ class Swagger implements \Serializable
      * @var string
      */
     protected $cacheKey;
+    
+    /**
+     * @var int
+     */
+    protected $cacheLifeTime = 3600;
 
     /**
      * @param null $path
@@ -198,7 +203,7 @@ class Swagger implements \Serializable
 
         ksort($this->registry, SORT_ASC);
         if ($this->getCache()) {
-            $this->getCache()->save($this->cacheKey, $this->serialize());
+            $this->getCache()->save($this->cacheKey, $this->serialize(),$this->getCacheLifeTime());
         }
         return $this;
     }
@@ -637,6 +642,17 @@ class Swagger implements \Serializable
         $this->registry = $registry;
         return $this;
     }
+    
+    /**
+     *
+     * @param int $lifetime
+     * @return Swagger
+     */
+    public function setCacheLifeTime($lifetime)
+    {
+        $this->cacheLifeTime = $lifetime;
+        return $this;
+    }
 
     /**
      * @param $path
@@ -655,6 +671,14 @@ class Swagger implements \Serializable
     public function getPath()
     {
         return $this->path;
+    }
+    
+    /**
+     * @return null|string
+     */
+    public function getCacheLifeTime()
+    {
+        return $this->cacheLifeTime;
     }
 
     /**
@@ -732,7 +756,7 @@ class Swagger implements \Serializable
     public function setCache(\Doctrine\Common\Cache\CacheProvider $cache)
     {
         $this->cache = $cache;
-        $this->cache->save($this->cacheKey, $this->serialize());
+        $this->cache->save($this->cacheKey, $this->serialize(), $this->getCacheLifeTime);
         return $this;
     }
 
