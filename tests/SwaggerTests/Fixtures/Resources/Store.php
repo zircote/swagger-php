@@ -58,8 +58,7 @@ class Store
      *           description="ID of pet that needs to be fetched",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple=false,
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -98,8 +97,7 @@ class Store
      *           description="ID of the order that needs to be deleted",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple=false,
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -136,8 +134,7 @@ class Store
      *           description="order placed for purchasing the pet",
      *           paramType="body",
      *           required="true",
-     *           allowMultiple=false,
-     *           dataType="Order"
+     *           type="Order"
      *         )
      *       ),
      *       @responseMessages(

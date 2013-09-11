@@ -68,6 +68,7 @@ class AllowableValues extends AbstractAnnotation
      */
     public function __construct($values = array())
     {
+        throw new AnnotationException('@SWG\AllowableValues is deprecated in '.AbstractAnnotation::$context);
         parent::__construct($values);
         switch (strtoupper($this->valueType)) {
             case self::TYPE_LIST:

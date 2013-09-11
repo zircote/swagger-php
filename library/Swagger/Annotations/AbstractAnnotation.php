@@ -146,34 +146,6 @@ abstract class AbstractAnnotation
         return true;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        $members = array_filter((array) $this, array($this, 'arrayFilter'));
-        $result = array();
-        foreach ($members as $k => $m) {
-            if ($m instanceof AbstractAnnotation) {
-                $members[$k] = $m->toArray();
-            }
-        }
-        if (isset($members['value'])) {
-            foreach ($members['value'] as $k => $m) {
-                if ($m instanceof AbstractAnnotation) {
-                    $result[] = $m->toArray();
-                }
-            }
-            if ($members['value'] instanceof AbstractAnnotation) {
-                $result[] = $members['value']->toArray();
-            }
-        }
-        if (isset($this->reflector) && !$this->reflector instanceof \ReflectionProperty) {
-            unset($this->reflecor);
-        }
-        return $members;
-    }
-
     public function jsonSerialize()
     {
         $data = get_object_vars($this);
@@ -187,7 +159,7 @@ abstract class AbstractAnnotation
     }
 
     /**
-     * @param $json
+     * @param string $json
      * @throws \Doctrine\Common\Annotations\AnnotationException
      *
      * @return mixed
@@ -195,11 +167,12 @@ abstract class AbstractAnnotation
     public function decode($json)
     {
         $json = preg_replace(self::REGEX, self::REPLACE, $json);
-        $json = json_decode($json);
-        if ($error = json_last_error()) {
+        $data = json_decode($json);
+        $error = json_last_error();
+        if ($error) {
             throw new AnnotationException(sprintf('json decode error [%s]', $error));
         }
-        return $json;
+        return $data;
     }
 
     /**

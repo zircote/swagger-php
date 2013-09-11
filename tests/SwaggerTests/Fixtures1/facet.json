@@ -16,8 +16,8 @@
                     "parameters":[
                         {
                             "description":"ID of facet that needs to be fetched",
-                            "allowMultiple":false,
-                            "dataType":"string",
+                            
+                            "type":"string",
                             "name":"facetId",
                             "paramType":"path",
                             "required":true
@@ -42,8 +42,8 @@
                     "parameters":[
                         {
                             "description":"ID of facet that needs to be fetched",
-                            "allowMultiple":false,
-                            "dataType":"string",
+                            
+                            "type":"string",
                             "name":"facetId",
                             "paramType":"path",
                             "required":true
@@ -69,7 +69,7 @@
             "id":"FacetResult",
             "properties":{
                 "facetSets":{
-                    "type":"Array",
+                    "type":"array",
                     "items":{
                         "$ref":"FacetSet"
                     }
@@ -80,7 +80,7 @@
             "id":"FacetSet",
             "properties":{
                 "facets":{
-                    "type":"Array",
+                    "type":"array",
                     "items":{
                         "$ref":"Facet"
                     }

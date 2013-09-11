@@ -28,7 +28,6 @@ use Swagger\Annotations as SWG;
  *   description="The unique ID",
  *   paramType="path",
  *   required="true",
- *   allowMultiple="false",
- *   dataType="string"
+ *   type="string"
  * )
  */

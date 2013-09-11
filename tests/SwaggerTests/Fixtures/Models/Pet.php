@@ -22,7 +22,6 @@ namespace SwaggerTests\Fixtures\Models;
  * @subpackage
  */
 use Swagger\Annotations\Property;
-use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
 use Swagger\Annotations\Items;
 
@@ -38,7 +37,7 @@ class Pet
     /**
      * @var array<Tags>
      *
-     * @Property(name="tags",type="Array", items="$ref:Tag")
+     * @Property(name="tags",type="array", items="$ref:Tag")
      */
     protected $tags = array();
 
@@ -63,10 +62,7 @@ class Pet
      *
      * @Property(
      *      name="status",type="string",
-     *      @allowableValues(
-     *          valueType="LIST",
-     *          values="['available', 'pending', 'sold']"
-     *      ),
+     *      enum="['available', 'pending', 'sold']",
      *      description="pet status in the store")
      */
     protected $status;
@@ -81,7 +77,7 @@ class Pet
     /**
      * @var array<string>
      *
-     * @Property(name="photoUrls",type="Array", @items(type="string"))
+     * @Property(name="photoUrls",type="array", @items(type="string"))
      */
     protected $photoUrls = array();
 }

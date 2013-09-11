@@ -5,12 +5,9 @@
             "type":"long"
         },
         "age":{
-            "type":"int",
-            "allowableValues":{
-                "valueType":"RANGE",
-                "min":18,
-                "max":60
-            }
+            "type":"integer",
+            "minimum":18,
+            "maximum":60
         }
     }
 }

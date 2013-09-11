@@ -28,13 +28,13 @@
                     "type": "Dog"
                 },
                 "tags": {
-                    "type": "Array",
+                    "type": "array",
                     "items": {
                         "$ref": "Tag"
                     }
                 },
                 "id": {
-                    "type": "int"
+                    "type": "integer"
                 },
                 "category": {
                     "type": "Category"
@@ -42,20 +42,17 @@
                 "status": {
                     "type": "string",
                     "description": "pet status in the store",
-                    "allowableValues": {
-                        "valueType": "LIST",
-                        "values": [
-                            "available",
-                            "pending",
-                            "sold"
-                        ]
-                    }
+                    "enum":[
+                        "available",
+                        "pending",
+                        "sold"
+                    ]
                 },
                 "name": {
                     "type": "string"
                 },
                 "photoUrls": {
-                    "type": "Array",
+                    "type": "array",
                     "items": {
                         "type": "string"
                     }

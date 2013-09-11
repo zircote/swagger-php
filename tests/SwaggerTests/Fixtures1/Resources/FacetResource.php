@@ -2,7 +2,7 @@
 namespace SwaggerTests\Fixtures1\Resources;
 
 /**
- * 
+ *
  */
 use Swagger\Annotations as SWG;
 /**
@@ -37,8 +37,7 @@ class FacetResource
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @SWG\responseMessages(
@@ -75,8 +74,7 @@ class FacetResource
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @SWG\responseMessages(

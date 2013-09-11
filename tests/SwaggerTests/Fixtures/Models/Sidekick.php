@@ -22,7 +22,6 @@ namespace SwaggerTests\Fixtures\Models;
  * @subpackage
  */
 use Swagger\Annotations\Property;
-use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
 
 /**
@@ -41,7 +40,7 @@ class Sidekick
     protected $id;
     /**
      * @var int
-     * @property(name="age", type="int", @allowableValues(valueType="RANGE", min=18,max=60))
+     * @property(name="age", type="integer", minimum=18,maximum=60))
      */
     protected $age;
 }

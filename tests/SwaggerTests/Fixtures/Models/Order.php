@@ -22,7 +22,6 @@ namespace SwaggerTests\Fixtures\Models;
  * @subpackage
  */
 use Swagger\Annotations\Property;
-use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
 
 /**
@@ -49,9 +48,7 @@ class Order
     /**
      * @var string
      * @Property(name="status",type="string",
-     *      @allowableValues(valueType="LIST",
-     *          values="['placed','approved','delivered']"
-     *      ),
+     *      enum="['placed','approved','delivered']",
      *      description="Order Status"
      *  )
      */
@@ -59,13 +56,13 @@ class Order
 
     /**
      * @var int
-     * @Property(name="quantity",type="int")
+     * @Property(name="quantity",type="integer")
      */
     protected $quantity;
 
     /**
      * @var string
-     * @Property(name="shipDate",type="Date")
+     * @Property(name="shipDate",type="date")
      */
     protected $shipDate;
 }

@@ -145,7 +145,7 @@ class Swagger
                         $models[] = $model;
                     }
                     foreach ($operation->parameters as $parameter) {
-                        $model = $this->resolveModel($parameter->dataType);
+                        $model = $this->resolveModel($parameter->type);
                         if ($model) {
                             $models[] = $model;
                         }
@@ -390,15 +390,6 @@ class Swagger
     }
 
     /**
-     * @param string $type
-     * @return bool
-     */
-    public static function isContainer($type)
-    {
-        return in_array(strtolower($type), array('array', 'set', 'list'));
-    }
-
-    /**
      * Log a notice when the type doesn't exactly match the Swagger spec.
      * @link https://github.com/wordnik/swagger-core/wiki/Datatypes
      *
@@ -408,19 +399,23 @@ class Swagger
     public static function checkDataType($type)
     {
         $map = array(
-            'array' => 'Array',
-            'byte' => 'byte',
-            'boolean' => 'boolean',
-            'bool' => 'boolean',
-            'int' => 'int',
-            'integer' => 'int',
-            'long' => 'long',
+            // primitive types
+            'integer' => 'integer',
+            'long' =>  'long',
             'float' => 'float',
             'double' => 'double',
             'string' => 'string',
-            'date' => 'Date',
-            'list' => 'List',
-            'set' => 'Set',
+            'byte' => 'byte',
+            'boolean' => 'boolean',
+            'date' => 'date',
+            'datetime' => 'dateTime',
+            'array' => 'array',
+            // complex types (from http://json-schema.org)
+            'object' => 'object',
+            'number' => 'number',
+            // common mistakes
+            'int' => 'integer',
+            'bool' => 'boolean'
         );
         if (array_key_exists(strtolower($type), $map) && array_search($type, $map) === false) {
             // Don't correct the type, this creates the incentive to use consistent naming in the doc comments.

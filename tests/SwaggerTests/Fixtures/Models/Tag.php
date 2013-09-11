@@ -22,7 +22,6 @@ namespace SwaggerTests\Fixtures\Models;
  * @subpackage
  */
 use Swagger\Annotations\Property;
-use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
 
 /**

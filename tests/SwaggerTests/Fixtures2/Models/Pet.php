@@ -37,16 +37,16 @@ class Pet
     /**
      * @var array<Tags>
      *
-     * @SWG\Property(type="Array", items="$ref:Tag")
+     * @SWG\Property(type="array", items="$ref:Tag")
 	 * Property() will use the property name "tags" as name.
      */
     protected $tags = array();
 
     /**
-     * @var integer
+     * @var int
      *
      * @SWG\Property()
-	 * Property() will use the property name "id" as name and detect the "@var integer" and use "int" as type.
+	 * Property() will use the property name "id" as name and detect the "@var int" and use "integer" as type.
      */
     protected $id;
 
@@ -63,10 +63,7 @@ class Pet
      * @var string
      *
      * @SWG\Property(
-     *      @SWG\AllowableValues(
-     *          valueType="LIST",
-     *          values="['available', 'pending', 'sold']"
-     *      ),
+     *      enum="['available', 'pending', 'sold']",
      *      description="pet status in the store")
      */
     protected $status;
@@ -81,7 +78,7 @@ class Pet
     /**
      * @var array<string>
      *
-     * @SWG\Property(type="Array", @SWG\items(type="string"))
+     * @SWG\Property(type="array", @SWG\items(type="string"))
      */
     protected $photoUrls = array();
 }

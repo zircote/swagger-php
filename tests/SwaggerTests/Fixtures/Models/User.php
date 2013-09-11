@@ -22,7 +22,6 @@ namespace SwaggerTests\Fixtures\Models;
  * @subpackage
  */
 use Swagger\Annotations\Property;
-use Swagger\Annotations\AllowableValues;
 use Swagger\Annotations\Model;
 
 /**
@@ -66,11 +65,8 @@ class User
 
     /**
      * @var int
-     * @Property(name="userStatus",type="int",
-     *      @allowableValues(
-     *          valueType="LIST",
-     *          values="{'1': 'registered', '2': 'active', '3': 'closed'}"
-     *      ),
+     * @Property(name="userStatus",type="integer",
+     *      enum="{'1': 'registered', '2': 'active', '3': 'closed'}",
      *      description="User Status"
      * )
      */

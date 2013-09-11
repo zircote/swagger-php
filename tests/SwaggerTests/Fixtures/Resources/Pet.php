@@ -29,7 +29,6 @@ use Swagger\Annotations\Api;
 use Swagger\Annotations\ResponseMessage;
 use Swagger\Annotations\ResponseMessages;
 use Swagger\Annotations\Resource;
-use Swagger\Annotations\AllowableValues;
 
 use Swagger\Annotations\Properties;
 use Swagger\Annotations\Property;
@@ -51,16 +50,16 @@ use Swagger\Annotations\Items;
  * @Model(
  *   id="PetResponse",
  *   @Properties(
- *     @Property(name="status",type="int"),
+ *     @Property(name="status",type="integer"),
  *     @Property(name="statusName",type="string"),
- *     @Property(name="tags",type="Array", items="$ref:Tag")
+ *     @Property(name="tags",type="array", items="$ref:Tag")
  *   )
  * )
  *
  * @Model(
  *   id="OtherPetResponse",
  *   @Properties(
- *     @Property(name="status",type="int"),
+ *     @Property(name="status",type="integer"),
  *     @Property(name="statusName",type="string"),
  *     @Property(name="pet",type="Pet")
  *   )
@@ -86,8 +85,7 @@ class Pet
      *           description="ID of pet that needs to be fetched",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -124,8 +122,7 @@ class Pet
      *           description="Pet object that needs to be added to the store",
      *           paramType="body",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="Pet"
+     *           type="Pet"
      *         )
      *       ),
      *       @responseMessages(
@@ -160,10 +157,9 @@ class Pet
      *           description="Status values that need to be considered for filter",
      *           paramType="query",
      *           defaultValue="available",
-     *           @allowableValues(valueType="LIST", values="['available', 'pending', 'sold']"),
+     *           enum="['available', 'pending', 'sold']",
      *           required="true",
-     *           allowMultiple=true,
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -198,8 +194,7 @@ class Pet
      *           description="Tags to filter by",
      *           paramType="query",
      *           required=true,
-     *           allowMultiple=true,
-     *           dataType="string"
+     *           type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -231,8 +226,7 @@ class Pet
      *           description="Pet object that needs to be updated in the store",
      *           paramType="body",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="Pet"
+     *           type="Pet"
      *         )
      *       ),
      *       @responseMessages(

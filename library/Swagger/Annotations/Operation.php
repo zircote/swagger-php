@@ -113,6 +113,11 @@ class Operation extends AbstractAnnotation
         if (empty($this->nickname)) {
             Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
         }
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->validate() == false) {
+                return false;
+            }
+        }
         return true;
     }
 

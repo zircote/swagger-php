@@ -1,3 +1,13 @@
+
+Changelog
+----------
+
+0.8
+
+* Upgraded to Swagger 1.2 Specification
+  * No longer supports the 1.1 or older swagger spec.
+* Compatible with swagger-ui 2.0
+
 0.7
 
 * Simplified CLI interface [#91](https://github.com/zircote/swagger-php/pull/91)

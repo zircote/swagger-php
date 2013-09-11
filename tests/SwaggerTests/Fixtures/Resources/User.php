@@ -54,7 +54,7 @@ class User
      *       @parameters(
      *         @parameter(
      *           description="List of user object", paramType="body",
-     *           required="true", allowMultiple=false, dataType="Array[User]"
+     *           required="true", type="Array[User]"
      *         )
      *       )
      *     )
@@ -77,7 +77,7 @@ class User
      *       @parameters(
      *         @parameter(
      *           description="Created user object", paramType="body",
-     *           required="true", allowMultiple=false, dataType="User"
+     *           required="true", type="User"
      *         )
      *       )
      *     )
@@ -99,7 +99,7 @@ class User
      *       @parameters(
      *         @parameter(
      *           description="List of user object", paramType="body",
-     *           required="true", allowMultiple=false, dataType="List[User]"
+     *           required="true", type="List[User]"
      *         )
      *       )
      *     )
@@ -121,10 +121,10 @@ class User
      *       @parameters(
      *         @parameter(
      *           name="username", description="name that need to be updated",
-     *           required="true", allowMultiple=false, dataType="string", paramType="path"
+     *           required="true", type="string", paramType="path"
      *         ), @parameter(
      *              description="Updated user object", paramType="body",
-     *              required="true", allowMultiple=false, dataType="User"
+     *              required="true", type="User"
      *         )
      *       ),
      *       @responseMessages(
@@ -150,7 +150,7 @@ class User
      *       @parameters(
      *         @parameter(name="username",
      *           description="The name that needs to be deleted", paramType="path",
-     *           required="true", allowMultiple=false, dataType="string"
+     *           required="true", type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -175,7 +175,7 @@ class User
      *       @parameters(
      *         @parameter(name="username",
      *           description="The name that needs to be fetched. Use user1 for testing.",
-     *           paramType="path", required="true", allowMultiple=false, dataType="string"
+     *           paramType="path", required="true", type="string"
      *         )
      *       ),
      *       @responseMessages(
@@ -200,11 +200,11 @@ class User
      *       @parameters(
      *         @parameter(
      *           name="username", description="The user name for login", paramType="query",
-     *           required="true", allowMultiple=false, dataType="string"
+     *           required="true", type="string"
      *         ),
      *         @parameter(
      *           name="password", description="The password for login in clear text", paramType="query",
-     *           required="true", allowMultiple=false, dataType="string"
+     *           required="true", type="string"
      *         )
      *       ),
      *       @responseMessages(

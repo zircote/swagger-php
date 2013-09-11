@@ -360,21 +360,21 @@ class Parser
                     if (preg_match('/@var\s+(\w+)/i', $docComment, $matches)) {
                         $type = (string) array_pop($matches);
                         $map = array(
-                            'array' => 'Array',
+                            'array' => 'array',
                             'byte' => 'byte',
                             'boolean' => 'boolean',
                             'bool' => 'boolean',
-                            'int' => 'int',
-                            'integer' => 'int',
+                            'int' => 'integer',
+                            'integer' => 'integer',
                             'long' => 'long',
                             'float' => 'float',
                             'double' => 'double',
                             'string' => 'string',
-                            'date' => 'Date',
-                            'datetime' => 'Date',
-                            '\\datetime' => 'Date',
-                            'list' => 'List',
-                            'set' => 'Set',
+                            'date' => 'date',
+                            'datetime' => 'dateTime',
+                            '\\datetime' => 'dateTime',
+                            'number' => 'number',
+                            'object' => 'object'
                         );
                         if (array_key_exists(strtolower($type), $map)) {
                             $type = $map[strtolower($type)];

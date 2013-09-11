@@ -32,8 +32,7 @@
                         {
                             "name": "id",
                             "description": "The unique ID",
-                            "allowMultiple": false,
-                            "dataType": "string",
+                            "type": "string",
                             "paramType": "path",
                             "required": true
                         }

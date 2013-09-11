@@ -36,8 +36,8 @@ class Operations
      *       summary="Create user",
      *       method="POST",
      *       type="User",
-     * @SWG\Parameter(name="email",dataType="string"),
-     * @SWG\Parameter(name="phone",dataType="string")
+     * @SWG\Parameter(name="email",type="string"),
+     * @SWG\Parameter(name="phone",type="string")
      *     )
      *   )
      * )

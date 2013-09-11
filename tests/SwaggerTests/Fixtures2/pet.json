@@ -5,19 +5,16 @@
 			"items":{
 				"$ref":"Tag"
 			},
-			"type":"Array"
+			"type":"array"
 		},
 		"id":{
-			"type":"int"
+			"type":"integer"
 		},
 		"category":{
 			"type":"Category"
 		},
 		"status":{
-			"allowableValues":{
-				"valueType":"LIST",
-				"values":["available", "pending", "sold"]
-			},
+			"enum":["available", "pending", "sold"],
 			"description":"pet status in the store",
 			"type":"string"
 		},
@@ -28,7 +25,7 @@
 			"items":{
 				"type":"string"
 			},
-			"type":"Array"
+			"type":"array"
 		}
 	}
 }
