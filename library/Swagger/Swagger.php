@@ -296,7 +296,7 @@ class Swagger implements \Serializable
      */
     protected function resolveModels($input)
     {
-        $models = array();
+        $models = $input;
         foreach ($input as $name) {
             $type = false;
             foreach ($this->models[$name]->properties as $property) {
@@ -308,7 +308,7 @@ class Swagger implements \Serializable
                     $type = $property->type;
                 }
                 $model = $this->resolveModel($type);
-                if ($model !== $name && $model && !in_array($type, $models)) {
+                if ($model !== $name && $model && !in_array($model, $models)) {
                     array_push($models, $model);
                     $models = array_merge($models, $this->resolveModels($models));
                 }
