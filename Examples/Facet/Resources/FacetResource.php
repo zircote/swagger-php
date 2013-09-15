@@ -44,11 +44,11 @@ class FacetResource
      *       @SWG\ResponseMessages(
      *          @SWG\ResponseMessage(
      *            code=400,
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @SWG\ResponseMessage(
      *            code=404,
-     *            reason="facet not found"
+     *            message="facet not found"
      *          )
      *       )
      *     )
@@ -81,11 +81,11 @@ class FacetResource
      *       @SWG\ResponseMessages(
      *          @SWG\ResponseMessage(
      *            code=400,
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @SWG\ResponseMessage(
      *            code=404,
-     *            reason="facet not found"
+     *            message="facet not found"
      *          )
      *       )
      *     )

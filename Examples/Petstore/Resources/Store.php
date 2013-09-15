@@ -64,11 +64,11 @@ class Store
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @responseMessage(
      *            code="404",
-     *            reason="Order not found"
+     *            message="Order not found"
      *          )
      *       )
      *     )
@@ -103,11 +103,11 @@ class Store
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @responseMessage(
      *            code="404",
-     *            reason="Order not found"
+     *            message="Order not found"
      *          )
      *       )
      *     )
@@ -140,7 +140,7 @@ class Store
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid order"
+     *            message="Invalid order"
      *          )
      *       )
      *     )

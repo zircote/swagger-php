@@ -128,8 +128,8 @@ class User
      *         )
      *       ),
      *       @responseMessages(
-     *          @responseMessage(code="400", reason="Invalid username supplied"),
-     *          @responseMessage(code="404", reason="User not found")
+     *          @responseMessage(code="400", message="Invalid username supplied"),
+     *          @responseMessage(code="404", message="User not found")
      *       )
      *     )
      *   )
@@ -154,8 +154,8 @@ class User
      *         )
      *       ),
      *       @responseMessages(
-     *          @responseMessage(code="400", reason="Invalid username supplied"),
-     *          @responseMessage(code="404", reason="User not found")
+     *          @responseMessage(code="400", message="Invalid username supplied"),
+     *          @responseMessage(code="404", message="User not found")
      *       )
      *     )
      *   )
@@ -179,8 +179,8 @@ class User
      *         )
      *       ),
      *       @responseMessages(
-     *          @responseMessage(code="400", reason="Invalid username supplied"),
-     *          @responseMessage(code="404", reason="User not found")
+     *          @responseMessage(code="400", message="Invalid username supplied"),
+     *          @responseMessage(code="404", message="User not found")
      *       )
      *     )
      *   )
@@ -208,7 +208,7 @@ class User
      *         )
      *       ),
      *       @responseMessages(
-     *          @responseMessage(code="400", reason="Invalid username and password combination")
+     *          @responseMessage(code="400", message="Invalid username and password combination")
      *       )
      *     )
      *   )

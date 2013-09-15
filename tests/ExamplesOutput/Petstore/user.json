@@ -98,11 +98,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid username supplied"
+                            "message":"Invalid username supplied"
                         },
                         {
                             "code":404,
-                            "reason":"User not found"
+                            "message":"User not found"
                         }
                     ]
                 },
@@ -125,11 +125,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid username supplied"
+                            "message":"Invalid username supplied"
                         },
                         {
                             "code":404,
-                            "reason":"User not found"
+                            "message":"User not found"
                         }
                     ]
                 },
@@ -151,11 +151,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid username supplied"
+                            "message":"Invalid username supplied"
                         },
                         {
                             "code":404,
-                            "reason":"User not found"
+                            "message":"User not found"
                         }
                     ]
                 }
@@ -191,7 +191,7 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid username and password combination"
+                            "message":"Invalid username and password combination"
                         }
                     ]
                 }

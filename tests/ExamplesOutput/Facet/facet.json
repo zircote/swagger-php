@@ -27,11 +27,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid ID supplied"
+                            "message":"Invalid ID supplied"
                         },
                         {
                             "code":404,
-                            "reason":"facet not found"
+                            "message":"facet not found"
                         }
                     ],
                     "notes":"Returns a facet based on ID"
@@ -53,11 +53,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid ID supplied"
+                            "message":"Invalid ID supplied"
                         },
                         {
                             "code":404,
-                            "reason":"facet not found"
+                            "message":"facet not found"
                         }
                     ],
                     "notes":"Returns a facet based on ID"

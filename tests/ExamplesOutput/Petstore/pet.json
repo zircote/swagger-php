@@ -27,11 +27,11 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid ID supplied"
+                            "message":"Invalid ID supplied"
                         },
                         {
                             "code":404,
-                            "reason":"Pet not found"
+                            "message":"Pet not found"
                         }
                     ]
                 }
@@ -58,7 +58,7 @@
                     "responseMessages":[
                         {
                             "code":405,
-                            "reason":"Invalid input"
+                            "message":"Invalid input"
                         }
                     ]
                 },
@@ -78,15 +78,15 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid ID supplied"
+                            "message":"Invalid ID supplied"
                         },
                         {
                             "code":404,
-                            "reason":"Pet not found"
+                            "message":"Pet not found"
                         },
                         {
                             "code":405,
-                            "reason":"Validation exception"
+                            "message":"Validation exception"
                         }
                     ]
                 }
@@ -116,7 +116,7 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid status value"
+                            "message":"Invalid status value"
                         }
                     ]
                 }
@@ -144,7 +144,7 @@
                     "responseMessages":[
                         {
                             "code":400,
-                            "reason":"Invalid tag value"
+                            "message":"Invalid tag value"
                         }
                     ]
                 }

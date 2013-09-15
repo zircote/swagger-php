@@ -91,11 +91,11 @@ class Pet
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @responseMessage(
      *            code="404",
-     *            reason="Pet not found"
+     *            message="Pet not found"
      *          )
      *       )
      *     )
@@ -128,7 +128,7 @@ class Pet
      *       @responseMessages(
      *          @responseMessage(
      *            code="405",
-     *            reason="Invalid input"
+     *            message="Invalid input"
      *          )
      *       )
      *     )
@@ -165,7 +165,7 @@ class Pet
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid status value"
+     *            message="Invalid status value"
      *          )
      *       )
      *     )
@@ -200,7 +200,7 @@ class Pet
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid tag value"
+     *            message="Invalid tag value"
      *          )
      *       )
      *     )
@@ -232,15 +232,15 @@ class Pet
      *       @responseMessages(
      *          @responseMessage(
      *            code="400",
-     *            reason="Invalid ID supplied"
+     *            message="Invalid ID supplied"
      *          ),
      *          @responseMessage(
      *            code="404",
-     *            reason="Pet not found"
+     *            message="Pet not found"
      *          ),
      *          @responseMessage(
      *            code="405",
-     *            reason="Validation exception"
+     *            message="Validation exception"
      *          )
      *       )
      *     )

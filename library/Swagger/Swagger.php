@@ -150,8 +150,14 @@ class Swagger
                             $models[] = $model;
                         }
                     }
+                    foreach ($operation->responseMessages as $responseMessage) {
+                        $model = $this->resolveModel($responseMessage->responseModel);
+                        if ($model) {
+                            $models[] = $model;
+                        }
+                    }
                 }
-                $models = array_merge($models, $this->resolveModels($models));
+                $models = $this->resolveModels($models);
                 foreach (array_unique($models) as $model) {
                     $resource->models[$model] = $this->models[$model];
                 }
