@@ -19,10 +19,10 @@
     "models": {
         "Dog": {
             "id": "Dog",
+            "required": ["breed"],
             "properties": {
                 "breed": {
-                    "type": "string",
-                    "required": true
+                    "type": "string"
                 },
                 "parent": {
                     "type": "Dog"

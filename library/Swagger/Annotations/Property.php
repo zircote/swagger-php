@@ -38,6 +38,7 @@ class Property extends DataType
     {
         $data = parent::jsonSerialize();
         unset($data['name']);
+        unset($data['required']);
         return $data;
     }
 

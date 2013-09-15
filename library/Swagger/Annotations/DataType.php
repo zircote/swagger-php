@@ -95,6 +95,17 @@ abstract class DataType extends AbstractAnnotation
     {
         parent::__construct($values);
         Swagger::checkDataType($this->type);
+        if (is_string($this->enum)) {
+            $values = $this->decode($this->enum);
+            if (is_object($values)) {
+                $this->enum = array();
+                foreach ($values as $key => $value) {
+                    $this->enum[] = $key.'-'.$value;
+                }
+            } else {
+                $this->enum = $values;
+            }
+        }
     }
 
     public function setNestedAnnotations($annotations)
@@ -122,18 +133,6 @@ abstract class DataType extends AbstractAnnotation
                 $this->items = null;
             } else {
                 Swagger::checkDataType($this->items->type);
-            }
-        }
-        // Validate enum
-        if (is_string($this->enum)) {
-            $values = $this->decode($this->enum);
-            if (is_object($values)) {
-                $this->enum = array();
-                foreach ($values as $key => $value) {
-                    $this->enum[] = $key.'-'.$value;
-                }
-            } else {
-                $this->enum = $values;
             }
         }
         return true;

@@ -49,6 +49,11 @@ class Model extends AbstractAnnotation
     public $properties = array();
 
     /**
+     * @var array
+     */
+    public $required;
+
+    /**
      * The PHP class connected to this model
      * @var null|string
      */
@@ -60,6 +65,12 @@ class Model extends AbstractAnnotation
      */
     public $phpExtends;
 
+    public function __construct(array $values = array()) {
+        parent::__construct($values);
+        if (is_string($this->required)) {
+            $this->required = $this->decode($this->required);
+        }
+    }
 
     public function setNestedAnnotations($annotations)
     {
@@ -79,12 +90,19 @@ class Model extends AbstractAnnotation
     public function validate()
     {
         $properties = array();
+        $required = $this->required ?: array();
         foreach ($this->properties as $property) {
             if ($property->validate()) {
                 $properties[] = $property;
+                if ($property->required) {
+                    $required[] = $property->name;
+                }
             }
         }
         $this->properties = $properties;
+        if (count($required) > 0) {
+            $this->required = array_unique($required);
+        }
         return true;
     }
 
@@ -95,9 +113,12 @@ class Model extends AbstractAnnotation
     {
         $data = parent::jsonSerialize($this);
         unset($data['phpClass'], $data['phpExtends']);
+        if (empty($data['required'])) {
+            unset($data['required']);
+        }
         $data['properties'] = array();
         foreach ($this->properties as $property) {
-            $data['properties'][$property->name] = $property;
+            $data['properties'][$property->name] = $property->jsonSerialize();
         }
         return $data;
     }
