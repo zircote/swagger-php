@@ -20,13 +20,8 @@ namespace Swagger;
  * @category   Swagger
  * @package    Swagger
  */
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\CacheProvider;
-use Swagger\Annotations\Model;
 use Swagger\Annotations\Resource;
-use Swagger\Annotations\Property;
-
+use Swagger\Annotations\Model;
 /**
  * @category   Swagger
  * @package    Swagger
@@ -37,6 +32,11 @@ class Swagger
      * @var null|string
      */
     protected $defaultApiVersion;
+
+        /**
+     * @var null|string
+     */
+    protected $defaultBasePath;
 
     /**
      * @var string
@@ -54,7 +54,7 @@ class Swagger
     public $registry = array();
 
     /**
-     * @var array
+     * @var array|Model
      */
     public $models = array();
 
@@ -400,27 +400,37 @@ class Swagger
     {
         $map = array(
             // primitive types
-            'integer' => 'integer',
-            'long' =>  'long',
-            'float' => 'float',
-            'double' => 'double',
-            'string' => 'string',
-            'byte' => 'byte',
+            'integer' => 'integer', // formats 'int32' or 'int64' for long,
+            'number' => 'number', // formats 'float' or 'double'
+            'string' => 'string', // formats '', 'byte', 'date' or 'date-time'
             'boolean' => 'boolean',
-            'date' => 'date',
-            'datetime' => 'dateTime',
-            'array' => 'array',
-            // complex types (from http://json-schema.org)
+            // complex types
             'object' => 'object',
-            'number' => 'number',
+            'array' => 'array',
             // common mistakes
             'int' => 'integer',
-            'bool' => 'boolean'
+            'long' => 'integer',
+            'bool' => 'boolean',
+            'date' => 'string',
+            'datetime' => 'string',
+            'byte' => 'string',
         );
-        if (array_key_exists(strtolower($type), $map) && array_search($type, $map) === false) {
-            // Don't correct the type, this creates the incentive to use consistent naming in the doc comments.
-            Logger::notice('Encountered type "'.$type.'", did you mean "'.$map[strtolower($type)].'" in '.Annotations\AbstractAnnotation::$context);
+        $mapFormats = array(
+            'long' => 'int64',
+            'byte' => 'byte',
+            'date' => 'date',
+            'datetime' => 'date-format',
+        );
+        if (array_key_exists(strtolower($type), $map) && array_search($type, $map) === false) { // Invalid notation for a primitive?
+            if (array_key_exists(strtolower($type), $mapFormats)) { //
+                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'",format="'.$mapFormats[strtolower($type)].'"` in '.Annotations\AbstractAnnotation::$context);
+            } else {
+                // Don't automaticly correct the type, this creates the incentive to use consistent naming in the doc comments.
+                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'"` in '.Annotations\AbstractAnnotation::$context);
+            }
         }
+
+
     }
 
     /**
@@ -448,12 +458,12 @@ class Swagger
     }
 
     /**
-     * @param      $data
+     * @param Resource $resource
      * @param bool $prettyPrint
      *
      * @return mixed|null|string
      */
-    public function jsonEncode($resource, $prettyPrint = false)
+    public static function jsonEncode($resource, $prettyPrint = false)
     {
         $data = self::export($resource);
         if (version_compare(PHP_VERSION, '5.4', '>=')) {
@@ -553,6 +563,25 @@ class Swagger
     {
         $this->registry = $registry;
         return $this;
+    }
+
+    /**
+     * Set the default basePath for the resources.
+     * @param string $url
+     * @return Swagger fluent api
+     */
+    public function setDefaultBasePath($url)
+    {
+        $this->defaultBasePath = $url;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDefaultBasePath()
+    {
+        return $this->defaultBasePath;
     }
 
     /**

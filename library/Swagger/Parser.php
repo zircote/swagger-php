@@ -361,23 +361,30 @@ class Parser
                         $type = (string) array_pop($matches);
                         $map = array(
                             'array' => 'array',
-                            'byte' => 'byte',
+                            'byte' => array('string', 'byte'),
                             'boolean' => 'boolean',
                             'bool' => 'boolean',
                             'int' => 'integer',
                             'integer' => 'integer',
-                            'long' => 'long',
-                            'float' => 'float',
-                            'double' => 'double',
+                            'long' => array('integer', 'long'),
+                            'float' => array('number', 'float'),
+                            'double' => array('number', 'double'),
                             'string' => 'string',
-                            'date' => 'date',
-                            'datetime' => 'dateTime',
-                            '\\datetime' => 'dateTime',
+                            'date' => array('string', 'date'),
+                            'datetime' => array('string', 'date-time'),
+                            '\\datetime' => array('string', 'date-time'),
+                            'byte' => array('string', 'byte'),
                             'number' => 'number',
                             'object' => 'object'
                         );
                         if (array_key_exists(strtolower($type), $map)) {
                             $type = $map[strtolower($type)];
+                            if (is_array($type)) {
+                                if ($annotation->format === null) {
+                                    $annotation->format = $type[1];
+                                }
+                                $type = $type[0];
+                            }
                         }
                         $annotation->type = $type;
                     }
