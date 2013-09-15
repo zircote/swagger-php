@@ -48,6 +48,26 @@ class Api extends AbstractAnnotation
      */
     public $operations = array();
 
+    /**
+     * @var array
+     */
+    public $produces;
+
+    /**
+     * @var array
+     */
+    public $consumes;
+
+    public function __construct(array $values = array()) {
+        parent::__construct($values);
+        if (is_string($this->produces)) {
+            $this->produces = $this->decode($this->produces);
+        }
+        if (is_string($this->consumes)) {
+            $this->consumes = $this->decode($this->consumes);
+        }
+    }
+
     public function setNestedAnnotations($annotations)
     {
         foreach ($annotations as $annotation) {

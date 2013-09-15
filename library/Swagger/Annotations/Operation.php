@@ -79,12 +79,27 @@ class Operation extends AbstractAnnotation
     public $notes;
 
     /**
+     * @var array
+     */
+    public $produces;
+
+    /**
+     * @var array
+     */
+    public $consumes;
+
+    /**
      * @param array $values
      */
-    public function __construct($values)
-    {
+    public function __construct(array $values = array()) {
         parent::__construct($values);
         $this->notes = $this->removePreamble($this->notes);
+        if (is_string($this->produces)) {
+            $this->produces = $this->decode($this->produces);
+        }
+        if (is_string($this->consumes)) {
+            $this->consumes = $this->decode($this->consumes);
+        }
     }
 
     public function setNestedAnnotations($annotations)

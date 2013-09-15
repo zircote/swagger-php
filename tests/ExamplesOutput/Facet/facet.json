@@ -7,6 +7,7 @@
         {
             "path":"/facet.{format}/{facetId}",
             "description":"Operations about facets",
+            "produces": ["application/json"],
             "operations":[
                 {
                     "nickname":"getfacetById",

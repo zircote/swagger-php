@@ -24,6 +24,7 @@ class FacetResource
      * @SWG\Api(
      *   path="/facet.{format}/{facetId}",
      *   description="Operations about facets",
+     *   produces="['application/json']",
      *   @SWG\Operations(
      *     @SWG\Operation(
      *       method="GET",
