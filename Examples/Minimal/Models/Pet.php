@@ -78,7 +78,7 @@ class Pet
     /**
      * @var array<string>
      *
-     * @SWG\Property(type="array", @SWG\items(type="string"))
+     * @SWG\Property(type="array", @SWG\Items(type="string"))
      */
     protected $photoUrls = array();
 }

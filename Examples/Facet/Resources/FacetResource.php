@@ -24,15 +24,15 @@ class FacetResource
      * @SWG\Api(
      *   path="/facet.{format}/{facetId}",
      *   description="Operations about facets",
-     *   @SWG\operations(
-     *     @SWG\operation(
+     *   @SWG\Operations(
+     *     @SWG\Operation(
      *       method="GET",
      *       summary="Find facet by ID",
      *       notes="Returns a facet based on ID",
      *       type="FacetResult",
      *       nickname="getfacetById",
-     *       @SWG\parameters(
-     *         @SWG\parameter(
+     *       @SWG\Parameters(
+     *         @SWG\Parameter(
      *           name="facetId",
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
@@ -40,13 +40,13 @@ class FacetResource
      *           type="string"
      *         )
      *       ),
-     *       @SWG\responseMessages(
-     *          @SWG\responseMessage(
-     *            code="400",
+     *       @SWG\ResponseMessages(
+     *          @SWG\ResponseMessage(
+     *            code=400,
      *            reason="Invalid ID supplied"
      *          ),
-     *          @SWG\responseMessage(
-     *            code="404",
+     *          @SWG\ResponseMessage(
+     *            code=404,
      *            reason="facet not found"
      *          )
      *       )
@@ -62,14 +62,14 @@ class FacetResource
      * @SWG\Api(
      *   path="/facet.{format}/{facetId}",
      *   description="Operations about facets",
-     *   @SWG\operations(
-     *     @SWG\operation(
+     *   @SWG\Operations(
+     *     @SWG\Operation(
      *       method="DELETE",
      *       summary="Find facet by ID",
      *       notes="Returns a facet based on ID",
      *       nickname="getfacetById",
-     *       @SWG\parameters(
-     *         @SWG\parameter(
+     *       @SWG\Parameters(
+     *         @SWG\Parameter(
      *           name="facetId",
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
@@ -77,13 +77,13 @@ class FacetResource
      *           type="string"
      *         )
      *       ),
-     *       @SWG\responseMessages(
-     *          @SWG\responseMessage(
-     *            code="400",
+     *       @SWG\ResponseMessages(
+     *          @SWG\ResponseMessage(
+     *            code=400,
      *            reason="Invalid ID supplied"
      *          ),
-     *          @SWG\responseMessage(
-     *            code="404",
+     *          @SWG\ResponseMessage(
+     *            code=404,
      *            reason="facet not found"
      *          )
      *       )
