@@ -98,7 +98,7 @@
                     "type":"string"
                 },
                 "prop3":{
-                    "type":"Some_Object"
+                    "$ref":"Some_Object"
                 }
             }
         }

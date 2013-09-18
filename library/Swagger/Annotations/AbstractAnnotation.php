@@ -52,6 +52,12 @@ abstract class AbstractAnnotation
      */
     public static $context = 'unknown';
 
+    /**
+     * Declarative mapping of Annotation types to properties
+     * @var array
+     */
+    protected static $mapAnnotations = array();
+
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';
     const NEWLINES = '/(?>\r\n|\n|\r|\f|\x0b|\x85|\x{2028}|\x{2029})/u';
@@ -64,7 +70,7 @@ abstract class AbstractAnnotation
     {
         foreach ($values as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->{$key} = $this->cast($value);
+                $this->{$key} = $value;
             } elseif ($key === 'partial') {
                 $this->_partialId = $value;
             } elseif ($key !== 'value') {
@@ -109,11 +115,30 @@ abstract class AbstractAnnotation
      */
     public function setNestedAnnotations($annotations)
     {
+
+
+        $map = static::$mapAnnotations;
+        $map['\Swagger\Annotations\Partial'] = '_partials[]';
+
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Partial) {
-                $this->_partials[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+            $found = false;
+            foreach ($map as $class => $property) {
+                if ($annotation instanceof $class) {
+                    if (substr($property, -2) === '[]') { // Append to array?
+                        $property = substr($property, 0, -2);
+                        if ($this->$property === null) {
+                            $this->$property = array();
+                        }
+                        array_push($this->$property, $annotation);
+                    } else {
+                        $this->$property = $annotation;
+                    }
+                    $found = true;
+                    break;
+                }
+            }
+            if ($found === false) {
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context.' expecting '.implode(', ', array_keys($map)));
             }
         }
     }
@@ -125,25 +150,6 @@ abstract class AbstractAnnotation
     protected function setNestedValue($value)
     {
         Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.AbstractAnnotation::$context);
-    }
-
-    private function cast($value)
-    {
-        if (is_string($value) && in_array($value, array('true', 'false'))) {
-            return ($value == 'true') ? true : false;
-        }
-        return $value;
-    }
-
-    protected function arrayFilter(&$v)
-    {
-        if (is_string($v) && in_array($v, array('true', 'false'))) {
-            $v = ($v == 'true') ? true : false;
-        }
-        if (empty($v) && $v !== false) {
-            return false;
-        }
-        return true;
     }
 
     public function jsonSerialize()
@@ -164,7 +170,7 @@ abstract class AbstractAnnotation
      *
      * @return mixed
      */
-    public function decode($json)
+    public static function decode($json)
     {
         $json = preg_replace(self::REGEX, self::REPLACE, $json);
         $data = json_decode($json);
@@ -191,5 +197,15 @@ abstract class AbstractAnnotation
             $values[$key] = preg_replace(self::PREAMBLE, null, $value);
         }
         return implode(PHP_EOL, $values);
+    }
+
+    /**
+     * Return a identity for easy debugging.
+     * Example: "SWG\Model(id="Pet")"
+     * @return string
+     */
+    public function identity() {
+       $array = explode('\\', get_class($this));
+       return '@SWG\\'.array_pop($array).'()';
     }
 }

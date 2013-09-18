@@ -39,6 +39,10 @@ class Property extends DataType
         $data = parent::jsonSerialize();
         unset($data['name']);
         unset($data['required']);
+        if ($this->type !== 'array' && Swagger::isPrimitive($this->type) === false) {
+            $data['$ref'] = $this->type;
+            unset($data['type']);
+        }
         return $data;
     }
 

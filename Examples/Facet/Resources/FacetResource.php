@@ -37,7 +37,7 @@ class FacetResource
      *           name="facetId",
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
-     *           required="true",
+     *           required=true,
      *           type="string"
      *         )
      *       ),
@@ -74,7 +74,7 @@ class FacetResource
      *           name="facetId",
      *           description="ID of facet that needs to be fetched",
      *           paramType="path",
-     *           required="true",
+     *           required=true,
      *           type="string"
      *         )
      *       ),

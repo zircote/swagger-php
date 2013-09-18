@@ -24,6 +24,15 @@ namespace Swagger\Annotations;
  */
 use Swagger\Swagger;
 
+//
+// Usage:
+// items="$ref:Pet"
+// or
+// @SWG\Items("Pet")
+// or
+// @SWG\Items(type="Pet")
+//
+
 /**
  * @package
  * @category
@@ -38,6 +47,10 @@ class Items extends AbstractAnnotation
      */
     public $type;
 
+    protected function setNestedValue($value) {
+        $this->type = $value;
+    }
+
     public function jsonSerialize()
     {
         if (Swagger::isPrimitive($this->type)) {
@@ -46,5 +59,28 @@ class Items extends AbstractAnnotation
         return array(
             '$ref' => $this->type
         );
+    }
+
+    /**
+     *
+     * @param Property|Parameter|Operation $annotation
+     * @return bool
+     */
+    public static function validateContainer($annotation) {
+        // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
+        if (is_string($annotation->items) && preg_match('/\$ref:(\w+)/', $annotation->items, $matches)) {
+            $annotation->items = new Items();
+            $annotation->items->type = array_pop($matches);
+        }
+        // Validate if items are inside a container type.
+        if ($annotation->items !== null) {
+            if ($annotation->type !== 'array') {
+                Logger::warning('Unexcepted items for type "'.$annotation->type.'" in '.$annotation->identity().', expecting "array"');
+                $annotation->items = null;
+            } else {
+                Swagger::checkDataType($annotation->items->type);
+            }
+        }
+        return true;
     }
 }

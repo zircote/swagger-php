@@ -25,7 +25,7 @@
                     "type": "string"
                 },
                 "parent": {
-                    "type": "Dog"
+                    "$ref": "Dog"
                 },
                 "tags": {
                     "type": "array",
@@ -37,7 +37,7 @@
                     "type": "integer"
                 },
                 "category": {
-                    "type": "Category"
+                    "$ref": "Category"
                 },
                 "status": {
                     "type": "string",

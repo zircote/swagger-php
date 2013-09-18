@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger\Annotations;
 
 /**
@@ -21,7 +22,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use Swagger\Swagger;
 
 /**
  * @package
@@ -30,15 +31,34 @@ use Swagger\Logger;
  *
  * @Annotation
  */
-class Properties extends AbstractAnnotation
+class Consumes extends AbstractAnnotation
 {
     /**
-     * @var array|Parameter
+     * @var array
      */
-    public $properties;
+    public $mimetype = 'string';
 
-    protected static $mapAnnotations = array(
-        '\Swagger\Annotations\Property' => 'properties[]'
-    );
+    public function jsonSerialize()
+    {
+        return $this->mimetype;
+    }
+    protected function setNestedValue($value) {
+        $this->mimetype = $value;
+    }
 
+    /**
+     *
+     * @param Resource|Api|Operation $annotation
+     * @return bool
+     */
+    public static function validateContainer($annotation) {
+        if (is_string($annotation->consumes)) {
+            $mimetypes = self::decode($annotation->consumes);
+            $annotation->consumes = array();
+            foreach ($mimetypes as $mimetype) {
+                $annotation->consumes[] = new Produces(array('mimetype' => $mimetype));
+            }
+        }
+        return true;
+    }
 }

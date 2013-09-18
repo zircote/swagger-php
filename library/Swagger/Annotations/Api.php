@@ -58,29 +58,38 @@ class Api extends AbstractAnnotation
      */
     public $consumes;
 
+    /**
+     * Undocumented
+     * @var bool
+     */
+    public $deprecated;
+
+    /**
+     * @var Undocumented
+     */
+    public $defaultValue;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Operation' => 'operations[]',
+        '\Swagger\Annotations\Produces' => 'produces[]',
+        '\Swagger\Annotations\Consumes' => 'consumes[]',
+    );
+
     public function __construct(array $values = array()) {
         parent::__construct($values);
-        if (is_string($this->produces)) {
-            $this->produces = $this->decode($this->produces);
-        }
-        if (is_string($this->consumes)) {
-            $this->consumes = $this->decode($this->consumes);
-        }
     }
 
     public function setNestedAnnotations($annotations)
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Operation) {
-                $this->operations[] = $annotation;
-            } elseif ($annotation instanceof Operations) {
+        foreach ($annotations as $index => $annotation) {
+            if ($annotation instanceof Operations) {
                 foreach ($annotation->operations as $operation) {
                     $this->operations[] = $operation;
                 }
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+                unset($annotations[$index]);
             }
         }
+        return parent::setNestedAnnotations($annotations);
     }
 
     public function validate()
@@ -96,6 +105,12 @@ class Api extends AbstractAnnotation
             Logger::notice('Api "'.$this->path.'" doesn\'t have any valid operations');
             return false;
         }
+        Produces::validateContainer($this);
+        Consumes::validateContainer($this);
         return true;
+    }
+
+    public function identity() {
+        return '@SWG\Api(path="'.$this->path.'")';
     }
 }

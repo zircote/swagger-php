@@ -37,14 +37,7 @@ class Parameters extends AbstractAnnotation
      */
     public $parameters;
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Parameter) {
-                $this->parameters[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Parameter' => 'parameters[]'
+    );
 }

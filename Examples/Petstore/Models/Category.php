@@ -21,28 +21,29 @@ namespace Petstore\Models;
  * @category
  * @subpackage
  */
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Model(id="Category")
+ * @SWG\Model(id="Category")
  */
 class Category
 {
     /**
-     * @var int
-     * @Property(name="id",type="integer",format="int64")
+     * @SWG\Property(
+     *   name="id",
+     *   type="integer",
+     *   format="int64"
+     * )
      */
-    protected $id;
+    public $id;
 
     /**
-     * @var string
-     * @Property(name="name",type="string")
+     * @SWG\Property(name="name",type="string")
      */
-    protected $name;
-}
+    public $name;
 
+}

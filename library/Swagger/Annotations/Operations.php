@@ -38,14 +38,7 @@ class Operations extends AbstractAnnotation
      */
     public $operations;
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Operation) {
-                $this->operations[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Operation' => 'operations[]'
+    );
 }

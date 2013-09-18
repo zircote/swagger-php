@@ -369,7 +369,7 @@ class Swagger
                 $path = '/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
                 $result['apis'][] = array(
                     'path' => $path,
-                    'description' => $resource->apis[0]->description
+                    'description' => $resource->getDescription()
                 );
             }
             $this->resourceList = $result;
@@ -389,9 +389,8 @@ class Swagger
      */
     public static function isPrimitive($type)
     {
-        $primitiveTypes = array('byte', 'boolean', 'int', 'long', 'float', 'double', 'string', 'date');
-        $primitiveTypes[] = 'integer'; // Should be int
-        $primitiveTypes[] = 'bool';
+        $primitiveTypes = array('boolean', 'integer', 'number', 'string');
+        $primitiveTypes = array_merge($primitiveTypes, array('byte', 'long', 'float', 'double', 'date', 'int', 'bool')); // Invalid notation, but meant to be primitive type
         return in_array(strtolower($type), $primitiveTypes);
     }
 

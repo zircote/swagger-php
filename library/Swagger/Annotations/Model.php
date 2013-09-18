@@ -65,6 +65,10 @@ class Model extends AbstractAnnotation
      */
     public $phpExtends;
 
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Property' => 'properties[]'
+    );
+
     public function __construct(array $values = array()) {
         parent::__construct($values);
         if (is_string($this->required)) {
@@ -74,17 +78,15 @@ class Model extends AbstractAnnotation
 
     public function setNestedAnnotations($annotations)
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Property) {
-                $this->properties[] = $annotation;
-            } elseif ($annotation instanceof Properties) {
+        foreach ($annotations as $index => $annotation) {
+            if ($annotation instanceof Properties) {
                 foreach ($annotation->properties as $property) {
                     $this->properties[] = $property;
                 }
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+                unset($annotations[$index]);
             }
         }
+        return parent::setNestedAnnotations($annotations);
     }
 
     public function validate()
@@ -121,5 +123,9 @@ class Model extends AbstractAnnotation
             $data['properties'][$property->name] = $property->jsonSerialize();
         }
         return $data;
+    }
+
+    public function identity() {
+        return '@SWG\Model(id="'.$this->id.'")';
     }
 }

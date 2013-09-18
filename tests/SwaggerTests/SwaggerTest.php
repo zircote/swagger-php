@@ -100,7 +100,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $tmpDir = sys_get_temp_dir();
         $command = dirname(dirname(__DIR__)).'/bin/swagger';
         shell_exec(escapeshellcmd($command).' '.escapeshellarg($this->examplesDir('Petstore')).' --output '.escapeshellarg($tmpDir));
-        foreach (array('user', 'pet', 'store') as $record) {
+        foreach (array('user', 'pet') as $record) {
             $json = $swagger->getResource("/{$record}");
             $filename = $tmpDir.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR."$record.json";
             $this->assertOutputEqualsJson($filename, $json);

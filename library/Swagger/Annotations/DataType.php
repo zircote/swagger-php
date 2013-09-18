@@ -91,6 +91,16 @@ abstract class DataType extends AbstractAnnotation
      */
     public $enum;
 
+    /**
+     * Undocumented
+     * @var mixed
+     */
+    public $defaultValue;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Items' => 'items'
+    );
+
     public function __construct(array $values = array())
     {
         parent::__construct($values);
@@ -108,34 +118,23 @@ abstract class DataType extends AbstractAnnotation
         }
     }
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Items) {
-                $this->items = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
-
     public function validate()
     {
-        // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
-        if (is_string($this->items) && preg_match('/\$ref:(\w+)/', $this->items, $matches)) {
-            $this->items = new Items();
-            $this->items->type = array_pop($matches);
-        }
-        // Validate if items are inside a container type.
-        if ($this->items !== null) {
-            if ($this->type !== 'array') {
-                Logger::warning('Unexcepted items for type "'.$this->type.'" in parameter "'.$this->name.'", expecting "array"');
-                $this->items = null;
+        if (is_string($this->required)) {
+            $required = filter_var($this->required, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($required === null) {
+                Logger::notice('Invalid `required="'.$this->required.'"` for '.$this->identity().' expecting `required=true`');
             } else {
-                Swagger::checkDataType($this->items->type);
+                $this->required = $required;
             }
         }
+        Items::validateContainer($this);
         return true;
+    }
+
+    public function identity() {
+       $array = explode('\\', get_class($this));
+       return '@SWG\\'.array_pop($array).'(name="'.$this->name.'")';
     }
 
 

@@ -67,16 +67,27 @@ class Resource extends AbstractAnnotation
      */
     public $models = array();
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Api) {
-                $this->apis[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
+    /**
+     * @var array
+     */
+    public $produces;
+
+    /**
+     * @var array
+     */
+    public $consumes;
+
+    /**
+     * The description in the resource listing (api-docs.json)
+     * @var string
+     */
+    public $description;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Api' => 'apis[]',
+        '\Swagger\Annotations\Produces' => 'produces[]',
+        '\Swagger\Annotations\Consumes' => 'consumes[]',
+    );
 
     public function validate()
     {
@@ -109,12 +120,15 @@ class Resource extends AbstractAnnotation
             return false;
         }
         $this->apis = $apis;
+        Produces::validateContainer($this);
+        Consumes::validateContainer($this);
         return true;
     }
 
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
+        unset($data['description']);
         if (count($this->models) === 0) {
             unset($data['models']);
         }
@@ -130,5 +144,25 @@ class Resource extends AbstractAnnotation
             $this->apis[] = $api;
         }
         $this->validate();
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        if ($this->description !== null) {
+            return $this->description;
+        }
+        foreach ($this->apis as $api) {
+            if ($api->description !== null) {
+                return $api->description;
+            }
+        }
+    }
+
+    public function identity() {
+        return '@SWG\Resource(resourcePath="'.$this->resourcePath.'")';
     }
 }

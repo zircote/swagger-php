@@ -21,64 +21,46 @@ namespace Petstore\Models;
  * @category
  * @subpackage
  */
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Model;
-use Swagger\Annotations\Items;
+use Swagger\Annotations as SWG;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Model(id="Pet")
+ * @SWG\Model(id="Pet",required="['name','id']")
  */
 class Pet
 {
     /**
-     * @var array<Tags>
-     *
-     * @Property(name="tags",type="array", items="$ref:Tag")
+     * @SWG\Property(name="name",type="string")
      */
-    protected $tags = array();
+    public $name;
 
     /**
-     * @var int
-     *
-     * @Property(name="id",type="integer",format="int64")
+     * @SWG\Property(name="id",type="integer",format="int64",description="foo",minimum="0.0",maximum="100.0")
      */
-    protected $id;
+    public $id;
 
     /**
-     * @var Category
-     *
-     * @Property(name="category",type="Category")
+     * @SWG\Property(name="category",type="Category")
      */
-    protected $category;
+    public $category;
 
     /**
-     *
-     *
-     * @var string
-     *
-     * @Property(
-     *      name="status",type="string",
-     *      enum="['available', 'pending', 'sold']",
-     *      description="pet status in the store")
+     * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"))
      */
-    protected $status;
+    public $photos;
 
     /**
-     * @var string
-     *
-     * @Property(name="name",type="string")
+     * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"))
      */
-    protected $name;
+    public $tags;
 
     /**
-     * @var array<string>
-     *
-     * @Property(name="photoUrls",type="array", @items(type="string"))
+     * @SWG\Property(name="status",type="string",description="pet status in the store",enum="['available','pending','sold']")
      */
-    protected $photoUrls = array();
+    public $status;
+
 }
 

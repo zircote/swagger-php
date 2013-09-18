@@ -63,8 +63,6 @@ class Parameter extends DataType
      */
     public $required;
 
-    public $defaultValue;
-
     public function __construct(array $values = array())
     {
         parent::__construct($values);

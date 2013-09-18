@@ -61,6 +61,11 @@ class Operation extends AbstractAnnotation
     public $type;
 
     /**
+     * @var Items
+     */
+    public $items;
+
+    /**
      * These are the inputs to the operation.
      * @var array|Parameter
      */
@@ -79,14 +84,28 @@ class Operation extends AbstractAnnotation
     public $notes;
 
     /**
-     * @var array
+     * @var array|Produces
      */
     public $produces;
 
     /**
-     * @var array
+     * @var array|Consumes
      */
     public $consumes;
+
+    /**
+     * Undocumented
+     * @var bool
+     */
+    public $deprecated;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Parameter' => 'parameters[]',
+        '\Swagger\Annotations\ResponseMessage' => 'responseMessages[]',
+        '\Swagger\Annotations\Produces' => 'produces[]',
+        '\Swagger\Annotations\Consumes' => 'consumes[]',
+        '\Swagger\Annotations\Items' => 'items',
+    );
 
     /**
      * @param array $values
@@ -94,45 +113,39 @@ class Operation extends AbstractAnnotation
     public function __construct(array $values = array()) {
         parent::__construct($values);
         $this->notes = $this->removePreamble($this->notes);
-        if (is_string($this->produces)) {
-            $this->produces = $this->decode($this->produces);
-        }
-        if (is_string($this->consumes)) {
-            $this->consumes = $this->decode($this->consumes);
-        }
     }
 
     public function setNestedAnnotations($annotations)
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Parameter) {
-                $this->parameters[] = $annotation;
-            } elseif ($annotation instanceof Parameters) {
+        foreach ($annotations as $index => $annotation) {
+            if ($annotation instanceof Parameters) {
                 foreach ($annotation->parameters as $parameter) {
                     $this->parameters[] = $parameter;
                 }
-            } elseif ($annotation instanceof ResponseMessage) {
-                $this->responseMessages[] = $annotation;
+                unset($annotations[$index]);
             } elseif ($annotation instanceof ResponseMessages) {
                 foreach ($annotation->responseMessages as $responseMessage) {
                     $this->responseMessages[] = $responseMessage;
                 }
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+                unset($annotations[$index]);
             }
         }
+        return parent::setNestedAnnotations($annotations);
     }
 
     public function validate()
     {
         if (empty($this->nickname)) {
-            Logger::notice('The optional field "nickname" is required for the swagger-ui client for an "'.get_class($this).'" in '.AbstractAnnotation::$context);
+            Logger::notice('Required field "nickname" is missing for "'.$this->identity().'" in '.AbstractAnnotation::$context);
         }
         foreach ($this->parameters as $parameter) {
             if ($parameter->validate() == false) {
                 return false;
             }
         }
+        Items::validateContainer($this);
+        Produces::validateContainer($this);
+        Consumes::validateContainer($this);
         return true;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Petstore\Models;
 
 /**
@@ -21,67 +22,63 @@ namespace Petstore\Models;
  * @category
  * @subpackage
  */
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Model(id="User")
+ * @SWG\Model(id="User")
  */
 class User
 {
     /**
-     * @var int
-     * @Property(name="id",type="integer",format="int64")
-     */
-    protected $id;
-
-    /**
-     * @var string
-     * @Property(name="lastName",type="string")
-     */
-    protected $lastName;
-
-    /**
-     * @var string
-     * @Property(name="phone",type="string")
-     */
-    protected $phone;
-
-    /**
-     * @var string
-     * @Property(name="username",type="string")
-     */
-    protected $username;
-
-    /**
-     * @var string
-     * @Property(name="email",type="string")
-     */
-    protected $email;
-
-    /**
-     * @var int
-     * @Property(name="userStatus",type="integer",
-     *      enum="{'1': 'registered', '2': 'active', '3': 'closed'}",
-     *      description="User Status"
+     * @SWG\Property(
+     *   name="id",
+     *   type="integer",
+     *   format="int64"
      * )
      */
-    protected $userStatus;
+    public $id;
 
     /**
-     * @var string
-     * @Property(name="firstName",type="string")
+     * @SWG\Property(name="firstName",type="string")
      */
-    protected $firstName;
+    public $firstname;
 
     /**
-     * @var string
-     * @Property(name="password",type="string")
+     * @SWG\Property(name="username",type="string")
      */
-    protected $password;
+    public $username;
+
+    /**
+     * @SWG\Property(name="lastName",type="string")
+     */
+    public $lastname;
+
+    /**
+     * @SWG\Property(name="email",type="string")
+     */
+    public $email;
+
+    /**
+     * @SWG\Property(name="password",type="string")
+     */
+    public $password;
+
+    /**
+     * @SWG\Property(name="phone",type="string")
+     */
+    public $phone;
+
+    /**
+     * @SWG\Property(
+     *   name="userStatus", type="integer", format="int32",
+     *   description="User Status",
+     *   enum="{'1':'registered','2':'active','3':'closed'}"
+     * )
+     */
+    public $status;
+
 }
-
