@@ -419,7 +419,7 @@ class Swagger implements \Serializable
                         'apis' => array()
                     );
                 }
-                $path = '/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
+                $path = '/'.str_replace('/', '-', ltrim($resource->resourcePath, '/'));
                 $result['apis'][] = array(
                     'path' => $path,
                     'description' => $resource->apis[0]->description
@@ -577,6 +577,7 @@ class Swagger implements \Serializable
     /**
      * @param $resourceName
      * @param bool $prettyPrint
+     * @param bool $serialize
      * @return bool|mixed|null|string
      */
     public function getResource($resourceName, $prettyPrint = true, $serialize = true)
@@ -594,7 +595,14 @@ class Swagger implements \Serializable
             array_multisort($paths, SORT_ASC, $apis);
 
             $resource->apis = $apis;
-            return $this->jsonEncode($resource, $prettyPrint);
+
+            // Return the resource itself if serialize is not requested
+            if ($serialize) {
+                return $this->jsonEncode($resource, $prettyPrint);
+            }
+
+            return $resource;
+
         }
         Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
         return false;
