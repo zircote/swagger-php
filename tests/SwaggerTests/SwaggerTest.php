@@ -45,13 +45,16 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $swagger = Swagger::discover($this->examplesDir($exampleDir));
         $dir = new \DirectoryIterator($this->outputDir($exampleDir));
+        $options = array(
+            'output' => 'json'
+        );
         foreach ($dir as $entry) {
             if ($entry->getExtension() === 'json') {
                 $name = $entry->getBasename('.json');
                 if (isset($swagger->registry['/'.$name])) { // Resource?
-                    $this->assertOutputEqualsJson($entry->getPathname(), $swagger->getResource('/'.$name), 'Resource "/'.$name.'" doesn\'t match expected output in "'.$entry->getPathname().'"');
+                    $this->assertOutputEqualsJson($entry->getPathname(), $swagger->getResource('/'.$name, $options), 'Resource "/'.$name.'" doesn\'t match expected output in "'.$entry->getPathname().'"');
                 } elseif ($name === 'api-docs') { // Listing?
-                    $this->assertOutputEqualsJson($entry->getPathname(), $swagger->getResourceList(), 'Resource listing  doesn\'t match expected output in "'.$entry->getPathname().'"');
+                    $this->assertOutputEqualsJson($entry->getPathname(), $swagger->getResourceList($options), 'Resource listing  doesn\'t match expected output in "'.$entry->getPathname().'"');
                 } elseif (isset($swagger->models[$name])) { // Model
                     $this->assertOutputEqualsJson($entry->getPathname(), Swagger::jsonEncode($swagger->models[$name]), 'Model "'.$name.'" doesn\'t match expected output in "'.$entry->getPathname().'"');
                 } else {
@@ -72,7 +75,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $swagger = unserialize($serialized);
         $this->assertEquals($original->models, $swagger->models);
         $this->assertEquals($original->registry, $swagger->registry);
-        $this->assertOutputEqualsJson('Facet/facet.json', $swagger->getResource('/facet'));
+        $this->assertOutputEqualsJson('Facet/facet.json', $swagger->getResource('/facet', array('output' => 'json')));
     }
 
     /**
@@ -101,12 +104,11 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $command = dirname(dirname(__DIR__)).'/bin/swagger';
         shell_exec(escapeshellcmd($command).' '.escapeshellarg($this->examplesDir('Petstore')).' --output '.escapeshellarg($tmpDir));
         foreach (array('user', 'pet') as $record) {
-            $json = $swagger->getResource("/{$record}");
-            $filename = $tmpDir.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR."$record.json";
+            $json = $swagger->getResource('/'.$record, array('output' => 'json'));
+            $filename = $tmpDir.DIRECTORY_SEPARATOR.$record.'.json';
             $this->assertOutputEqualsJson($filename, $json);
             unlink($filename);
         }
-        rmdir($tmpDir.DIRECTORY_SEPARATOR.'resources');
         unlink($tmpDir.DIRECTORY_SEPARATOR.'api-docs.json');
     }
     /**

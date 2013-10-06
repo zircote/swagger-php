@@ -44,9 +44,9 @@ class Swagger
     protected $defaultSwaggerVersion = '1.2';
 
     /**
-     * @var array
+     * @var null|string
      */
-    public $resourceList = array();
+    protected $apidocsBasePath;
 
     /**
      * @var array|Resource
@@ -350,12 +350,17 @@ class Swagger
     }
 
     /**
-     * @param bool $prettyPrint
-     * @param bool $serialize
-     * @return mixed|null|string
+     *
+     * @return mixed
      */
-    public function getResourceList($prettyPrint = true, $serialize = true)
+    public function getResourceList($options = array())
     {
+        self::parseOptions($options, array(
+            'prefix' => '/',
+            'suffix' => '',
+            'output' => 'array',
+            'json_pretty_print' => true, // for outputtype 'json'
+        ));
         if ($this->registry) {
             $result = array();
             foreach ($this->registry as $resource) {
@@ -365,21 +370,27 @@ class Swagger
                         'swaggerVersion' => $resource->swaggerVersion,
                         'apis' => array()
                     );
+                    $apidocsBasePath = $this->getApidocsBasePath();
+                    if ($apidocsBasePath) {
+                        $result['basePath'] = $apidocsBasePath;
+                    }
                 }
-                $path = '/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
+                $path = $options['prefix'].str_replace('/', '-', ltrim($resource->resourcePath, '/')).$options['suffix'];
                 $result['apis'][] = array(
                     'path' => $path,
                     'description' => $resource->getDescription()
                 );
             }
-            $this->resourceList = $result;
         }
-
-        if ($serialize) {
-            return $this->jsonEncode($this->resourceList, $prettyPrint);
+        switch ($options['output']) {
+            case 'array':
+                return $result;
+            case 'json':
+                return self::jsonEncode($result, $options['json_pretty_print']);
+            default:
+                throw new \Exception('Invalid output type "'.$options['ouput'].'"');
         }
-
-        return $this->resourceList;
+        return $result;
     }
 
     /**
@@ -527,28 +538,39 @@ class Swagger
 
     /**
      * @param $resourceName
-     * @param bool $prettyPrint
-     * @return bool|mixed|null|string
+     * @return mixed
      */
-    public function getResource($resourceName, $prettyPrint = true, $serialize = true)
+    public function getResource($resourceName, $options = array())
     {
-        if (array_key_exists($resourceName, $this->registry)) {
-            $resource = $this->registry[$resourceName];
-            $this->applyDefaults($resource);
-            // Sort operation paths alphabetically with shortest first
-            $apis = $resource->apis;
+        self::parseOptions($options, array(
+            'output' => 'array',
+            'json_pretty_print' => true, // for outputtype 'json'
+        ));
 
-            $paths = array();
-            foreach ($apis as $key => $api) {
-                $paths[$key] = str_replace('.{format}', '', $api->path);
-            }
-            array_multisort($paths, SORT_ASC, $apis);
-
-            $resource->apis = $apis;
-            return $this->jsonEncode($resource, $prettyPrint);
+        if (array_key_exists($resourceName, $this->registry) === false) {
+            Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
+            return false;
         }
-        Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
-        return false;
+        $resource = $this->registry[$resourceName];
+        $this->applyDefaults($resource);
+        // Sort operation paths alphabetically with shortest first
+        $apis = $resource->apis;
+
+        $paths = array();
+        foreach ($apis as $key => $api) {
+            $paths[$key] = $api->path;
+        }
+        array_multisort($paths, SORT_ASC, $apis);
+        $resource->apis = $apis;
+
+        switch ($options['output']) {
+            case 'object':
+                return $resource;
+            case 'array':
+                return self::export($resource);
+            case 'json':
+                return $this->jsonEncode($resource, $options['json_pretty_print']);
+        }
     }
 
     /**
@@ -567,6 +589,24 @@ class Swagger
     public function setRegistry($registry)
     {
         $this->registry = $registry;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getApidocsBasePath()
+    {
+        return $this->apidocsBasePath;
+    }
+
+    /**
+     * @param string $url
+     * @return Swagger fluent api
+     */
+    public function setApidocsBasePath($url)
+    {
+        $this->apidocsBasePath = $url;
         return $this;
     }
 
@@ -658,5 +698,26 @@ class Swagger
                 $model->properties[] = clone $parentProperty; // Inherit property
             }
         }
+    }
+
+    /**
+     * Validate options and apply default values.
+     *
+     * @param array $options Given options.
+     * @param array $defaults Available options and their default values.
+     * @return void
+     */
+    static function parseOptions(&$options, $defaults) {
+        if (is_array($options) === false) {
+            $backtrace = debug_backtrace();
+            throw new \InvalidArgumentException('Expecting an options-array for '.$backtrace[1]['function'].'()');
+        }
+        foreach (array_keys($options) as $option) {
+            if (array_key_exists($option, $defaults) === false) {
+                $backtrace = debug_backtrace();
+                throw new \InvalidArgumentException('Invalid option "'.$option.'" for '.$backtrace[1]['function'].'(), expecting "'.implode('", "', array_keys($defaults)).'"');
+            }
+        }
+        $options = array_merge($defaults, $options);
     }
 }

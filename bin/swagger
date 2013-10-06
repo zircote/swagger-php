@@ -47,12 +47,14 @@ try {
         'default-base-path' => false,
         'default-api-version' => false,
         'default-swagger-version' => false,
+        'url' => '../',
         'version' => false,
         'help' => false,
         'debug' => false,
     );
     $aliases = array(
         'o' => 'output',
+        'u' => 'url',
         'e' => 'exclude',
         'b' => 'bootstrap',
         'v' => 'version',
@@ -112,6 +114,7 @@ Generate Swagger JSON documents for a PHP project.
 Usage: swagger /path/to/project [--output /path/to/docs] ...
 
   -o, --output        Directory to store the generated json documents.
+  -u, --url           Url to the output folder. (api-docs basePath)
   -e, --exclude       Exclude path(s).
                          ex: --exclude vendor:library/Zend:library/Foo
   -b, --bootstrap     Bootstrap php file(s) for defining constants, etc.
@@ -160,7 +163,6 @@ EOF;
         throw new RuntimeException('Path "'.$paths[0].'" not found');
     }
     $outputPath = $options['output'].DIRECTORY_SEPARATOR;
-    $prettyPrint = $options['pretty-print'];
 
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
@@ -171,6 +173,7 @@ EOF;
     };
     $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
 
+    $swagger->setApidocsBasePath($options['url']);
     if ($options['default-base-path']) {
         $swagger->setDefaultBasePath($options['default-base-path']);
     }
@@ -180,10 +183,14 @@ EOF;
     if ($options['default-swagger-version']) {
         $swagger->setDefaultSwaggerVersion($options['default-swagger-version']);
     }
+    $resourceOptions = array(
+        'output' => 'json',
+        'json_pretty_print' => $options['pretty-print']
+    );
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
-        $json = $swagger->getResource($resourceName, $prettyPrint);
+        $json = $swagger->getResource($resourceName, $resourceOptions);
         $resourceName = str_replace(DIRECTORY_SEPARATOR, '-', ltrim($resourceName, DIRECTORY_SEPARATOR));
         $output[$resourceName] = $json;
     }
@@ -205,12 +212,12 @@ EOF;
                 );
             }
         }
-        if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($prettyPrint))) {
+        if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($resourceOptions))) {
             echo 'Created ', $outputPath, 'api-docs.json', PHP_EOL;
         }
         foreach ($output as $name => $json) {
-            $name = DIRECTORY_SEPARATOR . str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
-            $filename = $outputPath . 'resources' . $name . '.json';
+            $name = str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
+            $filename =  $outputPath . $name . '.json';
             echo 'Created ', $filename , PHP_EOL;
             file_put_contents($filename, $json);
         }

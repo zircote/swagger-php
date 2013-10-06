@@ -3,11 +3,11 @@
     "swaggerVersion": "1.2",
     "apis": [
         {
-            "path": "/resources/pet.{format}",
+            "path": "/pet",
             "description": "Operations about pets"
         },
         {
-            "path": "/resources/user.{format}",
+            "path": "/user",
             "description": "Operations about user"
         }
     ]
