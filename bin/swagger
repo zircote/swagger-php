@@ -43,11 +43,10 @@ try {
         'output' => getcwd(),
         'exclude' => null,
         'bootstrap' => false,
-        'pretty-print' => false,
         'default-base-path' => false,
         'default-api-version' => false,
         'default-swagger-version' => false,
-        'url' => '../',
+        'url' => false,
         'version' => false,
         'help' => false,
         'debug' => false,
@@ -100,7 +99,6 @@ try {
     }
     $version = trim(file_get_contents(__DIR__.'/../VERSION'));
     if ($options['version']) {
-
         echo $version, PHP_EOL;
         exit;
     }
@@ -119,7 +117,6 @@ Usage: swagger /path/to/project [--output /path/to/docs] ...
                          ex: --exclude vendor:library/Zend:library/Foo
   -b, --bootstrap     Bootstrap php file(s) for defining constants, etc.
                          ex: --bootstrap autoload.php:config/contants.php
-  --pretty-print      JSON output in readable formatting (Pretty Print)
 
   --default-base-path        Provide a default basePath for the resources
   --default-api-version      Provide a default apiVersion for the resources
@@ -162,7 +159,7 @@ EOF;
     if ($projectPath === false) {
         throw new RuntimeException('Path "'.$paths[0].'" not found');
     }
-    $outputPath = $options['output'].DIRECTORY_SEPARATOR;
+    $outputPath = rtrim($options['output'], '\\//').DIRECTORY_SEPARATOR; // Force a trailing slash
 
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
@@ -185,8 +182,12 @@ EOF;
     }
     $resourceOptions = array(
         'output' => 'json',
-        'json_pretty_print' => $options['pretty-print']
     );
+    $resourceListOptions = array(
+        'output' => 'json',
+        'suffix' => '.json'
+    );
+
     $resourceName = false;
     $output = array();
     foreach ($swagger->getResourceNames() as $resourceName) {
@@ -205,15 +206,26 @@ EOF;
                     sprintf('[%s] is not writeable', $outputPath)
                 );
             }
-            if (!file_exists($outputPath . DIRECTORY_SEPARATOR . 'resources') &&
-                !mkdir($outputPath . DIRECTORY_SEPARATOR . 'resources', 0755, true)) {
-                throw new RuntimeException(
-                    sprintf('[%s] is not writeable', $outputPath . DIRECTORY_SEPARATOR . 'resources')
-                );
-            }
         }
-        if (file_put_contents($outputPath . 'api-docs.json', $swagger->getResourceList($resourceOptions))) {
-            echo 'Created ', $outputPath, 'api-docs.json', PHP_EOL;
+
+        $filename = $outputPath . 'api-docs.json';
+        if (file_put_contents($filename, $swagger->getResourceList($resourceListOptions))) {
+            echo 'Created ', $filename, PHP_EOL;
+        }
+        if ($options['url'] == false) {
+            $filename = $outputPath.'.htaccess';
+            if (file_exists($filename)) {
+                $htaccess = file_get_contents($filename);
+                if (strpos($htaccess, 'api-docs.json')) {
+                    echo 'Skipped ', $filename , PHP_EOL;
+                } else {
+                    $htaccess = file_put_contents($filename, $htaccess."\nDirectoryIndex api-docs.json");
+                    echo 'Updated ', $filename, PHP_EOL;
+                }
+            } else {
+                file_put_contents($filename, 'DirectoryIndex api-docs.json');
+                echo 'Created ', $filename , PHP_EOL;
+            }
         }
         foreach ($output as $name => $json) {
             $name = str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
