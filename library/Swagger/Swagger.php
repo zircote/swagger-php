@@ -597,7 +597,7 @@ class Swagger implements \Serializable
             if ($serialize) {
                 return $this->jsonEncode($resource, $prettyPrint);
             }
-            return $resource;
+            return (array) $resource;
         }
         Logger::warning('Resource "'.$resourceName.'" not found, try "'.implode('", "', $this->getResourceNames()).'"');
         return false;
