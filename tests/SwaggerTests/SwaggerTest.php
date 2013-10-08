@@ -43,7 +43,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testExample($exampleDir)
     {
-        $swagger = Swagger::discover($this->examplesDir($exampleDir));
+        $swagger = new Swagger($this->examplesDir($exampleDir));
         $dir = new \DirectoryIterator($this->outputDir($exampleDir));
         $options = array(
             'output' => 'json'
@@ -70,7 +70,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSerializeUnserialize()
     {
-        $original = Swagger::discover($this->examplesDir('Facet'));
+        $original = new Swagger($this->examplesDir('Facet'));
         $serialized = serialize($original);
         $swagger = unserialize($serialized);
         $this->assertEquals($original->models, $swagger->models);
@@ -86,7 +86,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     public function testCaching()
     {
         $cache = new \Doctrine\Common\Cache\ArrayCache();
-        $swagger = Swagger::discover($this->examplesDir('Petstore/'));
+        $swagger = new Swagger($this->examplesDir('Petstore/'));
         $cache->save('swagger', serialize($swagger));
         $swag1 = unserialize($cache->fetch('swagger'));
         $this->assertInstanceOf('Swagger\Swagger', $swag1);
@@ -99,7 +99,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCliTool()
     {
-        $swagger = Swagger::discover($this->examplesDir('Petstore'));
+        $swagger = new Swagger($this->examplesDir('Petstore'));
         $tmpDir = sys_get_temp_dir();
         $command = dirname(dirname(__DIR__)).'/bin/swagger';
         shell_exec(escapeshellcmd($command).' '.escapeshellarg($this->examplesDir('Petstore')).' --output '.escapeshellarg($tmpDir));
@@ -117,7 +117,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
 //    public function testMultipleOperations()
 //    {
 //        $path = __DIR__ . '/Fixtures2';
-//        $swagger = Swagger::discover($path);
+//        $swagger = new Swagger($path);
 //        $swagger->setDefaultApiVersion('0.2');
 //        $swagger->setDefaultSwaggerVersion('1.3');
 //        $expected = json_decode(file_get_contents($path . '/multi-op.json'), true);

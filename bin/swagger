@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * @license  http://www.apache.org/licenses/LICENSE-2.0
  *           Copyright [2013] [Robert Allen]
@@ -26,8 +27,8 @@ function includeIfExists($file)
         return include $file;
     }
 }
-if ( !($loader = includeIfExists(dirname(__DIR__) . '/vendor/autoload.php')) // Local vendor-dir (swagger-php/vendor/)
-    && !($loader = includeIfExists(__DIR__ . '/../../../autoload.php')) // Project vendor-dir (swagger installed as dependancy)
+if (!($loader = includeIfExists(dirname(__DIR__).'/vendor/autoload.php')) // Local vendor-dir (swagger-php/vendor/)
+    && !($loader = includeIfExists(__DIR__.'/../../../autoload.php')) // Project vendor-dir (swagger installed as dependancy)
 ) {
     die(<<<'EOT'
 You must set up the project dependencies, run the following commands:
@@ -43,10 +44,10 @@ try {
         'output' => getcwd(),
         'exclude' => null,
         'bootstrap' => false,
-        'default-base-path' => false,
-        'default-api-version' => false,
-        'default-swagger-version' => false,
-        'url' => false,
+        'url' => null,
+        'default-base-path' => null,
+        'default-api-version' => null,
+        'default-swagger-version' => '1.2',
         'version' => false,
         'help' => false,
         'debug' => false,
@@ -63,6 +64,7 @@ try {
         'output',
         'exclude',
         'bootstrap',
+        'url',
         'default-base-path',
         'default-api-version',
         'default-swagger-version',
@@ -73,7 +75,6 @@ try {
         $arg = $argv[$i];
         if (substr($arg, 0, 2) === '--') { // longopt
             $option = substr($arg, 2);
-
         } elseif ($arg[0] === '-') { // shortopt
             if (array_key_exists(substr($arg, 1), $aliases)) {
                 $option = $aliases[$arg[1]];
@@ -133,7 +134,7 @@ EOF;
         $excludePaths = explode(':', $options['exclude']);
         foreach ($excludePaths as $index => $excludePath) {
             if (DIRECTORY_SEPARATOR != substr($excludePath, 0, 1)) {
-                $excludePaths[$index] = getcwd() . DIRECTORY_SEPARATOR . $excludePath;
+                $excludePaths[$index] = getcwd().DIRECTORY_SEPARATOR.$excludePath;
             }
         }
         $excludePath = implode(':', $excludePaths);
@@ -168,24 +169,20 @@ EOF;
         }
         echo '[', $type, '] ', $entry, PHP_EOL;
     };
-    $swagger = \Swagger\Swagger::discover($projectPath, $excludePath);
+    $swagger = new \Swagger\Swagger($projectPath, $excludePath);
 
-    $swagger->setApidocsBasePath($options['url']);
-    if ($options['default-base-path']) {
-        $swagger->setDefaultBasePath($options['default-base-path']);
-    }
-    if ($options['default-api-version']) {
-        $swagger->setDefaultApiVersion($options['default-api-version']);
-    }
-    if ($options['default-swagger-version']) {
-        $swagger->setDefaultSwaggerVersion($options['default-swagger-version']);
-    }
-    $resourceOptions = array(
-        'output' => 'json',
-    );
     $resourceListOptions = array(
         'output' => 'json',
-        'suffix' => '.json'
+        'suffix' => '.json',
+        'basePath' => $options['url'],
+        'apiVersion' => $options['default-api-version'],
+        'swaggerVersion' => $options['default-swagger-version'],
+    );
+    $resourceOptions = array(
+        'output' => 'json',
+        'defaultBasePath' => $options['default-base-path'],
+        'defaultApiVersion' => $options['default-api-version'],
+        'defaultSwaggerVersion' => $options['default-swagger-version'],
     );
 
     $resourceName = false;
@@ -198,17 +195,17 @@ EOF;
     if ($output) {
         if (file_exists($outputPath) && !is_dir($outputPath)) {
             throw new RuntimeException(
-                sprintf('[%s] is not a directory', $outputPath)
+            sprintf('[%s] is not a directory', $outputPath)
             );
         } else {
             if (!file_exists($outputPath) && !mkdir($outputPath, 0755, true)) {
                 throw new RuntimeException(
-                    sprintf('[%s] is not writeable', $outputPath)
+                sprintf('[%s] is not writeable', $outputPath)
                 );
             }
         }
 
-        $filename = $outputPath . 'api-docs.json';
+        $filename = $outputPath.'api-docs.json';
         if (file_put_contents($filename, $swagger->getResourceList($resourceListOptions))) {
             echo 'Created ', $filename, PHP_EOL;
         }
@@ -217,20 +214,20 @@ EOF;
             if (file_exists($filename)) {
                 $htaccess = file_get_contents($filename);
                 if (strpos($htaccess, 'api-docs.json')) {
-                    echo 'Skipped ', $filename , PHP_EOL;
+                    echo 'Skipped ', $filename, PHP_EOL;
                 } else {
                     $htaccess = file_put_contents($filename, $htaccess."\nDirectoryIndex api-docs.json");
                     echo 'Updated ', $filename, PHP_EOL;
                 }
             } else {
                 file_put_contents($filename, 'DirectoryIndex api-docs.json');
-                echo 'Created ', $filename , PHP_EOL;
+                echo 'Created ', $filename, PHP_EOL;
             }
         }
         foreach ($output as $name => $json) {
             $name = str_replace(DIRECTORY_SEPARATOR, '-', ltrim($name, DIRECTORY_SEPARATOR));
-            $filename =  $outputPath . $name . '.json';
-            echo 'Created ', $filename , PHP_EOL;
+            $filename = $outputPath.$name.'.json';
+            echo 'Created ', $filename, PHP_EOL;
             file_put_contents($filename, $json);
         }
         echo PHP_EOL;
