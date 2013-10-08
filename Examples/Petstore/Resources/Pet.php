@@ -31,7 +31,7 @@ use Swagger\Annotations as SWG;
  * @SWG\Resource(
  *   apiVersion="1.0.0",
  *   swaggerVersion="1.2",
- *   basePath="http://localhost:8002/api",
+ *   basePath="http://petstore.swagger.wordnik.com/api",
  *   resourcePath="/pet",
  *   description="Operations about pets",
  *   produces="['application/json','application/xml','text/plain','text/html']"
@@ -42,10 +42,8 @@ class Pet
     /**
      * @SWG\Api(
      *   path="/pet/{petId}",
-     *   deprecated=true,
      *   @SWG\Operation(
      *     method="GET",
-     *     deprecated=true,
      *     summary="Find pet by ID",
      *     notes="Returns a pet based on ID",
      *     type="Pet",

@@ -30,7 +30,7 @@ use Swagger\Annotations as SWG;
  * @SWG\Resource(
  *   apiVersion="1.0.0",
  *   swaggerVersion="1.2",
- *   basePath="http://localhost:8002/api",
+ *   basePath="http://petstore.swagger.wordnik.com/api",
  *   resourcePath="/user",
  *   description="Operations about user",
  *   @SWG\Produces("application/json")

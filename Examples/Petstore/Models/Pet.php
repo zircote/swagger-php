@@ -28,32 +28,32 @@ use Swagger\Annotations as SWG;
  * @category
  * @subpackage
  *
- * @SWG\Model(id="Pet",required="['name','id']")
+ * @SWG\Model(id="Pet",required="['id','name']")
  */
 class Pet
 {
     /**
-     * @SWG\Property(name="name",type="string")
-     */
-    public $name;
-
-    /**
-     * @SWG\Property(name="id",type="integer",format="int64",description="foo",minimum="0.0",maximum="100.0")
+     * @SWG\Property(name="id",type="integer",format="int64",description="Unique identifier for the Pet",minimum="0.0",maximum="100.0")
      */
     public $id;
 
     /**
-     * @SWG\Property(name="category",type="Category")
+     * @SWG\Property(name="name",type="string",description="Friendly name of the pet")
+     */
+    public $name;
+
+    /**
+     * @SWG\Property(name="category",type="Category",description="Category the pet is in")
      */
     public $category;
 
     /**
-     * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"))
+     * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"),description="Image URLs")
      */
     public $photos;
 
     /**
-     * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"))
+     * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"),description="Tags assigned to this pet")
      */
     public $tags;
 
