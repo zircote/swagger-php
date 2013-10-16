@@ -1,0 +1,106 @@
+{
+    "apiVersion":"0.2",
+    "swaggerVersion":"1.2",
+    "basePath":"http://facetstore.zircote.com/swagger-php/api",
+    "resourcePath":"/facet",
+    "apis":[
+        {
+            "path":"/facet.{format}/{facetId}",
+            "description":"Operations about facets",
+            "produces": ["application/json"],
+            "operations":[
+                {
+                    "nickname":"getfacetById",
+                    "type":"FacetResult",
+                    "summary":"Find facet by ID",
+                    "method":"GET",
+                    "parameters":[
+                        {
+                            "description":"ID of facet that needs to be fetched",
+
+                            "type":"string",
+                            "name":"facetId",
+                            "paramType":"path",
+                            "required":true
+                        }
+                    ],
+                    "responseMessages":[
+                        {
+                            "code":400,
+                            "message":"Invalid ID supplied"
+                        },
+                        {
+                            "code":404,
+                            "message":"facet not found"
+                        }
+                    ],
+                    "notes":"Returns a facet based on ID"
+                },
+                {
+                    "nickname":"getfacetById",
+                    "summary":"Find facet by ID",
+                    "method":"DELETE",
+                    "parameters":[
+                        {
+                            "description":"ID of facet that needs to be fetched",
+
+                            "type":"string",
+                            "name":"facetId",
+                            "paramType":"path",
+                            "required":true
+                        }
+                    ],
+                    "responseMessages":[
+                        {
+                            "code":400,
+                            "message":"Invalid ID supplied"
+                        },
+                        {
+                            "code":404,
+                            "message":"facet not found"
+                        }
+                    ],
+                    "notes":"Returns a facet based on ID"
+                }
+            ]
+        }
+    ],
+    "models":{
+        "FacetResult":{
+            "id":"FacetResult",
+            "properties":{
+                "facetSets":{
+                    "type":"array",
+                    "items":{
+                        "$ref":"FacetSet"
+                    }
+                }
+            }
+        },
+        "FacetSet":{
+            "id":"FacetSet",
+            "properties":{
+                "facets":{
+                    "type":"array",
+                    "items":{
+                        "$ref":"Facet"
+                    }
+                }
+            }
+        },
+        "Facet":{
+            "id":"Facet",
+            "properties":{
+                "prop1":{
+                    "type":"string"
+                },
+                "prop2":{
+                    "type":"string"
+                },
+                "prop3":{
+                    "$ref":"Some_Object"
+                }
+            }
+        }
+    }
+}

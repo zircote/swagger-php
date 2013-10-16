@@ -1,9 +1,10 @@
 <?php
+
 namespace Swagger\Annotations;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2012] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,19 +67,36 @@ class Resource extends AbstractAnnotation
      */
     public $models = array();
 
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Api) {
-                $this->apis[] = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
+    /**
+     * @var array
+     */
+    public $produces;
+
+    /**
+     * @var array
+     */
+    public $consumes;
+
+    /**
+     * The description in the resource listing (api-docs.json)
+     * @var string
+     */
+    public $description;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Api' => 'apis[]',
+        '\Swagger\Annotations\Produces' => 'produces[]',
+        '\Swagger\Annotations\Consumes' => 'consumes[]',
+    );
 
     public function validate()
     {
+        if ($this->swaggerVersion) {
+            if (version_compare($this->swaggerVersion, '1.2', '<')) {
+                Logger::warning('swaggerVersion: '.$this->swaggerVersion.' not supported. Use a swagger-php older than 0.8');
+                $this->swaggerVersion = null;
+            }
+        }
         $apis = array();
         foreach ($this->apis as $api) {
             if ($api->validate()) {
@@ -102,12 +120,15 @@ class Resource extends AbstractAnnotation
             return false;
         }
         $this->apis = $apis;
+        Produces::validateContainer($this);
+        Consumes::validateContainer($this);
         return true;
     }
 
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
+        unset($data['description']);
         if (count($this->models) === 0) {
             unset($data['models']);
         }
@@ -123,5 +144,25 @@ class Resource extends AbstractAnnotation
             $this->apis[] = $api;
         }
         $this->validate();
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        if ($this->description !== null) {
+            return $this->description;
+        }
+        foreach ($this->apis as $api) {
+            if ($api->description !== null) {
+                return $api->description;
+            }
+        }
+    }
+
+    public function identity() {
+        return '@SWG\Resource(resourcePath="'.$this->resourcePath.'")';
     }
 }

@@ -21,24 +21,39 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
-
 /**
  * @package
  * @category
  * @subpackage
  *
  * @Annotation
+ * @link https://github.com/wordnik/swagger-core/wiki/Response-Messages
  */
-class Properties extends AbstractAnnotation
+class ResponseMessage extends AbstractAnnotation
 {
     /**
-     * @var array|Parameter
+     * the HTTP response code of the error condition.
+     * @var int
      */
-    public $properties;
+    public $code;
 
-    protected static $mapAnnotations = array(
-        '\Swagger\Annotations\Property' => 'properties[]'
-    );
+    /**
+     * The explanation of what will cause the error condition.
+     * @var string
+     */
+    public $message;
 
+    /**
+     * An optional response class to accompany the response code.
+     * @var string
+     */
+    public $responseModel;
+
+    public function __construct(array $values = array())
+    {
+        parent::__construct($values);
+        if ($this->code !== null) {
+            $this->code = (int) $this->code;
+        }
+    }
 }

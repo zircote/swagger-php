@@ -3,7 +3,7 @@ namespace Swagger;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2012] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,9 @@ class Parser
         $namespace = '';
         $class = false;
 
-        $imports = array('swg' => 'Swagger\Annotations');
+        $imports = array(
+            'swg' => 'Swagger\Annotations' // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
+        );
         $this->docParser->setImports($imports);
         $uses = array();
         $docComment = false;
@@ -358,24 +360,31 @@ class Parser
                     if (preg_match('/@var\s+(\w+)/i', $docComment, $matches)) {
                         $type = (string) array_pop($matches);
                         $map = array(
-                            'array' => 'Array',
-                            'byte' => 'byte',
+                            'array' => 'array',
+                            'byte' => array('string', 'byte'),
                             'boolean' => 'boolean',
                             'bool' => 'boolean',
-                            'int' => 'int',
-                            'integer' => 'int',
-                            'long' => 'long',
-                            'float' => 'float',
-                            'double' => 'double',
+                            'int' => 'integer',
+                            'integer' => 'integer',
+                            'long' => array('integer', 'long'),
+                            'float' => array('number', 'float'),
+                            'double' => array('number', 'double'),
                             'string' => 'string',
-                            'date' => 'Date',
-                            'datetime' => 'Date',
-                            '\\datetime' => 'Date',
-                            'list' => 'List',
-                            'set' => 'Set',
+                            'date' => array('string', 'date'),
+                            'datetime' => array('string', 'date-time'),
+                            '\\datetime' => array('string', 'date-time'),
+                            'byte' => array('string', 'byte'),
+                            'number' => 'number',
+                            'object' => 'object'
                         );
                         if (array_key_exists(strtolower($type), $map)) {
                             $type = $map[strtolower($type)];
+                            if (is_array($type)) {
+                                if ($annotation->format === null) {
+                                    $annotation->format = $type[1];
+                                }
+                                $type = $type[0];
+                            }
                         }
                         $annotation->type = $type;
                     }

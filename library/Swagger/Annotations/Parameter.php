@@ -3,7 +3,7 @@ namespace Swagger\Annotations;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2012] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,32 +31,10 @@ use Swagger\Logger;
  *
  * @Annotation
  */
-class Parameter extends AbstractAnnotation
+class Parameter extends DataType
 {
     /**
-     * The name of the parameter name
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Description of the parameter
-     * @var string
-     */
-    public $description;
-
-    /**
-     * @var bool
-     */
-    public $allowMultiple = null;
-
-    /**
-     * The dataType of the parameter
-     * @var string
-     */
-    public $dataType;
-
-    /**
+     * The type of the parameter. It can be only one of the following: "path", "query", "body", "header" or "form".
      * "path" is for when the parameter is part of the URL path (e.g /foo/{id}.xml)
      * "query" is for when the parameter is part of the query_string or a form
      * @var string
@@ -64,63 +42,32 @@ class Parameter extends AbstractAnnotation
     public $paramType;
 
     /**
-     * If not present defaults to false.
+     * The unique name for the parameter. Each name must be unique, even if they are associated with different paramType values.
+     * @var string
+     */
+    public $name;
+
+    /**
+     * The type of the parameter.
+     *
+     * For path, query, and header paramTypes, this field must be a primitive.
+     * For body, this can be a complex or container datatype.
+     * When sending multiple values, the array type should be used
+     * @var string
+     */
+    public $type;
+
+    /**
+     * For path, this is always true. Otherwise, this field tells the client whether or not the field must be supplied.
      * @var bool
      */
     public $required;
 
-    /**
-     * @var AllowableValues
-     */
-    public $allowableValues;
-
-    /**
-     * @var mixed
-     */
-    public $defaultValue;
-
     public function __construct(array $values = array())
     {
         parent::__construct($values);
-        Swagger::checkDataType($this->dataType);
         if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header', 'form'))) {
             Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body", "header" or "form" in '.AbstractAnnotation::$context);
         }
-    }
-
-    public function setNestedAnnotations($annotations)
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof AllowableValues) {
-                $this->allowableValues = $annotation;
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
-            }
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        $members = array_filter((array) $this, array($this, 'arrayFilter'));
-        $result = array();
-        foreach ($members as $k => $m) {
-            if ($m instanceof AllowableValues) {
-                $members['allowableValues'] = $m->toArray();
-            }
-        }
-        if (isset($members['value'])) {
-            foreach ($members['value'] as $k => $m) {
-                if ($m instanceof AbstractAnnotation) {
-                    $result[] = $m->toArray();
-                }
-            }
-        }
-        if (isset($members['value'])) {
-            $members['value'] = $result;
-        }
-        return $members;
     }
 }

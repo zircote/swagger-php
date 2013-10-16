@@ -1,5 +1,5 @@
 <?php
-namespace Swagger\Annotations;
+namespace Minimal\Models;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
@@ -21,24 +21,29 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use \Swagger\Annotations as SWG;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Annotation
+ *
+ * @SWG\Model()
+ * Model() will use the classname "Dog" as id and inherit all swagger properties from Pet
  */
-class Properties extends AbstractAnnotation
+abstract class Dog extends Pet
 {
     /**
-     * @var array|Parameter
+     * @SWG\Property(required=true)
+     * @var string
      */
-    public $properties;
+    public $breed;
 
-    protected static $mapAnnotations = array(
-        '\Swagger\Annotations\Property' => 'properties[]'
-    );
-
+    /**
+     * @var Dog
+     *
+     * @SWG\Property()
+     */
+    protected $parent;
 }

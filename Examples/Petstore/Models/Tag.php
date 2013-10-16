@@ -1,5 +1,5 @@
 <?php
-namespace Swagger\Annotations;
+namespace Petstore\Models;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
@@ -21,24 +21,30 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use Swagger\Annotations as SWG;
 
 /**
  * @package
  * @category
  * @subpackage
  *
- * @Annotation
+ * @SWG\Model(id="Tag")
  */
-class Properties extends AbstractAnnotation
+class Tag
 {
     /**
-     * @var array|Parameter
+     * @SWG\Property(
+     *   name="id",
+     *   description="Unique identifier for the tag",
+     *   type="integer",
+     *   format="int64"
+     * )
      */
-    public $properties;
+    public $id;
 
-    protected static $mapAnnotations = array(
-        '\Swagger\Annotations\Property' => 'properties[]'
-    );
+    /**
+     * @SWG\Property(name="name",type="string",description="Friendly name for the tag")
+     */
+    public $name;
 
 }

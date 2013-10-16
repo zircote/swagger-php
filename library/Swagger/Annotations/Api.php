@@ -3,7 +3,7 @@ namespace Swagger\Annotations;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2012] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,28 +39,57 @@ class Api extends AbstractAnnotation
     public $path;
 
     /**
+     * @var string
+     */
+    public $description;
+
+    /**
      * @var string|Operation
      */
     public $operations = array();
 
     /**
-     * @var string
+     * @var array
      */
-    public $description;
+    public $produces;
+
+    /**
+     * @var array
+     */
+    public $consumes;
+
+    /**
+     * Undocumented
+     * @var bool
+     */
+    public $deprecated;
+
+    /**
+     * @var Undocumented
+     */
+    public $defaultValue;
+
+    protected static $mapAnnotations = array(
+        '\Swagger\Annotations\Operation' => 'operations[]',
+        '\Swagger\Annotations\Produces' => 'produces[]',
+        '\Swagger\Annotations\Consumes' => 'consumes[]',
+    );
+
+    public function __construct(array $values = array()) {
+        parent::__construct($values);
+    }
 
     public function setNestedAnnotations($annotations)
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Operation) {
-                $this->operations[] = $annotation;
-            } elseif ($annotation instanceof Operations) {
+        foreach ($annotations as $index => $annotation) {
+            if ($annotation instanceof Operations) {
                 foreach ($annotation->operations as $operation) {
                     $this->operations[] = $operation;
                 }
-            } else {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context);
+                unset($annotations[$index]);
             }
         }
+        return parent::setNestedAnnotations($annotations);
     }
 
     public function validate()
@@ -76,6 +105,12 @@ class Api extends AbstractAnnotation
             Logger::notice('Api "'.$this->path.'" doesn\'t have any valid operations');
             return false;
         }
+        Produces::validateContainer($this);
+        Consumes::validateContainer($this);
         return true;
+    }
+
+    public function identity() {
+        return '@SWG\Api(path="'.$this->path.'")';
     }
 }

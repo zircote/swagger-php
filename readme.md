@@ -2,11 +2,11 @@ swagger-php
 ============
 
  - [![Master Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
- - [![0.7.x Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=0.7)](http://travis-ci.org/zircote/swagger-php) `0.7.*@dev`
+ - [![0.8.x Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=0.8)](http://travis-ci.org/zircote/swagger-php) `0.8.*@dev`
 
 Swagger-PHP is a PHP library that serves as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
-it makes extensive use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for
-annotations support and caching.
+it makes use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for
+annotations support.
 
 To report issues or ask questions please feel free to submit to [Github Issues](https://github.com/zircote/swagger-php/issues)
 
@@ -26,7 +26,6 @@ Documentation is available at http://zircote.com/swagger-php
 Features
 -------------------
  - Fully compatible with the full swagger documented proposal.
- - Caching layer using the `\Doctrine\Common\Cache` library
  - Full project discovery
  - Standalone CLI phar implementation
  - Free

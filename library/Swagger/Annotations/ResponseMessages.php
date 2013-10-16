@@ -29,16 +29,16 @@ use Swagger\Logger;
  * @subpackage
  *
  * @Annotation
+ *
  */
-class Properties extends AbstractAnnotation
+class ResponseMessages extends AbstractAnnotation
 {
     /**
-     * @var array|Parameter
+     * @var array|ResponseMessage
      */
-    public $properties;
+    public $responseMessages;
 
     protected static $mapAnnotations = array(
-        '\Swagger\Annotations\Property' => 'properties[]'
+        '\Swagger\Annotations\ResponseMessage' => 'responseMessages[]'
     );
-
 }
