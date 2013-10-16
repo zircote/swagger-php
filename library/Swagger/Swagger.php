@@ -46,13 +46,16 @@ class Swagger
 
     /**
      *
-     * @param string $path Project root folder
-     * @param string $excludePath Exclude paths
+     * @param string|array $paths Project root folder
+     * @param string|array $excludePath Exclude paths
      * )
      */
-    public function __construct($path = null, $excludePath = null)
+    public function __construct($paths = array(), $excludePath = array())
     {
-        if ($path !== null) {
+        if (is_string($paths)) {
+            $paths = array($paths);
+        }
+        foreach ($paths as $path) {
             $this->scan($path, $excludePath);
         }
     }
@@ -67,8 +70,13 @@ class Swagger
      */
     public static function discover($path, $excludePath = null)
     {
-        Logger::warning('Swagger::discover($path) is deprecated, use new Swagger($path)');
-        return new self($path, $excludePath);
+        Logger::warning('Swagger::discover($path) is deprecated, use new Swagger($paths)');
+        if ($excludePath === null) {
+            $excludePaths = array();
+        } else {
+            $excludePaths = explode(':', $excludePath);
+        }
+        return new self($path, $excludePaths);
     }
 
     /**
@@ -342,12 +350,10 @@ class Swagger
      *
      * @return array
      */
-    protected function getFiles($path, $excludePaths = null)
+    protected function getFiles($path, $excludePaths = array())
     {
         if (is_string($excludePaths)) {
-            $excludePaths = explode(':', $excludePaths);
-        } elseif (is_array($excludePaths) === false) {
-            $excludePaths = array();
+            $excludePaths = array($excludePaths);
         }
 
         $files = array();

@@ -137,9 +137,8 @@ EOF;
                 $excludePaths[$index] = getcwd().DIRECTORY_SEPARATOR.$excludePath;
             }
         }
-        $excludePath = implode(':', $excludePaths);
     } else {
-        $excludePath = null;
+        $excludePaths = array();
     }
     if ($options['bootstrap']) {
         /* @var  \Composer\Autoload\ClassLoader $loader */
@@ -153,12 +152,13 @@ EOF;
     }
     if (count($paths) === 0) {
         throw new RuntimeException('A path must be provided');
-    } elseif (count($paths) !== 1) {
-        throw new RuntimeException('multiple paths are not (yet) supported');
     }
-    $projectPath = realpath($paths[0]);
-    if ($projectPath === false) {
-        throw new RuntimeException('Path "'.$paths[0].'" not found');
+    $projectPaths = array();
+    foreach ($paths as $i => $path) {
+        $projectPaths[$i] = realpath($path);
+        if ($projectPaths[$i] === false) {
+            throw new RuntimeException('Path "'.$path.'" not found');
+        }
     }
     $outputPath = rtrim($options['output'], '\\//').DIRECTORY_SEPARATOR; // Force a trailing slash
 
@@ -169,7 +169,7 @@ EOF;
         }
         echo '[', $type, '] ', $entry, PHP_EOL;
     };
-    $swagger = new \Swagger\Swagger($projectPath, $excludePath);
+    $swagger = new \Swagger\Swagger($projectPaths, $excludePaths);
 
     $resourceListOptions = array(
         'output' => 'json',
@@ -210,17 +210,11 @@ EOF;
             echo 'Created ', $filename, PHP_EOL;
         }
         if ($options['url'] == false) {
-            $filename = $outputPath.'.htaccess';
+            $filename = $outputPath.'index.php';
             if (file_exists($filename)) {
-                $htaccess = file_get_contents($filename);
-                if (strpos($htaccess, 'api-docs.json')) {
-                    echo 'Skipped ', $filename, PHP_EOL;
-                } else {
-                    $htaccess = file_put_contents($filename, $htaccess."\nDirectoryIndex api-docs.json");
-                    echo 'Updated ', $filename, PHP_EOL;
-                }
+                echo 'Skipped ', $filename, PHP_EOL;
             } else {
-                file_put_contents($filename, 'DirectoryIndex api-docs.json');
+                file_put_contents($filename, "<?php\nheader('Content-Type: application/json');\nreadfile(__DIR__.'/api-docs.json');");
                 echo 'Created ', $filename, PHP_EOL;
             }
         }
