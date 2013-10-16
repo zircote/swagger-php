@@ -2,7 +2,7 @@ swagger-php
 ============
 
  - [![Master Build Status](https://secure.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
- - [![0.7.x Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=0.7)](http://travis-ci.org/zircote/swagger-php) `0.7.*@dev`
+ - [![0.8.x Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=0.8)](http://travis-ci.org/zircote/swagger-php) `0.8.*@dev`
 
 Swagger-PHP is a PHP library that serves as an annotations toolkit to produce [Swagger Doc](http://swagger.wordnik.com)
 it makes use of the [Doctrine Common library](http://www.doctrine-project.org/projects/common.html) for

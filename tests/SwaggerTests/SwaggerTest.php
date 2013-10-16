@@ -111,18 +111,6 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         }
         unlink($tmpDir.DIRECTORY_SEPARATOR.'api-docs.json');
     }
-    /**
-     * @group multi-op
-     */
-//    public function testMultipleOperations()
-//    {
-//        $path = __DIR__ . '/Fixtures2';
-//        $swagger = new Swagger($path);
-//        $swagger->setDefaultApiVersion('0.2');
-//        $swagger->setDefaultSwaggerVersion('1.3');
-//        $expected = json_decode(file_get_contents($path . '/multi-op.json'), true);
-//        $this->assertEquals($expected, json_decode($swagger->getResource('/facet'), true));
-//    }
 
     /**
      * Verify that the jsonEncode method respects the prettyPrint flag.  This test assumes that JSON is considered
