@@ -2,6 +2,15 @@
 Installation
 ******************
 
+Phar
+**************
+Download the latest swagger.phar from https://github.com/zircote/swagger-php/blob/master/swagger.phar
+
+.. code-block:: bash
+
+    % php swagger.phar --help
+
+
 Composer
 **************
 
@@ -11,7 +20,7 @@ details for swagger-php to your projects *composer.json*
 .. code-block:: javascript
 
     "require": {
-        "zircote/swagger-php": "master-dev"
+        "zircote/swagger-php": "*"
     }
 
 Finally run *composer install* to update the composer dependencies and implement the *vendor/autoload.php* in your
@@ -28,24 +37,4 @@ Add *swagger-php/library* to your include path.
 
 .. code-block:: bash
 
-    % git clone git@github.com:zircote/swagger-php.git swagger-php
-
-Notes on use:
-****************
-For classes you with to implement *swagger-php* annotations, you must declare the annotation class in your *use* statements
-such as:
-
-.. code-block:: php
-
-    <?php
-    namespace Tardis\Models;
-
-    use Swagger\Annotations as SWG;
-
-    class Sidekick
-    {
-    ...
-    }
-
-Unless *use* statements are declared the annotations will go ignored and unparsed.
-
+    % git clone git@github.com:zircote/swagger-php.git

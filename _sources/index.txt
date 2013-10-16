@@ -12,7 +12,6 @@ Contents:
     installation
     using_swagger
     annotations
-    caching
 
 About Swagger-PHP
 **********************

@@ -59,12 +59,19 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="phar">
+<h2>Phar<a class="headerlink" href="#phar" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest swagger.phar from <a class="reference external" href="https://github.com/zircote/swagger-php/blob/master/swagger.phar">https://github.com/zircote/swagger-php/blob/master/swagger.phar</a></p>
+<div class="highlight-bash"><div class="highlight"><pre>% php swagger.phar --help
+</pre></div>
+</div>
+</div>
 <div class="section" id="composer">
 <h2>Composer<a class="headerlink" href="#composer" title="Permalink to this headline">¶</a></h2>
 <p>First acquire Composer at <a class="reference external" href="http://getcomposer.org">http://getcomposer.org</a> following the installation instructions. Finally add the composer
 details for swagger-php to your projects <em>composer.json</em></p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&quot;zircote/swagger-php&quot;</span><span class="o">:</span> <span class="s2">&quot;master-dev&quot;</span>
+    <span class="s2">&quot;zircote/swagger-php&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -79,26 +86,9 @@ details for swagger-php to your projects <em>composer.json</em></p>
 the <a class="reference external" href="http://www.doctrine-project.org/projects/common.html">Doctrine Common</a> library following the procedure they have
 documented on the project page.</p>
 <p>Add <em>swagger-php/library</em> to your include path.</p>
-<div class="highlight-bash"><div class="highlight"><pre>% git clone git@github.com:zircote/swagger-php.git swagger-php
+<div class="highlight-bash"><div class="highlight"><pre>% git clone git@github.com:zircote/swagger-php.git
 </pre></div>
 </div>
-</div>
-<div class="section" id="notes-on-use">
-<h2>Notes on use:<a class="headerlink" href="#notes-on-use" title="Permalink to this headline">¶</a></h2>
-<p>For classes you with to implement <em>swagger-php</em> annotations, you must declare the annotation class in your <em>use</em> statements
-such as:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">namespace</span> <span class="nx">Tardis\Models</span><span class="p">;</span>
-
-<span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="k">class</span> <span class="nc">Sidekick</span>
-<span class="p">{</span>
-<span class="o">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Unless <em>use</em> statements are declared the annotations will go ignored and unparsed.</p>
 </div>
 </div>
 
@@ -111,9 +101,9 @@ such as:</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#phar">Phar</a></li>
 <li><a class="reference internal" href="#composer">Composer</a></li>
 <li><a class="reference internal" href="#git">git</a></li>
-<li><a class="reference internal" href="#notes-on-use">Notes on use:</a></li>
 </ul>
 </li>
 </ul>
@@ -157,7 +147,7 @@ such as:</p>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Robert Allen.
+        &copy; Copyright 2013, Robert Allen.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

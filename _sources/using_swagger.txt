@@ -18,10 +18,9 @@ The following example will render the documentation to a web request.
 
     <?php
     use Swagger\Swagger;
-    $path = '/project/root/top_level';
-    $swagger = Swagger::discover($path);
+    $swagger = new Swagger('/project/root/top_level');
     header("Content-Type: application/json")
-    echo $swagger->getResource('/pet');
+    echo $swagger->getResource('/pet', array('output' => 'json'));
 
 
 While the CLI example will create individual json documents for each resource discovered in your project, these file are
@@ -29,7 +28,7 @@ then mappable via the `swagger-ui` of any other swagger friendly tool you wish t
 
 .. code-block:: bash
 
-    php swagger.phar -p /project/root/top_level -o /var/html/swagger-docs
+    php swagger.phar /project/root/top_level -o /var/html/swagger-docs
 
 Check the help for additional options.
 

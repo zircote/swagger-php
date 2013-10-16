@@ -2,7 +2,9 @@
 Annotations
 ******************
 
-.. warning:: Any annotation you intend to implement in your resources and or models must be declared with a ``use`` statement. The ``use`` statement does not require a namespace be declared.
+.. warning:: Using annotation in swagger-php before 0.7.3 require a ``use`` statement. Later versions register the ``@SWG\`` for annotations without a use statement.
+
+Tip! Mistype an attribute on purpose and a warning will be shown with the available attributes for that particular annotation.
 
 .. code-block:: php
 
@@ -19,7 +21,7 @@ Annotations
         /**
          * @var array<Tags>
          *
-         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
+         * @SWG\Property(name="tags",type="array", items="$ref:Tag")
          */
         protected $tags = array();
     }
@@ -35,68 +37,16 @@ Annotation Hierarchy
     -``@SWG\Api``
       - ``@SWG\Operations``
         - ``@SWG\Operation``
-          - ``@SWG\ErrorResponses``
-            - ``@SWG\ErrorResponse``
           - ``@SWG\Parameters``
             - ``@SWG\Parameter``
-              - ``@SWG\AllowableValues``
+          - ``@SWG\ResponseMessages``
+            - ``@SWG\ResponseMessage``
+          
  - ``@SWG\Model``
    - ``@SWG\Property``
-     - ``@SWG\AllowableValues``
      - ``@SWG\Items``
 
-
-AllowableValues
-******************
-
-.. note:: The `AllowableValues` annotation provides support for Enumerations as well as Range limits. This annotation may exist in either `Parameter`_ definitions within an `Operation`_ definition, or as an augmentation to the `Property`_ annotation within models.
-
-**Attributes**
-Types Supported: ``LIST`` || ``RANGE``
-``LIST`` attributes:
-
-- ``valueType``
-- ``values=[json encoded enumerations]``
-
-  - non-indexed values as a json array: ``['one','two','three']``
-  - indexed values as a json object: ``{'1': 'one', '2': 'two', '3': 'three'}``
-
-``RANGE`` attributes:
-
-- ``valueType=RANGE``
-- ``min``
-- ``max``
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\AllowableValues(valueType="LIST",values="['available', 'pending', 'sold']")
-     *
-     * @SWG\AllowableValues(valueType="RANGE",min="0", max="5")
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    "allowableValues":{
-        "valueType":"LIST",
-        "values":["available", "pending", "sold"]
-    }
-    ...
-    "allowableValues":{
-        "valueType":"RANGE",
-        "min": 0,
-        "max": 5
-    },
-
-**Allowable Use:**
-    - Enclosed within `Parameter`_
-    - Enclosed within `Property`_
+Container annotations like ``@SWG\Operations``, ``@SWG\Parameters`` and ``@SWG\ResponseMessages`` are optional. 
 
 Api
 ******************
@@ -118,11 +68,10 @@ Api
      * @SWG\Api(
      *   path="/pet.{format}/{petId}",
      *   description="Operations about pets",
-     *   @SWG\Operations(@SWG\Operation(@SWG\Parameters(@SWG\Parameter(...)),
-     *       @SWG\ErrorResponses(
-     *          @SWG\ErrorResponse(@SWG\errorResponse(...)
-     *       )
-     *     )
+     *   @SWG\Operation(..., 
+     *      @SWG\Parameter(...),
+     *      @SWG\ResponseMessage(...),
+     *      @SWG\ResponseMessage(...)
      *   )
      * )
      */
@@ -139,16 +88,13 @@ Api
             ]
         }
 
-**Allowable Use:**
-    - Method Annotation
-
-ErrorResponse
+ResponseMessage
 ******************
 
 **Attributes**
 
 - ``code``
-- ``reason``
+- ``message``
 
 **Example Annotations**
 
@@ -157,7 +103,7 @@ ErrorResponse
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\ErrorResponse(code="404", reason="Pet not found")
+     * @SWG\ResponseMessage(code=404, message="Pet not found")
      */
 
 **Derived JSON**
@@ -165,26 +111,22 @@ ErrorResponse
 .. code-block:: javascript
 
 
-    "errorResponses":[
-        {
-            "code":400,
-            "reason":"Invalid ID supplied"
-        },
+    "responseMessages":[
         {
             "code":404,
-            "reason":"Pet not found"
+            "message":"Pet not found"
         }
     ]
 
 **Allowable Use:**
-    - Enclosed within `ErrorResponses`_
+    - Enclosed within `ResponseMessages`_ or `Operation`_
 
-ErrorResponses
+ResponseMessages
 ******************
 
 **Attributes**
 
-- `ErrorResponse`_
+- `ResponseMessage`_
 
 **Example Annotations**
 
@@ -193,7 +135,7 @@ ErrorResponses
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\ErrorResponses(@SWG\ErrorResponse(...)[ @SWG\ErrorResponse(...), ])
+     * @SWG\ResponseMessages(@SWG\ResponseMessage(...)[ @SWG\ResponseMessage(...), ])
      */
 
 **Derived JSON**
@@ -226,15 +168,16 @@ Items
     class Pet
     {
         /**
-         * @SWG\Property(name="tags",type="Array", items="$ref:Tag")
+         * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"))
          */
-        protected $tags = array();
+        public $photos;
 
         /**
-         * @SWG\Property(name="photoUrls",type="Array", @SWG\Items(type="string"))
+         * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"))
          */
-        protected $photoUrls = array();
-    }
+        public $tags;
+
+        }
 
 
 **Derived JSON**
@@ -246,19 +189,17 @@ Items
             "items":{
                 "$ref":"Tag"
             },
-            "type":"Array"
+            "type":"array"
         },
         "id":{
-            "type":"long"
+            "type":"integer",
+            "format: "int64"
         },
         "category":{
             "type":"Category"
         },
         "status":{
-            "allowableValues":{
-                "valueType":"LIST",
-                "values":["available", "pending", "sold"]
-            },
+            "enum":["available", "pending", "sold"]
             "description":"pet status in the store",
             "type":"string"
         },
@@ -269,21 +210,22 @@ Items
             "items":{
                 "type":"string"
             },
-            "type":"Array"
+            "type":"array"
         }
     }
 
 **Allowable Use:**
-    - Enclosed within: `Property`_
+    - Enclosed within: `Property`_ or `Model`_
 
 Model
 ******************
 
-.. note:: The annotations parser will follow any `extend` statements of the current model class and include annotations from the base class as well, as long as the ``Model`` annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the `use` statement and appropriate annotations.
+.. note:: The annotations parser will follow any `extend` statements of the current model class and include annotations from the base class as well, as long as the ``Model`` annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the appropriate annotations.
 
 **Attributes**
 
-- ``id`` the formal name of the Model being described.
+- ``id`` the formal name of the Model being described. Defaults to the name of the class (excl. namespace).
+- ``required`` the required properties. Example: required="['id','name']"
 
 **Example Annotations**
 
@@ -309,21 +251,17 @@ Model
             ...
         }
 
-**Allowable Use:**
-    - Class Annotation
-
 Operation
 ******************
 
 **Attributes**
 
-- ``httpMethod`` GET|POST|DELETE|PUT|PATCH etc
+- ``method`` GET|POST|DELETE|PUT|PATCH etc
 - ``summary`` string
 - ``notes`` string
-- ``responseClass`` the `Model`_ ID returned
+- ``type`` the `Model`_ ID returned
 - ``nickname`` string
-- ``deprecated`` boolean
-- `ErrorResponses`_
+- `ResponseMessages`_
 - `Parameters`_
 
 **Example Annotations**
@@ -334,8 +272,8 @@ Operation
 
     /**
      * @SWG\Operation(
-     *     httpMethod="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
-     *     responseClass="Pet", nickname="getPetById"
+     *     method="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
+     *     type="Pet", nickname="getPetById", ...
      * )
      */
 
@@ -344,18 +282,18 @@ Operation
 .. code-block:: javascript
 
     {
-        "httpMethod":"GET",
+        "method":"GET",
         "summary":"Find pet by ID",
         "notes":"Returns a pet based on ID",
-        "responseClass":"Pet",
+        "type":"Pet",
         "nickname":"getPetById",
         "parameters":[...],
-        "errorResponses":[...]
+        "responseMessages":[...]
     }
 
 **Allowable Use:**
 
-    - Enclosed within: `Operations`_
+    - Enclosed within: `Operations`_ or `Api`_
 
 Operations
 ******************
@@ -396,8 +334,7 @@ Parameter
 - ``description``
 - ``paramType`` body|query|path
 - ``required`` bool
-- ``allowMultiple`` bool
-- ``dataType`` scalar or Model|object
+- ``type`` scalar or Model|object
 - ``defaultValue``
 
 **Example Annotations**
@@ -412,8 +349,7 @@ Parameter
      *           description="ID of pet that needs to be fetched",
      *           paramType="path",
      *           required="true",
-     *           allowMultiple="false",
-     *           dataType="string"
+     *           type="string"
      *         )
      */
 
@@ -425,9 +361,8 @@ Parameter
         "name":"petId",
         "description":"ID of pet that needs to be fetched",
         "paramType":"path",
-        "required":true,
         "allowMultiple":false,
-        "dataType":"string"
+        "type":"string"
     }
 
 **Allowable Use:**
@@ -485,10 +420,7 @@ Property
      public $category;
      * @SWG\Property(
      *      name="status",type="string",
-     *      @SWG\AllowableValues(
-     *          valueType="LIST",
-     *          values="['available', 'pending', 'sold']"
-     *      ),
+     *      enum="['available', 'pending', 'sold']",
      *      description="pet status in the store")
      */
      public $status;
@@ -501,10 +433,7 @@ Property
         "type":"Category"
     },
     "status":{
-        "allowableValues":{
-            "valueType":"LIST",
-            "values":["available", "pending", "sold"]
-        },
+        "enum":["available", "pending", "sold"],
         "description":"pet status in the store",
         "type":"string"
     },

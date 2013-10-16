@@ -25,7 +25,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
-    <link rel="next" title="Caching" href="caching.html" />
     <link rel="prev" title="Using Swagger-PHP" href="using_swagger.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -43,9 +42,6 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="caching.html" title="Caching"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
           <a href="using_swagger.html" title="Using Swagger-PHP"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
@@ -61,8 +57,9 @@
 <h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Any annotation you intend to implement in your resources and or models must be declared with a <tt class="docutils literal"><span class="pre">use</span></tt> statement. The <tt class="docutils literal"><span class="pre">use</span></tt> statement does not require a namespace be declared.</p>
+<p class="last">Using annotation in swagger-php before 0.7.3 require a <tt class="docutils literal"><span class="pre">use</span></tt> statement. Later versions register the <tt class="docutils literal"><span class="pre">&#64;SWG\</span></tt> for annotations without a use statement.</p>
 </div>
+<p>Tip! Mistype an attribute on purpose and a warning will be shown with the available attributes for that particular annotation.</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
@@ -76,7 +73,7 @@
     <span class="sd">/**</span>
 <span class="sd">     * @var array&lt;Tags&gt;</span>
 <span class="sd">     *</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;Array&quot;, items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;, items=&quot;$ref:Tag&quot;)</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="p">}</span>
@@ -88,72 +85,17 @@
    -``@SWG\Api``
      - ``@SWG\Operations``
        - ``@SWG\Operation``
-         - ``@SWG\ErrorResponses``
-           - ``@SWG\ErrorResponse``
          - ``@SWG\Parameters``
            - ``@SWG\Parameter``
-             - ``@SWG\AllowableValues``
+         - ``@SWG\ResponseMessages``
+           - ``@SWG\ResponseMessage``
+
 - ``@SWG\Model``
   - ``@SWG\Property``
-    - ``@SWG\AllowableValues``
     - ``@SWG\Items``
 </pre></div>
 </div>
-</div>
-<div class="section" id="allowablevalues">
-<h2>AllowableValues<a class="headerlink" href="#allowablevalues" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <cite>AllowableValues</cite> annotation provides support for Enumerations as well as Range limits. This annotation may exist in either <a class="reference internal" href="#parameter">Parameter</a> definitions within an <a class="reference internal" href="#operation">Operation</a> definition, or as an augmentation to the <a class="reference internal" href="#property">Property</a> annotation within models.</p>
-</div>
-<p><strong>Attributes</strong>
-Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt> || <tt class="docutils literal"><span class="pre">RANGE</span></tt>
-<tt class="docutils literal"><span class="pre">LIST</span></tt> attributes:</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">valueType</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">values=[json</span> <span class="pre">encoded</span> <span class="pre">enumerations]</span></tt><ul>
-<li>non-indexed values as a json array: <tt class="docutils literal"><span class="pre">['one','two','three']</span></tt></li>
-<li>indexed values as a json object: <tt class="docutils literal"><span class="pre">{'1':</span> <span class="pre">'one',</span> <span class="pre">'2':</span> <span class="pre">'two',</span> <span class="pre">'3':</span> <span class="pre">'three'}</span></tt></li>
-</ul>
-</li>
-</ul>
-<p><tt class="docutils literal"><span class="pre">RANGE</span></tt> attributes:</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">valueType=RANGE</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">min</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">max</span></tt></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\AllowableValues(valueType=&quot;LIST&quot;,values=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;)</span>
-<span class="sd"> *</span>
-<span class="sd"> * @SWG\AllowableValues(valueType=&quot;RANGE&quot;,min=&quot;0&quot;, max=&quot;5&quot;)</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;allowableValues&quot;</span><span class="o">:</span><span class="p">{</span>
-    <span class="s2">&quot;valueType&quot;</span><span class="o">:</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;values&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;sold&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-<span class="p">...</span>
-<span class="s2">&quot;allowableValues&quot;</span><span class="o">:</span><span class="p">{</span>
-    <span class="s2">&quot;valueType&quot;</span><span class="o">:</span><span class="s2">&quot;RANGE&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;min&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">&quot;max&quot;</span><span class="o">:</span> <span class="mi">5</span>
-<span class="p">},</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Enclosed within <a class="reference internal" href="#parameter">Parameter</a></li>
-<li>Enclosed within <a class="reference internal" href="#property">Property</a></li>
-</ul>
-</dd>
-</dl>
+<p>Container annotations like <tt class="docutils literal"><span class="pre">&#64;SWG\Operations</span></tt>, <tt class="docutils literal"><span class="pre">&#64;SWG\Parameters</span></tt> and <tt class="docutils literal"><span class="pre">&#64;SWG\ResponseMessages</span></tt> are optional.</p>
 </div>
 <div class="section" id="api">
 <h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
@@ -171,11 +113,10 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="sd"> * @SWG\Api(</span>
 <span class="sd"> *   path=&quot;/pet.{format}/{petId}&quot;,</span>
 <span class="sd"> *   description=&quot;Operations about pets&quot;,</span>
-<span class="sd"> *   @SWG\Operations(@SWG\Operation(@SWG\Parameters(@SWG\Parameter(...)),</span>
-<span class="sd"> *       @SWG\ErrorResponses(</span>
-<span class="sd"> *          @SWG\ErrorResponse(@SWG\errorResponse(...)</span>
-<span class="sd"> *       )</span>
-<span class="sd"> *     )</span>
+<span class="sd"> *   @SWG\Operation(...,</span>
+<span class="sd"> *      @SWG\Parameter(...),</span>
+<span class="sd"> *      @SWG\ResponseMessage(...),</span>
+<span class="sd"> *      @SWG\ResponseMessage(...)</span>
 <span class="sd"> *   )</span>
 <span class="sd"> * )</span>
 <span class="sd"> */</span>
@@ -191,38 +132,27 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Method Annotation</li>
-</ul>
-</dd>
-</dl>
 </div>
-<div class="section" id="errorresponse">
-<h2>ErrorResponse<a class="headerlink" href="#errorresponse" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="responsemessage">
+<h2>ResponseMessage<a class="headerlink" href="#responsemessage" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">code</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">reason</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">message</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\ErrorResponse(code=&quot;404&quot;, reason=&quot;Pet not found&quot;)</span>
+<span class="sd"> * @SWG\ResponseMessage(code=404, message=&quot;Pet not found&quot;)</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
 <p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;errorResponses&quot;</span><span class="o">:</span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;code&quot;</span><span class="o">:</span><span class="mi">400</span><span class="p">,</span>
-        <span class="s2">&quot;reason&quot;</span><span class="o">:</span><span class="s2">&quot;Invalid ID supplied&quot;</span>
-    <span class="p">},</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;responseMessages&quot;</span><span class="o">:</span><span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;code&quot;</span><span class="o">:</span><span class="mi">404</span><span class="p">,</span>
-        <span class="s2">&quot;reason&quot;</span><span class="o">:</span><span class="s2">&quot;Pet not found&quot;</span>
+        <span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="s2">&quot;Pet not found&quot;</span>
     <span class="p">}</span>
 <span class="p">]</span>
 </pre></div>
@@ -230,22 +160,22 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <dl class="docutils">
 <dt><strong>Allowable Use:</strong></dt>
 <dd><ul class="first last simple">
-<li>Enclosed within <a class="reference internal" href="#errorresponses">ErrorResponses</a></li>
+<li>Enclosed within <a class="reference internal" href="#responsemessages">ResponseMessages</a> or <a class="reference internal" href="#operation">Operation</a></li>
 </ul>
 </dd>
 </dl>
 </div>
-<div class="section" id="errorresponses">
-<h2>ErrorResponses<a class="headerlink" href="#errorresponses" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="responsemessages">
+<h2>ResponseMessages<a class="headerlink" href="#responsemessages" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
+<li><a class="reference internal" href="#responsemessage">ResponseMessage</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\ErrorResponses(@SWG\ErrorResponse(...)[ @SWG\ErrorResponse(...), ])</span>
+<span class="sd"> * @SWG\ResponseMessages(@SWG\ResponseMessage(...)[ @SWG\ResponseMessage(...), ])</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
@@ -280,55 +210,53 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;Array&quot;, items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;array&quot;,@SWG\Items(&quot;string&quot;))</span>
 <span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="k">public</span> <span class="nv">$photos</span><span class="p">;</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;Array&quot;, @SWG\Items(type=&quot;string&quot;))</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;,@SWG\Items(&quot;Tag&quot;))</span>
 <span class="sd">     */</span>
-    <span class="k">protected</span> <span class="nv">$photoUrls</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-<span class="p">}</span>
+    <span class="k">public</span> <span class="nv">$tags</span><span class="p">;</span>
+
+    <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span>
-    <span class="s2">&quot;tags&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;items&quot;</span><span class="o">:</span><span class="p">{</span>
-            <span class="s2">&quot;$ref&quot;</span><span class="o">:</span><span class="s2">&quot;Tag&quot;</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Array&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;long&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;category&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Category&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;allowableValues&quot;</span><span class="o">:</span><span class="p">{</span>
-            <span class="s2">&quot;valueType&quot;</span><span class="o">:</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;values&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;sold&quot;</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;pet status in the store&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;photoUrls&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;items&quot;</span><span class="o">:</span><span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Array&quot;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight-javascript"><pre>"properties":{
+    "tags":{
+        "items":{
+            "$ref":"Tag"
+        },
+        "type":"array"
+    },
+    "id":{
+        "type":"integer",
+        "format: "int64"
+    },
+    "category":{
+        "type":"Category"
+    },
+    "status":{
+        "enum":["available", "pending", "sold"]
+        "description":"pet status in the store",
+        "type":"string"
+    },
+    "name":{
+        "type":"string"
+    },
+    "photoUrls":{
+        "items":{
+            "type":"string"
+        },
+        "type":"array"
+    }
+}</pre>
 </div>
 <dl class="docutils">
 <dt><strong>Allowable Use:</strong></dt>
 <dd><ul class="first last simple">
-<li>Enclosed within: <a class="reference internal" href="#property">Property</a></li>
+<li>Enclosed within: <a class="reference internal" href="#property">Property</a> or <a class="reference internal" href="#model">Model</a></li>
 </ul>
 </dd>
 </dl>
@@ -337,11 +265,12 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The annotations parser will follow any <cite>extend</cite> statements of the current model class and include annotations from the base class as well, as long as the <tt class="docutils literal"><span class="pre">Model</span></tt> annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the <cite>use</cite> statement and appropriate annotations.</p>
+<p class="last">The annotations parser will follow any <cite>extend</cite> statements of the current model class and include annotations from the base class as well, as long as the <tt class="docutils literal"><span class="pre">Model</span></tt> annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the appropriate annotations.</p>
 </div>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">id</span></tt> the formal name of the Model being described.</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt> the formal name of the Model being described. Defaults to the name of the class (excl. namespace).</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt> the required properties. Example: required=&#8221;[&#8216;id&#8217;,&#8217;name&#8217;]&#8221;</li>
 </ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
@@ -363,25 +292,17 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
     <span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Class Annotation</li>
-</ul>
-</dd>
-</dl>
 </div>
 <div class="section" id="operation">
 <h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">httpMethod</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
+<li><tt class="docutils literal"><span class="pre">method</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
 <li><tt class="docutils literal"><span class="pre">summary</span></tt> string</li>
 <li><tt class="docutils literal"><span class="pre">notes</span></tt> string</li>
-<li><tt class="docutils literal"><span class="pre">responseClass</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
+<li><tt class="docutils literal"><span class="pre">type</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
 <li><tt class="docutils literal"><span class="pre">nickname</span></tt> string</li>
-<li><tt class="docutils literal"><span class="pre">deprecated</span></tt> boolean</li>
-<li><a class="reference internal" href="#errorresponses">ErrorResponses</a></li>
+<li><a class="reference internal" href="#responsemessages">ResponseMessages</a></li>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
@@ -389,28 +310,28 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 
 <span class="sd">/**</span>
 <span class="sd"> * @SWG\Operation(</span>
-<span class="sd"> *     httpMethod=&quot;GET&quot;, summary=&quot;Find pet by ID&quot;, notes=&quot;Returns a pet based on ID&quot;,</span>
-<span class="sd"> *     responseClass=&quot;Pet&quot;, nickname=&quot;getPetById&quot;</span>
+<span class="sd"> *     method=&quot;GET&quot;, summary=&quot;Find pet by ID&quot;, notes=&quot;Returns a pet based on ID&quot;,</span>
+<span class="sd"> *     type=&quot;Pet&quot;, nickname=&quot;getPetById&quot;, ...</span>
 <span class="sd"> * )</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
 <p><strong>Derived JSON</strong></p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;httpMethod&quot;</span><span class="o">:</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;method&quot;</span><span class="o">:</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
     <span class="s2">&quot;summary&quot;</span><span class="o">:</span><span class="s2">&quot;Find pet by ID&quot;</span><span class="p">,</span>
     <span class="s2">&quot;notes&quot;</span><span class="o">:</span><span class="s2">&quot;Returns a pet based on ID&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;responseClass&quot;</span><span class="o">:</span><span class="s2">&quot;Pet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Pet&quot;</span><span class="p">,</span>
     <span class="s2">&quot;nickname&quot;</span><span class="o">:</span><span class="s2">&quot;getPetById&quot;</span><span class="p">,</span>
     <span class="s2">&quot;parameters&quot;</span><span class="o">:</span><span class="p">[...],</span>
-    <span class="s2">&quot;errorResponses&quot;</span><span class="o">:</span><span class="p">[...]</span>
+    <span class="s2">&quot;responseMessages&quot;</span><span class="o">:</span><span class="p">[...]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Allowable Use:</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li>Enclosed within: <a class="reference internal" href="#operations">Operations</a></li>
+<li>Enclosed within: <a class="reference internal" href="#operations">Operations</a> or <a class="reference internal" href="#api">Api</a></li>
 </ul>
 </div></blockquote>
 </div>
@@ -451,8 +372,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <li><tt class="docutils literal"><span class="pre">description</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">paramType</span></tt> body|query|path</li>
 <li><tt class="docutils literal"><span class="pre">required</span></tt> bool</li>
-<li><tt class="docutils literal"><span class="pre">allowMultiple</span></tt> bool</li>
-<li><tt class="docutils literal"><span class="pre">dataType</span></tt> scalar or Model|object</li>
+<li><tt class="docutils literal"><span class="pre">type</span></tt> scalar or Model|object</li>
 <li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
@@ -464,8 +384,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
 <span class="sd"> *           description=&quot;ID of pet that needs to be fetched&quot;,</span>
 <span class="sd"> *           paramType=&quot;path&quot;,</span>
 <span class="sd"> *           required=&quot;true&quot;,</span>
-<span class="sd"> *           allowMultiple=&quot;false&quot;,</span>
-<span class="sd"> *           dataType=&quot;string&quot;</span>
+<span class="sd"> *           type=&quot;string&quot;</span>
 <span class="sd"> *         )</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -475,9 +394,8 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
     <span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="s2">&quot;petId&quot;</span><span class="p">,</span>
     <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;ID of pet that needs to be fetched&quot;</span><span class="p">,</span>
     <span class="s2">&quot;paramType&quot;</span><span class="o">:</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;required&quot;</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span>
     <span class="s2">&quot;allowMultiple&quot;</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
-    <span class="s2">&quot;dataType&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -532,10 +450,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
  <span class="k">public</span> <span class="nv">$category</span><span class="p">;</span>
  <span class="o">*</span> <span class="o">@</span><span class="nx">SWG\Property</span><span class="p">(</span>
  <span class="o">*</span>      <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
- <span class="o">*</span>      <span class="o">@</span><span class="nx">SWG\AllowableValues</span><span class="p">(</span>
- <span class="o">*</span>          <span class="nx">valueType</span><span class="o">=</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
- <span class="o">*</span>          <span class="nx">values</span><span class="o">=</span><span class="s2">&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;</span>
- <span class="o">*</span>      <span class="p">),</span>
+ <span class="o">*</span>      <span class="nx">enum</span><span class="o">=</span><span class="s2">&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;</span><span class="p">,</span>
  <span class="o">*</span>      <span class="nx">description</span><span class="o">=</span><span class="s2">&quot;pet status in the store&quot;</span><span class="p">)</span>
  <span class="o">*/</span>
  <span class="k">public</span> <span class="nv">$status</span><span class="p">;</span>
@@ -546,10 +461,7 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
     <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Category&quot;</span>
 <span class="p">},</span>
 <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="p">{</span>
-    <span class="s2">&quot;allowableValues&quot;</span><span class="o">:</span><span class="p">{</span>
-        <span class="s2">&quot;valueType&quot;</span><span class="o">:</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;values&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;sold&quot;</span><span class="p">]</span>
-    <span class="p">},</span>
+    <span class="s2">&quot;enum&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;sold&quot;</span><span class="p">],</span>
     <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;pet status in the store&quot;</span><span class="p">,</span>
     <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
 <span class="p">},</span>
@@ -616,10 +528,9 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
   <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
 <li><a class="reference internal" href="#annotation-hierarchy">Annotation Hierarchy</a></li>
-<li><a class="reference internal" href="#allowablevalues">AllowableValues</a></li>
 <li><a class="reference internal" href="#api">Api</a></li>
-<li><a class="reference internal" href="#errorresponse">ErrorResponse</a></li>
-<li><a class="reference internal" href="#errorresponses">ErrorResponses</a></li>
+<li><a class="reference internal" href="#responsemessage">ResponseMessage</a></li>
+<li><a class="reference internal" href="#responsemessages">ResponseMessages</a></li>
 <li><a class="reference internal" href="#items">Items</a></li>
 <li><a class="reference internal" href="#model">Model</a></li>
 <li><a class="reference internal" href="#operation">Operation</a></li>
@@ -635,9 +546,6 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
   <h4>Previous topic</h4>
   <p class="topless"><a href="using_swagger.html"
                         title="previous chapter">Using Swagger-PHP</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="caching.html"
-                        title="next chapter">Caching</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -662,16 +570,13 @@ Types Supported: <tt class="docutils literal"><span class="pre">LIST</span></tt>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="caching.html" title="Caching"
-             >next</a> |</li>
-        <li class="right" >
           <a href="using_swagger.html" title="Using Swagger-PHP"
              >previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Robert Allen.
+        &copy; Copyright 2013, Robert Allen.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

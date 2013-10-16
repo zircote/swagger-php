@@ -9,9 +9,9 @@ templates_path = ['_templates']
 master_doc = 'index'
 
 project = u'Swagger-PHP'
-copyright = u'2012, Robert Allen'
+copyright = u'2013, Robert Allen'
 
-version = '2013-05-09'
+version = '2013-10-16'
 
 release = ''
 

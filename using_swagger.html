@@ -70,15 +70,14 @@ to produce your <em>swagger documentation</em>,</p>
 <p>The following example will render the documentation to a web request.</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">use</span> <span class="nx">Swagger\Swagger</span><span class="p">;</span>
-<span class="nv">$path</span> <span class="o">=</span> <span class="s1">&#39;/project/root/top_level&#39;</span><span class="p">;</span>
-<span class="nv">$swagger</span> <span class="o">=</span> <span class="nx">Swagger</span><span class="o">::</span><span class="na">discover</span><span class="p">(</span><span class="nv">$path</span><span class="p">);</span>
+<span class="nv">$swagger</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Swagger</span><span class="p">(</span><span class="s1">&#39;/project/root/top_level&#39;</span><span class="p">);</span>
 <span class="nx">header</span><span class="p">(</span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="p">)</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;/pet&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;/pet&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;output&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;json&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>While the CLI example will create individual json documents for each resource discovered in your project, these file are
 then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool you wish to utilize against them.</p>
-<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar -p /project/root/top_level -o /var/html/swagger-docs
+<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar /project/root/top_level -o /var/html/swagger-docs
 </pre></div>
 </div>
 <p>Check the help for additional options.</p>
@@ -141,7 +140,7 @@ then mappable via the <cite>swagger-ui</cite> of any other swagger friendly tool
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Robert Allen.
+        &copy; Copyright 2013, Robert Allen.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
