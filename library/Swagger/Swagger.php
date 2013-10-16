@@ -64,6 +64,11 @@ class Swagger implements \Serializable
     protected $defaultSwaggerVersion;
 
     /**
+     * @var null|string
+     */
+    protected $resourceBasePath;
+
+    /**
      * @var array
      */
     public $resourceList = array();
@@ -415,9 +420,12 @@ class Swagger implements \Serializable
                 if (!$result) {
                     $result = array(
                         'apiVersion' => $this->getDefaultApiVersion() ?: $resource->apiVersion,
-                        'swaggerVersion' => $this->getDefaultSwaggerVersion() ?: $resource->swaggerVersion,
-                        'apis' => array()
+                        'swaggerVersion' => $this->getDefaultSwaggerVersion() ?: $resource->swaggerVersion
                     );
+                    if ($this->getResourceBasePath()) {
+                        $result['basePath'] = $this->getResourceBasePath();
+                    }
+                    $result['apis'] = array();
                 }
                 $path = '/resources/'.str_replace('/', '-', ltrim($resource->resourcePath, '/')).'.{format}';
                 $result['apis'][] = array(
@@ -708,6 +716,23 @@ class Swagger implements \Serializable
     public function getDefaultSwaggerVersion()
     {
         return $this->defaultSwaggerVersion;
+    }
+
+    /**
+     * @param string $url
+     * @return Swagger fluent api
+     */
+    public function setResourceBasePath($url)
+    {
+        $this->resourceBasePath = $url;
+        return $this;
+    }
+    /**
+     * @return null|string
+     */
+    public function getResourceBasePath()
+    {
+        return $this->resourceBasePath;
     }
 
     /**
