@@ -1,0 +1,71 @@
+{
+    "basePath": "http://example.com/api",
+    "swaggerVersion": "1.2",
+    "resourcePath": "/operations",
+    "apis": [
+        {
+            "path": "/operations/pets",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Retrieve all pets",
+                    "nickname": "pets_0",
+                    "type": "array[Pet]",
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "name": "status",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "method": "POST",
+                    "summary": "Register a new pet",
+                    "nickname": "pets_1",
+                    "type": "Pet"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "Pet": {
+            "id": "Pet",
+            "properties": {
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "Tag"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "category": {
+                    "$ref": "Category"
+                },
+                "status": {
+                    "description": "pet status in the store",
+                    "type": "string",
+                    "enum": [
+                        "available",
+                        "pending",
+                        "sold"
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photoUrls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
