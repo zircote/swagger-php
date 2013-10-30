@@ -1,46 +1,25 @@
 <?php
 namespace Minimal\Models;
 
-/**
- * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2013] [Robert Allen]
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @package
- * @category
- * @subpackage
- */
-use Swagger\Annotations as SWG;
+// swagger-php uses the @SWG namespace by default. The `use Swagger\Annotations as SWG;` statement is optional.
+
 
 /**
- * @package
- * @category
- * @subpackage
- *
- *
  * @SWG\Model()
  * Model() will use the classname "Pet" as id
  */
 class Pet
 {
     /**
-     * @var array<Tags>
+     * @var Tag[]
      *
-     * @SWG\Property(type="array", items="$ref:Tag")
-	 * Property() will use the property name "tags" as name.
+     * @SWG\Property()
      */
-    protected $tags = array();
+    public $tags = array();
+    // Autodetected:
+    // @SWG\Property->name is set to "tags" based on property name $tags.
+    // @SWG\Property->type is detected as "array" based on @var ending with "[]"
+    // @SWG\Property->items is detected as @SWG\Items("$ref:Tag") based on @var Tag[]
 
     /**
      * @var int
@@ -48,14 +27,14 @@ class Pet
      * @SWG\Property()
 	 * Property() will use the property name "id" as name and detect the "@var int" and use "integer" as type.
      */
-    protected $id;
+    public $id;
 
     /**
      * @var Category
      *
      * @SWG\Property()
      */
-    protected $category;
+    public $category;
 
     /**
      *
@@ -66,20 +45,20 @@ class Pet
      *      enum="['available', 'pending', 'sold']",
      *      description="pet status in the store")
      */
-    protected $status;
+    public $status;
 
     /**
      * @var string
      *
      * @SWG\Property()
      */
-    protected $name;
+    public $name;
 
     /**
-     * @var array<string>
+     * @var string[]
      *
-     * @SWG\Property(type="array", @SWG\Items(type="string"))
+     * @SWG\Property()
      */
-    protected $photoUrls = array();
+    public $photoUrls = array();
 }
 

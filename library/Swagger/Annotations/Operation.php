@@ -67,13 +67,13 @@ class Operation extends AbstractAnnotation
 
     /**
      * These are the inputs to the operation.
-     * @var array|Parameter
+     * @var Parameter[]
      */
     public $parameters = array();
 
     /**
      * An array describing the responseMessage cases returned by the operation.
-     * @var array|ResponseMessage
+     * @var ResponseMessage[]
      */
     public $responseMessages = array();
 
@@ -84,12 +84,12 @@ class Operation extends AbstractAnnotation
     public $notes;
 
     /**
-     * @var array|Produces
+     * @var Produces[]
      */
     public $produces;
 
     /**
-     * @var array|Consumes
+     * @var Consumes[]
      */
     public $consumes;
 

@@ -58,7 +58,7 @@ class Resource extends AbstractAnnotation
     public $resourcePath;
 
     /**
-     * @var array|Api
+     * @var Api[]
      */
     public $apis = array();
 

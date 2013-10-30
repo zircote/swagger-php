@@ -111,12 +111,10 @@ abstract class AbstractAnnotation
     /**
      * Example: @Annotation(@Nested) would call setNestedAnnotations with array(Nested)
      *
-     * @param array|AbstractAnnotation $annotations
+     * @param AbstractAnnotation[] $annotations
      */
     public function setNestedAnnotations($annotations)
     {
-
-
         $map = static::$mapAnnotations;
         $map['\Swagger\Annotations\Partial'] = '_partials[]';
 

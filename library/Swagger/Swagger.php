@@ -30,12 +30,12 @@ use Swagger\Annotations\Model;
 class Swagger
 {
     /**
-     * @var array|Resource
+     * @var Resource[]
      */
     public $registry = array();
 
     /**
-     * @var array|Model
+     * @var Model[]
      */
     public $models = array();
 

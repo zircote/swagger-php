@@ -34,7 +34,7 @@ use Swagger\Logger;
 class ResponseMessages extends AbstractAnnotation
 {
     /**
-     * @var array|ResponseMessage
+     * @var ResponseMessage[]
      */
     public $responseMessages;
 

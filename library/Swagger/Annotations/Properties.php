@@ -33,7 +33,7 @@ use Swagger\Logger;
 class Properties extends AbstractAnnotation
 {
     /**
-     * @var array|Parameter
+     * @var Parameter[]
      */
     public $properties;
 

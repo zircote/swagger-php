@@ -34,7 +34,7 @@ use Swagger\Logger;
 class Operations extends AbstractAnnotation
 {
     /**
-     * @var array|Operation
+     * @var Operation[]
      */
     public $operations;
 

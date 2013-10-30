@@ -32,7 +32,7 @@ class Parser
 {
     /**
      * All detected resources
-     * @var array|Annotations\Resource
+     * @var Annotations\Resource[]
      */
     protected $resources = array();
 
@@ -44,13 +44,13 @@ class Parser
 
     /**
      * All detected models
-     * @var array|Annotations\Model
+     * @var Annotations\Model[]
      */
     protected $models = array();
 
     /**
      * All detected annotation partials;
-     * @var array|Annotations\AbstractAnnotation
+     * @var Annotations\AbstractAnnotation[]
      */
     protected $partials = array();
 
@@ -82,7 +82,7 @@ class Parser
 
     /**
      * Get all valid resources.
-     * @return array|Annotations\Resource
+     * @return Annotations\Resource[]
      */
     public function getResources()
     {
@@ -100,7 +100,7 @@ class Parser
 
     /**
      * Get all valid models.
-     * @return array|Annotations\Model
+     * @return Annotations\Model[]
      */
     public function getModels()
     {
@@ -118,7 +118,7 @@ class Parser
 
     /**
      * Get all annotation partials.
-     * @return  array|Annotations\AbstractAnnotation
+     * @return Annotations\AbstractAnnotation[]
      */
     public function getPartials()
     {
@@ -247,7 +247,7 @@ class Parser
     /**
      *
      * @param string $docComment
-     * @return array|AbstractAnnotation
+     * @return AbstractAnnotation[]
      */
     protected function parseDocComment($docComment)
     {
@@ -294,7 +294,7 @@ class Parser
      * @param string $class
      * @param string $extends
      * @param string $docComment
-     * @return array|AbstractAnnotation
+     * @return AbstractAnnotation[]
      */
     protected function parseClass($class, $extends, $docComment)
     {
@@ -322,7 +322,7 @@ class Parser
     /**
      * @param string $method
      * @param string $docComment
-     * @return array|AbstractAnnotation
+     * @return AbstractAnnotation[]
      */
     protected function parseMethod($method, $docComment)
     {
@@ -333,9 +333,12 @@ class Parser
                     // Assume method (without Action suffix) on top the resourcePath
                     $annotation->path = $this->resource->resourcePath.'/'.preg_replace('/Action$/i', '', $method);
                 }
-                foreach ($annotation->operations as $operation) {
+                foreach ($annotation->operations as $i => $operation) {
                     if ($operation->nickname === null) {
                         $operation->nickname = $method;
+                        if (count($annotation->operations) > 1) {
+                            $operation->nickname .= '_'.$i;     
+                        }
                     }
                 }
             }
@@ -346,7 +349,7 @@ class Parser
     /**
      * @param string $property  Name of the property
      * @param string $docComment  The doc-comment above the property
-     * @return array|AbstractAnnotation
+     * @return AbstractAnnotation[]
      */
     protected function parsePropery($property, $docComment)
     {
@@ -357,8 +360,10 @@ class Parser
                     $annotation->name = $property;
                 }
                 if ($annotation->type === null) {
-                    if (preg_match('/@var\s+(\w+)/i', $docComment, $matches)) {
-                        $type = (string) array_pop($matches);
+                    if (preg_match('/@var\s+(\w+)(\[\])?/i', $docComment, $matches)) {
+                        $type = $matches[1];
+                        $isArray = isset($matches[2]);
+                        
                         $map = array(
                             'array' => 'array',
                             'byte' => array('string', 'byte'),
@@ -386,7 +391,14 @@ class Parser
                                 $type = $type[0];
                             }
                         }
-                        $annotation->type = $type;
+                        if ($isArray) {
+                          $annotation->type = 'array';
+                          if ($annotation->items === null) {
+                              $annotation->items = new Annotations\Items(array('value' => $type));
+                          }
+                        } else {
+                            $annotation->type = $type;
+                        }
                     }
                 }
                 // @todo Extract description
