@@ -1,5 +1,5 @@
 {
-    "basePath": "http://example.com//api",
+    "basePath": "http://example.com/api",
     "swaggerVersion": "1.2",
     "apiVersion": "0.2",
     "resourcePath": "/resolve",

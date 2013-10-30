@@ -352,10 +352,12 @@ class Swagger
      */
     protected function getFiles($path, $excludePaths = array())
     {
+        if (is_file($path)) {
+            return array($path);
+        }
         if (is_string($excludePaths)) {
             $excludePaths = array($excludePaths);
         }
-
         $files = array();
         $dir = new \DirectoryIterator($path);
         /* @var $fileInfo \DirectoryIterator */

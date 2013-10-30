@@ -93,7 +93,7 @@ class Resource extends AbstractAnnotation
     {
         if ($this->swaggerVersion) {
             if (version_compare($this->swaggerVersion, '1.2', '<')) {
-                Logger::warning('swaggerVersion: '.$this->swaggerVersion.' not supported. Use a swagger-php older than 0.8');
+                Logger::warning('swaggerVersion: '.$this->swaggerVersion.' is no longer supported. Use 1.2 or higher');
                 $this->swaggerVersion = null;
             }
         }
@@ -116,7 +116,11 @@ class Resource extends AbstractAnnotation
             }
         }
         if (count($apis) === 0 && count($this->_partials) === 0) {
-            Logger::notice('Resource "'.$this->basePath.'" doesn\'t have any valid api calls');
+            Logger::warning($this->identity().' doesn\'t have any valid api calls');
+            return false;
+        }
+        if (empty($this->resourcePath)) {
+            Logger::warning('@SWG\Resource() is missing "resourcePath" in '.AbstractAnnotation::$context);
             return false;
         }
         $this->apis = $apis;

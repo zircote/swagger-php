@@ -16,7 +16,7 @@ use Swagger\Annotations as SWG;
  * @SWG\Resource(
  *  apiVersion="0.2",
  *  swaggerVersion="1.2",
- *  basePath="http://example.com//api"
+ *  basePath="http://example.com/api"
  * )
  *
  * Auto-generated:
