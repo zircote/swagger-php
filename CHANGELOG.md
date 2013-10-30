@@ -2,6 +2,10 @@
 Changelog
 ----------
 
+## 0.8.1
+
+Detect @SWG\Parameter type and @SWG\Items based on `@var Type[]` phpdoc comments.
+
 ## 0.8.0
 
 * Compatible with swagger-ui 2.0
