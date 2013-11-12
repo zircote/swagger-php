@@ -222,6 +222,15 @@ class Swagger
                     if ($model) {
                         $models[] = $model;
                     }
+
+                    // check for items
+                    if ($operation->items) {
+                        $model = $this->resolveModel($operation->items->type);
+                        if ($model) {
+                            $models[] = $model;
+                        }
+                    }
+
                     foreach ($operation->parameters as $parameter) {
                         $model = $this->resolveModel($parameter->type);
                         if ($model) {
