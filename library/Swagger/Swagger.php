@@ -182,25 +182,54 @@ class Swagger
     public function scan($path, $excludePath = null)
     {
         foreach ($this->getFiles($path, $excludePath) as $filename) {
-            $parser = new Parser($filename);
-            foreach ($parser->getResources() as $resource) {
-                if (array_key_exists($resource->resourcePath, $this->registry)) {
-                    $this->registry[$resource->resourcePath]->merge($resource);
-                } else {
-                    $this->registry[$resource->resourcePath] = $resource;
-                }
-            }
-            foreach ($parser->getModels() as $model) {
-                $this->models[$model->id] = $model;
-            }
-            foreach ($parser->getPartials() as $id => $partial) {
-                if (isset($this->partials[$id])) {
-                    Logger::notice('partial="'.$id.'" is not unique.');
-                }
-                $this->partials[$id] = $partial;
+            $this->processParser(new Parser($filename));
+        }
+        $this->processResults();
+        return $this;
+    }
+    
+    /**
+     * Process a single code snippet.
+     * @param string $contents PHP code.
+     * @param string $context The original location of the contents.
+     * @return Swagger
+     */
+    public function examine($contents, $context = 'unknown')
+    {
+        if (strpos($contents, '<?php') === false) {
+            throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found'); 
+        }
+        $parser = new Parser();
+        $parser->parseContents($contents, $context);
+        $this->processParser($parser);
+        $this->processResults();
+        return $this;
+    }
+    
+    /**
+     * Extract resourses and models from the parser.
+     * @param Parser $parser
+     */
+    protected function processParser($parser) {
+        foreach ($parser->getResources() as $resource) {
+            if (array_key_exists($resource->resourcePath, $this->registry)) {
+                $this->registry[$resource->resourcePath]->merge($resource);
+            } else {
+                $this->registry[$resource->resourcePath] = $resource;
             }
         }
-
+        foreach ($parser->getModels() as $model) {
+            $this->models[$model->id] = $model;
+        }
+        foreach ($parser->getPartials() as $id => $partial) {
+            if (isset($this->partials[$id])) {
+                Logger::notice('partial="'.$id.'" is not unique.');
+            }
+            $this->partials[$id] = $partial;
+        }
+    }
+    
+    protected function processResults() {
         $this->applyPartials($this->registry);
         $this->applyPartials($this->models);
         foreach ($this->partials as $partial) {
@@ -250,9 +279,7 @@ class Swagger
                 }
             }
         }
-
         ksort($this->registry, SORT_ASC);
-        return $this;
     }
 
     /**
