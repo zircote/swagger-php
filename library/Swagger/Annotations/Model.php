@@ -116,6 +116,7 @@ class Model extends AbstractAnnotation
         $this->properties = $properties;
         if (count($required) > 0) {
             $this->required = array_unique($required);
+            sort($this->required);
         }
         return true;
     }

@@ -616,9 +616,10 @@ class Swagger
                 }
             }
             if ($exists === false) {
-                $model->properties[] = clone $parentProperty; // Inherit property
+                $model->properties[] = $parentProperty; // Inherit property
             }
         }
+        $model->validate(); // update Model->required
     }
 
     /**

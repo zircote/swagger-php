@@ -149,7 +149,7 @@ class Parser
     }
 
     /**
-     * Implementation for parseFile() & parseContents().
+     * Shared implementation for parseFile() & parseContents().
      * @param \Doctrine\Common\Annotations\TokenParser $tokenParser
      */
     protected function parseTokens(TokenParser $tokenParser)
@@ -187,6 +187,7 @@ class Parser
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 $token = $tokenParser->next();
                 $class = $namespace ? $namespace . '\\' . $token[1] : $token[1];
+                $this->model = false;
                 // @todo detect end-of-class and reset $class
                 if ($docComment) {
                     $extends = null;
@@ -283,8 +284,11 @@ class Parser
             return array();
         }
         foreach ($annotations as $annotation) {
+            if ($annotation instanceof Annotations\AbstractAnnotation === false) {
+                continue; // Ignore non-swagger annotations
+            } 
             if ($annotation instanceof Annotations\Partial) {
-                Logger::notice('Unexpected "' . get_class($annotation) . '", @SWG\Partial is a pointer to a partial and should inside another annotation in ' . Annotations\AbstractAnnotation::$context);
+                Logger::notice('Unexpected "' . $annotation->identity() . '", @SWG\Partial is a pointer to a partial and should inside another annotation in ' . Annotations\AbstractAnnotation::$context);
             } elseif ($annotation->_partialId !== null) {
                 if (isset($this->partials[$annotation->_partialId])) {
                     Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . Annotations\AbstractAnnotation::$context);
@@ -300,16 +304,18 @@ class Parser
                 if ($this->resource) {
                     $this->resource->apis[] = $annotation;
                 } else {
-                    Logger::notice('Unexpected "' . get_class($annotation) . '", should be inside or after a "Resource" declaration in ' . Annotations\AbstractAnnotation::$context);
+                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Resource" declaration in ' . Annotations\AbstractAnnotation::$context);
                 }
             } elseif ($annotation instanceof Annotations\Property) {
                 if ($this->model) {
                     $this->model->properties[] = $annotation;
+                } elseif (count($this->models)) {
+                    Logger::notice('Unexpected "' . $annotation->identity() . '", make sure the "@SWG\Model()" declaration is directly above the class definition in ' . Annotations\AbstractAnnotation::$context);
                 } else {
-                    Logger::notice('Unexpected "' . get_class($annotation) . '", should be inside or after a "Model" declaration in ' . Annotations\AbstractAnnotation::$context);
+                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Model" declaration in ' . Annotations\AbstractAnnotation::$context);
                 }
-            } elseif ($annotation instanceof Annotations\AbstractAnnotation) { // A Swagger notation?
-                Logger::notice('Unexpected "' . get_class($annotation) . '", Expecting a "Resource", "Model" or partial declaration in ' . Annotations\AbstractAnnotation::$context);
+            } else {
+                Logger::notice('Unexpected "' . $annotation->identity() . '", Expecting a "Resource", "Model" or partial declaration in ' . Annotations\AbstractAnnotation::$context);
             }
         }
         return $annotations;

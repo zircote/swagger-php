@@ -131,9 +131,50 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, explode("\n", $flatJson));
     }
 
+    public function testModelInheritance()
+    {
+        $code = <<<END
+<?php
+/**
+ * @SWG\Model()
+ */
+class Parent {
+    /**
+     * @var string
+     * @SWG\Property(required=true)
+     */
+    protected \$name;
+}
+/**
+ * @SWG\Model()
+ */
+class Child extends Parent {
+    /**
+     * @var int
+     * @SWG\Property(required=true)
+     */
+    protected \$id;
+}
+END;
+        $swagger = new Swagger();
+        $swagger->examine($code, __CLASS__.'->'.__FUNCTION__.'()');
+
+        // Assert parser & parent
+        $this->assertCount(2, $swagger->models);
+        $this->assertCount(1, $swagger->models['Parent']->properties);
+        $this->assertEquals('name', $swagger->models['Parent']->properties[0]->name);
+        $this->assertEquals(true, $swagger->models['Parent']->properties[0]->required);
+        $this->assertEquals(array('name'), $swagger->models['Parent']->required);
+        // Assert child and inheritance
+        $this->assertCount(2, $swagger->models['Child']->properties);
+        $this->assertEquals('id', $swagger->models['Child']->properties[0]->name);
+        $this->assertEquals('name', $swagger->models['Child']->properties[1]->name);
+        $this->assertEquals(true, $swagger->models['Child']->properties[1]->required);
+        $this->assertEquals(array('id', 'name'), $swagger->models['Child']->required);
+    }
     /**
      * dataProvider for testExample
-     * @return type
+     * @return array
      */
     public function getExampleDirs()
     {
