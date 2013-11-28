@@ -123,8 +123,9 @@ abstract class DataType extends AbstractAnnotation
         if (is_string($this->required)) {
             $required = filter_var($this->required, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
             if ($required === null) {
-                Logger::notice('Invalid `required="'.$this->required.'"` for '.$this->identity().' expecting `required=true`');
+                Logger::notice('Invalid `required="'.$this->required.'"` for '.$this->identity().' expecting `required=true` or `required=false` in '.AbstractAnnotation::$context);
             } else {
+                Logger::notice('Expecting a boolean, got a string `required="'.$this->required.'"` instead of `required='.($required ? 'true': 'false').'` for '.$this->identity().' in '.AbstractAnnotation::$context);
                 $this->required = $required;
             }
         }
