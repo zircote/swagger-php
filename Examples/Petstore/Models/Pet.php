@@ -28,7 +28,7 @@ use Swagger\Annotations as SWG;
  * @category
  * @subpackage
  *
- * @SWG\Model(id="Pet",required="['id','name']")
+ * @SWG\Model(id="Pet",required="id, name")
  */
 class Pet
 {

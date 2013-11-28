@@ -71,8 +71,13 @@ class Model extends AbstractAnnotation
 
     public function __construct(array $values = array()) {
         parent::__construct($values);
+        // required accepts both json syntax and comma-separated syntax.
         if (is_string($this->required)) {
-            $this->required = $this->decode($this->required);
+            if (strpos($this->required, '[') !== false) {
+                $this->required = $this->decode($this->required);
+            } else {
+                $this->required = preg_split('/(\s)*,(\s)*/', $this->required);
+            }
         }
     }
 
@@ -93,6 +98,13 @@ class Model extends AbstractAnnotation
     {
         $properties = array();
         $required = $this->required ?: array();
+        foreach ($required as $name) {
+            foreach ($this->properties as $property) {
+                if ($property->name === $name) {
+                    $property->required = true;
+                }
+            }
+        }
         foreach ($this->properties as $property) {
             if ($property->validate()) {
                 $properties[] = $property;
