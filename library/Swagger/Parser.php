@@ -338,11 +338,17 @@ class Parser
                     $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $class)));
                     $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
                 }
+                if ($annotation->description === null) {
+                    $annotation->description = $this->extractDescription($docComment);
+                }
             } elseif ($annotation instanceof Annotations\Model) {
                 // Model
                 $annotation->phpClass = $class;
                 if ($annotation->id === null) {
                     $annotation->id = basename(str_replace('\\', '/', $class));
+                }
+                if ($annotation->description === null) {
+                    $annotation->description = $this->extractDescription($docComment);
                 }
                 $annotation->phpExtends = $extends;
             }
@@ -364,6 +370,9 @@ class Parser
                     // Assume method (without Action suffix) on top the resourcePath
                     $annotation->path = $this->resource->resourcePath . '/' . preg_replace('/Action$/i', '', $method);
                 }
+                if ($annotation->description === null) {
+                    $annotation->description = $this->extractDescription($docComment);
+                }
                 foreach ($annotation->operations as $i => $operation) {
                     if ($operation->nickname === null) {
                         $operation->nickname = $method;
@@ -372,6 +381,7 @@ class Parser
                         }
                     }
                 }
+
             }
         }
         return $annotations;
@@ -432,10 +442,38 @@ class Parser
                         }
                     }
                 }
-                // @todo Extract description
+                if ($annotation->description === null) {
+                    $annotation->description = $this->extractDescription($docComment);
+                }
             }
         }
         return $annotations;
+    }
+
+    /**
+     * Extract a description from a docblock. Returns the plaintext before the first @annotation.
+     * @param string $docComment
+     * @return null|string
+     */
+    protected function extractDescription($docComment) {
+        $lines = explode("\n", $docComment);
+        unset($lines[0]);
+        $description = '';
+        foreach ($lines as $line) {
+            $line = ltrim($line, "\t *");
+            if (substr($line, 0, 1) === '@') {
+                break;
+            }
+            $description .= $line.' ';
+        }
+        $description = trim($description);
+        if ($description === '') {
+            return null;
+        }
+        if (stripos($description, 'license')) {
+            return null; // Don't use the GPL/MIT, etc license text as description.
+        }
+        return $description;
     }
 
     /**

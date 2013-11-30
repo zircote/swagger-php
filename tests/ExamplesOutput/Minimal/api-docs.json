@@ -1,0 +1,12 @@
+{
+    "apiVersion": "0.2",
+    "swaggerVersion": "1.2",
+    "apis": [
+        {
+            "path": "/operations"
+        }, {
+            "path": "/resolve",
+            "description": "An example resource"
+        }
+    ]
+}

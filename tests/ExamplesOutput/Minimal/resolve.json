@@ -19,6 +19,7 @@
     "models": {
         "Dog": {
             "id": "Dog",
+            "description": "A dog. a.k.a. Canis lupus familiaris",
             "required": ["breed"],
             "properties": {
                 "breed": {
@@ -41,7 +42,7 @@
                 },
                 "status": {
                     "type": "string",
-                    "description": "pet status in the store",
+                    "description": "Pet status in the store",
                     "enum":[
                         "available",
                         "pending",

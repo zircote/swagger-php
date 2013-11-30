@@ -2,6 +2,11 @@
 Changelog
 ----------
 
+## 0.8.2
+
+Extract descriptions from the docblock for model, resources, properties and apis. furter reducing duplicate descriptions.
+Fixes issues: #115 & #116
+
 ## 0.8.1
 
 Detect @SWG\Parameter type and @SWG\Items based on `@var Type[]` phpdoc comments.

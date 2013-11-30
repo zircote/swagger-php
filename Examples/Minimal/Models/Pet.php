@@ -37,13 +37,12 @@ class Pet
     public $category;
 
     /**
-     *
+     * Pet status in the store
      *
      * @var string
      *
-     * @SWG\Property(
-     *      enum="['available', 'pending', 'sold']",
-     *      description="pet status in the store")
+     * @SWG\Property(enum="['available', 'pending', 'sold']")
+     * Property() will use the part of the docblock above the first @ as description.
      */
     public $status;
 

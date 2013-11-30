@@ -108,10 +108,14 @@ class Swagger
                 $result['apiVersion'] = $resource->apiVersion;
             }
             $path = $options['prefix'].str_replace('/', '-', ltrim($resource->resourcePath, '/')).$options['suffix'];
-            $result['apis'][] = array(
+            $api = array(
                 'path' => $path,
                 'description' => $resource->getDescription()
             );
+            if ($api['description'] === null) {
+                unset($api['description']);
+            }
+            $result['apis'][] = $api;
         }
         if ($result['basePath'] === null) {
             unset($result['basePath']);

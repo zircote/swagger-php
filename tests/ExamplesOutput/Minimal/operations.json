@@ -48,7 +48,7 @@
                     "$ref": "Category"
                 },
                 "status": {
-                    "description": "pet status in the store",
+                    "description": "Pet status in the store",
                     "type": "string",
                     "enum": [
                         "available",

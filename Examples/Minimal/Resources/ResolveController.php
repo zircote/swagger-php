@@ -4,6 +4,7 @@ namespace Minimal\Resources;
 // swagger-php uses the @SWG namespace by default. The `use Swagger\Annotations as SWG;` statement is optional.
 
 /**
+ * An example resource
  * @SWG\Resource(
  *  apiVersion="0.2",
  *  basePath="http://example.com/api"
