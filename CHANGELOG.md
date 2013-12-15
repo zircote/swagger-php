@@ -2,6 +2,9 @@
 Changelog
 ----------
 
+## 0.8.3
+excludePath fixes and improvements
+
 ## 0.8.2
 
 Extract descriptions from the docblock for model, resources, properties and apis. furter reducing duplicate descriptions.
