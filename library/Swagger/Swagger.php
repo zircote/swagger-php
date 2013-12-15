@@ -181,11 +181,25 @@ class Swagger
 
     /**
      * Add resources to the registry and collect models.
+     * @param string $path The project root
+     * @param array|string The excludePaths
      * @return Swagger
      */
-    public function scan($path, $excludePath = null)
+    public function scan($path, $excludePaths = array())
     {
-        foreach ($this->getFiles($path, $excludePath) as $filename) {
+        if (is_string($excludePaths)) {
+            $excludePaths = array($excludePaths);
+        }
+        // Convert exclude paths to their canonicalized absolute pathnames
+        foreach ($excludePaths as $i => $excludePath) {
+            $excludePaths[$i] = realpath($excludePath);
+            if ($excludePaths[$i] === false) {
+                Logger::notice('Exclude path: "'.$excludePath.'" not found');
+                unset($excludePaths[$i]);
+            }
+        }
+
+        foreach ($this->getFiles($path, $excludePaths) as $filename) {
             $this->processParser(new Parser($filename));
         }
         $this->processResults();
@@ -395,26 +409,25 @@ class Swagger
         if (is_file($path)) {
             return array($path);
         }
-        if (is_string($excludePaths)) {
-            $excludePaths = array($excludePaths);
-        }
         $files = array();
         $dir = new \DirectoryIterator($path);
+        $vendorPaths = array(
+            realpath(__DIR__.'/../'),
+            realpath(__DIR__.'/../../tests'),
+            realpath(__DIR__.'/../../../../doctrine'),
+            realpath(__DIR__.'/../../vendor/doctrine')
+        );
         /* @var $fileInfo \DirectoryIterator */
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
                 $skip = false;
                 foreach ($excludePaths as $excludePath) {
-                    if (strpos(realpath($fileInfo->getPathname()), realpath($excludePath)) === 0) {
+                    if (strpos(realpath($fileInfo->getPathname()), $excludePath) === 0) {
                         $skip = true;
                         break;
                     }
                 }
-                if (realpath($fileInfo->getPathname()) === dirname(dirname(__DIR__)).'/tests') {
-                    $skip = true;
-                    Logger::notice('Skipping files in "'.realpath($fileInfo->getPathname()).'" add your "vendor" directory to the exclude paths');
-                }
-                if (realpath($fileInfo->getPathname()) === realpath(__DIR__.'/../../../../doctrine')) {
+                if (!$skip && in_array(realpath($fileInfo->getPathname()), $vendorPaths)) {
                     $skip = true;
                     Logger::notice('Skipping files in "'.realpath($fileInfo->getPathname()).'" add your "vendor" directory to the exclude paths');
                 }
@@ -428,7 +441,7 @@ class Swagger
                     array_push($files, $path.DIRECTORY_SEPARATOR.$fileInfo->getFileName());
                 }
             } elseif (!$fileInfo->isDot() && $fileInfo->isDir()) {
-                $files = array_merge($files, $this->getFiles($path.DIRECTORY_SEPARATOR.$fileInfo->getFileName()));
+                $files = array_merge($files, $this->getFiles($path.DIRECTORY_SEPARATOR.$fileInfo->getFileName(), $excludePaths));
             }
         }
         return $files;

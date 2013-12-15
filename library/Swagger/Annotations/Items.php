@@ -23,6 +23,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Swagger\Swagger;
+use Swagger\Logger;
 
 //
 // Usage:
