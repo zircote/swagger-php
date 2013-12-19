@@ -72,8 +72,20 @@ class Parser
      */
     private $filename;
 
-    public function __construct($filename = null)
+    /**
+     * @var ProcessorManager
+     */
+    private $processorManager;
+
+    public function __construct($filename = null, ProcessorManager $processorManager = null)
     {
+        if (null === $processorManager) {
+            $processorManager = new ProcessorManager();
+            $processorManager->initDefaultProcessors();
+        }
+
+        $this->processorManager = $processorManager;
+
         AnnotationRegistry::registerAutoloadNamespace(__NAMESPACE__, dirname(__DIR__));
         if ($filename !== null) {
             $this->parseFile($filename);
@@ -99,6 +111,23 @@ class Parser
     }
 
     /**
+     * @param Annotations\Resource $resource resource
+     */
+    public function appendResource(Annotations\Resource $resource)
+    {
+        $this->resource    = $resource;
+        $this->resources[] = $this->resource;
+    }
+
+    /**
+     * @return Annotation\Resource
+     */
+    public function getCurrentResource()
+    {
+        return $this->resource;
+    }
+
+    /**
      * Get all valid models.
      * @return Annotations\Model[]
      */
@@ -117,12 +146,48 @@ class Parser
     }
 
     /**
+     * @param Annotations\Model $model model
+     */
+    public function appendModel(Annotations\Model $model)
+    {
+        $this->model    = $model;
+        $this->models[] = $this->model;
+    }
+
+    /**
+     * @return Annotation\Model
+     */
+    public function getCurrentModel()
+    {
+        return $this->model;
+    }
+
+    /**
      * Get all annotation partials.
      * @return Annotations\AbstractAnnotation[]
      */
     public function getPartials()
     {
         return $this->partials;
+    }
+
+    /**
+     * @param string $key key
+     *
+     * @return boolean
+     */
+    public function hasPartial($key)
+    {
+        return isset($this->partials[$key]);
+    }
+
+    /**
+     * @param string $key        key
+     * @param object $annotation annotation
+     */
+    public function setPartial($key, $annotation)
+    {
+        $this->partials[$key] = $annotation;
     }
 
     /**
@@ -196,7 +261,7 @@ class Parser
                         $extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
                     }
                     Annotations\AbstractAnnotation::$context = $class . ' in ' . $location;
-                    $this->parseClass($class, $extends, $docComment);
+                    $this->parseDocComment($docComment, new Context\ClassContext($class, $extends, $docComment));
                     $docComment = false;
                     continue;
                 }
@@ -206,7 +271,8 @@ class Parser
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_VARIABLE) { // static property
                         Annotations\AbstractAnnotation::$context = $class . '::' . $token[1] . ' in ' . $location;
-                        $this->parsePropery(substr($token[1], 1), $docComment);
+
+                        $this->parseDocComment($docComment, new Context\PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                         continue;
                     }
@@ -218,13 +284,13 @@ class Parser
                     }
                     if ($token[0] === T_VARIABLE) { // instance property
                         Annotations\AbstractAnnotation::$context = $class . '->' . substr($token[1], 1) . ' in ' . $location;
-                        $this->parsePropery(substr($token[1], 1), $docComment);
+                        $this->parseDocComment($docComment, new Context\PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                     } elseif ($token[0] === T_FUNCTION) {
                         $token = $tokenParser->next(false);
                         if ($token[0] === T_STRING) {
                             Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                            $this->parseMethod($token[1], $docComment);
+                            $this->parseDocComment($docComment, new Context\MethodContext($token[1], $docComment, $this->resource));
                             $docComment = false;
                         }
                     }
@@ -233,7 +299,7 @@ class Parser
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_STRING) {
                         Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                        $this->parseMethod($token[1], $docComment);
+                        $this->parseDocComment($docComment, new Context\MethodContext($token[1], $docComment, $this->resource));
                         $docComment = false;
                     }
                 }
@@ -272,10 +338,11 @@ class Parser
 
     /**
      *
-     * @param string $docComment
+     * @param string      $docComment
+     * @param object|null $context
      * @return AbstractAnnotation[]
      */
-    protected function parseDocComment($docComment)
+    protected function parseDocComment($docComment, $context = null)
     {
         try {
             $annotations = $this->docParser->parse($docComment, Annotations\AbstractAnnotation::$context);
@@ -283,197 +350,12 @@ class Parser
             Logger::warning($e);
             return array();
         }
+
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Annotations\AbstractAnnotation === false) {
-                continue; // Ignore non-swagger annotations
-            } 
-            if ($annotation instanceof Annotations\Partial) {
-                Logger::notice('Unexpected "' . $annotation->identity() . '", @SWG\Partial is a pointer to a partial and should inside another annotation in ' . Annotations\AbstractAnnotation::$context);
-            } elseif ($annotation->_partialId !== null) {
-                if (isset($this->partials[$annotation->_partialId])) {
-                    Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . Annotations\AbstractAnnotation::$context);
-                }
-                $this->partials[$annotation->_partialId] = $annotation;
-            } elseif ($annotation instanceof Annotations\Resource) {
-                $this->resource = $annotation;
-                $this->resources[] = $this->resource;
-            } elseif ($annotation instanceof Annotations\Model) {
-                $this->model = $annotation;
-                $this->models[] = $this->model;
-            } elseif ($annotation instanceof Annotations\Api) {
-                if ($this->resource) {
-                    $this->resource->apis[] = $annotation;
-                } else {
-                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Resource" declaration in ' . Annotations\AbstractAnnotation::$context);
-                }
-            } elseif ($annotation instanceof Annotations\Property) {
-                if ($this->model) {
-                    $this->model->properties[] = $annotation;
-                } elseif (count($this->models)) {
-                    Logger::notice('Unexpected "' . $annotation->identity() . '", make sure the "@SWG\Model()" declaration is directly above the class definition in ' . Annotations\AbstractAnnotation::$context);
-                } else {
-                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Model" declaration in ' . Annotations\AbstractAnnotation::$context);
-                }
-            } else {
-                Logger::notice('Unexpected "' . $annotation->identity() . '", Expecting a "Resource", "Model" or partial declaration in ' . Annotations\AbstractAnnotation::$context);
-            }
+            $this->processorManager->process($this, $annotation, $context);
         }
+
         return $annotations;
-    }
-
-    /**
-     * @param string $class
-     * @param string $extends
-     * @param string $docComment
-     * @return AbstractAnnotation[]
-     */
-    protected function parseClass($class, $extends, $docComment)
-    {
-        $annotations = $this->parseDocComment($docComment);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Annotations\Resource) {
-                // Resource
-                if ($annotation->resourcePath === null) { // No resourcePath give?
-                    // Assume Classname (without Controller suffix) matches the base route.
-                    $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $class)));
-                    $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
-                }
-                if ($annotation->description === null) {
-                    $annotation->description = $this->extractDescription($docComment);
-                }
-            } elseif ($annotation instanceof Annotations\Model) {
-                // Model
-                $annotation->phpClass = $class;
-                if ($annotation->id === null) {
-                    $annotation->id = basename(str_replace('\\', '/', $class));
-                }
-                if ($annotation->description === null) {
-                    $annotation->description = $this->extractDescription($docComment);
-                }
-                $annotation->phpExtends = $extends;
-            }
-        }
-        return $annotations;
-    }
-
-    /**
-     * @param string $method
-     * @param string $docComment
-     * @return AbstractAnnotation[]
-     */
-    protected function parseMethod($method, $docComment)
-    {
-        $annotations = $this->parseDocComment($docComment);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Annotations\Api) {
-                if ($annotation->path === null && $this->resource && $this->resource->resourcePath) { // No path given?
-                    // Assume method (without Action suffix) on top the resourcePath
-                    $annotation->path = $this->resource->resourcePath . '/' . preg_replace('/Action$/i', '', $method);
-                }
-                if ($annotation->description === null) {
-                    $annotation->description = $this->extractDescription($docComment);
-                }
-                foreach ($annotation->operations as $i => $operation) {
-                    if ($operation->nickname === null) {
-                        $operation->nickname = $method;
-                        if (count($annotation->operations) > 1) {
-                            $operation->nickname .= '_' . $i;
-                        }
-                    }
-                }
-
-            }
-        }
-        return $annotations;
-    }
-
-    /**
-     * @param string $property  Name of the property
-     * @param string $docComment  The doc-comment above the property
-     * @return AbstractAnnotation[]
-     */
-    protected function parsePropery($property, $docComment)
-    {
-        $annotations = $this->parseDocComment($docComment);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Annotations\Property) {
-                if ($annotation->name === null) {
-                    $annotation->name = $property;
-                }
-                if ($annotation->type === null) {
-                    if (preg_match('/@var\s+(\w+)(\[\])?/i', $docComment, $matches)) {
-                        $type = $matches[1];
-                        $isArray = isset($matches[2]);
-
-                        $map = array(
-                            'array' => 'array',
-                            'byte' => array('string', 'byte'),
-                            'boolean' => 'boolean',
-                            'bool' => 'boolean',
-                            'int' => 'integer',
-                            'integer' => 'integer',
-                            'long' => array('integer', 'long'),
-                            'float' => array('number', 'float'),
-                            'double' => array('number', 'double'),
-                            'string' => 'string',
-                            'date' => array('string', 'date'),
-                            'datetime' => array('string', 'date-time'),
-                            '\\datetime' => array('string', 'date-time'),
-                            'byte' => array('string', 'byte'),
-                            'number' => 'number',
-                            'object' => 'object'
-                        );
-                        if (array_key_exists(strtolower($type), $map)) {
-                            $type = $map[strtolower($type)];
-                            if (is_array($type)) {
-                                if ($annotation->format === null) {
-                                    $annotation->format = $type[1];
-                                }
-                                $type = $type[0];
-                            }
-                        }
-                        if ($isArray) {
-                            $annotation->type = 'array';
-                            if ($annotation->items === null) {
-                                $annotation->items = new Annotations\Items(array('value' => $type));
-                            }
-                        } else {
-                            $annotation->type = $type;
-                        }
-                    }
-                }
-                if ($annotation->description === null) {
-                    $annotation->description = $this->extractDescription($docComment);
-                }
-            }
-        }
-        return $annotations;
-    }
-
-    /**
-     * Extract a description from a docblock. Returns the plaintext before the first @annotation.
-     * @param string $docComment
-     * @return null|string
-     */
-    protected function extractDescription($docComment) {
-        $lines = explode("\n", $docComment);
-        unset($lines[0]);
-        $description = '';
-        foreach ($lines as $line) {
-            $line = ltrim($line, "\t *");
-            if (substr($line, 0, 1) === '@') {
-                break;
-            }
-            $description .= $line.' ';
-        }
-        $description = trim($description);
-        if ($description === '') {
-            return null;
-        }
-        if (stripos($description, 'license')) {
-            return null; // Don't use the GPL/MIT, etc license text as description.
-        }
-        return $description;
     }
 
     /**

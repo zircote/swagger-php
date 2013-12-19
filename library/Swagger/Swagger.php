@@ -45,6 +45,11 @@ class Swagger
     public $partials = array();
 
     /**
+     * @var ProcessorManager
+     */
+    protected $processorManager;
+
+    /**
      *
      * @param string|array $paths Project root folder
      * @param string|array $excludePath Exclude paths
@@ -200,12 +205,12 @@ class Swagger
         }
 
         foreach ($this->getFiles($path, $excludePaths) as $filename) {
-            $this->processParser(new Parser($filename));
+            $this->processParser(new Parser($filename, $this->getProcessorManager()));
         }
         $this->processResults();
         return $this;
     }
-    
+
     /**
      * Process a single code snippet.
      * @param string $contents PHP code.
@@ -215,15 +220,15 @@ class Swagger
     public function examine($contents, $context = 'unknown')
     {
         if (strpos($contents, '<?php') === false) {
-            throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found'); 
+            throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found');
         }
-        $parser = new Parser();
+        $parser = new Parser(null, $this->getProcessorManager());
         $parser->parseContents($contents, $context);
         $this->processParser($parser);
         $this->processResults();
         return $this;
     }
-    
+
     /**
      * Extract resourses and models from the parser.
      * @param Parser $parser
@@ -246,7 +251,7 @@ class Swagger
             $this->partials[$id] = $partial;
         }
     }
-    
+
     protected function processResults() {
         $this->applyPartials($this->registry);
         $this->applyPartials($this->models);
@@ -444,6 +449,7 @@ class Swagger
                 $files = array_merge($files, $this->getFiles($path.DIRECTORY_SEPARATOR.$fileInfo->getFileName(), $excludePaths));
             }
         }
+
         return $files;
     }
 
@@ -659,5 +665,20 @@ class Swagger
             }
         }
         $options = array_merge($defaults, $options);
+    }
+
+    public function getProcessorManager()
+    {
+        if (null === $this->processorManager) {
+            $this->processorManager = new ProcessorManager();
+            $this->processorManager->initDefaultProcessors();
+        }
+
+        return $this->processorManager;
+    }
+
+    public function addProcessor(Processor\ProcessorInterface $processor)
+    {
+        $this->getProcessorManager()->add($processor);
     }
 }

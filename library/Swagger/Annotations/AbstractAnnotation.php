@@ -99,6 +99,14 @@ abstract class AbstractAnnotation
     }
 
     /**
+     * @return boolean
+     */
+    public function hasPartialId()
+    {
+        return $this->_partialId !== null;
+    }
+
+    /**
      * Log warning, correct errors where possible.
      * @return bool Return false when the annotation is invalid and can't be used.
      */
