@@ -316,15 +316,11 @@ class Parser
             if ($token[0] === T_USE) {
                 $nsLength = strlen(__NAMESPACE__);
                 foreach ($tokenParser->parseUseStatement() as $alias => $target) {
-                    $uses[$alias] = $target;
                     if ($target[0] === '\\') {
-                        $uses[$alias] = substr($target, 1);
+                        $target = substr($target, 1);
                     }
-                    if ($target[0] === '\\' && substr($target, 1, $nsLength + 1) === __NAMESPACE__ . '\\') {
-                        $imports[$alias] = substr($target, 1);
-                    } elseif (substr($target, 0, $nsLength + 1) === __NAMESPACE__ . '\\') {
-                        $imports[$alias] = $target;
-                    }
+
+                    $imports[$alias] = $target;
                 }
                 $this->docParser->setImports($imports);
                 continue;
