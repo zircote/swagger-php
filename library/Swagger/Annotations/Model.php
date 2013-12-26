@@ -69,7 +69,8 @@ class Model extends AbstractAnnotation
         '\Swagger\Annotations\Property' => 'properties[]'
     );
 
-    public function __construct(array $values = array()) {
+    public function __construct(array $values = array())
+    {
         parent::__construct($values);
         // required accepts both json syntax and comma-separated syntax.
         if (is_string($this->required)) {
@@ -138,7 +139,8 @@ class Model extends AbstractAnnotation
         return $data;
     }
 
-    public function identity() {
+    public function identity()
+    {
         return '@SWG\Model(id="'.$this->id.'")';
     }
 }

@@ -42,7 +42,9 @@ class Consumes extends AbstractAnnotation
     {
         return $this->mimetype;
     }
-    protected function setNestedValue($value) {
+
+    protected function setNestedValue($value)
+    {
         $this->mimetype = $value;
     }
 
@@ -51,7 +53,8 @@ class Consumes extends AbstractAnnotation
      * @param Resource|Api|Operation $annotation
      * @return bool
      */
-    public static function validateContainer($annotation) {
+    public static function validateContainer($annotation)
+    {
         if (is_string($annotation->consumes)) {
             $mimetypes = self::decode($annotation->consumes);
             $annotation->consumes = array();

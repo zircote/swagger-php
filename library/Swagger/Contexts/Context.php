@@ -19,50 +19,56 @@ namespace Swagger\Contexts;
  * @category   Swagger
  * @package    Swagger
  */
+use Swagger\Parser;
 
 /**
  * Context
- *
- * @category   Swagger
- * @package    Swagger
  */
-class ClassContext extends Context
+class Context
 {
     /**
      * @var string
      */
-    private $class;
+    private $docComment;
 
     /**
-     * @var string
-     */
-    private $extends;
-
-    /**
-     * @param string $class      class
-     * @param string $extends    extends
      * @param string $docComment docComment
      */
-    public function __construct($class, $extends, $docComment)
+    public function __construct($docComment)
     {
-        parent::__construct($docComment);
-        $this->class = $class;
-        $this->extends = $extends;
+        $this->docComment = $docComment;
     }
 
     /**
      * @return string
      */
-    public function getClass()
+    public function getDocComment()
     {
-        return $this->class;
+        return $this->docComment;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getExtends()
+    public function extractDescription()
     {
-        return $this->extends;
+        $lines = explode("\n", $this->getDocComment());
+        unset($lines[0]);
+        $description = '';
+        foreach ($lines as $line) {
+            $line = ltrim($line, "\t *");
+            if (substr($line, 0, 1) === '@') {
+                break;
+            }
+            $description .= $line.' ';
+        }
+        $description = trim($description);
+        if ($description === '') {
+            return null;
+        }
+        if (stripos($description, 'license')) {
+            return null; // Don't use the GPL/MIT license text as the description.
+        }
+        return $description;
     }
 }

@@ -40,5 +40,4 @@ class Properties extends AbstractAnnotation
     protected static $mapAnnotations = array(
         '\Swagger\Annotations\Property' => 'properties[]'
     );
-
 }

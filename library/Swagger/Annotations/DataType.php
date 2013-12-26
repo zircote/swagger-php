@@ -133,10 +133,9 @@ abstract class DataType extends AbstractAnnotation
         return true;
     }
 
-    public function identity() {
-       $array = explode('\\', get_class($this));
-       return '@SWG\\'.array_pop($array).'(name="'.$this->name.'")';
+    public function identity()
+    {
+        $array = explode('\\', get_class($this));
+        return '@SWG\\'.array_pop($array).'(name="'.$this->name.'")';
     }
-
-
 }

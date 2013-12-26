@@ -110,7 +110,8 @@ class Operation extends AbstractAnnotation
     /**
      * @param array $values
      */
-    public function __construct(array $values = array()) {
+    public function __construct(array $values = array())
+    {
         parent::__construct($values);
         $this->notes = $this->removePreamble($this->notes);
     }

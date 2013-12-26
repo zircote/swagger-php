@@ -45,5 +45,4 @@ class Property extends DataType
         }
         return $data;
     }
-
 }

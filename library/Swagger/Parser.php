@@ -25,6 +25,11 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\TokenParser;
 use Doctrine\Common\Annotations\DocParser;
 
+use Swagger\Contexts\Context;
+use Swagger\Contexts\ClassContext;
+use Swagger\Contexts\MethodContext;
+use Swagger\Contexts\PropertyContext;
+
 /**
  * @category   Swagger
  * @package    Swagger
@@ -42,7 +47,7 @@ class Parser
      * Current resource
      * @var Annotations\Resource
      */
-    protected $resource = false;
+    protected $currentResource = false;
 
     /**
      * All detected models
@@ -60,7 +65,7 @@ class Parser
      * Current model
      * @var Annotations\Model
      */
-    protected $model = false;
+    protected $currentModel = false;
 
     /**
      * @var DocParser
@@ -73,18 +78,19 @@ class Parser
     private $filename;
 
     /**
-     * @var ProcessorManager
+     *
+     * @var Processor\ProcessorInterface[]
      */
-    private $processorManager;
+    private $processors;
 
-    public function __construct($filename = null, ProcessorManager $processorManager = null)
+    /**
+     *
+     * @param Processor\ProcessorInterface[] $processors
+     * @param string $filename
+     */
+    public function __construct($processors, $filename = null)
     {
-        if (null === $processorManager) {
-            $processorManager = new ProcessorManager();
-            $processorManager->initDefaultProcessors();
-        }
-
-        $this->processorManager = $processorManager;
+        $this->processors = $processors;
 
         AnnotationRegistry::registerAutoloadNamespace(__NAMESPACE__, dirname(__DIR__));
         if ($filename !== null) {
@@ -115,8 +121,8 @@ class Parser
      */
     public function appendResource(Annotations\Resource $resource)
     {
-        $this->resource    = $resource;
-        $this->resources[] = $this->resource;
+        $this->resources[] = $resource;
+        $this->currentResource = $resource;
     }
 
     /**
@@ -124,7 +130,7 @@ class Parser
      */
     public function getCurrentResource()
     {
-        return $this->resource;
+        return $this->currentResource;
     }
 
     /**
@@ -150,8 +156,8 @@ class Parser
      */
     public function appendModel(Annotations\Model $model)
     {
-        $this->model    = $model;
-        $this->models[] = $this->model;
+        $this->models[] = $model;
+        $this->currentModel = $model;
     }
 
     /**
@@ -159,7 +165,7 @@ class Parser
      */
     public function getCurrentModel()
     {
-        return $this->model;
+        return $this->currentModel;
     }
 
     /**
@@ -241,7 +247,7 @@ class Parser
                 $location = $this->filename . ' on line ' . $token[2];
                 Annotations\AbstractAnnotation::$context = $location;
                 if ($docComment) { // 2 Doc-comments in succession?
-                    $this->parseDocComment($docComment);
+                    $this->parseContext(new Context($docComment));
                 }
                 $docComment = $token[1];
                 continue;
@@ -252,7 +258,7 @@ class Parser
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 $token = $tokenParser->next();
                 $class = $namespace ? $namespace . '\\' . $token[1] : $token[1];
-                $this->model = false;
+                $this->currentModel = false;
                 // @todo detect end-of-class and reset $class
                 if ($docComment) {
                     $extends = null;
@@ -261,7 +267,7 @@ class Parser
                         $extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
                     }
                     Annotations\AbstractAnnotation::$context = $class . ' in ' . $location;
-                    $this->parseDocComment($docComment, new Contexts\ClassContext($class, $extends, $docComment));
+                    $this->parseContext(new ClassContext($class, $extends, $docComment));
                     $docComment = false;
                     continue;
                 }
@@ -272,7 +278,7 @@ class Parser
                     if ($token[0] === T_VARIABLE) { // static property
                         Annotations\AbstractAnnotation::$context = $class . '::' . $token[1] . ' in ' . $location;
 
-                        $this->parseDocComment($docComment, new Contexts\PropertyContext(substr($token[1], 1), $docComment));
+                        $this->parseContext(new PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                         continue;
                     }
@@ -284,13 +290,13 @@ class Parser
                     }
                     if ($token[0] === T_VARIABLE) { // instance property
                         Annotations\AbstractAnnotation::$context = $class . '->' . substr($token[1], 1) . ' in ' . $location;
-                        $this->parseDocComment($docComment, new Contexts\PropertyContext(substr($token[1], 1), $docComment));
+                        $this->parseContext(new PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                     } elseif ($token[0] === T_FUNCTION) {
                         $token = $tokenParser->next(false);
                         if ($token[0] === T_STRING) {
                             Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                            $this->parseDocComment($docComment, new Contexts\MethodContext($token[1], $docComment, $this->resource));
+                            $this->parseContext(new MethodContext($token[1], $docComment));
                             $docComment = false;
                         }
                     }
@@ -299,13 +305,13 @@ class Parser
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_STRING) {
                         Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                        $this->parseDocComment($docComment, new Contexts\MethodContext($token[1], $docComment, $this->resource));
+                        $this->parseContext(new MethodContext($token[1], $docComment));
                         $docComment = false;
                     }
                 }
                 if (in_array($token[0], array(T_NAMESPACE, T_USE)) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
                     // Not a doc-comment for a class, property or method?
-                    $this->parseDocComment($docComment);
+                    $this->parseContext(new Context($docComment));
                     $docComment = false;
                 }
             }
@@ -327,30 +333,32 @@ class Parser
             }
         }
         if ($docComment) { // File ends with a T_DOC_COMMENT
-            $this->parseDocComment($docComment);
+            $this->parseContext(new Context($docComment));
         }
         Annotations\AbstractAnnotation::$context = 'unknown';
     }
 
     /**
      *
-     * @param string      $docComment
-     * @param object|null $context
+     * @param Context $context Content containing the docComment
      * @return AbstractAnnotation[]
      */
-    protected function parseDocComment($docComment, $context = null)
+    protected function parseContext($context)
     {
         try {
-            $annotations = $this->docParser->parse($docComment, Annotations\AbstractAnnotation::$context);
+            $annotations = $this->docParser->parse($context->getDocComment(), Annotations\AbstractAnnotation::$context);
         } catch (\Exception $e) {
             Logger::warning($e);
             return array();
         }
 
         foreach ($annotations as $annotation) {
-            $this->processorManager->process($this, $annotation, $context);
+            foreach ($this->processors as $processor) {
+                if ($processor->supports($annotation, $context)) {
+                    $processor->process($this, $annotation, $context);
+                }
+            }
         }
-
         return $annotations;
     }
 
@@ -390,5 +398,4 @@ class Parser
         }
         return $namespace . '\\' . $class;
     }
-
 }

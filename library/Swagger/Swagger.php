@@ -22,6 +22,7 @@ namespace Swagger;
  */
 use Swagger\Annotations\Resource;
 use Swagger\Annotations\Model;
+use Swagger\Processors\ProcessorInterface;
 
 /**
  * @category   Swagger
@@ -45,9 +46,9 @@ class Swagger
     public $partials = array();
 
     /**
-     * @var ProcessorManager
+     * @var ProcessorInterface[]
      */
-    protected $processorManager;
+    protected $processors;
 
     /**
      *
@@ -205,7 +206,7 @@ class Swagger
         }
 
         foreach ($this->getFiles($path, $excludePaths) as $filename) {
-            $this->processParser(new Parser($filename, $this->getProcessorManager()));
+            $this->processParser(new Parser($this->getProcessors(), $filename));
         }
         $this->processResults();
         return $this;
@@ -222,7 +223,7 @@ class Swagger
         if (strpos($contents, '<?php') === false) {
             throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found');
         }
-        $parser = new Parser(null, $this->getProcessorManager());
+        $parser = new Parser($this->getProcessors());
         $parser->parseContents($contents, $context);
         $this->processParser($parser);
         $this->processResults();
@@ -233,7 +234,8 @@ class Swagger
      * Extract resourses and models from the parser.
      * @param Parser $parser
      */
-    protected function processParser($parser) {
+    protected function processParser($parser)
+    {
         foreach ($parser->getResources() as $resource) {
             if (array_key_exists($resource->resourcePath, $this->registry)) {
                 $this->registry[$resource->resourcePath]->merge($resource);
@@ -252,7 +254,8 @@ class Swagger
         }
     }
 
-    protected function processResults() {
+    protected function processResults()
+    {
         $this->applyPartials($this->registry);
         $this->applyPartials($this->models);
         foreach ($this->partials as $partial) {
@@ -317,7 +320,7 @@ class Swagger
             foreach ($node as $annotation) {
                 $this->applyPartials($annotation, $depth + 1);
             }
-        } else if ($node instanceof Annotations\AbstractAnnotation) {
+        } elseif ($node instanceof Annotations\AbstractAnnotation) {
             foreach ($node->_partials as $i => $id) {
                 unset($node->_partials[$i]);
                 if (empty($this->partials[$id])) {
@@ -652,7 +655,7 @@ class Swagger
      * @param array $defaults Available options and their default values.
      * @return void
      */
-    static function parseOptions(&$options, $defaults)
+    public static function parseOptions(&$options, $defaults)
     {
         if (is_array($options) === false) {
             $backtrace = debug_backtrace();
@@ -667,18 +670,45 @@ class Swagger
         $options = array_merge($defaults, $options);
     }
 
-    public function getProcessorManager()
+    /**
+     * @return ProcessorInterface[]
+     */
+    public static function getDefaultProcessors()
     {
-        if (null === $this->processorManager) {
-            $this->processorManager = new ProcessorManager();
-            $this->processorManager->initDefaultProcessors();
-        }
-
-        return $this->processorManager;
+        return array(
+            // has to be the first one
+            new Processors\PartialIdProcessor(),
+            // other processors
+            new Processors\ApiProcessor(),
+            new Processors\ModelProcessor(),
+            new Processors\PartialProcessor(),
+            new Processors\PropertyProcessor(),
+            new Processors\ResourceProcessor(),
+        );
     }
 
-    public function addProcessor(Processors\ProcessorInterface $processor)
+    /**
+     * @return ProcessorInterface[]
+     */
+    public function getProcessors()
     {
-        $this->getProcessorManager()->add($processor);
+        if ($this->processors === null) {
+            $this->processors = $this->getDefaultProcessors();
+        }
+        return $this->processors;
+    }
+
+    /**
+     * @param ProcessorInterface[] $processors
+     */
+    public function setProcessors($processors)
+    {
+        $this->processors = $processors;
+    }
+
+    public function addProcessor(ProcessorInterface $processor)
+    {
+        $this->processors = $this->getProcessors();
+        $this->processors[] = $processor;
     }
 }

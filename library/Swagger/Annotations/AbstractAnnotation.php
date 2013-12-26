@@ -210,8 +210,9 @@ abstract class AbstractAnnotation
      * Example: "SWG\Model(id="Pet")"
      * @return string
      */
-    public function identity() {
-       $array = explode('\\', get_class($this));
-       return '@SWG\\'.array_pop($array).'()';
+    public function identity()
+    {
+        $array = explode('\\', get_class($this));
+        return '@SWG\\'.array_pop($array).'()';
     }
 }

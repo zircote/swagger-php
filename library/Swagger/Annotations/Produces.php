@@ -42,7 +42,8 @@ class Produces extends AbstractAnnotation
     {
         return $this->mimetype;
     }
-    protected function setNestedValue($value) {
+    protected function setNestedValue($value)
+    {
         $this->mimetype = $value;
     }
 
@@ -51,7 +52,8 @@ class Produces extends AbstractAnnotation
      * @param Resource|Api|Operation $annotation
      * @return bool
      */
-    public static function validateContainer($annotation) {
+    public static function validateContainer($annotation)
+    {
         if (is_string($annotation->produces)) {
             $mimetypes = self::decode($annotation->produces);
             $annotation->produces = array();

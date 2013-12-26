@@ -48,7 +48,8 @@ class Items extends AbstractAnnotation
      */
     public $type;
 
-    protected function setNestedValue($value) {
+    protected function setNestedValue($value)
+    {
         $this->type = $value;
     }
 
@@ -67,7 +68,8 @@ class Items extends AbstractAnnotation
      * @param Property|Parameter|Operation $annotation
      * @return bool
      */
-    public static function validateContainer($annotation) {
+    public static function validateContainer($annotation)
+    {
         // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
         if (is_string($annotation->items) && preg_match('/\$ref:(\w+)/', $annotation->items, $matches)) {
             $annotation->items = new Items();

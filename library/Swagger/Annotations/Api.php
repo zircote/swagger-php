@@ -75,7 +75,8 @@ class Api extends AbstractAnnotation
         '\Swagger\Annotations\Consumes' => 'consumes[]',
     );
 
-    public function __construct(array $values = array()) {
+    public function __construct(array $values = array())
+    {
         parent::__construct($values);
     }
 
@@ -110,7 +111,8 @@ class Api extends AbstractAnnotation
         return true;
     }
 
-    public function identity() {
+    public function identity()
+    {
         return '@SWG\Api(path="'.$this->path.'")';
     }
 }

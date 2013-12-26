@@ -166,7 +166,8 @@ class Resource extends AbstractAnnotation
         }
     }
 
-    public function identity() {
+    public function identity()
+    {
         return '@SWG\Resource(resourcePath="'.$this->resourcePath.'")';
     }
 }
