@@ -1,24 +1,24 @@
 <?php
 
-namespace Swagger\Processor;
+namespace Swagger\Processors;
 
 use Swagger\Parser;
-use Swagger\Context\ClassContext;
+use Swagger\Contexts\ClassContext;
 
 /**
- * ResourceProcessor
+ * ModelProcessor
  *
  * @uses ProcessorInterface
  * @author Stephane PY <py.stephane1@gmail.com>
  */
-class ResourceProcessor implements ProcessorInterface
+class ModelProcessor implements ProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
     public function supports($annotation, $context)
     {
-        return $annotation instanceof \Swagger\Annotations\Resource;
+        return $annotation instanceof \Swagger\Annotations\Model;
     }
 
     /**
@@ -27,19 +27,19 @@ class ResourceProcessor implements ProcessorInterface
     public function process(Parser $parser, $annotation, $context)
     {
         if (!$annotation->hasPartialId()) {
-            $parser->appendResource($annotation);
+            $parser->appendModel($annotation);
         }
 
         if ($context instanceof ClassContext) {
-            if ($annotation->resourcePath === null) { // No resourcePath given ?
-                // Assume Classname (without Controller suffix) matches the base route.
-                $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $context->getClass())));
-                $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
+            $annotation->phpClass = $context->getClass();
+            if ($annotation->id === null) {
+                $annotation->id = basename(str_replace('\\', '/', $context->getClass()));
             }
 
             if ($annotation->description === null) {
                 $annotation->description = $context->extractDescription();
             }
+            $annotation->phpExtends = $context->getExtends();
         }
     }
 
@@ -48,6 +48,6 @@ class ResourceProcessor implements ProcessorInterface
      */
     public function getId()
     {
-        return 'zircote_resource';
+        return 'zircote_model';
     }
 }

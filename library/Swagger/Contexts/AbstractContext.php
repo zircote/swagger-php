@@ -1,6 +1,6 @@
 <?php
 
-namespace Swagger\Context;
+namespace Swagger\Contexts;
 
 /**
  * AbstractContext

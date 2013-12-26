@@ -1,11 +1,11 @@
 <?php
 
-namespace Swagger\Processor;
+namespace Swagger\Processors;
 
 use Swagger\Logger;
 use Swagger\Parser;
 use Swagger\Annotations;
-use Swagger\Context\MethodContext;
+use Swagger\Contexts\MethodContext;
 
 /**
  * ApiProcessor

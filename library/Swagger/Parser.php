@@ -261,7 +261,7 @@ class Parser
                         $extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
                     }
                     Annotations\AbstractAnnotation::$context = $class . ' in ' . $location;
-                    $this->parseDocComment($docComment, new Context\ClassContext($class, $extends, $docComment));
+                    $this->parseDocComment($docComment, new Contexts\ClassContext($class, $extends, $docComment));
                     $docComment = false;
                     continue;
                 }
@@ -272,7 +272,7 @@ class Parser
                     if ($token[0] === T_VARIABLE) { // static property
                         Annotations\AbstractAnnotation::$context = $class . '::' . $token[1] . ' in ' . $location;
 
-                        $this->parseDocComment($docComment, new Context\PropertyContext(substr($token[1], 1), $docComment));
+                        $this->parseDocComment($docComment, new Contexts\PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                         continue;
                     }
@@ -284,13 +284,13 @@ class Parser
                     }
                     if ($token[0] === T_VARIABLE) { // instance property
                         Annotations\AbstractAnnotation::$context = $class . '->' . substr($token[1], 1) . ' in ' . $location;
-                        $this->parseDocComment($docComment, new Context\PropertyContext(substr($token[1], 1), $docComment));
+                        $this->parseDocComment($docComment, new Contexts\PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                     } elseif ($token[0] === T_FUNCTION) {
                         $token = $tokenParser->next(false);
                         if ($token[0] === T_STRING) {
                             Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                            $this->parseDocComment($docComment, new Context\MethodContext($token[1], $docComment, $this->resource));
+                            $this->parseDocComment($docComment, new Contexts\MethodContext($token[1], $docComment, $this->resource));
                             $docComment = false;
                         }
                     }
@@ -299,7 +299,7 @@ class Parser
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_STRING) {
                         Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
-                        $this->parseDocComment($docComment, new Context\MethodContext($token[1], $docComment, $this->resource));
+                        $this->parseDocComment($docComment, new Contexts\MethodContext($token[1], $docComment, $this->resource));
                         $docComment = false;
                     }
                 }

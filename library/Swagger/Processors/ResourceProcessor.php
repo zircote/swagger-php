@@ -1,24 +1,24 @@
 <?php
 
-namespace Swagger\Processor;
+namespace Swagger\Processors;
 
 use Swagger\Parser;
-use Swagger\Context\ClassContext;
+use Swagger\Contexts\ClassContext;
 
 /**
- * ModelProcessor
+ * ResourceProcessor
  *
  * @uses ProcessorInterface
  * @author Stephane PY <py.stephane1@gmail.com>
  */
-class ModelProcessor implements ProcessorInterface
+class ResourceProcessor implements ProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
     public function supports($annotation, $context)
     {
-        return $annotation instanceof \Swagger\Annotations\Model;
+        return $annotation instanceof \Swagger\Annotations\Resource;
     }
 
     /**
@@ -27,19 +27,19 @@ class ModelProcessor implements ProcessorInterface
     public function process(Parser $parser, $annotation, $context)
     {
         if (!$annotation->hasPartialId()) {
-            $parser->appendModel($annotation);
+            $parser->appendResource($annotation);
         }
 
         if ($context instanceof ClassContext) {
-            $annotation->phpClass = $context->getClass();
-            if ($annotation->id === null) {
-                $annotation->id = basename(str_replace('\\', '/', $context->getClass()));
+            if ($annotation->resourcePath === null) { // No resourcePath given ?
+                // Assume Classname (without Controller suffix) matches the base route.
+                $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $context->getClass())));
+                $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
             }
 
             if ($annotation->description === null) {
                 $annotation->description = $context->extractDescription();
             }
-            $annotation->phpExtends = $context->getExtends();
         }
     }
 
@@ -48,6 +48,6 @@ class ModelProcessor implements ProcessorInterface
      */
     public function getId()
     {
-        return 'zircote_model';
+        return 'zircote_resource';
     }
 }

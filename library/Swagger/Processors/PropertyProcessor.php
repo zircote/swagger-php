@@ -1,10 +1,10 @@
 <?php
 
-namespace Swagger\Processor;
+namespace Swagger\Processors;
 
 use Swagger\Logger;
 use Swagger\Parser;
-use Swagger\Context\PropertyContext;
+use Swagger\Contexts\PropertyContext;
 
 /**
  * PropertyProcessor

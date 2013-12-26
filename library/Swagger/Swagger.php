@@ -677,7 +677,7 @@ class Swagger
         return $this->processorManager;
     }
 
-    public function addProcessor(Processor\ProcessorInterface $processor)
+    public function addProcessor(Processors\ProcessorInterface $processor)
     {
         $this->getProcessorManager()->add($processor);
     }

@@ -20,13 +20,13 @@ class ProcessorManager
     public function initDefaultProcessors()
     {
         // has to be the first one
-        $this->add(new Processor\PartialIdProcessor());
+        $this->add(new Processors\PartialIdProcessor());
         // other processors
-        $this->add(new Processor\ApiProcessor());
-        $this->add(new Processor\ModelProcessor());
-        $this->add(new Processor\PartialProcessor());
-        $this->add(new Processor\PropertyProcessor());
-        $this->add(new Processor\ResourceProcessor());
+        $this->add(new Processors\ApiProcessor());
+        $this->add(new Processors\ModelProcessor());
+        $this->add(new Processors\PartialProcessor());
+        $this->add(new Processors\PropertyProcessor());
+        $this->add(new Processors\ResourceProcessor());
     }
 
     /**
@@ -46,9 +46,9 @@ class ProcessorManager
     }
 
     /**
-     * @param Processor\ProcessorInterface $processor processor
+     * @param Processors\ProcessorInterface $processor processor
      */
-    public function add(Processor\ProcessorInterface $processor)
+    public function add(Processors\ProcessorInterface $processor)
     {
         $this->processors[$processor->getId()] = $processor;
     }

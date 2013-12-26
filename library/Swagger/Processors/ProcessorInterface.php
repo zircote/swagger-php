@@ -1,6 +1,6 @@
 <?php
 
-namespace Swagger\Processor;
+namespace Swagger\Processors;
 
 use Swagger\Parser;
 
