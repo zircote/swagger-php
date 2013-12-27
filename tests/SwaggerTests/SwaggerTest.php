@@ -79,22 +79,6 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * An example of how to cache a Swagger instance.
-     * Although you'll probably just going to cache the json output, or even better generate the json files as a build step.
-     * Swagger before 0.8 intergraded Caching, this is removed from \Swagger\Swagger which allows for better caching controle.
-     */
-    public function testCaching()
-    {
-        $cache = new \Doctrine\Common\Cache\ArrayCache();
-        $swagger = new Swagger($this->examplesDir('Petstore/'));
-        $cache->save('swagger', serialize($swagger));
-        $swag1 = unserialize($cache->fetch('swagger'));
-        $this->assertInstanceOf('Swagger\Swagger', $swag1);
-        $this->assertEquals($swagger->models, $swag1->models);
-        $this->assertEquals($swagger->registry['/user'], $swag1->registry['/user']);
-    }
-
-    /**
      * @group cli
      */
     public function testCliTool()
