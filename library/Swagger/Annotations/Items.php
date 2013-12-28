@@ -69,7 +69,7 @@ class Items extends AbstractAnnotation
      */
     public static function validateContainer($annotation) {
         // Interpret `items="$ref:Model"` as `@SWG\Items(type="Model")`
-        if (is_string($annotation->items) && preg_match('/\$ref:(\w+)/', $annotation->items, $matches)) {
+        if (is_string($annotation->items) && preg_match('/\$ref:([\w._\\/\\\\]+)/', $annotation->items, $matches)) {
             $annotation->items = new Items();
             $annotation->items->type = array_pop($matches);
         }
