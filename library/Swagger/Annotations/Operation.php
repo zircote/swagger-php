@@ -25,6 +25,7 @@ namespace Swagger\Annotations;
 use Swagger\Annotations\Parameters;
 use Swagger\Annotations\ResponseMessages;
 use Swagger\Logger;
+use Swagger\Swagger;
 
 /**
  * The Operation is what is shown as a bar-like container in the interactive UI.
@@ -139,6 +140,7 @@ class Operation extends AbstractAnnotation
         if (empty($this->nickname)) {
             Logger::notice('Required field "nickname" is missing for "'.$this->identity().'" in '.AbstractAnnotation::$context);
         }
+        Swagger::checkDataType($this->type);
         foreach ($this->parameters as $parameter) {
             if ($parameter->validate() == false) {
                 return false;

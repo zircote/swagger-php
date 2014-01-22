@@ -369,7 +369,7 @@ class Swagger
         if ($model === null) {
             return false;
         }
-        if (preg_match('/(List|Array|Set)\[(\w+)\]|\$ref:(\w+)/', $model, $matches)) {
+        if (preg_match('/(List|Array|Set)\[([^\]]+)\]|\$ref:[\s]*(.+)[\s]*$/', $model, $matches)) {
             $model = array_pop($matches);
         }
         if (array_key_exists($model, $this->models)) {

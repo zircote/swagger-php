@@ -95,4 +95,19 @@ class FacetResource
     public function deleteAction()
     {
     }
+
+    /**
+     * @SWG\Api(
+     *   path="/$ref:model/",
+     *   description="allow namespaces and underscores in model names",
+     *   @SWG\Operation(
+     *     method="GET",
+     *     type="array",
+     *     items="$ref: Examples\Some_Model"
+     *   )
+     * )
+     */
+    public function modelReferencing()
+    {
+    }
 }

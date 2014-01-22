@@ -63,7 +63,21 @@
                     "notes":"Returns a facet based on ID"
                 }
             ]
-        }
+        },
+        {
+            "path": "/$ref:model/",
+            "description": "allow namespaces and underscores in model names",
+            "operations": [
+                {
+                    "method": "GET",
+                    "nickname": "modelReferencing",
+                    "type": "array",
+                     "items": {
+                        "$ref": "Examples\\Some_Model"
+                    }
+                }
+            ]
+         }
     ],
     "models":{
         "FacetResult":{
@@ -99,6 +113,20 @@
                 },
                 "prop3":{
                     "$ref":"Some_Object"
+                }
+            }
+        },
+        "Examples\\Some_Model": {
+            "id": "Examples\\Some_Model",
+            "properties": {
+                "children": {
+                    "items": {
+                        "$ref": "Examples\\Some_Model"
+                    },
+                    "type": "array"
+                },
+                "id": {
+                    "type": "integer"
                 }
             }
         }

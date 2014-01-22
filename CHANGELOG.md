@@ -2,7 +2,14 @@
 Changelog
 ----------
 
+## 0.9.0
+
+* New processing architecture allowing swagger-php to act on other annotations (https://github.com/zircote/swagger-php/pull/121)
+* Improved model referencing: $ref allowed with complex modelnames (https://github.com/zircote/swagger-php/pull/122 and https://github.com/zircote/swagger-php/pull/123)
+* Updated depedencies creating a 50% smaller swagger.phar
+
 ## 0.8.3
+
 excludePath fixes and improvements
 
 ## 0.8.2
