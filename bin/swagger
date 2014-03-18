@@ -142,7 +142,7 @@ EOF;
     }
     if ($options['bootstrap']) {
         /* @var  \Composer\Autoload\ClassLoader $loader */
-        foreach (explode(',', $option['bootstrap']) as $incPath) {
+        foreach (explode(',', $options['bootstrap']) as $incPath) {
             @list($namespace, $inclusionPath) = explode(':', $incPath);
             $loader->add($namespace, array($inclusionPath ? : '.'));
             if (!$inclusionPath && is_file($incPath)) {
