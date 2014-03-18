@@ -19,9 +19,10 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
+use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Logger;
 use Swagger\Parser;
-use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Processors\ProcessorInterface;
 
 class PartialIdProcessor implements ProcessorInterface
 {
@@ -41,7 +42,7 @@ class PartialIdProcessor implements ProcessorInterface
         $id = $annotation->_partialId;
 
         if ($parser->hasPartial($id)) {
-            Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . Annotations\AbstractAnnotation::$context);
+            Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . AbstractAnnotation::$context);
         }
 
         $parser->setPartial($id, $annotation);

@@ -21,8 +21,8 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Operation;
-use Swagger\Logger;
 
 /**
  * @package

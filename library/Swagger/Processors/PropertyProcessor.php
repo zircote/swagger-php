@@ -19,9 +19,13 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
+
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Items;
+use Swagger\Annotations\Property;
+use Swagger\Contexts\PropertyContext;
 use Swagger\Logger;
 use Swagger\Parser;
-use Swagger\Contexts\PropertyContext;
 
 /**
  * PropertyProcessor
@@ -33,7 +37,7 @@ class PropertyProcessor implements ProcessorInterface
      */
     public function supports($annotation, $context)
     {
-        return $annotation instanceof \Swagger\Annotations\Property;
+        return $annotation instanceof Property;
     }
 
     /**
@@ -46,9 +50,9 @@ class PropertyProcessor implements ProcessorInterface
                 $model->properties[] = $annotation;
             } else {
                 if (count($parser->getModels())) {
-                    Logger::notice('Unexpected "' . $annotation->identity() . '", make sure the "@SWG\Model()" declaration is directly above the class definition in ' . Annotations\AbstractAnnotation::$context);
+                    Logger::notice('Unexpected "' . $annotation->identity() . '", make sure the "@SWG\Model()" declaration is directly above the class definition in ' . AbstractAnnotation::$context);
                 } else {
-                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Model" declaration in ' . Annotations\AbstractAnnotation::$context);
+                    Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Model" declaration in ' . AbstractAnnotation::$context);
                 }
             }
         }
@@ -92,7 +96,7 @@ class PropertyProcessor implements ProcessorInterface
                     if ($isArray) {
                         $annotation->type = 'array';
                         if ($annotation->items === null) {
-                            $annotation->items = new \Swagger\Annotations\Items(array('value' => $type));
+                            $annotation->items = new Items(array('value' => $type));
                         }
                     } else {
                         $annotation->type = $type;

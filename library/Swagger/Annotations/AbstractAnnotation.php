@@ -22,6 +22,8 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Doctrine\Common\Annotations\AnnotationException;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Partial;
 use Swagger\Logger;
 
 /**
@@ -172,10 +174,7 @@ abstract class AbstractAnnotation
 
     /**
      * @param string $json
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     *
-     * @return mixed
-     */
+     * @throws AnnotationException     */
     public static function decode($json)
     {
         $json = preg_replace(self::REGEX, self::REPLACE, $json);

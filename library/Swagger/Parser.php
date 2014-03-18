@@ -1,5 +1,4 @@
 <?php
-
 namespace Swagger;
 
 /**
@@ -21,14 +20,17 @@ namespace Swagger;
  * @package    Swagger
  */
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\TokenParser;
 use Doctrine\Common\Annotations\DocParser;
+use Doctrine\Common\Annotations\TokenParser;
 
-use Swagger\Contexts\Context;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Model;
+use Swagger\Annotations\Resource;
 use Swagger\Contexts\ClassContext;
+use Swagger\Contexts\Context;
 use Swagger\Contexts\MethodContext;
 use Swagger\Contexts\PropertyContext;
+use Swagger\Processors\ProcessorInterface;
 
 /**
  * @category   Swagger
@@ -39,31 +41,31 @@ class Parser
 
     /**
      * All detected resources
-     * @var Annotations\Resource[]
+     * @var Resource[]
      */
     protected $resources = array();
 
     /**
      * Current resource
-     * @var Annotations\Resource
+     * @var Resource
      */
     protected $currentResource = false;
 
     /**
      * All detected models
-     * @var Annotations\Model[]
+     * @var Model[]
      */
     protected $models = array();
 
     /**
      * All detected annotation partials;
-     * @var Annotations\AbstractAnnotation[]
+     * @var AbstractAnnotation[]
      */
     protected $partials = array();
 
     /**
      * Current model
-     * @var Annotations\Model
+     * @var Model
      */
     protected $currentModel = false;
 
@@ -78,14 +80,13 @@ class Parser
     private $filename;
 
     /**
-     *
-     * @var Processor\ProcessorInterface[]
+     * @var ProcessorInterface[]
      */
     private $processors;
 
     /**
      *
-     * @param Processor\ProcessorInterface[] $processors
+     * @param ProcessorInterface[] $processors
      * @param string $filename
      */
     public function __construct($processors, $filename = null)
@@ -100,11 +101,11 @@ class Parser
 
     /**
      * Get all valid resources.
-     * @return Annotations\Resource[]
+     * @return Resource[]
      */
     public function getResources()
     {
-        Annotations\AbstractAnnotation::$context = $this->filename;
+        AbstractAnnotation::$context = $this->filename;
         $resources = array();
         foreach ($this->resources as $resource) {
             if ($resource->validate()) {
@@ -112,14 +113,14 @@ class Parser
             }
         }
         $this->resources = $resources;
-        Annotations\AbstractAnnotation::$context = 'unknown';
+        AbstractAnnotation::$context = 'unknown';
         return $resources;
     }
 
     /**
-     * @param Annotations\Resource $resource resource
+     * @param Resource $resource resource
      */
-    public function appendResource(Annotations\Resource $resource)
+    public function appendResource(Resource $resource)
     {
         $this->resources[] = $resource;
         $this->currentResource = $resource;
@@ -135,11 +136,11 @@ class Parser
 
     /**
      * Get all valid models.
-     * @return Annotations\Model[]
+     * @return Model[]
      */
     public function getModels()
     {
-        Annotations\AbstractAnnotation::$context = $this->filename;
+        AbstractAnnotation::$context = $this->filename;
         $models = array();
         foreach ($this->models as $model) {
             if ($model->validate()) {
@@ -147,14 +148,14 @@ class Parser
             }
         }
         $this->models = $models;
-        Annotations\AbstractAnnotation::$context = 'unknown';
+        AbstractAnnotation::$context = 'unknown';
         return $models;
     }
 
     /**
-     * @param Annotations\Model $model model
+     * @param Model $model model
      */
-    public function appendModel(Annotations\Model $model)
+    public function appendModel(Model $model)
     {
         $this->models[] = $model;
         $this->currentModel = $model;
@@ -170,7 +171,7 @@ class Parser
 
     /**
      * Get all annotation partials.
-     * @return Annotations\AbstractAnnotation[]
+     * @return AbstractAnnotation[]
      */
     public function getPartials()
     {
@@ -221,7 +222,7 @@ class Parser
 
     /**
      * Shared implementation for parseFile() & parseContents().
-     * @param \Doctrine\Common\Annotations\TokenParser $tokenParser
+     * @param TokenParser $tokenParser
      */
     protected function parseTokens(TokenParser $tokenParser)
     {
@@ -245,7 +246,7 @@ class Parser
             }
             if ($token[0] === T_DOC_COMMENT) {
                 $location = $this->filename . ' on line ' . $token[2];
-                Annotations\AbstractAnnotation::$context = $location;
+                AbstractAnnotation::$context = $location;
                 if ($docComment) { // 2 Doc-comments in succession?
                     $this->parseContext(new Context($docComment));
                 }
@@ -266,7 +267,7 @@ class Parser
                     if ($token[0] === T_EXTENDS) {
                         $extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
                     }
-                    Annotations\AbstractAnnotation::$context = $class . ' in ' . $location;
+                    AbstractAnnotation::$context = $class . ' in ' . $location;
                     $this->parseContext(new ClassContext($class, $extends, $docComment));
                     $docComment = false;
                     continue;
@@ -276,7 +277,7 @@ class Parser
                 if ($token[0] == T_STATIC) {
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_VARIABLE) { // static property
-                        Annotations\AbstractAnnotation::$context = $class . '::' . $token[1] . ' in ' . $location;
+                        AbstractAnnotation::$context = $class . '::' . $token[1] . ' in ' . $location;
 
                         $this->parseContext(new PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
@@ -289,13 +290,13 @@ class Parser
                         $token = $tokenParser->next(false);
                     }
                     if ($token[0] === T_VARIABLE) { // instance property
-                        Annotations\AbstractAnnotation::$context = $class . '->' . substr($token[1], 1) . ' in ' . $location;
+                        AbstractAnnotation::$context = $class . '->' . substr($token[1], 1) . ' in ' . $location;
                         $this->parseContext(new PropertyContext(substr($token[1], 1), $docComment));
                         $docComment = false;
                     } elseif ($token[0] === T_FUNCTION) {
                         $token = $tokenParser->next(false);
                         if ($token[0] === T_STRING) {
-                            Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
+                            AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
                             $this->parseContext(new MethodContext($token[1], $docComment));
                             $docComment = false;
                         }
@@ -304,7 +305,7 @@ class Parser
                 } elseif ($token[0] === T_FUNCTION) {
                     $token = $tokenParser->next(false);
                     if ($token[0] === T_STRING) {
-                        Annotations\AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
+                        AbstractAnnotation::$context = $class . '->' . $token[1] . '(...)' . ' in ' . $location;
                         $this->parseContext(new MethodContext($token[1], $docComment));
                         $docComment = false;
                     }
@@ -335,7 +336,7 @@ class Parser
         if ($docComment) { // File ends with a T_DOC_COMMENT
             $this->parseContext(new Context($docComment));
         }
-        Annotations\AbstractAnnotation::$context = 'unknown';
+        AbstractAnnotation::$context = 'unknown';
     }
 
     /**
@@ -346,7 +347,7 @@ class Parser
     protected function parseContext($context)
     {
         try {
-            $annotations = $this->docParser->parse($context->getDocComment(), Annotations\AbstractAnnotation::$context);
+            $annotations = $this->docParser->parse($context->getDocComment(), AbstractAnnotation::$context);
         } catch (\Exception $e) {
             Logger::warning($e);
             return array();

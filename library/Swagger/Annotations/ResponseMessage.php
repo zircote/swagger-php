@@ -21,6 +21,8 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+use Swagger\Annotations\AbstractAnnotation;
+
 /**
  * @package
  * @category

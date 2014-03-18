@@ -22,6 +22,7 @@ namespace Swagger\Annotations;
  * @subpackage
  */
 use Doctrine\Common\Annotations\AnnotationException;
+use Swagger\Annotations\AbstractAnnotation;
 
 /**
  * @package

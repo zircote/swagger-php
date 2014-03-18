@@ -19,6 +19,9 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
+
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Partial;
 use Swagger\Logger;
 use Swagger\Parser;
 
@@ -29,7 +32,7 @@ class PartialProcessor implements ProcessorInterface
      */
     public function supports($annotation, $context)
     {
-        return $annotation instanceof \Swagger\Annotations\Partial;
+        return $annotation instanceof Partial;
     }
 
     /**
@@ -37,6 +40,6 @@ class PartialProcessor implements ProcessorInterface
      */
     public function process(Parser $parser, $annotation, $context)
     {
-        Logger::notice('Unexpected "' . $annotation->identity() . '", @SWG\Partial is a pointer to a partial and should inside another annotation in ' . Annotations\AbstractAnnotation::$context);
+        Logger::notice('Unexpected "' . $annotation->identity() . '", @SWG\Partial is a pointer to a partial and should inside another annotation in ' . AbstractAnnotation::$context);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger\Processors;
 
 /**
@@ -19,8 +20,9 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
-use Swagger\Parser;
+
 use Swagger\Contexts\Context;
+use Swagger\Parser;
 
 /**
  * ProcessorInterface

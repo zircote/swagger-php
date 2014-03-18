@@ -19,7 +19,6 @@ namespace Swagger\Contexts;
  * @category   Swagger
  * @package    Swagger
  */
-use Swagger\Parser;
 
 /**
  * Context

@@ -1,4 +1,5 @@
 <?php
+
 namespace Swagger\Processors;
 
 /**
@@ -19,8 +20,10 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
-use Swagger\Parser;
+use Swagger\Annotations\Resource;
 use Swagger\Contexts\ClassContext;
+use Swagger\Parser;
+use Swagger\Processors\ProcessorInterface;
 
 /**
  * ResourceProcessor
@@ -32,7 +35,7 @@ class ResourceProcessor implements ProcessorInterface
      */
     public function supports($annotation, $context)
     {
-        return $annotation instanceof \Swagger\Annotations\Resource;
+        return $annotation instanceof Resource;
     }
 
     /**

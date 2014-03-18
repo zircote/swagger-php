@@ -1,5 +1,4 @@
 <?php
-
 namespace Swagger\Annotations;
 
 /**
@@ -22,8 +21,13 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Swagger;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Items;
+use Swagger\Annotations\Operation;
+use Swagger\Annotations\Parameter;
+use Swagger\Annotations\Property;
 use Swagger\Logger;
+use Swagger\Swagger;
 
 //
 // Usage:

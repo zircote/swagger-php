@@ -21,7 +21,7 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
-use Swagger\Logger;
+use Swagger\Annotations\DataType;
 use Swagger\Swagger;
 
 /**

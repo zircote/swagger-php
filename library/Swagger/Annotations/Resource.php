@@ -1,5 +1,4 @@
 <?php
-
 namespace Swagger\Annotations;
 
 /**
@@ -53,7 +52,7 @@ class Resource extends AbstractAnnotation
     public $apiVersion;
 
     /**
-     * @var "/store"
+     * @var string "/store"
      */
     public $resourcePath;
 
