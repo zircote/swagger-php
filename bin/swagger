@@ -49,6 +49,7 @@ try {
         'default-api-version' => null,
         'default-swagger-version' => '1.2',
         'version' => false,
+        'suffix' => '.{format}',
         'help' => false,
         'debug' => false,
     );
@@ -65,6 +66,7 @@ try {
         'exclude',
         'bootstrap',
         'url',
+        'suffix',
         'default-base-path',
         'default-api-version',
         'default-swagger-version',
@@ -173,7 +175,7 @@ EOF;
 
     $resourceListOptions = array(
         'output' => 'json',
-        'suffix' => '.json',
+        'suffix' => $options['suffix'],
         'basePath' => $options['url'],
         'apiVersion' => $options['default-api-version'],
         'swaggerVersion' => $options['default-swagger-version'],
