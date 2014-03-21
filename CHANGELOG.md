@@ -2,6 +2,12 @@
 Changelog
 ----------
 
+## 0.9.1
+
+* Generate ".{format}" instead of ".json" suffix when using the commandline.
+* Fixed bootstrap option
+* Fixed missing use statements.
+
 ## 0.9.0
 
 * New processing architecture allowing swagger-php to act on other annotations (https://github.com/zircote/swagger-php/pull/121)
