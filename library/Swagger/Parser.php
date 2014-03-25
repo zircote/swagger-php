@@ -240,6 +240,7 @@ class Parser
         $uses = array();
         $docComment = false;
         while ($token != null) {
+            $previousToken = $token;
             $token = $tokenParser->next(false);
             if (is_array($token) === false) { // Ignore tokens like "{", "}", etc
                 continue;
@@ -257,6 +258,10 @@ class Parser
                 $token = $tokenParser->next(false); // Skip "abstract" keyword
             }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
+                if (is_array($previousToken) && $previousToken[0] === T_DOUBLE_COLON) {
+                    //php 5.5 class name resolution (i.e. ClassName::class)
+                    continue;
+                }
                 $token = $tokenParser->next();
                 $class = $namespace ? $namespace . '\\' . $token[1] : $token[1];
                 $this->currentModel = false;
