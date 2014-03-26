@@ -2,6 +2,10 @@
 Changelog
 ----------
 
+## 0.9.2
+
+* Fixed issue with PHP 5.5  class name resolution (ClassName::class)
+
 ## 0.9.1
 
 * Generate ".{format}" instead of ".json" suffix when using the commandline.
