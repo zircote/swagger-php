@@ -155,13 +155,13 @@ class Swagger
         }
         $resource = $this->registry[$resourceName];
         // Apply defaults
-        if ($resource->basePath === null) {
+        if (!empty($options['defaultBasePath'])) {
             $resource->basePath = $options['defaultBasePath'];
         }
-        if ($resource->apiVersion === null) {
+        if (!empty($options['defaultApiVersion'])) {
             $resource->apiVersion = $options['defaultApiVersion'];
         }
-        if ($resource->swaggerVersion === null) {
+        if (!empty($options['defaultSwaggerVersion'])) {
             $resource->swaggerVersion = $options['defaultSwaggerVersion'];
         }
         // Sort operation paths alphabetically with shortest first
