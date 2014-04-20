@@ -98,13 +98,15 @@ class Swagger
             'swaggerVersion' => '1.2',
             'output' => 'array',
             'json_pretty_print' => true, // for outputtype 'json'
+            'template' => array(),
         ));
-        $result = array(
-            'basePath' => $options['basePath'],
-            'apiVersion' => $options['apiVersion'],
-            'swaggerVersion' => $options['swaggerVersion'],
-            'apis' => array()
-        );
+
+        $result = $options['template'];
+        $result['basePath'] = $options['basePath'];
+        $result['apiVersion'] = $options['apiVersion'];
+        $result['swaggerVersion'] = $options['swaggerVersion'];
+        $result['apis'] = array();
+
         foreach ($this->registry as $resource) {
             if ($resource->swaggerVersion > $result['swaggerVersion']) {
                 $result['swaggerVersion'] = $resource->swaggerVersion;
