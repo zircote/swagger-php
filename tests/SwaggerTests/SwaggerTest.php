@@ -147,14 +147,46 @@ END;
         $this->assertCount(2, $swagger->models);
         $this->assertCount(1, $swagger->models['Parent']->properties);
         $this->assertEquals('name', $swagger->models['Parent']->properties[0]->name);
-        $this->assertEquals(true, $swagger->models['Parent']->properties[0]->required);
+        $this->assertContains('name', $swagger->models['Parent']->required);
         $this->assertEquals(array('name'), $swagger->models['Parent']->required);
         // Assert child and inheritance
         $this->assertCount(2, $swagger->models['Child']->properties);
         $this->assertEquals('id', $swagger->models['Child']->properties[0]->name);
         $this->assertEquals('name', $swagger->models['Child']->properties[1]->name);
-        $this->assertEquals(true, $swagger->models['Child']->properties[1]->required);
+        $this->assertContains('id', $swagger->models['Child']->required);
         $this->assertEquals(array('id', 'name'), $swagger->models['Child']->required);
+    }
+
+    function testPropertyInheritance() {
+        $code = <<<END
+<?php
+/**
+ * Class UserBase
+ *
+ * @SWG\Model(id="UserBase")
+ */
+class UserBase {
+    /**
+     * @SWG\Property()
+     */
+    public \$email;
+}
+
+/**
+ * @SWG\Model(id="UserNew",required="['email']")
+ */
+class UserNew extends UserBase { }
+
+/**
+ * @SWG\Model(id="UserUpdate")
+ */
+class UserUpdate extends UserBase { }
+END;
+        $swagger = new Swagger();
+        $swagger->examine($code, __CLASS__.'->'.__FUNCTION__.'()');
+        $this->assertCount(1, $swagger->models['UserNew']->required);
+        $this->assertNull($swagger->models['UserUpdate']->required);
+
     }
     /**
      * dataProvider for testExample

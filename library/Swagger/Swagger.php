@@ -646,7 +646,11 @@ class Swagger
                 $model->properties[] = $parentProperty; // Inherit property
             }
         }
-        $model->validate(); // update Model->required
+        if (is_array($parent->required)) {
+             // Merge required properties
+            $model->required = array_unique(array_merge($parent->required, (is_array($model->required) ? $model->required : [])));
+            sort($model->required);
+        }
     }
 
     /**

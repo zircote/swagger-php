@@ -99,25 +99,20 @@ class Model extends AbstractAnnotation
     {
         $properties = array();
         $required = $this->required ?: array();
-        foreach ($required as $name) {
-            foreach ($this->properties as $property) {
-                if ($property->name === $name) {
-                    $property->required = true;
-                }
-            }
-        }
         foreach ($this->properties as $property) {
             if ($property->validate()) {
                 $properties[] = $property;
-                if ($property->required) {
+                if ($property->required && in_array($property->name, $required) === false) {
                     $required[] = $property->name;
                 }
+                $property->required = null;
             }
         }
         $this->properties = $properties;
-        if (count($required) > 0) {
-            $this->required = array_unique($required);
-            sort($this->required);
+        sort($required);
+        $this->required = $required;
+        if (count($required) === 0) {
+            $this->required = null;
         }
         return true;
     }
@@ -129,9 +124,6 @@ class Model extends AbstractAnnotation
     {
         $data = parent::jsonSerialize($this);
         unset($data['phpClass'], $data['phpExtends']);
-        if (empty($data['required'])) {
-            unset($data['required']);
-        }
         $data['properties'] = array();
         foreach ($this->properties as $property) {
             $data['properties'][$property->name] = $property->jsonSerialize();

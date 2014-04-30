@@ -2,6 +2,11 @@
 Changelog
 ----------
 
+## 0.9.3
+
+# getResourceList() now has a template option, which allows accepts a json which can the `info` and `authentication` information.
+# Fixed model inheritance bug #140.
+
 ## 0.9.2
 
 * Fixed issue with PHP 5.5  class name resolution (ClassName::class)
