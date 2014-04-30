@@ -93,18 +93,37 @@ class Swagger
         self::parseOptions($options, array(
             'prefix' => '/',
             'suffix' => '',
+            'template' => null, // array or path to a json file to use as starting point for the listing.
             'basePath' => null,
             'apiVersion' => null,
             'swaggerVersion' => '1.2',
             'output' => 'array',
             'json_pretty_print' => true, // for outputtype 'json'
-            'template' => array(),
         ));
 
-        $result = $options['template'];
-        $result['basePath'] = $options['basePath'];
-        $result['apiVersion'] = $options['apiVersion'];
-        $result['swaggerVersion'] = $options['swaggerVersion'];
+        if (is_array($options['template'])) {
+            $result = $options['template'];
+        } elseif (is_string($options['template'])) {
+            if (substr($options['template'], 0, 1) === '{') {
+                $json = $options['template'];
+            } else {
+                $json = file_get_contents($options['template']);
+                if ($json === false) {
+                    throw new \Exception('Failed to open template "'.$options['template'].'"');
+                }
+            }
+            $result = json_decode($json, true);
+            if (is_array($result) === false) {
+                throw new \Exception('Failed to decode template: "'.$options['template'].'", json_error: '.json_last_error());
+            }
+        } else {
+            $result = array();
+        }
+        foreach (array('basePath', 'apiVersion', 'swaggerVersion') as $key) {
+            if (array_key_exists($key, $result) === false) {
+                $result[$key] = $options[$key];
+            }
+        }
         $result['apis'] = array();
 
         foreach ($this->registry as $resource) {
@@ -648,7 +667,7 @@ class Swagger
         }
         if (is_array($parent->required)) {
              // Merge required properties
-            $model->required = array_unique(array_merge($parent->required, (is_array($model->required) ? $model->required : [])));
+            $model->required = array_unique(array_merge($parent->required, (is_array($model->required) ? $model->required : array())));
             sort($model->required);
         }
     }

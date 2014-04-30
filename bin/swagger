@@ -126,7 +126,7 @@ Usage: swagger /path/to/project [--output /path/to/docs] ...
   --default-base-path        Provide a default basePath for the resources
   --default-api-version      Provide a default apiVersion for the resources
   --default-swagger-version  Provide a default swaggerVersion for the resources
-  --api-doc-template         Provide a template for the resource listing
+  --api-doc-template         Provide a json template for the resource listing
 
   -v, --version       Swagger-PHP version
   -h, --help          This help message
@@ -167,25 +167,6 @@ EOF;
     }
     $outputPath = rtrim($options['output'], '\\//').DIRECTORY_SEPARATOR; // Force a trailing slash
 
-    if ($options['api-doc-template']) {
-
-        if (!file_exists($options['api-doc-template'])) {
-            throw new RuntimeException('Template "'.$options['api-doc-template'].'" does not exist');
-        }
-
-        if (!is_readable($options['api-doc-template'])) {
-            throw new RuntimeException('Template "'.$options['api-doc-template'].'" is not readable');
-        }
-
-        $template = json_decode(file_get_contents($options['api-doc-template']), true);
-        if ($error = json_last_error()) {
-            throw new RuntimeException('Template "'.$options['api-doc-template'].'" does contain invalid json');
-        }
-
-        $options['api-doc-template'] = $template;
-        
-    }
-
     \Swagger\Logger::getInstance()->log = function ($entry, $type) {
         $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
         if ($entry instanceof Exception) {
@@ -195,20 +176,25 @@ EOF;
     };
     $swagger = new \Swagger\Swagger($projectPaths, $excludePaths);
 
-    $resourceListOptions = array(
-        'output' => 'json',
+    $resourceList = $swagger->getResourceList(array(
+        'output' => 'array',
         'suffix' => $options['suffix'],
         'basePath' => $options['url'],
         'apiVersion' => $options['default-api-version'],
         'swaggerVersion' => $options['default-swagger-version'],
-        'template' => $options['api-doc-template'] ?: array()
-    );
+        'template' => $options['api-doc-template']
+    ));
+    // Use the imported values from the `api-doc-template` or else use the given defaults.
     $resourceOptions = array(
         'output' => 'json',
-        'defaultBasePath' => $options['default-base-path'],
-        'defaultApiVersion' => $options['default-api-version'],
-        'defaultSwaggerVersion' => $options['default-swagger-version'],
+        'defaultSwaggerVersion' => $resourceList['swaggerVersion'],
     );
+    if (isset($resourceList['basePath'])) {
+        $resourceOptions['defaultBasePath'] = $resourceList['basePath'];
+    }
+    if (isset($resourceList['apiVersion'])) {
+        $resourceOptions['defaultApiVersion'] = $resourceList['apiVersion'];
+    }
 
     $resourceName = false;
     $output = array();
@@ -231,7 +217,7 @@ EOF;
         }
 
         $filename = $outputPath.'api-docs.json';
-        if (file_put_contents($filename, $swagger->getResourceList($resourceListOptions))) {
+        if (file_put_contents($filename, Swagger\Swagger::jsonEncode($resourceList, true))) {
             echo 'Created ', $filename, PHP_EOL;
         }
         if ($options['url'] == false) {

@@ -4,8 +4,9 @@ Changelog
 
 ## 0.9.3
 
-# getResourceList() now has a template option, which allows accepts a json which can the `info` and `authentication` information.
-# Fixed model inheritance bug #140.
+* Fixed model inheritance bug #140.
+* getResourceList() now has a template option, which accepts a json file which can contain the `info` and `authentication` fields.
+* The `--api-doc-template` option will use the imported `swaggerVersion`, `apiVersion` and `basePath` as defaults.
 
 ## 0.9.2
 
