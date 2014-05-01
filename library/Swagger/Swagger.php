@@ -112,6 +112,9 @@ class Swagger
             if ($options['apiVersion'] === null && $resource->apiVersion > $result['apiVersion']) {
                 $result['apiVersion'] = $resource->apiVersion;
             }
+            if ($options['apiVersion'] and $options['apiVersion'] !== $resource->apiVersion) { //filter by apiVersion
+                continue;
+            }
             $path = $options['prefix'].str_replace('/', '-', ltrim($resource->resourcePath, '/')).$options['suffix'];
             $api = array(
                 'path' => $path,
