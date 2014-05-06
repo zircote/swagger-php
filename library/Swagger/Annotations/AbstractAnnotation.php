@@ -60,6 +60,12 @@ abstract class AbstractAnnotation
      */
     protected static $mapAnnotations = array();
 
+    /**
+     * The context this annnotation was parsed in.
+     * @var array
+     */
+    private $_context = array();
+
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';
     const NEWLINES = '/(?>\r\n|\n|\r|\f|\x0b|\x85|\x{2028}|\x{2029})/u';
@@ -98,6 +104,7 @@ abstract class AbstractAnnotation
                 $this->setNestedAnnotations($objects);
             }
         }
+        $this->setContext(AbstractAnnotation::$context);
     }
 
     /**
@@ -163,7 +170,7 @@ abstract class AbstractAnnotation
     public function jsonSerialize()
     {
         $data = get_object_vars($this);
-        unset($data['_partialId'], $data['_partials']);
+        unset($data['_partialId'], $data['_partials'], $data['_context']);
         foreach ($data as $key => $value) {
             if ($value === null) {
                 unset($data[$key]); // Skip undefined values
@@ -213,5 +220,25 @@ abstract class AbstractAnnotation
     {
         $array = explode('\\', get_class($this));
         return '@SWG\\'.array_pop($array).'()';
+    }
+    
+    protected function setContext($context) {
+        $matches = null;
+        $pattern = '/([0-9a-zA-Z\\\\_]+)->([0-9a-zA-Z_]+)(\\(\\.\\.\\.\\))?\\sin\\s([0-9a-zA-Z\\/\\s_\\-\\.]+)\\son\\sline\\s([0-9]+)/';
+        $return = preg_match($pattern, $context, $matches);
+        if(count($matches) > 1) {
+            $context = array(
+                'class' => $matches[1],
+                'property' => $matches[2],
+                'type' => !empty($matches[3]),
+                'file' => $matches[4],
+                'line' => $matches[5]
+            );
+        }
+        $this->_context = $context;
+    }
+    
+    public function getContext() {
+        return $this->_context;
     }
 }
