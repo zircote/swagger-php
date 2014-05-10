@@ -119,7 +119,7 @@ class Resource extends AbstractAnnotation
             return false;
         }
         if (empty($this->resourcePath)) {
-            Logger::warning('@SWG\Resource() is missing "resourcePath" in '.AbstractAnnotation::$context);
+            Logger::warning('@SWG\Resource() is missing "resourcePath" in '.$this->_context);
             return false;
         }
         $this->apis = $apis;

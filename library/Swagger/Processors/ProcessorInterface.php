@@ -21,8 +21,8 @@ namespace Swagger\Processors;
  * @package    Swagger
  */
 
-use Swagger\Contexts\Context;
-use Swagger\Parser;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Context;
 
 /**
  * ProcessorInterface
@@ -30,17 +30,8 @@ use Swagger\Parser;
 interface ProcessorInterface
 {
     /**
-     * @param object      $annotation annotation
-     * @param Context     $context    context
-     *
-     * @return boolean
+     * @param AbstractAnnotation $annotation
+     * @param Context $context
      */
-    public function supports($annotation, $context);
-
-    /**
-     * @param Parser      $parser     parser
-     * @param object      $annotation annotation
-     * @param Context     $context    context
-     */
-    public function process(Parser $parser, $annotation, $context);
+    public function process($annotation, $context);
 }

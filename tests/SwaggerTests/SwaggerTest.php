@@ -160,7 +160,7 @@ class Child extends Parent {
 }
 END;
         $swagger = new Swagger();
-        $swagger->examine($code, __CLASS__.'->'.__FUNCTION__.'()');
+        $swagger->examine($code);
 
         // Assert parser & parent
         $this->assertCount(2, $swagger->models);
@@ -202,7 +202,7 @@ class UserNew extends UserBase { }
 class UserUpdate extends UserBase { }
 END;
         $swagger = new Swagger();
-        $swagger->examine($code, __CLASS__.'->'.__FUNCTION__.'()');
+        $swagger->examine($code);
         $this->assertCount(1, $swagger->models['UserNew']->required);
         $this->assertNull($swagger->models['UserUpdate']->required);
 

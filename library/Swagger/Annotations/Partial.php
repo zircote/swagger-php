@@ -42,7 +42,7 @@ class Partial
     public function __construct($data)
     {
         if (empty($data['value'])) {
-            throw new AnnotationException('Invalid @SWG\Partial declaration (example: @SWG\Partial("id of the partial"), in '.AbstractAnnotation::$context);
+            throw new AnnotationException('Invalid @SWG\Partial declaration (example: @SWG\Partial("id of the partial"), in '.$this->_context);
         }
         $this->use = $data['value'];
     }

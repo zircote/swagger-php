@@ -21,10 +21,13 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+
 use Doctrine\Common\Annotations\AnnotationException;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Partial;
+use Swagger\Context;
 use Swagger\Logger;
+use Swagger\Parser;
 
 /**
  * @package
@@ -49,10 +52,9 @@ abstract class AbstractAnnotation
     public $_partials = array();
 
     /**
-     * Allows Annotation classes to know which property or method in which class is being processed.
-     * @var string
+     * @var Context
      */
-    public static $context = 'unknown';
+    public $_context;
 
     /**
      * Declarative mapping of Annotation types to properties
@@ -70,6 +72,10 @@ abstract class AbstractAnnotation
      */
     public function __construct(array $values = array())
     {
+        $this->_context = Parser::$context;
+        if ($this->_context === null) {
+            $this->_context = new Context();
+        }
         foreach ($values as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
@@ -77,7 +83,7 @@ abstract class AbstractAnnotation
                 $this->_partialId = $value;
             } elseif ($key !== 'value') {
                 $properties = array_keys(get_object_vars($this));
-                Logger::notice('Skipping unsupported property: "'.$key.'" for @'.get_class($this).', expecting "'.implode('", "', $properties).'" in '.AbstractAnnotation::$context);
+                Logger::notice('Skipping unsupported property: "'.$key.'" for @'.get_class($this).', expecting "'.implode('", "', $properties).'" in '.$this->_context);
             }
         }
         if (isset($values['value'])) {
@@ -146,7 +152,7 @@ abstract class AbstractAnnotation
                 }
             }
             if ($found === false) {
-                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.AbstractAnnotation::$context.' expecting '.implode(', ', array_keys($map)));
+                Logger::notice('Unexpected '.get_class($annotation).' in a '.get_class($this).' in '.$this->_context.' expecting '.implode(', ', array_keys($map)));
             }
         }
     }
@@ -157,13 +163,13 @@ abstract class AbstractAnnotation
      */
     protected function setNestedValue($value)
     {
-        Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.AbstractAnnotation::$context);
+        Logger::notice('Unexpected value "'.$value.'", direct values not supported for '.get_class($this).' in '.$this->_context);
     }
 
     public function jsonSerialize()
     {
         $data = get_object_vars($this);
-        unset($data['_partialId'], $data['_partials']);
+        unset($data['_partialId'], $data['_partials'], $data['_context']);
         foreach ($data as $key => $value) {
             if ($value === null) {
                 unset($data[$key]); // Skip undefined values

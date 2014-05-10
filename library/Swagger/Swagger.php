@@ -234,15 +234,23 @@ class Swagger
 
     /**
      * Process a single code snippet.
+     *
      * @param string $contents PHP code.
      * @param string $context The original location of the contents.
      * @return Swagger
      */
-    public function examine($contents, $context = 'unknown')
+    public function examine($contents, $context = null)
     {
-        if (strpos($contents, '<?php') === false) {
-            throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found');
+        if ($context === null) {
+            $context = Context::detect(1);
+            if ($context->filename) {
+                $context->filename .= '(examined at line '.$context->line.')';
+            }
         }
+        if (strpos($contents, '<?php') === false) {
+            throw new \Exception('No PHP code detected, T_OPEN_TAG("<?php") not found in '.$context);
+        }
+
         $parser = new Parser($this->getProcessors());
         $parser->parseContents($contents, $context);
         $this->processParser($parser);
@@ -493,9 +501,10 @@ class Swagger
      * @link https://github.com/wordnik/swagger-core/wiki/Datatypes
      *
      * @param string $type
+     * @param Context $context
      * @return void
      */
-    public static function checkDataType($type)
+    public static function checkDataType($type, $context)
     {
         $map = array(
             // primitive types
@@ -522,10 +531,10 @@ class Swagger
         );
         if (array_key_exists(strtolower($type), $map) && array_search($type, $map) === false) { // Invalid notation for a primitive?
             if (array_key_exists(strtolower($type), $mapFormats)) { //
-                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'",format="'.$mapFormats[strtolower($type)].'"` in '.Annotations\AbstractAnnotation::$context);
+                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'",format="'.$mapFormats[strtolower($type)].'"` in '.$context);
             } else {
                 // Don't automaticly correct the type, this creates the incentive to use consistent naming in the doc comments.
-                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'"` in '.Annotations\AbstractAnnotation::$context);
+                Logger::notice('Invalid `type="'.$type.'"` use `type="'.$map[strtolower($type)].'"` in '.$context);
             }
         }
     }
@@ -700,14 +709,11 @@ class Swagger
     public static function getDefaultProcessors()
     {
         return array(
-            // has to be the first one
-            new Processors\PartialIdProcessor(),
-            // other processors
+            new Processors\ResourceProcessor(),
             new Processors\ApiProcessor(),
             new Processors\ModelProcessor(),
-            new Processors\PartialProcessor(),
             new Processors\PropertyProcessor(),
-            new Processors\ResourceProcessor(),
+            new Processors\PartialProcessor(),
         );
     }
 

@@ -68,7 +68,7 @@ class Parameter extends DataType
     {
         parent::__construct($values);
         if ($this->paramType && !in_array($this->paramType, array('path', 'query', 'body', 'header', 'form'))) {
-            Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body", "header" or "form" in '.AbstractAnnotation::$context);
+            Logger::warning('Unexpected paramType "'.$this->paramType.'", expecting "path", "query", "body", "header" or "form" in '.$this->_context);
         }
     }
 }

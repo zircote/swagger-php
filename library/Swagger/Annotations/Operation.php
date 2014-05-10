@@ -143,9 +143,9 @@ class Operation extends AbstractAnnotation
     public function validate()
     {
         if (empty($this->nickname)) {
-            Logger::notice('Required field "nickname" is missing for "'.$this->identity().'" in '.AbstractAnnotation::$context);
+            Logger::notice('Required field "nickname" is missing for "'.$this->identity().'" in '.$this->_context);
         }
-        Swagger::checkDataType($this->type);
+        Swagger::checkDataType($this->type, $this->_context);
         foreach ($this->parameters as $parameter) {
             if ($parameter->validate() == false) {
                 return false;

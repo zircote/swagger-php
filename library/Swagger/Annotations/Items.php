@@ -85,7 +85,7 @@ class Items extends AbstractAnnotation
                 Logger::warning('Unexcepted items for type "'.$annotation->type.'" in '.$annotation->identity().', expecting "array"');
                 $annotation->items = null;
             } else {
-                Swagger::checkDataType($annotation->items->type);
+                Swagger::checkDataType($annotation->items->type, $annotation->items->_context);
             }
         }
         return true;

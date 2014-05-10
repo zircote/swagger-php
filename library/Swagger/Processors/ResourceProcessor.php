@@ -22,7 +22,6 @@ namespace Swagger\Processors;
  */
 use Swagger\Annotations\Resource;
 use Swagger\Contexts\ClassContext;
-use Swagger\Parser;
 use Swagger\Processors\ProcessorInterface;
 
 /**
@@ -33,24 +32,19 @@ class ResourceProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($annotation, $context)
+    public function process($annotation, $context)
     {
-        return $annotation instanceof Resource;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Parser $parser, $annotation, $context)
-    {
-        if (!$annotation->hasPartialId()) {
-            $parser->appendResource($annotation);
+        if (($annotation instanceof Resource) === false) {
+            return;
+        }
+        if ($annotation->hasPartialId() === false) {
+            $context->resource = $annotation;
         }
 
-        if ($context instanceof ClassContext) {
+        if ($context->is('class')) {
             if ($annotation->resourcePath === null) { // No resourcePath given ?
                 // Assume Classname (without Controller suffix) matches the base route.
-                $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $context->getClass())));
+                $annotation->resourcePath = '/' . lcfirst(basename(str_replace('\\', '/', $context->class)));
                 $annotation->resourcePath = preg_replace('/Controller$/i', '', $annotation->resourcePath);
             }
 
