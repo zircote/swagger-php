@@ -311,11 +311,11 @@ class Parser
         try {
             self::$context = $context;
             $annotations = $this->docParser->parse($context->comment);
+            self::$context = null;
         } catch (\Exception $e) {
+            self::$context = null;
             Logger::warning($e);
             return array();
-        } finally {
-            self::$context = null;
         }
 
         foreach ($annotations as $annotation) {
