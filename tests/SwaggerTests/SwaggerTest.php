@@ -79,6 +79,25 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Filter resource list by api version
+     */
+    public function testResourceFilter() {
+        $swagger = new Swagger($this->examplesDir('Petstore'));
+        $swagger->registry['/pet']->apiVersion = 4; // Set "/pet" to a version below 1
+
+        $before = $swagger->getResourceList();
+        $this->assertCount(2, $before['apis'], 'Both /pet and /user resources');
+
+        // Filter out all unstable versions
+        $swagger->registry = array_filter($swagger->registry, function ($resource) {
+            return version_compare($resource->apiVersion, 4, '==');
+        });
+        $after = $swagger->getResourceList();
+        $this->assertCount(1, $after['apis']);
+        $this->assertEquals('/pet', $after['apis'][0]['path'], 'Resource /user didn\'t match the filter and only /pet remains');
+    }
+
+    /**
      * @group cli
      */
     public function testCliTool()
