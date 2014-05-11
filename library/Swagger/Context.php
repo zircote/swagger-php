@@ -38,6 +38,7 @@ namespace Swagger;
  * @property string $comment  The PHP DocComment
  * @property string $filename
  * @property int $line
+ * @property int $character
  *
  * @property string $class
  * @property string $extends
@@ -101,7 +102,7 @@ class Context {
      */
     public function getDebugLocation() {
         $location = '';
-        if ($this->class) {
+        if ($this->class && ($this->method || $this->property)) {
             $location .= $this->class;
             if ($this->method) {
                 $location .= ($this->static ? '::' : '->').$this->method.'()';
@@ -120,6 +121,9 @@ class Context {
                 $location .= ' on';
             }
             $location .= ' line '.$this->line;
+            if ($this->character) {
+                $location .= ':'.$this->character;
+            }
         }
         return $location;
     }

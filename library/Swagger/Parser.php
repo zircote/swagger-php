@@ -310,11 +310,21 @@ class Parser
     {
         try {
             self::$context = $context;
-            $annotations = $this->docParser->parse($context->comment);
+            $annotations = $this->docParser->parse($context->comment, $context);
             self::$context = null;
         } catch (\Exception $e) {
             self::$context = null;
-            Logger::warning($e);
+            if (preg_match('/^(.+) at position ([0-9]+) in '.preg_quote($context, '/').'\.$/', $e->getMessage(), $matches)) {
+                $errorMessage = $matches[1];
+                $errorPos = $matches[2];
+                $atPos = strpos($context->comment, '@');
+                $context->line += substr_count($context->comment, "\n", 0, $atPos + $errorPos);
+                $lines = explode("\n", substr($context->comment, $atPos, $errorPos));
+                $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
+                Logger::warning(new \Exception($errorMessage.' in '.$context, $e->getCode(), $e));
+            } else {
+                Logger::warning($e);
+            }
             return array();
         }
 

@@ -327,8 +327,8 @@ class Swagger
                         }
                     }
                 }
-                $models = $this->resolveModels($models);
-                foreach (array_unique($models) as $model) {
+                $models = array_unique($this->resolveModels($models));
+                foreach ($models as $model) {
                     $resource->models[$model] = $this->models[$model];
                 }
             }

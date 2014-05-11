@@ -4,8 +4,10 @@ Changelog
 
 ## 0.9.3
 
+* New Context/ProcessorInterface allows access to the parse context via the Annotation #142
+* Added context to DocParser error messages and position is converted back into line and character information. #124
 * Fixed model inheritance bug #140.
-* getResourceList() now has a template option, which accepts a json file which can contain the `info` and `authentication` fields.
+* getResourceList() now has a template option, which accepts a json file which can contain the `info` and `authentication` fields. #139
 * The `--api-doc-template` option will use the imported `swaggerVersion`, `apiVersion` and `basePath` as defaults.
 
 ## 0.9.2
