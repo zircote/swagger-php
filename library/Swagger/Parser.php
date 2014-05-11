@@ -180,7 +180,7 @@ class Parser
         );
         $this->docParser->setImports($imports);
         $uses = array();
-        $classContext = $parseContext;
+        $classContext = $parseContext; // Use the parseContext until a classContext is created.
         $comment = false;
         $line = 0;
         while ($token != null) {

@@ -20,12 +20,9 @@ namespace Swagger\Processors;
  * @package    Swagger
  */
 
-use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Property;
-use Swagger\Contexts\PropertyContext;
 use Swagger\Logger;
-use Swagger\Parser;
 
 /**
  * PropertyProcessor

@@ -21,7 +21,6 @@ namespace Swagger\Processors;
  * @package    Swagger
  */
 use Swagger\Annotations\Resource;
-use Swagger\Contexts\ClassContext;
 use Swagger\Processors\ProcessorInterface;
 
 /**

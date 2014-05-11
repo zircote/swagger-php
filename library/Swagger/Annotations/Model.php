@@ -53,18 +53,6 @@ class Model extends AbstractAnnotation
      */
     public $required;
 
-    /**
-     * The PHP class connected to this model
-     * @var null|string
-     */
-    public $phpClass;
-
-    /**
-     * The superclass connected to this model.
-     * @var null|string
-     */
-    public $phpExtends;
-
     protected static $mapAnnotations = array(
         '\Swagger\Annotations\Property' => 'properties[]'
     );
@@ -123,7 +111,6 @@ class Model extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize($this);
-        unset($data['phpClass'], $data['phpExtends']);
         $data['properties'] = array();
         foreach ($this->properties as $property) {
             $data['properties'][$property->name] = $property->jsonSerialize();

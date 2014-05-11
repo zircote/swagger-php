@@ -21,8 +21,10 @@ namespace Swagger\Annotations;
  * @category
  * @subpackage
  */
+
 use Doctrine\Common\Annotations\AnnotationException;
-use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Context;
+use Swagger\Parser;
 
 /**
  * @package
@@ -31,7 +33,7 @@ use Swagger\Annotations\AbstractAnnotation;
  *
  * @Annotation
  */
-class Partial
+class Partial extends AbstractAnnotation
 {
     /**
      * The id of the partial this annotation points to.
@@ -41,9 +43,18 @@ class Partial
 
     public function __construct($data)
     {
+        $this->_context = Parser::$context;
+        if ($this->_context === null) {
+            $this->_context = new Context();
+        }
         if (empty($data['value'])) {
             throw new AnnotationException('Invalid @SWG\Partial declaration (example: @SWG\Partial("id of the partial"), in '.$this->_context);
         }
         $this->use = $data['value'];
+    }
+
+    public function identity()
+    {
+        return '@SWG\Partial("'.$this->use.'")';
     }
 }

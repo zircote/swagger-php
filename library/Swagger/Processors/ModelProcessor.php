@@ -39,7 +39,6 @@ class ModelProcessor implements ProcessorInterface
             $context->model = $annotation;
         }
         if ($context->is('class')) {
-            $annotation->phpClass = $context->class;
             if ($annotation->id === null) {
                 $annotation->id = basename(str_replace('\\', '/', $context->class));
             }
@@ -47,7 +46,6 @@ class ModelProcessor implements ProcessorInterface
             if ($annotation->description === null) {
                 $annotation->description = $context->extractDescription();
             }
-            $annotation->phpExtends = $context->extends;
         }
     }
 }

@@ -645,14 +645,18 @@ class Swagger
         return $this;
     }
 
+    /**
+     * @param Model $model
+     */
     protected function inheritProperties($model)
     {
-        if ($model->phpExtends === null) {
-            return; // model doesn't have a superclass (or is already resolved)
+        $context = $model->_context;
+        if ($context->is('class') && $context->extends === null && $context->propertiesInherited !== null) {
+            return; // model doesn't have a superclass or is already resolved
         }
         $parent = false;
         foreach ($this->models as $super) {
-            if ($model->phpExtends === $super->phpClass) {
+            if ($context->extends === $super->_context->class) {
                 $parent = $super;
                 break;
             }
@@ -660,7 +664,7 @@ class Swagger
         if ($parent === false) {
             return; // Superclass not discoved or doesn't have annotations
         }
-        $model->phpExtends = null;
+        $context->propertiesInherited = true;
         $this->inheritProperties($parent);
         foreach ($parent->properties as $parentProperty) {
             $exists = false;
@@ -713,7 +717,7 @@ class Swagger
             new Processors\ApiProcessor(),
             new Processors\ModelProcessor(),
             new Processors\PropertyProcessor(),
-            new Processors\PartialProcessor(),
+            new Processors\NestingProcessor(),
         );
     }
 

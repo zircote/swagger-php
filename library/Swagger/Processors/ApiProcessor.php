@@ -19,10 +19,9 @@ namespace Swagger\Processors;
  * @category   Swagger
  * @package    Swagger
  */
+
+use Swagger\Annotations\Api;
 use Swagger\Logger;
-use Swagger\Parser;
-use Swagger\Annotations;
-use Swagger\Contexts\MethodContext;
 
 /**
  * ApiProcessor
@@ -34,7 +33,7 @@ class ApiProcessor implements ProcessorInterface
      */
     public function process($annotation, $context)
     {
-        if (($annotation instanceof \Swagger\Annotations\Api) === false) {
+        if (($annotation instanceof Api) === false) {
             return;
         }
         if ($annotation->hasPartialId() === false) {
