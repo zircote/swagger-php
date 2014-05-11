@@ -62,6 +62,12 @@ abstract class AbstractAnnotation
      */
     protected static $mapAnnotations = array();
 
+    /**
+     * The context this annnotation was parsed in.
+     * @var array
+     */
+    private $_context = array();
+
     const REGEX = '/(:?|\[|\{)\s{0,}\'(:?|\]|\})/';
     const REPLACE = '$1"$2';
     const NEWLINES = '/(?>\r\n|\n|\r|\f|\x0b|\x85|\x{2028}|\x{2029})/u';
@@ -104,6 +110,7 @@ abstract class AbstractAnnotation
                 $this->setNestedAnnotations($objects);
             }
         }
+        $this->setContext(AbstractAnnotation::$context);
     }
 
     /**
@@ -219,5 +226,40 @@ abstract class AbstractAnnotation
     {
         $array = explode('\\', get_class($this));
         return '@SWG\\'.array_pop($array).'()';
+    }
+
+    /**
+     * Set the Context for this Annnotation
+     * 
+     * The context will be the context in which this Annotation was parsed.
+     * Useful for when you want to use the Swagger parser, as well as have
+     * access to the Classes that the Swagger Parser is describing.
+     * 
+     * @param $context string
+     * @see AbstractAnnotation::$context
+     * @return
+     */
+    protected function setContext($context) {
+        $matches = null;
+        $pattern = '/([0-9a-zA-Z\\\\_]+)->([0-9a-zA-Z_]+)(\\(\\.\\.\\.\\))?\\sin\\s([0-9a-zA-Z\\/\\s_\\-\\.]+)\\son\\sline\\s([0-9]+)/';
+        $return = preg_match($pattern, $context, $matches);
+        if(count($matches) > 1) {
+            $this->_context = array(
+                'class' => $matches[1], // The Class name
+                'name' => $matches[2], // The Class Element name
+                'type' => !empty($matches[3]), // The Element Type (1 - Method, 2 - Property)
+                'file' => $matches[4], // The File name and path the class in found in
+                'line' => $matches[5] // The Line the Element occurs on
+            );
+        }
+    }
+
+    /**
+     * Return the Context Array
+     * @see self::setContext()
+     * @return array
+     */
+    public function getContext() {
+        return $this->_context;
     }
 }
