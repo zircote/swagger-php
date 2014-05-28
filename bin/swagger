@@ -188,10 +188,8 @@ EOF;
     $resourceOptions = array(
         'output' => 'json',
         'defaultSwaggerVersion' => $resourceList['swaggerVersion'],
+        'defaultBasePath' => $options['default-base-path']
     );
-    if (isset($resourceList['basePath'])) {
-        $resourceOptions['defaultBasePath'] = $resourceList['basePath'];
-    }
     if (isset($resourceList['apiVersion'])) {
         $resourceOptions['defaultApiVersion'] = $resourceList['apiVersion'];
     }
