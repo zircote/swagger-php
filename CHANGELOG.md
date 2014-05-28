@@ -2,6 +2,10 @@
 Changelog
 ----------
 
+## 0.9.4
+
+* Fixed regressions #145 & #146
+
 ## 0.9.3
 
 * New Context/ProcessorInterface allows access to the parse context via the Annotation #142
