@@ -41,7 +41,7 @@ class PropertyProcessor implements ProcessorInterface
             if ($context->model) {
                 $context->model->properties[] = $annotation;
             } else {
-                Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Model" declaration in ' . $context);
+                Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after @SWG\Model() in ' . $context);
             }
         }
 

@@ -96,6 +96,16 @@ class Context {
     }
 
     /**
+     * @return \Swagger\Context
+     */
+    public function getRootContext() {
+        if ($this->_parent) {
+            return $this->_parent->getRootContext();
+        }
+        return $this;
+    }
+
+    /**
      * Export location for debugging.
      *
      * @return string Example: "file1.php on line 12"

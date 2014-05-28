@@ -37,9 +37,12 @@ class ResourceProcessor implements ProcessorInterface
             return;
         }
         if ($annotation->hasPartialId() === false) {
-            $context->resource = $annotation;
+            if ($context->is('class')) {
+                $context->resource = $annotation; // Expose within the class context
+            } else {
+                $context->getRootContext()->resource = $annotation; // Expose to the parse/file context
+            }
         }
-
         if ($context->is('class')) {
             if ($annotation->resourcePath === null) { // No resourcePath given ?
                 // Assume Classname (without Controller suffix) matches the base route.

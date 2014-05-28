@@ -41,7 +41,7 @@ class ApiProcessor implements ProcessorInterface
             if ($resource) {
                 $resource->apis[] = $annotation;
             } else {
-                Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after a "Resource" declaration in ' . $context);
+                Logger::notice('Unexpected "' . $annotation->identity() . '", should be inside or after @SWG\Resource() in ' . $context);
             }
         }
 
