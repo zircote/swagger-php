@@ -63,6 +63,14 @@ class Parameter extends DataType
      * @var bool
      */
     public $required;
+    
+    /**
+     * Another way to allow multiple values for a "query" parameter. 
+     * If used, the query parameter may accept comma-separated values. 
+     * The field may be used only if paramType is "query", "header" or "path".
+     * @var bool
+     */
+    public $allowMultiple;
 
     public function __construct(array $values = array())
     {
