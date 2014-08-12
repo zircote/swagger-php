@@ -156,8 +156,6 @@ class Context {
         return $this->getDebugLocation();
     }
 
-
-
     /**
      * @return string|null
      */

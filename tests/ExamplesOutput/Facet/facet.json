@@ -3,11 +3,11 @@
     "swaggerVersion":"1.2",
     "basePath":"http://facetstore.zircote.com/swagger-php/api",
     "resourcePath":"/facet",
+    "produces": ["application/json"],
     "apis":[
         {
             "path":"/facet.{format}/{facetId}",
             "description":"Operations about facets",
-            "produces": ["application/json"],
             "operations":[
                 {
                     "nickname":"getfacetById",

@@ -2,6 +2,11 @@
 Changelog
 ----------
 
+## 0.9.5
+
+* Implemented @SWG\Info & @SWG\Authorizations which can be used to augment the api-docs.json with metadata.
+* Updated @link references to the github.com/wordnik/swagger-spec repository
+
 ## 0.9.4
 
 * Fixed regressions #145 & #146
@@ -28,7 +33,7 @@ Changelog
 
 * New processing architecture allowing swagger-php to act on other annotations (https://github.com/zircote/swagger-php/pull/121)
 * Improved model referencing: $ref allowed with complex modelnames (https://github.com/zircote/swagger-php/pull/122 and https://github.com/zircote/swagger-php/pull/123)
-* Updated depedencies creating a 50% smaller swagger.phar
+* Updated dependencies creating a 50% smaller swagger.phar
 
 ## 0.8.3
 
@@ -46,7 +51,7 @@ Detect @SWG\Parameter type and @SWG\Items based on `@var Type[]` phpdoc comments
 ## 0.8.0
 
 * Compatible with swagger-ui 2.0
-* Upgraded annotations to the [Swagger 1.2 Specification](https://github.com/wordnik/swagger-core/wiki/1.2-transition)
+* Upgraded annotations to the [Swagger 1.2 Specification](https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md)
   * Use swagger-php 0.7.x to generate 1.1 or older swagger specs.
 * Simplified API.
   * Removed many methods from the Swagger class.

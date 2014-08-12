@@ -14,7 +14,8 @@ use Swagger\Annotations as SWG;
  *  apiVersion="0.2",
  *  swaggerVersion="1.2",
  *  resourcePath="/facet",
- *  basePath="http://facetstore.zircote.com/swagger-php/api"
+ *  basePath="http://facetstore.zircote.com/swagger-php/api",
+ *  produces="['application/json']"
  * )
  */
 class FacetResource
@@ -24,7 +25,6 @@ class FacetResource
      * @SWG\Api(
      *   path="/facet.{format}/{facetId}",
      *   description="Operations about facets",
-     *   produces="['application/json']",
      *   @SWG\Operations(
      *     @SWG\Operation(
      *       method="GET",

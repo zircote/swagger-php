@@ -41,6 +41,18 @@ class Parser
     public static $context;
 
     /**
+     * The metadata about the API
+     * @var Annotations\Info
+     */
+    protected $info = null;
+
+    /**
+     * The authentication config
+     * @var Annotations\Authorizations
+     */
+    protected $authorizations = null;
+
+    /**
      * All detected resources
      * @var Resource[]
      */
@@ -141,6 +153,22 @@ class Parser
     public function setPartial($key, $annotation)
     {
         $this->partials[$key] = $annotation;
+    }
+
+    /**
+     * @return Annotations\Info
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * @return Annotations\Authorizations
+     */
+    public function getAuthorizations()
+    {
+        return $this->authorizations;
     }
 
     /**
@@ -298,6 +326,13 @@ class Parser
         }
         if ($comment) { // File ends with a T_DOC_COMMENT
             $this->parseContext(new Context(array('comment' => $comment, 'line' => $line), $classContext));
+        }
+        $rootContext = $parseContext->getRootContext();
+        if ($rootContext->info) {
+            $this->info = $rootContext->info;
+        }
+        if ($rootContext->authorizations) {
+            $this->authorizations = $rootContext->authorizations;
         }
     }
 
