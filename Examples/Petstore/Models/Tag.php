@@ -35,7 +35,6 @@ class Tag
     /**
      * @SWG\Property(
      *   name="id",
-     *   description="Unique identifier for the tag",
      *   type="integer",
      *   format="int64"
      * )
@@ -43,7 +42,7 @@ class Tag
     public $id;
 
     /**
-     * @SWG\Property(name="name",type="string",description="Friendly name for the tag")
+     * @SWG\Property(type="string")
      */
     public $name;
 

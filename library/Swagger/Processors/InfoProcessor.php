@@ -28,7 +28,6 @@ use Swagger\Parser;
  */
 class InfoProcessor implements ProcessorInterface
 {
-
     /**
      * {@inheritdoc}
      */

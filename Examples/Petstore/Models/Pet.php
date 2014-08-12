@@ -33,27 +33,27 @@ use Swagger\Annotations as SWG;
 class Pet
 {
     /**
-     * @SWG\Property(name="id",type="integer",format="int64",description="Unique identifier for the Pet",minimum="0.0",maximum="100.0")
+     * @SWG\Property(name="id",type="integer",format="int64",minimum="0.0",maximum="100.0",description="unique identifier for the pet")
      */
     public $id;
 
     /**
-     * @SWG\Property(name="name",type="string",description="Friendly name of the pet")
+     * @SWG\Property(name="name",type="string")
      */
     public $name;
 
     /**
-     * @SWG\Property(name="category",type="Category",description="Category the pet is in")
+     * @SWG\Property(name="category",type="Category")
      */
     public $category;
 
     /**
-     * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"),description="Image URLs")
+     * @SWG\Property(name="photoUrls",type="array",@SWG\Items("string"))
      */
     public $photos;
 
     /**
-     * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"),description="Tags assigned to this pet")
+     * @SWG\Property(name="tags",type="array",@SWG\Items("Tag"))
      */
     public $tags;
 

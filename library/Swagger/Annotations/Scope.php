@@ -49,13 +49,13 @@ class Scope extends AbstractAnnotation
      */
     public $description;
 
-	public function validate()
+    public function validate()
     {
         if (empty($this->scope)) {
             Logger::warning('Required field "scope" is missing for "'.$this->identity().'" in '.$this->_context);
             return false;
         }
         return true;
-	}
+    }
 
 }
