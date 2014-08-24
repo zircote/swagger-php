@@ -321,7 +321,7 @@ class Swagger
         $this->applyPartials($this->models);
         foreach ($this->partials as $partial) {
             if ($partial->_partialId !== null) {
-                Logger::notice('partial="'.$partial->_partialId.'" is was not used.');
+                Logger::notice('partial="'.$partial->_partialId.'" is not used.');
             }
         }
 
