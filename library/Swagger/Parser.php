@@ -432,15 +432,17 @@ class Parser
             foreach ($this->processors as $processor) {
                 $processor->process($annotation, $context);
             }
-            if ($annotation->hasPartialId()) {
-                if ($this->hasPartial($annotation->_partialId)) {
-                    Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . $annotation->_context);
+            if ($annotation instanceof AbstractAnnotation) {
+                if ($annotation->hasPartialId()) {
+                    if ($this->hasPartial($annotation->_partialId)) {
+                        Logger::notice('partial="' . $annotation->_partialId . '" is not unique. another was found in ' . $annotation->_context);
+                    }
+                    $this->setPartial($annotation->_partialId, $annotation);
+                } elseif ($annotation instanceof Resource) {
+                    $this->resources[] = $annotation;
+                } elseif ($annotation instanceof Model) {
+                    $this->models[] = $annotation;
                 }
-                $this->setPartial($annotation->_partialId, $annotation);
-            } elseif ($annotation instanceof Resource) {
-                $this->resources[] = $annotation;
-            } elseif ($annotation instanceof Model) {
-                $this->models[] = $annotation;
             }
         }
         return $annotations;
