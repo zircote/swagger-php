@@ -177,8 +177,8 @@ class Parser
      */
     public function parseFile($filename)
     {
-        $tokenParser = new TokenParser(file_get_contents($filename));
-        return $this->parseTokens($tokenParser, new Context(array('filename' => $filename)));
+        $tokens = token_get_all(file_get_contents($filename));
+        return $this->parseTokens($tokens, new Context(array('filename' => $filename)));
     }
 
     /**
@@ -188,20 +188,21 @@ class Parser
      */
     public function parseContents($contents, $context)
     {
-        $tokenParser = new TokenParser($contents);
-        return $this->parseTokens($tokenParser, $context);
+        $tokens = token_get_all($contents);
+        return $this->parseTokens($tokens, $context);
     }
 
     /**
      * Shared implementation for parseFile() & parseContents().
-     * @param TokenParser $tokenParser
+     * @param array $tokens The result of a token_get_all()
      */
-    protected function parseTokens(TokenParser $tokenParser, $parseContext)
+    protected function parseTokens($tokens, $parseContext)
     {
         $this->docParser = new DocParser();
         $this->docParser->setIgnoreNotImportedAnnotations(true);
 
-        $token = $tokenParser->next(false);
+        reset($tokens);
+        $token = '';
         $namespace = '';
         $imports = array(
             'swg' => 'Swagger\Annotations' // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
@@ -211,9 +212,9 @@ class Parser
         $classContext = $parseContext; // Use the parseContext until a classContext is created.
         $comment = false;
         $line = 0;
-        while ($token != null) {
+        while ($token !== false) {
             $previousToken = $token;
-            $token = $tokenParser->next(false);
+            $token = $this->nextToken($tokens, $parseContext);
             if (is_array($token) === false) { // Ignore tokens like "{", "}", etc
                 continue;
             }
@@ -226,23 +227,23 @@ class Parser
                 continue;
             }
             if ($token[0] === T_ABSTRACT) {
-                $token = $tokenParser->next(false); // Skip "abstract" keyword
+                $token = $this->nextToken($tokens, $parseContext); // Skip "abstract" keyword
             }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 if (is_array($previousToken) && $previousToken[0] === T_DOUBLE_COLON) {
                     //php 5.5 class name resolution (i.e. ClassName::class)
                     continue;
                 }
-                $token = $tokenParser->next();
+                $token = $this->nextToken($tokens, $parseContext);
                 $classContext = new Context(array(
                     'class' => $namespace ? $namespace . '\\' . $token[1] : $token[1],
                     'line' => $token[2],
                 ), $parseContext);
                 // @todo detect end-of-class and reset $class
                 $extends = null;
-                $token = $tokenParser->next(false);
+                $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_EXTENDS) {
-                    $classContext->extends = $this->prefixNamespace($namespace, $tokenParser->parseClass(), $uses);
+                    $classContext->extends = $this->prefixNamespace($namespace, $this->parseNamespace($tokens, $token, $parseContext), $uses);
                 }
                 if ($comment) {
                     $classContext->comment = $comment;
@@ -254,7 +255,7 @@ class Parser
             }
             if ($comment) {
                 if ($token[0] == T_STATIC) {
-                    $token = $tokenParser->next(false);
+                    $token = $this->nextToken($tokens, $parseContext);
                     if ($token[0] === T_VARIABLE) { // static property
                         $this->parseContext(new Context(array(
                             'property' => substr($token[1], 1),
@@ -267,9 +268,9 @@ class Parser
                     }
                 }
                 if (in_array($token[0], array(T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR))) { // Scope
-                    $token = $tokenParser->next(false);
+                    $token = $this->nextToken($tokens, $parseContext);
                     if ($token[0] == T_STATIC) {
-                        $token = $tokenParser->next(false);
+                        $token = $this->nextToken($tokens, $parseContext);
                     }
                     if ($token[0] === T_VARIABLE) { // instance property
                         $this->parseContext(new Context(array(
@@ -279,7 +280,7 @@ class Parser
                         ), $classContext));
                         $comment = false;
                     } elseif ($token[0] === T_FUNCTION) {
-                        $token = $tokenParser->next(false);
+                        $token = $this->nextToken($tokens, $parseContext);
                         if ($token[0] === T_STRING) {
                             $this->parseContext(new Context(array(
                                 'method' => $token[1],
@@ -291,7 +292,7 @@ class Parser
                     }
                     continue;
                 } elseif ($token[0] === T_FUNCTION) {
-                    $token = $tokenParser->next(false);
+                    $token = $this->nextToken($tokens, $parseContext);
                     if ($token[0] === T_STRING) {
                         $this->parseContext(new Context(array(
                             'method' => $token[1],
@@ -308,16 +309,15 @@ class Parser
                 }
             }
             if ($token[0] === T_NAMESPACE) {
-                $namespace = $tokenParser->parseNamespace();
+                $namespace = $this->parseNamespace($tokens, $token, $parseContext);
                 continue;
             }
             if ($token[0] === T_USE) {
-                $nsLength = strlen(__NAMESPACE__);
-                foreach ($tokenParser->parseUseStatement() as $alias => $target) {
+                $statements = $this->parseUseStatement($tokens, $token, $parseContext);
+                foreach ($statements as $alias => $target) {
                     if ($target[0] === '\\') {
                         $target = substr($target, 1);
                     }
-
                     $imports[$alias] = $target;
                 }
                 $this->docParser->setImports($imports);
@@ -334,6 +334,71 @@ class Parser
         if ($rootContext->authorizations) {
             $this->authorizations = $rootContext->authorizations;
         }
+    }
+    
+    /**
+     * The next non-whitespace, non-comment token.
+     * @param array $tokens
+     * @param Context $context
+     * @return string|array The next token (or false)
+     */
+    private function nextToken(&$tokens, $context) {
+        $token = next($tokens);
+        if ($token[0] === T_WHITESPACE) {
+            return $this->nextToken($tokens, $context);
+        }
+        if ($token[0] === T_COMMENT) {
+            $pos = strpos($token[1], '@SWG\\');
+            if ($pos) {
+                $commentContext = new Context(array('line' => $token[2]), $context);
+                Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping '.$commentContext);
+            }
+            return $this->nextToken($tokens, $context);
+        }
+        return $token;
+    }
+    
+    private function parseNamespace(&$tokens, &$token, $parseContext) {
+        $namespace = '';
+        while($token !== false) {
+            $token = $this->nextToken($tokens, $parseContext);
+            if ($token[0] !== T_STRING && $token[0] !== T_NS_SEPARATOR) {
+                break;
+            }
+            $namespace .= $token[1];
+        } 
+        return $namespace;
+    }
+    
+    private function parseUseStatement(&$tokens, &$token, $parseContext) {
+        $class = '';
+        $alias = '';
+        $statements = array();
+        $explicitAlias = false;
+        while ($token !== false) {
+            $token = $this->nextToken($tokens, $parseContext);
+            $isNameToken = $token[0] === T_STRING || $token[0] === T_NS_SEPARATOR;
+            if (!$explicitAlias && $isNameToken) {
+                $class .= $token[1];
+                $alias = $token[1];
+            } else if ($explicitAlias && $isNameToken) {
+                $alias .= $token[1];
+            } else if ($token[0] === T_AS) {
+                $explicitAlias = true;
+                $alias = '';
+            } else if ($token === ',') {
+                $statements[strtolower($alias)] = $class;
+                $class = '';
+                $alias = '';
+                $explicitAlias = false;
+            } else if ($token === ';') {
+                $statements[strtolower($alias)] = $class;
+                break;
+            } else {
+                break;
+            }
+        }
+        return $statements;
     }
 
     /**

@@ -7,6 +7,7 @@ Changelog
 * Implemented @SWG\Info & @SWG\Authorizations which can be used to augment the api-docs.json with metadata.
 * Updated @link references to the github.com/wordnik/swagger-spec repository
 * Reimplemented the petstore example using the updated json files from http://petstore.swagger.wordnik.com/api/api-docs
+* Detect when an @SWG in a normal comment `//` or `/* */` instead of a DocBlock `/** */`
 
 ## 0.9.4
 

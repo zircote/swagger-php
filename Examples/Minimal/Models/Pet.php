@@ -18,9 +18,9 @@ class Pet
      */
     public $id;
     // Autodetected:
-    // @SWG\Property->name is set to "id" based on the propertyname $id
-    // @SWG\Property-type is set to "integer" based on the "@var int"
-    // @SWG\Property->description is set to "Unique identifier for the Pet" extracted from the docblock
+    // @Property->name is set to "id" based on the propertyname $id
+    // @Property-type is set to "integer" based on the "@var int"
+    // @Property->description is set to "Unique identifier for the Pet" extracted from the docblock
 
     /**
      * Tags assigned to this pet
@@ -30,9 +30,9 @@ class Pet
      */
     public $tags = array();
     // Autodetected:
-    // @SWG\Property->name is set to "tags" based on property name $tags.
-    // @SWG\Property->type is detected as "array" based on @var ending with "[]"
-    // @SWG\Property->items is detected as @SWG\Items("$ref:Tag") based on @var Tag[]
+    // @Property->name is set to "tags" based on property name $tags.
+    // @Property->type is detected as "array" based on @var ending with "[]"
+    // @Property->items is detected as @Items("$ref:Tag") based on @var Tag[]
 
     /**
      * Category the pet is in

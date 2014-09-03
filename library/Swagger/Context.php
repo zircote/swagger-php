@@ -90,7 +90,7 @@ class Context {
             return $this;
         }
         if ($this->_parent) {
-            return $this->with($property);
+            return $this->_parent->with($property);
         }
         return false;
     }

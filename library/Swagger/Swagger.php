@@ -735,9 +735,10 @@ class Swagger
     protected function inheritProperties($model)
     {
         $context = $model->_context;
-        if ($context->is('class') === false || $context->extends === null || $context->propertiesInherited !== null) {
+        if ($context->is('class') === false || $context->extends === null || $context->is('propertiesInherited')) {
             return; // model doesn't have a superclass or is already resolved
         }
+        $context->propertiesInherited = true;
         $parent = false;
         foreach ($this->models as $super) {
             if ($context->extends === $super->_context->class) {
@@ -748,7 +749,6 @@ class Swagger
         if ($parent === false) {
             return; // Superclass not discoved or doesn't have annotations
         }
-        $context->propertiesInherited = true;
         $this->inheritProperties($parent);
         foreach ($parent->properties as $parentProperty) {
             $exists = false;

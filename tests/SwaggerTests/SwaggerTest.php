@@ -207,6 +207,21 @@ END;
         $this->assertNull($swagger->models['UserUpdate']->required);
 
     }
+
+    public function testInvalidCommentTypeNotification() {
+        $code = <<<END
+<?php
+/*
+ * @SWG\Model(id="Participant")
+ */
+END;
+        $swagger = new Swagger();
+        \PHPUnit_Framework_Error_Notice::$enabled = true;
+        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+        $swagger->examine($code);
+        $this->assertCount(0, $swagger->models);
+    }
+    
     /**
      * dataProvider for testExample
      * @return array
