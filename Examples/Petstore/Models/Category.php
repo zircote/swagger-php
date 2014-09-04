@@ -35,17 +35,14 @@ class Category
     /**
      * @SWG\Property(
      *   name="id",
-     *   description="Category unique identifier",
      *   type="integer",
-     *   format="int64",
-     *   minimum="0.0",
-     *   maximum="100.0"
+     *   format="int64"
      * )
      */
     public $id;
 
     /**
-     * @SWG\Property(name="name",type="string",description="Name of the category")
+     * @SWG\Property(name="name",type="string")
      */
     public $name;
 

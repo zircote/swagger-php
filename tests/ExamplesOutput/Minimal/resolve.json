@@ -29,15 +29,18 @@
                     "$ref": "Dog"
                 },
                 "tags": {
+                    "description": "Tags assigned to this pet",
                     "type": "array",
                     "items": {
                         "$ref": "Tag"
                     }
                 },
                 "id": {
+                    "description": "Unique identifier for the pet",
                     "type": "integer"
                 },
                 "category": {
+                    "description": "Category the pet is in",
                     "$ref": "Category"
                 },
                 "status": {
@@ -50,6 +53,7 @@
                     ]
                 },
                 "name": {
+                    "description": "Friendly name of the pet",
                     "type": "string"
                 },
                 "photoUrls": {

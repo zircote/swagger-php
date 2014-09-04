@@ -82,47 +82,58 @@ class Resource extends AbstractAnnotation
      */
     public $description;
 
+    /**
+     * @var Authorizations
+     */
+    public $authorizations;
+
     protected static $mapAnnotations = array(
         '\Swagger\Annotations\Api' => 'apis[]',
         '\Swagger\Annotations\Produces' => 'produces[]',
         '\Swagger\Annotations\Consumes' => 'consumes[]',
+        '\Swagger\Annotations\Authorizations' => 'authorizations',
     );
 
     public function validate()
     {
+        if (empty($this->resourcePath)) {
+            Logger::warning('@SWG\Resource() is missing "resourcePath" in '.$this->_context);
+            return false;
+        }
         if ($this->swaggerVersion) {
             if (version_compare($this->swaggerVersion, '1.2', '<')) {
                 Logger::warning('swaggerVersion: '.$this->swaggerVersion.' is no longer supported. Use 1.2 or higher');
                 $this->swaggerVersion = null;
             }
         }
-        $apis = array();
+        $validApis = array();
         foreach ($this->apis as $api) {
-            if ($api->validate()) {
-                $append = true;
-                foreach ($apis as $validApi) {
-                    if ($validApi->path === $api->path && $validApi->description === $api->description) { // A similar api call?
-                        $append = false;
-                        // merge operations
-                        foreach ($api->operations as $operation) {
-                            $validApi->operations[] = $operation;
-                        }
+            $append = true;
+            foreach ($validApis as $validApi) {
+                if ($api->path === $validApi->path) { // The same api path?
+                    $append = false;
+                    // merge operations
+                    foreach ($api->operations as $operation) {
+                        $validApi->operations[] = $operation;
                     }
-                }
-                if ($append) {
-                    $apis[] = $api;
+                    // merge description
+                    if ($validApi->description === null) {
+                        $validApi->description = $api->description;
+                    } elseif ($api->description !== null && $api->description !== $validApi->description){
+                        Logger::notice('Competing description for '.$validApi->identity().' in '.$validApi->_context.' and '.$api->_context);
+                    }
+                    break;
                 }
             }
+            if ($api->validate() && $append) {
+                $validApis[] = $api;
+            }
         }
-        if (count($apis) === 0 && count($this->_partials) === 0) {
+        if (count($validApis) === 0 && count($this->_partials) === 0) {
             Logger::warning($this->identity().' doesn\'t have any valid api calls');
             return false;
         }
-        if (empty($this->resourcePath)) {
-            Logger::warning('@SWG\Resource() is missing "resourcePath" in '.$this->_context);
-            return false;
-        }
-        $this->apis = $apis;
+        $this->apis = $validApis;
         Produces::validateContainer($this);
         Consumes::validateContainer($this);
         return true;

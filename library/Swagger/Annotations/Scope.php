@@ -1,9 +1,10 @@
 <?php
-namespace Petstore\Models;
+
+namespace Swagger\Annotations;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2014] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,29 +22,40 @@ namespace Petstore\Models;
  * @category
  * @subpackage
  */
-use Swagger\Annotations as SWG;
+use Swagger\Logger;
 
 /**
+ * Describes an OAuth2 authorization scope.
+ * @link https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#516-scope-object
+ *
  * @package
  * @category
  * @subpackage
  *
- * @SWG\Model(id="Tag")
+ * @Annotation
  */
-class Tag
+class Scope extends AbstractAnnotation
 {
-    /**
-     * @SWG\Property(
-     *   name="id",
-     *   type="integer",
-     *   format="int64"
-     * )
-     */
-    public $id;
 
     /**
-     * @SWG\Property(type="string")
+     * The name of the scope.
+     * @var string
      */
-    public $name;
+    public $scope;
+    
+    /**
+     * A short description of the scope.
+     * @var string
+     */
+    public $description;
+
+    public function validate()
+    {
+        if (empty($this->scope)) {
+            Logger::warning('Required field "scope" is missing for "'.$this->identity().'" in '.$this->_context);
+            return false;
+        }
+        return true;
+    }
 
 }

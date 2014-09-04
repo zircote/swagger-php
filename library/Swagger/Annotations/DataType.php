@@ -28,13 +28,14 @@ use Swagger\Swagger;
 
 /**
  * Baseclass for the @SWG\Parameter & @SWG\Property annotations.
- * @link https://github.com/wordnik/swagger-core/wiki/datatypes
+ * https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#43-data-types
  *
  * @package
  * @category
  * @subpackage
  *
  * @Annotation
+ * @link https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#43-data-types
  */
 abstract class DataType extends AbstractAnnotation
 {
@@ -55,17 +56,19 @@ abstract class DataType extends AbstractAnnotation
     public $type;
 
     /**
-     *
+     * Fine-tuned primitive type definition
      * @var string
      */
     public $format;
 
     /**
+     * The type definition of the values in the container.
      * @var Items
      */
     public $items;
 
     /**
+     * A flag to note whether the container allows duplicate values or not.
      * @var bool
      */
     public $uniqueItems;
@@ -76,24 +79,25 @@ abstract class DataType extends AbstractAnnotation
     public $required;
 
     /**
-     *
+     * The minimum valid value for the type, inclusive.
      * @var mixed
      */
     public $minimum;
 
     /**
-     *
+     * The maximum valid value for the type, inclusive.
      * @var mixed
      */
     public $maximum;
 
     /**
+     * A fixed list of possible values.
      * @var array
      */
     public $enum;
 
     /**
-     * Undocumented
+     * The default value to be used for the field.
      * @var mixed
      */
     public $defaultValue;

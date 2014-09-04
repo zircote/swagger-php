@@ -43,7 +43,7 @@ use Swagger\Swagger;
 class Operation extends AbstractAnnotation
 {
     /**
-     * This is the HTTP method required to invoke this operation--the allowable values are GET, POST, PUT, DELETE.
+     * This is the HTTP method required to invoke this operation--the allowable values are GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS.
      * @var string
      */
     public $method;
@@ -100,7 +100,13 @@ class Operation extends AbstractAnnotation
     public $consumes;
 
     /**
-     * Undocumented
+     * A list of authorizations required to execute this operation.
+     * @var string|array
+     */
+    public $authorizations;
+
+    /**
+     * Declares this operation to be deprecated.
      * @var bool
      */
     public $deprecated;
@@ -111,6 +117,7 @@ class Operation extends AbstractAnnotation
         '\Swagger\Annotations\Produces' => 'produces[]',
         '\Swagger\Annotations\Consumes' => 'consumes[]',
         '\Swagger\Annotations\Items' => 'items',
+        '\Swagger\Annotations\Authorizations' => 'authorizations',
     );
 
     /**

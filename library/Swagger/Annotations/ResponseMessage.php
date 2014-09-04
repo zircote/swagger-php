@@ -29,7 +29,7 @@ use Swagger\Annotations\AbstractAnnotation;
  * @subpackage
  *
  * @Annotation
- * @link https://github.com/wordnik/swagger-core/wiki/Response-Messages
+ * @link https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#525-response-message-object
  */
 class ResponseMessage extends AbstractAnnotation
 {

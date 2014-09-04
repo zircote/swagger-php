@@ -11,25 +11,31 @@ namespace Minimal\Models;
 class Pet
 {
     /**
+     * Unique identifier for the pet
+     * @var int
+     *
+     * @SWG\Property()
+     */
+    public $id;
+    // Autodetected:
+    // @Property->name is set to "id" based on the propertyname $id
+    // @Property-type is set to "integer" based on the "@var int"
+    // @Property->description is set to "Unique identifier for the Pet" extracted from the docblock
+
+    /**
+     * Tags assigned to this pet
      * @var Tag[]
      *
      * @SWG\Property()
      */
     public $tags = array();
     // Autodetected:
-    // @SWG\Property->name is set to "tags" based on property name $tags.
-    // @SWG\Property->type is detected as "array" based on @var ending with "[]"
-    // @SWG\Property->items is detected as @SWG\Items("$ref:Tag") based on @var Tag[]
+    // @Property->name is set to "tags" based on property name $tags.
+    // @Property->type is detected as "array" based on @var ending with "[]"
+    // @Property->items is detected as @Items("$ref:Tag") based on @var Tag[]
 
     /**
-     * @var int
-     *
-     * @SWG\Property()
-	 * Property() will use the property name "id" as name and detect the "@var int" and use "integer" as type.
-     */
-    public $id;
-
-    /**
+     * Category the pet is in
      * @var Category
      *
      * @SWG\Property()
@@ -47,6 +53,7 @@ class Pet
     public $status;
 
     /**
+     * Friendly name of the pet
      * @var string
      *
      * @SWG\Property()

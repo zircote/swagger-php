@@ -1,9 +1,9 @@
 <?php
-namespace Petstore\Models;
+namespace Swagger\Processors;
 
 /**
  * @license    http://www.apache.org/licenses/LICENSE-2.0
- *             Copyright [2014] [Robert Allen]
+ *             Copyright [2013] [Robert Allen]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,29 @@ namespace Petstore\Models;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package
- * @category
- * @subpackage
+ * @category   Swagger
+ * @package    Swagger
  */
-use Swagger\Annotations as SWG;
+
+use Swagger\Annotations\Authorization;
+use Swagger\Parser;
 
 /**
- * @package
- * @category
- * @subpackage
- *
- * @SWG\Model(id="Tag")
+ * AuthorizationsProcessor
  */
-class Tag
+class AuthorizationProcessor implements ProcessorInterface
 {
     /**
-     * @SWG\Property(
-     *   name="id",
-     *   type="integer",
-     *   format="int64"
-     * )
+     * {@inheritdoc}
      */
-    public $id;
-
-    /**
-     * @SWG\Property(type="string")
-     */
-    public $name;
-
+    public function process($annotation, $context)
+    {
+        if ($annotation instanceof Authorization && $annotation->validate()) {
+            $root = $context->getRootContext();
+            if ($root->authorizations === null) {
+                $root->authorizations = array();
+            }
+            $root->authorizations[] = $annotation;
+        }
+    }
 }

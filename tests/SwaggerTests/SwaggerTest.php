@@ -86,7 +86,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         $swagger->registry['/pet']->apiVersion = 4; // Set "/pet" to a version below 1
 
         $before = $swagger->getResourceList();
-        $this->assertCount(2, $before['apis'], 'Both /pet and /user resources');
+        $this->assertCount(3, $before['apis'], 'The /pet, /user and /store resources');
 
         // Filter out all unstable versions
         $swagger->registry = array_filter($swagger->registry, function ($resource) {
@@ -94,7 +94,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
         });
         $after = $swagger->getResourceList();
         $this->assertCount(1, $after['apis']);
-        $this->assertEquals('/pet', $after['apis'][0]['path'], 'Resource /user didn\'t match the filter and only /pet remains');
+        $this->assertEquals('/pet', $after['apis'][0]['path'], 'Resources /user and /store didn\'t match the filter and only /pet remains');
     }
 
     /**
@@ -207,6 +207,21 @@ END;
         $this->assertNull($swagger->models['UserUpdate']->required);
 
     }
+
+    public function testInvalidCommentTypeNotification() {
+        $code = <<<END
+<?php
+/*
+ * @SWG\Model(id="Participant")
+ */
+END;
+        $swagger = new Swagger();
+        \PHPUnit_Framework_Error_Notice::$enabled = true;
+        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+        $swagger->examine($code);
+        $this->assertCount(0, $swagger->models);
+    }
+    
     /**
      * dataProvider for testExample
      * @return array
@@ -228,7 +243,7 @@ END;
         if (file_exists($this->outputDir($outputFile))) {
             $outputFile = $this->outputDir($outputFile);
         }
-        $expectedArray = json_decode(file_get_contents($outputFile), true);
+        $expected = json_decode(file_get_contents($outputFile));
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
             $this->fail('File: "'.$outputFile.'" doesn\'t contain valid json, error '.$error);
@@ -236,75 +251,62 @@ END;
         if (is_string($json) === false) {
             $this->fail('Not a (json) string');
         }
-        $actualArray = json_decode($json, true);
+        $actual = json_decode($json);
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
             $this->fail('invalid json, error '.$error);
         }
-        $this->sort($expectedArray, '"'.$outputFile.'"');
-        $this->sort($actualArray, 'generated json');
-        $expectedJson = Swagger::jsonEncode($expectedArray, true);
-        $actualJson = Swagger::jsonEncode($actualArray, true);
+        $expectedJson = Swagger::jsonEncode($this->sort($expected, '"'.$outputFile.'" '), true);
+        $actualJson = Swagger::jsonEncode($this->sort($actual, 'generated json '), true);
         return $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
     /**
      * Sorts the array to improve matching and debugging the differrences.
      * Used by assertOutputEqualsJson
-     * @param array $array
-     * @retrun void
+     * @param object $object
+     * @return The sorted object
      */
-    private function sort(&$array, $origin = 'unknown')
+    private function sort(\stdClass $object, $origin = 'unknown')
     {
-        ksort($array);
-        if (isset($array['properties'])) { // a model?
-            ksort($array['properties']);
-            foreach (array_keys($array['properties']) as $property) {
-                ksort($array['properties'][$property]);
-            }
+        static $sortMap = null;
+        if ($sortMap === null) {
+            $sortMap = array(
+                // property -> algorithm
+                'apis' => function ($a, $b) { return strcasecmp($a->path, $b->path); },
+                'operations' => function ($a, $b) { return strcasecmp($a->nickname, $b->nickname); },
+                'parameters' => function ($a, $b) { return strcasecmp($a->name, $b->name); },
+                'responseMessages' => function ($a, $b) { return strcasecmp($a->code, $b->code); },
+                'produces' => 'strcasecmp',
+                'consumes' => 'strcasecmp',
+                'required' => 'strcasecmp',
+                'enum' => 'strcasecmp',
+                'scopes' => function ($a, $b) { return strcasecmp($a->scope, $b->scope); },
+                'oauth2' => function ($a, $b) { return strcasecmp($a->scope, $b->scope); },
+            );
         }
-        if (isset($array['apis'])) { // a resource?
-            usort($array['apis'], function ($a, $b) {
-                return strcmp($a['path'], $b['path']);
-            });
-            foreach (array_keys($array['apis']) as $api) {
-                ksort($array['apis'][$api]);
-                if (isset($array['apis'][$api]['operations'])) {
-                    usort($array['apis'][$api]['operations'], function ($a, $b) {
-                        return strcmp($a['method'].' '.$a['nickname'], $b['method'].' '.$b['nickname']);
-                    });
-                    foreach (array_keys($array['apis'][$api]['operations']) as $operation) {
-                        ksort($array['apis'][$api]['operations'][$operation]);
-                        if (isset($array['apis'][$api]['operations'][$operation]['parameters'])) {
-                            usort($array['apis'][$api]['operations'][$operation]['parameters'], function ($a, $b) {
-                                $aName = array_key_exists('name', $a) ? $a['name'] : '';
-                                $bName = array_key_exists('name', $b) ? $b['name'] : '';
-                                return strcmp($aName, $bName);
-                            });
-                            foreach (array_keys($array['apis'][$api]['operations'][$operation]['parameters']) as $parameter) {
-                                ksort($array['apis'][$api]['operations'][$operation]['parameters'][$parameter]);
-                            }
-                        }
-                        if (isset($array['apis'][$api]['operations'][$operation]['responseMessages'])) {
-                            usort($array['apis'][$api]['operations'][$operation]['responseMessages'], function ($a, $b) {
-                                return strcmp($a['code'], $b['code']);
-                            });
-                            foreach (array_keys($array['apis'][$api]['operations'][$operation]['responseMessages']) as $responseMessage) {
-                                ksort($array['apis'][$api]['operations'][$operation]['responseMessages'][$responseMessage]);
-                            }
-                        }
+        $data = get_object_vars($object);
+        ksort($data);
+        foreach ($data as $property => $value) {
+            if (is_object($value)) {
+                $data[$property] = $this->sort($value, $origin .'->'.$property);
+            }
+            if (is_array($value)) {
+                $sort = @$sortMap[$property];
+                if ($sort) {
+                    usort($value, $sort);
+                    $data[$property] = $value;
+                } else {
+                    // echo 'no sort for '.$origin.'->'.$property."\n";die;
+                }
+                foreach ($value as $i => $element) {
+                    if (is_object($element)) {
+                        $data[$property][$i] = $this->sort($element, $origin.'->'.$property.'['.$i.']');
                     }
-                } elseif (array_key_exists('models', $array) || count($array['apis'][$api]) > 2) { //  not a resource-listing?
-                    $this->fail('No operations in api "'.$array['apis'][$api]['path'].'" for "'.$origin.'"');
                 }
             }
         }
-        if (isset($array['models'])) { // models inside a resource?
-            ksort($array['models']);
-            foreach (array_keys($array['models']) as $model) {
-                $this->sort($array['models'][$model], $origin);
-            }
-        }
+        return (object)$data;
     }
 
     protected function examplesDir($example = '')

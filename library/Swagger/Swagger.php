@@ -30,6 +30,16 @@ use Swagger\Processors\ProcessorInterface;
 class Swagger
 {
     /**
+     * @var array|Annotations\Info
+     */
+    public $info;
+
+    /**
+     * @var Annotations\Authorization[]
+     */
+    public $authorizations = array();
+
+    /**
      * @var Resource[]
      */
     public $registry = array();
@@ -145,6 +155,12 @@ class Swagger
         }
         if ($result['basePath'] === null) {
             unset($result['basePath']);
+        }
+        if ($this->info !== null) {
+            $result['info'] = $this->info;
+        }
+        if (count($this->authorizations) !== 0) {
+            $result['authorizations'] = $this->authorizations;
         }
         switch ($options['output']) {
             case 'array':
@@ -264,6 +280,23 @@ class Swagger
      */
     protected function processParser($parser)
     {
+        $info = $parser->getInfo();
+        if ($info) {
+            if ($this->info !== null) {
+                Logger::notice('Overwriting '.$info->identity().' "'.$this->info->_context.'" with "'.$info->_context.'"');
+            }
+            $this->info = $info;
+        }
+        $authorizations = $parser->getAuthorizations();
+        if ($authorizations) {
+            foreach ($authorizations as $authorization) {
+                if (isset($this->authorizations[$authorization->type])) {
+                    Logger::notice('Overwriting '.$authorization->identity().' "'.$this->authorizations[$authorization->type]->_context.'" with "'.$authorization->_context.'"');
+                }
+                $this->authorizations[$authorization->type] = $authorization;
+            }
+            
+        }
         foreach ($parser->getResources() as $resource) {
             if (array_key_exists($resource->resourcePath, $this->registry)) {
                 $this->registry[$resource->resourcePath]->merge($resource);
@@ -297,10 +330,12 @@ class Swagger
         }
 
         foreach ($this->registry as $resource) {
+            $this->applyAuthorization($resource);
 
             $models = array();
             foreach ($resource->apis as $api) {
                 foreach ($api->operations as $operation) {
+                    $this->applyAuthorization($operation);
                     $model = $this->resolveModel($operation->type);
                     if ($model) {
                         $models[] = $model;
@@ -384,6 +419,52 @@ class Swagger
             if ($node instanceof Annotations\Resource || $node instanceof Annotations\Model) {
                 $node->validate();
             }
+        }
+    }
+
+    /**
+     * Expand the authorizations fields with the data from @SWG\Authorization().
+     * @param  AbstractAnnotation $annotation
+     * @return void
+     */
+    protected function applyAuthorization($annotation) {
+        if ($annotation->authorizations === null) {
+            return;
+        }
+        if (is_array($annotation->authorizations) && count($annotation->authorizations) === 0) {
+            $annotation->authorizations = new \stdClass();
+            return;
+        }
+        if (is_string($annotation->authorizations) === false) {
+            return;
+        }
+        $keys = explode(',', $annotation->authorizations);
+        $annotation->authorizations = new \stdClass();
+        foreach ($keys as $key) {
+            $key = trim($key);
+            $registered = false;
+            if (isset($this->authorizations[$key])) {
+                $annotation->authorizations->$key = array();
+                continue;
+            }
+
+            $pos = strpos($key, '.');
+            if ($pos !== false) {
+                $scope = substr($key, $pos + 1);
+                $oauth2 = substr($key, 0, $pos);
+                if (isset($annotation->authorizations->$oauth2) === false) {
+                    $annotation->authorizations->$oauth2 = array();
+                }
+                if (isset($this->authorizations[$oauth2]) && is_array($this->authorizations[$oauth2]->scopes)) {
+                    foreach ($this->authorizations[$oauth2]->scopes as $scopeObj) {
+                        if ($scope === $scopeObj->scope) {
+                            array_push($annotation->authorizations->$oauth2, $scopeObj);
+                            continue 2;
+                        }
+                    }
+                }
+            }
+            Logger::notice('Authorization: "'.$key.'" not registered, used in '.$annotation->_context);
         }
     }
 
@@ -498,7 +579,7 @@ class Swagger
 
     /**
      * Log a notice when the type doesn't exactly match the Swagger spec.
-     * @link https://github.com/wordnik/swagger-core/wiki/Datatypes
+     * @link https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#43-data-types
      *
      * @param string $type
      * @param Context $context
@@ -551,6 +632,9 @@ class Swagger
                 $data = $data->jsonSerialize();
             } else {
                 $data = get_object_vars($data);
+            }
+            if (count($data) === 0) {
+                return (object) $data; // empty object
             }
         }
         if (is_array($data) === false) {
@@ -651,9 +735,10 @@ class Swagger
     protected function inheritProperties($model)
     {
         $context = $model->_context;
-        if ($context->is('class') && $context->extends === null && $context->propertiesInherited !== null) {
+        if ($context->is('class') === false || $context->extends === null || $context->is('propertiesInherited')) {
             return; // model doesn't have a superclass or is already resolved
         }
+        $context->propertiesInherited = true;
         $parent = false;
         foreach ($this->models as $super) {
             if ($context->extends === $super->_context->class) {
@@ -664,7 +749,6 @@ class Swagger
         if ($parent === false) {
             return; // Superclass not discoved or doesn't have annotations
         }
-        $context->propertiesInherited = true;
         $this->inheritProperties($parent);
         foreach ($parent->properties as $parentProperty) {
             $exists = false;
@@ -717,6 +801,9 @@ class Swagger
             new Processors\ApiProcessor(),
             new Processors\ModelProcessor(),
             new Processors\PropertyProcessor(),
+            new Processors\ResourceProcessor(),
+            new Processors\InfoProcessor(),
+            new Processors\AuthorizationProcessor(),
             new Processors\NestingProcessor(),
         );
     }

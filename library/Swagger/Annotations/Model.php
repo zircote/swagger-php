@@ -30,29 +30,34 @@ use Swagger\Annotations\Properties;
  * @subpackage
  *
  * @Annotation
+ * @link https://github.com/wordnik/swagger-spec/blob/master/versions/1.2.md#527-model-object
  */
 class Model extends AbstractAnnotation
 {
     /**
+     * A unique identifier for the model.
      * @var string
      */
     public $id;
 
     /**
+     * A brief description of this model.
      * @var string
      */
     public $description;
 
     /**
-     * @var array
-     */
-    public $properties = array();
-
-    /**
+     * A definition of which properties must exist when a model instance is produced.
      * @var array
      */
     public $required;
 
+    /**
+     * A list of properties (fields) that are part of the model.
+     * @var Property[]
+     */
+    public $properties = array();
+    
     protected static $mapAnnotations = array(
         '\Swagger\Annotations\Property' => 'properties[]'
     );

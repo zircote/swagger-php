@@ -41,7 +41,9 @@ class NestingProcessor implements ProcessorInterface
                 'Swagger\Annotations\Resource',
                 'Swagger\Annotations\Api',
                 'Swagger\Annotations\Model',
-                'Swagger\Annotations\Property'
+                'Swagger\Annotations\Property',
+                'Swagger\Annotations\Info',
+                'Swagger\Annotations\Authorization',
             );
             if (in_array(get_class($annotation), $whitelist)) {
                 return;

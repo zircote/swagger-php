@@ -37,39 +37,38 @@ class User
      * @SWG\Property(
      *   name="id",
      *   type="integer",
-     *   format="int64",
-     *   description="Unique identifier for the user"
+     *   format="int64"
      * )
      */
     public $id;
 
     /**
-     * @SWG\Property(name="firstName",type="string",description="First name of the user")
+     * @SWG\Property(name="firstName",type="string")
      */
     public $firstname;
 
     /**
-     * @SWG\Property(name="username",type="string",description="Unique username")
+     * @SWG\Property(name="username",type="string")
      */
     public $username;
 
     /**
-     * @SWG\Property(name="lastName",type="string",description="Last name of the user")
+     * @SWG\Property(name="lastName",type="string")
      */
     public $lastname;
 
     /**
-     * @SWG\Property(name="email",type="string",description="Email address of the user")
+     * @SWG\Property(name="email",type="string")
      */
     public $email;
 
     /**
-     * @SWG\Property(name="password",type="string",description="Password name of the user")
+     * @SWG\Property(name="password",type="string")
      */
     public $password;
 
     /**
-     * @SWG\Property(name="phone",type="string",description="Phone number of the user")
+     * @SWG\Property(name="phone",type="string")
      */
     public $phone;
 
