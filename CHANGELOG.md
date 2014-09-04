@@ -8,6 +8,7 @@ Changelog
 * Updated @link references to the github.com/wordnik/swagger-spec repository
 * Reimplemented the petstore example using the updated json files from http://petstore.swagger.wordnik.com/api/api-docs
 * Detect when an @SWG in a normal comment `//` or `/* */` instead of a DocBlock `/** */`
+* Don't call hasPartialId() on non-swagger annotations (https://github.com/zircote/swagger-php/pull/160)
 
 ## 0.9.4
 
