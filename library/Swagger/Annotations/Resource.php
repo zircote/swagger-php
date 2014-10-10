@@ -112,16 +112,26 @@ class Resource extends AbstractAnnotation
             foreach ($validApis as $validApi) {
                 if ($api->path === $validApi->path) { // The same api path?
                     $append = false;
+
                     // merge operations
                     foreach ($api->operations as $operation) {
-                        $validApi->operations[] = $operation;
+                          $validApi->operations[] = $operation;
                     }
+
                     // merge description
                     if ($validApi->description === null) {
                         $validApi->description = $api->description;
                     } elseif ($api->description !== null && $api->description !== $validApi->description){
                         Logger::notice('Competing description for '.$validApi->identity().' in '.$validApi->_context.' and '.$api->_context);
                     }
+
+                    foreach ($api->_partials as $partial) {
+                        if( !in_array($partial, $validApi->_partials) )
+                        {
+                            $validApi->_partials[] = $partial;
+                        }
+                    }
+
                     break;
                 }
             }

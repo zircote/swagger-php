@@ -9,6 +9,11 @@
                     "method": "GET",
                     "summary": "This function does some magic xyz",
                     "nickname": "logidx"
+                },
+                {
+                    "method": "POST",
+                    "nickname": "newlog",
+                    "summary": "This function does some magic xyz"
                 }
             ]
         },
