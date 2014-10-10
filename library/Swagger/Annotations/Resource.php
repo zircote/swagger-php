@@ -122,6 +122,12 @@ class Resource extends AbstractAnnotation
                     } elseif ($api->description !== null && $api->description !== $validApi->description){
                         Logger::notice('Competing description for '.$validApi->identity().' in '.$validApi->_context.' and '.$api->_context);
                     }
+                    // merge partials
+                    foreach ($api->_partials as $partial) {
+                        if( !in_array($partial, $validApi->_partials) ) {
+                            $validApi->_partials[] = $partial;
+                        }
+                    }
                     break;
                 }
             }

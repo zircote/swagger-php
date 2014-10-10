@@ -15,9 +15,19 @@ use Swagger\Annotations as SWG;
  *         nickname="logidx",
  *         @SWG\Partial("logs.index")
  *     )
- * ),
- *
  * )
  */
-Router::route('/', array('controller' => 'Operations'));
+Router::get('/', 'Operations@getStuff');
+
+/**
+ * @SWG\Api(
+ *     path="/",
+ *     @SWG\Operation(
+ *         method="POST",
+ *         nickname="newlog",
+ *         @SWG\Partial("logs.index")
+ *     )
+ * )
+ */
+Router::post('/', 'Operation@postStuff');
 ?>
