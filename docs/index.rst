@@ -12,11 +12,12 @@ Contents:
     installation
     using_swagger
     annotations
+    partials
 
 About Swagger-PHP
 **********************
 
-Swagger-PHP is a PHP annotations library for generating `Swagger <http://swagger.wordnik.com>`_ compatable JSON documentation
-for your API. The resulting JSON documentation may then be utulized for internal and external user friendly documentation,
+Swagger-PHP is a PHP annotations library for generating `Swagger <http://swagger.wordnik.com>`_ compatible JSON documentation
+for your API. The resulting JSON documentation may then be utilized for internal and external user friendly documentation,
 API portal sandbox with `Swagger UI <https://github.com/wordnik/swagger-ui>`_ as well as client code generation with the
 `Swagger Code Generation tooling <https://github.com/wordnik/swagger-codegen>`_.

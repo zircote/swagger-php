@@ -2,36 +2,39 @@
 Using Swagger-PHP
 =========================
 
-Generating the *Swagger Documentation* can be performed in multiple ways.Depending on your workflow the method you
-choose may vary. Large projects will want to compile the documentation at deployment, while conversely in an development
-environment you may choose to generate on demand. Within these constraints there is again more than one means by which
-to produce the documents in your project, you may choose to create your own tooling that utilizes the \Swagger\Swagger
-class and control your filtering options on demand. While finally the alternative to this is to utilize the CLI swagger.phar
-to produce your *swagger documentation*,
+Generating the *Swagger Documentation* can be performed in multiple ways.
 
-Swagger\\Swagger
+Depending on your workflow the method you choose may vary. 
+Generally you'll want to generate the documentation on-the-fly in development and 
+generate static json files in production.
+
+Via Command Line
 *****************
 
-The following example will render the documentation to a web request.
-
-.. code-block:: php
-
-    <?php
-    use Swagger\Swagger;
-    $swagger = new Swagger('/project/root/top_level');
-    header("Content-Type: application/json")
-    echo $swagger->getResource('/pet', array('output' => 'json'));
-
-
-While the CLI example will create individual json documents for each resource discovered in your project, these file are
-then mappable via the `swagger-ui` of any other swagger friendly tool you wish to utilize against them.
+The CLI will create json files for each resource discovered in your project.
+To make them accessable to `swagger-ui` they must be placed onto an webserver.
 
 .. code-block:: bash
 
-    php swagger.phar /project/root/top_level -o /var/html/swagger-docs
+    php swagger.phar /projects/my_project  -o /var/html/swagger-docs
 
 Check the help for additional options.
 
 .. code-block:: bash
 
     php swagger.phar --help
+
+
+Via PHP
+*****************
+
+The following example will generate and output the documentation of the "/pet" resource.
+
+.. code-block:: php
+
+    <?php
+    use Swagger\Swagger;
+    $swagger = new Swagger('/projects/my_project');
+    header('Content-Type: application/json');
+    echo $swagger->getResource('/pet', array('output' => 'json'));
+

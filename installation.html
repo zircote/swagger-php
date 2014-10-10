@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -14,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -59,17 +58,9 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="phar">
-<h2>Phar<a class="headerlink" href="#phar" title="Permalink to this headline">¶</a></h2>
-<p>Download the latest swagger.phar from <a class="reference external" href="https://github.com/zircote/swagger-php/blob/master/swagger.phar">https://github.com/zircote/swagger-php/blob/master/swagger.phar</a></p>
-<div class="highlight-bash"><div class="highlight"><pre>% php swagger.phar --help
-</pre></div>
-</div>
-</div>
-<div class="section" id="composer">
-<h2>Composer<a class="headerlink" href="#composer" title="Permalink to this headline">¶</a></h2>
-<p>First acquire Composer at <a class="reference external" href="http://getcomposer.org">http://getcomposer.org</a> following the installation instructions. Finally add the composer
-details for swagger-php to your projects <em>composer.json</em></p>
+<div class="section" id="via-composer-recommended">
+<h2>Via Composer (Recommended)<a class="headerlink" href="#via-composer-recommended" title="Permalink to this headline">¶</a></h2>
+<p>First download and install <a class="reference external" href="http://getcomposer.org">Composer</a> add zircote/swagger-php to your <em>composer.json</em></p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;zircote/swagger-php&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
 <span class="p">}</span>
@@ -80,15 +71,16 @@ details for swagger-php to your projects <em>composer.json</em></p>
 <dd>projects bootstrap.</dd>
 </dl>
 </div>
-<div class="section" id="git">
-<h2>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h2>
-<p>You may also install <em>swagger-php</em> with git; this installation method will however require that you manually install
-the <a class="reference external" href="http://www.doctrine-project.org/projects/common.html">Doctrine Common</a> library following the procedure they have
-documented on the project page.</p>
-<p>Add <em>swagger-php/library</em> to your include path.</p>
-<div class="highlight-bash"><div class="highlight"><pre>% git clone git@github.com:zircote/swagger-php.git
+<div class="section" id="via-phar">
+<h2>Via Phar<a class="headerlink" href="#via-phar" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest <a class="reference external" href="https://github.com/zircote/swagger-php/raw/master/swagger.phar">swagger.phar</a></p>
+<div class="highlight-bash"><div class="highlight"><pre>% php swagger.phar --help
 </pre></div>
 </div>
+</div>
+<div class="section" id="manual-unsupported">
+<h2>Manual (Unsupported)<a class="headerlink" href="#manual-unsupported" title="Permalink to this headline">¶</a></h2>
+<p>Download/clone the source from <a class="reference external" href="https://github.com/zircote/swagger-php/">GitHub</a>, install <a class="reference external" href="http://www.doctrine-project.org/projects/common.html">Doctrine Annotations</a> and configure a PSR compatible class loader.</p>
 </div>
 </div>
 
@@ -101,9 +93,9 @@ documented on the project page.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#phar">Phar</a></li>
-<li><a class="reference internal" href="#composer">Composer</a></li>
-<li><a class="reference internal" href="#git">git</a></li>
+<li><a class="reference internal" href="#via-composer-recommended">Via Composer (Recommended)</a></li>
+<li><a class="reference internal" href="#via-phar">Via Phar</a></li>
+<li><a class="reference internal" href="#manual-unsupported">Manual (Unsupported)</a></li>
 </ul>
 </li>
 </ul>
@@ -147,8 +139,8 @@ documented on the project page.</p>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2013, Robert Allen.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright 2014, Robert Allen &amp; Bob Fanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

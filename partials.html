@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using Swagger-PHP &mdash; Swagger-PHP  documentation</title>
+    <title>Partials &mdash; Swagger-PHP  documentation</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
-    <link rel="next" title="Annotations" href="annotations.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
+    <link rel="prev" title="Annotations" href="annotations.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -43,9 +42,6 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="annotations.html" title="Annotations"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
@@ -56,32 +52,52 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="using-swagger-php">
-<h1>Using Swagger-PHP<a class="headerlink" href="#using-swagger-php" title="Permalink to this headline">¶</a></h1>
-<p>Generating the <em>Swagger Documentation</em> can be performed in multiple ways.</p>
-<p>Depending on your workflow the method you choose may vary.
-Generally you&#8217;ll want to generate the documentation on-the-fly in development and
-generate static json files in production.</p>
-<div class="section" id="via-command-line">
-<h2>Via Command Line<a class="headerlink" href="#via-command-line" title="Permalink to this headline">¶</a></h2>
-<p>The CLI will create json files for each resource discovered in your project.
-To make them accessable to <cite>swagger-ui</cite> they must be placed onto an webserver.</p>
-<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar /projects/my_project  -o /var/html/swagger-docs
-</pre></div>
-</div>
-<p>Check the help for additional options.</p>
-<div class="highlight-bash"><div class="highlight"><pre>php swagger.phar --help
+  <div class="section" id="partials">
+<h1>Partials<a class="headerlink" href="#partials" title="Permalink to this headline">¶</a></h1>
+<p>To avoid duplication swagger-php introduces partials.</p>
+<div class="section" id="defining-a-partial">
+<h2>Defining a partial<a class="headerlink" href="#defining-a-partial" title="Permalink to this headline">¶</a></h2>
+<p>Any swagger annotation can become a partial by addding the property &#8220;partial_id&#8221;.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<span class="sd"> * @SWG\Parameter(partial=&quot;path_id&quot;, name=&quot;id&quot;, paramType=&quot;path&quot;, type=&quot;integer&quot;)</span>
+<span class="sd"> * @SWG\ResponseMessage(partial_id=&quot;error404&quot;, code=404, message=&quot;Entity not found&quot;)</span>
+<span class="sd"> */</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="via-php">
-<h2>Via PHP<a class="headerlink" href="#via-php" title="Permalink to this headline">¶</a></h2>
-<p>The following example will generate and output the documentation of the &#8220;/pet&#8221; resource.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">use</span> <span class="nx">Swagger\Swagger</span><span class="p">;</span>
-<span class="nv">$swagger</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Swagger</span><span class="p">(</span><span class="s1">&#39;/projects/my_project&#39;</span><span class="p">);</span>
-<span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;/pet&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;output&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;json&#39;</span><span class="p">));</span>
+<div class="section" id="using-a-partial">
+<h2>Using a partial<a class="headerlink" href="#using-a-partial" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
+<span class="sd"> * @SWG\Operation(</span>
+<span class="sd"> *   method=&quot;GET&quot;,</span>
+<span class="sd"> *   nickname=&quot;partialDemo&quot;</span>
+<span class="sd"> *   @SWG\Partial(&#39;path_id&#39;),</span>
+<span class="sd"> *   @SWG\Partial(&#39;error404&#39;),</span>
+<span class="sd"> * )</span>
+<span class="sd"> */</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-json"><div class="highlight"><pre>operations: [
+  {
+    method: &quot;GET&quot;,
+    nickname: &quot;partialDemo&quot;,
+    parameters: [
+      {
+        paramType: &quot;path&quot;,
+        name: &quot;id&quot;,
+        type: &quot;integer&quot;
+      }
+    ],
+    responseMessages: [
+      {
+        code: 404,
+        message: &quot;Entity not found&quot;
+
+      }
+    ]
+  }
+]
 </pre></div>
 </div>
 </div>
@@ -95,19 +111,16 @@ To make them accessable to <cite>swagger-ui</cite> they must be placed onto an w
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Using Swagger-PHP</a><ul>
-<li><a class="reference internal" href="#via-command-line">Via Command Line</a></li>
-<li><a class="reference internal" href="#via-php">Via PHP</a></li>
+<li><a class="reference internal" href="#">Partials</a><ul>
+<li><a class="reference internal" href="#defining-a-partial">Defining a partial</a></li>
+<li><a class="reference internal" href="#using-a-partial">Using a partial</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="previous chapter">Installation</a></p>
-  <h4>Next topic</h4>
   <p class="topless"><a href="annotations.html"
-                        title="next chapter">Annotations</a></p>
+                        title="previous chapter">Annotations</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -133,9 +146,6 @@ To make them accessable to <cite>swagger-ui</cite> they must be placed onto an w
              >index</a></li>
         <li class="right" >
           <a href="annotations.html" title="Annotations"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="installation.html" title="Installation"
              >previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>

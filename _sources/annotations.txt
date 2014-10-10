@@ -2,10 +2,6 @@
 Annotations
 ******************
 
-.. warning:: Using annotation in swagger-php before 0.7.3 require a ``use`` statement. Later versions register the ``@SWG\`` for annotations without a use statement.
-
-Tip! Mistype an attribute on purpose and a warning will be shown with the available attributes for that particular annotation.
-
 .. code-block:: php
 
     <?php
@@ -19,13 +15,19 @@ Tip! Mistype an attribute on purpose and a warning will be shown with the availa
     class Pet
     {
         /**
-         * @var array<Tags>
+         * @var Tag[]
          *
-         * @SWG\Property(name="tags",type="array", items="$ref:Tag")
+         * @SWG\Property(name="tags", type="array", items="$ref:Tag")
          */
         protected $tags = array();
     }
 
+When properties are ommitted, swagger-php will try to detect their value.
+The name for the @SWG\Property in this example is not needed, because swagger-php would infer "tags" based on `protected $tags` after the annotation.
+
+The use statement also optional when using ``@SWG\`` for annotations.
+
+Tip! Mistype an attribute and a warning will be shown with the available attributes for that particular annotation.
 
 
 Annotation Hierarchy
@@ -33,20 +35,64 @@ Annotation Hierarchy
 
 .. code-block:: text
 
- - ``@SWG\Resource``
-    -``@SWG\Api``
-      - ``@SWG\Operations``
-        - ``@SWG\Operation``
-          - ``@SWG\Parameters``
-            - ``@SWG\Parameter``
-          - ``@SWG\ResponseMessages``
-            - ``@SWG\ResponseMessage``
+ - @SWG\Resource
+   - @SWG\Api
+     - @SWG\Operation
+       - @SWG\Parameter
+       - @SWG\ResponseMessage
           
- - ``@SWG\Model``
-   - ``@SWG\Property``
-     - ``@SWG\Items``
+ - @SWG\Model
+   - @SWG\Property
+     - @SWG\Items
 
-Container annotations like ``@SWG\Operations``, ``@SWG\Parameters`` and ``@SWG\ResponseMessages`` are optional. 
+ - @SWG\Authorization
+   - @SWG\Scope
+
+ - @SWG\Info
+
+Resource
+******************
+
+**Attributes**
+
+- ``apiVersion`` the version this api is being rendered as
+- ``swaggerVersion`` the swagger-docs version being rendered ``2.0``
+- ``resourcePath`` the HTTP URI path for the resource
+- ``basePath`` the service root HTTP URI path
+- Api_ []
+
+**Example Annotations**
+
+.. code-block:: php
+
+    use Swagger\Annotations as SWG;
+
+    /**
+     * @SWG\Resource(
+     *     apiVersion="0.2",
+     *     swaggerVersion="1.1",
+     *     resourcePath="/pet",
+     *     basePath="http://petstore.swagger.wordnik.com/api"
+     * )
+     */
+
+**Derived JSON**
+
+.. code-block:: javascript
+
+    {
+        "apiVersion":"0.2",
+        "swaggerVersion":"1.1",
+        "basePath":"http://petstore.swagger.wordnik.com/api",
+        "resourcePath":"/pet",
+        "apis":[...],
+        "models": [...]
+    }
+
+**Allowable Use:**
+
+Recommended as file or class annotation.
+
 
 Api
 ******************
@@ -55,9 +101,9 @@ Api
 
 - ``path``
 - ``description``
-- `Operations`_
+- `Operation`_ []
 
-**Example Annotations**
+**Example Annotation**
 
 .. code-block:: php
 
@@ -88,6 +134,56 @@ Api
             ]
         }
 
+**Allowable Use:**
+
+Must be after or inside a Resource_ annotation.
+Recommended as method annotation.
+
+
+Operation
+******************
+
+**Attributes**
+
+- ``method`` GET|POST|DELETE|PUT|PATCH etc
+- ``summary`` string
+- ``notes`` string
+- ``type`` the `Model`_ ID returned
+- ``nickname`` string
+- `ResponseMessage`_ []
+- `Parameter`_ []
+
+**Example Annotations**
+
+.. code-block:: php
+
+    use Swagger\Annotations as SWG;
+
+    /**
+     * @SWG\Operation(
+     *     method="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
+     *     type="Pet", nickname="getPetById", ...
+     * )
+     */
+
+**Derived JSON**
+
+.. code-block:: javascript
+
+    {
+        "method":"GET",
+        "summary":"Find pet by ID",
+        "notes":"Returns a pet based on ID",
+        "type":"Pet",
+        "nickname":"getPetById",
+        "parameters":[...],
+        "responseMessages":[...]
+    }
+
+**Allowable Use:**
+
+Enclosed within Api_.
+
 ResponseMessage
 ******************
 
@@ -100,8 +196,6 @@ ResponseMessage
 
 .. code-block:: php
 
-    use Swagger\Annotations as SWG;
-
     /**
      * @SWG\ResponseMessage(code=404, message="Pet not found")
      */
@@ -109,7 +203,6 @@ ResponseMessage
 **Derived JSON**
 
 .. code-block:: javascript
-
 
     "responseMessages":[
         {
@@ -119,14 +212,20 @@ ResponseMessage
     ]
 
 **Allowable Use:**
-    - Enclosed within `ResponseMessages`_ or `Operation`_
 
-ResponseMessages
+Enclosed within Operation_.
+
+Parameter
 ******************
 
 **Attributes**
 
-- `ResponseMessage`_
+- ``name``
+- ``description``
+- ``paramType`` body|query|path
+- ``required`` bool
+- ``type`` scalar or Model|object
+- ``defaultValue``
 
 **Example Annotations**
 
@@ -135,7 +234,13 @@ ResponseMessages
     use Swagger\Annotations as SWG;
 
     /**
-     * @SWG\ResponseMessages(@SWG\ResponseMessage(...)[ @SWG\ResponseMessage(...), ])
+     * @SWG\Parameter(
+     *     name="petId",
+     *     description="ID of pet that needs to be fetched",
+     *     paramType="path",
+     *     required="true",
+     *     type="string"
+     * )
      */
 
 **Derived JSON**
@@ -143,12 +248,96 @@ ResponseMessages
 .. code-block:: javascript
 
     {
-        "code":400,
-        "reason":"Invalid ID supplied"
+        "name":"petId",
+        "description":"ID of pet that needs to be fetched",
+        "paramType":"path",
+        "allowMultiple":false,
+        "type":"string"
+    }
+
+**Allowable Use:**
+
+Enclosed within Operation_
+
+Model
+******************
+
+.. note:: The annotations parser will follow any `extend` statements of the current model class and include annotations from the base class as well, as long as the ``Model`` annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the appropriate annotations.
+
+**Attributes**
+
+- ``id`` the formal name of the Model being described. Defaults to the name of the class (excl. namespace).
+- ``required`` the required properties. Example: required="['id','name']"
+
+**Example Annotations**
+
+.. code-block:: php
+
+    use Swagger\Annotations as SWG;
+
+    /**
+     * @SWG\Model(id="Pet")
+     */
+     class Pet
+     {
+        ...
+     }
+
+**Derived JSON**
+
+.. code-block:: javascript
+
+    "Pet":{
+        "id":"Pet",
+        "properties":{
+            ...
+        }
+    }
+
+Property
+******************
+
+**Attributes**
+
+- ``name``
+- ``type``
+- ``description``
+- `Items`_
+
+**Example Annotations**
+
+.. code-block:: php
+
+    use Swagger\Annotations as SWG;
+
+    /**
+     * @SWG\Property(name="category",type="Category")
+     */
+     public $category;
+     * @SWG\Property(
+     *      name="status",type="string",
+     *      enum="['available', 'pending', 'sold']",
+     *      description="pet status in the store")
+     */
+     public $status;
+
+**Derived JSON**
+
+.. code-block:: javascript
+
+    "category":{
+        "type":"Category"
+    },
+    "status":{
+        "enum":["available", "pending", "sold"],
+        "description":"pet status in the store",
+        "type":"string"
     },
 
 **Allowable Use:**
-    - Enclosed within: `Operation`_
+
+Enclosed within Model_ or as property annotation.
+
 
 Items
 ******************
@@ -215,269 +404,5 @@ Items
     }
 
 **Allowable Use:**
-    - Enclosed within: `Property`_ or `Model`_
 
-Model
-******************
-
-.. note:: The annotations parser will follow any `extend` statements of the current model class and include annotations from the base class as well, as long as the ``Model`` annotation is placed into the comment block directly above the class declaration. Be sure also to activate the parser in the base class with the appropriate annotations.
-
-**Attributes**
-
-- ``id`` the formal name of the Model being described. Defaults to the name of the class (excl. namespace).
-- ``required`` the required properties. Example: required="['id','name']"
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Model(id="Pet")
-     */
-     class Pet
-     {
-        ...
-     }
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    "Pet":{
-        "id":"Pet",
-        "properties":{
-            ...
-        }
-
-Operation
-******************
-
-**Attributes**
-
-- ``method`` GET|POST|DELETE|PUT|PATCH etc
-- ``summary`` string
-- ``notes`` string
-- ``type`` the `Model`_ ID returned
-- ``nickname`` string
-- `ResponseMessages`_
-- `Parameters`_
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Operation(
-     *     method="GET", summary="Find pet by ID", notes="Returns a pet based on ID",
-     *     type="Pet", nickname="getPetById", ...
-     * )
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    {
-        "method":"GET",
-        "summary":"Find pet by ID",
-        "notes":"Returns a pet based on ID",
-        "type":"Pet",
-        "nickname":"getPetById",
-        "parameters":[...],
-        "responseMessages":[...]
-    }
-
-**Allowable Use:**
-
-    - Enclosed within: `Operations`_ or `Api`_
-
-Operations
-******************
-
-A container of one or more `Operation`_ s
-
-**Attributes**
-
-- `Operation`_
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Operations(@SWG\Operation()[, @SWG\Operation()])
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    "operations":[
-        { ... }, {...}
-    ]
-
-**Allowable Use:**
-    - Enclosed within: `Api`_
-
-Parameter
-******************
-
-**Attributes**
-
-- ``name``
-- ``description``
-- ``paramType`` body|query|path
-- ``required`` bool
-- ``type`` scalar or Model|object
-- ``defaultValue``
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Parameter(
-     *           name="petId",
-     *           description="ID of pet that needs to be fetched",
-     *           paramType="path",
-     *           required="true",
-     *           type="string"
-     *         )
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    {
-        "name":"petId",
-        "description":"ID of pet that needs to be fetched",
-        "paramType":"path",
-        "allowMultiple":false,
-        "type":"string"
-    }
-
-**Allowable Use:**
-
-    - `Parameters`_
-
-Parameters
-******************
-
-A collection of one or more `Parameter`_ s
-
-**Attributes**
-
-- `Parameter`_
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Parameters(@SWG\Parameter()[, @SWG\Parameter()])
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    "parameters":[...]
-
-**Allowable Use:**
-
-    - `Operation`_
-
-Property
-******************
-
-**Attributes**
-
-- ``name``
-- ``type``
-- ``description``
-- `Items`_
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Property(name="category",type="Category")
-     */
-     public $category;
-     * @SWG\Property(
-     *      name="status",type="string",
-     *      enum="['available', 'pending', 'sold']",
-     *      description="pet status in the store")
-     */
-     public $status;
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    "category":{
-        "type":"Category"
-    },
-    "status":{
-        "enum":["available", "pending", "sold"],
-        "description":"pet status in the store",
-        "type":"string"
-    },
-
-**Allowable Use:**
-    - Property Annotation
-
-Resource
-******************
-
-**Attributes**
-
-- ``apiVersion`` the version this api is being rendered as
-- ``swaggerVersion`` the swagger-docs version being rendered ``2.0``
-- ``resourcePath`` the HTTP URI path for the resource
-- ``basePath`` the service root HTTP URI path
-
-**Example Annotations**
-
-.. code-block:: php
-
-    use Swagger\Annotations as SWG;
-
-    /**
-     * @SWG\Resource(
-     *     apiVersion="0.2",
-     *     swaggerVersion="1.1",
-     *     resourcePath="/pet",
-     *     basePath="http://petstore.swagger.wordnik.com/api"
-     * )
-     */
-
-**Derived JSON**
-
-.. code-block:: javascript
-
-    {
-        "apiVersion":"0.2",
-        "swaggerVersion":"1.1",
-        "basePath":"http://petstore.swagger.wordnik.com/api",
-        "resourcePath":"/pet",
-        "apis":[...],
-        "models": [...]
-    }
-
-**Allowable Use:**
-    - Class Annotation
+Enclosed within: Property_

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -14,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -25,6 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
+    <link rel="next" title="Partials" href="partials.html" />
     <link rel="prev" title="Using Swagger-PHP" href="using_swagger.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -42,6 +42,9 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="partials.html" title="Partials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
           <a href="using_swagger.html" title="Using Swagger-PHP"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
@@ -55,11 +58,6 @@
             
   <div class="section" id="annotations">
 <h1>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Using annotation in swagger-php before 0.7.3 require a <tt class="docutils literal"><span class="pre">use</span></tt> statement. Later versions register the <tt class="docutils literal"><span class="pre">&#64;SWG\</span></tt> for annotations without a use statement.</p>
-</div>
-<p>Tip! Mistype an attribute on purpose and a warning will be shown with the available attributes for that particular annotation.</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
@@ -71,31 +69,73 @@
 <span class="k">class</span> <span class="nc">Pet</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
-<span class="sd">     * @var array&lt;Tags&gt;</span>
+<span class="sd">     * @var Tag[]</span>
 <span class="sd">     *</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;, items=&quot;$ref:Tag&quot;)</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;, type=&quot;array&quot;, items=&quot;$ref:Tag&quot;)</span>
 <span class="sd">     */</span>
     <span class="k">protected</span> <span class="nv">$tags</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>When properties are ommitted, swagger-php will try to detect their value.
+The name for the &#64;SWGProperty in this example is not needed, because swagger-php would infer &#8220;tags&#8221; based on <cite>protected $tags</cite> after the annotation.</p>
+<p>The use statement also optional when using <tt class="docutils literal"><span class="pre">&#64;SWG\</span></tt> for annotations.</p>
+<p>Tip! Mistype an attribute and a warning will be shown with the available attributes for that particular annotation.</p>
 <div class="section" id="annotation-hierarchy">
 <h2>Annotation Hierarchy<a class="headerlink" href="#annotation-hierarchy" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-text"><div class="highlight"><pre>- ``@SWG\Resource``
-   -``@SWG\Api``
-     - ``@SWG\Operations``
-       - ``@SWG\Operation``
-         - ``@SWG\Parameters``
-           - ``@SWG\Parameter``
-         - ``@SWG\ResponseMessages``
-           - ``@SWG\ResponseMessage``
+<div class="highlight-text"><div class="highlight"><pre>- @SWG\Resource
+  - @SWG\Api
+    - @SWG\Operation
+      - @SWG\Parameter
+      - @SWG\ResponseMessage
 
-- ``@SWG\Model``
-  - ``@SWG\Property``
-    - ``@SWG\Items``
+- @SWG\Model
+  - @SWG\Property
+    - @SWG\Items
+
+- @SWG\Authorization
+  - @SWG\Scope
+
+- @SWG\Info
 </pre></div>
 </div>
-<p>Container annotations like <tt class="docutils literal"><span class="pre">&#64;SWG\Operations</span></tt>, <tt class="docutils literal"><span class="pre">&#64;SWG\Parameters</span></tt> and <tt class="docutils literal"><span class="pre">&#64;SWG\ResponseMessages</span></tt> are optional.</p>
+</div>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apiVersion</span></tt> the version this api is being rendered as</li>
+<li><tt class="docutils literal"><span class="pre">swaggerVersion</span></tt> the swagger-docs version being rendered <tt class="docutils literal"><span class="pre">2.0</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">resourcePath</span></tt> the HTTP URI path for the resource</li>
+<li><tt class="docutils literal"><span class="pre">basePath</span></tt> the service root HTTP URI path</li>
+<li><a class="reference internal" href="#api">Api</a> []</li>
+</ul>
+<p><strong>Example Annotations</strong></p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @SWG\Resource(</span>
+<span class="sd"> *     apiVersion=&quot;0.2&quot;,</span>
+<span class="sd"> *     swaggerVersion=&quot;1.1&quot;,</span>
+<span class="sd"> *     resourcePath=&quot;/pet&quot;,</span>
+<span class="sd"> *     basePath=&quot;http://petstore.swagger.wordnik.com/api&quot;</span>
+<span class="sd"> * )</span>
+<span class="sd"> */</span>
+</pre></div>
+</div>
+<p><strong>Derived JSON</strong></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;apiVersion&quot;</span><span class="o">:</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;swaggerVersion&quot;</span><span class="o">:</span><span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;basePath&quot;</span><span class="o">:</span><span class="s2">&quot;http://petstore.swagger.wordnik.com/api&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resourcePath&quot;</span><span class="o">:</span><span class="s2">&quot;/pet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;apis&quot;</span><span class="o">:</span><span class="p">[...],</span>
+    <span class="s2">&quot;models&quot;</span><span class="o">:</span> <span class="p">[...]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Allowable Use:</strong></p>
+<p>Recommended as file or class annotation.</p>
 </div>
 <div class="section" id="api">
 <h2>Api<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
@@ -103,9 +143,9 @@
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">path</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">description</span></tt></li>
-<li><a class="reference internal" href="#operations">Operations</a></li>
+<li><a class="reference internal" href="#operation">Operation</a> []</li>
 </ul>
-<p><strong>Example Annotations</strong></p>
+<p><strong>Example Annotation</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
@@ -132,6 +172,47 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><strong>Allowable Use:</strong></p>
+<p>Must be after or inside a <a class="reference internal" href="#resource">Resource</a> annotation.
+Recommended as method annotation.</p>
+</div>
+<div class="section" id="operation">
+<h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Attributes</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">method</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
+<li><tt class="docutils literal"><span class="pre">summary</span></tt> string</li>
+<li><tt class="docutils literal"><span class="pre">notes</span></tt> string</li>
+<li><tt class="docutils literal"><span class="pre">type</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
+<li><tt class="docutils literal"><span class="pre">nickname</span></tt> string</li>
+<li><a class="reference internal" href="#responsemessage">ResponseMessage</a> []</li>
+<li><a class="reference internal" href="#parameter">Parameter</a> []</li>
+</ul>
+<p><strong>Example Annotations</strong></p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * @SWG\Operation(</span>
+<span class="sd"> *     method=&quot;GET&quot;, summary=&quot;Find pet by ID&quot;, notes=&quot;Returns a pet based on ID&quot;,</span>
+<span class="sd"> *     type=&quot;Pet&quot;, nickname=&quot;getPetById&quot;, ...</span>
+<span class="sd"> * )</span>
+<span class="sd"> */</span>
+</pre></div>
+</div>
+<p><strong>Derived JSON</strong></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;method&quot;</span><span class="o">:</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;summary&quot;</span><span class="o">:</span><span class="s2">&quot;Find pet by ID&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;notes&quot;</span><span class="o">:</span><span class="s2">&quot;Returns a pet based on ID&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Pet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nickname&quot;</span><span class="o">:</span><span class="s2">&quot;getPetById&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parameters&quot;</span><span class="o">:</span><span class="p">[...],</span>
+    <span class="s2">&quot;responseMessages&quot;</span><span class="o">:</span><span class="p">[...]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Allowable Use:</strong></p>
+<p>Enclosed within <a class="reference internal" href="#api">Api</a>.</p>
 </div>
 <div class="section" id="responsemessage">
 <h2>ResponseMessage<a class="headerlink" href="#responsemessage" title="Permalink to this headline">¶</a></h2>
@@ -141,9 +222,7 @@
 <li><tt class="docutils literal"><span class="pre">message</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
 <span class="sd"> * @SWG\ResponseMessage(code=404, message=&quot;Pet not found&quot;)</span>
 <span class="sd"> */</span>
 </pre></div>
@@ -157,109 +236,46 @@
 <span class="p">]</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Enclosed within <a class="reference internal" href="#responsemessages">ResponseMessages</a> or <a class="reference internal" href="#operation">Operation</a></li>
-</ul>
-</dd>
-</dl>
+<p><strong>Allowable Use:</strong></p>
+<p>Enclosed within <a class="reference internal" href="#operation">Operation</a>.</p>
 </div>
-<div class="section" id="responsemessages">
-<h2>ResponseMessages<a class="headerlink" href="#responsemessages" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parameter">
+<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><a class="reference internal" href="#responsemessage">ResponseMessage</a></li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">description</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">paramType</span></tt> body|query|path</li>
+<li><tt class="docutils literal"><span class="pre">required</span></tt> bool</li>
+<li><tt class="docutils literal"><span class="pre">type</span></tt> scalar or Model|object</li>
+<li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
 <span class="sd">/**</span>
-<span class="sd"> * @SWG\ResponseMessages(@SWG\ResponseMessage(...)[ @SWG\ResponseMessage(...), ])</span>
+<span class="sd"> * @SWG\Parameter(</span>
+<span class="sd"> *     name=&quot;petId&quot;,</span>
+<span class="sd"> *     description=&quot;ID of pet that needs to be fetched&quot;,</span>
+<span class="sd"> *     paramType=&quot;path&quot;,</span>
+<span class="sd"> *     required=&quot;true&quot;,</span>
+<span class="sd"> *     type=&quot;string&quot;</span>
+<span class="sd"> * )</span>
 <span class="sd"> */</span>
 </pre></div>
 </div>
 <p><strong>Derived JSON</strong></p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;code&quot;</span><span class="o">:</span><span class="mi">400</span><span class="p">,</span>
-    <span class="s2">&quot;reason&quot;</span><span class="o">:</span><span class="s2">&quot;Invalid ID supplied&quot;</span>
-<span class="p">},</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="s2">&quot;petId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;ID of pet that needs to be fetched&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;paramType&quot;</span><span class="o">:</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;allowMultiple&quot;</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Enclosed within: <a class="reference internal" href="#operation">Operation</a></li>
-</ul>
-</dd>
-</dl>
-</div>
-<div class="section" id="items">
-<h2>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">Items</span></tt> annotation defines an array type i.e. an array of integers, strings or <tt class="docutils literal"><span class="pre">$ref</span></tt> to another model type. References are defined with a <strong>$ref:</strong> preamble followed by the model ID name as defined within a <a class="reference internal" href="#model">Model</a> annotation. The <tt class="docutils literal"><span class="pre">&#64;SWG\Items</span></tt> annotation resides within a <a class="reference internal" href="#property">Property</a> declaration.</p>
-</div>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">Type</span></tt></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="k">class</span> <span class="nc">Pet</span>
-<span class="p">{</span>
-    <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;array&quot;,@SWG\Items(&quot;string&quot;))</span>
-<span class="sd">     */</span>
-    <span class="k">public</span> <span class="nv">$photos</span><span class="p">;</span>
-
-    <span class="sd">/**</span>
-<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;,@SWG\Items(&quot;Tag&quot;))</span>
-<span class="sd">     */</span>
-    <span class="k">public</span> <span class="nv">$tags</span><span class="p">;</span>
-
-    <span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><pre>"properties":{
-    "tags":{
-        "items":{
-            "$ref":"Tag"
-        },
-        "type":"array"
-    },
-    "id":{
-        "type":"integer",
-        "format: "int64"
-    },
-    "category":{
-        "type":"Category"
-    },
-    "status":{
-        "enum":["available", "pending", "sold"]
-        "description":"pet status in the store",
-        "type":"string"
-    },
-    "name":{
-        "type":"string"
-    },
-    "photoUrls":{
-        "items":{
-            "type":"string"
-        },
-        "type":"array"
-    }
-}</pre>
-</div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Enclosed within: <a class="reference internal" href="#property">Property</a> or <a class="reference internal" href="#model">Model</a></li>
-</ul>
-</dd>
-</dl>
+<p><strong>Allowable Use:</strong></p>
+<p>Enclosed within <a class="reference internal" href="#operation">Operation</a></p>
 </div>
 <div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
@@ -290,147 +306,9 @@
     <span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span>
         <span class="p">...</span>
     <span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="operation">
-<h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">method</span></tt> GET|POST|DELETE|PUT|PATCH etc</li>
-<li><tt class="docutils literal"><span class="pre">summary</span></tt> string</li>
-<li><tt class="docutils literal"><span class="pre">notes</span></tt> string</li>
-<li><tt class="docutils literal"><span class="pre">type</span></tt> the <a class="reference internal" href="#model">Model</a> ID returned</li>
-<li><tt class="docutils literal"><span class="pre">nickname</span></tt> string</li>
-<li><a class="reference internal" href="#responsemessages">ResponseMessages</a></li>
-<li><a class="reference internal" href="#parameters">Parameters</a></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\Operation(</span>
-<span class="sd"> *     method=&quot;GET&quot;, summary=&quot;Find pet by ID&quot;, notes=&quot;Returns a pet based on ID&quot;,</span>
-<span class="sd"> *     type=&quot;Pet&quot;, nickname=&quot;getPetById&quot;, ...</span>
-<span class="sd"> * )</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;method&quot;</span><span class="o">:</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;summary&quot;</span><span class="o">:</span><span class="s2">&quot;Find pet by ID&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;notes&quot;</span><span class="o">:</span><span class="s2">&quot;Returns a pet based on ID&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;Pet&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;nickname&quot;</span><span class="o">:</span><span class="s2">&quot;getPetById&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;parameters&quot;</span><span class="o">:</span><span class="p">[...],</span>
-    <span class="s2">&quot;responseMessages&quot;</span><span class="o">:</span><span class="p">[...]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Allowable Use:</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li>Enclosed within: <a class="reference internal" href="#operations">Operations</a> or <a class="reference internal" href="#api">Api</a></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="operations">
-<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
-<p>A container of one or more <a class="reference internal" href="#operation">Operation</a> s</p>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><a class="reference internal" href="#operation">Operation</a></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\Operations(@SWG\Operation()[, @SWG\Operation()])</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;operations&quot;</span><span class="o">:</span><span class="p">[</span>
-    <span class="p">{</span> <span class="p">...</span> <span class="p">},</span> <span class="p">{...}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Enclosed within: <a class="reference internal" href="#api">Api</a></li>
-</ul>
-</dd>
-</dl>
-</div>
-<div class="section" id="parameter">
-<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">name</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">description</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">paramType</span></tt> body|query|path</li>
-<li><tt class="docutils literal"><span class="pre">required</span></tt> bool</li>
-<li><tt class="docutils literal"><span class="pre">type</span></tt> scalar or Model|object</li>
-<li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\Parameter(</span>
-<span class="sd"> *           name=&quot;petId&quot;,</span>
-<span class="sd"> *           description=&quot;ID of pet that needs to be fetched&quot;,</span>
-<span class="sd"> *           paramType=&quot;path&quot;,</span>
-<span class="sd"> *           required=&quot;true&quot;,</span>
-<span class="sd"> *           type=&quot;string&quot;</span>
-<span class="sd"> *         )</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="s2">&quot;petId&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;ID of pet that needs to be fetched&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;paramType&quot;</span><span class="o">:</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;allowMultiple&quot;</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Allowable Use:</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><a class="reference internal" href="#parameters">Parameters</a></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
-<p>A collection of one or more <a class="reference internal" href="#parameter">Parameter</a> s</p>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><a class="reference internal" href="#parameter">Parameter</a></li>
-</ul>
-<p><strong>Example Annotations</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
-
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\Parameters(@SWG\Parameter()[, @SWG\Parameter()])</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;parameters&quot;</span><span class="o">:</span><span class="p">[...]</span>
-</pre></div>
-</div>
-<p><strong>Allowable Use:</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><a class="reference internal" href="#operation">Operation</a></li>
-</ul>
-</div></blockquote>
 </div>
 <div class="section" id="property">
 <h2>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h2>
@@ -467,54 +345,71 @@
 <span class="p">},</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Property Annotation</li>
-</ul>
-</dd>
-</dl>
+<p><strong>Allowable Use:</strong></p>
+<p>Enclosed within <a class="reference internal" href="#model">Model</a> or as property annotation.</p>
 </div>
-<div class="section" id="resource">
-<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="items">
+<h2>Items<a class="headerlink" href="#items" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">Items</span></tt> annotation defines an array type i.e. an array of integers, strings or <tt class="docutils literal"><span class="pre">$ref</span></tt> to another model type. References are defined with a <strong>$ref:</strong> preamble followed by the model ID name as defined within a <a class="reference internal" href="#model">Model</a> annotation. The <tt class="docutils literal"><span class="pre">&#64;SWG\Items</span></tt> annotation resides within a <a class="reference internal" href="#property">Property</a> declaration.</p>
+</div>
 <p><strong>Attributes</strong></p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">apiVersion</span></tt> the version this api is being rendered as</li>
-<li><tt class="docutils literal"><span class="pre">swaggerVersion</span></tt> the swagger-docs version being rendered <tt class="docutils literal"><span class="pre">2.0</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">resourcePath</span></tt> the HTTP URI path for the resource</li>
-<li><tt class="docutils literal"><span class="pre">basePath</span></tt> the service root HTTP URI path</li>
+<li><tt class="docutils literal"><span class="pre">Type</span></tt></li>
 </ul>
 <p><strong>Example Annotations</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Swagger\Annotations</span> <span class="k">as</span> <span class="nx">SWG</span><span class="p">;</span>
 
-<span class="sd">/**</span>
-<span class="sd"> * @SWG\Resource(</span>
-<span class="sd"> *     apiVersion=&quot;0.2&quot;,</span>
-<span class="sd"> *     swaggerVersion=&quot;1.1&quot;,</span>
-<span class="sd"> *     resourcePath=&quot;/pet&quot;,</span>
-<span class="sd"> *     basePath=&quot;http://petstore.swagger.wordnik.com/api&quot;</span>
-<span class="sd"> * )</span>
-<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Pet</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * @SWG\Property(name=&quot;photoUrls&quot;,type=&quot;array&quot;,@SWG\Items(&quot;string&quot;))</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="nv">$photos</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @SWG\Property(name=&quot;tags&quot;,type=&quot;array&quot;,@SWG\Items(&quot;Tag&quot;))</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="nv">$tags</span><span class="p">;</span>
+
+    <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Derived JSON</strong></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;apiVersion&quot;</span><span class="o">:</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;swaggerVersion&quot;</span><span class="o">:</span><span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;basePath&quot;</span><span class="o">:</span><span class="s2">&quot;http://petstore.swagger.wordnik.com/api&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;resourcePath&quot;</span><span class="o">:</span><span class="s2">&quot;/pet&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;apis&quot;</span><span class="o">:</span><span class="p">[...],</span>
-    <span class="s2">&quot;models&quot;</span><span class="o">:</span> <span class="p">[...]</span>
-<span class="p">}</span>
+<div class="highlight-javascript"><div class="highlight"><pre>&quot;properties&quot;:{
+    &quot;tags&quot;:{
+        &quot;items&quot;:{
+            &quot;$ref&quot;:&quot;Tag&quot;
+        },
+        &quot;type&quot;:&quot;array&quot;
+    },
+    &quot;id&quot;:{
+        &quot;type&quot;:&quot;integer&quot;,
+        &quot;format: &quot;int64&quot;
+    },
+    &quot;category&quot;:{
+        &quot;type&quot;:&quot;Category&quot;
+    },
+    &quot;status&quot;:{
+        &quot;enum&quot;:[&quot;available&quot;, &quot;pending&quot;, &quot;sold&quot;]
+        &quot;description&quot;:&quot;pet status in the store&quot;,
+        &quot;type&quot;:&quot;string&quot;
+    },
+    &quot;name&quot;:{
+        &quot;type&quot;:&quot;string&quot;
+    },
+    &quot;photoUrls&quot;:{
+        &quot;items&quot;:{
+            &quot;type&quot;:&quot;string&quot;
+        },
+        &quot;type&quot;:&quot;array&quot;
+    }
+}
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><strong>Allowable Use:</strong></dt>
-<dd><ul class="first last simple">
-<li>Class Annotation</li>
-</ul>
-</dd>
-</dl>
+<p><strong>Allowable Use:</strong></p>
+<p>Enclosed within: <a class="reference internal" href="#property">Property</a></p>
 </div>
 </div>
 
@@ -528,17 +423,14 @@
   <ul>
 <li><a class="reference internal" href="#">Annotations</a><ul>
 <li><a class="reference internal" href="#annotation-hierarchy">Annotation Hierarchy</a></li>
-<li><a class="reference internal" href="#api">Api</a></li>
-<li><a class="reference internal" href="#responsemessage">ResponseMessage</a></li>
-<li><a class="reference internal" href="#responsemessages">ResponseMessages</a></li>
-<li><a class="reference internal" href="#items">Items</a></li>
-<li><a class="reference internal" href="#model">Model</a></li>
-<li><a class="reference internal" href="#operation">Operation</a></li>
-<li><a class="reference internal" href="#operations">Operations</a></li>
-<li><a class="reference internal" href="#parameter">Parameter</a></li>
-<li><a class="reference internal" href="#parameters">Parameters</a></li>
-<li><a class="reference internal" href="#property">Property</a></li>
 <li><a class="reference internal" href="#resource">Resource</a></li>
+<li><a class="reference internal" href="#api">Api</a></li>
+<li><a class="reference internal" href="#operation">Operation</a></li>
+<li><a class="reference internal" href="#responsemessage">ResponseMessage</a></li>
+<li><a class="reference internal" href="#parameter">Parameter</a></li>
+<li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#property">Property</a></li>
+<li><a class="reference internal" href="#items">Items</a></li>
 </ul>
 </li>
 </ul>
@@ -546,6 +438,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="using_swagger.html"
                         title="previous chapter">Using Swagger-PHP</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="partials.html"
+                        title="next chapter">Partials</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -570,14 +465,17 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="partials.html" title="Partials"
+             >next</a> |</li>
+        <li class="right" >
           <a href="using_swagger.html" title="Using Swagger-PHP"
              >previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2013, Robert Allen.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright 2014, Robert Allen &amp; Bob Fanger.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
