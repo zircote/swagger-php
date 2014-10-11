@@ -2,6 +2,11 @@
 Changelog
 ----------
 
+## 0.9.6
+
+* Fix #169: Merge apis partials and then merge apis operation in one API (path) definition.
+* Fix #163: Detect model inheritance for classes that are scanned in different paths.
+
 ## 0.9.5
 
 * Implemented @SWG\Info & @SWG\Authorizations which can be used to augment the api-docs.json with metadata.
