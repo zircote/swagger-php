@@ -109,7 +109,10 @@ class User
      *   )
      * )
      */
-    public function logoutUser() {
+    public function logoutUser()
+    {
+
+    }
 
     /**
      * @SWG\Api(
@@ -258,4 +261,4 @@ class User
     function updateOrDelete() {
 
     }
-    
+}
