@@ -31,8 +31,8 @@ Features
  - Free
 
  More on Swagger:
-  * http://swagger.wordnik.com/
-  * https://github.com/wordnik/swagger-spec/
+  * http://swagger.io/
+  * https://github.com/swagger-api/swagger-spec/
   * https://github.com/outeredge/SwaggerModule a ZF2 Module implementing swagger-php
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
