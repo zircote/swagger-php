@@ -283,7 +283,10 @@ class Pet
      *   )
      * )
      */
-    function findPetsByTags();
+    function findPetsByTags()
+    {
+
+    }
 
     /**
      * @SWG\Api(
