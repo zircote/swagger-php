@@ -224,6 +224,7 @@ Parameter
 - ``description``
 - ``paramType`` body|query|path
 - ``required`` bool
+- ``allowMultiple`` bool
 - ``type`` scalar or Model|object
 - ``defaultValue``
 
@@ -238,7 +239,8 @@ Parameter
      *     name="petId",
      *     description="ID of pet that needs to be fetched",
      *     paramType="path",
-     *     required="true",
+     *     required=true,
+     *     allowMultiple=false,
      *     type="string"
      * )
      */
@@ -251,6 +253,7 @@ Parameter
         "name":"petId",
         "description":"ID of pet that needs to be fetched",
         "paramType":"path",
+        "required":true,
         "allowMultiple":false,
         "type":"string"
     }

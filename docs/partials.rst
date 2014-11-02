@@ -26,8 +26,8 @@ Using a partial
    * @SWG\Operation(
    *   method="GET",
    *   nickname="partialDemo"
-   *   @SWG\Partial('path_id'),
-   *   @SWG\Partial('error404'),
+   *   @SWG\Partial("path_id"),
+   *   @SWG\Partial("error404"),
    * )
    */
 

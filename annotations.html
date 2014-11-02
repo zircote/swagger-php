@@ -247,6 +247,7 @@ Recommended as method annotation.</p>
 <li><tt class="docutils literal"><span class="pre">description</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">paramType</span></tt> body|query|path</li>
 <li><tt class="docutils literal"><span class="pre">required</span></tt> bool</li>
+<li><tt class="docutils literal"><span class="pre">allowMultiple</span></tt> bool</li>
 <li><tt class="docutils literal"><span class="pre">type</span></tt> scalar or Model|object</li>
 <li><tt class="docutils literal"><span class="pre">defaultValue</span></tt></li>
 </ul>
@@ -258,7 +259,8 @@ Recommended as method annotation.</p>
 <span class="sd"> *     name=&quot;petId&quot;,</span>
 <span class="sd"> *     description=&quot;ID of pet that needs to be fetched&quot;,</span>
 <span class="sd"> *     paramType=&quot;path&quot;,</span>
-<span class="sd"> *     required=&quot;true&quot;,</span>
+<span class="sd"> *     required=true,</span>
+<span class="sd"> *     allowMultiple=false,</span>
 <span class="sd"> *     type=&quot;string&quot;</span>
 <span class="sd"> * )</span>
 <span class="sd"> */</span>
@@ -269,6 +271,7 @@ Recommended as method annotation.</p>
     <span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="s2">&quot;petId&quot;</span><span class="p">,</span>
     <span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="s2">&quot;ID of pet that needs to be fetched&quot;</span><span class="p">,</span>
     <span class="s2">&quot;paramType&quot;</span><span class="o">:</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;required&quot;</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span>
     <span class="s2">&quot;allowMultiple&quot;</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
     <span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span>
 <span class="p">}</span>

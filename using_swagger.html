@@ -80,7 +80,7 @@ To make them accessable to <cite>swagger-ui</cite> they must be placed onto an w
 <div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">use</span> <span class="nx">Swagger\Swagger</span><span class="p">;</span>
 <span class="nv">$swagger</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Swagger</span><span class="p">(</span><span class="s1">&#39;/projects/my_project&#39;</span><span class="p">);</span>
-<span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="p">);</span>
+<span class="nb">header</span><span class="p">(</span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="p">);</span>
 <span class="k">echo</span> <span class="nv">$swagger</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;/pet&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;output&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;json&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
