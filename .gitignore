@@ -1,0 +1,6 @@
+/.idea
+/bin/*
+!/bin/swagger
+/vendor
+/composer.lock
+/composer.phar
