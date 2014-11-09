@@ -104,7 +104,7 @@ class SwaggerTest extends \PHPUnit_Framework_TestCase
     {
         $swagger = new Swagger($this->examplesDir('Petstore'));
         $tmpDir = sys_get_temp_dir();
-        $command = dirname(dirname(__DIR__)).'/bin/swagger';
+        $command = 'php ' . dirname(dirname(__DIR__)).'/bin/swagger';
         shell_exec(escapeshellcmd($command).' '.escapeshellarg($this->examplesDir('Petstore')).' --output '.escapeshellarg($tmpDir));
         foreach (array('user', 'pet') as $record) {
             $json = $swagger->getResource('/'.$record, array('output' => 'json'));
