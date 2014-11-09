@@ -243,7 +243,14 @@ END;
         if (file_exists($this->outputDir($outputFile))) {
             $outputFile = $this->outputDir($outputFile);
         }
-        $expected = json_decode(file_get_contents($outputFile));
+
+        $expected = file_get_contents($outputFile);
+
+        if(PHP_EOL !== "\n") {
+            $expected = str_replace('\n', '\r\n', $expected);
+        }
+
+        $expected = json_decode($expected);
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
             $this->fail('File: "'.$outputFile.'" doesn\'t contain valid json, error '.$error);
