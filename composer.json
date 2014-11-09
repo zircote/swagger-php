@@ -27,7 +27,8 @@
     },
     "require-dev": {
         "symfony/finder": "*",
-        "symfony/process": "*"
+        "symfony/process": "*",
+        "phpunit/phpunit": "~4.3.4@stable"
     },
     "autoload": {
         "psr-0": {

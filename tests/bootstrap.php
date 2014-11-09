@@ -17,16 +17,4 @@
  * limitations under the License.
  *
  */
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
-
-if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) { // Use local vendor-dir?
-	$loader = require_once(dirname(__DIR__) . '/vendor/autoload.php');
-} else {
-	$loader = require_once(__DIR__ . '/../../../autoload.php');
-}
-$loader->add('SwaggerTests', __DIR__.'/');
+$loader = require_once(dirname(__DIR__) . '/vendor/autoload.php');
