@@ -149,6 +149,9 @@ class Operation extends AbstractAnnotation
 
     public function validate()
     {
+        if (count($this->_partials) !== 0) {
+            return true;
+        }
         if (empty($this->nickname)) {
             Logger::notice('Required field "nickname" is missing for "'.$this->identity().'" in '.$this->_context);
         }

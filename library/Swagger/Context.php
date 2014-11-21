@@ -208,4 +208,14 @@ class Context {
         return $context;
     }
 
+    function __debugInfo() {
+        $properties = array(
+            '$$location' => $this->getDebugLocation()
+        );
+        foreach (get_object_vars($this) as $property => $value) {
+
+        }
+        return $properties;
+    }
+
 }

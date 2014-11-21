@@ -295,7 +295,7 @@ class Swagger
                 }
                 $this->authorizations[$authorization->type] = $authorization;
             }
-            
+
         }
         foreach ($parser->getResources() as $resource) {
             if (array_key_exists($resource->resourcePath, $this->registry)) {
@@ -404,6 +404,15 @@ class Swagger
                     foreach ($partial as $property => $value) {
                         if (!empty($value) && empty($node->$property)) {
                             $node->$property = $value;
+                        } elseif (is_array($value)) { // merge array (@SWG\Property)
+                            if (empty($node->$property)) {
+                                $node->$property = array();
+                            }
+                            if (is_array($node->$property)) {
+                                foreach ($value as $item) {
+                                    array_push($node->$property, $item);
+                                }
+                            }
                         }
                     }
                 } else {
