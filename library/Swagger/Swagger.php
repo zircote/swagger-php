@@ -129,7 +129,7 @@ class Swagger
         } else {
             $result = array();
         }
-        foreach (array('basePath', 'apiVersion', 'swaggerVersion') as $key) {
+        foreach (array('apiVersion', 'swaggerVersion') as $key) {
             if (array_key_exists($key, $result) === false) {
                 $result[$key] = $options[$key];
             }
@@ -152,9 +152,6 @@ class Swagger
                 unset($api['description']);
             }
             $result['apis'][] = $api;
-        }
-        if ($result['basePath'] === null) {
-            unset($result['basePath']);
         }
         if ($this->info !== null) {
             $result['info'] = $this->info;
