@@ -23,11 +23,13 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "doctrine/annotations": "*"
+        "doctrine/annotations": "*",
+        "symfony/finder": "~2.6"
     },
     "autoload": {
         "psr-4": {
             "Swagger\\": "src"
-        }
+        },
+        "files": ["src/functions.php"]
     }
 }

@@ -9,8 +9,8 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  */
-class Get extends Operation {
+class Post extends Operation {
 
-    public $method = 'get';
+    public $method = 'post';
 
 }

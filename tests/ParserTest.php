@@ -1,12 +1,27 @@
 <?php
+
+/**
+ * @license Apache 2.0
+ */
+
 namespace SwaggerTests;
 
-class ParserTest extends \PHPUnit_Framework_TestCase{
-    
-    function test_parseFile() {
-        $parser = new \Swagger\Parser();
-        $annotations = $parser->parseFile(__DIR__.'/../Examples/petstore-simple/pets.php');
+use Swagger\Context;
+use Swagger\Parser;
+
+class ParserTest extends SwaggerTestCase {
+
+    function test_parseContents() {
+        $annotations = $this->parseComment('@SWG\Parameter(name="my_param")');
         $this->assertInternalType('array', $annotations);
-        $this->assertInstanceOf('Swagger\Annotations\SwaggerAnnotation', $annotations[0]);
+        $parameter = $annotations[0];
+        $this->assertInstanceOf('Swagger\Annotations\Parameter', $parameter);
+        $this->assertSame('my_param', $parameter->name);
     }
+
+    function test_wrong_comment_type() {
+        $parser = new Parser();
+        $annotations = $parser->parseContents('<?php\n/*\n * @SWG\Parameter() */', Context::detect());
+    }
+
 }

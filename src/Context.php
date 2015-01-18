@@ -1,6 +1,6 @@
 <?php
 /**
- * @license  Apache 2.0
+ * @license Apache 2.0
  */
 
 namespace Swagger;
@@ -28,6 +28,7 @@ namespace Swagger;
  * @property string $extends
  * @property string $method
  * @property string $property
+ * @property Annotations\AbstractAnnotation[] $annotations
  */
 class Context {
 
@@ -41,7 +42,7 @@ class Context {
      * @param array $properties new properties for this context.
      * @param Context $parent The parent context
      */
-    public function __construct($properties = array(), $parent = null) {
+    public function __construct($properties = [], $parent = null) {
         foreach ($properties as $property => $value) {
             $this->$property = $value;
         }
@@ -135,7 +136,7 @@ class Context {
     }
 
     public function __debugInfo() {
-        return $this->getDebugLocation();
+        return ['-' => $this->getDebugLocation()];
     }
 
     /**

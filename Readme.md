@@ -13,7 +13,8 @@ composer require zircote/swagger-php
 ## Features
 
  - Compatible with the Swagger 2.0 specification
- - 
+ - Exceptional error reporting (with hints, context)
+ - Extracts information from code & existing phpdoc annotations.
 
 ## More on Swagger
 
