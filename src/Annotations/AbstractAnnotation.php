@@ -75,6 +75,10 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
             }
             $this->merge($annotations);
             $this->value = null;
+        } elseif (is_object($this->value)) {
+            $this->value->initialize($context);
+            $this->merge([$this->value]);
+            $this->value = null;
         }
     }
 
@@ -85,15 +89,6 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
             unset($properties[$property]);
         }
         Logger::notice('Skipping field "' . $name . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($properties)) . '" in ' . $context);
-    }
-
-    /**
-     * Return a identity for easy debugging.
-     * Example: "@SWG\Get(path="/pets")"
-     * @return string
-     */
-    public function identity() {
-        return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '()';
     }
 
     /**
@@ -129,6 +124,37 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
 
     /**
      *
+     * @param stdClass $object
+     */
+    public function mergeProperties($object) {
+        $defaultValues = get_class_vars(get_class($this));
+        $currentValues = get_object_vars($this);
+        foreach ($object as $property => $value) {
+            if ($property === '_context') {
+                continue;
+            }
+            if ($currentValues[$property] === $defaultValues[$property]) { // Overwrite default values
+                $this->$property = $value;
+                continue;
+            }
+            if ($property === '_unmerged') {
+                $this->_unmerged = array_merge($this->_unmerged, $value);
+                continue;
+            }
+            if ($currentValues[$property] !== $value) { // New value is not the same?
+                $context = property_exists($object, '_context') ? $object->_context : 'unknown';
+                $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
+                Logger::warning('Skipping field "' . $property . '" in ' . $identity . ' in ' . $context);
+            }
+        }
+    }
+
+    public function __toString() {
+        return json_encode($this, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Customize the way json_encode() renders the annotations.
      * @return array
      */
     public function jsonSerialize() {
@@ -191,11 +217,11 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
         $valid = true;
         $properties = get_object_vars($annotation);
         foreach ($properties as $property => $value) {
-            if ($value === null || is_scalar($value) || $property !== '_unmerged') {
+            if ($value === null || is_scalar($value) || $property === '_unmerged') {
                 continue;
             }
             if (is_object($value) && method_exists($value, 'validate')) {
-                if (!$valid->validate()) {
+                if (!$value->validate()) {
                     $valid = false;
                 }
             }
@@ -208,6 +234,15 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
             }
         }
         return $valid;
+    }
+
+    /**
+     * Return a identity for easy debugging.
+     * Example: "@SWG\Get(path="/pets")"
+     * @return string
+     */
+    public function identity() {
+        return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '()';
     }
 
 }

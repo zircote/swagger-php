@@ -7,6 +7,8 @@
 namespace Swagger;
 
 use Swagger\Annotations\Swagger;
+use Swagger\Processors\MergeSwagger;
+use Swagger\Processors\SwaggerPaths;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -28,7 +30,13 @@ function scan($directory, $exclude = null) {
         $swagger->merge($parser->parseFile($file->getPathname()));
     }
     // Post processing
-    // @todo Extract date from context
+    $processors = [
+        new MergeSwagger(),
+        new SwaggerPaths()
+    ];
+    foreach ($processors as $processor) {
+        $processor($swagger);
+    }
     // Validation (Generate notices & warnings)
     $swagger->validate();
     return $swagger;

@@ -8,6 +8,11 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
+ * Describes the operations available on a single path.
+ * A Path Item may be empty, due to ACL constraints.
+ * The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
+ *
+ * A Swagger "Path Item Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#path-item-object-
  */
 class Path extends AbstractAnnotation {
 

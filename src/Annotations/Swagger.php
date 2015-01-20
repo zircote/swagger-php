@@ -107,29 +107,12 @@ class Swagger extends AbstractAnnotation {
     public $externalDocs;
 
     public static $nested = [
-        'Swagger\Annotations\Info' => 'info'
+        'Swagger\Annotations\Info' => 'info',
+        'Swagger\Annotations\Get' => 'paths[]',
+        'Swagger\Annotations\Post' => 'paths[]',
+        'Swagger\Annotations\Put' => 'paths[]',
+        'Swagger\Annotations\Delete' => 'paths[]',
+        'Swagger\Annotations\Operation' => 'paths[]',
     ];
-
-    public function merge($annotations) {
-        foreach ($annotations as $i => $annotation) {
-            if ($annotation instanceof Path || $annotation instanceof Operation) {
-                if (empty($annotation->path)) {
-                    Logger::warning('Missing path for '.$annotation->identity().' in '.$annotation->_context);
-                } elseif (isset($this->paths[$annotation->path])) {
-                    $this->paths->merge([$annotation]);
-                    unset($annotations[$i]);
-                } else {
-                    if ($annotation instanceof Path) {
-                        $this->paths[$annotation->path] = $annotation;
-                    } else {
-                        $this->paths[$annotation->path] = new Path(['path' => $annotation->path]);
-                        $this->paths[$annotation->path]->merge([$annotation]);
-                    }
-                    unset($annotations[$i]);
-                }
-            }
-        }
-        return parent::merge($annotations);
-    }
 
 }

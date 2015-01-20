@@ -8,6 +8,9 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
+ * An limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
+ *
+ * A Swagger "Items Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#itemsObject
  */
 class Items extends AbstractAnnotation {
 

@@ -8,9 +8,9 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- *
  * Describes a single operation parameter.
- * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
+ *
+ * A Swagger "Parameter Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
  */
 class Parameter extends Items {
 

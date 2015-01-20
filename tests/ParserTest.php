@@ -19,7 +19,7 @@ class ParserTest extends SwaggerTestCase {
         $this->assertSame('my_param', $parameter->name);
     }
 
-    function test_wrong_comment_type() {
+    function testWrongCommentType() {
         $parser = new Parser();
         $annotations = $parser->parseContents('<?php\n/*\n * @SWG\Parameter() */', Context::detect());
     }

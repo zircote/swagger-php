@@ -7,6 +7,7 @@
 namespace Swagger\Annotations;
 
 /**
+ * @Annotation
  * Base class for the @SWG\Get(),  @SWG\Post(),  @SWG\Put(),  @SWG\Delete()
  *
  * A Swagger "Operation Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#operationObject
