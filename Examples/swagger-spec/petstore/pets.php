@@ -7,30 +7,28 @@ class PetResource {
     /**
      * @SWG\Get(
      *     path="/pets",
-     *     description="Returns all pets from the system that the user has access to",
-     *     @SWG\Parameter(
-     *         name="tags",
-     *         in="query",
-     *         description="tags to filter by",
-     *         required=false,
-     *         type="array",
-     *         items={
-     *             "type": "string"
-     *         },
-     *         collectionFormat="csv"
+     *     summary="finds pets in the system",
+     *     tags={"Pet Operations"},
+     *     @SWG\Response(
+     *         code=200,
+     *         description="pet response",
+     *         @SWG\Schema(
+     *             type="array",
+     *             @SWG\Items(ref="#/definitions/Pet")
+     *         ),
+     *         @SWG\Header(header="x-expires", type="string")
      *     ),
-     *     @SWG\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         description="maximum number of results to return",
-     *         required=false,
-     *         type="integer",
-     *         format="int32"
+     *     @SWG\Response(
+     *         code="default",
+     *         description="unexpected error",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Error"
+     *         )
      *     )
      * )
      */
     function findPets() {
-        
+
     }
 
 }

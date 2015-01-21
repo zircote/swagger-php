@@ -71,9 +71,12 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-//                'responseMessages' => function ($a, $b) {
-//                    return strcasecmp($a->code, $b->code);
-//                },
+                'responses' => function ($a, $b) {
+                    return strcasecmp($a->code, $b->code);
+                },
+                'headers' => function ($a, $b) {
+                    return strcasecmp($a->header, $b->header);
+                },
 //                'scopes' => function ($a, $b) {
 //                    return strcasecmp($a->scope, $b->scope);
 //                },
@@ -89,7 +92,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 $data[$property] = $this->sorted($value, $origin . '->' . $property);
             }
             if (is_array($value)) {
-                if (count($value) !== 0) {
+                if (count($value) > 1) {
                     if (gettype($value[0]) === 'string') {
                         $sortFn = 'strcasecmp';
                     } else {

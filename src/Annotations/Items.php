@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+//use Swagger\JsonSchema;
+
 /**
  * @Annotation
  * An limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
@@ -114,5 +116,11 @@ class Items extends AbstractAnnotation {
      * @var number
      */
     public $multipleOf;
+
+    public $ref;
+    static $parents = [
+        'Swagger\Annotations\Parameter',
+        'Swagger\Annotations\Schema',
+    ];
 
 }

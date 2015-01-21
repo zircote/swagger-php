@@ -301,7 +301,6 @@ class Parser {
         }
         foreach ($result as $annotation) {
             if ($annotation instanceof Annotations\AbstractAnnotation) {
-                $annotation->initialize($context);
                 $annotations[] = $annotation;
             }
         }

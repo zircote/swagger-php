@@ -1,5 +1,7 @@
 <?php
 
+use Swagger\Annotations\AbstractAnnotation;
+
 /**
  * @license Apache 2.0
  */
@@ -8,41 +10,22 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- * Describes a single operation parameter.
+ * The definition of input and output data types.
+ * These types can be objects, but also primitives and arrays.
+ * This object is based on the [JSON Schema Specification Draft 4](http://json-schema.org) and uses a predefined subset of it.
+ *  On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A Swagger "Parameter Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
+ * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
  */
-class Parameter extends AbstractAnnotation {
+class Schema extends AbstractAnnotation {
 
-    /**
-     * The name of the parameter. Parameter names are case sensitive. If in is "path", the name field MUST correspond to the associated path segment from the path field in the Paths Object. See Path Templating for further information. For all other cases, the name corresponds to the parameter name used based on the in property.
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The location of the parameter. Possible values are "query", "header", "path", "formData" or "body".
-     * @var string
-     */
-    public $in;
-
-    /**
-     * A brief description of the parameter. This could contain examples of use. GFM syntax can be used for rich text representation.
-     * @var string
-     */
+    public $ref;
+    public $title;
     public $description;
 
-    /**
-     * Determines whether this parameter is mandatory. If the parameter is in "path", this property is required and its value MUST be true. Otherwise, the property MAY be included and its default value is false.
-     * @var boolean
-     */
+    public $maxProperties;
+    public $minProperties;
     public $required;
-
-    /**
-     * The schema defining the type used for the body parameter.
-     * @var array
-     */
-    public $schema;
 
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
@@ -145,15 +128,41 @@ class Parameter extends AbstractAnnotation {
      */
     public $multipleOf;
 
+    /**
+     * Adds support for polymorphism. The discriminator is the schema property name that is used to differentiate between other schemas that inherit this schema. The property name used MUST be defined at this schema and it MUST be in the required property list. When used, the value MUST be the name of this schema or any schema that inherits it.
+     * @var string
+     */
+    public $discriminator;
+
+    /**
+     * Relevant only for Schema "properties" definitions. Declares the property as "read only". This means that it MAY be sent as part of a response but MUST NOT be sent as part of the request. Properties marked as readOnly being true SHOULD NOT be in the required list of the defined schema. Default value is false.
+     * @var boolean
+     */
+    public $readOnly;
+
+    /**
+     * This MAY be used only on properties schemas. It has no effect on root schemas. Adds Additional metadata to describe the XML representation format of this property.
+     * @var array
+     */
+    public $xml;
+
+    /**
+     * Additional external documentation for this schema.
+     * @var array
+     */
+    public $externalDocs;
+
+    /**
+     * 	A free-form property to include a an example of an instance for this schema.
+     * @var array
+     */
+    public $example;
+
     public static $nested = [
         'Swagger\Annotations\Items' =>'items'
     ];
     public static $parents = [
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Put',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Path'
+        'Swagger\Annotations\Response',
+        'Swagger\Annotations\Items'
     ];
-
 }

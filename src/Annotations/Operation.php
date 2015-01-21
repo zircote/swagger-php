@@ -117,13 +117,14 @@ class Operation extends AbstractAnnotation {
     public $security;
 
     public static $nested = [
-        'Swagger\Annotations\Parameter' => 'parameters[]'
+        'Swagger\Annotations\Parameter' => 'parameters[]',
+        'Swagger\Annotations\Response' => 'responses[]'
     ];
 
     public function jsonSerialize() {
         $data = parent::jsonSerialize();
-        unset($data['method']);
-        unset($data['path']);
+        unset($data->method);
+        unset($data->path);
         return $data;
     }
 

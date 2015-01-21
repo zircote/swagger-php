@@ -77,9 +77,5 @@ class Path extends AbstractAnnotation {
         'Swagger\Annotations\Delete' => 'delete',
     ];
 
-    public function jsonSerialize() {
-        $data = parent::jsonSerialize();
-        unset($data['path']);
-        return $data;
-    }
+    public static $key = 'path';
 }

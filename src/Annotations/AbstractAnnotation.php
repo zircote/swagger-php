@@ -6,13 +6,16 @@
 
 namespace Swagger\Annotations;
 
-use Doctrine\Common\Annotations\Annotation;
 use JsonSerializable;
+use stdClass;
 use Swagger\Context;
 use Swagger\Logger;
 use Swagger\Parser;
 
-abstract class AbstractAnnotation extends Annotation implements JsonSerializable {
+/**
+ * The swagger annotation base class.
+ */
+abstract class AbstractAnnotation implements JsonSerializable {
 
     /**
      * Special value to allow null in the output.
@@ -57,38 +60,63 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
      *
      * @var array
      */
-    public static $blacklist = ['_context', '_unmerged', 'value'];
+    public static $blacklist = ['_context', '_unmerged'];
 
     /**
-     * @param Context $context
+     * The property that is used as key in the output json.
+     * @var string
      */
-    public function initialize($context) {
-        $this->_context = $context;
+    public static $key = false;
+
+    /**
+     * @param array $properties
+     */
+    public function __construct($properties) {
+        if (Parser::$context) {
+            $this->_context = Parser::$context;
+        } else {
+            $this->_context = Context::detect(1);
+            $this->_context->annotations = [];
+        }
         $this->_context->annotations[] = $this;
-        if (is_array($this->value)) {
-            $annotations = [];
-            foreach ($this->value as $annotation) {
-                if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
-                    $annotation->initialize($context);
-                    $annotations[] = $annotation;
+        foreach ($properties as $property => $value) {
+            if (property_exists($this, $property)) {
+                $this->$property = $value;
+            } elseif ($property !== 'value') {
+                $fields = get_object_vars($this);
+                foreach (static::$blacklist as $_property) {
+                    unset($fields[$_property]);
                 }
+                Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
+                @$this->$property = $value;
+            } elseif (is_array($value)) {
+                $annotations = [];
+                foreach ($value as $annotation) {
+                    if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
+                        $annotations[] = $annotation;
+                    } else {
+                        Logger::notice('Unexpected field in ' . $this->identity());
+                    }
+                }
+                $this->merge($annotations);
+            } elseif (is_object($value)) {
+                $this->merge([$value]);
+            } else {
+                Logger::notice('Unexpected parameter in ' . $this->identity());
             }
-            $this->merge($annotations);
-            $this->value = null;
-        } elseif (is_object($this->value)) {
-            $this->value->initialize($context);
-            $this->merge([$this->value]);
-            $this->value = null;
         }
     }
 
-    public function __set($name, $value) {
-        $context = $this->_context ? : Parser::$context;
+    public function __get($property) {
         $properties = get_object_vars($this);
-        foreach (static::$blacklist as $property) {
-            unset($properties[$property]);
-        }
-        Logger::notice('Skipping field "' . $name . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($properties)) . '" in ' . $context);
+        Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', exising properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
+    }
+
+    public function __set($property, $value) {
+        $properties = get_object_vars($this);
+        Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', exising properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
+        Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
+        $this->$property = $value;
     }
 
     /**
@@ -107,7 +135,7 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
                         array_push($this->$property, $annotation);
                     } else {
                         if ($this->$property) { // Don't overwrite existing property
-                            $this->$property->merge([$annotation]);
+                            $this->_unmerged[] = $annotation;
                         } else {
                             $this->$property = $annotation;
                         }
@@ -158,79 +186,145 @@ abstract class AbstractAnnotation extends Annotation implements JsonSerializable
      * @return array
      */
     public function jsonSerialize() {
-        $data = [];
+        $data = new stdClass();
         // Strip null values
         $classVars = get_class_vars(get_class($this));
         foreach (get_object_vars($this) as $property => $value) {
             if ($classVars[$property] === self::UNDEFINED) {
                 if ($value !== self::UNDEFINED) {
-                    $data[$property] = $value;
+                    $data->$property = $value;
                 }
             } elseif ($value !== null) {
-                $data[$property] = $value;
+                $data->$property = $value;
             }
         }
         // Strip properties that are for internal (swagger-php) use.
         foreach (static::$blacklist as $property) {
-            unset($data[$property]);
+            unset($data->$property);
+        }
+        if (static::$key) {
+            $property = static::$key;
+            unset($data->$property);
         }
         // Inject vendor properties.
-        unset($data['x']);
+        unset($data->x);
         if (is_array($this->x)) {
             foreach ($this->x as $property => $value) {
-                $data['x-' . $property] = $value;
+                $prefixed = 'x-' . $property;
+                $data->$prefixed = $value;
             }
+        }
+        // Map keys
+        foreach ($data as $property => $value) {
+            if (is_array($value)) {
+                $array = [];
+                foreach ($value as $i => $item) {
+                    if ($item instanceof AbstractAnnotation) {
+                        $class = get_class($item);
+                        if ($class::$key) {
+                            $keyProperty = $class::$key;
+                            $array[$item->$keyProperty] = $item;
+                            continue;
+                        }
+                    }
+                    $array[$i] = $item;
+                }
+                $data->$property = $array;
+            }
+        }
+        // $ref
+        if (isset($data->ref)) {
+            $dollarRef = '$ref';
+            $data->$dollarRef= $data->ref;
+            unset($data->ref);
         }
         return $data;
     }
 
     /**
      * Validate annotation tree, and log notices & warnings.
+     * @param array $skip (prevent stackoverflow, when traversing an infinite dependency graph)
      * @return boolean
      */
-    public function validate() {
+    public function validate($skip = array()) {
+        if (in_array($this, $skip, true)) {
+            return true;
+        }
         $valid = true;
         // Report orphaned annotations
         foreach ($this->_unmerged as $annotation) {
-            $message = 'Unexpected ' . $annotation->identity();
             $class = get_class($annotation);
-            if (count($class::$parents)) {
-                $shortNotations = [];
-                foreach ($class::$parents as $_class) {
-                    $shortNotations[] = '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', $_class);
+            if (isset(static::$nested[$class])) {
+                $property = static::$nested[$class];
+                Logger::notice('Multiple '.$annotation->identity().' not allowed for '.$this->identity()." in:\n  ". $annotation->_context. "\n  ".$this->$property->_context);
+            } else {
+                $message = 'Unexpected ' . $annotation->identity();
+                if (count($class::$parents)) {
+                    $shortNotations = [];
+                    foreach ($class::$parents as $_class) {
+                        $shortNotations[] = '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', $_class);
+                    }
+                    $message .= ', expected to be inside ' . implode(', ', $shortNotations);
                 }
-                $message .= ', expected to be inside ' . implode(', ', $shortNotations);
+                Logger::notice($message . ' in ' . $annotation->_context);
             }
-            Logger::notice($message . ' in ' . $annotation->_context);
             $valid = false;
         }
-        return self::_validate($this) ? $valid : false;
+        // Report conflicting key
+        foreach ($this as $property => $value) {
+            if ($property === '_context') {
+                continue;
+            }
+            if (is_array($value)) {
+                $keys = [];
+                foreach ($value as $i => $item) {
+                    if ($item instanceof AbstractAnnotation) {
+                        $class = get_class($item);
+                        if ($class::$key) {
+                            $keyProperty = $class::$key;
+                            if (isset($keys[$item->$keyProperty])) {
+                                Logger::notice("Multiple @SWG\Header() with the same header value in:\n  ".$item->_context."\n  ".$keys[$item->$keyProperty]->_context);
+                            }
+                            $keys[$item->$keyProperty] = $item;
+                            continue;
+                        }
+                    }
+                    $keys[$i] = $item;
+                }
+            }
+        }
+        return self::_validate($this, $skip) ? $valid : false;
     }
 
     /**
      * Recursively validate all annotation properties.
      *
-     * @param AbstractAnnotation $annotation
+     * @param array|object $fields
+     * @param array [$skip] Array with objects which are already validated
      * @return boolean
      */
-    private static function _validate($annotation) {
+    private static function _validate($fields, $skip) {
         $valid = true;
-        $properties = get_object_vars($annotation);
-        foreach ($properties as $property => $value) {
-            if ($value === null || is_scalar($value) || $property === '_unmerged') {
+        if (is_object($fields)) {
+            if (in_array($fields, $skip, true)) {
+                return true;
+            }
+            $skip[] = $fields;
+        }
+        foreach ($fields as $field => $value) {
+            if ($value === null || is_scalar($value) || $field === '_unmerged' || $field === '_context') {
                 continue;
             }
-            if (is_object($value) && method_exists($value, 'validate')) {
-                if (!$value->validate()) {
+            if (is_object($value)) {
+                if (method_exists($value, 'validate')) {
+                    if (!$value->validate($skip)) {
+                        $valid = false;
+                    }
+                } elseif (!self::_validate($value, $skip)) {
                     $valid = false;
                 }
-            }
-        }
-        if (is_array($value)) {
-            foreach ($value as $item) {
-                if (!self::_validate($item)) {
-                    $valid = false;
-                }
+            } elseif (is_array($value) && !self::_validate($value, $skip)) {
+                $valid = false;
             }
         }
         return $valid;

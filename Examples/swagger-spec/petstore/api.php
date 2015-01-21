@@ -6,7 +6,10 @@
  *     host="petstore.swagger.wordnik.com",
  *     schemes={"http"},
  *     @SWG\Info(
- *         @SWG\Contact(name="wordnik api team", url="http://developer.wordnik.com")
+ *         version="1.0.0",
+ *         title="Swagger Petstore",
+ *         @SWG\Contact(name="wordnik api team", url="http://developer.wordnik.com"),
+ *         @SWG\License(name="Creative Commons 4.0 International", url="http://creativecommons.org/licenses/by/4.0/")
  *     )
  * )
  */
