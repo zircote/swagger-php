@@ -13,4 +13,8 @@ class Get extends Operation {
 
     public $method = 'get';
 
+    public static $parents = [
+        'Swagger\Annotations\Path',
+        'Swagger\Annotations\Swagger'
+    ];
 }

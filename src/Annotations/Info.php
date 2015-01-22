@@ -54,4 +54,6 @@ class Info extends AbstractAnnotation {
         'Swagger\Annotations\License' => 'license'
     ];
 
+    public static $parents = ['Swagger\Annotations\Swagger'];
+
 }

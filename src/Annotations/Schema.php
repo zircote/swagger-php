@@ -22,11 +22,10 @@ class Schema extends AbstractAnnotation {
     public $ref;
     public $title;
     public $description;
-
     public $maxProperties;
     public $minProperties;
     public $required;
-
+    public $properties;
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
      * @var string
@@ -159,10 +158,11 @@ class Schema extends AbstractAnnotation {
     public $example;
 
     public static $nested = [
-        'Swagger\Annotations\Items' =>'items'
+        'Swagger\Annotations\Items' => 'items',
+        'Swagger\Annotations\Property' => 'properties[]'
     ];
     public static $parents = [
         'Swagger\Annotations\Response',
-        'Swagger\Annotations\Items'
     ];
+
 }

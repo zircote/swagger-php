@@ -170,6 +170,9 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 continue;
             }
             if ($currentValues[$property] !== $value) { // New value is not the same?
+                if ($defaultValues[$property] === $value) { // but is the same as the default?
+                    continue; // Keep current, no notice
+                }
                 $context = property_exists($object, '_context') ? $object->_context : 'unknown';
                 $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
                 Logger::warning('Skipping field "' . $property . '" in ' . $identity . ' in ' . $context);
@@ -235,7 +238,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
         // $ref
         if (isset($data->ref)) {
             $dollarRef = '$ref';
-            $data->$dollarRef= $data->ref;
+            $data->$dollarRef = $data->ref;
             unset($data->ref);
         }
         return $data;
@@ -256,7 +259,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
             $class = get_class($annotation);
             if (isset(static::$nested[$class])) {
                 $property = static::$nested[$class];
-                Logger::notice('Multiple '.$annotation->identity().' not allowed for '.$this->identity()." in:\n  ". $annotation->_context. "\n  ".$this->$property->_context);
+                Logger::notice('Multiple ' . $annotation->identity() . ' not allowed for ' . $this->identity() . " in:\n  " . $annotation->_context . "\n  " . $this->$property->_context);
             } else {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$parents)) {
@@ -282,8 +285,12 @@ abstract class AbstractAnnotation implements JsonSerializable {
                         $class = get_class($item);
                         if ($class::$key) {
                             $keyProperty = $class::$key;
+                            if (empty($item->$keyProperty)) {
+                                Logger::notice($item->identity() . ' is missing key-field: "' . $keyProperty . '" in ' . $item->_context);
+                                continue;
+                            }
                             if (isset($keys[$item->$keyProperty])) {
-                                Logger::notice("Multiple @SWG\Header() with the same header value in:\n  ".$item->_context."\n  ".$keys[$item->$keyProperty]->_context);
+                                Logger::notice('Multiple '.$item->identity()." with the same header value in:\n  " . $item->_context . "\n  " . $keys[$item->$keyProperty]->_context);
                             }
                             $keys[$item->$keyProperty] = $item;
                             continue;

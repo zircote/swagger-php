@@ -149,11 +149,12 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Items' =>'items'
     ];
     public static $parents = [
+        'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
         'Swagger\Annotations\Post',
         'Swagger\Annotations\Put',
         'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Path'
+        'Swagger\Annotations\Path',
     ];
 
 }

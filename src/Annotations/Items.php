@@ -118,9 +118,16 @@ class Items extends AbstractAnnotation {
     public $multipleOf;
 
     public $ref;
+
+    public static $nested = [
+        'Swagger\Annotations\Items' => 'items',
+    ];
     static $parents = [
         'Swagger\Annotations\Parameter',
+        'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
+        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Items'
     ];
 
 }

@@ -13,4 +13,8 @@ class Put extends Operation {
 
     public $method = 'put';
 
+    public static $parents = [
+        'Swagger\Annotations\Path',
+        'Swagger\Annotations\Swagger'
+    ];
 }

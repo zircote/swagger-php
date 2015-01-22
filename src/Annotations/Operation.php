@@ -12,7 +12,7 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Operation Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#operationObject
  */
-class Operation extends AbstractAnnotation {
+abstract class Operation extends AbstractAnnotation {
 
     /**
      * key in the Swagger "Paths Object" for this operation

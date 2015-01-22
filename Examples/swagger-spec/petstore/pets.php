@@ -1,8 +1,8 @@
 <?php
 
-namespace PetstoreSimple;
+namespace Petstore;
 
-class PetResource {
+class PetsController {
 
     /**
      * @SWG\Get(
@@ -10,7 +10,7 @@ class PetResource {
      *     summary="finds pets in the system",
      *     tags={"Pet Operations"},
      *     @SWG\Response(
-     *         code=200,
+     *         name=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -19,7 +19,7 @@ class PetResource {
      *         @SWG\Header(header="x-expires", type="string")
      *     ),
      *     @SWG\Response(
-     *         code="default",
+     *         name="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/Error"

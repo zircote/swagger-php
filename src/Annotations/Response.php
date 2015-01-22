@@ -17,7 +17,7 @@ class Response extends AbstractAnnotation {
      * The key into Operations->reponses array.
      * @var string
      */
-    public $code;
+    public $name;
 
     /**
      * A short description of the response. GFM syntax can be used for rich text representation.
@@ -43,7 +43,7 @@ class Response extends AbstractAnnotation {
      */
     public $examples;
 
-    public static $key = 'code';
+    public static $key = 'name';
     /**
      * Mapping for merge()
      * @var array
@@ -58,7 +58,11 @@ class Response extends AbstractAnnotation {
      * @var array
      */
     public static $parents = [
-        'Swagger\Annotations\Operation'
+        'Swagger\Annotations\Operation',
+        'Swagger\Annotations\Get',
+        'Swagger\Annotations\Post',
+        'Swagger\Annotations\Put',
+        'Swagger\Annotations\Delete'
     ];
 
 }

@@ -16,7 +16,6 @@ class ExamplesTest extends SwaggerTestCase {
      */
     public function testExample($example, $output) {
         $swagger = \Swagger\scan(__DIR__ . '/../Examples/'.$example);
-        $this->markTestSkipped('Not yet implemeted');
 //        die((string) $swagger);
         $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/'.$output, $swagger);
     }

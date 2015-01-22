@@ -24,25 +24,25 @@ class Path extends AbstractAnnotation {
 
     /**
      * A definition of a GET operation on this path.
-     * @var Get|Operation
+     * @var Get
      */
     public $get;
 
     /**
      * A definition of a PUT operation on this path.
-     * @var Operation
+     * @var Put
      */
     public $put;
 
     /**
      * A definition of a POST operation on this path.
-     * @var Operation
+     * @var Post
      */
     public $post;
 
     /**
      * A definition of a DELETE operation on this path.
-     * @var Operation
+     * @var Delete
      */
     public $delete;
 
@@ -75,6 +75,7 @@ class Path extends AbstractAnnotation {
         'Swagger\Annotations\Post' => 'post',
         'Swagger\Annotations\Put' => 'put',
         'Swagger\Annotations\Delete' => 'delete',
+        'Swagger\Annotations\Parameter' => 'parameters[]',
     ];
 
     public static $key = 'path';

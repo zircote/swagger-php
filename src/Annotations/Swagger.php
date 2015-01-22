@@ -68,7 +68,7 @@ class Swagger extends AbstractAnnotation {
      * An object to hold data types produced and consumed by operations.
      * @var array
      */
-    public $definitions;
+    public $definitions = [];
 
     /**
      * An object to hold parameters that can be used across operations. This property does not define global parameters for all operations.
@@ -112,7 +112,7 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Post' => 'paths[]',
         'Swagger\Annotations\Put' => 'paths[]',
         'Swagger\Annotations\Delete' => 'paths[]',
-        'Swagger\Annotations\Operation' => 'paths[]',
+        'Swagger\Annotations\Definition' => 'definitions[]',
     ];
 
 }

@@ -8,7 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Swagger;
-use Swagger\Logger;
+
 
 /**
  *
