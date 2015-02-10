@@ -7,14 +7,14 @@ To avoid duplication swagger-php introduces partials.
 Defining a partial
 ******************
 
-Any swagger annotation can become a partial by addding the property "partial_id".
+Any swagger annotation can become a partial by addding the property "partial".
 
 
 .. code-block:: php
 
   /**
    * @SWG\Parameter(partial="path_id", name="id", paramType="path", type="integer")
-   * @SWG\ResponseMessage(partial_id="error404", code=404, message="Entity not found")
+   * @SWG\ResponseMessage(partial="error404", code=404, message="Entity not found")
    */
 
 Using a partial
