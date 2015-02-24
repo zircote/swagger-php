@@ -1,6 +1,6 @@
 # swagger-php
 
- - [![2.* Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=2.0)](http://travis-ci.org/zircote/swagger-php) `2.*@dev`
+[![2.* Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=2.x)](http://travis-ci.org/zircote/swagger-php) `2.*@dev`
 
 Generate interactive [Swagger](http://swagger.io) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
 

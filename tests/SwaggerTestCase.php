@@ -62,12 +62,6 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         if ($sortMap === null) {
             $sortMap = [
                 // property -> algorithm
-//                'apis' => function ($a, $b) {
-//                    return strcasecmp($a->path, $b->path);
-//                },
-//                'operations' => function ($a, $b) {
-//                    return strcasecmp($a->nickname, $b->nickname);
-//                },
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
@@ -77,12 +71,9 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 'headers' => function ($a, $b) {
                     return strcasecmp($a->header, $b->header);
                 },
-//                'scopes' => function ($a, $b) {
-//                    return strcasecmp($a->scope, $b->scope);
-//                },
-//                'oauth2' => function ($a, $b) {
-//                    return strcasecmp($a->scope, $b->scope);
-//                },
+                'allOf' => function ($a, $b) {
+                    return count(get_object_vars($a)) - count(get_object_vars($b));
+                },
             ];
         }
         $data = get_object_vars($object);

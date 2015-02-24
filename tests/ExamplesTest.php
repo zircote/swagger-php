@@ -12,12 +12,13 @@ class ExamplesTest extends SwaggerTestCase {
      * Test the processed Examples against json files in ExamplesOutput.
      *
      * @dataProvider getExamples
-     * @param string $dir
+     * @param string $example Example path
+     * @param string $output Expected output (path to a json file)
      */
     public function testExample($example, $output) {
-        $swagger = \Swagger\scan(__DIR__ . '/../Examples/'.$example);
+        $swagger = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
 //        die((string) $swagger);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/'.$output, $swagger);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $swagger);
     }
 
     /**
@@ -26,9 +27,9 @@ class ExamplesTest extends SwaggerTestCase {
      */
     public function getExamples() {
         return [
-            ['swagger-spec/petstore', 'petstore.json']
+            ['swagger-spec/petstore', 'petstore.json'],
+//            ['swagger-spec/petstore-simple', 'petstore-simple.json'],
         ];
     }
-
 
 }

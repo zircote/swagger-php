@@ -163,6 +163,7 @@ class Schema extends AbstractAnnotation {
     ];
     public static $parents = [
         'Swagger\Annotations\Response',
+        'Swagger\Annotations\Parameter',
     ];
 
 }

@@ -120,9 +120,12 @@ abstract class AbstractAnnotation implements JsonSerializable {
     }
 
     /**
-     * @param AbstractAnnotation $annotations
+     * Merge given annotations to their mapped properties configured in static::$nested.
+     * Annotations that couldn't be merged are added to the _unmerged array.
+     *
+     * @param AbstractAnnotation[] $annotations
      */
-    public function merge($annotations) {
+    public function merge(Array $annotations) {
         foreach ($annotations as $annotation) {
             $found = false;
             foreach (static::$nested as $class => $property) {
@@ -151,6 +154,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
     }
 
     /**
+     * Merge the properties from the given object into this annotation.
+     * Prevents overwriting properties that are already configured.
      *
      * @param stdClass $object
      */
@@ -256,6 +261,10 @@ abstract class AbstractAnnotation implements JsonSerializable {
         $valid = true;
         // Report orphaned annotations
         foreach ($this->_unmerged as $annotation) {
+            if (!is_object($annotation)) {
+                Logger::notice('Unexpected type: "'.gettype($annotation).'" in '.$this->identity().'->_unmerged, expecting a Annotation object');
+                break;
+            }
             $class = get_class($annotation);
             if (isset(static::$nested[$class])) {
                 $property = static::$nested[$class];

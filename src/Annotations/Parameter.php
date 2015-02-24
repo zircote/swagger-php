@@ -40,7 +40,7 @@ class Parameter extends AbstractAnnotation {
 
     /**
      * The schema defining the type used for the body parameter.
-     * @var array
+     * @var Schema
      */
     public $schema;
 
@@ -146,7 +146,8 @@ class Parameter extends AbstractAnnotation {
     public $multipleOf;
 
     public static $nested = [
-        'Swagger\Annotations\Items' =>'items'
+        'Swagger\Annotations\Items' =>'items',
+        'Swagger\Annotations\Schema' =>'schema'
     ];
     public static $parents = [
         'Swagger\Annotations\Operation',
