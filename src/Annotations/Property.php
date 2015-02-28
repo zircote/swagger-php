@@ -16,7 +16,11 @@ class Property extends Schema {
      * @var string
      */
     public $name;
+
+    /** @inheritdoc */
     public static $key = 'name';
+
+    /** @inheritdoc */
     public static $parents = [
         'Swagger\Annotations\Definition',
         'Swagger\Annotations\Schema',

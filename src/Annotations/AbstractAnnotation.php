@@ -51,7 +51,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     public static $nested = [];
 
     /**
-     *
+     * Reverse mapping of $nested with the allowed parent annotations.
      * @var string[]
      */
     public static $parents = [];

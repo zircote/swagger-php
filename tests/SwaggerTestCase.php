@@ -72,8 +72,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                     return strcasecmp($a->header, $b->header);
                 },
                 'allOf' => function ($a, $b) {
-                    return count(get_object_vars($a)) - count(get_object_vars($b));
-                },
+                    return strcasecmp(implode(',',array_keys(get_object_vars($a))), implode(',',array_keys(get_object_vars($b))));
+                }
             ];
         }
         $data = get_object_vars($object);

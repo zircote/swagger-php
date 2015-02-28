@@ -12,8 +12,8 @@ namespace Swagger\Annotations;
  * @Annotation
  * The definition of input and output data types.
  * These types can be objects, but also primitives and arrays.
- * This object is based on the [JSON Schema Specification Draft 4](http://json-schema.org) and uses a predefined subset of it.
- *  On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
+ * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
+ * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
  * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
  */
@@ -24,8 +24,17 @@ class Schema extends AbstractAnnotation {
     public $description;
     public $maxProperties;
     public $minProperties;
+
+    /**
+     * @var array
+     */
     public $required;
+
+    /**
+     * @var Property[]
+     */
     public $properties;
+
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
      * @var string
@@ -152,15 +161,24 @@ class Schema extends AbstractAnnotation {
     public $externalDocs;
 
     /**
-     * 	A free-form property to include a an example of an instance for this schema.
+     * A free-form property to include a an example of an instance for this schema.
      * @var array
      */
     public $example;
 
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#anchor82
+     * @var Schema[]
+     */
+    public $allOf;
+
+    /** @inheritdoc */
     public static $nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => 'properties[]'
     ];
+
+    /** @inheritdoc */
     public static $parents = [
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',

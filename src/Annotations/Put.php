@@ -13,6 +13,7 @@ class Put extends Operation {
 
     public $method = 'put';
 
+    /** @inheritdoc */
     public static $parents = [
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Swagger'

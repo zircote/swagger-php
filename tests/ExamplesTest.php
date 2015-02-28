@@ -28,7 +28,7 @@ class ExamplesTest extends SwaggerTestCase {
     public function getExamples() {
         return [
             ['swagger-spec/petstore', 'petstore.json'],
-//            ['swagger-spec/petstore-simple', 'petstore-simple.json'],
+            ['swagger-spec/petstore-simple', 'petstore-simple.json'],
         ];
     }
 

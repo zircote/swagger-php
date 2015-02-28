@@ -33,10 +33,13 @@ class ClassProperties {
                 $class = explode('\\', $definition->_context->class);
                 $definition->name = array_pop($class);
             }
+
             // Use the property names for @SWG\Property()
-            foreach ($definition->properties as $property) {
-                if ($property->name === null && $property->_context->property) {
-                    $property->name = $property->_context->property;
+            if ($definition->properties) {
+                foreach ($definition->properties as $property) {
+                    if ($property->name === null && $property->_context->property) {
+                        $property->name = $property->_context->property;
+                    }
                 }
             }
         }

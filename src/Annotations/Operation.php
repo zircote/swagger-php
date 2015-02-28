@@ -116,11 +116,13 @@ abstract class Operation extends AbstractAnnotation {
      */
     public $security;
 
+    /** @inheritdoc */
     public static $nested = [
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]'
     ];
 
+    /** @inheritdoc */
     public function jsonSerialize() {
         $data = parent::jsonSerialize();
         unset($data->method);

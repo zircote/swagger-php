@@ -11,7 +11,7 @@ use Swagger\Parser;
 
 class ParserTest extends SwaggerTestCase {
 
-    function test_parseContents() {
+    function testParseContents() {
         $annotations = $this->parseComment('@SWG\Parameter(name="my_param")');
         $this->assertInternalType('array', $annotations);
         $parameter = $annotations[0];
@@ -22,6 +22,7 @@ class ParserTest extends SwaggerTestCase {
     function testWrongCommentType() {
         $parser = new Parser();
         $annotations = $parser->parseContents('<?php\n/*\n * @SWG\Parameter() */', Context::detect());
+        $this->markTestSkipped('Not implemented');
     }
 
 }

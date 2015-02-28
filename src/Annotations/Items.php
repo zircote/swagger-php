@@ -17,6 +17,12 @@ namespace Swagger\Annotations;
 class Items extends AbstractAnnotation {
 
     /**
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * @var string
+     */
+    public $ref;
+
+    /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
      * @var string
      */
@@ -117,11 +123,12 @@ class Items extends AbstractAnnotation {
      */
     public $multipleOf;
 
-    public $ref;
-
+    /** @inheritdoc */
     public static $nested = [
         'Swagger\Annotations\Items' => 'items',
     ];
+
+    /** @inheritdoc */
     static $parents = [
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Property',

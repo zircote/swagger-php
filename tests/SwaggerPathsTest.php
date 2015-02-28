@@ -14,7 +14,7 @@ use Swagger\Annotations\Post;
 
 class SwaggerPathsTest extends SwaggerTestCase {
 
-    function test_merge_paths_with_same_path() {
+    function testMergePathsWithSamePath() {
         $swagger = new Swagger([]);
         $swagger->paths = [
             new Path([
@@ -30,7 +30,7 @@ class SwaggerPathsTest extends SwaggerTestCase {
         $this->assertSame('/comments', $swagger->paths[0]->path);
     }
 
-    function test_merge_operations_with_same_path() {
+    function testMergeOperationsWithSamePath() {
         $swagger = new Swagger([]);
         $swagger->paths = [
             new Get([

@@ -11,26 +11,26 @@ use Swagger\Annotations\Swagger;
 
 class AbstractAnnotationTest extends SwaggerTestCase {
 
-    function test_vendor_fields() {
+    function testVendorFields() {
         $annotations = $this->parseComment('@SWG\Get(x={"internal-id": 123})');
         $output = $annotations[0]->jsonSerialize();
         $prefixedProperty = 'x-internal-id';
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
-    function test_invalid_field() {
+    function testInvalidField() {
         $this->setExpectedException('PHPUnit_Framework_Error_Warning', 'Unexpected field "doesnot" for @SWG\\Get(), expecting ');
         $this->parseComment('@SWG\Get(doesnot="exist")');
     }
 
-    function test_umerged_annotation() {
+    function testUmergedAnnotation() {
         $swagger = new Swagger([]);
         $swagger->merge($this->parseComment('@SWG\Parameter()'));
         $this->setExpectedException('PHPUnit_Framework_Error_Notice', 'Unexpected @SWG\Parameter(), expected to be inside @SWG\\');
         $swagger->validate();
     }
 
-    function test_conflicted_nesting() {
+    function testConflictedNesting() {
         $comment = <<<END
 @SWG\Info(
     @SWG\Contact(name="first"),
@@ -42,7 +42,7 @@ END;
         $annotations[0]->validate();
     }
 
-    function test_key() {
+    function testKey() {
         $comment = <<<END
 @SWG\Response(
     @SWG\Header(header="X-CSRF-Token",description="Token to prevent Cross Site Request Forgery")
@@ -52,7 +52,7 @@ END;
         $this->assertEquals('{"headers":{"X-CSRF-Token":{"description":"Token to prevent Cross Site Request Forgery"}}}', json_encode($annotations[0]));
     }
 
-    function test_conflicting_key() {
+    function testConflictingKey() {
         $comment = <<<END
 @SWG\Response(
     @SWG\Header(header="X-CSRF-Token",description="first"),

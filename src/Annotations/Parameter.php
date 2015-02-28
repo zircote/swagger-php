@@ -145,10 +145,13 @@ class Parameter extends AbstractAnnotation {
      */
     public $multipleOf;
 
+    /** @inheritdoc */
     public static $nested = [
-        'Swagger\Annotations\Items' =>'items',
-        'Swagger\Annotations\Schema' =>'schema'
+        'Swagger\Annotations\Items' => 'items',
+        'Swagger\Annotations\Schema' => 'schema'
     ];
+
+    /** @inheritdoc */
     public static $parents = [
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
