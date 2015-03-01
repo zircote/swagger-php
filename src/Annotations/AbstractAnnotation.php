@@ -87,8 +87,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 foreach (static::$blacklist as $_property) {
                     unset($fields[$_property]);
                 }
-                Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
-                @$this->$property = $value;
+                $this->$property = $value;
             } elseif (is_array($value)) {
                 $annotations = [];
                 foreach ($value as $annotation) {
@@ -114,7 +113,6 @@ abstract class AbstractAnnotation implements JsonSerializable {
 
     public function __set($property, $value) {
         $properties = get_object_vars($this);
-        Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', exising properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
         Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
         $this->$property = $value;
     }

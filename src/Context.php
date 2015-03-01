@@ -171,21 +171,22 @@ class Context {
     static public function detect($index = 0) {
         $context = new Context();
         $backtrace = debug_backtrace();
-        $call = $backtrace[$index];
-        if (isset($call['function'])) {
-            $context->method = $call['function'];
-            if (isset($call['type']) && $call['type'] === '::') {
+        $position = $backtrace[$index];
+        if (isset($position['file'])) {
+            $context->filename = $position['file'];
+        }
+        if (isset($position['line'])) {
+            $context->line = $position['line'];
+        }
+        $caller = @$backtrace[$index + 1];
+        if (isset($caller['function'])) {
+            $context->method = $caller['function'];
+            if (isset($caller['type']) && $caller['type'] === '::') {
                 $context->static = true;
             }
         }
-        if (isset($call['class'])) {
-            $context->class = $call['class'];
-        }
-        if (isset($call['file'])) {
-            $context->filename = $call['file'];
-        }
-        if (isset($call['line'])) {
-            $context->line = $call['line'];
+        if (isset($caller['class'])) {
+            $context->class = $caller['class'];
         }
         return $context;
     }

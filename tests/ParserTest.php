@@ -21,8 +21,8 @@ class ParserTest extends SwaggerTestCase {
 
     function testWrongCommentType() {
         $parser = new Parser();
-        $annotations = $parser->parseContents('<?php\n/*\n * @SWG\Parameter() */', Context::detect());
-        $this->markTestSkipped('Not implemented');
+        $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
+        $parser->parseContents("<?php\n/*\n * @SWG\Parameter() */", Context::detect());
     }
 
 }

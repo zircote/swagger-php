@@ -12,22 +12,19 @@ use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Context;
 use Swagger\Parser;
+use \Swagger\Logger;
 
 class SwaggerTestCase extends PHPUnit_Framework_TestCase {
 
     /**
-     *
-     * @param string $comment Contents of a comment block
-     * @return AbstractAnnotation[]
+     * @var array
      */
-    protected function parseComment($comment) {
-        $parser = new Parser();
-        $caller = Context::detect(1);
-        $context = Context::detect(2);
-        $context->line = -2;
-        $context->filename = $caller->filename . ':' . $caller->line;
-        return $parser->parseContents("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
-    }
+    private $expectedLogMessages;
+
+    /**
+     * @var Closure
+     */
+    private $originalLogger;
 
     /**
      *
@@ -51,6 +48,69 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         return $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
+    public function assertSwaggerLog($expectedEntry, $expectedType, $message = '') {
+        $this->expectedLogMessages[] = function ($actualEntry, $actualType) use ($expectedEntry, $expectedType, $message) {
+            $this->assertSame($expectedEntry, $actualEntry, $message);
+            $this->assertSame($expectedType, $actualType, $message);
+        };
+    }
+
+    public function assertSwaggerLogType($expectedType, $message = '') {
+        $this->expectedLogMessages[] = function ($entry, $actualType) use ($expectedType, $message) {
+            $this->assertSame($expectedType, $actualType, $message);
+        };
+    }
+    public function assertSwaggerLogEntry($expectedEntry, $message = '') {
+        $this->expectedLogMessages[] = function ($actualEntry, $type) use ($expectedEntry, $message) {
+            $this->assertSame($expectedEntry, $actualEntry, $message);
+        };
+    }
+    public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '') {
+        $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
+            $this->assertStringStartsWith($entryPrefix, $entry, $message);
+        };
+    }
+
+    protected function setUp() {
+        $this->expectedLogMessages = [];
+        $this->originalLogger = Logger::getInstance()->log;
+        Logger::getInstance()->log = function ($entry, $type) {
+            if (count($this->expectedLogMessages)) {
+                $assertion = array_shift($this->expectedLogMessages);
+                $assertion($entry, $type);
+            } else {
+                $map = [
+                    E_USER_NOTICE => 'notice',
+                    E_USER_WARNING => 'warning',
+                ];
+                if (isset($map[$type])) {
+                    $this->fail('Unexpected \Swagger\Logger::' . $map[$type] . '("' . $entry . '")');
+                } else {
+                    $this->fail('Unexpected \Swagger\Logger->getInstance()->log("' . $entry . '",' . $type . ')');
+                }
+            }
+        };
+        return parent::setUp();
+    }
+
+    protected function tearDown() {
+        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages).' Swagger\Logger messagges were not triggered');
+        Logger::getInstance()->log = $this->originalLogger;
+        return parent::tearDown();
+    }
+
+    /**
+     *
+     * @param string $comment Contents of a comment block
+     * @return AbstractAnnotation[]
+     */
+    protected function parseComment($comment) {
+        $parser = new Parser();
+        $context = Context::detect(1);
+        $context->line -= 2; // correct generated lines: "<?php\n" and "/**\n"
+        return $parser->parseContents("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
+    }
+
     /**
      * Sorts the object to improve matching and debugging the differences.
      * Used by assertSwaggerEqualsFile
@@ -72,7 +132,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                     return strcasecmp($a->header, $b->header);
                 },
                 'allOf' => function ($a, $b) {
-                    return strcasecmp(implode(',',array_keys(get_object_vars($a))), implode(',',array_keys(get_object_vars($b))));
+                    return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
                 }
             ];
         }
@@ -93,7 +153,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                         usort($value, $sortFn);
                         $data[$property] = $value;
                     } else {
-                        echo 'no sort for '.$origin.'->'.$property."\n";die;
+                        echo 'no sort for ' . $origin . '->' . $property . "\n";
+                        die;
                     }
                 }
                 foreach ($value as $i => $element) {
@@ -105,4 +166,5 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         }
         return (object) $data;
     }
+
 }

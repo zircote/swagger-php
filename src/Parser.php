@@ -217,9 +217,11 @@ class Parser {
             return $this->nextToken($tokens, $context);
         }
         if ($token[0] === T_COMMENT) {
+
             $pos = strpos($token[1], '@SWG\\');
             if ($pos) {
-                $commentContext = new Context(['line' => $token[2]], $context);
+                $line = $context->line ? $context->line + $token[2] : $token[2];
+                $commentContext = new Context(['line' => $line], $context);
                 Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
             }
             return $this->nextToken($tokens, $context);

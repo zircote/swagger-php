@@ -6,7 +6,6 @@
 
 namespace SwaggerTests;
 
-use Exception;
 use Swagger\Annotations\Swagger;
 
 class AbstractAnnotationTest extends SwaggerTestCase {
@@ -19,14 +18,14 @@ class AbstractAnnotationTest extends SwaggerTestCase {
     }
 
     function testInvalidField() {
-        $this->setExpectedException('PHPUnit_Framework_Error_Warning', 'Unexpected field "doesnot" for @SWG\\Get(), expecting ');
+        $this->assertSwaggerLogEntryStartsWith('Unexpected field "doesnot" for @SWG\Get(), expecting');
         $this->parseComment('@SWG\Get(doesnot="exist")');
     }
 
     function testUmergedAnnotation() {
         $swagger = new Swagger([]);
         $swagger->merge($this->parseComment('@SWG\Parameter()'));
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice', 'Unexpected @SWG\Parameter(), expected to be inside @SWG\\');
+        $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Parameter(), expected to be inside @SWG\\');
         $swagger->validate();
     }
 
@@ -38,7 +37,7 @@ class AbstractAnnotationTest extends SwaggerTestCase {
 )
 END;
         $annotations = $this->parseComment($comment);
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice', 'Multiple @SWG\Contact() not allowed for @SWG\Info() in:');
+        $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Contact() not allowed for @SWG\Info() in:');
         $annotations[0]->validate();
     }
 
@@ -60,7 +59,7 @@ END;
 )
 END;
         $annotations = $this->parseComment($comment);
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice', 'Multiple @SWG\Header() with the same header value in:');
+        $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Header() with the same header value in:');
         $annotations[0]->validate();
     }
 }
