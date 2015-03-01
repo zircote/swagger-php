@@ -18,11 +18,6 @@ use Swagger\Parser;
 abstract class AbstractAnnotation implements JsonSerializable {
 
     /**
-     * Special value to allow null in the output.
-     */
-    const UNDEFINED = '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}';
-
-    /**
      * Allows extensions to the Swagger Schema.
      * The keys inside the array will be prefixed with `x-`.
      * For further details see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#vendorExtensions.
@@ -57,7 +52,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     public static $parents = [];
 
     /**
-     *
+     * List of properties are blacklisted from the JSON output.
      * @var array
      */
     public static $blacklist = ['_context', '_unmerged'];
@@ -83,10 +78,6 @@ abstract class AbstractAnnotation implements JsonSerializable {
             if (property_exists($this, $property)) {
                 $this->$property = $value;
             } elseif ($property !== 'value') {
-                $fields = get_object_vars($this);
-                foreach (static::$blacklist as $_property) {
-                    unset($fields[$_property]);
-                }
                 $this->$property = $value;
             } elseif (is_array($value)) {
                 $annotations = [];
@@ -112,8 +103,11 @@ abstract class AbstractAnnotation implements JsonSerializable {
     }
 
     public function __set($property, $value) {
-        $properties = get_object_vars($this);
-        Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
+        $fields = get_object_vars($this);
+        foreach (static::$blacklist as $_property) {
+            unset($fields[$_property]);
+        }
+        Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
         $this->$property = $value;
     }
 
@@ -187,21 +181,31 @@ abstract class AbstractAnnotation implements JsonSerializable {
         return json_encode($this, JSON_PRETTY_PRINT);
     }
 
+    public function __debugInfo() {
+        $properties = [];
+        foreach (get_object_vars($this) as $property => $value) {
+            if ($value !== UNDEFINED) {
+                $properties[$property] = $value;
+            }
+        }
+        return $properties;
+    }
+
     /**
      * Customize the way json_encode() renders the annotations.
      * @return array
      */
     public function jsonSerialize() {
         $data = new stdClass();
-        // Strip null values
+        // Strip undefined and null values.
         $classVars = get_class_vars(get_class($this));
         foreach (get_object_vars($this) as $property => $value) {
-            if ($classVars[$property] === self::UNDEFINED) {
-                if ($value !== self::UNDEFINED) {
+            if ($value !== UNDEFINED) {
+                if ($classVars[$property] === UNDEFINED) { // When default is undefined, null is allowed.
+                    $data->$property = $value;
+                } elseif ($value !== null) {
                     $data->$property = $value;
                 }
-            } elseif ($value !== null) {
-                $data->$property = $value;
             }
         }
         // Strip properties that are for internal (swagger-php) use.
@@ -260,7 +264,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
         // Report orphaned annotations
         foreach ($this->_unmerged as $annotation) {
             if (!is_object($annotation)) {
-                Logger::notice('Unexpected type: "'.gettype($annotation).'" in '.$this->identity().'->_unmerged, expecting a Annotation object');
+                Logger::notice('Unexpected type: "' . gettype($annotation) . '" in ' . $this->identity() . '->_unmerged, expecting a Annotation object');
                 break;
             }
             $class = get_class($annotation);
@@ -297,7 +301,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
                                 continue;
                             }
                             if (isset($keys[$item->$keyProperty])) {
-                                Logger::notice('Multiple '.$item->identity()." with the same header value in:\n  " . $item->_context . "\n  " . $keys[$item->$keyProperty]->_context);
+                                Logger::notice('Multiple ' . $item->identity() . " with the same header value in:\n  " . $item->_context . "\n  " . $keys[$item->$keyProperty]->_context);
                             }
                             $keys[$item->$keyProperty] = $item;
                             continue;

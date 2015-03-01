@@ -71,7 +71,7 @@ class Parameter extends AbstractAnnotation {
      * Sets a default value to the parameter. The type of the value depends on the defined type. See http://json-schema.org/latest/json-schema-validation.html#anchor101.
      * @var mixed
      */
-    public $default = AbstractAnnotation::UNDEFINED;
+    public $default = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.

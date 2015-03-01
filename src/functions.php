@@ -13,6 +13,13 @@ use Swagger\Processors\SwaggerPaths;
 use Symfony\Component\Finder\Finder;
 
 /**
+ * Special value to differentiate between null and undefined.
+ */
+define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
+define('Swagger\Annotations\UNDEFINED', UNDEFINED);
+define('Swagger\Processors\UNDEFINED', UNDEFINED);
+
+/**
  *
  * @param string|array|Finder $directory
  * @param string|array $exclude

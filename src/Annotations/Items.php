@@ -6,8 +6,6 @@
 
 namespace Swagger\Annotations;
 
-//use Swagger\JsonSchema;
-
 /**
  * @Annotation
  * An limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
@@ -49,7 +47,7 @@ class Items extends AbstractAnnotation {
      * Sets a default value to the parameter. The type of the value depends on the defined type. See http://json-schema.org/latest/json-schema-validation.html#anchor101.
      * @var mixed
      */
-    public $default = AbstractAnnotation::UNDEFINED;
+    public $default = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
