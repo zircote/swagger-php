@@ -76,6 +76,7 @@ class Path extends AbstractAnnotation {
         'Swagger\Annotations\Post' => 'post',
         'Swagger\Annotations\Put' => 'put',
         'Swagger\Annotations\Delete' => 'delete',
+        'Swagger\Annotations\Patch' => 'patch',
         'Swagger\Annotations\Parameter' => 'parameters[]',
     ];
 

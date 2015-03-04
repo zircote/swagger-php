@@ -158,6 +158,7 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Post',
         'Swagger\Annotations\Put',
         'Swagger\Annotations\Delete',
+        'Swagger\Annotations\Patch',
         'Swagger\Annotations\Path',
     ];
 
