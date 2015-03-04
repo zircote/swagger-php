@@ -112,6 +112,7 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Get' => 'paths[]',
         'Swagger\Annotations\Post' => 'paths[]',
         'Swagger\Annotations\Put' => 'paths[]',
+        'Swagger\Annotations\Patch' => 'paths[]',
         'Swagger\Annotations\Delete' => 'paths[]',
         'Swagger\Annotations\Definition' => 'definitions[]',
     ];
