@@ -13,12 +13,14 @@ class Pet {
     public $id;
 
     /**
-     * @SWG\Property(type="string")
+     * @SWG\Property()
+     * @var string
      */
     public $name;
 
     /**
-     * @SWG\Property(type="string")
+     * @SWG\Property()
+     * @var string
      */
     public $tag;
 

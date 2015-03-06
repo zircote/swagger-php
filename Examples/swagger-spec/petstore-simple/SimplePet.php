@@ -8,17 +8,20 @@ namespace Petstore;
 class SimplePet {
 
     /**
-     * @SWG\Property(type="integer", format="int64")
+     * @SWG\Property(format="int64")
+     * @var int
      */
     public $id;
 
     /**
-     * @SWG\Property(type="string")
+     * @SWG\Property()
+     * @var string
      */
     public $name;
 
     /**
-     * @SWG\Property(type="string")
+     * @var string
+     * @SWG\Property()
      */
     public $tag;
 

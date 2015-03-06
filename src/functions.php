@@ -31,7 +31,11 @@ function scan($directory, $exclude = null) {
     if ($exclude !== null) {
         $finder->exclude($exclude);
     }
-    $finder->files()->in($directory);
+    if (is_file($directory)) { // Scan a single file?
+        $finder->files()->name(basename($directory))->in(dirname($directory));
+    } else { // Scan a directory
+        $finder->files()->in($directory);
+    }
     // Parse all files
     $parser = new Parser();
     foreach ($finder as $file) {

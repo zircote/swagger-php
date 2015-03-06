@@ -256,7 +256,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @param array $skip (prevent stackoverflow, when traversing an infinite dependency graph)
      * @return boolean
      */
-    public function validate($skip = array()) {
+    public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
             return true;
         }

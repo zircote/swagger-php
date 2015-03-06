@@ -4,17 +4,26 @@
 
 Generate interactive [Swagger](http://swagger.io) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
 
+## Features
+
+ - Compatible with the Swagger 2.0 specification
+ - Exceptional error reporting (with hints, context)
+ - Extracts information from code & existing phpdoc annotations.
+
 ## Installation (with [Composer](http://composer.org))
 
 ```sh
 composer require zircote/swagger-php
 ```
 
-## Features
+## Usage
 
- - Compatible with the Swagger 2.0 specification
- - Exceptional error reporting (with hints, context)
- - Extracts information from code & existing phpdoc annotations.
+```php
+<?php
+require("vendor/autoload.php");
+$swagger = \Swagger\scan('/path/to/project');
+echo $swagger;
+```
 
 ## More on Swagger
 
