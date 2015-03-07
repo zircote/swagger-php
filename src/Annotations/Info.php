@@ -49,11 +49,13 @@ class Info extends AbstractAnnotation {
      */
     public $version;
 
-    public static $nested = [
+    /** @inheritdoc */
+    public static $_nested = [
         'Swagger\Annotations\Contact' => 'contact',
         'Swagger\Annotations\License' => 'license'
     ];
 
-    public static $parents = ['Swagger\Annotations\Swagger'];
+    /** @inheritdoc */
+    public static $_parents = ['Swagger\Annotations\Swagger'];
 
 }

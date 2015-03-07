@@ -122,12 +122,12 @@ class Items extends AbstractAnnotation {
     public $multipleOf;
 
     /** @inheritdoc */
-    public static $nested = [
+    public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
     ];
 
     /** @inheritdoc */
-    static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',

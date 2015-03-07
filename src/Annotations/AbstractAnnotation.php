@@ -43,25 +43,25 @@ abstract class AbstractAnnotation implements JsonSerializable {
      *   'Swagger\Annotation\Parameter' => 'parameters[]',  // Append @SWG\Parameter annotations the parameters array.
      * @var array
      */
-    public static $nested = [];
+    public static $_nested = [];
 
     /**
-     * Reverse mapping of $nested with the allowed parent annotations.
+     * Reverse mapping of $_nested with the allowed parent annotations.
      * @var string[]
      */
-    public static $parents = [];
+    public static $_parents = [];
 
     /**
      * List of properties are blacklisted from the JSON output.
      * @var array
      */
-    public static $blacklist = ['_context', '_unmerged'];
+    public static $_blacklist = ['_context', '_unmerged'];
 
     /**
      * The property that is used as key in the output json.
      * @var string
      */
-    public static $key = false;
+    public static $_key = false;
 
     /**
      * @param array $properties
@@ -104,7 +104,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
 
     public function __set($property, $value) {
         $fields = get_object_vars($this);
-        foreach (static::$blacklist as $_property) {
+        foreach (static::$_blacklist as $_property) {
             unset($fields[$_property]);
         }
         Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
@@ -112,7 +112,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     }
 
     /**
-     * Merge given annotations to their mapped properties configured in static::$nested.
+     * Merge given annotations to their mapped properties configured in static::$_nested.
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
      * @param AbstractAnnotation[] $annotations
@@ -120,7 +120,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     public function merge(Array $annotations) {
         foreach ($annotations as $annotation) {
             $found = false;
-            foreach (static::$nested as $class => $property) {
+            foreach (static::$_nested as $class => $property) {
                 if ($annotation instanceof $class) {
                     if (substr($property, -2) === '[]') { // Append to array?
                         $property = substr($property, 0, -2);
@@ -209,11 +209,11 @@ abstract class AbstractAnnotation implements JsonSerializable {
             }
         }
         // Strip properties that are for internal (swagger-php) use.
-        foreach (static::$blacklist as $property) {
+        foreach (static::$_blacklist as $property) {
             unset($data->$property);
         }
-        if (static::$key) {
-            $property = static::$key;
+        if (static::$_key) {
+            $property = static::$_key;
             unset($data->$property);
         }
         // Inject vendor properties.
@@ -231,8 +231,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 foreach ($value as $i => $item) {
                     if ($item instanceof AbstractAnnotation) {
                         $class = get_class($item);
-                        if ($class::$key) {
-                            $keyProperty = $class::$key;
+                        if ($class::$_key) {
+                            $keyProperty = $class::$_key;
                             $array[$item->$keyProperty] = $item;
                             continue;
                         }
@@ -268,14 +268,14 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 break;
             }
             $class = get_class($annotation);
-            if (isset(static::$nested[$class])) {
-                $property = static::$nested[$class];
+            if (isset(static::$_nested[$class])) {
+                $property = static::$_nested[$class];
                 Logger::notice('Multiple ' . $annotation->identity() . ' not allowed for ' . $this->identity() . " in:\n  " . $annotation->_context . "\n  " . $this->$property->_context);
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
-                if (count($class::$parents)) {
+                if (count($class::$_parents)) {
                     $shortNotations = [];
-                    foreach ($class::$parents as $_class) {
+                    foreach ($class::$_parents as $_class) {
                         $shortNotations[] = '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', $_class);
                     }
                     $message .= ', expected to be inside ' . implode(', ', $shortNotations);
@@ -294,8 +294,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 foreach ($value as $i => $item) {
                     if ($item instanceof AbstractAnnotation) {
                         $class = get_class($item);
-                        if ($class::$key) {
-                            $keyProperty = $class::$key;
+                        if ($class::$_key) {
+                            $keyProperty = $class::$_key;
                             if (empty($item->$keyProperty)) {
                                 Logger::notice($item->identity() . ' is missing key-field: "' . $keyProperty . '" in ' . $item->_context);
                                 continue;

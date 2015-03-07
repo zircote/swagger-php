@@ -44,16 +44,16 @@ class Response extends AbstractAnnotation {
     public $examples;
 
     /** @inheritdoc */
-    public static $key = 'name';
+    public static $_key = 'name';
 
     /** @inheritdoc */
-    public static $nested = [
+    public static $_nested = [
         'Swagger\Annotations\Schema' => 'schema',
         'Swagger\Annotations\Header' => 'headers[]'
     ];
 
     /** @inheritdoc */
-    public static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
         'Swagger\Annotations\Post',

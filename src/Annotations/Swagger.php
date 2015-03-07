@@ -107,7 +107,7 @@ class Swagger extends AbstractAnnotation {
     public $externalDocs;
 
     /** @inheritdoc */
-    public static $nested = [
+    public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
         'Swagger\Annotations\Get' => 'paths[]',
         'Swagger\Annotations\Post' => 'paths[]',

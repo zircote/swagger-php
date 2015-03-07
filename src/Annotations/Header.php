@@ -124,15 +124,15 @@ class Header extends Operation {
      */
     public $multipleOf;
 
-    public static $nested = [];
+    public static $_nested = [];
     /**
      * Mapping for validate()
      * @var array
      */
-    public static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Response'
     ];
 
-    public static $key = 'header';
+    public static $_key = 'header';
 
 }

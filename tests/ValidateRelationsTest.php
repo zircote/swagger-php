@@ -17,16 +17,16 @@ class ValidateRelationsTest extends SwaggerTestCase {
      * @param string $class
      */
     public function testParents($class) {
-        foreach ($class::$parents as $parent) {
+        foreach ($class::$_parents as $parent) {
             $found = false;
-            foreach ($parent::$nested as $nested => $property) {
+            foreach ($parent::$_nested as $nested => $property) {
                 if ($nested === $class) {
                     $found = true;
                     break;
                 }
             }
             if ($found === false) {
-                $this->fail($class . ' not found in ' . $parent . "::\$nested. Found:\n  " . implode("\n  ", array_keys($parent::$nested)));
+                $this->fail($class . ' not found in ' . $parent . "::\$_nested. Found:\n  " . implode("\n  ", array_keys($parent::$_nested)));
             }
         }
     }
@@ -37,16 +37,16 @@ class ValidateRelationsTest extends SwaggerTestCase {
      * @param string $class
      */
     public function testNested($class) {
-        foreach ($class::$nested as $nested => $property) {
+        foreach ($class::$_nested as $nested => $property) {
             $found = false;
-            foreach ($nested::$parents as $parent) {
+            foreach ($nested::$_parents as $parent) {
                 if ($parent === $class) {
                     $found = true;
                     break;
                 }
             }
             if ($found === false) {
-                $this->fail($class . ' not found in ' . $nested . "::\$parent. Found:\n  " . implode("\n  ", $nested::$parents));
+                $this->fail($class . ' not found in ' . $nested . "::\$parent. Found:\n  " . implode("\n  ", $nested::$_parents));
             }
         }
     }

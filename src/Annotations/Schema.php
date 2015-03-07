@@ -173,13 +173,13 @@ class Schema extends AbstractAnnotation {
     public $allOf;
 
     /** @inheritdoc */
-    public static $nested = [
+    public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => 'properties[]'
     ];
 
     /** @inheritdoc */
-    public static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
     ];

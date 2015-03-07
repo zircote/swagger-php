@@ -13,7 +13,7 @@ class Delete extends Operation {
 
     public $method = 'delete';
 
-    public static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Swagger'
     ];

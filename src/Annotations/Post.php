@@ -14,7 +14,7 @@ class Post extends Operation {
     public $method = 'post';
 
     /** @inheritdoc */
-    public static $parents = [
+    public static $_parents = [
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Swagger'
     ];

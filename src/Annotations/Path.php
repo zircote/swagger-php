@@ -71,7 +71,7 @@ class Path extends AbstractAnnotation {
     public $parameters;
 
     /** @inheritdoc */
-    public static $nested = [
+    public static $_nested = [
         'Swagger\Annotations\Get' => 'get',
         'Swagger\Annotations\Post' => 'post',
         'Swagger\Annotations\Put' => 'put',
@@ -81,6 +81,6 @@ class Path extends AbstractAnnotation {
     ];
 
     /** @inheritdoc */
-    public static $key = 'path';
+    public static $_key = 'path';
 
 }
