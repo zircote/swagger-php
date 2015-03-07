@@ -10,11 +10,14 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Annotations\AbstractAnnotation;
 
-//
+// Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
-    if (substr($class, 0, 20) === 'Swagger\\Annotations\\') {
-        return class_exists($class);
+    foreach (Parser::$whitelist as $namespace) {
+        if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
+            return class_exists($class);
+        }
     }
+    return false;
 });
 
 /**
@@ -22,6 +25,12 @@ AnnotationRegistry::registerLoader(function ($class) {
  * @package    Swagger
  */
 class Parser {
+    
+    /**
+     * List of namespaces that should be detected by the doctrine annotation parser.
+     * @var array
+     */
+    public static $whitelist = ['Swagger\\Annotations\\'];
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
@@ -192,7 +201,12 @@ class Parser {
                     if ($target[0] === '\\') {
                         $target = substr($target, 1);
                     }
-                    $imports[$alias] = $target;
+                    foreach (Parser::$whitelist as $namespace) {
+                        if (strtolower(substr($target, 0, strlen($namespace))) === strtolower($namespace)) {
+                            $imports[$alias] = $target;
+                            break;
+                        }
+                    }
                 }
                 $this->docParser->setImports($imports);
                 continue;
@@ -302,9 +316,7 @@ class Parser {
             return [];
         }
         foreach ($result as $annotation) {
-            if ($annotation instanceof Annotations\AbstractAnnotation) {
-                $annotations[] = $annotation;
-            }
+            $annotations[] = $annotation;
         }
         return $annotations;
     }

@@ -271,7 +271,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
             if (isset(static::$nested[$class])) {
                 $property = static::$nested[$class];
                 Logger::notice('Multiple ' . $annotation->identity() . ' not allowed for ' . $this->identity() . " in:\n  " . $annotation->_context . "\n  " . $this->$property->_context);
-            } else {
+            } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$parents)) {
                     $shortNotations = [];

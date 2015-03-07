@@ -31,5 +31,8 @@
             "Swagger\\": "src"
         },
         "files": ["src/functions.php"]
+    },
+    "require-dev": {
+        "zendframework/zend-form": "~2.3"
     }
 }
