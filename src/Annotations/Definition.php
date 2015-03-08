@@ -16,12 +16,13 @@ class Definition extends Schema {
      * @var string
      */
     public $name;
-    
+
     /** @inheritdoc */
     public static $_key = 'name';
-    
+
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Swagger',
     ];
+
 }

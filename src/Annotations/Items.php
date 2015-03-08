@@ -149,4 +149,5 @@ class Items extends AbstractAnnotation {
         }
         return $valid;
     }
+
 }

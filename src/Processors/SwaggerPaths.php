@@ -19,10 +19,10 @@ class SwaggerPaths {
     public function __invoke(Swagger $swagger) {
         $paths = [];
         $operations = [];
-         // Merge @SWG\Paths with the same path.
+        // Merge @SWG\Paths with the same path.
         foreach ($swagger->paths as $annotation) {
             if (empty($annotation->path)) {
-                Logger::notice($annotation->identity().' is missing required property "path" in '.$annotation->_context);
+                Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
                 continue;
             }
             if ($annotation instanceof Path) {

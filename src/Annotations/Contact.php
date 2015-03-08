@@ -32,6 +32,9 @@ class Contact extends AbstractAnnotation {
      */
     public $email;
 
-    public static $_parents = ['Swagger\Annotations\Info'];
+    /** @inheritdoc */
+    public static $_parents = [
+        'Swagger\Annotations\Info'
+    ];
 
 }

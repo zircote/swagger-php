@@ -35,7 +35,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @var array
      */
     public $_unmerged = [];
-    
+
     /**
      * The properties which are required by [the spec](https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
      * @var array
@@ -176,9 +176,13 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 if ($defaultValues[$property] === $value) { // but is the same as the default?
                     continue; // Keep current, no notice
                 }
-                $context = property_exists($object, '_context') ? $object->_context : 'unknown';
                 $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
-                Logger::warning('Skipping field "' . $property . '" in ' . $identity . ' in ' . $context);
+                $context1 = $this->_context;
+                $context2 = property_exists($object, '_context') ? $object->_context : 'unknown';
+                if (is_object($this->$property) && $this->$property instanceof AbstractAnnotation) {
+                    $context1 = $this->$property->_context;
+                }
+                Logger::warning('Multiple definitions for ' . $identity . '->' . $property . "\n     Using: " . $context1 . "\n  Skipping: " . $context2);
             }
         }
     }
@@ -276,7 +280,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
             $class = get_class($annotation);
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
-                Logger::notice('Multiple ' . $annotation->identity() . ' not allowed for ' . $this->identity() . " in:\n  " . $annotation->_context . "\n  " . $this->$property->_context);
+                Logger::notice('Only one @' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$_parents)) {
@@ -321,15 +325,15 @@ abstract class AbstractAnnotation implements JsonSerializable {
             // Report missing required fields (when not a $ref)
             foreach (static::$_required as $property) {
                 if ($this->$property === null || $this->$property === UNDEFINED) {
-                    $message = 'Missing required field "'.$property.'" for '.$this->identity().' in '.$this->_context;
+                    $message = 'Missing required field "' . $property . '" for ' . $this->identity() . ' in ' . $this->_context;
                     foreach (static::$_nested as $class => $nestedProperty) {
                         if ($property == $nestedProperty || (substr($nestedProperty, -2) === '[]' && $property === substr($nestedProperty, 0, -2))) {
                             if ($this instanceof Swagger) {
-                                $message = 'Required @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() not found';
+                                $message = 'Required @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() not found';
                             } elseif (substr($nestedProperty, -2) === '[]') {
-                                $message = $this->identity().' requires at least one @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() in '.$this->_context;
+                                $message = $this->identity() . ' requires at least one @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() in ' . $this->_context;
                             } else {
-                                $message = $this->identity().'requires a @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() in '.$this->_context;
+                                $message = $this->identity() . 'requires a @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() in ' . $this->_context;
                             }
                             break;
                         }

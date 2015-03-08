@@ -107,10 +107,10 @@ class Swagger extends AbstractAnnotation {
      * @var array
      */
     public $externalDocs;
-    
+
     /** @inheritdoc */
     public static $_required = ['swagger', 'info', 'paths'];
-    
+
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
@@ -134,7 +134,7 @@ class Swagger extends AbstractAnnotation {
             $finder = $directory;
         } else {
             $finder = new Finder();
-            if (is_file($directory)) { // Scan a single file?
+            if (is_string($directory) && is_file($directory)) { // Scan a single file?
                 $finder->files()->name(basename($directory))->in(dirname($directory));
             } else { // Scan a directory
                 $finder->files()->in($directory);
@@ -148,5 +148,6 @@ class Swagger extends AbstractAnnotation {
         foreach ($finder as $file) {
             $this->merge($parser->parseFile($file->getPathname()));
         }
-    }        
+    }
+
 }

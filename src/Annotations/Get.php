@@ -11,6 +11,7 @@ namespace Swagger\Annotations;
  */
 class Get extends Operation {
 
+    /** @inheritdoc */
     public $method = 'get';
 
     /** @inheritdoc */
@@ -18,4 +19,5 @@ class Get extends Operation {
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Swagger'
     ];
+
 }

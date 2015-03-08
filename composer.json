@@ -4,7 +4,7 @@
     "license": "Apache2",
     "bin": ["bin/swagger"],
     "description": "Swagger-PHP - Generate interactive documentation for your RESTful API using phpdoc annotations",
-    "keywords": ["json", "api", "service discovery"],
+    "keywords": ["json", "rest", "api", "service discovery"],
     "homepage": "https://github.com/zircote/swagger-php/",
     "authors": [
         {

@@ -45,9 +45,9 @@ class Response extends AbstractAnnotation {
 
     /** @inheritdoc */
     public static $_key = 'name';
-    
+
     /** @inheritdoc */
-    public static $_required = ['description']; 
+    public static $_required = ['description'];
 
     /** @inheritdoc */
     public static $_nested = [

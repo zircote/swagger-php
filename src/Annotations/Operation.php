@@ -21,8 +21,8 @@ abstract class Operation extends AbstractAnnotation {
     public $path;
 
     /**
-     * key in the Swagger "Path Item Object" for this operation
-     * 'get', 'post', put', 'delete', 'options', 'head', 'patch'
+     * Key in the Swagger "Path Item Object" for this operation.
+     * Allowed values: 'get', 'post', put', 'delete', 'options', 'head' and 'patch'
      * @var string
      */
     public $method;
@@ -117,8 +117,8 @@ abstract class Operation extends AbstractAnnotation {
     public $security;
 
     /** @inheritdoc */
-    public static $_required = ['responses']; 
-        
+    public static $_required = ['responses'];
+
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Parameter' => 'parameters[]',
@@ -131,6 +131,15 @@ abstract class Operation extends AbstractAnnotation {
         unset($data->method);
         unset($data->path);
         return $data;
+    }
+
+    /** @inheritdoc */
+    public function identity() {
+        $identity = parent::identity();
+        if ($this->path) {
+            $identity = substr($identity, 0, -1) . 'path="' . $this->path . '")';
+        }
+        return $identity;
     }
 
 }

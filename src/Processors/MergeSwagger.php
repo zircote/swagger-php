@@ -14,6 +14,7 @@ use Swagger\Annotations\Swagger;
 class MergeSwagger {
 
     public function __invoke(Swagger $swagger) {
+        $unmerged = $swagger->_unmerged;
         foreach ($swagger->_unmerged as $i => $annotation) {
             if ($annotation instanceof Swagger) {
                 $paths = $annotation->paths;
@@ -21,7 +22,7 @@ class MergeSwagger {
                 unset($annotation->paths);
                 unset($annotation->definitions);
                 $swagger->mergeProperties($annotation);
-                unset($swagger->_unmerged[$i]);
+                unset($unmerged[$i]);
                 foreach ($paths as $path) {
                     $swagger->paths[] = $path;
                 }
@@ -30,6 +31,7 @@ class MergeSwagger {
                 }
             }
         }
+        $swagger->_unmerged = array_values($unmerged);
     }
 
 }

@@ -11,10 +11,13 @@ namespace Swagger\Annotations;
  */
 class Delete extends Operation {
 
+    /** @inheritdoc */
     public $method = 'delete';
 
+    /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Swagger'
     ];
+
 }

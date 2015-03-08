@@ -25,7 +25,7 @@ AnnotationRegistry::registerLoader(function ($class) {
  * @package    Swagger
  */
 class Parser {
-    
+
     /**
      * List of namespaces that should be detected by the doctrine annotation parser.
      * @var array
@@ -145,7 +145,7 @@ class Parser {
                             'static' => true,
                             'comment' => $comment,
                             'line' => $line
-                            ], $classContext), $annotations);
+                                ], $classContext), $annotations);
                         $comment = false;
                         continue;
                     }
@@ -160,7 +160,7 @@ class Parser {
                             'property' => substr($token[1], 1),
                             'comment' => $comment,
                             'line' => $line
-                            ], $classContext), $annotations);
+                                ], $classContext), $annotations);
                         $comment = false;
                     } elseif ($token[0] === T_FUNCTION) {
                         $token = $this->nextToken($tokens, $parseContext);
@@ -169,7 +169,7 @@ class Parser {
                                 'method' => $token[1],
                                 'comment' => $comment,
                                 'line' => $line
-                                ], $classContext), $annotations);
+                                    ], $classContext), $annotations);
                             $comment = false;
                         }
                     }
@@ -181,7 +181,7 @@ class Parser {
                             'method' => $token[1],
                             'comment' => $comment,
                             'line' => $line
-                            ], $classContext), $annotations);
+                                ], $classContext), $annotations);
                         $comment = false;
                     }
                 }

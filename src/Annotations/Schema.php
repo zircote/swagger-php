@@ -19,6 +19,10 @@ namespace Swagger\Annotations;
  */
 class Schema extends AbstractAnnotation {
 
+    /**
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * @var string
+     */
     public $ref;
     public $title;
     public $description;

@@ -39,7 +39,7 @@ class AbstractAnnotationTest extends SwaggerTestCase {
 )
 END;
         $annotations = $this->parseComment($comment);
-        $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Contact() not allowed for @SWG\Info() in:');
+        $this->assertSwaggerLogEntryStartsWith('Only one @SWG\Contact() allowed for @SWG\Info() multiple found in:');
         $annotations[0]->validate();
     }
 

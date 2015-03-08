@@ -83,4 +83,13 @@ class Path extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_key = 'path';
 
+    /** @inheritdoc */
+    public function identity() {
+        $identity = parent::identity();
+        if ($this->path) {
+            $identity = substr($identity, 0, -1) . 'path="' . $this->path . '")';
+        }
+        return $identity;
+    }
+
 }
