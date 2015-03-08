@@ -117,6 +117,9 @@ abstract class Operation extends AbstractAnnotation {
     public $security;
 
     /** @inheritdoc */
+    public static $_required = ['responses']; 
+        
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]'

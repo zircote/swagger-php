@@ -27,6 +27,9 @@ class License extends AbstractAnnotation {
     public $url;
 
     /** @inheritdoc */
+    public static $_required = ['name'];
+    
+    /** @inheritdoc */
     public static $_parents = ['Swagger\Annotations\Info'];
 
 }

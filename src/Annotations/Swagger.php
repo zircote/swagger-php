@@ -7,6 +7,8 @@
 namespace Swagger\Annotations;
 
 use Swagger\Logger;
+use Swagger\Parser;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @Annotation
@@ -105,7 +107,10 @@ class Swagger extends AbstractAnnotation {
      * @var array
      */
     public $externalDocs;
-
+    
+    /** @inheritdoc */
+    public static $_required = ['swagger', 'info', 'paths'];
+    
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
@@ -117,4 +122,31 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Definition' => 'definitions[]',
     ];
 
+    /**
+     * Parse all annotations in the given directory.
+     *
+     * @param string|array|Finder $directory
+     * @param string|array $exclude
+     */
+    function crawl($directory, $exclude = null) {
+        // Setup Finder
+        if (is_object($directory)) {
+            $finder = $directory;
+        } else {
+            $finder = new Finder();
+            if (is_file($directory)) { // Scan a single file?
+                $finder->files()->name(basename($directory))->in(dirname($directory));
+            } else { // Scan a directory
+                $finder->files()->in($directory);
+            }
+        }
+        if ($exclude !== null) {
+            $finder->exclude($exclude);
+        }
+        // Parse all files
+        $parser = new Parser();
+        foreach ($finder as $file) {
+            $this->merge($parser->parseFile($file->getPathname()));
+        }
+    }        
 }

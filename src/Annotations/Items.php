@@ -122,6 +122,9 @@ class Items extends AbstractAnnotation {
     public $multipleOf;
 
     /** @inheritdoc */
+    public static $_required = ['type'];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
     ];
@@ -135,4 +138,15 @@ class Items extends AbstractAnnotation {
         'Swagger\Annotations\Items'
     ];
 
+    public function validate($skip = array()) {
+        if (in_array($this, $skip, true)) {
+            return true;
+        }
+        $valid = parent::validate($skip);
+        if (!$this->ref && $this->type === 'array' && $this->items === null) {
+            Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            $valid = false;
+        }
+        return $valid;
+    }
 }

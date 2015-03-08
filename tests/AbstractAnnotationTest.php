@@ -23,7 +23,7 @@ class AbstractAnnotationTest extends SwaggerTestCase {
     }
 
     function testUmergedAnnotation() {
-        $swagger = new Swagger([]);
+        $swagger = $this->createSwaggerWithInfo();
         $swagger->merge($this->parseComment('@SWG\Parameter()'));
         $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Parameter(), expected to be inside @SWG\\');
         $swagger->validate();
@@ -32,6 +32,8 @@ class AbstractAnnotationTest extends SwaggerTestCase {
     function testConflictedNesting() {
         $comment = <<<END
 @SWG\Info(
+    title="Info only has one contact field..",
+    version="test",
     @SWG\Contact(name="first"),
     @SWG\Contact(name="second")
 )
@@ -54,12 +56,21 @@ END;
     function testConflictingKey() {
         $comment = <<<END
 @SWG\Response(
-    @SWG\Header(header="X-CSRF-Token",description="first"),
-    @SWG\Header(header="X-CSRF-Token",description="second")
+    description="The headers in response must have unique header values",
+    @SWG\Header(header="X-CSRF-Token", type="string", description="first"),
+    @SWG\Header(header="X-CSRF-Token", type="string", description="second")
 )
 END;
         $annotations = $this->parseComment($comment);
         $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Header() with the same header value in:');
         $annotations[0]->validate();
+    }
+    
+    function testRequiredFields() {
+        $annotations = $this->parseComment('@SWG\Info()');
+        $info = $annotations[0];
+        $this->assertSwaggerLogEntryStartsWith('Missing required field "title" for @SWG\Info() in ');
+        $this->assertSwaggerLogEntryStartsWith('Missing required field "version" for @SWG\Info() in ');
+        $info->validate();
     }
 }

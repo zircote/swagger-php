@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use \Swagger\Logger;
+
 /**
  * @Annotation
  * Describes a single operation parameter.
@@ -13,6 +15,12 @@ namespace Swagger\Annotations;
  * A Swagger "Parameter Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
  */
 class Parameter extends AbstractAnnotation {
+
+    /**
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * @var string
+     */
+    public $ref;
 
     /**
      * The name of the parameter. Parameter names are case sensitive. If in is "path", the name field MUST correspond to the associated path segment from the path field in the Paths Object. See Path Templating for further information. For all other cases, the name corresponds to the parameter name used based on the in property.
@@ -146,6 +154,9 @@ class Parameter extends AbstractAnnotation {
     public $multipleOf;
 
     /** @inheritdoc */
+    public static $_required = ['name', 'in'];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Schema' => 'schema'
@@ -161,5 +172,29 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Path',
     ];
+
+    public function validate($skip = array()) {
+        if (in_array($this, $skip, true)) {
+            return true;
+        }
+        $valid = parent::validate($skip);
+        if (empty($this->ref)) {
+            if ($this->in === 'body') {
+                if ($this->schema === null) {
+                    Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                    $valid = false;
+                }
+            } else {
+                if ($this->type === null) {
+                    Logger::notice('Field "type" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                    $valid = false;
+                } elseif ($this->type === 'array' && $this->items === null) {
+                    Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+                    $valid = false;
+                }
+            }
+        }
+        return $valid;
+    }
 
 }

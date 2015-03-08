@@ -124,15 +124,18 @@ class Header extends Operation {
      */
     public $multipleOf;
 
+    /** @inheritdoc */
+    public static $_required = ['type'];
+
+    /** @inheritdoc */
     public static $_nested = [];
-    /**
-     * Mapping for validate()
-     * @var array
-     */
+
+    /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Response'
     ];
 
+    /** @inheritdoc */
     public static $_key = 'header';
 
 }

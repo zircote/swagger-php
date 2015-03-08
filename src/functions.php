@@ -10,7 +10,6 @@ use Swagger\Annotations\Swagger;
 use Swagger\Processors\ClassProperties;
 use Swagger\Processors\MergeSwagger;
 use Swagger\Processors\SwaggerPaths;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Special value to differentiate between null and undefined.
@@ -26,21 +25,9 @@ define('Swagger\Processors\UNDEFINED', UNDEFINED);
  */
 function scan($directory, $exclude = null) {
     $swagger = new Swagger([]);
-    // Setup Finder
-    $finder = new Finder();
-    if ($exclude !== null) {
-        $finder->exclude($exclude);
-    }
-    if (is_file($directory)) { // Scan a single file?
-        $finder->files()->name(basename($directory))->in(dirname($directory));
-    } else { // Scan a directory
-        $finder->files()->in($directory);
-    }
-    // Parse all files
-    $parser = new Parser();
-    foreach ($finder as $file) {
-        $swagger->merge($parser->parseFile($file->getPathname()));
-    }
+    $swagger->_context = Context::detect(1);
+    // Crawl directory and parse all files
+    $swagger->crawl($directory, $exclude);
     // Post processing
     $processors = [
         new MergeSwagger(),

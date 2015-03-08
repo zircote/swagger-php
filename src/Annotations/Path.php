@@ -60,7 +60,7 @@ class Path extends AbstractAnnotation {
 
     /**
      * A definition of a PATCH operation on this path.
-     * @var Operation
+     * @var Patch
      */
     public $patch;
 

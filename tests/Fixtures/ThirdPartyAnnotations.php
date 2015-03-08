@@ -1,5 +1,6 @@
 <?php
 /**
+ * @SWG\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
@@ -31,7 +32,7 @@ class ThirdPartyAnnotations
     public $email;
     
     /**
-     * @SWG\Get(path="api/3rd-party")
+     * @SWG\Get(path="api/3rd-party", @SWG\Response(name="200", description="a response"))
      */
     function methodWithSwaggerAnnotation() {
         

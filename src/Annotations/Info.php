@@ -48,6 +48,9 @@ class Info extends AbstractAnnotation {
      * @var string
      */
     public $version;
+    
+    /** @inheritdoc */
+    public static $_required = ['title', 'version'];
 
     /** @inheritdoc */
     public static $_nested = [

@@ -9,6 +9,7 @@ namespace Swagger\Processors;
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Swagger;
 use Swagger\Logger;
+use Swagger\Context;
 
 /**
  * Merge & dedupe @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc) into a tree
@@ -38,6 +39,9 @@ class SwaggerPaths {
         foreach ($operations as $operation) {
             if (empty($paths[$operation->path])) {
                 $paths[$operation->path] = new Path(['path' => $operation->path]);
+                $paths[$operation->path]->_context = new Context();
+                $paths[$operation->path]->_context->filename = $operation->_context->filename;
+                $paths[$operation->path]->_context->line = $operation->_context->line;
             }
             $paths[$operation->path]->merge([$operation]);
         }

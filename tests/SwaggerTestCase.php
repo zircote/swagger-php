@@ -6,13 +6,14 @@
 
 namespace SwaggerTests;
 
+use Closure;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Context;
+use Swagger\Logger;
 use Swagger\Parser;
-use \Swagger\Logger;
 
 class SwaggerTestCase extends PHPUnit_Framework_TestCase {
 
@@ -110,6 +111,20 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         $context->line -= 2; // correct generated lines: "<?php\n" and "/**\n"
         return $parser->parseContents("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
+    
+    /**
+     * Create a Swagger object with Info.
+     * (So it will pass validation.)
+     */
+    protected function createSwaggerWithInfo() {
+        $swagger = new Swagger([
+            'info' => new \Swagger\Annotations\Info([
+                'title' => 'Swagger-PHP Test-API',
+                'version' => 'test'
+            ])
+        ]);
+        return $swagger;
+    }
 
     /**
      * Sorts the object to improve matching and debugging the differences.
@@ -166,5 +181,5 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         }
         return (object) $data;
     }
-
+    
 }

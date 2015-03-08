@@ -35,6 +35,12 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @var array
      */
     public $_unmerged = [];
+    
+    /**
+     * The properties which are required by [the spec](https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
+     * @var array
+     */
+    public static $_required = [];
 
     /**
      * Declarative mapping of Annotation types to properties.
@@ -308,6 +314,27 @@ abstract class AbstractAnnotation implements JsonSerializable {
                         }
                     }
                     $keys[$i] = $item;
+                }
+            }
+        }
+        if (empty($this->ref)) {
+            // Report missing required fields (when not a $ref)
+            foreach (static::$_required as $property) {
+                if ($this->$property === null || $this->$property === UNDEFINED) {
+                    $message = 'Missing required field "'.$property.'" for '.$this->identity().' in '.$this->_context;
+                    foreach (static::$_nested as $class => $nestedProperty) {
+                        if ($property == $nestedProperty || (substr($nestedProperty, -2) === '[]' && $property === substr($nestedProperty, 0, -2))) {
+                            if ($this instanceof Swagger) {
+                                $message = 'Required @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() not found';
+                            } elseif (substr($nestedProperty, -2) === '[]') {
+                                $message = $this->identity().' requires at least one @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() in '.$this->_context;
+                            } else {
+                                $message = $this->identity().'requires a @'. str_replace('Swagger\\Annotations\\', 'SWG\\', $class).'() in '.$this->_context;
+                            }
+                            break;
+                        }
+                    }
+                    Logger::notice($message);
                 }
             }
         }

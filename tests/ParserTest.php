@@ -29,7 +29,7 @@ class ParserTest extends SwaggerTestCase {
         Parser::$whitelist = ['Swagger\\Annotations\\'];
         $parser = new Parser();
         $annotations = $parser->parseFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
-        $this->assertCount(1, $annotations, 'Only read the @SWG annotation, skip the others.');
+        $this->assertCount(2, $annotations, 'Only read the @SWG annotations, skip the others.');
         // Allow Swagger to parse 3rd party annotations
         // might contain usefull info that could be extracted with a custom processor
         Parser::$whitelist[] = 'Zend\\Form\\Annotation';

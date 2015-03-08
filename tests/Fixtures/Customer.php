@@ -1,5 +1,6 @@
 <?php
 /**
+ * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
  * @SWG\Definition()
  */
 class Customer {
