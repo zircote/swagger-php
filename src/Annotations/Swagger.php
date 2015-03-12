@@ -120,6 +120,7 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Patch' => 'paths[]',
         'Swagger\Annotations\Delete' => 'paths[]',
         'Swagger\Annotations\Definition' => 'definitions[]',
+        'Swagger\Annotations\Tag' => 'tags[]',
     ];
 
     /**
