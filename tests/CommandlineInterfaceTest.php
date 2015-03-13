@@ -8,6 +8,13 @@ namespace SwaggerTests;
 
 class CommandlineInterfaceTest extends SwaggerTestCase {
 
+    protected function setUp() {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped();
+        }
+        return parent::setUp();
+    }
+
     public function testPipe() {
         exec(__DIR__ . '/../bin/swagger ' . escapeshellarg(__DIR__ . '/../Examples/swagger-spec/petstore-simple') . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);

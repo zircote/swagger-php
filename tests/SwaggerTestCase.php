@@ -61,11 +61,13 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
             $this->assertSame($expectedType, $actualType, $message);
         };
     }
+
     public function assertSwaggerLogEntry($expectedEntry, $message = '') {
         $this->expectedLogMessages[] = function ($actualEntry, $type) use ($expectedEntry, $message) {
             $this->assertSame($expectedEntry, $actualEntry, $message);
         };
     }
+
     public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '') {
         $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
             $this->assertStringStartsWith($entryPrefix, $entry, $message);
@@ -95,7 +97,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
     }
 
     protected function tearDown() {
-        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages).' Swagger\Logger messagges were not triggered');
+        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messagges were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         return parent::tearDown();
     }
@@ -111,7 +113,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         $context->line -= 2; // correct generated lines: "<?php\n" and "/**\n"
         return $parser->parseContents("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
-    
+
     /**
      * Create a Swagger object with Info.
      * (So it will pass validation.)
@@ -121,7 +123,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
             'info' => new \Swagger\Annotations\Info([
                 'title' => 'Swagger-PHP Test-API',
                 'version' => 'test'
-            ])
+                    ])
         ]);
         return $swagger;
     }
@@ -181,5 +183,5 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         }
         return (object) $data;
     }
-    
+
 }
