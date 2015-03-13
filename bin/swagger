@@ -96,7 +96,11 @@ if (count($paths) === 0) {
     $paths[] = getcwd();
 }
 if (class_exists('Swagger\Logger') === false) {
-    require_once(__DIR__.'/../vendor/autoload.php');
+    if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
+        require_once(__DIR__.'/../vendor/autoload.php');
+    } else {
+        require_once(realpath(__DIR__.'/../../../').'/autoload.php');
+    }
 }
 \Swagger\Logger::getInstance()->log = function ($entry, $type) {
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
@@ -126,7 +130,7 @@ error_log('----------------------'.  str_repeat('-', strlen($counter)));
 error_log($counter.' operations documented');
 error_log('----------------------'.  str_repeat('-', strlen($counter)));
 if ($options['output']) {
-    file_put_contents($options['output'], $swagger);
+    $swagger->saveAs($options['output']);
 } else {
     echo $swagger;
     error_log('');

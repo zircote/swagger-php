@@ -62,7 +62,8 @@ class Response extends AbstractAnnotation {
         'Swagger\Annotations\Post',
         'Swagger\Annotations\Put',
         'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Delete'
+        'Swagger\Annotations\Delete',
+        'Swagger\Annotations\Swagger'
     ];
 
 }

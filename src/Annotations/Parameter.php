@@ -171,6 +171,7 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Path',
+        'Swagger\Annotations\Swagger'
     ];
 
     public function validate($skip = array()) {

@@ -6,7 +6,6 @@
 
 namespace Swagger\Annotations;
 
-use Swagger\Logger;
 use Swagger\Parser;
 use Symfony\Component\Finder\Finder;
 
@@ -74,13 +73,13 @@ class Swagger extends AbstractAnnotation {
 
     /**
      * An object to hold parameters that can be used across operations. This property does not define global parameters for all operations.
-     * @var array
+     * @var Parameter[]
      */
     public $parameters;
 
     /**
      * An object to hold responses that can be used across operations. This property does not define global responses for all operations.
-     * @var array
+     * @var Response[]
      */
     public $responses;
 
@@ -98,7 +97,7 @@ class Swagger extends AbstractAnnotation {
 
     /**
      * A list of tags used by the specification with additional metadata. The order of the tags can be used to reflect on their order by the parsing tools. Not all tags that are used by the Operation Object must be declared. The tags that are not declared may be organized randomly or based on the tools' logic. Each tag name in the list MUST be unique.
-     * @var array
+     * @var Tag[]
      */
     public $tags;
 
@@ -121,6 +120,8 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Delete' => 'paths[]',
         'Swagger\Annotations\Definition' => 'definitions[]',
         'Swagger\Annotations\Tag' => 'tags[]',
+        'Swagger\Annotations\Parameter' => 'parameters[]',
+        'Swagger\Annotations\Response' => 'responses[]',
     ];
 
     /**
@@ -129,7 +130,7 @@ class Swagger extends AbstractAnnotation {
      * @param string|array|Finder $directory
      * @param string|array $exclude
      */
-    function crawl($directory, $exclude = null) {
+    public function crawl($directory, $exclude = null) {
         // Setup Finder
         if (is_object($directory)) {
             $finder = $directory;
@@ -148,6 +149,12 @@ class Swagger extends AbstractAnnotation {
         $parser = new Parser();
         foreach ($finder as $file) {
             $this->merge($parser->parseFile($file->getPathname()));
+        }
+    }
+    
+    public function saveAs($filename) {
+        if (file_put_contents($filename, $this) === false) {
+            throw new Exception('Failed to saveAs("'.$filename.'")');
         }
     }
 
