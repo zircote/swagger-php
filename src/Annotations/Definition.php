@@ -18,6 +18,11 @@ class Definition extends Schema {
     public $name;
 
     /** @inheritdoc */
+    public static $_types = [
+        'name' => 'string'
+    ];
+
+    /** @inheritdoc */
     public static $_key = 'name';
 
     /** @inheritdoc */

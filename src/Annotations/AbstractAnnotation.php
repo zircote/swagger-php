@@ -8,6 +8,7 @@ namespace Swagger\Annotations;
 
 use JsonSerializable;
 use stdClass;
+use Exception;
 use Swagger\Context;
 use Swagger\Logger;
 use Swagger\Parser;
@@ -41,6 +42,17 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @var array
      */
     public static $_required = [];
+
+    /**
+     * Specify the type of the property.
+     * Examples:
+     *   'name' => 'string' // a string
+     *   'required' => 'boolean', // true or false
+     *   'tags' => '[string]', // array containing strings
+     *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
+     * @var array
+     */
+    public static $_types = [];
 
     /**
      * Declarative mapping of Annotation types to properties.
@@ -311,7 +323,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
                                 continue;
                             }
                             if (isset($keys[$item->$keyProperty])) {
-                                Logger::notice('Multiple ' . $item->identity() . " with the same header value in:\n  " . $item->_context . "\n  " . $keys[$item->$keyProperty]->_context);
+                                Logger::notice('Multiple ' . $item->_identity([]) . ' with the same ' . $keyProperty . '="' . $item->$keyProperty . "\":\n  " . $item->_context . "\n  " . $keys[$item->$keyProperty]->_context);
                             }
                             $keys[$item->$keyProperty] = $item;
                             continue;
@@ -340,6 +352,25 @@ abstract class AbstractAnnotation implements JsonSerializable {
                     }
                     Logger::notice($message);
                 }
+            }
+        }
+        // Report invalid types
+        foreach (static::$_types as $property => $type) {
+            $value = $this->$property;
+            if ($value === null || $value === UNDEFINED) {
+                continue;
+            }
+            if (is_string($type)) {
+                if ($this->validateType($type, $value) === false) {
+                    $valid = false;
+                    Logger::notice($this->identity() . '->' . $property . ' is a "' . gettype($value) . '", expecting a "' . $type . '" in ' . $this->_context);
+                }
+            } elseif (is_array($type)) { // enum?
+                if (in_array($value, $type) === false) {
+                    Logger::notice($this->identity() . '->' . $property . ' is invalid, expecting "' . implode('", "', $type) . '" in ' . $this->_context);
+                }
+            } else {
+                throw new Exception('Invalid ' . get_class($this) . '::$_types[' . $property . ']');
             }
         }
         return self::_validate($this, $skip) ? $valid : false;
@@ -385,7 +416,74 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @return string
      */
     public function identity() {
-        return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '()';
+        $properties = [];
+        if (static::$_key) {
+            $properties[] = static::$_key;
+        }
+        return $this->_identity($properties);
+    }
+
+    /**
+     * Helper for generating the identity()
+     * @param array $properties
+     */
+    protected function _identity($properties) {
+        $fields = [];
+        foreach ($properties as $property) {
+            $value = $this->$property;
+            if ($value !== null && $value !== UNDEFINED) {
+                $fields[] = $property . '=' . (is_string($value) ? '"' . $value . '"' : $value);
+            }
+        }
+        return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '(' . implode(',', $fields) . ')';
+    }
+
+    private function validateType($type, $value) {
+        if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type? 
+            if ($this->validateType('array', $value) === false) {
+                return false;
+            }
+            $itemType = substr($type, 1, -1);
+            foreach ($value as $i => $item) {
+                if ($this->validateType($itemType, $item) === false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        switch ($type) {
+
+            case 'string':
+                return is_string($value);
+
+            case 'boolean':
+                return is_bool($value);
+
+            case 'integer':
+                return is_int($value);
+
+            case 'number':
+                return is_numeric($value);
+
+            case 'array':
+                if (is_array($value) === false) {
+                    return false;
+                }
+                $count = 0;
+                foreach ($value as $i => $item) {
+                    if ($count !== $i) { // not a array, but a hash/map
+                        return false;
+                    }
+                    $count++;
+                }
+                return true;
+
+            case 'scheme':
+                return in_array($value, ['http', 'https', 'ws', 'wss']);
+
+            default:
+                throw new Exception('Invalid type "' . $type . '"');
+        }
     }
 
 }

@@ -35,6 +35,12 @@ class Tag extends AbstractAnnotation {
     public static $_required = ['name'];
 
     /** @inheritdoc */
+    public static $_types = [
+        'name' => 'string',
+        'description' => 'string',
+    ];
+
+    /** @inheritdoc */
     public static $_parents = ['Swagger\Annotations\Swagger'];
 
 }

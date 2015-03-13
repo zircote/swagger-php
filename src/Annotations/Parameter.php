@@ -157,6 +157,27 @@ class Parameter extends AbstractAnnotation {
     public static $_required = ['name', 'in'];
 
     /** @inheritdoc */
+    public static $_types = [
+        'name' => 'string',
+        'in' => ['query', 'header', 'path', 'formData', 'body'],
+        'description' => 'string',
+        'required' => 'boolean',
+        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
+        'maximum' => 'number',
+        'exclusiveMaximum' => 'boolean',
+        'minimum' => 'number',
+        'exclusiveMinimum' => 'boolean',
+        'maxLength' => 'integer',
+        'minLength' => 'integer',
+        'pattern' => 'string',
+        'maxItems' => 'integer',
+        'minItems' => 'integer',
+        'uniqueItems' => 'boolean',
+        'multipleOf' => 'integer',
+    ];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Schema' => 'schema'
@@ -186,16 +207,25 @@ class Parameter extends AbstractAnnotation {
                     $valid = false;
                 }
             } else {
+                $validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'];
                 if ($this->type === null) {
-                    Logger::notice('Field "type" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                    Logger::notice($this->identity() . '->type is required when ' . $this->_identity([]) . '->in == "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 } elseif ($this->type === 'array' && $this->items === null) {
-                    Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+                    Logger::notice($this->identity() . '->items required when ' . $this->_identity([]) . '->type == "array" in ' . $this->_context);
                     $valid = false;
+                } elseif (in_array($this->type, $validTypes) === false) {
+                    $valid = false;
+                    Logger::notice($this->identity() . '->type must be "' . implode('", "', $validTypes) . '" when ' . $this->_identity([]) . '->in != "body" in ' . $this->_context);
                 }
             }
         }
         return $valid;
+    }
+
+    /** @inheritdoc */
+    public function identity() {
+        return parent::_identity(['name', 'in']);
     }
 
 }

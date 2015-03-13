@@ -125,6 +125,24 @@ class Items extends AbstractAnnotation {
     public static $_required = ['type'];
 
     /** @inheritdoc */
+    public static $_types = [
+        'type' => ['string', 'number', 'integer', 'boolean', 'array', 'file'],
+        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
+        'maximum' => 'number',
+        'exclusiveMaximum' => 'boolean',
+        'minimum' => 'number',
+        'exclusiveMinimum' => 'boolean',
+        'maxLength' => 'integer',
+        'minLength' => 'integer',
+        'pattern' => 'string',
+        'maxItems' => 'integer',
+        'minItems' => 'integer',
+        'uniqueItems' => 'boolean',
+        'multipleOf' => 'integer',
+    ];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
     ];

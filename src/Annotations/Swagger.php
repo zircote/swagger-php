@@ -123,6 +123,15 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]',
     ];
+    
+    /** @inheritdoc */
+    public static $_types = [
+        'host' => 'string',
+        'basePath' => 'string',
+        'schemes' => '[scheme]',
+        'consumes' => '[string]',
+        'produces' => '[string]',
+    ];
 
     /**
      * Parse all annotations in the given directory.
@@ -151,7 +160,11 @@ class Swagger extends AbstractAnnotation {
             $this->merge($parser->parseFile($file->getPathname()));
         }
     }
-    
+
+    /**
+     * Save the swagger documentation to a file.
+     * @param string $filename
+     */
     public function saveAs($filename) {
         if (file_put_contents($filename, $this) === false) {
             throw new Exception('Failed to saveAs("'.$filename.'")');

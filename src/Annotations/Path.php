@@ -71,6 +71,11 @@ class Path extends AbstractAnnotation {
     public $parameters;
 
     /** @inheritdoc */
+    public static $_types = [
+        'path' => 'string'
+    ];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Get' => 'get',
         'Swagger\Annotations\Post' => 'post',
@@ -82,14 +87,5 @@ class Path extends AbstractAnnotation {
 
     /** @inheritdoc */
     public static $_key = 'path';
-
-    /** @inheritdoc */
-    public function identity() {
-        $identity = parent::identity();
-        if ($this->path) {
-            $identity = substr($identity, 0, -1) . 'path="' . $this->path . '")';
-        }
-        return $identity;
-    }
 
 }

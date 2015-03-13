@@ -6,8 +6,6 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\Swagger;
-
 class AbstractAnnotationTest extends SwaggerTestCase {
 
     function testVendorFields() {
@@ -62,10 +60,10 @@ END;
 )
 END;
         $annotations = $this->parseComment($comment);
-        $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Header() with the same header value in:');
+        $this->assertSwaggerLogEntryStartsWith('Multiple @SWG\Header() with the same header="X-CSRF-Token":');
         $annotations[0]->validate();
     }
-    
+
     function testRequiredFields() {
         $annotations = $this->parseComment('@SWG\Info()');
         $info = $annotations[0];
@@ -73,4 +71,25 @@ END;
         $this->assertSwaggerLogEntryStartsWith('Missing required field "version" for @SWG\Info() in ');
         $info->validate();
     }
+
+    function testTypeValidation() {
+        $comment = <<<END
+@SWG\Parameter(
+    name=123, 
+    type="strig", 
+    in="dunno", 
+    required="maybe",
+    maximum="twentytwo"
+)
+END;
+        $annotations = $this->parseComment($comment);
+        $parameter = $annotations[0];
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->in is invalid, expecting "query", "header", "path", "formData", "body" in ');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->maximum is a "string", expecting a "number" in ');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @SWG\Parameter()->in != "body" in ');
+        $parameter->validate();
+    }
+
 }

@@ -120,6 +120,19 @@ abstract class Operation extends AbstractAnnotation {
     public static $_required = ['responses'];
 
     /** @inheritdoc */
+    public static $_types = [
+        'path' => 'string',
+        'method' => 'string',
+        'tags' => '[string]',
+        'summary' => 'string',
+        'description' => 'string',
+        'consumes' => '[string]',
+        'produces' => '[string]',
+        'schemes' => '[scheme]',
+        'deprecated' => 'boolean'
+    ];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]'
@@ -131,15 +144,6 @@ abstract class Operation extends AbstractAnnotation {
         unset($data->method);
         unset($data->path);
         return $data;
-    }
-
-    /** @inheritdoc */
-    public function identity() {
-        $identity = parent::identity();
-        if ($this->path) {
-            $identity = substr($identity, 0, -1) . 'path="' . $this->path . '")';
-        }
-        return $identity;
     }
 
 }

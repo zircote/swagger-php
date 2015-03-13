@@ -50,6 +50,11 @@ class Response extends AbstractAnnotation {
     public static $_required = ['description'];
 
     /** @inheritdoc */
+    public static $_types = [
+        'description' => 'string',
+    ];
+
+    /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Schema' => 'schema',
         'Swagger\Annotations\Header' => 'headers[]'

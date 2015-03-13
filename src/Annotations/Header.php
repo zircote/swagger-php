@@ -11,7 +11,7 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Header Object" https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#headerObject
  */
-class Header extends Operation {
+class Header extends AbstractAnnotation {
 
     /**
      * @var string
@@ -126,6 +126,25 @@ class Header extends Operation {
 
     /** @inheritdoc */
     public static $_required = ['type'];
+
+    /** @inheritdoc */
+    public static $_types = [
+        'header' => 'string',
+        'description' => 'string',
+        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
+        'maximum' => 'number',
+        'exclusiveMaximum' => 'boolean',
+        'minimum' => 'number',
+        'exclusiveMinimum' => 'boolean',
+        'maxLength' => 'integer',
+        'minLength' => 'integer',
+        'pattern' => 'string',
+        'maxItems' => 'integer',
+        'minItems' => 'integer',
+        'uniqueItems' => 'boolean',
+        'multipleOf' => 'integer',
+    ];
 
     /** @inheritdoc */
     public static $_nested = [];
