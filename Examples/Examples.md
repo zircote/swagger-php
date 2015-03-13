@@ -7,3 +7,7 @@ Using swagger-php to generate the [examples in the spec](https://github.com/swag
 The smallest example, contains only 1 operation.
 
 ## petstore-simple
+An example with 4 operations on 2 paths.
+
+## petstore-with-external-docs
+Very similar to petstore-simple but with externalDocs

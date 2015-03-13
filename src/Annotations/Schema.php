@@ -160,7 +160,7 @@ class Schema extends AbstractAnnotation {
 
     /**
      * Additional external documentation for this schema.
-     * @var array
+     * @var ExternalDocumentation
      */
     public $externalDocs;
 
@@ -198,7 +198,8 @@ class Schema extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
-        'Swagger\Annotations\Property' => 'properties[]'
+        'Swagger\Annotations\Property' => 'properties[]',
+        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
     ];
 
     /** @inheritdoc */

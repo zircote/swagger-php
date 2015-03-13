@@ -103,7 +103,7 @@ class Swagger extends AbstractAnnotation {
 
     /**
      * Additional external documentation.
-     * @var array
+     * @var ExternalDocumentation
      */
     public $externalDocs;
 
@@ -122,6 +122,7 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Tag' => 'tags[]',
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]',
+        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
     ];
     
     /** @inheritdoc */

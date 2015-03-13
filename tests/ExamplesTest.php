@@ -29,6 +29,7 @@ class ExamplesTest extends SwaggerTestCase {
         return [
             ['swagger-spec/petstore', 'petstore.json'],
             ['swagger-spec/petstore-simple', 'petstore-simple.json'],
+            ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
         ];
     }
 

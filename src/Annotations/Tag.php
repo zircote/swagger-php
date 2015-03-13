@@ -27,7 +27,7 @@ class Tag extends AbstractAnnotation {
 
     /**
      * Additional external documentation for this tag.
-     * @var array
+     * @var ExternalDocumentation
      */
     public $externalDocs;
 
@@ -41,6 +41,13 @@ class Tag extends AbstractAnnotation {
     ];
 
     /** @inheritdoc */
-    public static $_parents = ['Swagger\Annotations\Swagger'];
+    public static $_parents = [
+        'Swagger\Annotations\Swagger'
+    ];
+
+    /** @inheritdoc */
+    public static $_nested = [
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
+    ];
 
 }

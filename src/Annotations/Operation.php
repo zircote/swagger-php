@@ -47,7 +47,7 @@ abstract class Operation extends AbstractAnnotation {
 
     /**
      * Additional external documentation for this operation.
-     * @var array
+     * @var ExternalDocumentation
      */
     public $externalDocs;
 
@@ -135,7 +135,8 @@ abstract class Operation extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Parameter' => 'parameters[]',
-        'Swagger\Annotations\Response' => 'responses[]'
+        'Swagger\Annotations\Response' => 'responses[]',
+        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
     ];
 
     /** @inheritdoc */
