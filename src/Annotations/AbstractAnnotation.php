@@ -200,7 +200,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     }
 
     public function __toString() {
-        return json_encode($this, JSON_PRETTY_PRINT);
+        return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     public function __debugInfo() {
