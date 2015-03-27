@@ -15,8 +15,8 @@ class CommandlineInterfaceTest extends SwaggerTestCase {
         return parent::setUp();
     }
 
-    public function testPipe() {
-        exec(__DIR__ . '/../bin/swagger ' . escapeshellarg(__DIR__ . '/../Examples/swagger-spec/petstore-simple') . ' 2> /dev/null', $output, $retval);
+    public function testStdout() {
+        exec(__DIR__ . '/../bin/swagger --stdout ' . escapeshellarg(__DIR__ . '/../Examples/swagger-spec/petstore-simple') . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
         $json = json_decode(implode("\n", $output));
         $this->assertSame(JSON_ERROR_NONE, json_last_error());
