@@ -10,7 +10,7 @@ class PetsController {
      *     summary="finds pets in the system",
      *     tags={"Pet Operations"},
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -19,7 +19,7 @@ class PetsController {
      *         @SWG\Header(header="x-expires", type="string")
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/Error"

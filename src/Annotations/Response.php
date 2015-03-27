@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Logger;
+
 /**
  * @Annotation
  *
@@ -15,9 +17,10 @@ class Response extends AbstractAnnotation {
 
     /**
      * The key into Operations->reponses array.
-     * @var string
+     * 
+     * @var string a HTTP Status Code or "default" 
      */
-    public $name;
+    public $status;
 
     /**
      * A short description of the response. GFM syntax can be used for rich text representation.
@@ -44,7 +47,7 @@ class Response extends AbstractAnnotation {
     public $examples;
 
     /** @inheritdoc */
-    public static $_key = 'name';
+    public static $_key = 'status';
 
     /** @inheritdoc */
     public static $_required = ['description'];
@@ -70,5 +73,17 @@ class Response extends AbstractAnnotation {
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Swagger'
     ];
+
+    public function validate($skip = array()) {
+        if (in_array($this, $skip, true)) {
+            return true;
+        }
+        $valid = parent::validate($skip);
+        if ($this->status !== null && $this->status !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $this->status) === 0) {
+            Logger::notice('Invalid value "' . $this->status . '" for ' . $this->_identity([]) . '->status, expecting "default" or a HTTP Status Code in '.$this->_context);
+        }
+        return $valid;
+
+    }
 
 }

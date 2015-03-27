@@ -26,12 +26,12 @@ class PetWithDocsController {
      *         @SWG\Schema(ref="#/definitions/NewPet"),
      *     ),
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
@@ -61,12 +61,12 @@ class PetWithDocsController {
      *         "text/xml"
      *     },
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
@@ -100,7 +100,7 @@ class PetWithDocsController {
      *         format="int32"
      *     ),
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -108,7 +108,7 @@ class PetWithDocsController {
      *         ),
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/ErrorModel"
@@ -138,11 +138,11 @@ class PetWithDocsController {
      *         type="integer"
      *     ),
      *     @SWG\Response(
-     *         name=204,
+     *         status=204,
      *         description="pet deleted"
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )

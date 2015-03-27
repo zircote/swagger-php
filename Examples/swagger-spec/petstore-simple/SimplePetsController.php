@@ -28,7 +28,7 @@ class SimplePetsController {
      *         format="int32"
      *     ),
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -36,7 +36,7 @@ class SimplePetsController {
      *         ),
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/errorModel"
@@ -68,12 +68,12 @@ class SimplePetsController {
      *         "text/xml"
      *     },
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/pet")
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )
@@ -97,12 +97,12 @@ class SimplePetsController {
      *         @SWG\Schema(ref="#/definitions/petInput"),
      *     ),
      *     @SWG\Response(
-     *         name=200,
+     *         status=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/pet")
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )
@@ -140,11 +140,11 @@ class SimplePetsController {
      *         type="integer"
      *     ),
      *     @SWG\Response(
-     *         name=204,
+     *         status=204,
      *         description="pet deleted"
      *     ),
      *     @SWG\Response(
-     *         name="default",
+     *         status="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )
