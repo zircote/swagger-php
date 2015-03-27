@@ -1,8 +1,10 @@
 #!/usr/bin/env php
 <?php
+error_reporting(E_ALL);
 // Possible options and their default values.
 $options = array(
-    'output' => null,
+    'output' => 'swagger.json',
+    'stdout' => false,
     'exclude' => null,
     'bootstrap' => false,
     'help' => false,
@@ -77,9 +79,10 @@ if ($error) {
 if ($options['help']) {
     $help = <<<EOF
 
-usage: swagger [/path/to/project] [--output index.json] ...
+usage: swagger [/path/to/project] [--output ./swagger.json] ...
 
   --output (-o)     Path to store the generated documentation.
+  --stdout          Write to the standard output.
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
@@ -102,6 +105,37 @@ if (class_exists('Swagger\Logger') === false) {
         require_once(realpath(__DIR__.'/../../../').'/autoload.php');
     }
 }
+$errorTypes = [
+    E_ERROR => 'ERROR',
+    E_WARNING => 'WARNING',
+    E_PARSE => 'PARSE',
+    E_NOTICE => 'NOTICE',
+    E_CORE_ERROR => 'CORE_ERROR',
+    E_CORE_WARNING => 'CORE_WARNING',
+    E_COMPILE_ERROR => 'COMPILE_ERROR',
+    E_COMPILE_WARNING => 'COMPILE_WARNING',
+    E_USER_ERROR => 'ERROR',
+    E_USER_WARNING => 'WARNING',
+    E_USER_NOTICE => 'NOTICE',
+    E_STRICT => 'STRICT',
+    E_RECOVERABLE_ERROR => 'RECOVERABLE_ERROR',
+    E_DEPRECATED => 'DEPRECATED',
+    E_USER_DEPRECATED => 'DEPRECATED'
+];
+set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes) {
+    if (!(error_reporting() & $errno)) {
+        return; // This error code is not included in error_reporting
+    }
+    $type = @$errorTypes[$errno] ?: 'ERROR';
+    error_log('[' . $type . '] '.$errstr .' in '.$file.' on line '.$line);
+    if ($type === 'ERROR') {
+        exit($errno);
+    }
+});
+set_exception_handler(function ($exception) {
+    error_log('[EXCEPTION] '.$exception->getMessage() .' in '.$exception->getFile().' on line '.$exception->getLine());
+    exit($exception->getCode() ?: 1);
+});
 \Swagger\Logger::getInstance()->log = function ($entry, $type) {
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
     if ($entry instanceof Exception) {
@@ -129,9 +163,13 @@ foreach ($swagger->paths as $path) {
 error_log('----------------------'.  str_repeat('-', strlen($counter)));
 error_log($counter.' operations documented');
 error_log('----------------------'.  str_repeat('-', strlen($counter)));
-if ($options['output']) {
-    $swagger->saveAs($options['output']);
-} else {
+if ($options['stdout']) {
     echo $swagger;
-    error_log('');
+} else {
+    if (is_dir($options['output'])) {
+        $options['output'] .= '/swagger.json';
+    }
+    $swagger->saveAs($options['output']);
+    error_log('Written to '.realpath($options['output']));
 }
+error_log('');

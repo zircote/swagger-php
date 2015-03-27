@@ -7,6 +7,7 @@
 namespace Swagger\Annotations;
 
 use Swagger\Parser;
+use Exception;
 use Symfony\Component\Finder\Finder;
 
 /**
