@@ -80,7 +80,7 @@ Placing multiple annotation of the same type will result in an array or object.
  *   ),
  *   @SWG\Response(
  *     status="default",
- *     description="unexpected error"
+ *     description="an ""unexpected"" error"
  *   )
  * )
  */

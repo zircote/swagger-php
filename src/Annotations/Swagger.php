@@ -86,7 +86,7 @@ class Swagger extends AbstractAnnotation {
 
     /**
      * Security scheme definitions that can be used across the specification.
-     * @var array
+     * @var SecurityScheme[]
      */
     public $securityDefinitions;
 
@@ -123,9 +123,10 @@ class Swagger extends AbstractAnnotation {
         'Swagger\Annotations\Tag' => 'tags[]',
         'Swagger\Annotations\Parameter' => 'parameters[]',
         'Swagger\Annotations\Response' => 'responses[]',
-        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
+        'Swagger\Annotations\SecurityScheme' => 'securityDefinitions[]'
     ];
-    
+
     /** @inheritdoc */
     public static $_types = [
         'host' => 'string',
@@ -169,7 +170,7 @@ class Swagger extends AbstractAnnotation {
      */
     public function saveAs($filename) {
         if (file_put_contents($filename, $this) === false) {
-            throw new Exception('Failed to saveAs("'.$filename.'")');
+            throw new Exception('Failed to saveAs("' . $filename . '")');
         }
     }
 

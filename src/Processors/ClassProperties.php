@@ -8,8 +8,9 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Swagger;
-use \Swagger\Annotations\Definition;
-use \Swagger\Annotations\Items;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Items;
+use Swagger\Context;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
@@ -53,6 +54,9 @@ class ClassProperties {
             if ($definition->name === null && $definition->_context->is('class')) {
                 $class = explode('\\', $definition->_context->class);
                 $definition->name = array_pop($class);
+                // if ($definition->type === null) {
+                //     $definition->type = 'object';
+                // }
             }
 
             // Use the property names for @SWG\Property()
@@ -91,14 +95,16 @@ class ClassProperties {
                         }
                         $type = $type[0];
                     }
+                    $annotation->type = $type;
+                } else {
+                    $annotation->_context->type = $type; // @todo Create $ref if the class is annotated with @SWG\Definition
                 }
                 if ($typeMatches[2] === '[]') {
-                    $annotation->type = 'array';
-                    if ($annotation->items === null) {
-                        $annotation->items = new Items(['type' => $type]);
+                    if ($annotation->items === null && $annotation->type !== null) {
+                        $annotation->items = new Items(['type' => $annotation->type]);
+                        $annotation->items->_context = new Context(['generated' => true], $annotation->_context);
                     }
-                } else {
-                    $annotation->type = $type;
+                    $annotation->type = 'array';
                 }
             }
         }

@@ -85,7 +85,7 @@ END;
         $annotations = $this->parseComment($comment);
         $parameter = $annotations[0];
         $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
-        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->in is invalid, expecting "query", "header", "path", "formData", "body" in ');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "formData", "body" in ');
         $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
         $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->maximum is a "string", expecting a "number" in ');
         $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @SWG\Parameter()->in != "body" in ');

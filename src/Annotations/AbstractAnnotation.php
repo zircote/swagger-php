@@ -367,7 +367,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 }
             } elseif (is_array($type)) { // enum?
                 if (in_array($value, $type) === false) {
-                    Logger::notice($this->identity() . '->' . $property . ' is invalid, expecting "' . implode('", "', $type) . '" in ' . $this->_context);
+                    Logger::notice($this->identity() . '->' . $property . ' "' . $value . '" is invalid, expecting "' . implode('", "', $type) . '" in ' . $this->_context);
                 }
             } else {
                 throw new Exception('Invalid ' . get_class($this) . '::$_types[' . $property . ']');

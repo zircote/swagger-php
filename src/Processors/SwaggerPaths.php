@@ -39,9 +39,7 @@ class SwaggerPaths {
         foreach ($operations as $operation) {
             if (empty($paths[$operation->path])) {
                 $paths[$operation->path] = new Path(['path' => $operation->path]);
-                $paths[$operation->path]->_context = new Context();
-                $paths[$operation->path]->_context->filename = $operation->_context->filename;
-                $paths[$operation->path]->_context->line = $operation->_context->line;
+                $paths[$operation->path]->_context = new Context(['generated' => true], $operation->_context);
             }
             $paths[$operation->path]->merge([$operation]);
         }

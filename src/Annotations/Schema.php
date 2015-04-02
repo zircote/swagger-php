@@ -154,7 +154,7 @@ class Schema extends AbstractAnnotation {
 
     /**
      * This MAY be used only on properties schemas. It has no effect on root schemas. Adds Additional metadata to describe the XML representation format of this property.
-     * @var array
+     * @var Xml
      */
     public $xml;
 
@@ -199,7 +199,8 @@ class Schema extends AbstractAnnotation {
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => 'properties[]',
-        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
+        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs',
+        'Swagger\Annotations\Xml' => 'xml',
     ];
 
     /** @inheritdoc */

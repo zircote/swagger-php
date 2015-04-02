@@ -44,8 +44,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
             $this->fail('Failed to encode swagger object');
         }
         $actual = json_decode($json);
-        $expectedJson = json_encode($this->sorted($expected, $expectedFile), JSON_PRETTY_PRINT);
-        $actualJson = json_encode($this->sorted($actual, 'Swagger'), JSON_PRETTY_PRINT);
+        $expectedJson = json_encode($this->sorted($expected, $expectedFile), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $actualJson = json_encode($this->sorted($actual, 'Swagger'), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         return $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
@@ -148,7 +148,13 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 'headers' => function ($a, $b) {
                     return strcasecmp($a->header, $b->header);
                 },
+                'tags' => function ($a, $b) {
+                    return strcasecmp($a->name, $b->name);
+                },
                 'allOf' => function ($a, $b) {
+                    return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
+                },
+                'security' => function ($a, $b) {
                     return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
                 }
             ];
