@@ -63,6 +63,7 @@ Generate the swagger documentation to a static json file.
 
   * http://swagger.io/
   * https://github.com/swagger-api/swagger-spec/
+  * http://bfanger.github.io/swagger-explained/
 
 ## Contributing
 
