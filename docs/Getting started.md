@@ -55,13 +55,13 @@ Use the annotation with the same name as the property:
  */
 ```
 
-This adds validation to so when you misspel a property or forgot a required property it will trigger a php warning.  
+This adds validation too so when you misspell a property or forget a required property it will trigger a php warning.  
 For example the snippet above would generate the "Unexpected field "titel" for @SWG\Info(), expecting "title", ..." notice.
 
 
 ## Annotation placement
 
-You shouldn't place all annotations inside one @SWG\Swagger() annotation, scattered annotations thoughout your codebase.
+You shouldn't place all annotations inside one @SWG\Swagger() annotation, scattered annotations throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
 
 The big benefit swagger-php provides is that the documentation lives close the the code implementing the request.
