@@ -36,6 +36,12 @@ class Customer {
      * @var Customer
      */
     public $submittedBy;
+    
+    /**
+     * @SWG\Property()
+     * @var Customer[]
+     */
+    public $friends;
 
     /**
      * for ContextTest

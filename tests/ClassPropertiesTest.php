@@ -13,7 +13,7 @@ class ClassPropertiesTest extends SwaggerTestCase {
         $this->assertCount(1, $swagger->definitions);
         $customer = $swagger->definitions[0];
         $this->assertSame('Customer', $customer->name, '@SWG\Definition()->name based on classname');
-        $this->assertCount(4, $customer->properties, '@SWG\Properties() are merged into the @SWG\Definition of the class');
+        $this->assertCount(5, $customer->properties, '@SWG\Properties() are merged into the @SWG\Definition of the class');
         $firstname = $customer->properties[0];
         $this->assertSame('firstname', $firstname->name, '@SWG\Property()->name based on propertyname');
         $this->assertSame('The firstname of the customer.', $firstname->description, '@SWG\Property()->description based on @var description');
@@ -28,7 +28,11 @@ class ClassPropertiesTest extends SwaggerTestCase {
         $this->assertSame('string', $tags->items->type);
         $submittedBy = $customer->properties[3];
         $this->assertSame('submittedBy', $submittedBy->name);
-//        $this->assertSame('#/definitions/Category', $submittedBy->ref);
+        $this->assertSame('#/definitions/Customer', $submittedBy->ref);
+        $friends = $customer->properties[4];
+        $this->assertSame('friends', $friends->name);
+        $this->assertSame('array', $friends->type);
+        $this->assertSame('#/definitions/Customer', $friends->items->ref);
     }
 
 }
