@@ -85,10 +85,15 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @param array $properties
      */
     public function __construct($properties) {
-        if (Parser::$context) {
+        if (isset($properties['_context'])) {
+            $this->_context = $properties['_context'];
+            unset($properties['_context']);
+        } else if (Parser::$context) {
             $this->_context = Parser::$context;
         } else {
             $this->_context = Context::detect(1);
+        }
+        if ($this->_context->is('annotations') === false) {
             $this->_context->annotations = [];
         }
         $this->_context->annotations[] = $this;

@@ -38,8 +38,10 @@ class SwaggerPaths {
         // Merge @SWG\Operations into existing @SWG\Paths or create a new one.
         foreach ($operations as $operation) {
             if (empty($paths[$operation->path])) {
-                $paths[$operation->path] = new Path(['path' => $operation->path]);
-                $paths[$operation->path]->_context = new Context(['generated' => true], $operation->_context);
+                $paths[$operation->path] = new Path([
+                    'path' => $operation->path,
+                    '_context' => new Context(['generated' => true], $operation->_context)
+                ]);
             }
             $paths[$operation->path]->merge([$operation]);
         }

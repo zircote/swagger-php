@@ -9,7 +9,7 @@ namespace Swagger\Processors;
 use Swagger\Annotations\Swagger;
 
 /**
- *
+ * Merge all @SWG\Swagger annotations into one.
  */
 class MergeSwagger {
 

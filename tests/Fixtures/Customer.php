@@ -1,4 +1,11 @@
 <?php
+namespace SwaggerFixure;
+
+use Exception;
+use Swagger\Parser as SwgParser;
+use \Swagger\Parser;
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
  * @SWG\Definition()
@@ -24,4 +31,19 @@ class Customer {
      */
     public $tags;
     
+    /**
+     * @SWG\Property()
+     * @var Customer
+     */
+    public $submittedBy;
+
+    /**
+     * for ContextTest
+     */
+    function testResolvingFullyQualifiedNames() {
+        $test = new SwgParser();
+        $test2 = new Parser();
+        $test3 = new SWG\Contact();
+        throw new Exception();
+    }
 }

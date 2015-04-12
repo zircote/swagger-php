@@ -6,6 +6,9 @@
 
 namespace Swagger;
 
+/**
+ * Logger reports the parser and validation messages.
+ */
 class Logger {
 
     /**

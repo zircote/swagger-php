@@ -122,8 +122,10 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         $swagger = new Swagger([
             'info' => new \Swagger\Annotations\Info([
                 'title' => 'Swagger-PHP Test-API',
-                'version' => 'test'
-                    ])
+                'version' => 'test',
+                '_context' => new Context(['unittest' => true])
+            ]),
+            '_context' => new Context(['unittest' => true])
         ]);
         return $swagger;
     }

@@ -25,6 +25,8 @@ namespace Swagger;
  * @property int $line
  * @property int $character
  *
+ * @property string $namespace
+ * @property array $uses
  * @property string $class
  * @property string $extends
  * @property string $method
@@ -94,7 +96,7 @@ class Context {
     public function getDebugLocation() {
         $location = '';
         if ($this->class && ($this->method || $this->property)) {
-            $location .= $this->class;
+            $location .= $this->fullyQualifiedName($this->class);
             if ($this->method) {
                 $location .= ($this->static ? '::' : '->') . $this->method . '()';
             } elseif ($this->property) {
@@ -187,9 +189,58 @@ class Context {
             }
         }
         if (isset($caller['class'])) {
-            $context->class = $caller['class'];
+            $fqn = explode('\\', $caller['class']);
+            $context->class = array_pop($fqn);
+            if (count($fqn)) {
+                $context->namespace = implode('\\', $fqn);
+            }
         }
+        // @todo extract namespaces and use statements
         return $context;
+    }
+
+    /**
+     * Resolve the fully qualified name.
+     *
+     * @param string $namespace  Active namespace
+     * @param string $class  The class name
+     * @param array $uses  Active USE statements.
+     * @return string
+     */
+    public function fullyQualifiedName($class) {
+        if ($this->namespace) {
+            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
+        } else {
+            $namespace = '\\'; // global namespace
+        }
+        if (strcasecmp($class, $this->class) === 0) {
+            return $namespace . $this->class;
+        }
+        $pos = strpos($class, '\\');
+        if ($pos !== false) {
+            if ($pos === 0) {
+                // Fully qualified name (\Foo\Bar)
+                return $class;
+            }
+            // Qualified name (Foo\Bar)
+            if ($this->uses) {
+                foreach ($this->uses as $alias => $aliasedNamespace) {
+                    $alias .= '\\';
+                    if (strcasecmp(substr($class, 0, strlen($alias)), $alias) === 0) {
+                        // Aliased namespace (use \Long\Namespace as Foo)
+                        return '\\' . $aliasedNamespace . substr($class, strlen($alias) - 1);
+                    }
+                }
+            }
+        } elseif ($this->uses) {
+            // Unqualified name (Foo)
+            foreach ($this->uses as $alias => $aliasedNamespace) {
+                if (strcasecmp($alias, $class) === 0) {
+                    return '\\' . $aliasedNamespace;
+                }
+            }
+        }
+        return $namespace . $class;
     }
 
 }

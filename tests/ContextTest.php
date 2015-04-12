@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace SwaggerTests;
+
+use Swagger\Context;
+
+class ContextTest extends SwaggerTestCase {
+
+    function testDetect() {
+        $context = Context::detect();
+        $line = __LINE__ - 1;
+        $this->assertSame('ContextTest', $context->class);
+        $this->assertSame('\SwaggerTests\ContextTest', $context->fullyQualifiedName($context->class));
+        $this->assertSame('testDetect', $context->method);
+        $this->assertSame(__FILE__, $context->filename);
+        $this->assertSame($line, $context->line);
+        $this->assertSame('SwaggerTests', $context->namespace);
+//        $this->assertCount(1, $context->uses); // Context::detect() doens't pick up USE statements (yet)
+    }
+
+    function testFullyQualifiedName() {
+        $swagger = \Swagger\scan(__DIR__ . '/Fixtures/Customer.php');
+        $context = $swagger->definitions[0]->_context;
+        // resolve with namespace 
+        $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
+        $this->assertSame('\SwaggerFixure\Unqualified', $context->fullyQualifiedName('Unqualified'));
+        $this->assertSame('\SwaggerFixure\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
+        // respect use statements
+        $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
+        $this->assertSame('\SwaggerFixure\Customer', $context->fullyQualifiedName('Customer'));
+        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('Parser'));
+        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('pArSeR')); // php has case-insensitive classnames :-(
+        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('SwgParser'));
+        $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
+    }
+
+}

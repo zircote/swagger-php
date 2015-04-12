@@ -21,8 +21,7 @@ AnnotationRegistry::registerLoader(function ($class) {
 });
 
 /**
- * @category   Swagger
- * @package    Swagger
+ * Swagger\Parser extracts swagger-php annotations from php code.
  */
 class Parser {
 
@@ -88,11 +87,10 @@ class Parser {
         $annotations = [];
         reset($tokens);
         $token = '';
-        $namespace = '';
         $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
 
         $this->docParser->setImports($imports);
-        $uses = [];
+        $parseContext->uses = [];
         $classContext = $parseContext; // Use the parseContext until a classContext is created.
         $comment = false;
         $line = 0;
@@ -120,13 +118,12 @@ class Parser {
                     continue;
                 }
                 $token = $this->nextToken($tokens, $parseContext);
-                $class = $namespace ? $namespace . '\\' . $token[1] : $token[1];
-                $classContext = new Context(['class' => $class, 'line' => $token[2]], $parseContext);
+                $classContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 // @todo detect end-of-class and reset $classContext
                 $extends = null;
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_EXTENDS) {
-                    $classContext->extends = $this->prefixNamespace($namespace, $this->parseNamespace($tokens, $token, $parseContext), $uses);
+                    $classContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
                 }
                 if ($comment) {
                     $classContext->comment = $comment;
@@ -192,7 +189,7 @@ class Parser {
                 }
             }
             if ($token[0] === T_NAMESPACE) {
-                $namespace = $this->parseNamespace($tokens, $token, $parseContext);
+                $parseContext->namespace = $this->parseNamespace($tokens, $token, $parseContext);
                 continue;
             }
             if ($token[0] === T_USE) {
@@ -201,9 +198,11 @@ class Parser {
                     if ($target[0] === '\\') {
                         $target = substr($target, 1);
                     }
+                    
+                    $parseContext->uses[$alias] = $target;
                     foreach (Parser::$whitelist as $namespace) {
-                        if (strtolower(substr($target, 0, strlen($namespace))) === strtolower($namespace)) {
-                            $imports[$alias] = $target;
+                        if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
+                            $imports[strtolower($alias)] = $target;
                             break;
                         }
                     }
@@ -272,12 +271,12 @@ class Parser {
                 $explicitAlias = true;
                 $alias = '';
             } else if ($token === ',') {
-                $statements[strtolower($alias)] = $class;
+                $statements[$alias] = $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
             } else if ($token === ';') {
-                $statements[strtolower($alias)] = $class;
+                $statements[$alias] = $class;
                 break;
             } else {
                 break;
@@ -319,42 +318,6 @@ class Parser {
             $annotations[] = $annotation;
         }
         return $annotations;
-    }
-
-    /**
-     * Resolve the full classname.
-     *
-     * @param string $namespace  Active namespace
-     * @param string $class  The class name
-     * @param array $uses  Active USE statements.
-     * @return string
-     */
-    private function prefixNamespace($namespace, $class, $uses = []) {
-        $pos = strpos($class, '\\');
-        if ($pos !== false) {
-            if ($pos === 0) {
-                // Fully qualified name (\Foo\Bar)
-                return substr($class, 1);
-            }
-            // Qualified name (Foo\Bar)
-            foreach ($uses as $alias => $aliasedNamespace) {
-                $alias .= '\\';
-                if (strtolower(substr($class, 0, strlen($alias))) === $alias) {
-                    // Aliased namespace (use \Long\Namespace as Foo)
-                    return $aliasedNamespace . substr($class, strlen($alias) - 1);
-                }
-            }
-        } else {
-            // Unqualified name (Foo)
-            $alias = strtolower($class);
-            if (isset($uses[$alias])) { // Is an alias?
-                return $uses[$alias];
-            }
-        }
-        if ($namespace == '') {
-            return $class;
-        }
-        return $namespace . '\\' . $class;
     }
 
 }

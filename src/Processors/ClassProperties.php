@@ -52,8 +52,7 @@ class ClassProperties {
         // Use the class names for @SWG\Definition()
         foreach ($swagger->definitions as $definition) {
             if ($definition->name === null && $definition->_context->is('class')) {
-                $class = explode('\\', $definition->_context->class);
-                $definition->name = array_pop($class);
+                $definition->name = $definition->_context->class;
                 // if ($definition->type === null) {
                 //     $definition->type = 'object';
                 // }
@@ -101,8 +100,10 @@ class ClassProperties {
                 }
                 if ($typeMatches[2] === '[]') {
                     if ($annotation->items === null && $annotation->type !== null) {
-                        $annotation->items = new Items(['type' => $annotation->type]);
-                        $annotation->items->_context = new Context(['generated' => true], $annotation->_context);
+                        $annotation->items = new Items([
+                            'type' => $annotation->type,
+                            '_context' => new Context(['generated' => true], $annotation->_context)
+                        ]);
                     }
                     $annotation->type = 'array';
                 }
