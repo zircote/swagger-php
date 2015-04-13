@@ -37,5 +37,11 @@ class ParserTest extends SwaggerTestCase {
         $this->assertSame('api/3rd-party', $swagger->paths[0]->path);
         $this->assertCount(10, $swagger->_unmerged);
     }
+    
+    function testIndentationCorrection() {
+        $parser = new Parser();
+        $annotations = $parser->parseFile(__DIR__.'/Fixtures/routes.php');
+        $this->assertCount(2, $annotations);
+    }
 
 }

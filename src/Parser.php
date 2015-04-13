@@ -297,7 +297,12 @@ class Parser {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
-            $result = $this->docParser->parse($context->comment, $context);
+            $comment = preg_replace_callback('/^[\t ]*\*[\t ]+/m', function ($match) {
+                // Replace leading tabs with spaces.
+                // Workaround for http://www.doctrine-project.org/jira/browse/DCOM-255
+                return str_replace("\t", ' ', $match[0]); 
+            }, $context->comment);
+            $result = $this->docParser->parse($comment, $context);
             self::$context = null;
         } catch (\Exception $e) {
             self::$context = null;
