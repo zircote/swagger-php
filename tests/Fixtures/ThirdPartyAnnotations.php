@@ -1,4 +1,5 @@
 <?php
+namespace SwaggerFixtures;
 /**
  * @SWG\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html

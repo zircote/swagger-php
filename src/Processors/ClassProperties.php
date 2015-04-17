@@ -53,12 +53,14 @@ class ClassProperties {
             if ($property instanceof Property && $property->_context->is('property')) {
                 $classAnnotations = $property->_context->with('class')->annotations;
                 $notFound = true;
-                foreach ($classAnnotations as $annotation) {
-                    if ($annotation instanceof Definition) {
-                        $annotation->merge([$property]);
-                        unset($swagger->_unmerged[$i]);
-                        $notFound = false;
-                        break;
+                if ($classAnnotations) {
+                    foreach ($classAnnotations as $annotation) {
+                        if ($annotation instanceof Definition) {
+                            $annotation->merge([$property]);
+                            unset($swagger->_unmerged[$i]);
+                            $notFound = false;
+                            break;
+                        }
                     }
                 }
                 if ($notFound) {

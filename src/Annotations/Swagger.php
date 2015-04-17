@@ -148,10 +148,23 @@ class Swagger extends AbstractAnnotation {
             $finder = $directory;
         } else {
             $finder = new Finder();
-            if (is_string($directory) && is_file($directory)) { // Scan a single file?
-                $finder->files()->name(basename($directory))->in(dirname($directory));
-            } else { // Scan a directory
-                $finder->files()->in($directory);
+            $finder->files();
+            if (is_string($directory)) {
+                if (is_file($directory)) { // Scan a single file?
+                    $finder->append([$directory]);
+                } else { // Scan a directory
+                    $finder->in($directory);
+                }
+            } elseif (is_array($directory)) {
+                foreach ($directory as $path) {
+                    if (is_file($path)) { // Scan a file?
+                        $finder->append([$path]);
+                    } else {
+                        $finder->in($path);
+                    }
+                }
+            } else {
+                throw new Exception('Unexpected $directory value:' .gettype($directory));
             }
         }
         if ($exclude !== null) {

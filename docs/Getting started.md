@@ -6,10 +6,10 @@ To output:
 
 ```json
 {
-   swagger: "2.0",
-   schemes: ["http"]
-   host: "example.com",
-   basePath: "/api"
+   "swagger": "2.0",
+   "schemes": ["http"]
+   "host": "example.com",
+   "basePath": "/api"
 }
 ```
 

@@ -1,5 +1,5 @@
 <?php
-namespace SwaggerFixure;
+namespace SwaggerFixures;
 
 use Exception;
 use Swagger\Parser as SwgParser;

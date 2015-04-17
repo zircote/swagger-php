@@ -7,9 +7,10 @@
 namespace Swagger;
 
 use Swagger\Annotations\Swagger;
-use Swagger\Processors\ClassProperties;
 use Swagger\Processors\MergeSwagger;
 use Swagger\Processors\SwaggerPaths;
+use Swagger\Processors\ClassProperties;
+use Swagger\Processors\InheritProperties;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -37,6 +38,7 @@ function scan($directory, $exclude = null) {
         new MergeSwagger(),
         new SwaggerPaths(),
         new ClassProperties(),
+        new InheritProperties(),
     ];
     foreach ($processors as $processor) {
         $processor($swagger);

@@ -6,14 +6,21 @@
 
 namespace SwaggerTests;
 
+use Swagger\Annotations\Swagger;
+use Swagger\Processors\ClassProperties;
+
 class ClassPropertiesTest extends SwaggerTestCase {
 
     function testClassPropertiesProcessor() {
-        $swagger = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
+        $processor = new ClassProperties();
+        $swagger = new Swagger([]);
+        $swagger->crawl(__DIR__ . '/Fixtures/Customer.php');
         $this->assertCount(1, $swagger->definitions);
         $customer = $swagger->definitions[0];
+        $this->assertSame(null, $customer->properties, 'Sanity check. @SWG\Property\'s not yet erged ');
+        $processor($swagger);
         $this->assertSame('Customer', $customer->name, '@SWG\Definition()->name based on classname');
-        $this->assertCount(5, $customer->properties, '@SWG\Properties() are merged into the @SWG\Definition of the class');
+        $this->assertCount(5, $customer->properties, '@SWG\Property()s are merged into the @SWG\Definition of the class');
         $firstname = $customer->properties[0];
         $this->assertSame('firstname', $firstname->name, '@SWG\Property()->name based on propertyname');
         $this->assertSame('The firstname of the customer.', $firstname->description, '@SWG\Property()->description based on @var description');
