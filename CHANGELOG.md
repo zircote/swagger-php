@@ -2,6 +2,10 @@
 Changelog
 ----------
 
+## 1.0.0
+
+Active development is focussed on 2.x, swagger-php 1.x is in maintainance mode, which accepts community contributions (pull requests) but  new issues will be closed.
+
 ## 0.9.6
 
 * Fix #169: Merge apis partials and then merge apis operation in one API (path) definition.
