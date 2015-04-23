@@ -31,7 +31,6 @@ class ClassProperties {
         'date' => ['string', 'date'],
         'datetime' => ['string', 'date-time'],
         '\\datetime' => ['string', 'date-time'],
-        'byte' => ['string', 'byte'],
         'number' => 'number',
         'object' => 'object'
     ];
