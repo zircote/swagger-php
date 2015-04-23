@@ -6,10 +6,10 @@
 
 namespace Swagger;
 
-use Annotations\AbstractAnnotation;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Exception;
+use Swagger\Annotations\AbstractAnnotation;
 
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {

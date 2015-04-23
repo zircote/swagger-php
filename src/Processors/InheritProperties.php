@@ -9,8 +9,6 @@ namespace Swagger\Processors;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Swagger;
 use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
-use Swagger\Context;
 
 /**
  * Copy the annotated properties from parent classes;

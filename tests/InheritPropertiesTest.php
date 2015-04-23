@@ -6,7 +6,6 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\Swagger;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\ClassProperties;
 

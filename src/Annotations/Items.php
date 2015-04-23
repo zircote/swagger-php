@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Logger;
+
 /**
  * @Annotation
  * An limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
