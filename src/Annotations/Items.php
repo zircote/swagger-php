@@ -158,7 +158,7 @@ class Items extends AbstractAnnotation {
         'Swagger\Annotations\Items'
     ];
 
-    public function validate($skip = array()) {
+    public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
             return true;
         }

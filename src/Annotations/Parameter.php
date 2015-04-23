@@ -201,7 +201,7 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Swagger'
     ];
 
-    public function validate($skip = array()) {
+    public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
             return true;
         }
