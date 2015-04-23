@@ -164,7 +164,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * Merge the properties from the given object into this annotation.
      * Prevents overwriting properties that are already configured.
      *
-     * @param stdClass $object
+     * @param object $object
      */
     public function mergeProperties($object) {
         $defaultValues = get_class_vars(get_class($this));
@@ -270,8 +270,9 @@ abstract class AbstractAnnotation implements JsonSerializable {
 
     /**
      * Validate annotation tree, and log notices & warnings.
-     * @param array $skip (prevent stackoverflow, when traversing an infinite dependency graph)
+     * @param array $skip (prevent stack overflow, when traversing an infinite dependency graph)
      * @return boolean
+     * @throws Exception
      */
     public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
@@ -413,6 +414,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
     /**
      * Helper for generating the identity()
      * @param array $properties
+     * @return string
      */
     protected function _identity($properties) {
         $fields = [];

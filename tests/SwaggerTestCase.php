@@ -47,7 +47,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         $actual = json_decode($json);
         $expectedJson = json_encode($this->sorted($expected, $expectedFile), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $actualJson = json_encode($this->sorted($actual, 'Swagger'), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        return $this->assertEquals($expectedJson, $actualJson, $message);
+        $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
     public function assertSwaggerLog($expectedEntry, $expectedType, $message = '') {
@@ -97,13 +97,13 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 }
             }
         };
-        return parent::setUp();
+        parent::setUp();
     }
 
     protected function tearDown() {
-        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messagges were not triggered');
+        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     /**
@@ -137,7 +137,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
     /**
      * Sorts the object to improve matching and debugging the differences.
      * Used by assertSwaggerEqualsFile
-     * @param object $object
+     * @param stdClass $object
+     * @param string   $origin
      * @return stdClass The sorted object
      */
     protected function sorted(stdClass $object, $origin = 'unknown') {

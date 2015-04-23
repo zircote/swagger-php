@@ -19,7 +19,7 @@ class ContextTest extends SwaggerTestCase {
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
         $this->assertSame('SwaggerTests', $context->namespace);
-//        $this->assertCount(1, $context->uses); // Context::detect() doens't pick up USE statements (yet)
+//        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
     function testFullyQualifiedName() {
@@ -33,7 +33,7 @@ class ContextTest extends SwaggerTestCase {
         $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
         $this->assertSame('\SwaggerFixures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('Parser'));
-        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('pArSeR')); // php has case-insensitive classnames :-(
+        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('pArSeR')); // php has case-insensitive class names :-(
         $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('SwgParser'));
         $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
     }

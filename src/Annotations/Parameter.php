@@ -21,7 +21,7 @@ class Parameter extends AbstractAnnotation {
      * @var string
      */
     public $ref;
-    
+
     /**
      * The key into Swagger->parameters or Path->parameters array.
      * @var string
@@ -201,7 +201,7 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Swagger'
     ];
 
-    public function validate($skip = array()) {
+    public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
             return true;
         }

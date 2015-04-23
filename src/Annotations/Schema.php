@@ -53,7 +53,7 @@ class Schema extends AbstractAnnotation {
 
     /**
      * Required if type is "array". Describes the type of items in the array.
-     * @var array
+     * @var Items
      */
     public $items;
 
@@ -199,7 +199,7 @@ class Schema extends AbstractAnnotation {
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
-        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs',
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
         'Swagger\Annotations\Xml' => 'xml',
     ];
 

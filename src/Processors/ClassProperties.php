@@ -31,7 +31,6 @@ class ClassProperties {
         'date' => ['string', 'date'],
         'datetime' => ['string', 'date-time'],
         '\\datetime' => ['string', 'date-time'],
-        'byte' => ['string', 'byte'],
         'number' => 'number',
         'object' => 'object'
     ];
@@ -46,7 +45,7 @@ class ClassProperties {
                 //     $definition->type = 'object';
                 // }
             }
-            $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/'.$definition->definition;
+            $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/' . $definition->definition;
         }
         // Merge @SWG\Property() for php properties into the @SWG\Definition of the class.
         foreach ($swagger->_unmerged as $i => $property) {
@@ -69,7 +68,7 @@ class ClassProperties {
                 }
             }
         }
-        
+
         // Extract property info
         foreach ($swagger->definitions as $definition) {
             if ($definition->properties) {

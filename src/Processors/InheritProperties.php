@@ -9,8 +9,6 @@ namespace Swagger\Processors;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Swagger;
 use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
-use Swagger\Context;
 
 /**
  * Copy the annotated properties from parent classes;
@@ -50,7 +48,7 @@ class InheritProperties {
     }
 
     /**
-     * @param array $swagger
+     * @param Swagger $swagger
      * @return array '\Namespace\ClassName' => SWG\Definition
      */
     public function getDefinitions($swagger) {
@@ -76,7 +74,6 @@ class InheritProperties {
             }
         }
         foreach ($swagger->_unmerged as $property) {
-            
             if ($property instanceof Property && $property->_context->is('property')) {
                 $context = $property->_context->with('class');
                 if ($context && $context->is('extends')) {
@@ -96,7 +93,7 @@ class InheritProperties {
     /**
      * @param string $class
      * @param array $extends '\namespace\class' => '\namespace\parent'
-     * @param array
+     * @return array
      */
     private function getChildrenFor($class, $extends) {
         $children = [];

@@ -8,6 +8,7 @@ namespace Swagger;
 
 use Closure;
 use Exception;
+
 /**
  * Logger reports the parser and validation messages.
  */
@@ -27,7 +28,7 @@ class Logger {
     protected function __construct() {
         /**
          * @param \Exception|string $entry
-         * @param int Error type
+         * @param int $type Error type
          */
         $this->log = function ($entry, $type) {
             if ($entry instanceof Exception) {

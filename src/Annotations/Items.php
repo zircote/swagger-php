@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Logger;
+
 /**
  * @Annotation
  * An limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
@@ -156,7 +158,7 @@ class Items extends AbstractAnnotation {
         'Swagger\Annotations\Items'
     ];
 
-    public function validate($skip = array()) {
+    public function validate($skip = []) {
         if (in_array($this, $skip, true)) {
             return true;
         }

@@ -6,10 +6,10 @@
 
 namespace Swagger;
 
-use Annotations\AbstractAnnotation;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Exception;
+use Swagger\Annotations\AbstractAnnotation;
 
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
@@ -18,7 +18,7 @@ AnnotationRegistry::registerLoader(function ($class) {
             $loaded = class_exists($class);
             if (!$loaded && $namespace === 'Swagger\\Annotations\\') {
                 if (in_array(strtolower(substr($class, 20)), ['model', 'resource', 'api'])) { // Detected an 1.x annotation?
-                    throw new Exception('The annotation @SWG\\'.substr($class, 20).'() is deprecated. Found in '.Parser::$context."\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/2.x/docs/Migrating-to-v2.md");
+                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Parser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/2.x/docs/Migrating-to-v2.md");
                 }
             }
             return $loaded;
@@ -85,6 +85,7 @@ class Parser {
      * Shared implementation for parseFile() & parseContents().
      *
      * @param array $tokens The result of a token_get_all()
+     * @param Context $parseContext
      * @return AbstractAnnotation[]
      */
     protected function parseTokens($tokens, $parseContext) {
@@ -94,7 +95,7 @@ class Parser {
         $annotations = [];
         reset($tokens);
         $token = '';
-        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
+        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $this->docParser->setImports($imports);
         $parseContext->uses = [];
@@ -205,7 +206,7 @@ class Parser {
                     if ($target[0] === '\\') {
                         $target = substr($target, 1);
                     }
-                    
+
                     $parseContext->uses[$alias] = $target;
                     foreach (Parser::$whitelist as $namespace) {
                         if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
@@ -297,6 +298,7 @@ class Parser {
      *
      * @param Context $context
      * @param  AbstractAnnotation[] $annotations
+     * @return AbstractAnnotation[]
      */
     protected function parseContext($context, &$annotations) {
         try {
@@ -307,7 +309,7 @@ class Parser {
             $comment = preg_replace_callback('/^[\t ]*\*[\t ]+/m', function ($match) {
                 // Replace leading tabs with spaces.
                 // Workaround for http://www.doctrine-project.org/jira/browse/DCOM-255
-                return str_replace("\t", ' ', $match[0]); 
+                return str_replace("\t", ' ', $match[0]);
             }, $context->comment);
             $result = $this->docParser->parse($comment, $context);
             self::$context = null;

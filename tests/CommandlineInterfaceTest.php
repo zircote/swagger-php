@@ -12,7 +12,7 @@ class CommandlineInterfaceTest extends SwaggerTestCase {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped();
         }
-        return parent::setUp();
+        parent::setUp();
     }
 
     public function testStdout() {
