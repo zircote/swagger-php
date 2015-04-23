@@ -20,7 +20,7 @@ class Response extends AbstractAnnotation {
     public $ref;
 
     /**
-     * The key into Operations->reponses array.
+     * The key into Operations->responses array.
      * 
      * @var string a HTTP Status Code or "default" 
      */

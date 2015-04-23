@@ -202,9 +202,7 @@ class Context {
     /**
      * Resolve the fully qualified name.
      *
-     * @param string $namespace  Active namespace
      * @param string $class  The class name
-     * @param array $uses  Active USE statements.
      * @return string
      */
     public function fullyQualifiedName($class) {

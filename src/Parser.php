@@ -85,6 +85,7 @@ class Parser {
      * Shared implementation for parseFile() & parseContents().
      *
      * @param array $tokens The result of a token_get_all()
+     * @param Context $parseContext
      * @return AbstractAnnotation[]
      */
     protected function parseTokens($tokens, $parseContext) {
@@ -94,7 +95,7 @@ class Parser {
         $annotations = [];
         reset($tokens);
         $token = '';
-        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwrittemn by a use statement)
+        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $this->docParser->setImports($imports);
         $parseContext->uses = [];
@@ -297,6 +298,7 @@ class Parser {
      *
      * @param Context $context
      * @param  AbstractAnnotation[] $annotations
+     * @return AbstractAnnotation[]
      */
     protected function parseContext($context, &$annotations) {
         try {

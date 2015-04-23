@@ -50,7 +50,7 @@ class InheritProperties {
     }
 
     /**
-     * @param array $swagger
+     * @param Swagger $swagger
      * @return array '\Namespace\ClassName' => SWG\Definition
      */
     public function getDefinitions($swagger) {
@@ -96,7 +96,7 @@ class InheritProperties {
     /**
      * @param string $class
      * @param array $extends '\namespace\class' => '\namespace\parent'
-     * @param array
+     * @return array
      */
     private function getChildrenFor($class, $extends) {
         $children = [];

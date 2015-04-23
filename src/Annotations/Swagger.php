@@ -62,13 +62,13 @@ class Swagger extends AbstractAnnotation {
 
     /**
      * The available paths and operations for the API.
-     * @var array
+     * @var Path[]
      */
     public $paths = [];
 
     /**
      * An object to hold data types produced and consumed by operations.
-     * @var array
+     * @var Definition[]
      */
     public $definitions = [];
 
@@ -137,6 +137,7 @@ class Swagger extends AbstractAnnotation {
      *
      * @param string|array|Finder $directory
      * @param string|array $exclude
+     * @throws Exception
      */
     public function crawl($directory, $exclude = null) {
         // Setup Finder
@@ -176,6 +177,7 @@ class Swagger extends AbstractAnnotation {
     /**
      * Save the swagger documentation to a file.
      * @param string $filename
+     * @throws Exception
      */
     public function saveAs($filename) {
         if (file_put_contents($filename, $this) === false) {

@@ -101,7 +101,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
     }
 
     protected function tearDown() {
-        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messagges were not triggered');
+        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         return parent::tearDown();
     }
@@ -137,7 +137,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
     /**
      * Sorts the object to improve matching and debugging the differences.
      * Used by assertSwaggerEqualsFile
-     * @param object $object
+     * @param stdClass $object
+     * @param string   $origin
      * @return stdClass The sorted object
      */
     protected function sorted(stdClass $object, $origin = 'unknown') {

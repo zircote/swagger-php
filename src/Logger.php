@@ -20,14 +20,14 @@ class Logger {
     public static $instance;
 
     /**
-     * @var Closure
+     * @var \Closure
      */
     public $log;
 
     protected function __construct() {
         /**
          * @param \Exception|string $entry
-         * @param int Error type
+         * @param int $type Error type
          */
         $this->log = function ($entry, $type) {
             if ($entry instanceof Exception) {

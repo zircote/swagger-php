@@ -53,7 +53,7 @@ class Schema extends AbstractAnnotation {
 
     /**
      * Required if type is "array". Describes the type of items in the array.
-     * @var array
+     * @var Items
      */
     public $items;
 
