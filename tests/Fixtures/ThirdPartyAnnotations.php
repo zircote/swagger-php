@@ -33,7 +33,7 @@ class ThirdPartyAnnotations
     public $email;
     
     /**
-     * @SWG\Get(path="api/3rd-party", @SWG\Response(status="200", description="a response"))
+     * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
      */
     function methodWithSwaggerAnnotation() {
         

@@ -12,11 +12,11 @@ use Swagger\Parser;
 class ParserTest extends SwaggerTestCase {
 
     function testParseContents() {
-        $annotations = $this->parseComment('@SWG\Parameter(name="my_param")');
+        $annotations = $this->parseComment('@SWG\Parameter(description="This is my parameter")');
         $this->assertInternalType('array', $annotations);
         $parameter = $annotations[0];
         $this->assertInstanceOf('Swagger\Annotations\Parameter', $parameter);
-        $this->assertSame('my_param', $parameter->name);
+        $this->assertSame('This is my parameter', $parameter->description);
     }
 
     function testWrongCommentType() {

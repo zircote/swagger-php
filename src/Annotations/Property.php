@@ -15,10 +15,7 @@ class Property extends Schema {
      * The key into Schema->properties array.
      * @var string
      */
-    public $name;
-
-    /** @inheritdoc */
-    public static $_key = 'name';
+    public $property;
 
     /** @inheritdoc */
     public static $_parents = [

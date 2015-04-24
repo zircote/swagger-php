@@ -144,9 +144,9 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-                'responses' => function ($a, $b) {
-                    return strcasecmp($a->name, $b->name);
-                },
+//                'responses' => function ($a, $b) {
+//                    return strcasecmp($a->name, $b->name);
+//                },
                 'headers' => function ($a, $b) {
                     return strcasecmp($a->header, $b->header);
                 },

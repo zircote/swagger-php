@@ -147,14 +147,8 @@ class Header extends AbstractAnnotation {
     ];
 
     /** @inheritdoc */
-    public static $_nested = [];
-
-    /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Response'
     ];
-
-    /** @inheritdoc */
-    public static $_key = 'header';
 
 }

@@ -28,7 +28,7 @@ class SimplePetsController {
      *         format="int32"
      *     ),
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -36,7 +36,7 @@ class SimplePetsController {
      *         ),
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/errorModel"
@@ -68,12 +68,12 @@ class SimplePetsController {
      *         "text/xml"
      *     },
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/pet")
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )
@@ -97,24 +97,24 @@ class SimplePetsController {
      *         @SWG\Schema(ref="#/definitions/petInput"),
      *     ),
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/pet")
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )
      * )
      * @SWG\Definition(
-     *     name="petInput",
+     *     definition="petInput",
      *     allOf={
      *         @SWG\Schema(ref="pet"),
      *         @SWG\Schema(
      *             required={"name"},
      *             @SWG\Property(
-     *                 name="id",
+     *                 property="id",
      *                 type="integer",
      *                 format="int64"
      *             )
@@ -140,11 +140,11 @@ class SimplePetsController {
      *         type="integer"
      *     ),
      *     @SWG\Response(
-     *         status=204,
+     *         response=204,
      *         description="pet deleted"
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/errorModel")
      *     )

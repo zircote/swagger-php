@@ -40,13 +40,13 @@ class ClassProperties {
         $refs = [];
         // Use the class names for @SWG\Definition()
         foreach ($swagger->definitions as $definition) {
-            if ($definition->name === null && $definition->_context->is('class')) {
-                $definition->name = $definition->_context->class;
+            if ($definition->definition === null && $definition->_context->is('class')) {
+                $definition->definition = $definition->_context->class;
                 // if ($definition->type === null) {
                 //     $definition->type = 'object';
                 // }
             }
-            $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/'.$definition->name;
+            $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/'.$definition->definition;
         }
         // Merge @SWG\Property() for php properties into the @SWG\Definition of the class.
         foreach ($swagger->_unmerged as $i => $property) {
@@ -89,8 +89,8 @@ class ClassProperties {
     public function processProperty($annotation, $refs) {
         $context = $annotation->_context;
         // Use the property names for @SWG\Property()
-        if ($annotation->name === null) {
-            $annotation->name = $context->property;
+        if ($annotation->property === null) {
+            $annotation->property = $context->property;
         }
 
         if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {

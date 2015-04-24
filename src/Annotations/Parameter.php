@@ -21,6 +21,12 @@ class Parameter extends AbstractAnnotation {
      * @var string
      */
     public $ref;
+    
+    /**
+     * The key into Swagger->parameters or Path->parameters array.
+     * @var string
+     */
+    public $parameter;
 
     /**
      * The name of the parameter. Parameter names are case sensitive. If in is "path", the name field MUST correspond to the associated path segment from the path field in the Paths Object. See Path Templating for further information. For all other cases, the name corresponds to the parameter name used based on the in property.

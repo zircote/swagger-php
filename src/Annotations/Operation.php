@@ -134,8 +134,8 @@ abstract class Operation extends AbstractAnnotation {
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Parameter' => 'parameters[]',
-        'Swagger\Annotations\Response' => 'responses[]',
+        'Swagger\Annotations\Parameter' => ['parameters'],
+        'Swagger\Annotations\Response' => ['responses', 'response'],
         'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
     ];
 

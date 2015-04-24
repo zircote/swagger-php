@@ -19,7 +19,7 @@ class ValidateRelationsTest extends SwaggerTestCase {
     public function testParents($class) {
         foreach ($class::$_parents as $parent) {
             $found = false;
-            foreach ($parent::$_nested as $nested => $property) {
+            foreach (array_keys($parent::$_nested) as $nested) {
                 if ($nested === $class) {
                     $found = true;
                     break;
@@ -37,7 +37,7 @@ class ValidateRelationsTest extends SwaggerTestCase {
      * @param string $class
      */
     public function testNested($class) {
-        foreach ($class::$_nested as $nested => $property) {
+        foreach (array_keys($class::$_nested) as $nested) {
             $found = false;
             foreach ($nested::$_parents as $parent) {
                 if ($parent === $class) {

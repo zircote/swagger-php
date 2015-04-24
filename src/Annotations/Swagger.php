@@ -114,17 +114,13 @@ class Swagger extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
-        'Swagger\Annotations\Get' => 'paths[]',
-        'Swagger\Annotations\Post' => 'paths[]',
-        'Swagger\Annotations\Put' => 'paths[]',
-        'Swagger\Annotations\Patch' => 'paths[]',
-        'Swagger\Annotations\Delete' => 'paths[]',
-        'Swagger\Annotations\Definition' => 'definitions[]',
-        'Swagger\Annotations\Tag' => 'tags[]',
-        'Swagger\Annotations\Parameter' => 'parameters[]',
-        'Swagger\Annotations\Response' => 'responses[]',
+        'Swagger\Annotations\Path' => ['paths', 'path'],
+        'Swagger\Annotations\Definition' => ['definitions', 'definition'],
+        'Swagger\Annotations\Tag' => ['tags'],
+        'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
+        'Swagger\Annotations\Response' => ['responses', 'response'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\SecurityScheme' => 'securityDefinitions[]'
+        'Swagger\Annotations\SecurityScheme' => ['securityDefinitions', 'securityDefinition']
     ];
 
     /** @inheritdoc */

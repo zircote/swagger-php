@@ -7,6 +7,7 @@
 namespace Swagger\Processors;
 
 use Swagger\Annotations\Path;
+use Swagger\Annotations\Operation;
 use Swagger\Annotations\Swagger;
 use Swagger\Logger;
 use Swagger\Context;
@@ -18,32 +19,29 @@ class SwaggerPaths {
 
     public function __invoke(Swagger $swagger) {
         $paths = [];
-        $operations = [];
         // Merge @SWG\Paths with the same path.
         foreach ($swagger->paths as $annotation) {
             if (empty($annotation->path)) {
                 Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
-                continue;
-            }
-            if ($annotation instanceof Path) {
-                if (isset($paths[$annotation->path])) {
-                    $paths[$annotation->path]->mergeProperties($annotation);
-                } else {
-                    $paths[$annotation->path] = $annotation;
-                }
+            } elseif (isset($paths[$annotation->path])) {
+                $paths[$annotation->path]->mergeProperties($annotation);
             } else {
-                $operations[] = $annotation;
+                $paths[$annotation->path] = $annotation;
             }
         }
+
         // Merge @SWG\Operations into existing @SWG\Paths or create a new one.
-        foreach ($operations as $operation) {
-            if (empty($paths[$operation->path])) {
-                $paths[$operation->path] = new Path([
-                    'path' => $operation->path,
-                    '_context' => new Context(['generated' => true], $operation->_context)
-                ]);
+        foreach ($swagger->_unmerged as $i => $operation) {
+            if ($operation instanceof Operation && $operation->path) {
+                if (empty($paths[$operation->path])) {
+                    $paths[$operation->path] = new Path([
+                        'path' => $operation->path,
+                        '_context' => new Context(['generated' => true], $operation->_context)
+                    ]);
+                }
+                $paths[$operation->path]->merge([$operation]);
+                unset($swagger->_unmerged[$i]);
             }
-            $paths[$operation->path]->merge([$operation]);
         }
         $swagger->paths = array_values($paths);
     }

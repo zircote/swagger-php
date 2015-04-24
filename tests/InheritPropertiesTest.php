@@ -56,15 +56,15 @@ class InheritPropertiesTest extends SwaggerTestCase {
         $classPropertiesProcessor = new ClassProperties();
         $classPropertiesProcessor($swagger);
         $this->assertCount(1, $swagger->_unmerged); // only the property in GrandParent is not merged
-        $this->assertSame('lastname', $swagger->_unmerged[0]->name);
+        $this->assertSame('lastname', $swagger->_unmerged[0]->property);
         $processor = new InheritProperties();
         $processor($swagger);
         $this->assertCount(0, $swagger->_unmerged);
         $childDefinition = $swagger->definitions[0];
-        $this->assertSame('Child', $childDefinition->name);
+        $this->assertSame('Child', $childDefinition->property);
         $this->assertCount(3, $childDefinition->properties);
         $parentDefinition = $swagger->definitions[0];
-        $this->assertSame('Parent', $parentDefinition->name);
+        $this->assertSame('Parent', $parentDefinition->property);
         $this->assertCount(2, $parentDefinition->properties);
         $swagger->validate();
     }

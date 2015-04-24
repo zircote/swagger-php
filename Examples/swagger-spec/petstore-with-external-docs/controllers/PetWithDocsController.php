@@ -7,10 +7,10 @@ class PetWithDocsController {
 
     /**
      * @SWG\Definition(
-     *   name="NewPet",
+     *   definition="NewPet",
      *   allOf={
      *     @SWG\Schema(ref="#/definitions/Pet"),
-     *     @SWG\Schema(required={"name"}, @SWG\Property(name="id", format="int64", type="integer"))
+     *     @SWG\Schema(required={"name"}, @SWG\Property(property="id", format="int64", type="integer"))
      *   },
      * )
      * * @SWG\Post(
@@ -26,12 +26,12 @@ class PetWithDocsController {
      *         @SWG\Schema(ref="#/definitions/NewPet"),
      *     ),
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
@@ -61,12 +61,12 @@ class PetWithDocsController {
      *         "text/xml"
      *     },
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
@@ -100,7 +100,7 @@ class PetWithDocsController {
      *         format="int32"
      *     ),
      *     @SWG\Response(
-     *         status=200,
+     *         response=200,
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
@@ -108,7 +108,7 @@ class PetWithDocsController {
      *         ),
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(
      *             ref="#/definitions/ErrorModel"
@@ -138,11 +138,11 @@ class PetWithDocsController {
      *         type="integer"
      *     ),
      *     @SWG\Response(
-     *         status=204,
+     *         response=204,
      *         description="pet deleted"
      *     ),
      *     @SWG\Response(
-     *         status="default",
+     *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )

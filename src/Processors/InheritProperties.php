@@ -22,7 +22,7 @@ class InheritProperties {
         $definitions = $this->getDefinitions($swagger);
 
         foreach ($swagger->_unmerged as $i => $property) {
-            if ($property instanceof Property && $property->_context->is('property') && $property->name !== null) {
+            if ($property instanceof Property && $property->_context->is('property') && $property->property !== null) {
                 $class = $property->_context->fullyQualifiedName($property->_context->class);
                 if (isset($children[$class])) {
                     $merged = false;
@@ -122,7 +122,7 @@ class InheritProperties {
         foreach ($properties as $property) {
             $unique = true;
             foreach ($definition->properties as $existingProperty) {
-                if ($existingProperty->name === $property->name) {
+                if ($existingProperty->property === $property->property) {
                     $unique = false;
                 }
             }

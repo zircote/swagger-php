@@ -20,7 +20,7 @@ class Response extends AbstractAnnotation {
      * 
      * @var string a HTTP Status Code or "default" 
      */
-    public $status;
+    public $response;
 
     /**
      * A short description of the response. GFM syntax can be used for rich text representation.
@@ -47,9 +47,6 @@ class Response extends AbstractAnnotation {
     public $examples;
 
     /** @inheritdoc */
-    public static $_key = 'status';
-
-    /** @inheritdoc */
     public static $_required = ['description'];
 
     /** @inheritdoc */
@@ -60,7 +57,7 @@ class Response extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Schema' => 'schema',
-        'Swagger\Annotations\Header' => 'headers[]'
+        'Swagger\Annotations\Header' => ['headers', 'header']
     ];
 
     /** @inheritdoc */
@@ -79,8 +76,8 @@ class Response extends AbstractAnnotation {
             return true;
         }
         $valid = parent::validate($skip);
-        if ($this->status !== null && $this->status !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $this->status) === 0) {
-            Logger::notice('Invalid value "' . $this->status . '" for ' . $this->_identity([]) . '->status, expecting "default" or a HTTP Status Code in '.$this->_context);
+        if ($this->response !== null && $this->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $this->response) === 0) {
+            Logger::notice('Invalid value "' . $this->response . '" for ' . $this->_identity([]) . '->response, expecting "default" or a HTTP Status Code in '.$this->_context);
         }
         return $valid;
 

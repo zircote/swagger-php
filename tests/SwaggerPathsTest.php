@@ -32,7 +32,7 @@ class SwaggerPathsTest extends SwaggerTestCase {
 
     function testMergeOperationsWithSamePath() {
         $swagger = new Swagger([]);
-        $swagger->paths = [
+        $swagger->_unmerged = [
             new Get([
                 'path' => '/comments'
             ]),

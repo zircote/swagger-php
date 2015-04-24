@@ -12,15 +12,15 @@
  *         @SWG\License(name="Creative Commons 4.0 International", url="http://creativecommons.org/licenses/by/4.0/")
  *     ),
  *     @SWG\Definition(
- *         name="Error",
+ *         definition="Error",
  *         required={"code", "message"},
  *         @SWG\Property(
- *             name="code",
+ *             property="code",
  *             type="integer",
  *             format="int32"
  *         ),
  *         @SWG\Property(
- *             name="message",
+ *             property="message",
  *             type="string"
  *         )
  *     )

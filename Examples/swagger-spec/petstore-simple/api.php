@@ -16,15 +16,15 @@
  *         @SWG\License(name="MIT")
  *     ),
  *     @SWG\Definition(
- *         name="errorModel",
+ *         definition="errorModel",
  *         required={"code", "message"},
  *         @SWG\Property(
- *             name="code",
+ *             property="code",
  *             type="integer",
  *             format="int32"
  *         ),
  *         @SWG\Property(
- *             name="message",
+ *             property="message",
  *             type="string"
  *         )
  *     )

@@ -27,11 +27,11 @@
     * 			@SWG\Schema(ref="#/definitions/User"),
     *		),
     * 		@SWG\Response(
-    * 			status=200,
+    * 			response=200,
     * 			description="success",
     * 		),
     * 		@SWG\Response(
-    * 			status="default",
+    * 			response="default",
     * 			description="error",
     * 			@SWG\Schema(ref="#/definitions/Error"),
     * 		),
@@ -55,11 +55,11 @@
 	 * 			description="UUID",
 	 * 		),
 	 * 		@SWG\Response(
-	 * 			status=200,
+	 * 			response=200,
 	 * 			description="success",
 	 * 		),
 	 * 		@SWG\Response(
-	 * 			status="default",
+	 * 			response="default",
 	 * 			description="error",
 	 * 			@SWG\Schema(ref="#/definitions/Error"),
 	 * 		),

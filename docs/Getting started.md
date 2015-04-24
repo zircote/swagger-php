@@ -75,11 +75,11 @@ Placing multiple annotation of the same type will result in an array or object.
  *   path="/products",
  *   summary="list products",
  *   @SWG\Response(
- *     status=200,
+ *     response=200,
  *     description="A list with products"
  *   ),
  *   @SWG\Response(
- *     status="default",
+ *     response="default",
  *     description="an ""unexpected"" error"
  *   )
  * )

@@ -3,7 +3,7 @@ namespace SwaggerFixtures;
 class GrandParent {
 
 	/**
-	 * @SWG\Property(name="lastname");
+	 * @SWG\Property(property="lastname");
 	 * @var string
 	 */
 	public $lastname;

@@ -82,10 +82,12 @@ class Path extends AbstractAnnotation {
         'Swagger\Annotations\Put' => 'put',
         'Swagger\Annotations\Delete' => 'delete',
         'Swagger\Annotations\Patch' => 'patch',
-        'Swagger\Annotations\Parameter' => 'parameters[]',
+        'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
     ];
 
     /** @inheritdoc */
-    public static $_key = 'path';
+    public static $_parents = [
+        'Swagger\Annotations\Swagger'
+    ];
 
 }

@@ -198,7 +198,7 @@ class Schema extends AbstractAnnotation {
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
-        'Swagger\Annotations\Property' => 'properties[]',
+        'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' =>'externalDocs',
         'Swagger\Annotations\Xml' => 'xml',
     ];

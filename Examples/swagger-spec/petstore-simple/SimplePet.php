@@ -3,7 +3,7 @@
 namespace Petstore;
 
 /**
- * @SWG\Definition(name="pet", required={"id", "name"})
+ * @SWG\Definition(definition="pet", required={"id", "name"})
  */
 class SimplePet {
 

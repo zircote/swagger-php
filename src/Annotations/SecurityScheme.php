@@ -70,9 +70,6 @@ class SecurityScheme extends AbstractAnnotation {
     public static $_required = ['type'];
 
     /** @inheritdoc */
-    public static $_key = 'securityDefinition';
-
-    /** @inheritdoc */
     public static $_types = [
         'type' => ['basic', 'apiKey', 'oauth2'],
         'description' => 'string',
