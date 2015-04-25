@@ -6,6 +6,8 @@
 
 namespace Swagger;
 
+use Closure;
+use Exception;
 /**
  * Logger reports the parser and validation messages.
  */
@@ -28,7 +30,7 @@ class Logger {
          * @param int Error type
          */
         $this->log = function ($entry, $type) {
-            if ($entry instanceof \Exception) {
+            if ($entry instanceof Exception) {
                 $entry = $entry->getMessage();
             }
             trigger_error($entry, $type);
@@ -47,7 +49,7 @@ class Logger {
 
     /**
      * Log a Swagger warning.
-     * @param \Exception|string $entry
+     * @param Exception|string $entry
      */
     public static function warning($entry) {
         call_user_func(self::getInstance()->log, $entry, E_USER_WARNING);
@@ -55,7 +57,7 @@ class Logger {
 
     /**
      * Log a Swagger notice.
-     * @param \Exception|string $entry
+     * @param Exception|string $entry
      */
     public static function notice($entry) {
         call_user_func(self::getInstance()->log, $entry, E_USER_NOTICE);

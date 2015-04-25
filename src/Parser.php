@@ -6,15 +6,22 @@
 
 namespace Swagger;
 
+use Annotations\AbstractAnnotation;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
-use Annotations\AbstractAnnotation;
+use Exception;
 
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
     foreach (Parser::$whitelist as $namespace) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-            return class_exists($class);
+            $loaded = class_exists($class);
+            if (!$loaded && $namespace === 'Swagger\\Annotations\\') {
+                if (in_array(strtolower(substr($class, 20)), ['model', 'resource', 'api'])) { // Detected an 1.x annotation?
+                    throw new Exception('The annotation @SWG\\'.substr($class, 20).'() is deprecated. Found in '.Parser::$context."\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/2.x/docs/Migrating-to-v2.md");
+                }
+            }
+            return $loaded;
         }
     }
     return false;
@@ -304,7 +311,7 @@ class Parser {
             }, $context->comment);
             $result = $this->docParser->parse($comment, $context);
             self::$context = null;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             self::$context = null;
             if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote($context, '/') . '\.$/', $e->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
@@ -313,7 +320,7 @@ class Parser {
                 $context->line += substr_count($context->comment, "\n", 0, $atPos + $errorPos);
                 $lines = explode("\n", substr($context->comment, $atPos, $errorPos));
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
-                Logger::warning(new \Exception($errorMessage . ' in ' . $context, $e->getCode(), $e));
+                Logger::warning(new Exception($errorMessage . ' in ' . $context, $e->getCode(), $e));
             } else {
                 Logger::warning($e);
             }

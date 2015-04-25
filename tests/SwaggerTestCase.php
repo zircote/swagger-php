@@ -9,6 +9,7 @@ namespace SwaggerTests;
 use Closure;
 use PHPUnit_Framework_TestCase;
 use stdClass;
+use Exception;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Context;
@@ -70,6 +71,9 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
 
     public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '') {
         $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
+            if ($entry instanceof Exception) {
+                $entry = $entry->getMessage();
+            }
             $this->assertStringStartsWith($entryPrefix, $entry, $message);
         };
     }

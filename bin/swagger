@@ -97,6 +97,7 @@ EOF;
 }
 if (count($paths) === 0) {
     $paths[] = getcwd();
+    echo "Scanning files in '".$paths[0]."' ...\n";
 }
 if (class_exists('Swagger\Logger') === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
