@@ -351,6 +351,12 @@ class Swagger
                         if ($model) {
                             $models[] = $model;
                         }
+                        if ($parameter->items && $parameter->items->type) {
+                            $model = $this->resolveModel($parameter->items->type);
+                            if ($model) {
+                                $models[] = $model;
+                            }
+                        }
                     }
                     foreach ($operation->responseMessages as $responseMessage) {
                         $model = $this->resolveModel($responseMessage->responseModel);
