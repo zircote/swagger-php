@@ -82,7 +82,7 @@ class Path extends AbstractAnnotation {
         'Swagger\Annotations\Put' => 'put',
         'Swagger\Annotations\Delete' => 'delete',
         'Swagger\Annotations\Patch' => 'patch',
-        'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
+        'Swagger\Annotations\Parameter' => ['parameters'],
     ];
 
     /** @inheritdoc */

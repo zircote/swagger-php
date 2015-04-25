@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Logger;
+
 /**
  * @Annotation
  * Base class for the @SWG\Get(),  @SWG\Post(),  @SWG\Put(),  @SWG\Delete(), @SWG\Patch()
@@ -136,7 +138,7 @@ abstract class Operation extends AbstractAnnotation {
     public static $_nested = [
         'Swagger\Annotations\Parameter' => ['parameters'],
         'Swagger\Annotations\Response' => ['responses', 'response'],
-        'Swagger\Annotations\ExternalDocumentation' =>'externalDocs'
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
     ];
 
     /** @inheritdoc */
@@ -145,6 +147,21 @@ abstract class Operation extends AbstractAnnotation {
         unset($data->method);
         unset($data->path);
         return $data;
+    }
+
+    public function validate($skip = array()) {
+        if (in_array($this, $skip, true)) {
+            return true;
+        }
+        $valid = parent::validate($skip);
+        if ($this->responses !== null) {
+            foreach ($this->responses as $response) {
+                if ($response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $response->response) === 0) {
+                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default" or a HTTP Status Code in ' . $response->_context);
+                }
+            }
+        }
+        return $valid;
     }
 
 }

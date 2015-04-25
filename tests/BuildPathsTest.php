@@ -7,24 +7,20 @@
 namespace SwaggerTests;
 
 use Swagger\Annotations\Swagger;
-use Swagger\Processors\SwaggerPaths;
+use Swagger\Processors\BuildPaths;
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Get;
 use Swagger\Annotations\Post;
 
-class SwaggerPathsTest extends SwaggerTestCase {
+class BuildPathsTest extends SwaggerTestCase {
 
     function testMergePathsWithSamePath() {
         $swagger = new Swagger([]);
         $swagger->paths = [
-            new Path([
-                'path' => '/comments'
-            ]),
-            new Path([
-                'path' => '/comments'
-            ])
+            new Path(['path' => '/comments']),
+            new Path(['path' => '/comments'])
         ];
-        $processor = new SwaggerPaths();
+        $processor = new BuildPaths();
         $processor($swagger);
         $this->assertCount(1, $swagger->paths);
         $this->assertSame('/comments', $swagger->paths[0]->path);
@@ -33,14 +29,10 @@ class SwaggerPathsTest extends SwaggerTestCase {
     function testMergeOperationsWithSamePath() {
         $swagger = new Swagger([]);
         $swagger->_unmerged = [
-            new Get([
-                'path' => '/comments'
-            ]),
-            new Post([
-                'path' => '/comments'
-            ])
+            new Get(['path' => '/comments']),
+            new Post(['path' => '/comments'])
         ];
-        $processor = new SwaggerPaths();
+        $processor = new BuildPaths();
         $processor($swagger);
         $this->assertCount(1, $swagger->paths);
         $path = $swagger->paths[0];
@@ -50,4 +42,5 @@ class SwaggerPathsTest extends SwaggerTestCase {
         $this->assertInstanceOf('\Swagger\Annotations\Post', $path->post);
         $this->assertNull($path->put);
     }
+
 }

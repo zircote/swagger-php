@@ -6,14 +6,18 @@
 
 namespace Swagger\Annotations;
 
-use Swagger\Logger;
-
 /**
  * @Annotation
  *
  * A Swagger "Response Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#responseObject
  */
 class Response extends AbstractAnnotation {
+
+    /**
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * @var string
+     */
+    public $ref;
 
     /**
      * The key into Operations->reponses array.
@@ -70,17 +74,5 @@ class Response extends AbstractAnnotation {
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Swagger'
     ];
-
-    public function validate($skip = array()) {
-        if (in_array($this, $skip, true)) {
-            return true;
-        }
-        $valid = parent::validate($skip);
-        if ($this->response !== null && $this->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $this->response) === 0) {
-            Logger::notice('Invalid value "' . $this->response . '" for ' . $this->_identity([]) . '->response, expecting "default" or a HTTP Status Code in '.$this->_context);
-        }
-        return $valid;
-
-    }
 
 }

@@ -13,9 +13,9 @@ use Swagger\Logger;
 use Swagger\Context;
 
 /**
- * Merge & dedupe @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc) into a tree
+ * Build the swagger->paths using the detected @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
  */
-class SwaggerPaths {
+class BuildPaths {
 
     public function __invoke(Swagger $swagger) {
         $paths = [];
