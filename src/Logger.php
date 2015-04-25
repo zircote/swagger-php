@@ -21,7 +21,7 @@ class Logger {
     public static $instance;
 
     /**
-     * @var Closure
+     * @var \Closure
      */
     public $log;
 
