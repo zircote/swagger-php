@@ -103,7 +103,7 @@ abstract class AbstractAnnotation implements JsonSerializable {
                     if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
                         $annotations[] = $annotation;
                     } else {
-                        Logger::notice('Unexpected field in ' . $this->identity());
+                        Logger::notice('Unexpected field in ' . $this->identity() . ' in ' . $this->_context);
                     }
                 }
                 $this->merge($annotations);

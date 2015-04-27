@@ -1,3 +1,6 @@
+## petstore.swagger.io
+
+Using swagger-php to generate the [example for swagger-ui](http://petstore.swagger.io/)
 
 ## swagger-spec
 

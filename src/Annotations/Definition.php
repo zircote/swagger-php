@@ -25,6 +25,9 @@ class Definition extends Schema {
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Swagger',
+        'Swagger\Annotations\Schema',
+        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Property',
     ];
 
 }

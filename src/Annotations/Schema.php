@@ -16,6 +16,7 @@ namespace Swagger\Annotations;
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
  * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
+ * JSON Schema: http://json-schema.org/latest/json-schema-validation.html
  */
 class Schema extends AbstractAnnotation {
 
@@ -24,13 +25,34 @@ class Schema extends AbstractAnnotation {
      * @var string
      */
     public $ref;
+
+    /**
+     * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
+     * @var string
+     */
     public $title;
+
+    /**
+     * A description will provide explanation about the purpose of the instance described by this schema.
+     * @var string
+     */
     public $description;
+
+    /**
+     * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the value of this property.
+     * @var integer
+     */
     public $maxProperties;
+
+    /**
+     * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to, the value of this property.
+     * @var integer
+     */
     public $minProperties;
 
     /**
-     * @var array
+     * An object instance is valid against this property if its property set contains all elements in this property's array value.
+     * @var string[]
      */
     public $required;
 
@@ -105,7 +127,7 @@ class Schema extends AbstractAnnotation {
     public $minLength;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor33.
+     * A string instance is considered valid if the regular expression matches the instance successfully.
      * @var string
      */
     public $pattern;
@@ -129,13 +151,19 @@ class Schema extends AbstractAnnotation {
     public $uniqueItems;
 
     /**
+     * http://json-schema.org/latest/json-schema-validation.html#anchor37
+     * @var boo|array
+     */
+    public $additionalItems;
+
+    /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor76.
      * @var array
      */
     public $enum;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor14.
+     * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this property's value is an integer.
      * @var number
      */
     public $multipleOf;
@@ -171,10 +199,45 @@ class Schema extends AbstractAnnotation {
     public $example;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor82
+     * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
      * @var Schema[]
      */
     public $allOf;
+
+    /**
+     * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
+     * @var Schema[]
+     */
+    public $anyOf;
+
+    /**
+     * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
+     * @var type 
+     */
+    public $oneOf;
+
+    /**
+     * An instance is valid against this keyword if it fails to validate successfully against the schema defined by this keyword.
+     * @var Schema
+     */
+    public $not;
+
+    /**
+     * This property plays no role in validation per se. Its role is to provide a standardized location for schema authors to inline JSON Schemas into a more general schema.
+     * @var Definition[]
+     */
+    public $definitions;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#anchor64
+     * @var bool|object
+     */
+    public $additionalProperties;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#anchor64
+     */
+    public $patternProperties;
 
     /** @inheritdoc */
     public static $_types = [
@@ -201,6 +264,7 @@ class Schema extends AbstractAnnotation {
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
         'Swagger\Annotations\Xml' => 'xml',
+        'Swagger\Annotations\Definition' => ['definitions', 'definition'],
     ];
 
     /** @inheritdoc */
