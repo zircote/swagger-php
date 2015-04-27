@@ -7,11 +7,6 @@
 namespace Swagger;
 
 use Swagger\Annotations\Swagger;
-use Swagger\Processors\MergeSwagger;
-use Swagger\Processors\BuildPaths;
-use Swagger\Processors\ClassProperties;
-use Swagger\Processors\InheritProperties;
-use Swagger\Processors\AugmentParameter;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -35,16 +30,7 @@ function scan($directory, $exclude = null) {
     // Crawl directory and parse all files
     $swagger->crawl($directory, $exclude);
     // Post processing
-    $processors = [
-        new MergeSwagger(),
-        new BuildPaths(),
-        new ClassProperties(),
-        new InheritProperties(),
-        new AugmentParameter(),
-    ];
-    foreach ($processors as $processor) {
-        $processor($swagger);
-    }
+    Processing::process($swagger);
     // Validation (Generate notices & warnings)
     $swagger->validate();
     return $swagger;
