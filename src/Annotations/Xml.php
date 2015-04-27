@@ -11,7 +11,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "XML Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#xmlObject
  */
-class Xml extends AbstractAnnotation {
+class Xml extends AbstractAnnotation
+{
 
     /**
      * Replaces the name of the element/attribute used for the described schema property. When defined within the Items Object (items), it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored.
@@ -58,5 +59,4 @@ class Xml extends AbstractAnnotation {
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Definition'
     ];
-
 }

@@ -11,9 +11,11 @@ use Swagger\Annotations\Swagger;
 /**
  * Merge all @SWG\Swagger annotations into one.
  */
-class MergeSwagger {
+class MergeSwagger
+{
 
-    public function __invoke(Swagger $swagger) {
+    public function __invoke(Swagger $swagger)
+    {
         $unmerged = $swagger->_unmerged;
         foreach ($swagger->_unmerged as $i => $annotation) {
             if ($annotation instanceof Swagger) {
@@ -33,5 +35,4 @@ class MergeSwagger {
         }
         $swagger->_unmerged = array_values($unmerged);
     }
-
 }

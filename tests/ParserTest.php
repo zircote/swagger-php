@@ -9,9 +9,11 @@ namespace SwaggerTests;
 use Swagger\Context;
 use Swagger\Parser;
 
-class ParserTest extends SwaggerTestCase {
+class ParserTest extends SwaggerTestCase
+{
 
-    function testParseContents() {
+    public function testParseContents()
+    {
         $annotations = $this->parseComment('@SWG\Parameter(description="This is my parameter")');
         $this->assertInternalType('array', $annotations);
         $parameter = $annotations[0];
@@ -19,13 +21,15 @@ class ParserTest extends SwaggerTestCase {
         $this->assertSame('This is my parameter', $parameter->description);
     }
 
-    function testWrongCommentType() {
+    public function testWrongCommentType()
+    {
         $parser = new Parser();
         $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
         $parser->parseContents("<?php\n/*\n * @SWG\Parameter() */", Context::detect());
     }
 
-    function testThirdPartyAnnotations() {
+    public function testThirdPartyAnnotations()
+    {
         Parser::$whitelist = ['Swagger\\Annotations\\'];
         $parser = new Parser();
         $annotations = $parser->parseFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
@@ -38,15 +42,16 @@ class ParserTest extends SwaggerTestCase {
         $this->assertCount(10, $swagger->_unmerged);
     }
 
-    function testIndentationCorrection() {
+    public function testIndentationCorrection()
+    {
         $parser = new Parser();
         $annotations = $parser->parseFile(__DIR__ . '/Fixtures/routes.php');
         $this->assertCount(2, $annotations);
     }
 
-    function testDeprecatedAnnotationWarning() {
+    public function testDeprecatedAnnotationWarning()
+    {
         $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\\Resource() is deprecated.');
         $annotations = $this->parseComment('@SWG\Resource()');
     }
-
 }

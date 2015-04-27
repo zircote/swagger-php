@@ -16,7 +16,8 @@ use Swagger\Parser;
 /**
  * The swagger annotation base class.
  */
-abstract class AbstractAnnotation implements JsonSerializable {
+abstract class AbstractAnnotation implements JsonSerializable
+{
 
     /**
      * Allows extensions to the Swagger Schema.
@@ -79,11 +80,12 @@ abstract class AbstractAnnotation implements JsonSerializable {
     /**
      * @param array $properties
      */
-    public function __construct($properties) {
+    public function __construct($properties)
+    {
         if (isset($properties['_context'])) {
             $this->_context = $properties['_context'];
             unset($properties['_context']);
-        } else if (Parser::$context) {
+        } elseif (Parser::$context) {
             $this->_context = Parser::$context;
         } else {
             $this->_context = Context::detect(1);
@@ -115,12 +117,14 @@ abstract class AbstractAnnotation implements JsonSerializable {
         }
     }
 
-    public function __get($property) {
+    public function __get($property)
+    {
         $properties = get_object_vars($this);
         Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', exising properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $fields = get_object_vars($this);
         foreach (static::$_blacklist as $_property) {
             unset($fields[$_property]);
@@ -135,7 +139,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      *
      * @param AbstractAnnotation[] $annotations
      */
-    public function merge(Array $annotations) {
+    public function merge(Array $annotations)
+    {
         foreach ($annotations as $annotation) {
             $found = false;
             foreach (static::$_nested as $class => $property) {
@@ -166,7 +171,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      *
      * @param object $object
      */
-    public function mergeProperties($object) {
+    public function mergeProperties($object)
+    {
         $defaultValues = get_class_vars(get_class($this));
         $currentValues = get_object_vars($this);
         foreach ($object as $property => $value) {
@@ -196,11 +202,13 @@ abstract class AbstractAnnotation implements JsonSerializable {
         }
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
-    public function __debugInfo() {
+    public function __debugInfo()
+    {
         $properties = [];
         foreach (get_object_vars($this) as $property => $value) {
             if ($value !== UNDEFINED) {
@@ -214,7 +222,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * Customize the way json_encode() renders the annotations.
      * @return array
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $data = new stdClass();
         // Strip undefined and null values.
         $classVars = get_class_vars(get_class($this));
@@ -274,7 +283,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @return boolean
      * @throws Exception
      */
-    public function validate($skip = []) {
+    public function validate($skip = [])
+    {
         if (in_array($this, $skip, true)) {
             return true;
         }
@@ -375,7 +385,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @param array [$skip] Array with objects which are already validated
      * @return boolean
      */
-    private static function _validate($fields, $skip) {
+    private static function _validate($fields, $skip)
+    {
         $valid = true;
         if (is_object($fields)) {
             if (in_array($fields, $skip, true)) {
@@ -407,7 +418,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * Example: "@SWG\Get(path="/pets")"
      * @return string
      */
-    public function identity() {
+    public function identity()
+    {
         return $this->_identity([]);
     }
 
@@ -416,7 +428,8 @@ abstract class AbstractAnnotation implements JsonSerializable {
      * @param array $properties
      * @return string
      */
-    protected function _identity($properties) {
+    protected function _identity($properties)
+    {
         $fields = [];
         foreach ($properties as $property) {
             $value = $this->$property;
@@ -427,8 +440,9 @@ abstract class AbstractAnnotation implements JsonSerializable {
         return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
-    private function validateType($type, $value) {
-        if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type? 
+    private function validateType($type, $value)
+    {
+        if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type?
             if ($this->validateType('array', $value) === false) {
                 return false;
             }
@@ -474,5 +488,4 @@ abstract class AbstractAnnotation implements JsonSerializable {
                 throw new Exception('Invalid type "' . $type . '"');
         }
     }
-
 }

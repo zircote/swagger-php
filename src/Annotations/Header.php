@@ -11,7 +11,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Header Object" https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#headerObject
  */
-class Header extends AbstractAnnotation {
+class Header extends AbstractAnnotation
+{
 
     /**
      * @var string
@@ -150,5 +151,4 @@ class Header extends AbstractAnnotation {
     public static $_parents = [
         'Swagger\Annotations\Response'
     ];
-
 }

@@ -12,7 +12,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "External Documentation Object":  * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#external-documentation-object
  */
-class ExternalDocumentation extends AbstractAnnotation {
+class ExternalDocumentation extends AbstractAnnotation
+{
 
     /**
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
@@ -49,5 +50,4 @@ class ExternalDocumentation extends AbstractAnnotation {
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Patch',
     ];
-
 }

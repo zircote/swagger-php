@@ -9,9 +9,11 @@ namespace SwaggerTests;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\ClassProperties;
 
-class ClassPropertiesTest extends SwaggerTestCase {
+class ClassPropertiesTest extends SwaggerTestCase
+{
 
-    function testClassPropertiesProcessor() {
+    public function testClassPropertiesProcessor()
+    {
         $processor = new ClassProperties();
         $swagger = new Swagger([]);
         $swagger->crawl(__DIR__ . '/Fixtures/Customer.php');
@@ -41,5 +43,4 @@ class ClassPropertiesTest extends SwaggerTestCase {
         $this->assertSame('array', $friends->type);
         $this->assertSame('#/definitions/Customer', $friends->items->ref);
     }
-
 }

@@ -11,7 +11,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Response Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#responseObject
  */
-class Response extends AbstractAnnotation {
+class Response extends AbstractAnnotation
+{
 
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
@@ -21,8 +22,8 @@ class Response extends AbstractAnnotation {
 
     /**
      * The key into Operations->responses array.
-     * 
-     * @var string a HTTP Status Code or "default" 
+     *
+     * @var string a HTTP Status Code or "default"
      */
     public $response;
 
@@ -74,5 +75,4 @@ class Response extends AbstractAnnotation {
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Swagger'
     ];
-
 }

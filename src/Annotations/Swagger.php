@@ -16,7 +16,8 @@ use Symfony\Component\Finder\Finder;
  *
  * A Swagger "Swagger Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#swagger-object-
  */
-class Swagger extends AbstractAnnotation {
+class Swagger extends AbstractAnnotation
+{
 
     /**
      * Specifies the Swagger Specification version being used. It can be used by the Swagger UI and other clients to interpret the API listing.
@@ -139,7 +140,8 @@ class Swagger extends AbstractAnnotation {
      * @param string|array $exclude
      * @throws Exception
      */
-    public function crawl($directory, $exclude = null) {
+    public function crawl($directory, $exclude = null)
+    {
         // Setup Finder
         if (is_object($directory)) {
             $finder = $directory;
@@ -179,10 +181,10 @@ class Swagger extends AbstractAnnotation {
      * @param string $filename
      * @throws Exception
      */
-    public function saveAs($filename) {
+    public function saveAs($filename)
+    {
         if (file_put_contents($filename, $this) === false) {
             throw new Exception('Failed to saveAs("' . $filename . '")');
         }
     }
-
 }

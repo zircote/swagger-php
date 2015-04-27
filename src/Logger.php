@@ -12,7 +12,8 @@ use Exception;
 /**
  * Logger reports the parser and validation messages.
  */
-class Logger {
+class Logger
+{
 
     /**
      * Singleton
@@ -25,7 +26,8 @@ class Logger {
      */
     public $log;
 
-    protected function __construct() {
+    protected function __construct()
+    {
         /**
          * @param \Exception|string $entry
          * @param int $type Error type
@@ -41,7 +43,8 @@ class Logger {
     /**
      * @return Logger
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new Logger();
         }
@@ -52,7 +55,8 @@ class Logger {
      * Log a Swagger warning.
      * @param Exception|string $entry
      */
-    public static function warning($entry) {
+    public static function warning($entry)
+    {
         call_user_func(self::getInstance()->log, $entry, E_USER_WARNING);
     }
 
@@ -60,8 +64,8 @@ class Logger {
      * Log a Swagger notice.
      * @param Exception|string $entry
      */
-    public static function notice($entry) {
+    public static function notice($entry)
+    {
         call_user_func(self::getInstance()->log, $entry, E_USER_NOTICE);
     }
-
 }

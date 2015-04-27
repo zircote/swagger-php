@@ -9,7 +9,8 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  */
-class Post extends Operation {
+class Post extends Operation
+{
 
     /** @inheritdoc */
     public $method = 'post';
@@ -18,5 +19,4 @@ class Post extends Operation {
     public static $_parents = [
         'Swagger\Annotations\Path'
     ];
-
 }

@@ -9,9 +9,11 @@ namespace SwaggerTests;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\ClassProperties;
 
-class InheritPropertiesTest extends SwaggerTestCase {
+class InheritPropertiesTest extends SwaggerTestCase
+{
 
-    function testGetChildren() {
+    public function testGetChildren()
+    {
         $processor = new InheritProperties();
         $swagger = $this->createSwaggerWithInfo();
         $swagger->crawl([
@@ -26,7 +28,8 @@ class InheritPropertiesTest extends SwaggerTestCase {
         $this->assertSame($children['\\SwaggerFixtures\\GrandParent'], ['\\SwaggerFixtures\\Parent', '\\AnotherNamespace\\Child']);
     }
 
-    function testInheritWithoutClassProperties() {
+    public function testInheritWithoutClassProperties()
+    {
         $swagger = $this->createSwaggerWithInfo();
         $swagger->crawl([
             __DIR__ . '/Fixtures/Child.php',
@@ -45,7 +48,8 @@ class InheritPropertiesTest extends SwaggerTestCase {
         $this->assertCount(1, $childDefinition->properties); // Inherited 1 property, but couldn't inherit the property from Parent because it didn't have a name, also missing its own isBaby property.
     }
 
-    function detestInheritProcessor() {
+    public function detestInheritProcessor()
+    {
         $swagger = $this->createSwaggerWithInfo();
         $swagger->crawl([
             __DIR__ . '/Fixtures/GrandParent.php',
@@ -67,5 +71,4 @@ class InheritPropertiesTest extends SwaggerTestCase {
         $this->assertCount(2, $parentDefinition->properties);
         $swagger->validate();
     }
-
 }

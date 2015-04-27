@@ -9,7 +9,8 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  */
-class Property extends Schema {
+class Property extends Schema
+{
 
     /**
      * The key into Schema->properties array.
@@ -23,5 +24,4 @@ class Property extends Schema {
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
     ];
-
 }

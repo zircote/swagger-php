@@ -13,9 +13,11 @@ use Swagger\Annotations\Definition;
 /**
  * Copy the annotated properties from parent classes;
  */
-class InheritProperties {
+class InheritProperties
+{
 
-    public function __invoke(Swagger $swagger) {
+    public function __invoke(Swagger $swagger)
+    {
         $children = $this->getChildren($swagger);
         $definitions = $this->getDefinitions($swagger);
 
@@ -51,7 +53,8 @@ class InheritProperties {
      * @param Swagger $swagger
      * @return array '\Namespace\ClassName' => SWG\Definition
      */
-    public function getDefinitions($swagger) {
+    public function getDefinitions($swagger)
+    {
         $definitions = [];
         foreach ($swagger->definitions as $definition) {
             if ($definition->_context->is('class')) {
@@ -65,7 +68,8 @@ class InheritProperties {
      * @param Swagger $swagger
      * @return array '\namespace\ParentClass' => ['\namespace\Child', 'Child2']
      */
-    public function getChildren($swagger) {
+    public function getChildren($swagger)
+    {
         $extends = []; // '\namespace\class' => '\namespace\parent'
         foreach ($swagger->definitions as $definition) {
             $context = $definition->_context;
@@ -95,7 +99,8 @@ class InheritProperties {
      * @param array $extends '\namespace\class' => '\namespace\parent'
      * @return array
      */
-    private function getChildrenFor($class, $extends) {
+    private function getChildrenFor($class, $extends)
+    {
         $children = [];
         foreach ($extends as $child => $parent) {
             if ($parent === $class) { // A direct descendant?
@@ -107,11 +112,12 @@ class InheritProperties {
     }
 
     /**
-     * 
+     *
      * @param Definition $definition
      * @param Property[] $properties
      */
-    private function mergeProperties($definition, $properties) {
+    private function mergeProperties($definition, $properties)
+    {
         if ($definition->properties === null) {
             $definition->properties = $properties;
             return;
@@ -128,5 +134,4 @@ class InheritProperties {
             }
         }
     }
-
 }

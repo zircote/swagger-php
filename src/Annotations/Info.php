@@ -11,7 +11,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Info Object":  https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#infoObject
  */
-class Info extends AbstractAnnotation {
+class Info extends AbstractAnnotation
+{
 
     /**
      * The title of the application.
@@ -69,5 +70,4 @@ class Info extends AbstractAnnotation {
     public static $_parents = [
         'Swagger\Annotations\Swagger'
     ];
-
 }

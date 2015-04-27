@@ -6,7 +6,8 @@
 
 namespace SwaggerTests;
 
-class ExamplesTest extends SwaggerTestCase {
+class ExamplesTest extends SwaggerTestCase
+{
 
     /**
      * Test the processed Examples against json files in ExamplesOutput.
@@ -15,7 +16,8 @@ class ExamplesTest extends SwaggerTestCase {
      * @param string $example Example path
      * @param string $output Expected output (path to a json file)
      */
-    public function testExample($example, $output) {
+    public function testExample($example, $output)
+    {
         $swagger = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
 //        die((string) $swagger);
         $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $swagger);
@@ -25,7 +27,8 @@ class ExamplesTest extends SwaggerTestCase {
      * dataProvider for testExample
      * @return array
      */
-    public function getExamples() {
+    public function getExamples()
+    {
         return [
             ['petstore.swagger.io', 'petstore.swagger.io.json'],
             ['swagger-spec/petstore', 'petstore.json'],
@@ -33,5 +36,4 @@ class ExamplesTest extends SwaggerTestCase {
             ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
         ];
     }
-
 }

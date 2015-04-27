@@ -11,9 +11,11 @@ use Swagger\Annotations\Swagger;
 /**
  * Use the parameter->name as keyfield (parameter->parameter) when used in swagger object.
  */
-class AugmentParameter {
+class AugmentParameter
+{
 
-    public function __invoke(Swagger $swagger) {
+    public function __invoke(Swagger $swagger)
+    {
         if ($swagger->parameters) {
             $keys = [];
             $parametersWithoutKey = [];
@@ -32,5 +34,4 @@ class AugmentParameter {
             }
         }
     }
-
 }

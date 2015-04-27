@@ -8,9 +8,11 @@ namespace SwaggerTests;
 
 use Swagger\Context;
 
-class ContextTest extends SwaggerTestCase {
+class ContextTest extends SwaggerTestCase
+{
 
-    function testDetect() {
+    public function testDetect()
+    {
         $context = Context::detect();
         $line = __LINE__ - 1;
         $this->assertSame('ContextTest', $context->class);
@@ -22,10 +24,11 @@ class ContextTest extends SwaggerTestCase {
 //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
-    function testFullyQualifiedName() {
+    public function testFullyQualifiedName()
+    {
         $swagger = \Swagger\scan(__DIR__ . '/Fixtures/Customer.php');
         $context = $swagger->definitions[0]->_context;
-        // resolve with namespace 
+        // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
         $this->assertSame('\SwaggerFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
         $this->assertSame('\SwaggerFixures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
@@ -37,5 +40,4 @@ class ContextTest extends SwaggerTestCase {
         $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('SwgParser'));
         $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
     }
-
 }

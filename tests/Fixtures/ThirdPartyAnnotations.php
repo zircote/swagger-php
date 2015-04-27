@@ -1,5 +1,6 @@
 <?php
 namespace SwaggerFixtures;
+
 /**
  * @SWG\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
@@ -35,7 +36,7 @@ class ThirdPartyAnnotations
     /**
      * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
      */
-    function methodWithSwaggerAnnotation() {
-        
+    public function methodWithSwaggerAnnotation()
+    {
     }
 }

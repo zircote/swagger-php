@@ -2,7 +2,8 @@
 /**
  * @SWG\Info(title="Using a parameter definition", version="unittest")
  */
-class UsingRefs {
+class UsingRefs
+{
 
     /**
      * @SWG\Get(
@@ -12,18 +13,17 @@ class UsingRefs {
      *   @SWG\Response(response="default", ref="#/responses/Item")
      * )
      */
-    function getProtectedItem() {
-        
+    public function getProtectedItem()
+    {
     }
-
 }
 
 /**
  * @SWG\Parameter(
  *   name="ItemName",
- *   in="path", 
+ *   in="path",
  *   type="string",
- *   required=true, 
+ *   required=true,
  *   description="protected item name",
  *   maxLength=256
  * )

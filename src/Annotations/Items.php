@@ -14,7 +14,8 @@ use Swagger\Logger;
  *
  * A Swagger "Items Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#itemsObject
  */
-class Items extends AbstractAnnotation {
+class Items extends AbstractAnnotation
+{
 
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
@@ -158,7 +159,8 @@ class Items extends AbstractAnnotation {
         'Swagger\Annotations\Items'
     ];
 
-    public function validate($skip = []) {
+    public function validate($skip = [])
+    {
         if (in_array($this, $skip, true)) {
             return true;
         }
@@ -169,5 +171,4 @@ class Items extends AbstractAnnotation {
         }
         return $valid;
     }
-
 }

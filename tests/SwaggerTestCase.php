@@ -16,7 +16,8 @@ use Swagger\Context;
 use Swagger\Logger;
 use Swagger\Parser;
 
-class SwaggerTestCase extends PHPUnit_Framework_TestCase {
+class SwaggerTestCase extends PHPUnit_Framework_TestCase
+{
 
     /**
      * @var array
@@ -34,7 +35,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
      * @param Swagger $actualSwagger
      * @param string $message
      */
-    public function assertSwaggerEqualsFile($expectedFile, $actualSwagger, $message = '') {
+    public function assertSwaggerEqualsFile($expectedFile, $actualSwagger, $message = '')
+    {
         $expected = json_decode(file_get_contents($expectedFile));
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
@@ -50,26 +52,30 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
-    public function assertSwaggerLog($expectedEntry, $expectedType, $message = '') {
+    public function assertSwaggerLog($expectedEntry, $expectedType, $message = '')
+    {
         $this->expectedLogMessages[] = function ($actualEntry, $actualType) use ($expectedEntry, $expectedType, $message) {
             $this->assertSame($expectedEntry, $actualEntry, $message);
             $this->assertSame($expectedType, $actualType, $message);
         };
     }
 
-    public function assertSwaggerLogType($expectedType, $message = '') {
+    public function assertSwaggerLogType($expectedType, $message = '')
+    {
         $this->expectedLogMessages[] = function ($entry, $actualType) use ($expectedType, $message) {
             $this->assertSame($expectedType, $actualType, $message);
         };
     }
 
-    public function assertSwaggerLogEntry($expectedEntry, $message = '') {
+    public function assertSwaggerLogEntry($expectedEntry, $message = '')
+    {
         $this->expectedLogMessages[] = function ($actualEntry, $type) use ($expectedEntry, $message) {
             $this->assertSame($expectedEntry, $actualEntry, $message);
         };
     }
 
-    public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '') {
+    public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '')
+    {
         $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
             if ($entry instanceof Exception) {
                 $entry = $entry->getMessage();
@@ -78,7 +84,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         };
     }
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->expectedLogMessages = [];
         $this->originalLogger = Logger::getInstance()->log;
         Logger::getInstance()->log = function ($entry, $type) {
@@ -100,7 +107,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         parent::setUp();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
@@ -111,7 +119,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
      * @param string $comment Contents of a comment block
      * @return AbstractAnnotation[]
      */
-    protected function parseComment($comment) {
+    protected function parseComment($comment)
+    {
         $parser = new Parser();
         $context = Context::detect(1);
         $context->line -= 2; // correct generated lines: "<?php\n" and "/**\n"
@@ -122,7 +131,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
      * Create a Swagger object with Info.
      * (So it will pass validation.)
      */
-    protected function createSwaggerWithInfo() {
+    protected function createSwaggerWithInfo()
+    {
         $swagger = new Swagger([
             'info' => new \Swagger\Annotations\Info([
                 'title' => 'Swagger-PHP Test-API',
@@ -141,7 +151,8 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
      * @param string   $origin
      * @return stdClass The sorted object
      */
-    protected function sorted(stdClass $object, $origin = 'unknown') {
+    protected function sorted(stdClass $object, $origin = 'unknown')
+    {
         static $sortMap = null;
         if ($sortMap === null) {
             $sortMap = [
@@ -196,5 +207,4 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase {
         }
         return (object) $data;
     }
-
 }

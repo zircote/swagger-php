@@ -10,7 +10,8 @@ use Swagger\Annotations as SWG;
  * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
  * @SWG\Definition()
  */
-class Customer {
+class Customer
+{
     
     /**
      * The firstname of the customer.
@@ -46,7 +47,8 @@ class Customer {
     /**
      * for ContextTest
      */
-    function testResolvingFullyQualifiedNames() {
+    public function testResolvingFullyQualifiedNames()
+    {
         $test = new SwgParser();
         $test2 = new Parser();
         $test3 = new SWG\Contact();
