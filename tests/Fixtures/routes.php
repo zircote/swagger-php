@@ -1,7 +1,7 @@
 <?php
 //
 // Allow indentation with tab(s).
-// 
+//
 // http://www.doctrine-project.org/jira/browse/DCOM-255
 // https://github.com/zircote/swagger-php/issues/168
 // https://github.com/zircote/swagger-php/issues/203

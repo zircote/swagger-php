@@ -1,8 +1,9 @@
 <?php
 
-namespace Petstore;
+namespace petstore;
 
-class PetsController {
+class PetsController
+{
 
     /**
      * @SWG\Get(
@@ -27,8 +28,7 @@ class PetsController {
      *     )
      * )
      */
-    function findPets() {
-
+    public function findPets()
+    {
     }
-
 }

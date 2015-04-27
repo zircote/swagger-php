@@ -2,7 +2,8 @@
 
 namespace PetstoreIO;
 
-class StoreController {
+class StoreController
+{
 
     /**
      * @SWG\Get(path="/store/inventory",
@@ -28,8 +29,8 @@ class StoreController {
      *   }}
      * )
      */
-    function getInventory() {
-        
+    public function getInventory()
+    {
     }
 
     /**
@@ -54,8 +55,8 @@ class StoreController {
      *   @SWG\Response(response=400,  description="Invalid Order")
      * )
      */
-    function placeOrder() {
-        
+    public function placeOrder()
+    {
     }
 
     /**
@@ -83,8 +84,8 @@ class StoreController {
      *   @SWG\Response(response=404, description="Order not found")
      * )
      */
-    function getOrderById() {
-        
+    public function getOrderById()
+    {
     }
 
     /**
@@ -105,8 +106,7 @@ class StoreController {
      *   @SWG\Response(response=404, description="Order not found")
      * )
      */
-    function deleteOrder() {
-        
+    public function deleteOrder()
+    {
     }
-
 }

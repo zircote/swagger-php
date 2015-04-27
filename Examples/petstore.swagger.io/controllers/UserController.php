@@ -2,7 +2,8 @@
 
 namespace PetstoreIO;
 
-class UserController {
+class UserController
+{
 
     /**
      * @SWG\Post(path="/user",
@@ -21,8 +22,8 @@ class UserController {
      *   @SWG\Response(response="default", description="successful operation")
      * )
      */
-    function createUser() {
-        
+    public function createUser()
+    {
     }
 
     /**
@@ -45,8 +46,8 @@ class UserController {
      *   @SWG\Response(response="default", description="successful operation")
      * )
      */
-    function createUsersWithArrayInput() {
-        
+    public function createUsersWithArrayInput()
+    {
     }
 
     /**
@@ -111,8 +112,8 @@ class UserController {
      *   @SWG\Response(response=400, description="Invalid username/password supplied")
      * )
      */
-    function loginUser() {
-        
+    public function loginUser()
+    {
     }
 
     /**
@@ -126,8 +127,8 @@ class UserController {
      *   @SWG\Response(response="default", description="successful operation")
      * )
      */
-    function logoutUser() {
-        
+    public function logoutUser()
+    {
     }
 
     /**
@@ -149,8 +150,8 @@ class UserController {
      *   @SWG\Response(response=404, description="User not found")
      * )
      */
-    function getUserByName($username) {
-        
+    public function getUserByName($username)
+    {
     }
 
     /**
@@ -178,8 +179,8 @@ class UserController {
      *   @SWG\Response(response=404, description="User not found")
      * )
      */
-    function updateUser() {
-        
+    public function updateUser()
+    {
     }
 
     /**
@@ -200,8 +201,7 @@ class UserController {
      *   @SWG\Response(response=404, description="User not found")
      * )
      */
-    function deleteUser() {
-        
+    public function deleteUser()
+    {
     }
-
 }

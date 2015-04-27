@@ -14,7 +14,8 @@ use Swagger\Logger;
  *
  * A Swagger "Operation Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#operationObject
  */
-abstract class Operation extends AbstractAnnotation {
+abstract class Operation extends AbstractAnnotation
+{
 
     /**
      * key in the Swagger "Paths Object" for this operation
@@ -142,14 +143,16 @@ abstract class Operation extends AbstractAnnotation {
     ];
 
     /** @inheritdoc */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $data = parent::jsonSerialize();
         unset($data->method);
         unset($data->path);
         return $data;
     }
 
-    public function validate($skip = array()) {
+    public function validate($skip = array())
+    {
         if (in_array($this, $skip, true)) {
             return true;
         }
@@ -163,5 +166,4 @@ abstract class Operation extends AbstractAnnotation {
         }
         return $valid;
     }
-
 }

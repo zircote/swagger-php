@@ -30,7 +30,8 @@ AnnotationRegistry::registerLoader(function ($class) {
 /**
  * Swagger\Parser extracts swagger-php annotations from php code.
  */
-class Parser {
+class Parser
+{
 
     /**
      * List of namespaces that should be detected by the doctrine annotation parser.
@@ -52,7 +53,8 @@ class Parser {
     /**
      * @param string $filename
      */
-    public function __construct($filename = null) {
+    public function __construct($filename = null)
+    {
         if ($filename !== null) {
             $this->parseFile($filename);
         }
@@ -64,7 +66,8 @@ class Parser {
      * @param string $filename Path to a php file.
      * @return AbstractAnnotation[]
      */
-    public function parseFile($filename) {
+    public function parseFile($filename)
+    {
         $tokens = token_get_all(file_get_contents($filename));
         return $this->parseTokens($tokens, new Context(['filename' => $filename]));
     }
@@ -76,7 +79,8 @@ class Parser {
      * @param Context $context The original location of the contents.
      * @return AbstractAnnotation[]
      */
-    public function parseContents($contents, $context) {
+    public function parseContents($contents, $context)
+    {
         $tokens = token_get_all($contents);
         return $this->parseTokens($tokens, $context);
     }
@@ -88,7 +92,8 @@ class Parser {
      * @param Context $parseContext
      * @return AbstractAnnotation[]
      */
-    protected function parseTokens($tokens, $parseContext) {
+    protected function parseTokens($tokens, $parseContext)
+    {
         $this->docParser = new DocParser();
         $this->docParser->setIgnoreNotImportedAnnotations(true);
 
@@ -232,13 +237,13 @@ class Parser {
      * @param Context $context
      * @return string|array The next token (or false)
      */
-    private function nextToken(&$tokens, $context) {
+    private function nextToken(&$tokens, $context)
+    {
         $token = next($tokens);
         if ($token[0] === T_WHITESPACE) {
             return $this->nextToken($tokens, $context);
         }
         if ($token[0] === T_COMMENT) {
-
             $pos = strpos($token[1], '@SWG\\');
             if ($pos) {
                 $line = $context->line ? $context->line + $token[2] : $token[2];
@@ -250,7 +255,8 @@ class Parser {
         return $token;
     }
 
-    private function parseNamespace(&$tokens, &$token, $parseContext) {
+    private function parseNamespace(&$tokens, &$token, $parseContext)
+    {
         $namespace = '';
         while ($token !== false) {
             $token = $this->nextToken($tokens, $parseContext);
@@ -262,7 +268,8 @@ class Parser {
         return $namespace;
     }
 
-    private function parseUseStatement(&$tokens, &$token, $parseContext) {
+    private function parseUseStatement(&$tokens, &$token, $parseContext)
+    {
         $class = '';
         $alias = '';
         $statements = [];
@@ -273,17 +280,17 @@ class Parser {
             if (!$explicitAlias && $isNameToken) {
                 $class .= $token[1];
                 $alias = $token[1];
-            } else if ($explicitAlias && $isNameToken) {
+            } elseif ($explicitAlias && $isNameToken) {
                 $alias .= $token[1];
-            } else if ($token[0] === T_AS) {
+            } elseif ($token[0] === T_AS) {
                 $explicitAlias = true;
                 $alias = '';
-            } else if ($token === ',') {
+            } elseif ($token === ',') {
                 $statements[$alias] = $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
-            } else if ($token === ';') {
+            } elseif ($token === ';') {
                 $statements[$alias] = $class;
                 break;
             } else {
@@ -300,7 +307,8 @@ class Parser {
      * @param  AbstractAnnotation[] $annotations
      * @return AbstractAnnotation[]
      */
-    protected function parseContext($context, &$annotations) {
+    protected function parseContext($context, &$annotations)
+    {
         try {
             self::$context = $context;
             if ($context->is('annotations') === false) {
@@ -333,5 +341,4 @@ class Parser {
         }
         return $annotations;
     }
-
 }

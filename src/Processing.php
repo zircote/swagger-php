@@ -18,13 +18,15 @@ use Swagger\Processors\MergeSwagger;
 /**
  * Registry for the post-processing operations.
  */
-class Processing {
+class Processing
+{
 
     /**
-     * Apply all processors 
+     * Apply all processors
      * @param Swagger $swagger
      */
-    static function process($swagger) {
+    public static function process($swagger)
+    {
         foreach (self::processors() as $processor) {
             $processor($swagger);
         }
@@ -39,7 +41,8 @@ class Processing {
      * Get direct access to the processors array.
      * @return array reference
      */
-    static function &processors() {
+    public static function &processors()
+    {
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
@@ -57,7 +60,8 @@ class Processing {
      * Register a processor
      * @param Closure $processor
      */
-    static function register($processor) {
+    public static function register($processor)
+    {
         array_push(self::processors(), $processor);
     }
     
@@ -65,7 +69,8 @@ class Processing {
      * Unregister a processor
      * @param Closure $processor
      */
-    static function unregister($processor) {
+    public static function unregister($processor)
+    {
         $processors = &self::processors();
         $key = array_search($processor, $processors, true);
         if ($key === false) {
@@ -73,5 +78,4 @@ class Processing {
         }
         unset($processors[$key]);
     }
-
 }

@@ -14,7 +14,8 @@ use \Swagger\Logger;
  *
  * A Swagger "Parameter Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
  */
-class Parameter extends AbstractAnnotation {
+class Parameter extends AbstractAnnotation
+{
 
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
@@ -201,7 +202,8 @@ class Parameter extends AbstractAnnotation {
         'Swagger\Annotations\Swagger'
     ];
 
-    public function validate($skip = []) {
+    public function validate($skip = [])
+    {
         if (in_array($this, $skip, true)) {
             return true;
         }
@@ -230,8 +232,8 @@ class Parameter extends AbstractAnnotation {
     }
 
     /** @inheritdoc */
-    public function identity() {
+    public function identity()
+    {
         return parent::_identity(['name', 'in']);
     }
-
 }

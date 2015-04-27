@@ -15,9 +15,11 @@ use Swagger\Context;
 /**
  * Build the swagger->paths using the detected @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
  */
-class BuildPaths {
+class BuildPaths
+{
 
-    public function __invoke(Swagger $swagger) {
+    public function __invoke(Swagger $swagger)
+    {
         $paths = [];
         // Merge @SWG\Paths with the same path.
         foreach ($swagger->paths as $annotation) {
@@ -45,5 +47,4 @@ class BuildPaths {
         }
         $swagger->paths = array_values($paths);
     }
-
 }

@@ -1,9 +1,10 @@
 <?php
 
 /**
- * 
+ *
  */
-class PetWithDocsController {
+class PetWithDocsController
+{
 
     /**
      * @SWG\Definition(
@@ -37,8 +38,8 @@ class PetWithDocsController {
      *     )
      * )
      */
-    function addPet() {
-        
+    public function addPet()
+    {
     }
 
     /**
@@ -72,8 +73,8 @@ class PetWithDocsController {
      *     )
      * )
      */
-    function findPetById() {
-        
+    public function findPetById()
+    {
     }
 
     /**
@@ -117,11 +118,11 @@ class PetWithDocsController {
      *     @SWG\ExternalDocumentation(
      *         description="find more info here",
      *         url="https://swagger.io/about"
-     *     ) 
+     *     )
      * )
      */
-    function findPets() {
-        
+    public function findPets()
+    {
     }
 
     /**
@@ -148,8 +149,7 @@ class PetWithDocsController {
      *     )
      * )
      */
-    function deletePet() {
-        
+    public function deletePet()
+    {
     }
-
 }

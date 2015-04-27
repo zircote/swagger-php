@@ -34,5 +34,10 @@
     },
     "require-dev": {
         "zendframework/zend-form": "~2.3"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SwaggerTests\\": "tests/"
+        }
     }
 }

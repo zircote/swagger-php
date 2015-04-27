@@ -11,7 +11,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Tag Object":  https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#tagObject
  */
-class Tag extends AbstractAnnotation {
+class Tag extends AbstractAnnotation
+{
 
     /**
      * The name of the tag.
@@ -49,5 +50,4 @@ class Tag extends AbstractAnnotation {
     public static $_nested = [
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
     ];
-
 }

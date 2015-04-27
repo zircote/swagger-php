@@ -12,7 +12,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Contact Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#contactObject
  */
-class Contact extends AbstractAnnotation {
+class Contact extends AbstractAnnotation
+{
 
     /**
      * The identifying name of the contact person/organization.
@@ -43,5 +44,4 @@ class Contact extends AbstractAnnotation {
     public static $_parents = [
         'Swagger\Annotations\Info'
     ];
-
 }

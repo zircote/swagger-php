@@ -1,11 +1,12 @@
 <?php
 
-namespace Petstore;
+namespace petstore;
 
 /**
  * @SWG\Definition(required={"id", "name"})
  */
-class Pet {
+class Pet
+{
 
     /**
      * @SWG\Property(type="integer", format="int64")
@@ -23,5 +24,4 @@ class Pet {
      * @var string
      */
     public $tag;
-
 }

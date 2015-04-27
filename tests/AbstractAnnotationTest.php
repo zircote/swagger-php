@@ -6,28 +6,33 @@
 
 namespace SwaggerTests;
 
-class AbstractAnnotationTest extends SwaggerTestCase {
+class AbstractAnnotationTest extends SwaggerTestCase
+{
 
-    function testVendorFields() {
+    public function testVendorFields()
+    {
         $annotations = $this->parseComment('@SWG\Get(x={"internal-id": 123})');
         $output = $annotations[0]->jsonSerialize();
         $prefixedProperty = 'x-internal-id';
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
-    function testInvalidField() {
+    public function testInvalidField()
+    {
         $this->assertSwaggerLogEntryStartsWith('Unexpected field "doesnot" for @SWG\Get(), expecting');
         $this->parseComment('@SWG\Get(doesnot="exist")');
     }
 
-    function testUmergedAnnotation() {
+    public function testUmergedAnnotation()
+    {
         $swagger = $this->createSwaggerWithInfo();
         $swagger->merge($this->parseComment('@SWG\Items()'));
         $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Items(), expected to be inside @SWG\\');
         $swagger->validate();
     }
 
-    function testConflictedNesting() {
+    public function testConflictedNesting()
+    {
         $comment = <<<END
 @SWG\Info(
     title="Info only has one contact field..",
@@ -41,7 +46,8 @@ END;
         $annotations[0]->validate();
     }
 
-    function testKey() {
+    public function testKey()
+    {
         $comment = <<<END
 @SWG\Response(
     @SWG\Header(header="X-CSRF-Token",description="Token to prevent Cross Site Request Forgery")
@@ -51,7 +57,8 @@ END;
         $this->assertEquals('{"headers":{"X-CSRF-Token":{"description":"Token to prevent Cross Site Request Forgery"}}}', json_encode($annotations[0]));
     }
 
-    function testConflictingKey() {
+    public function testConflictingKey()
+    {
         $comment = <<<END
 @SWG\Response(
     description="The headers in response must have unique header values",
@@ -64,7 +71,8 @@ END;
         $annotations[0]->validate();
     }
 
-    function testRequiredFields() {
+    public function testRequiredFields()
+    {
         $annotations = $this->parseComment('@SWG\Info()');
         $info = $annotations[0];
         $this->assertSwaggerLogEntryStartsWith('Missing required field "title" for @SWG\Info() in ');
@@ -72,12 +80,13 @@ END;
         $info->validate();
     }
 
-    function testTypeValidation() {
+    public function testTypeValidation()
+    {
         $comment = <<<END
 @SWG\Parameter(
-    name=123, 
-    type="strig", 
-    in="dunno", 
+    name=123,
+    type="strig",
+    in="dunno",
     required="maybe",
     maximum="twentytwo"
 )
@@ -91,5 +100,4 @@ END;
         $this->assertSwaggerLogEntryStartsWith('@SWG\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @SWG\Parameter()->in != "body" in ');
         $parameter->validate();
     }
-
 }

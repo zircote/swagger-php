@@ -9,7 +9,8 @@
  *   )
  * )
  */
-class Pet {
+class Pet
+{
 
     /**
      * @SWG\Property(type="integer", format="int64")
@@ -24,5 +25,4 @@ class Pet {
      * @SWG\Property(type="string")
      */
     public $tag;
-
 }

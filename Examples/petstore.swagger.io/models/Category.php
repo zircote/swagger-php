@@ -7,7 +7,8 @@ namespace PetstoreIO;
  *   @SWG\Xml(name="Category")
  * )
  */
-class Category {
+class Category
+{
 
     /**
      * @SWG\Property(format="int64")
@@ -20,5 +21,4 @@ class Category {
      * @var string
      */
     public $name;
-
 }

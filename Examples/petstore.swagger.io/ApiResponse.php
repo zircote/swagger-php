@@ -7,7 +7,8 @@ namespace PetstoreIO;
  *   @SWG\Xml(name="##default")
  * )
  */
-class ApiResponse {
+class ApiResponse
+{
 
     /**
      * @SWG\Property(format="int32")
@@ -26,5 +27,4 @@ class ApiResponse {
      * @var string
      */
     public $message;
-
 }

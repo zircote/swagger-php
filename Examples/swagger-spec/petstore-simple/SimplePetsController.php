@@ -2,7 +2,8 @@
 
 namespace Petstore;
 
-class SimplePetsController {
+class SimplePetsController
+{
 
     /**
      * @SWG\Get(
@@ -44,8 +45,8 @@ class SimplePetsController {
      *     )
      * )
      */
-    function findPets() {
-
+    public function findPets()
+    {
     }
 
     /**
@@ -79,8 +80,8 @@ class SimplePetsController {
      *     )
      * )
      */
-    function findPetById() {
-
+    public function findPetById()
+    {
     }
 
     /**
@@ -122,8 +123,8 @@ class SimplePetsController {
      *     }
      * )
      */
-    function addPet() {
-
+    public function addPet()
+    {
     }
 
     /**
@@ -150,8 +151,7 @@ class SimplePetsController {
      *     )
      * )
      */
-    function deletePet() {
-
+    public function deletePet()
+    {
     }
-
 }

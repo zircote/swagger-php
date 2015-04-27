@@ -7,7 +7,8 @@ namespace PetstoreIO;
  *   @SWG\Xml(name="Tag")
  * )
  */
-class Tag {
+class Tag
+{
 
     /**
      * @SWG\Property(format="int64")
@@ -20,5 +21,4 @@ class Tag {
      * @var string
      */
     public $name;
-
 }

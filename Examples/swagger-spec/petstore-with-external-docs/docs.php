@@ -17,7 +17,7 @@
  *   termsOfService="http://swagger.io/terms/"
  * )
  * @SWG\Swagger(
- *   host="petstore.swagger.io", 
+ *   host="petstore.swagger.io",
  *   basePath="/api",
  *   schemes={"http"},
  *   produces={"application/json"},
@@ -25,7 +25,6 @@
  *   @SWG\ExternalDocumentation(
  *     description="find more info here",
  *     url="https://swagger.io/about"
- *   ) 
+ *   )
  * )
  */
-

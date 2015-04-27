@@ -5,7 +5,8 @@ namespace Petstore;
 /**
  * @SWG\Definition(definition="pet", required={"id", "name"})
  */
-class SimplePet {
+class SimplePet
+{
 
     /**
      * @SWG\Property(format="int64")
@@ -24,5 +25,4 @@ class SimplePet {
      * @SWG\Property()
      */
     public $tag;
-
 }

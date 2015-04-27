@@ -10,7 +10,8 @@ namespace Swagger\Annotations;
  * @Annotation
  * A Swagger "Security Scheme Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#securitySchemeObject
  */
-class SecurityScheme extends AbstractAnnotation {
+class SecurityScheme extends AbstractAnnotation
+{
 
     /**
      * The key into Swagger->securityDefinitions array.
@@ -43,8 +44,8 @@ class SecurityScheme extends AbstractAnnotation {
     public $in;
 
     /**
-     * The flow used by the OAuth2 security scheme. 
-     * @var 
+     * The flow used by the OAuth2 security scheme.
+     * @var
      */
     public $flow;
 
@@ -82,5 +83,4 @@ class SecurityScheme extends AbstractAnnotation {
     public static $_parents = [
         'Swagger\Annotations\Swagger',
     ];
-
 }

@@ -14,7 +14,8 @@ namespace Swagger\Annotations;
  *
  * A Swagger "Path Item Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#path-item-object-
  */
-class Path extends AbstractAnnotation {
+class Path extends AbstractAnnotation
+{
 
     /**
      * key in the Swagger "Paths Object" for this path.
@@ -89,5 +90,4 @@ class Path extends AbstractAnnotation {
     public static $_parents = [
         'Swagger\Annotations\Swagger'
     ];
-
 }

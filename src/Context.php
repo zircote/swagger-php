@@ -33,7 +33,8 @@ namespace Swagger;
  * @property string $property
  * @property Annotations\AbstractAnnotation[] $annotations
  */
-class Context {
+class Context
+{
 
     /**
      * Prototypical inheritance for properties.
@@ -45,7 +46,8 @@ class Context {
      * @param array $properties new properties for this context.
      * @param Context $parent The parent context
      */
-    public function __construct($properties = [], $parent = null) {
+    public function __construct($properties = [], $parent = null)
+    {
         foreach ($properties as $property => $value) {
             $this->$property = $value;
         }
@@ -58,7 +60,8 @@ class Context {
      * @param string $type Example: $c->is('method') or $c->is('class')
      * @return bool
      */
-    public function is($type) {
+    public function is($type)
+    {
         return property_exists($this, $type);
     }
 
@@ -68,7 +71,8 @@ class Context {
      * @param string $property
      * @return boolean|\Swagger\Context
      */
-    public function with($property) {
+    public function with($property)
+    {
         if (property_exists($this, $property)) {
             return $this;
         }
@@ -81,7 +85,8 @@ class Context {
     /**
      * @return \Swagger\Context
      */
-    public function getRootContext() {
+    public function getRootContext()
+    {
         if ($this->_parent) {
             return $this->_parent->getRootContext();
         }
@@ -93,7 +98,8 @@ class Context {
      *
      * @return string Example: "file1.php on line 12"
      */
-    public function getDebugLocation() {
+    public function getDebugLocation()
+    {
         $location = '';
         if ($this->class && ($this->method || $this->property)) {
             $location .= $this->fullyQualifiedName($this->class);
@@ -127,25 +133,29 @@ class Context {
      * @param string $property
      * @return mixed
      */
-    public function __get($property) {
+    public function __get($property)
+    {
         if ($this->_parent) {
             return $this->_parent->$property;
         }
         return null;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getDebugLocation();
     }
 
-    public function __debugInfo() {
+    public function __debugInfo()
+    {
         return ['-' => $this->getDebugLocation()];
     }
 
     /**
      * @return string|null
      */
-    public function extractDescription() {
+    public function extractDescription()
+    {
         $lines = explode("\n", $this->comment);
         unset($lines[0]);
         $description = '';
@@ -171,7 +181,8 @@ class Context {
      * @param int $index
      * @return \Swagger\Context
      */
-    static public function detect($index = 0) {
+    public static function detect($index = 0)
+    {
         $context = new Context();
         $backtrace = debug_backtrace();
         $position = $backtrace[$index];
@@ -205,7 +216,8 @@ class Context {
      * @param string $class  The class name
      * @return string
      */
-    public function fullyQualifiedName($class) {
+    public function fullyQualifiedName($class)
+    {
         if ($this->namespace) {
             $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
         } else {
@@ -240,5 +252,4 @@ class Context {
         }
         return $namespace . $class;
     }
-
 }

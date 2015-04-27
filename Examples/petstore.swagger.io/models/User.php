@@ -5,7 +5,8 @@ namespace PetstoreIO;
 /**
  * @SWG\Definition(@SWG\Xml(name="User"))
  */
-class User {
+class User
+{
 
     /**
      * @SWG\Property(format="int64")
@@ -55,5 +56,4 @@ class User {
      * @SWG\Property(format="int32")
      */
     public $userStatus;
-
 }

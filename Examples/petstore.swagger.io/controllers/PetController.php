@@ -2,7 +2,8 @@
 
 namespace PetstoreIO;
 
-class PetController {
+class PetController
+{
 
     /**
      * @SWG\Get(
@@ -41,8 +42,8 @@ class PetController {
      *     }
      * )
      */
-    function findByTags() {
-        
+    public function findByTags()
+    {
     }
 
     /**
@@ -82,8 +83,8 @@ class PetController {
      *     }
      * )
      */
-    function findByStatus() {
-        
+    public function findByStatus()
+    {
     }
 
     /**
@@ -126,8 +127,8 @@ class PetController {
      *     }
      * )
      */
-    function getPetById() {
-        
+    public function getPetById()
+    {
     }
 
     /**
@@ -153,8 +154,8 @@ class PetController {
      *     security={{"petstore_auth":{"write:pets", "read:pets"}}}
      * )
      */
-    function addPet() {
-        
+    public function addPet()
+    {
     }
 
     /**
@@ -188,8 +189,8 @@ class PetController {
      *     security={{"petstore_auth":{"write:pets", "read:pets"}}}
      * )
      */
-    function updatePet() {
-        
+    public function updatePet()
+    {
     }
 
     /**
@@ -223,8 +224,8 @@ class PetController {
      *     security={{"petstore_auth":{"write:pets", "read:pets"}}}
      * )
      */
-    function deletePet() {
-        
+    public function deletePet()
+    {
     }
 
     /**
@@ -263,8 +264,8 @@ class PetController {
      *   }}
      * )
      */
-    function updatePetWithForm() {
-        
+    public function updatePetWithForm()
+    {
     }
 
     /**
@@ -308,15 +309,14 @@ class PetController {
      *                  "write:pets"
      *             }
      *         }
-     *     },     
+     *     },
      *     summary="uploads an image",
      *     tags={
      *         "pet"
      *     }
      * )
      * */
-    function uploadFile() {
-        
+    public function uploadFile()
+    {
     }
-
 }

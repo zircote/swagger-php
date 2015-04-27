@@ -18,7 +18,8 @@ namespace Swagger\Annotations;
  * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
  * JSON Schema: http://json-schema.org/latest/json-schema-validation.html
  */
-class Schema extends AbstractAnnotation {
+class Schema extends AbstractAnnotation
+{
 
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
@@ -212,7 +213,7 @@ class Schema extends AbstractAnnotation {
 
     /**
      * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
-     * @var type 
+     * @var type
      */
     public $oneOf;
 
@@ -272,5 +273,4 @@ class Schema extends AbstractAnnotation {
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
     ];
-
 }

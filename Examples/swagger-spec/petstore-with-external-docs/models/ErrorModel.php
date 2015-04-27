@@ -2,7 +2,8 @@
 /**
  * @SWG\Definition(required={"code", "message"});
  */
-class ErrorModel extends Exception {
+class ErrorModel extends Exception
+{
     /**
      * @SWG\Property(format="int32");
      * @var int

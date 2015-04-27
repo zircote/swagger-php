@@ -23,7 +23,8 @@ define('Swagger\Processors\UNDEFINED', UNDEFINED);
  * @param string|array $exclude
  * @return Swagger
  */
-function scan($directory, $exclude = null) {
+function scan($directory, $exclude = null)
+{
     $swagger = new Swagger([
         '_context' => Context::detect(1)
     ]);

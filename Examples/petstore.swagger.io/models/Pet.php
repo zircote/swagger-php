@@ -5,7 +5,8 @@ namespace PetstoreIO;
 /**
  * @SWG\Definition(required={"name", "photoUrls"}, @SWG\Xml(name="Pet"))
  */
-class Pet {
+class Pet
+{
 
     /**
      * @SWG\Property(format="int64")

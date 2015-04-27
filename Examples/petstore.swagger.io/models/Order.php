@@ -5,7 +5,8 @@ namespace PetstoreIO;
 /**
  * @SWG\Definition(@SWG\Xml(name="Order"))
  */
-class Order {
+class Order
+{
 
     /**
      * @SWG\Property(format="int64")
@@ -43,5 +44,4 @@ class Order {
      * @SWG\Property(enum={"placed","approved","delivered"})
      */
     public $status;
-
 }

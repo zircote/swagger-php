@@ -15,9 +15,10 @@ use Swagger\Context;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class ClassProperties {
+class ClassProperties
+{
 
-    static $types = [
+    public static $types = [
         'array' => 'array',
         'byte' => ['string', 'byte'],
         'boolean' => 'boolean',
@@ -35,7 +36,8 @@ class ClassProperties {
         'object' => 'object'
     ];
 
-    public function __invoke(Swagger $swagger) {
+    public function __invoke(Swagger $swagger)
+    {
         $refs = [];
         // Use the class names for @SWG\Definition()
         foreach ($swagger->definitions as $definition) {
@@ -85,7 +87,8 @@ class ClassProperties {
      * @param Property $annotation
      * @param array $refs
      */
-    public function processProperty($annotation, $refs) {
+    public function processProperty($annotation, $refs)
+    {
         $context = $annotation->_context;
         // Use the property names for @SWG\Property()
         if ($annotation->property === null) {
@@ -130,5 +133,4 @@ class ClassProperties {
             $annotation->description = $context->extractDescription();
         }
     }
-
 }

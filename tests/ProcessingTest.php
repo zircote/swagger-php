@@ -9,9 +9,11 @@ namespace SwaggerTests;
 use Swagger\Annotations\Swagger;
 use Swagger\Processing;
 
-class ProcessingTest extends SwaggerTestCase {
+class ProcessingTest extends SwaggerTestCase
+{
 
-    function testRegister() {
+    public function testRegister()
+    {
         $counter = 0;
         $swagger = $this->createSwaggerWithInfo();
         Processing::process($swagger);
@@ -26,5 +28,4 @@ class ProcessingTest extends SwaggerTestCase {
         Processing::process($swagger);
         $this->assertSame(1, $counter);
     }
-
 }

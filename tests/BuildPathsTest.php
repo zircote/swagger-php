@@ -12,9 +12,11 @@ use Swagger\Annotations\Path;
 use Swagger\Annotations\Get;
 use Swagger\Annotations\Post;
 
-class BuildPathsTest extends SwaggerTestCase {
+class BuildPathsTest extends SwaggerTestCase
+{
 
-    function testMergePathsWithSamePath() {
+    public function testMergePathsWithSamePath()
+    {
         $swagger = new Swagger([]);
         $swagger->paths = [
             new Path(['path' => '/comments']),
@@ -26,7 +28,8 @@ class BuildPathsTest extends SwaggerTestCase {
         $this->assertSame('/comments', $swagger->paths[0]->path);
     }
 
-    function testMergeOperationsWithSamePath() {
+    public function testMergeOperationsWithSamePath()
+    {
         $swagger = new Swagger([]);
         $swagger->_unmerged = [
             new Get(['path' => '/comments']),
@@ -42,5 +45,4 @@ class BuildPathsTest extends SwaggerTestCase {
         $this->assertInstanceOf('\Swagger\Annotations\Post', $path->post);
         $this->assertNull($path->put);
     }
-
 }
