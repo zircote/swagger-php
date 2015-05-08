@@ -64,7 +64,7 @@ class Processing
     {
         array_push(self::processors(), $processor);
     }
-    
+
     /**
      * Unregister a processor
      * @param Closure $processor

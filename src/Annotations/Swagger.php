@@ -6,9 +6,7 @@
 
 namespace Swagger\Annotations;
 
-use Swagger\Parser;
 use Exception;
-use Symfony\Component\Finder\Finder;
 
 /**
  * @Annotation
@@ -132,49 +130,6 @@ class Swagger extends AbstractAnnotation
         'consumes' => '[string]',
         'produces' => '[string]',
     ];
-
-    /**
-     * Parse all annotations in the given directory.
-     *
-     * @param string|array|Finder $directory
-     * @param string|array $exclude
-     * @throws Exception
-     */
-    public function crawl($directory, $exclude = null)
-    {
-        // Setup Finder
-        if (is_object($directory)) {
-            $finder = $directory;
-        } else {
-            $finder = new Finder();
-            $finder->files();
-            if (is_string($directory)) {
-                if (is_file($directory)) { // Scan a single file?
-                    $finder->append([$directory]);
-                } else { // Scan a directory
-                    $finder->in($directory);
-                }
-            } elseif (is_array($directory)) {
-                foreach ($directory as $path) {
-                    if (is_file($path)) { // Scan a file?
-                        $finder->append([$path]);
-                    } else {
-                        $finder->in($path);
-                    }
-                }
-            } else {
-                throw new Exception('Unexpected $directory value:' . gettype($directory));
-            }
-        }
-        if ($exclude !== null) {
-            $finder->exclude($exclude);
-        }
-        // Parse all files
-        $parser = new Parser();
-        foreach ($finder as $file) {
-            $this->merge($parser->parseFile($file->getPathname()));
-        }
-    }
 
     /**
      * Save the swagger documentation to a file.

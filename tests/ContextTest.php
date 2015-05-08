@@ -35,9 +35,9 @@ class ContextTest extends SwaggerTestCase
         // respect use statements
         $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
         $this->assertSame('\SwaggerFixures\Customer', $context->fullyQualifiedName('Customer'));
-        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('Parser'));
-        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('pArSeR')); // php has case-insensitive class names :-(
-        $this->assertSame('\Swagger\Parser', $context->fullyQualifiedName('SwgParser'));
+        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('Logger'));
+        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
+        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwgLogger'));
         $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
     }
 }

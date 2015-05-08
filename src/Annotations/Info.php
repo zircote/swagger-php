@@ -21,13 +21,13 @@ class Info extends AbstractAnnotation
     public $title;
 
     /**
-     * 	A short description of the application. GFM syntax can be used for rich text representation.
+     * A short description of the application. GFM syntax can be used for rich text representation.
      * @var string
      */
     public $description;
 
     /**
-     * 	The Terms of Service for the API.
+     * The Terms of Service for the API.
      * @var string
      */
     public $termsOfService;

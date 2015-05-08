@@ -2,8 +2,8 @@
 namespace SwaggerFixures;
 
 use Exception;
-use Swagger\Parser as SwgParser;
-use \Swagger\Parser;
+use Swagger\Logger as SwgLogger;
+use \Swagger\Logger;
 use Swagger\Annotations as SWG;
 
 /**
@@ -49,8 +49,8 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        $test = new SwgParser();
-        $test2 = new Parser();
+        $test = new SwgLogger();
+        $test2 = new Logger();
         $test3 = new SWG\Contact();
         throw new Exception();
     }

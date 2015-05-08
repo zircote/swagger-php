@@ -8,6 +8,7 @@ namespace SwaggerTests;
 
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\ClassProperties;
+use Swagger\StaticAnalyser;
 
 class ClassPropertiesTest extends SwaggerTestCase
 {
@@ -16,7 +17,8 @@ class ClassPropertiesTest extends SwaggerTestCase
     {
         $processor = new ClassProperties();
         $swagger = new Swagger([]);
-        $swagger->crawl(__DIR__ . '/Fixtures/Customer.php');
+        $analyser = new StaticAnalyser();
+        $swagger->merge($analyser->fromFile(__DIR__ . '/Fixtures/Customer.php'));
         $this->assertCount(1, $swagger->definitions);
         $customer = $swagger->definitions[0];
         $this->assertSame(null, $customer->properties, 'Sanity check. @SWG\Property\'s not yet erged ');

@@ -11,7 +11,7 @@ use stdClass;
 use Exception;
 use Swagger\Context;
 use Swagger\Logger;
-use Swagger\Parser;
+use Swagger\Analyser;
 
 /**
  * The swagger annotation base class.
@@ -85,8 +85,8 @@ abstract class AbstractAnnotation implements JsonSerializable
         if (isset($properties['_context'])) {
             $this->_context = $properties['_context'];
             unset($properties['_context']);
-        } elseif (Parser::$context) {
-            $this->_context = Parser::$context;
+        } elseif (Analyser::$context) {
+            $this->_context = Analyser::$context;
         } else {
             $this->_context = Context::detect(1);
         }

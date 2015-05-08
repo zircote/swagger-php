@@ -14,7 +14,7 @@ use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Context;
 use Swagger\Logger;
-use Swagger\Parser;
+use Swagger\Analyser;
 
 class SwaggerTestCase extends PHPUnit_Framework_TestCase
 {
@@ -121,10 +121,10 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
      */
     protected function parseComment($comment)
     {
-        $parser = new Parser();
+        $analyser = new Analyser();
         $context = Context::detect(1);
-        $context->line -= 2; // correct generated lines: "<?php\n" and "/**\n"
-        return $parser->parseContents("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
+        $context->line -= 1; // correct generated lines: "<?php\n" and "/**\n"
+        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
 
     /**

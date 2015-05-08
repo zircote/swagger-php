@@ -6,8 +6,9 @@
 
 namespace SwaggerTests;
 
-use Swagger\Processors\InheritProperties;
 use Swagger\Processors\ClassProperties;
+use Swagger\Processors\InheritProperties;
+use Swagger\StaticAnalyser;
 
 class InheritPropertiesTest extends SwaggerTestCase
 {
@@ -16,11 +17,12 @@ class InheritPropertiesTest extends SwaggerTestCase
     {
         $processor = new InheritProperties();
         $swagger = $this->createSwaggerWithInfo();
-        $swagger->crawl([
-            __DIR__ . '/Fixtures/Parent.php',
-            __DIR__ . '/Fixtures/Child.php',
-            __DIR__ . '/Fixtures/GrandParent.php',
-        ]);
+        $analyser = new StaticAnalyser();
+        $swagger->merge(array_merge(
+            $analyser->fromFile(__DIR__ . '/Fixtures/Parent.php'),
+            $analyser->fromFile(__DIR__ . '/Fixtures/Child.php'),
+            $analyser->fromFile(__DIR__ . '/Fixtures/GrandParent.php')
+        ));
 
         $children = $processor->getChildren($swagger);
         $this->assertCount(2, $children, '2 classes have children');
@@ -31,11 +33,12 @@ class InheritPropertiesTest extends SwaggerTestCase
     public function testInheritWithoutClassProperties()
     {
         $swagger = $this->createSwaggerWithInfo();
-        $swagger->crawl([
-            __DIR__ . '/Fixtures/Child.php',
-            __DIR__ . '/Fixtures/GrandParent.php',
-            __DIR__ . '/Fixtures/Parent.php',
-        ]);
+        $analyser = new StaticAnalyser();
+        $swagger->merge(array_merge(
+            $analyser->fromFile(__DIR__ . '/Fixtures/Child.php'),
+            $analyser->fromFile(__DIR__ . '/Fixtures/GrandParent.php'),
+            $analyser->fromFile(__DIR__ . '/Fixtures/Parent.php')
+        ));
         $childDefinition = $swagger->definitions[0];
         $this->assertSame('Child', $childDefinition->_context->class);
         $this->assertNull($childDefinition->properties);
