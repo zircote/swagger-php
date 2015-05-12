@@ -23,6 +23,7 @@ class MergeSwagger
                 $definitions = $annotation->definitions;
                 unset($annotation->paths);
                 unset($annotation->definitions);
+                $unmerged = array_merge($unmerged, $annotation->_unmerged);
                 $swagger->mergeProperties($annotation);
                 unset($unmerged[$i]);
                 foreach ($paths as $path) {
