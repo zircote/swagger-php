@@ -11,7 +11,7 @@ use Swagger\Annotations\AbstractAnnotation;
 /**
  * Swagger\StaticAnalyser extracts swagger-php annotations from php code using static analysis.
  */
-class StaticAnalyser
+class StaticAnalyser implements AnalyserInterface
 {
 
     /**
