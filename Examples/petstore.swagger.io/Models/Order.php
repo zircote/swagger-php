@@ -1,6 +1,8 @@
 <?php
 
-namespace PetstoreIO;
+namespace PetstoreIO\Models;
+
+use Swagger\Annotations as SWG;
 
 /**
  * @SWG\Definition(@SWG\Xml(name="Order"))

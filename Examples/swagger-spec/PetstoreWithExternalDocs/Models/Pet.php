@@ -1,5 +1,9 @@
 <?php
 
+namespace PetstoreWithExternalDocs\Models;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Definition(
  *   required={"id","name"},

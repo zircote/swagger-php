@@ -1,5 +1,9 @@
 <?php
 
+namespace PetstoreIO;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Tag(
  *   name="pet",
@@ -22,3 +26,6 @@
  *   )
  * )
  */
+class Tags
+{
+}

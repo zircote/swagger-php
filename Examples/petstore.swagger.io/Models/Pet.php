@@ -1,6 +1,8 @@
 <?php
 
-namespace PetstoreIO;
+namespace PetstoreIO\Models;
+
+use Swagger\Annotations as SWG;
 
 /**
  * @SWG\Definition(required={"name", "photoUrls"}, @SWG\Xml(name="Pet"))

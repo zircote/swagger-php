@@ -1,6 +1,8 @@
 <?php
 
-namespace petstore;
+namespace Petstore;
+
+use Swagger\Annotations as SWG;
 
 class PetsController
 {

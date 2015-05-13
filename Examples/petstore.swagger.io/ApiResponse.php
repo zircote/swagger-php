@@ -2,6 +2,8 @@
 
 namespace PetstoreIO;
 
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Definition(
  *   @SWG\Xml(name="##default")

@@ -1,6 +1,8 @@
 <?php
 
-namespace Petstore;
+namespace PetstoreSimple;
+
+use Swagger\Annotations as SWG;
 
 /**
  * @SWG\Definition(definition="pet", required={"id", "name"})

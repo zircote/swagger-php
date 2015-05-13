@@ -1,5 +1,9 @@
 <?php
 
+namespace PetstoreSimple;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Swagger(
  *     basePath="/api",
@@ -30,3 +34,6 @@
  *     )
  * )
  */
+class Api
+{
+}

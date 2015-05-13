@@ -1,4 +1,9 @@
 <?php
+
+namespace PetstoreIO;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\SecurityScheme(
  *   securityDefinition="api_key",
@@ -6,9 +11,6 @@
  *   in="header",
  *   name="api_key"
  * )
- */
-
-/**
  * @SWG\SecurityScheme(
  *   securityDefinition="petstore_auth",
  *   type="oauth2",
@@ -20,3 +22,6 @@
  *   }
  * )
  */
+class Security
+{
+}

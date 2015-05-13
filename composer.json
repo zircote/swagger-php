@@ -37,7 +37,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SwaggerTests\\": "tests/"
+            "SwaggerTests\\": "tests/",
+            "": "Examples/swagger-spec",
+            "PetstoreIO\\": "Examples/petstore.swagger.io"
         }
     }
 }

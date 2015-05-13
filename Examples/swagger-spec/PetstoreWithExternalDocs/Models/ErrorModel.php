@@ -1,4 +1,10 @@
 <?php
+
+namespace PetstoreWithExternalDocs\Models;
+
+use Exception;
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Definition(required={"code", "message"});
  */

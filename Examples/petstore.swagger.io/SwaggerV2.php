@@ -1,5 +1,9 @@
 <?php
 
+namespace PetstoreIO;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Swagger(
  *     schemes={"http"},
@@ -24,3 +28,6 @@
  *     )
  * )
  */
+class SwaggerV2
+{
+}

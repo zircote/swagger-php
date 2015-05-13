@@ -1,5 +1,9 @@
 <?php
 
+namespace PetstoreWithExternalDocs;
+
+use Swagger\Annotations as SWG;
+
 /**
  * @SWG\Info(
  *   title="Swagger Petstore",
@@ -28,3 +32,6 @@
  *   )
  * )
  */
+class Docs
+{
+}

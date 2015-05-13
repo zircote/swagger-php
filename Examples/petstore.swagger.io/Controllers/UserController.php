@@ -1,6 +1,8 @@
 <?php
 
-namespace PetstoreIO;
+namespace PetstoreIO\Controllers;
+
+use Swagger\Annotations as SWG;
 
 class UserController
 {
@@ -70,6 +72,9 @@ class UserController
      *   @SWG\Response(response="default", description="successful operation")
      * )
      */
+    function createUsersWithListInput() {
+
+    }
 
     /**
      * @SWG\Get(path="/user/login",
