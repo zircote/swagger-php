@@ -5,7 +5,7 @@ namespace SwaggerTests\Fixtures\Shop\Model;
 use Swagger\Annotations as SWG;
 
 /**
- * @SWG\Definition(definition="Product")
+ * @SWG\Definition
  */
 class Product
 {
@@ -13,7 +13,7 @@ class Product
 
     /**
      * @var string
-     * @SWG\Property(property="name", type="string")
+     * @SWG\Property
      */
     public $name;
 }

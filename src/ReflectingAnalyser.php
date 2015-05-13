@@ -9,6 +9,10 @@ namespace Swagger;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\TokenParser;
 use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Processors\DefinitionName;
+use Swagger\Processors\PropertyDescriptionComment;
+use Swagger\Processors\PropertyName;
+use Swagger\Processors\PropertyTypeComment;
 
 /**
  * ReflectingAnalyser extracts swagger-php annotations using reflection.
@@ -17,20 +21,28 @@ class ReflectingAnalyser implements AnalyserInterface
 {
     /** @var AnnotationReader */
     private $annotationReader;
+    /** @var callable[] */
+    private $processors;
 
-    public function __construct(AnnotationReader $annotationReader)
+    public function __construct(AnnotationReader $annotationReader, array $processors)
     {
         $this->annotationReader = new AnnotationReader();
+        $this->processors       = $processors;
     }
 
     /**
-     * Create a new reader using the default annotation reader.
+     * Create a new reader using the default annotation reader and processor configuration.
      *
      * @return static
      */
     public static function createDefault()
     {
-        return new static(new AnnotationReader());
+        return new static(new AnnotationReader(), [
+            new DefinitionName(),
+            new PropertyDescriptionComment(),
+            new PropertyName(),
+            new PropertyTypeComment(),
+        ]);
     }
 
     /**
@@ -66,6 +78,10 @@ class ReflectingAnalyser implements AnalyserInterface
             array_map($createMethod, $class->getMethods()),
             array_map($createProperty, $class->getProperties())
         );
+
+        foreach ($this->processors as $processor) {
+            $processor($annotations);
+        }
 
         return $annotations->getAnnotations();
     }

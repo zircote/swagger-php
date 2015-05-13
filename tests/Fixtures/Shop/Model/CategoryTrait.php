@@ -8,7 +8,7 @@ trait CategoryTrait
 {
     /**
      * @var string
-     * @SWG\Property(property="category", type="string")
+     * @SWG\Property
      */
     public $category;
 }
