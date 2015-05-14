@@ -21,7 +21,7 @@ define('Swagger\Processors\UNDEFINED', UNDEFINED);
  * Scan the filesystem for swagger annotations and build swagger-documentation.
  *
  * @param string|array|Finder $directory The directory(s) or filename(s)
- * @param null|string|array $exclude
+ * @param null|string|array $exclude The directory(s) or filename(s) to exclude (as relative paths)
  * @return Swagger
  */
 function scan($directory, $exclude = null)
@@ -46,7 +46,7 @@ function scan($directory, $exclude = null)
  * Build a Symfony Finder object that scans the given $directory.
  *
  * @param string|array|Finder $directory The directory(s) or filename(s)
- * @param null|string|array $exclude
+ * @param null|string|array $exclude The directory(s) or filename(s) to exclude (as relative paths)
  * @throws InvalidArgumentException
  */
 function buildFinder($directory, $exclude = null)
@@ -74,8 +74,16 @@ function buildFinder($directory, $exclude = null)
     } else {
         throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
     }
-    if ($exclude !== null) {
-        $finder->exclude($exclude);
+    if (!is_null($exclude)) {
+        if (is_string($exclude)) {
+            $finder->notPath($exclude);
+        } elseif (is_array($exclude)) {
+            foreach ($exclude as $path) {
+                $finder->notPath($path);
+            }
+        } else {
+            throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+        }
     }
     return $finder;
 }
