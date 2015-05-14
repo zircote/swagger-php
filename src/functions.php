@@ -6,6 +6,7 @@
 
 namespace Swagger;
 
+use InvalidArgumentException;
 use Swagger\Annotations\Swagger;
 use Symfony\Component\Finder\Finder;
 
@@ -19,8 +20,8 @@ define('Swagger\Processors\UNDEFINED', UNDEFINED);
 /**
  * Scan the filesystem for swagger annotations and build swagger-documentation.
  *
- * @param string|array|Finder $directory
- * @param string|array $exclude
+ * @param string|array|Finder $directory The directory(s) or filename(s)
+ * @param null|string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
  * @return Swagger
  */
 function scan($directory, $exclude = null)
@@ -42,17 +43,18 @@ function scan($directory, $exclude = null)
 }
 
 /**
- * Build a Symfony Finder object that scan the given $directory.
+ * Build a Symfony Finder object that scans the given $directory.
+ *
  * @param string|array|Finder $directory The directory(s) or filename(s)
- * @param string|array $exclude
- * @throws Exception
+ * @param null|string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
+ * @throws InvalidArgumentException
  */
-function buildFinder($directory, $exclude)
+function buildFinder($directory, $exclude = null)
 {
-    if (is_object($directory)) {
+    if ($directory instanceof Finder) {
         return $directory;
     } else {
-        $finder = new Finder($directory, $exclude);
+        $finder = new Finder();
     }
     $finder->files();
     if (is_string($directory)) {
@@ -70,10 +72,19 @@ function buildFinder($directory, $exclude)
             }
         }
     } else {
-        throw new Exception('Unexpected $directory value:' . gettype($directory));
+        throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
     }
-    if ($exclude !== null) {
-        $finder->exclude($exclude);
+    if (!is_null($exclude)) {
+        if (is_string($exclude)) {
+            $finder->notPath((new Util())->getRelativePath($exclude, $directory));
+        } elseif (is_array($exclude)) {
+            $util = new Util();
+            foreach ($exclude as $path) {
+                $finder->notPath($util->getRelativePath($path, $directory));
+            }
+        } else {
+            throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+        }
     }
     return $finder;
 }
