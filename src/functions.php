@@ -26,17 +26,15 @@ define('Swagger\Processors\UNDEFINED', UNDEFINED);
 function scan($directory, $exclude = null)
 {
     $analyser = new StaticAnalyser();
-    $swagger = new Swagger([
-        '_context' => Context::detect(1)
-    ]);
+    $analysis = new Analysis();
     // Crawl directory and parse all files
     $finder = Util::finder($directory, $exclude);
     foreach ($finder as $file) {
-        $swagger->merge($analyser->fromFile($file->getPathname()));
+        $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
     }
     // Post processing
-    Processing::process($swagger);
+    $analysis->process();
     // Validation (Generate notices & warnings)
-    $swagger->validate();
-    return $swagger;
+    $analysis->validate();
+    return $analysis->swagger;
 }

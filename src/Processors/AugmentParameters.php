@@ -6,20 +6,19 @@
 
 namespace Swagger\Processors;
 
-use Swagger\Annotations\Swagger;
+use Swagger\Analysis;
 
 /**
  * Use the parameter->name as keyfield (parameter->parameter) when used in swagger object.
  */
-class AugmentParameter
+class AugmentParameters
 {
-
-    public function __invoke(Swagger $swagger)
+    public function __invoke(Analysis $analysis)
     {
-        if ($swagger->parameters) {
+        if ($analysis->swagger->parameters) {
             $keys = [];
             $parametersWithoutKey = [];
-            foreach ($swagger->parameters as $parameter) {
+            foreach ($analysis->swagger->parameters as $parameter) {
                 if ($parameter->parameter) {
                     $keys[$parameter->parameter] = $parameter;
                 } else {

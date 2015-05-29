@@ -13,7 +13,7 @@ class UtilTest extends SwaggerTestCase
 
     function testExclude()
     {
-        $swagger = \Swagger\scan(__DIR__ . '/Fixtures', ['Customer.php', 'UsingRefs.php']);
+        $swagger = \Swagger\scan(__DIR__ . '/Fixtures', ['Customer.php', 'UsingRefs.php', 'GrandParent.php']);
         $this->assertSame('Fixture for ParserTest', $swagger->info->title, 'No errors about duplicate @SWG\Info() annotations');
     }
 }

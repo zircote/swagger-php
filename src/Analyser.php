@@ -15,7 +15,7 @@ AnnotationRegistry::registerLoader(function ($class) {
     foreach (Analyser::$whitelist as $namespace) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
             $loaded = class_exists($class);
-            if (!$loaded && $namespace === 'Swagger\\Annotations\\') {
+            if (!$loaded && $namespace === 'Swagger\Annotations\\') {
                 if (in_array(strtolower(substr($class, 20)), ['model', 'resource', 'api'])) { // Detected an 1.x annotation?
                     throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/2.x/docs/Migrating-to-v2.md");
                 }
@@ -36,7 +36,7 @@ class Analyser
      * List of namespaces that should be detected by the doctrine annotation parser.
      * @var array
      */
-    public static $whitelist = ['Swagger\\Annotations\\'];
+    public static $whitelist = ['Swagger\Annotations\\'];
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
@@ -83,9 +83,9 @@ class Analyser
                 // Workaround for http://www.doctrine-project.org/jira/browse/DCOM-255
                 return str_replace("\t", ' ', $match[0]);
             }, $comment);
-            $result = $this->docParser->parse($comment, $context);
+            $annotations = $this->docParser->parse($comment, $context);
             self::$context = null;
-            return $result;
+            return $annotations;
         } catch (Exception $e) {
             self::$context = null;
             if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote($context, '/') . '\.$/', $e->getMessage(), $matches)) {

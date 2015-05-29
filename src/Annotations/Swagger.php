@@ -7,6 +7,7 @@
 namespace Swagger\Annotations;
 
 use Exception;
+use Swagger\Analysis;
 
 /**
  * @Annotation
@@ -106,7 +107,15 @@ class Swagger extends AbstractAnnotation
      * @var ExternalDocumentation
      */
     public $externalDocs;
+    
+    /**
+     * @var Analysis
+     */
+    public $_analysis;
 
+    /** @inheritdoc */
+    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
+    
     /** @inheritdoc */
     public static $_required = ['swagger', 'info', 'paths'];
 

@@ -64,6 +64,17 @@ class Context
     {
         return property_exists($this, $type);
     }
+    
+    /**
+     * Check if a property is NOT set directly on this context and but its parent context.
+     *
+     * @param string $type Example: $c->not('method') or $c->not('class')
+     * @return bool
+     */
+    public function not($type)
+    {
+        return property_exists($this, $type) === false;
+    }
 
     /**
      * Return the context containing the specified property.

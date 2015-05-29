@@ -1,13 +1,12 @@
 <?php
 namespace SwaggerFixtures;
 /**
- * @SWG\Definition()
+ * An intermediate class
  */
 class Parent extends GrandParent {
 
 	/**
-	 * @SWG\Property();
-	 * @var string
+	 * Without swagger annotations
 	 */
 	public $firstname;
 }

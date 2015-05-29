@@ -6,25 +6,24 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\Swagger;
-use Swagger\Processors\ClassProperties;
+use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentProperties;
+use Swagger\Processors\MergeIntoSwagger;
 use Swagger\StaticAnalyser;
 
-class ClassPropertiesTest extends SwaggerTestCase
+class AugmentPropertiesTest extends SwaggerTestCase
 {
 
-    public function testClassPropertiesProcessor()
+    public function testAugmentProperties()
     {
-        $processor = new ClassProperties();
-        $swagger = new Swagger([]);
         $analyser = new StaticAnalyser();
-        $swagger->merge($analyser->fromFile(__DIR__ . '/Fixtures/Customer.php'));
-        $this->assertCount(1, $swagger->definitions);
-        $customer = $swagger->definitions[0];
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis->process(new MergeIntoSwagger());
+        $this->assertCount(1, $analysis->swagger->definitions);
+        $customer = $analysis->swagger->definitions[0];
         $this->assertSame(null, $customer->properties, 'Sanity check. @SWG\Property\'s not yet erged ');
-        $processor($swagger);
-        $this->assertSame('Customer', $customer->definition, '@SWG\Definition()->definition based on classname');
-        $this->assertCount(5, $customer->properties, '@SWG\Property()s are merged into the @SWG\Definition of the class');
+        $analysis->process(new AugmentDefinitions());
+        $analysis->process(new AugmentProperties());
         $firstname = $customer->properties[0];
         $this->assertSame('firstname', $firstname->property, '@SWG\Property()->property based on propertyname');
         $this->assertSame('The firstname of the customer.', $firstname->description, '@SWG\Property()->description based on @var description');

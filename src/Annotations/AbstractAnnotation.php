@@ -6,19 +6,18 @@
 
 namespace Swagger\Annotations;
 
+use Exception;
 use JsonSerializable;
 use stdClass;
-use Exception;
+use Swagger\Analyser;
 use Swagger\Context;
 use Swagger\Logger;
-use Swagger\Analyser;
 
 /**
  * The swagger annotation base class.
  */
 abstract class AbstractAnnotation implements JsonSerializable
 {
-
     /**
      * Allows extensions to the Swagger Schema.
      * The keys inside the array will be prefixed with `x-`.
@@ -138,9 +137,13 @@ abstract class AbstractAnnotation implements JsonSerializable
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
      * @param AbstractAnnotation[] $annotations
+     * @param bool $ignore Ignore unmerged annotations
+     * @return AbstractAnnotation[] The unmerged annotations
      */
-    public function merge(Array $annotations)
+    public function merge($annotations, $ignore = false)
     {
+        $unmerged = [];
+        $nextedContext = new Context(['nested' => $this], $this->_context);
         foreach ($annotations as $annotation) {
             $found = false;
             foreach (static::$_nested as $class => $property) {
@@ -150,19 +153,25 @@ abstract class AbstractAnnotation implements JsonSerializable
                         if ($this->$property === null) {
                             $this->$property = [];
                         }
-                        array_push($this->$property, $annotation);
+                        array_push($this->$property, $this->nested($annotation, $nextedContext));
                         $found = true;
                     } elseif ($this->$property === null) {
-                        $this->$property = $annotation;
+                        $this->$property = $this->nested($annotation, $nextedContext);
                         $found = true;
                     }
                     break;
                 }
             }
             if ($found === false) {
-                $this->_unmerged[] = $annotation;
+                $unmerged[] = $annotation;
             }
         }
+        if (!$ignore) {
+            foreach ($unmerged as $annotation) {
+                $this->_unmerged[] = $this->nested($annotation, $nextedContext);
+            }
+        }
+        return $unmerged;
     }
 
     /**
@@ -298,13 +307,13 @@ abstract class AbstractAnnotation implements JsonSerializable
             $class = get_class($annotation);
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
-                Logger::notice('Only one @' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
+                Logger::notice('Only one @' . str_replace('Swagger\Annotations\\', 'SWG\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$_parents)) {
                     $shortNotations = [];
                     foreach ($class::$_parents as $_class) {
-                        $shortNotations[] = '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', $_class);
+                        $shortNotations[] = '@' . str_replace('Swagger\Annotations\\', 'SWG\\', $_class);
                     }
                     $message .= ', expected to be inside ' . implode(', ', $shortNotations);
                 }
@@ -388,14 +397,17 @@ abstract class AbstractAnnotation implements JsonSerializable
     private static function _validate($fields, $skip)
     {
         $valid = true;
+        $blacklist = [];
         if (is_object($fields)) {
             if (in_array($fields, $skip, true)) {
                 return true;
             }
             $skip[] = $fields;
+            $blacklist = property_exists($fields, '_blacklist') ? $fields::$_blacklist : []; 
         }
+        
         foreach ($fields as $field => $value) {
-            if ($value === null || is_scalar($value) || $field === '_unmerged' || $field === '_context') {
+            if ($value === null || is_scalar($value || in_array($field, $blacklist))) {
                 continue;
             }
             if (is_object($value)) {
@@ -487,5 +499,17 @@ abstract class AbstractAnnotation implements JsonSerializable
             default:
                 throw new Exception('Invalid type "' . $type . '"');
         }
+    }
+    /**
+     * Wrap the context with a refernece to the annotation it is nested in.
+     * @param AbstractAnnotation $annotation
+     * @param Context $nextedContext
+     * @return AbstractAnnotation
+     */
+    private function nested($annotation, $nestedContext) {
+        if (property_exists($annotation, '_context') && $annotation->_context === $this->_context) {
+            $annotation->_context = $nestedContext;
+        }
+        return $annotation;
     }
 }

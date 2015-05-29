@@ -6,8 +6,6 @@
 
 namespace Swagger;
 
-use Swagger\Annotations\AbstractAnnotation;
-
 /**
  * Swagger\StaticAnalyser extracts swagger-php annotations from php code using static analysis.
  */
@@ -28,7 +26,7 @@ class StaticAnalyser
      * Extract and process all doc-comments from a file.
      *
      * @param string $filename Path to a php file.
-     * @return AbstractAnnotation[]
+     * @return Analysis
      */
     public function fromFile($filename)
     {
@@ -41,7 +39,7 @@ class StaticAnalyser
      *
      * @param string $code PHP code. (including <?php tags)
      * @param Context $context The original location of the contents.
-     * @return AbstractAnnotation[]
+     * @return Analysis
      */
     public function fromCode($code, $context)
     {
@@ -54,18 +52,19 @@ class StaticAnalyser
      *
      * @param array $tokens The result of a token_get_all()
      * @param Context $parseContext
-     * @return AbstractAnnotation[]
+     * @return Analysis
      */
     protected function fromTokens($tokens, $parseContext)
     {
         $analyser = new Analyser();
-        $annotations = [];
+        $analysis = new Analysis();
         reset($tokens);
         $token = '';
         $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
         $classContext = $parseContext; // Use the parseContext until a classContext is created.
+        $classDefinition = false;
         $comment = false;
         $line = 0;
         $lineOffset = $parseContext->line ? : 0;
@@ -77,7 +76,7 @@ class StaticAnalyser
             }
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) { // 2 Doc-comments in succession?
-                    $this->mergeResult($analyser, $comment, new Context(['line' => $line], $classContext), $annotations);
+                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
                 }
                 $comment = $token[1];
                 $line = $token[2] + $lineOffset;
@@ -93,67 +92,102 @@ class StaticAnalyser
                 }
                 $token = $this->nextToken($tokens, $parseContext);
                 $classContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($classDefinition) {
+                    $analysis->addClassDefinition($classDefinition);
+                }
+                $classDefinition = [
+                    'class' => $token[1],
+                    'extends' => null,
+                    'properties' => [],
+                    'methods' => [],
+                    'context' => $classContext
+                ];
                 // @todo detect end-of-class and reset $classContext
-                $extends = null;
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_EXTENDS) {
                     $classContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
+                    $classDefinition['extends'] = $classContext->fullyQualifiedName($classContext->extends);
                 }
                 if ($comment) {
                     $classContext->line = $line;
-                    $this->mergeResult($analyser, $comment, $classContext, $annotations);
+                    $analysis->addAnnotations($analyser->fromComment($comment, $classContext));
                     $comment = false;
                     continue;
                 }
             }
-            if ($comment) {
-                if ($token[0] == T_STATIC) {
-                    $token = $this->nextToken($tokens, $parseContext);
-                    if ($token[0] === T_VARIABLE) { // static property
-                        $this->mergeResult($analyser, $comment, new Context([
-                            'property' => substr($token[1], 1),
-                            'static' => true,
-                            'line' => $line
-                                ], $classContext), $annotations);
-                        $comment = false;
-                        continue;
+            if ($token[0] == T_STATIC) {
+                $token = $this->nextToken($tokens, $parseContext);
+                if ($token[0] === T_VARIABLE) { // static property
+                    $propertyContext = new Context([
+                        'property' => substr($token[1], 1),
+                        'static' => true,
+                        'line' => $line
+                            ], $classContext);
+                    if ($classDefinition) {
+                        $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
-                }
-                if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
-                    $token = $this->nextToken($tokens, $parseContext);
-                    if ($token[0] == T_STATIC) {
-                        $token = $this->nextToken($tokens, $parseContext);
-                    }
-                    if ($token[0] === T_VARIABLE) { // instance property
-                        $this->mergeResult($analyser, $comment, new Context([
-                            'property' => substr($token[1], 1),
-                            'line' => $line
-                                ], $classContext), $annotations);
+                    if ($comment) {
+                        $analysis->addAnnotations($analyser->fromComment($comment, $propertyContext));
                         $comment = false;
-                    } elseif ($token[0] === T_FUNCTION) {
-                        $token = $this->nextToken($tokens, $parseContext);
-                        if ($token[0] === T_STRING) {
-                            $this->mergeResult($analyser, $comment, new Context([
-                                'method' => $token[1],
-                                'line' => $line
-                                    ], $classContext), $annotations);
-                            $comment = false;
-                        }
                     }
                     continue;
+                }
+            }
+
+            if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
+                $token = $this->nextToken($tokens, $parseContext);
+                if ($token[0] == T_STATIC) {
+                    $token = $this->nextToken($tokens, $parseContext);
+                }
+                if ($token[0] === T_VARIABLE) { // instance property
+                    $propertyContext = new Context([
+                        'property' => substr($token[1], 1),
+                        'line' => $line
+                            ], $classContext);
+                    if ($classDefinition) {
+                        $classDefinition['properties'][$propertyContext->property] = $propertyContext;
+                    }
+                    if ($comment) {
+                        $analysis->addAnnotations($analyser->fromComment($comment, $propertyContext));
+                        $comment = false;
+                    }
                 } elseif ($token[0] === T_FUNCTION) {
                     $token = $this->nextToken($tokens, $parseContext);
                     if ($token[0] === T_STRING) {
-                        $this->mergeResult($analyser, $comment, new Context([
+                        $methodContext = new Context([
                             'method' => $token[1],
                             'line' => $line
-                                ], $classContext), $annotations);
+                                ], $classContext);
+                        if ($classDefinition) {
+                            $classDefinition['methods'][$token[1]] = $methodContext;
+                        }
+                        if ($comment) {
+                            $analysis->addAnnotations($analyser->fromComment($comment, $methodContext));
+                            $comment = false;
+                        }
+                    }
+                }
+                continue;
+            } elseif ($token[0] === T_FUNCTION) {
+                $token = $this->nextToken($tokens, $parseContext);
+                if ($token[0] === T_STRING) {
+                    $methodContext = new Context([
+                        'method' => $token[1],
+                        'line' => $line
+                            ], $classContext);
+                    if ($classDefinition) {
+                        $classDefinition['methods'][$token[1]] = $methodContext;
+                    }
+                    if ($comment) {
+                        $analysis->addAnnotations($analyser->fromComment($comment, $methodContext));
                         $comment = false;
                     }
                 }
-                if (in_array($token[0], [T_NAMESPACE, T_USE]) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
-                    // Not a doc-comment for a class, property or method?
-                    $this->mergeResult($analyser, $comment, new Context(['line' => $line], $classContext), $annotations);
+            }
+            if (in_array($token[0], [T_NAMESPACE, T_USE]) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
+                // Not a doc-comment for a class, property or method?
+                if ($comment) {
+                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
                     $comment = false;
                 }
             }
@@ -181,21 +215,12 @@ class StaticAnalyser
             }
         }
         if ($comment) { // File ends with a T_DOC_COMMENT
-            $this->mergeResult($analyser, $comment, new Context(['line' => $line], $classContext), $annotations);
+            $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
         }
-        return $annotations;
-    }
-
-    /**
-     *
-     * @param Analyser $analyser
-     * @param string $comment
-     * @param Context $context
-     * @param array $annotations
-     */
-    private function mergeResult($analyser, $comment, $context, &$annotations)
-    {
-        $annotations = array_merge($annotations, $analyser->fromComment($comment, $context));
+        if ($classDefinition) {
+            $analysis->addClassDefinition($classDefinition);
+        }
+        return $analysis;
     }
 
     /**
