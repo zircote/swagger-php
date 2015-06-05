@@ -329,11 +329,14 @@ Recommended as method annotation.</p>
 <span class="sd"> * @SWG\Property(name=&quot;category&quot;,type=&quot;Category&quot;)</span>
 <span class="sd"> */</span>
  <span class="k">public</span> <span class="nv">$category</span><span class="p">;</span>
- <span class="o">*</span> <span class="o">@</span><span class="nx">SWG\Property</span><span class="p">(</span>
- <span class="o">*</span>      <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
- <span class="o">*</span>      <span class="nx">enum</span><span class="o">=</span><span class="s2">&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;</span><span class="p">,</span>
- <span class="o">*</span>      <span class="nx">description</span><span class="o">=</span><span class="s2">&quot;pet status in the store&quot;</span><span class="p">)</span>
- <span class="o">*/</span>
+
+<span class="sd">/**</span>
+ <span class="sd">* @SWG\Property(</span>
+ <span class="sd">*      name=&quot;status&quot;,type=&quot;string&quot;,</span>
+ <span class="sd">*      enum=&quot;[&#39;available&#39;, &#39;pending&#39;, &#39;sold&#39;]&quot;,</span>
+ <span class="sd">*      description=&quot;pet status in the store&quot;</span>
+ <span class="sd">* )</span>
+ <span class="sd">*/</span>
  <span class="k">public</span> <span class="nv">$status</span><span class="p">;</span>
 </pre></div>
 </div>
