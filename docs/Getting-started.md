@@ -25,9 +25,9 @@ Write:
  */
 ```
 
-Note that Doctrine annotation supports arrays, but uses the '{' and '}' instead of '[' and ']'.
+Note that Doctrine annotation supports arrays, but uses the `{` and `}` instead of `[` and `]`.
 
-And although doctrine also supports objects, but also uses '{' and '}' and require the properties to be surrounded with '"'.
+And although doctrine also supports objects, but also uses `{` and `}` and requires the properties to be surrounded with `"`.
 
 DON'T write:
 
@@ -35,14 +35,14 @@ DON'T write:
 /**
  * @SWG\Swagger(
  *   info={
- *     "title="My first swagger documented API",
+ *     "title"="My first swagger documented API",
  *     "version"="1.0.0"
  *   }
  * )
  */
 ```
 
-Use the annotation with the same name as the property:
+But use the annotation with the same name as the property, such as `@SWG\Info` for `info`:
 
 ```php
 /**
@@ -55,19 +55,21 @@ Use the annotation with the same name as the property:
  */
 ```
 
-This adds validation too so when you misspell a property or forget a required property it will trigger a php warning.  
-For example the snippet above would generate the "Unexpected field "titel" for @SWG\Info(), expecting "title", ..." notice.
+This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.  
+For example the snippet above would generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
 
 
 ## Annotation placement
 
-You shouldn't place all annotations inside one @SWG\Swagger() annotation, scattered annotations throughout your codebase.
+You shouldn't place all annotations inside one big @SWG\Swagger() annotation block, but scatter them throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
 
-The big benefit swagger-php provides is that the documentation lives close the the code implementing the request.
+The big benefit swagger-php provides is that the documentation lives close the the code implementing the api.
 
 ### Arrays and Objects
+
 Placing multiple annotation of the same type will result in an array or object.
+For objects, the convension for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
 
 ```php
 /**
@@ -112,7 +114,7 @@ Generates:
 
 ### Swagger-PHP detects values based on context
 
-swagger-php also looks at context of the comment which reduces duplication.
+swagger-php looks at context of the comment which reduces duplication.
 
 ```php
 /**
@@ -145,6 +147,23 @@ results in:
     }
   }
 }
+```
+
+As if you'd written:
+
+```php
+
+    /**
+     * The product name
+     * @var string
+     *
+     * @SWG\Property(
+     *   property="name",
+     *   type="string",
+     *   descriptions="The product name" 
+     * )
+     */
+    public $name;
 ```
 
 ## More information
