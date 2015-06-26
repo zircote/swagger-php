@@ -30,6 +30,7 @@ class MergeIntoSwagger
             }
             if (!$swagger) {
                 $swagger = new Swagger(['_context' => new Context(['analysis' => $analysis])]);
+                $analysis->annotations->attach($swagger);
             }
         }
         $analysis->swagger = $swagger;

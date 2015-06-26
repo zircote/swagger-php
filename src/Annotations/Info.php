@@ -34,13 +34,13 @@ class Info extends AbstractAnnotation
 
     /**
      * The contact information for the exposed API.
-     * @var array
+     * @var Contact
      */
     public $contact;
 
     /**
      * The license information for the exposed API.
-     * @var array
+     * @var License
      */
     public $license;
 

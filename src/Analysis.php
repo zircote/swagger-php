@@ -183,7 +183,11 @@ class Analysis
         if (!$this->swagger) {
             throw new Exception('No swagger target set. Run the MergeIntoSwagger processor');
         }
-        return new Analysis([$this->swagger]);
+        $unmerged = $this->swagger->_unmerged;
+        $this->swagger->_unmerged = [];
+        $analysis = new Analysis([$this->swagger]);
+        $this->swagger->_unmerged = $unmerged;
+        return $analysis;
     }
 
     /**
@@ -200,7 +204,7 @@ class Analysis
      * Split the annotation into two analysis.
      * One with annotations that are merged and one with annotations that are not merged.
      *
-     * @return object 
+     * @return object {merged: Analysis, unmerged: Analysis} 
      */
     public function split()
     {
