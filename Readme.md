@@ -1,6 +1,6 @@
 # swagger-php
 
-[![2.* Development Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=2.x)](http://travis-ci.org/zircote/swagger-php) `2.*@dev`
+[![Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
 
 Generate interactive [Swagger](http://swagger.io) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
 
@@ -14,13 +14,13 @@ Generate interactive [Swagger](http://swagger.io) documentation for your RESTful
 ## Installation (with [Composer](http://composer.org))
 
 ```sh
-composer require zircote/swagger-php=2.*@dev
+composer require zircote/swagger-php
 ```
 
 For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `swagger` executable can be located by your system.
 
 ```sh
-composer global require zircote/swagger-php=2.*@dev
+composer global require zircote/swagger-php
 ```
 
 ## Usage
