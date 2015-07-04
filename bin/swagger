@@ -148,7 +148,7 @@ set_exception_handler(function ($exception) {
 
 $exclude = $options['exclude'] ? explode(',', $options['exclude']) : null;
 
-$swagger = Swagger\scan($paths, $exclude);
+$swagger = Swagger\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 $counter = 0;
 
