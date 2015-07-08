@@ -34,7 +34,7 @@ Add annotations to your php files.
 /**
  * @SWG\Get(
  *     path="/api/resource.json",
- *     @SWG\Response(name="200", description="An example resource")
+ *     @SWG\Response(response="200", description="An example resource")
  * )
  */
 ```
