@@ -63,7 +63,7 @@ class StaticAnalyser
         $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
-        $classContext = $parseContext; // Use the parseContext until a classContext is created.
+        $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created. 
         $classDefinition = false;
         $comment = false;
         $line = 0;
@@ -76,7 +76,7 @@ class StaticAnalyser
             }
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) { // 2 Doc-comments in succession?
-                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
+                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
                 }
                 $comment = $token[1];
                 $line = $token[2] + $lineOffset;
@@ -91,7 +91,7 @@ class StaticAnalyser
                     continue;
                 }
                 $token = $this->nextToken($tokens, $parseContext);
-                $classContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
+                $definitionContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
                 }
@@ -100,29 +100,40 @@ class StaticAnalyser
                     'extends' => null,
                     'properties' => [],
                     'methods' => [],
-                    'context' => $classContext
+                    'context' => $definitionContext
                 ];
-                // @todo detect end-of-class and reset $classContext
+                // @todo detect end-of-class and reset $definitionContext
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_EXTENDS) {
-                    $classContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
-                    $classDefinition['extends'] = $classContext->fullyQualifiedName($classContext->extends);
+                    $definitionContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
+                    $classDefinition['extends'] = $definitionContext->fullyQualifiedName($definitionContext->extends);
                 }
                 if ($comment) {
-                    $classContext->line = $line;
-                    $analysis->addAnnotations($analyser->fromComment($comment, $classContext));
+                    $definitionContext->line = $line;
+                    $analysis->addAnnotations($analyser->fromComment($comment, $definitionContext));
                     $comment = false;
                     continue;
                 }
             }
-            if ($token[0] == T_STATIC) {
+            if ($token[0] === T_TRAIT) {
+                $classDefinition = false;
+                $token = $this->nextToken($tokens, $parseContext);
+                $definitionContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($comment) {
+                    $definitionContext->line = $line;
+                    $analysis->addAnnotations($analyser->fromComment($comment, $definitionContext));
+                    $comment = false;
+                    continue;
+                }
+            }
+            if ($token[0] === T_STATIC) {
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_VARIABLE) { // static property
                     $propertyContext = new Context([
                         'property' => substr($token[1], 1),
                         'static' => true,
                         'line' => $line
-                            ], $classContext);
+                            ], $definitionContext);
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
@@ -143,7 +154,7 @@ class StaticAnalyser
                     $propertyContext = new Context([
                         'property' => substr($token[1], 1),
                         'line' => $line
-                            ], $classContext);
+                            ], $definitionContext);
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
@@ -157,7 +168,7 @@ class StaticAnalyser
                         $methodContext = new Context([
                             'method' => $token[1],
                             'line' => $line
-                                ], $classContext);
+                                ], $definitionContext);
                         if ($classDefinition) {
                             $classDefinition['methods'][$token[1]] = $methodContext;
                         }
@@ -174,7 +185,7 @@ class StaticAnalyser
                     $methodContext = new Context([
                         'method' => $token[1],
                         'line' => $line
-                            ], $classContext);
+                            ], $definitionContext);
                     if ($classDefinition) {
                         $classDefinition['methods'][$token[1]] = $methodContext;
                     }
@@ -187,7 +198,7 @@ class StaticAnalyser
             if (in_array($token[0], [T_NAMESPACE, T_USE]) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
                 // Not a doc-comment for a class, property or method?
                 if ($comment) {
-                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
+                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
                     $comment = false;
                 }
             }
@@ -215,7 +226,7 @@ class StaticAnalyser
             }
         }
         if ($comment) { // File ends with a T_DOC_COMMENT
-            $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $classContext)));
+            $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);

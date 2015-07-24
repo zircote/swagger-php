@@ -21,8 +21,12 @@ class AugmentDefinitions
         $definitions = $analysis->getAnnotationsOfType('\Swagger\Annotations\Definition');
         // Use the class names for @SWG\Definition()
         foreach ($definitions as $definition) {
-            if ($definition->definition === null && $definition->_context->is('class')) {
-                $definition->definition = $definition->_context->class;
+            if ($definition->definition === null) {
+                if ($definition->_context->is('class')) {
+                    $definition->definition = $definition->_context->class;    
+                } elseif ($definition->_context->is('trait')) {
+                    $definition->definition = $definition->_context->trait;
+                }
                 // if ($definition->type === null) {
                 //     $definition->type = 'object';
                 // }
@@ -31,11 +35,10 @@ class AugmentDefinitions
         // Merge unmerged @SWG\Property annotations into the @SWG\Definition of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Property');
         foreach ($unmergedProperties as $property) {
-            $classContext = $property->_context->with('class');
-            if ($classContext->annotations) {
-
+            $definitonContext = $property->_context->with('class') ?: $property->_context->with('trait');
+            if ($definitonContext->annotations) {
                 $definition = false;
-                foreach ($classContext->annotations as $annotation) {
+                foreach ($definitonContext->annotations as $annotation) {
                     if ($annotation instanceof Definition) {
                         $definition = $annotation;
                     }
