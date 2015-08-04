@@ -407,7 +407,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
         
         foreach ($fields as $field => $value) {
-            if ($value === null || is_scalar($value || in_array($field, $blacklist))) {
+            if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
             }
             if (is_object($value)) {
