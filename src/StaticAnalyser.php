@@ -82,8 +82,8 @@ class StaticAnalyser
                 $line = $token[2] + $lineOffset;
                 continue;
             }
-            if ($token[0] === T_ABSTRACT) {
-                $token = $this->nextToken($tokens, $parseContext); // Skip "abstract" keyword
+            if (in_array($token[0], [T_ABSTRACT, T_FINAL])) {
+                $token = $this->nextToken($tokens, $parseContext); // Skip "abstract" and "final" keywords
             }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 if (is_array($previousToken) && $previousToken[0] === T_DOUBLE_COLON) {

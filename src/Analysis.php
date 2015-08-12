@@ -6,9 +6,6 @@
 
 namespace Swagger;
 
-//use Swagger\Processors\InheritProperties;
-
-
 use Closure;
 use Exception;
 use SplObjectStorage;
@@ -21,6 +18,7 @@ use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\MergeIntoSwagger;
 use Swagger\Processors\CleanUnmerged;
+use Swagger\Processors\InheritProperties;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
@@ -249,7 +247,7 @@ class Analysis
                 new BuildPaths(),
                 new AugmentDefinitions(),
                 new AugmentProperties(),
-//                new InheritProperties(),
+                new InheritProperties(),
                 new AugmentParameters(),
                 new CleanUnmerged(),
             ];

@@ -182,8 +182,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
         foreach ($data as $property => $value) {
             if (is_object($value)) {
                 $data[$property] = $this->sorted($value, $origin . '->' . $property);
-            }
-            if (is_array($value)) {
+            } elseif (is_array($value)) {
                 if (count($value) > 1) {
                     if (gettype($value[0]) === 'string') {
                         $sortFn = 'strcasecmp';

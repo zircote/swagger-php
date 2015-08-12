@@ -2,7 +2,7 @@
 
 namespace PetstoreIO;
 
-class StoreController
+abstract class StoreController
 {
 
     /**
