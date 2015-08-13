@@ -85,6 +85,9 @@ class StaticAnalyser
             if (in_array($token[0], [T_ABSTRACT, T_FINAL])) {
                 $token = $this->nextToken($tokens, $parseContext); // Skip "abstract" and "final" keywords
             }
+            if ($token[0] === T_FINAL) {
+                $token = $this->nextToken($tokens, $parseContext); // Skip "final" keyword
+            }
             if ($token[0] === T_CLASS) { // Doc-comment before a class?
                 if (is_array($previousToken) && $previousToken[0] === T_DOUBLE_COLON) {
                     //php 5.5 class name resolution (i.e. ClassName::class)
