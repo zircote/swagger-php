@@ -58,6 +58,25 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.  
 For example the snippet above would generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
 
+## Using variables in annotations
+
+You can use constants inside doctrine annotations.
+
+```php
+define("API_HOST", ($env === "production") ? "example.com" : "localhost");
+```
+
+```php
+/**
+ * @SWG\Swagger(host=API_HOST)
+ */
+```
+
+When you're using the CLI you'll need to include the php file with the constants using the `--bootstrap` options:
+```
+$ swagger --bootstrap constants.php
+```
+
 
 ## Annotation placement
 
