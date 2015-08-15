@@ -106,7 +106,7 @@ class UserController
      *       header="X-Expires-After",
      *       type="string",
      *       format="date-time",
-     *       description="date in UTC when toekn expires"
+     *       description="date in UTC when token expires"
      *     )
      *   ),
      *   @SWG\Response(response=400, description="Invalid username/password supplied")
