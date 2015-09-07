@@ -48,7 +48,7 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 /**
  * @SWG\Swagger(
  *   @SWG\Info(
- *     titel="My first swagger documented API",
+ *     title="My first swagger documented API",
  *     version="1.0.0"
  *   )
  * )
