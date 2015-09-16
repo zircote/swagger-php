@@ -11,6 +11,7 @@ use Exception;
 use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\CustomAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentParameters;
@@ -29,6 +30,11 @@ class Analysis
      * @var SplObjectStorage
      */
     public $annotations;
+
+    /**
+     * @var CustomAnnotationHandlerInterface
+     */
+    public static $customAnnotationHandler = null;
 
     /**
      * Class definitions
@@ -62,6 +68,10 @@ class Analysis
      */
     public function addAnnotation($annotation)
     {
+        if (($annotation instanceof CustomAnnotation) && self::$customAnnotationHandler) {
+            $this->addAnnotations(self::$customAnnotationHandler->migrate($annotation));
+        }
+
         if ($this->annotations->contains($annotation)) {
             return;
         }
@@ -147,7 +157,7 @@ class Analysis
     }
 
     /**
-     * 
+     *
      * @param string $class
      * @param boolean $strict Innon-strict mode childclasses are also detected.
      * @return array
@@ -202,7 +212,7 @@ class Analysis
      * Split the annotation into two analysis.
      * One with annotations that are merged and one with annotations that are not merged.
      *
-     * @return object {merged: Analysis, unmerged: Analysis} 
+     * @return object {merged: Analysis, unmerged: Analysis}
      */
     public function split()
     {

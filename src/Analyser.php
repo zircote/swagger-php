@@ -9,6 +9,8 @@ namespace Swagger;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Exception;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\CustomAnnotation;
 
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
@@ -84,6 +86,11 @@ class Analyser
                 return str_replace("\t", ' ', $match[0]);
             }, $comment);
             $annotations = $this->docParser->parse($comment, $context);
+            foreach ($annotations as $ii => $annotation) {
+                if (!($annotation instanceof AbstractAnnotation)) {
+                    $annotations[$ii] = new CustomAnnotation(['_context' => self::$context], $annotation);
+                }
+            }
             self::$context = null;
             return $annotations;
         } catch (Exception $e) {
