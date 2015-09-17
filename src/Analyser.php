@@ -85,9 +85,11 @@ class Analyser
                 return str_replace("\t", ' ', $match[0]);
             }, $comment);
             $annotations = $this->docParser->parse($comment, $context);
-            foreach ($annotations as $ii => $annotation) {
-                if (!($annotation instanceof AbstractAnnotation)) {
-                    $annotations[$ii] = new CustomAnnotation(['_context' => self::$context], $annotation);
+            if (Analysis::$customAnnotationHandler) {
+                foreach ($annotations as $ii => $annotation) {
+                    if (!($annotation instanceof AbstractAnnotation)) {
+                        $annotations[$ii] = new CustomAnnotation(['_context' => self::$context], $annotation);
+                    }
                 }
             }
             self::$context = null;
