@@ -36,7 +36,10 @@
     * 			@SWG\Schema(ref="#/definitions/Error"),
     * 		),
     * 	)
-    *
+    * @SWG\Options(
+    * path="/users/{id}",
+    * @SWG\Response(response=200,description="Some CORS stuff")
+    * )
     */
    Route::put('/users/{user_id}', 'UserController@update');
 
@@ -67,3 +70,8 @@
 	 *
 	 */
 	Route::delete('/users/{user_id}', 'UserController@destroy');
+
+      /**
+      *@SWG\Head(path="/users/{id}",@SWG\Response(response=200,description="Only checking if it exists"))
+      */
+     Route::get('/users/{user_id}', 'UserController@show');

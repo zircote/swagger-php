@@ -49,13 +49,13 @@ class Path extends AbstractAnnotation
 
     /**
      * A definition of a OPTIONS operation on this path.
-     * @var Operation
+     * @var Options
      */
     public $options;
 
     /**
      * A definition of a HEAD operation on this path.
-     * @var Operation
+     * @var Head
      */
     public $head;
 
@@ -83,6 +83,8 @@ class Path extends AbstractAnnotation
         'Swagger\Annotations\Put' => 'put',
         'Swagger\Annotations\Delete' => 'delete',
         'Swagger\Annotations\Patch' => 'patch',
+        'Swagger\Annotations\Head' => 'head',
+        'Swagger\Annotations\Options' => 'options',
         'Swagger\Annotations\Parameter' => ['parameters'],
     ];
 

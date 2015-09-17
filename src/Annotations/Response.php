@@ -73,6 +73,8 @@ class Response extends AbstractAnnotation
         'Swagger\Annotations\Put',
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Delete',
+        'Swagger\Annotations\Head',
+        'Swagger\Annotations\Options',
         'Swagger\Annotations\Swagger'
     ];
 }

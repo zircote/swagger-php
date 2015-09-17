@@ -40,7 +40,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/routes.php');
-        $this->assertCount(12, $analysis->annotations);
+        $this->assertCount(16, $analysis->annotations);
     }
     
     public function testTrait() {

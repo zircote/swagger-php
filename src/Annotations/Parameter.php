@@ -199,6 +199,8 @@ class Parameter extends AbstractAnnotation
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Path',
+        'Swagger\Annotations\Head',
+        'Swagger\Annotations\Options',
         'Swagger\Annotations\Swagger'
     ];
 
