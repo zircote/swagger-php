@@ -150,12 +150,12 @@ abstract class Operation extends AbstractAnnotation
         return $data;
     }
 
-    public function validate($skip = array())
+    public function validate($parents = [], $skip = [])
     {
         if (in_array($this, $skip, true)) {
             return true;
         }
-        $valid = parent::validate($skip);
+        $valid = parent::validate($parents, $skip);
         if ($this->responses !== null) {
             foreach ($this->responses as $response) {
                 if ($response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $response->response) === 0) {
