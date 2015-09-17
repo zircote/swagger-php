@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Post extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'post';
 

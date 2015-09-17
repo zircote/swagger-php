@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Head extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'head';
 

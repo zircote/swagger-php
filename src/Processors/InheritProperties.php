@@ -16,7 +16,6 @@ use Swagger\Analysis;
  */
 class InheritProperties
 {
-
     public function __invoke(Analysis $analysis)
     {
         $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');

@@ -14,7 +14,6 @@ namespace Swagger\Annotations;
  */
 class License extends AbstractAnnotation
 {
-
     /**
      * The license name used for the API.
      * @var string

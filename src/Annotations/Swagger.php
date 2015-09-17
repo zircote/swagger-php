@@ -17,7 +17,6 @@ use Swagger\Analysis;
  */
 class Swagger extends AbstractAnnotation
 {
-
     /**
      * Specifies the Swagger Specification version being used. It can be used by the Swagger UI and other clients to interpret the API listing.
      * @var string

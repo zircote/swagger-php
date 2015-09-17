@@ -14,7 +14,6 @@ namespace Swagger\Annotations;
  */
 class ExternalDocumentation extends AbstractAnnotation
 {
-
     /**
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
      * @var string

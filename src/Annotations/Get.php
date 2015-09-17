@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Get extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'get';
 

@@ -14,7 +14,6 @@ namespace Swagger\Annotations;
  */
 class Contact extends AbstractAnnotation
 {
-
     /**
      * The identifying name of the contact person/organization.
      * @var string

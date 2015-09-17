@@ -14,7 +14,6 @@ use Exception;
  */
 class Logger
 {
-
     /**
      * Singleton
      * @var Logger

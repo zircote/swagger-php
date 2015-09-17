@@ -16,7 +16,6 @@ namespace Swagger\Annotations;
  */
 class Path extends AbstractAnnotation
 {
-
     /**
      * key in the Swagger "Paths Object" for this path.
      * @var string

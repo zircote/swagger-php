@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Options extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'options';
 

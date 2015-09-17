@@ -35,7 +35,6 @@ namespace Swagger;
  */
 class Context
 {
-
     /**
      * Prototypical inheritance for properties.
      * @var Context

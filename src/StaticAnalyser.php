@@ -11,7 +11,6 @@ namespace Swagger;
  */
 class StaticAnalyser
 {
-
     /**
      * @param string $filename
      */

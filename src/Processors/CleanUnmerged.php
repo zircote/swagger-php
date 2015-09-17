@@ -14,7 +14,6 @@ use SplObjectStorage;
  */
 class CleanUnmerged
 {
-
     public function __invoke(Analysis $analysis)
     {
         $split = $analysis->split();
@@ -31,7 +30,7 @@ class CleanUnmerged
             }
         }
         $analysis->swagger->_unmerged = [];
-        foreach ($unmerged as $annotation) {    
+        foreach ($unmerged as $annotation) {
             $analysis->swagger->_unmerged[] = $annotation;
         }
     }

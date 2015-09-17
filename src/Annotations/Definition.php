@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Definition extends Schema
 {
-
     /**
      * The key into Swagger->definitions array.
      * @var string

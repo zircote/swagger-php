@@ -15,7 +15,6 @@ use Swagger\Annotations\Definition;
  */
 class AugmentDefinitions
 {
-
     public function __invoke(Analysis $analysis)
     {
         $definitions = $analysis->getAnnotationsOfType('\Swagger\Annotations\Definition');
@@ -23,7 +22,7 @@ class AugmentDefinitions
         foreach ($definitions as $definition) {
             if ($definition->definition === null) {
                 if ($definition->_context->is('class')) {
-                    $definition->definition = $definition->_context->class;    
+                    $definition->definition = $definition->_context->class;
                 } elseif ($definition->_context->is('trait')) {
                     $definition->definition = $definition->_context->trait;
                 }

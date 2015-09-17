@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Patch extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'patch';
 

@@ -31,7 +31,6 @@ AnnotationRegistry::registerLoader(function ($class) {
  */
 class Analyser
 {
-
     /**
      * List of namespaces that should be detected by the doctrine annotation parser.
      * @var array

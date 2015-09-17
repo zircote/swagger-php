@@ -13,7 +13,6 @@ namespace Swagger\Annotations;
  */
 class Response extends AbstractAnnotation
 {
-
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
      * @var string

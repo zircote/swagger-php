@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Property extends Schema
 {
-
     /**
      * The key into Schema->properties array.
      * @var string

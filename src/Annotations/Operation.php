@@ -16,7 +16,6 @@ use Swagger\Logger;
  */
 abstract class Operation extends AbstractAnnotation
 {
-
     /**
      * key in the Swagger "Paths Object" for this operation
      * @var string

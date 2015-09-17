@@ -13,7 +13,6 @@ namespace Swagger\Annotations;
  */
 class Tag extends AbstractAnnotation
 {
-
     /**
      * The name of the tag.
      * @var string

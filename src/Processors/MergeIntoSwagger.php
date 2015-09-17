@@ -15,7 +15,6 @@ use Swagger\Context;
  */
 class MergeIntoSwagger
 {
-
     public function __invoke(Analysis $analysis)
     {
         // Set the first Swagger annotation as target.

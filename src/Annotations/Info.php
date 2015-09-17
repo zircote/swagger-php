@@ -13,7 +13,6 @@ namespace Swagger\Annotations;
  */
 class Info extends AbstractAnnotation
 {
-
     /**
      * The title of the application.
      * @var string

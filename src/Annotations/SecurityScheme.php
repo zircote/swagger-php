@@ -12,7 +12,6 @@ namespace Swagger\Annotations;
  */
 class SecurityScheme extends AbstractAnnotation
 {
-
     /**
      * The key into Swagger->securityDefinitions array.
      * @var string

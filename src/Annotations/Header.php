@@ -13,7 +13,6 @@ namespace Swagger\Annotations;
  */
 class Header extends AbstractAnnotation
 {
-
     /**
      * @var string
      */

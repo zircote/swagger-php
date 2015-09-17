@@ -16,7 +16,6 @@ use \Swagger\Logger;
  */
 class Parameter extends AbstractAnnotation
 {
-
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
      * @var string
@@ -204,12 +203,13 @@ class Parameter extends AbstractAnnotation
         'Swagger\Annotations\Swagger'
     ];
 
-    public function validate($skip = [])
+    /** @inheritdoc */
+    public function validate($parents = [], $skip = [])
     {
         if (in_array($this, $skip, true)) {
             return true;
         }
-        $valid = parent::validate($skip);
+        $valid = parent::validate($parents, $skip);
         if (empty($this->ref)) {
             if ($this->in === 'body') {
                 if ($this->schema === null) {

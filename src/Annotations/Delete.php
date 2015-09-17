@@ -11,7 +11,6 @@ namespace Swagger\Annotations;
  */
 class Delete extends Operation
 {
-
     /** @inheritdoc */
     public $method = 'delete';
 

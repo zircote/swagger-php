@@ -13,7 +13,6 @@ namespace Swagger\Annotations;
  */
 class Xml extends AbstractAnnotation
 {
-
     /**
      * Replaces the name of the element/attribute used for the described schema property. When defined within the Items Object (items), it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored.
      * @var string
