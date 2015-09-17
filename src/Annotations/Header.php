@@ -37,7 +37,7 @@ class Header extends AbstractAnnotation
 
     /**
      * Required if type is "array". Describes the type of items in the array.
-     * @var array
+     * @var Items
      */
     public $items;
 
@@ -144,6 +144,11 @@ class Header extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
+    ];
+
+    /** @inheritdoc */
+    public static $_nested = [
+        'Swagger\Annotations\Items' => 'items'
     ];
 
     /** @inheritdoc */

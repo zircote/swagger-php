@@ -25,7 +25,8 @@ class Items extends Schema
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Definition',
-        'Swagger\Annotations\Items'
+        'Swagger\Annotations\Items',
+        'Swagger\Annotations\Header',
     ];
 
     /** @inheritdoc */
