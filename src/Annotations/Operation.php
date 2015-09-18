@@ -75,7 +75,7 @@ abstract class Operation extends AbstractAnnotation
      * This overrides the [produces](#swaggerProduces) definition at the Swagger Object.
      * An empty value MAY be used to clear the global definition.
      * Value MUST be as described under Mime Types.
-     * @var string
+     * @var array
      */
     public $produces;
 
