@@ -29,7 +29,7 @@ Note that Doctrine annotation supports arrays, but uses the `{` and `}` instead 
 
 And although doctrine also supports objects, but also uses `{` and `}` and requires the properties to be surrounded with `"`.
 
-DON'T write:
+**DON'T** write:
 
 ```php
 /**
@@ -48,7 +48,7 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 /**
  * @SWG\Swagger(
  *   @SWG\Info(
- *     titel="My first swagger documented API",
+ *     title="My first swagger documented API",
  *     version="1.0.0"
  *   )
  * )
@@ -56,7 +56,7 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 ```
 
 This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.  
-For example the snippet above would generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
+For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
 
 ## Using variables in annotations
 
