@@ -75,7 +75,7 @@ class StaticAnalyser
             }
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) { // 2 Doc-comments in succession?
-                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
+                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $definitionContext));
                 }
                 $comment = $token[1];
                 $line = $token[2] + $lineOffset;
@@ -109,7 +109,7 @@ class StaticAnalyser
                 }
                 if ($comment) {
                     $definitionContext->line = $line;
-                    $analysis->addAnnotations($analyser->fromComment($comment, $definitionContext));
+                    $this->analyseComment($analysis, $analyser, $comment, $definitionContext);
                     $comment = false;
                     continue;
                 }
@@ -120,7 +120,7 @@ class StaticAnalyser
                 $definitionContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($comment) {
                     $definitionContext->line = $line;
-                    $analysis->addAnnotations($analyser->fromComment($comment, $definitionContext));
+                    $this->analyseComment($analysis, $analyser, $comment, $definitionContext);
                     $comment = false;
                     continue;
                 }
@@ -137,7 +137,7 @@ class StaticAnalyser
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
                     if ($comment) {
-                        $analysis->addAnnotations($analyser->fromComment($comment, $propertyContext));
+                        $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
                         $comment = false;
                     }
                     continue;
@@ -158,7 +158,7 @@ class StaticAnalyser
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
                     if ($comment) {
-                        $analysis->addAnnotations($analyser->fromComment($comment, $propertyContext));
+                        $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
                         $comment = false;
                     }
                 } elseif ($token[0] === T_FUNCTION) {
@@ -172,7 +172,7 @@ class StaticAnalyser
                             $classDefinition['methods'][$token[1]] = $methodContext;
                         }
                         if ($comment) {
-                            $analysis->addAnnotations($analyser->fromComment($comment, $methodContext));
+                            $this->analyseComment($analysis, $analyser, $comment, $methodContext);
                             $comment = false;
                         }
                     }
@@ -189,7 +189,7 @@ class StaticAnalyser
                         $classDefinition['methods'][$token[1]] = $methodContext;
                     }
                     if ($comment) {
-                        $analysis->addAnnotations($analyser->fromComment($comment, $methodContext));
+                        $this->analyseComment($analysis, $analyser, $comment, $methodContext);
                         $comment = false;
                     }
                 }
@@ -197,7 +197,7 @@ class StaticAnalyser
             if (in_array($token[0], [T_NAMESPACE, T_USE]) === false) { // Skip "use" & "namespace" to prevent "never imported" warnings)
                 // Not a doc-comment for a class, property or method?
                 if ($comment) {
-                    $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
+                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $definitionContext));
                     $comment = false;
                 }
             }
@@ -225,12 +225,23 @@ class StaticAnalyser
             }
         }
         if ($comment) { // File ends with a T_DOC_COMMENT
-            $analysis->addAnnotations($analyser->fromComment($comment, new Context(['line' => $line], $definitionContext)));
+            $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $definitionContext));
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
         }
         return $analysis;
+    }
+    /**
+     * 
+     * @param Analysis $analysis
+     * @param Analyser $analyser
+     * @param string $comment
+     * @param Context $context
+     */
+    private function analyseComment($analysis, $analyser, $comment, $context)
+    {
+        $analysis->addAnnotations($analyser->fromComment($comment, $context), $context);
     }
 
     /**

@@ -16,9 +16,9 @@ use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
-use Swagger\Processors\MergeIntoSwagger;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Processors\InheritProperties;
+use Swagger\Processors\MergeIntoSwagger;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
@@ -51,49 +51,66 @@ class Analysis
     /**
      * @param array $annotations
      */
-    public function __construct($annotations = [])
+    public function __construct($annotations = [], $context = null)
     {
         $this->annotations = new SplObjectStorage();
-        $this->addAnnotations($annotations);
+        if (count($annotations) !== 0) {
+            if ($context === null) {
+                $context = Context::detect(1);
+            }
+            $this->addAnnotations($annotations, $context);
+        }
     }
 
     /**
      * @param AbstractAnnotation $annotation
+     * @param Context $context
      */
-    public function addAnnotation($annotation)
+    public function addAnnotation($annotation, $context)
     {
         if ($this->annotations->contains($annotation)) {
             return;
         }
-        $this->annotations->attach($annotation);
+        if ($annotation instanceof AbstractAnnotation) {
+            $context = $annotation->_context;
+        } else {
+            if ($context->is('annotations') === false) {
+                $context->annotations = [];
+            }
+            if (in_array($annotation, $context->annotations, true) === false) {
+                $context->annotations[] = $annotation;
+            }
+        }
+        $this->annotations->attach($annotation, $context);
         $blacklist = property_exists($annotation, '_blacklist') ? $annotation::$_blacklist : [];
         foreach ($annotation as $property => $value) {
             if (in_array($property, $blacklist)) {
                 if ($property === '_unmerged') {
                     foreach ($value as $item) {
-                        $this->addAnnotation($item);
+                        $this->addAnnotation($item, $context);
                     }
                 }
                 continue;
             } elseif (is_array($value)) {
                 foreach ($value as $item) {
                     if ($item instanceof AbstractAnnotation) {
-                        $this->addAnnotation($item);
+                        $this->addAnnotation($item, $context);
                     }
                 }
             } elseif ($value instanceof AbstractAnnotation) {
-                $this->addAnnotation($value);
+                $this->addAnnotation($value, $context);
             }
         }
     }
 
     /**
      * @param array $annotations
+     * @param Context $context
      */
-    public function addAnnotations($annotations)
+    public function addAnnotations($annotations, $context)
     {
         foreach ($annotations as $annotation) {
-            $this->addAnnotation($annotation);
+            $this->addAnnotation($annotation, $context);
         }
     }
 
@@ -111,7 +128,9 @@ class Analysis
      */
     public function addAnalysis($analysis)
     {
-        $this->addAnnotations($analysis->annotations);
+        foreach ($analysis->annotations as $annotation) {
+            $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
+        }
         $this->classes = array_merge($this->classes, $analysis->classes);
         if ($this->swagger === null && $analysis->swagger) {
             $this->swagger = $analysis->swagger;
@@ -172,6 +191,29 @@ class Analysis
     }
 
     /**
+     * 
+     * @param object $annotation
+     * @return \Swagger\Context
+     */
+    public function getContext($annotation)
+    {
+        if ($annotation instanceof AbstractAnnotation) {
+            return $annotation->_context;
+        }
+        if ($this->annotations->contains($annotation) === false) {
+            throw new Exception('Annotation not found');
+        }
+        $context = $this->annotations[$annotation];
+        if ($context instanceof Context) {
+            return $context;
+        }
+        var_dump($context);
+        ob_flush();
+        die;
+        throw new Exception('Annotation has no context'); // Weird, did you use the addAnnotation/addAnnotations methods?
+    }
+
+    /**
      * Build an analysis with only the annotations that are merged into the swagger annotation.
      *
      * @return Analysis
@@ -211,7 +253,7 @@ class Analysis
         $result->unmerged = new Analysis();
         foreach ($this->annotations as $annotation) {
             if ($result->merged->annotations->contains($annotation) === false) {
-                $result->unmerged->annotations->attach($annotation);
+                $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
             }
         }
         return $result;
