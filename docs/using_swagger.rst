@@ -16,25 +16,25 @@ To make them accessable to `swagger-ui` they must be placed onto an webserver.
 
 .. code-block:: bash
 
-    php swagger.phar /projects/my_project  -o /var/html/swagger-docs
+    php vendor/zircote/swagger-php/bin/swagger /projects/my_project  -o /var/html/swagger-docs
 
 Check the help for additional options.
 
 .. code-block:: bash
 
-    php swagger.phar --help
+    php vendor/zircote/swagger-php/bin/swagger --help
 
 
 Via PHP
 *****************
 
-The following example will generate and output the documentation of the "/pet" resource.
+The following example will generate and output the documentation for all documentation within the `/path/to/project` path
 
 .. code-block:: php
 
     <?php
-    use Swagger\Swagger;
-    $swagger = new Swagger('/projects/my_project');
+    require("vendor/autoload.php");
+    $swagger = \Swagger\scan('/path/to/project');
     header('Content-Type: application/json');
-    echo $swagger->getResource('/pet', array('output' => 'json'));
+    echo $swagger;
 
