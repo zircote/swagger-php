@@ -75,7 +75,7 @@ class Analysis
     public function addAnnotation($annotation, $context)
     {
         if (($annotation instanceof CustomAnnotation) && self::$customAnnotationHandler) {
-            $this->addAnnotations(self::$customAnnotationHandler->migrate($annotation));
+            $this->addAnnotations(self::$customAnnotationHandler->migrate($annotation), $context);
         }
 
         if ($this->annotations->contains($annotation)) {
@@ -201,7 +201,7 @@ class Analysis
     }
 
     /**
-     * 
+     *
      * @param object $annotation
      * @return \Swagger\Context
      */
