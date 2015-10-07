@@ -317,6 +317,7 @@ Property
      * @SWG\Property(name="category",type="Category")
      */
      public $category;
+    /**
      * @SWG\Property(
      *      name="status",type="string",
      *      enum="['available', 'pending', 'sold']",
