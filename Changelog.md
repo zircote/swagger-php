@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3
+
+- Removed format restrictions #253
+- Fixed a bug with inherited properties #250
+
 ## 2.0.2
 
 - Added support for @SWG\Head & @SWG\Options for documenting the HEAD and OPTIONS responses

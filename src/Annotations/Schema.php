@@ -243,7 +243,7 @@ class Schema extends AbstractAnnotation
     public static $_types = [
         'description' => 'string',
         'required' => '[string]',
-        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'format' => 'string',
         'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
         'maximum' => 'number',
         'exclusiveMaximum' => 'boolean',
