@@ -169,7 +169,7 @@ class Parameter extends AbstractAnnotation
         'in' => ['query', 'header', 'path', 'formData', 'body'],
         'description' => 'string',
         'required' => 'boolean',
-        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'format' => [],
         'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
         'maximum' => 'number',
         'exclusiveMaximum' => 'boolean',
