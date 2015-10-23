@@ -131,7 +131,7 @@ class Header extends AbstractAnnotation
     public static $_types = [
         'header' => 'string',
         'description' => 'string',
-        'format' => ['int32', 'int64', 'float', 'double', 'byte', 'date', 'date-time'],
+        'format' => 'string',
         'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
         'maximum' => 'number',
         'exclusiveMaximum' => 'boolean',

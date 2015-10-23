@@ -169,6 +169,7 @@ class Parameter extends AbstractAnnotation
         'in' => ['query', 'header', 'path', 'formData', 'body'],
         'description' => 'string',
         'required' => 'boolean',
+        'format' => 'string',
         'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
         'maximum' => 'number',
         'exclusiveMaximum' => 'boolean',
