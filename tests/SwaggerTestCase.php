@@ -177,7 +177,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
                 }
             ];
         }
-        $data = get_object_vars($object);
+        $data = unserialize(serialize((array) $object));
         ksort($data);
         foreach ($data as $property => $value) {
             if (is_object($value)) {

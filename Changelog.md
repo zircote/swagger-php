@@ -2,7 +2,7 @@
 
 ## 2.0.4
  - Fixed minor regression #254
- - Removed format restrictions from the remaining annotation #253 
+ - Removed format restrictions from the remaining annotations #253 
 
 ## 2.0.3
 
