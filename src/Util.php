@@ -73,6 +73,7 @@ class Util
             return $directory;
         } else {
             $finder = new Finder();
+            $finder->sortByName();
         }
         $finder->files();
         if (is_string($directory)) {
