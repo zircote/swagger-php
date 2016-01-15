@@ -151,12 +151,6 @@ class Schema extends AbstractAnnotation
     public $uniqueItems;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor37
-     * @var boo|array
-     */
-    public $additionalItems;
-
-    /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor76.
      * @var array
      */
@@ -205,39 +199,10 @@ class Schema extends AbstractAnnotation
     public $allOf;
 
     /**
-     * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
-     * @var Schema[]
-     */
-    public $anyOf;
-
-    /**
-     * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
-     * @var type
-     */
-    public $oneOf;
-
-    /**
-     * An instance is valid against this keyword if it fails to validate successfully against the schema defined by this keyword.
-     * @var Schema
-     */
-    public $not;
-
-    /**
-     * This property plays no role in validation per se. Its role is to provide a standardized location for schema authors to inline JSON Schemas into a more general schema.
-     * @var Definition[]
-     */
-    public $definitions;
-
-    /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64
      * @var bool|object
      */
     public $additionalProperties;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor64
-     */
-    public $patternProperties;
 
     /** @inheritdoc */
     public static $_types = [
@@ -263,8 +228,7 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Xml' => 'xml',
-        'Swagger\Annotations\Definition' => ['definitions', 'definition'],
+        'Swagger\Annotations\Xml' => 'xml'
     ];
 
     /** @inheritdoc */
