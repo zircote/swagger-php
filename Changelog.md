@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.6-dev
+- Add support for xml (and externalDocs and properties) inside a @SWG\Items. #279
+
 ## 2.0.5
  - Removed JSON-Schema properties that are not supported in swagger. #273
  - Added ordering filenames to guarantee a consistent output #263

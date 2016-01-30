@@ -49,6 +49,7 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options'
+        'Swagger\Annotations\Options',
+        'Swagger\Annotations\Items',
     ];
 }

@@ -56,6 +56,7 @@ class Xml extends AbstractAnnotation
     public static $_parents = [
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
-        'Swagger\Annotations\Definition'
+        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Items',
     ];
 }

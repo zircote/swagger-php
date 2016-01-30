@@ -22,5 +22,6 @@ class Property extends Schema
         'Swagger\Annotations\Definition',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
+        'Swagger\Annotations\Items',
     ];
 }
