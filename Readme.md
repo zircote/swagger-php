@@ -11,7 +11,7 @@ Generate interactive [Swagger](http://swagger.io) documentation for your RESTful
  - Extracts information from code & existing phpdoc annotations.
  - Command-line interface available.
 
-## Installation (with [Composer](http://composer.org))
+## Installation (with [Composer](https://getcomposer.org))
 
 ```sh
 composer require zircote/swagger-php
