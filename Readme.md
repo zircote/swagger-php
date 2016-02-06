@@ -1,6 +1,6 @@
 # swagger-php
 
-[![Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
+[![Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) 
 
 Generate interactive [Swagger](http://swagger.io) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
 
