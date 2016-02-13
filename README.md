@@ -69,7 +69,18 @@ Generate the swagger documentation to a static json file.
 
 ## Contributing
 
-Please feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues) or pull requests.
+Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
+or pull requests.
+
 The documentation website resides within the `gh-pages` branch.
+
+Make sure pull requests pass [PHPUnit](https://phpunit.de/)
+and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
+
+To run the phpcs tests on your local machine execute:
+
+```bash
+./vendor/squizlabs/php_codesniffer/scripts/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+```
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
