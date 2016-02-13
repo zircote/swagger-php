@@ -61,6 +61,20 @@ Generate the swagger documentation to a static json file.
 ./vendor/bin/swagger --help
 ```
 
+### Usage from the Deserializer
+
+Generate the swagger annotation object from a json string, which makes it easier to manipulate swagger object programmatically.
+
+```php
+<?php
+
+use Swagger\Serializer;
+
+$serializer = new Serializer();
+$swagger = $serializer->deserialize($jsonString, 'Swagger\Annotations\Swagger');
+echo $swagger;
+```
+
 ## More on Swagger
 
   * http://swagger.io/
