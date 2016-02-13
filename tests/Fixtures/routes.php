@@ -5,7 +5,10 @@
 // http://www.doctrine-project.org/jira/browse/DCOM-255
 // https://github.com/zircote/swagger-php/issues/168
 // https://github.com/zircote/swagger-php/issues/203
- 
+//
+// @codingStandardsIgnoreStart
+//
+
    /**
     *
     *	@SWG\Put(
@@ -75,3 +78,7 @@
       *@SWG\Head(path="/users/{id}",@SWG\Response(response=200,description="Only checking if it exists"))
       */
      Route::get('/users/{user_id}', 'UserController@show');
+
+//
+// @codingStandardsIgnoreEnd
+//

@@ -62,7 +62,7 @@ class StaticAnalyser
         $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
-        $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created. 
+        $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
         $classDefinition = false;
         $comment = false;
         $line = 0;
@@ -233,7 +233,7 @@ class StaticAnalyser
         return $analysis;
     }
     /**
-     * 
+     *
      * @param Analysis $analysis
      * @param Analyser $analyser
      * @param string $comment

@@ -1,12 +1,14 @@
 <?php
 namespace SwaggerFixtures;
+
 /**
  * An intermediate class
  */
-class Parent extends GrandParent {
+class Parent extends GrandParent
+{
 
-	/**
-	 * Without swagger annotations
-	 */
-	public $firstname;
+    /**
+     * Without swagger annotations
+     */
+    public $firstname;
 }

@@ -4,7 +4,8 @@ namespace SwaggerFixures;
 /**
  * @SWG\Definition
  */
-trait Hello {
+trait Hello
+{
 
     /**
      * @SWG\Property()
