@@ -13,9 +13,9 @@ if (defined('Swagger\UNDEFINED') === false) {
     /**
      * Special value to differentiate between null and undefined.
      */
-    define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
-    define('Swagger\Annotations\UNDEFINED', UNDEFINED);
-    define('Swagger\Processors\UNDEFINED', UNDEFINED);
+    define('SWAGGER\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
+    define('SWAGGER\ANNOTATIONS\UNDEFINED', UNDEFINED);
+    define('SWAGGER\PROCESSORS\UNDEFINED', UNDEFINED);
 
     /**
      * Scan the filesystem for swagger annotations and build swagger-documentation.
