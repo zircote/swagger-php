@@ -1,12 +1,20 @@
 # Changelog
 
+## 2.0.6
+
+ - Added Deserializer for converting json string into a Swagger Annotations object. #290
+ - Various readme improvements #284 #286
+ - Various PSR-2 coding standard fixes #291
+ - Travis now enforces passing PHP CodeSniffer PSR-2 tests #291
+ - Use badges from shields.io #288
+
 ## 2.0.5
  - Removed JSON-Schema properties that are not supported in swagger. #273
  - Added ordering filenames to guarantee a consistent output #263
- 
+
 ## 2.0.4
  - Fixed minor regression #254
- - Removed format restrictions from the remaining annotations #253 
+ - Removed format restrictions from the remaining annotations #253
 
 ## 2.0.3
 
