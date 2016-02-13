@@ -1,4 +1,6 @@
 <?php
+namespace SwaggerFixtures;
+
 /**
  * @SWG\Info(title="Using a parameter definition", version="unittest")
  */

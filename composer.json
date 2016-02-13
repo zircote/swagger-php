@@ -33,7 +33,8 @@
         "files": ["src/functions.php"]
     },
     "require-dev": {
-        "zendframework/zend-form": "*"
+        "zendframework/zend-form": "*",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "autoload-dev": {
         "psr-4": {

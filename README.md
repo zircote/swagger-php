@@ -1,6 +1,8 @@
-# swagger-php
+[![Build Status](https://img.shields.io/travis/zircote/swagger-php/master.svg?style=flat-square)](https://travis-ci.org/zircote/swagger-php)
+[![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg?style=flat-square)](https://packagist.org/packages/zircote/swagger-php)
+[![License](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](LICENSE-2.0.txt)
 
-[![Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
+# swagger-php
 
 Generate interactive [Swagger](http://swagger.io) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
 
@@ -81,7 +83,18 @@ echo $swagger;
 
 ## Contributing
 
-Please feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues) or pull requests.
+Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
+or pull requests.
+
 The documentation website resides within the `gh-pages` branch.
+
+Make sure pull requests pass [PHPUnit](https://phpunit.de/)
+and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
+
+To run the phpcs tests on your local machine execute:
+
+```bash
+./vendor/squizlabs/php_codesniffer/scripts/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+```
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
