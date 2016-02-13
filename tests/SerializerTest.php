@@ -1,7 +1,6 @@
 <?php
 
-
-namespace SwaggerTests;
+namespace Swaggertests;
 
 use Swagger\Annotations;
 use Swagger\Serializer;
@@ -89,6 +88,7 @@ JSON;
         $this->assertInstanceOf('Swagger\Annotations\Swagger', $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->__toString(),
-            $this->getExpected()->__toString());
+            $this->getExpected()->__toString()
+        );
     }
 }

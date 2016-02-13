@@ -11,30 +11,30 @@ namespace Swagger;
  */
 class Serializer
 {
-    const    Contact = 'Swagger\Annotations\Contact';
-    const    Definition = 'Swagger\Annotations\Definition';
-    const    Delete = 'Swagger\Annotations\Delete';
-    const    ExternalDocumentation = 'Swagger\Annotations\ExternalDocumentation';
-    const    Get = 'Swagger\Annotations\Get';
-    const    Head = 'Swagger\Annotations\Head';
-    const    Header = 'Swagger\Annotations\Header';
-    const    Info = 'Swagger\Annotations\Info';
-    const    Items = 'Swagger\Annotations\Items';
-    const    License = 'Swagger\Annotations\License';
-    const    Operation = 'Swagger\Annotations\Operation';
-    const    Options = 'Swagger\Annotations\Options';
-    const    Parameter = 'Swagger\Annotations\Parameter';
-    const    Patch = 'Swagger\Annotations\Patch';
-    const    Path = 'Swagger\Annotations\Path';
-    const    Post = 'Swagger\Annotations\Post';
-    const    Property = 'Swagger\Annotations\Property';
-    const    Put = 'Swagger\Annotations\Put';
-    const    Response = 'Swagger\Annotations\Response';
-    const    Schema = 'Swagger\Annotations\Schema';
-    const    SecurityScheme = 'Swagger\Annotations\SecurityScheme';
-    const    Swagger = 'Swagger\Annotations\Swagger';
-    const    Tag = 'Swagger\Annotations\Tag';
-    const    Xml = 'Swagger\Annotations\Xml';
+    const    CONTACT = 'Swagger\Annotations\Contact';
+    const    DEFINITION = 'Swagger\Annotations\Definition';
+    const    DELETE = 'Swagger\Annotations\Delete';
+    const    EXTERNALDOCUMENTATION = 'Swagger\Annotations\ExternalDocumentation';
+    const    GET = 'Swagger\Annotations\Get';
+    const    HEAD = 'Swagger\Annotations\Head';
+    const    HEADER = 'Swagger\Annotations\Header';
+    const    INFO = 'Swagger\Annotations\Info';
+    const    ITEMS = 'Swagger\Annotations\Items';
+    const    LICENSE = 'Swagger\Annotations\License';
+    const    OPERATION = 'Swagger\Annotations\Operation';
+    const    OPTIONS = 'Swagger\Annotations\Options';
+    const    PARAMETER = 'Swagger\Annotations\Parameter';
+    const    PATCH = 'Swagger\Annotations\Patch';
+    const    PATH = 'Swagger\Annotations\Path';
+    const    POST = 'Swagger\Annotations\Post';
+    const    PROPERTY = 'Swagger\Annotations\Property';
+    const    PUT = 'Swagger\Annotations\Put';
+    const    RESPONSE = 'Swagger\Annotations\Response';
+    const    SCHEMA = 'Swagger\Annotations\Schema';
+    const    SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
+    const    SWAGGER = 'Swagger\Annotations\Swagger';
+    const    TAG = 'Swagger\Annotations\Tag';
+    const    XML = 'Swagger\Annotations\Xml';
 
     private static $cachedNames;
 
