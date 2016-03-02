@@ -63,7 +63,7 @@ class Context
     {
         return property_exists($this, $type);
     }
-    
+
     /**
      * Check if a property is NOT set directly on this context and but its parent context.
      *
@@ -162,20 +162,39 @@ class Context
     }
 
     /**
+     * @param string $type One of 'all', 'summary' or 'description'
+     *
      * @return string|null
      */
-    public function extractDescription()
+    public function extractDescription($type = 'all')
     {
         $lines = explode("\n", $this->comment);
         unset($lines[0]);
-        $description = '';
+        $descriptions = array(
+            'summary' => array(),
+            'description' => array(),
+        );
+        $currentType = 'summary';
         foreach ($lines as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
                 break;
             }
-            $description .= $line . ' ';
+            if ($line === '') {
+                $currentType = 'description';
+            }
+            $descriptions[$currentType][] = $line;
         }
+
+        switch ($type) {
+            case 'summary':
+            case 'description':
+                $description = implode(' ', $descriptions[$type]);
+                break;
+            default:
+                $description = implode(' ', $descriptions['summary']) . ' ' . implode(' ', $descriptions['description']);
+        }
+
         $description = trim($description);
         if ($description === '') {
             return null;

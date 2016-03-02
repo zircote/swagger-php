@@ -13,6 +13,7 @@ use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
@@ -290,6 +291,7 @@ class Analysis
                 new AugmentDefinitions(),
                 new AugmentProperties(),
                 new InheritProperties(),
+                new AugmentOperations(),
                 new AugmentParameters(),
                 new CleanUnmerged(),
             ];
