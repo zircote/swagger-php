@@ -63,7 +63,7 @@ class Context
     {
         return property_exists($this, $type);
     }
-    
+
     /**
      * Check if a property is NOT set directly on this context and but its parent context.
      *
@@ -166,17 +166,24 @@ class Context
      */
     public function extractDescription()
     {
-        $lines = explode("\n", $this->comment);
-        unset($lines[0]);
-        $description = '';
-        foreach ($lines as $line) {
+        $comment = explode("\n", $this->comment);
+        unset($comment[0]);
+        $lines = [];
+        $append = false;
+        foreach ($comment as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
                 break;
             }
-            $description .= $line . ' ';
+            if ($append) {
+                $i = count($lines) - 1;
+                $lines[$i] = substr($lines[$i], 0, -1).$line;
+            } else {
+                $lines[] = $line;
+            }
+            $append = (substr($line, -1) === '\\');
         }
-        $description = trim($description);
+        $description = trim(implode("\n", $lines));
         if ($description === '') {
             return null;
         }

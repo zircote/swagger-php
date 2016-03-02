@@ -40,4 +40,41 @@ class ContextTest extends SwaggerTestCase
         $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwgLogger'));
         $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
     }
+    
+    public function testExtractDescription()
+    {
+        $singleLine = new Context(['comment' => <<<END
+    /**
+     * A single line.
+     *
+     * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+     */
+END
+        ]);
+        $this->assertEquals('A single line.', $singleLine->extractDescription());
+        
+        $multiline = new Context(['comment' => <<<END
+/**
+ * A description spread across
+ * multiple lines.
+ *           
+ * even blank lines
+ *
+ * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ */
+END
+        ]);
+        $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $multiline->extractDescription());
+        
+        $escapedLinebreak = new Context(['comment' => <<<END
+/**
+ * A single line spread across \
+ * multiple lines.
+ *
+ * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ */
+END
+        ]);
+        $this->assertEquals("A single line spread across multiple lines.", $escapedLinebreak->extractDescription());
+    }
 }
