@@ -4,6 +4,7 @@
 
  - Add support for xml (and externalDocs and properties) inside a @SWG\Items. #279
  - Nested properties are no longer injected into the Definition #297
+ - Fixed nesting issue with verbose property notation #297
 
 ## 2.0.6
 
