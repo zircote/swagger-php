@@ -34,6 +34,9 @@ class AugmentDefinitions
         // Merge unmerged @SWG\Property annotations into the @SWG\Definition of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Property');
         foreach ($unmergedProperties as $property) {
+            if ($property->_context->nested) {
+                continue;
+            }
             $definitonContext = $property->_context->with('class') ?: $property->_context->with('trait');
             if ($definitonContext->annotations) {
                 $definition = false;
