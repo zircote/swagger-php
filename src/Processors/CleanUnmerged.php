@@ -10,7 +10,7 @@ use Swagger\Analysis;
 use SplObjectStorage;
 
 /**
- * 
+ *
  */
 class CleanUnmerged
 {

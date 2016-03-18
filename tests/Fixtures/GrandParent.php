@@ -15,5 +15,4 @@ class GrandParent
      * @var string
      */
     public $lastname;
-    
 }

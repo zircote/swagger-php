@@ -166,7 +166,7 @@ class Analysis
     }
 
     /**
-     * 
+     *
      * @param string $class
      * @param boolean $strict Innon-strict mode childclasses are also detected.
      * @return array
@@ -191,7 +191,7 @@ class Analysis
     }
 
     /**
-     * 
+     *
      * @param object $annotation
      * @return \Swagger\Context
      */
@@ -244,7 +244,7 @@ class Analysis
      * Split the annotation into two analysis.
      * One with annotations that are merged and one with annotations that are not merged.
      *
-     * @return object {merged: Analysis, unmerged: Analysis} 
+     * @return object {merged: Analysis, unmerged: Analysis}
      */
     public function split()
     {

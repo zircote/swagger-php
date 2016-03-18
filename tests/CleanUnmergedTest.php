@@ -38,8 +38,8 @@ END;
         $this->assertCount(2, $before->unmerged->annotations, '@SWG\License + @SWG\Contact');
         $this->assertCount(0, $analysis->swagger->_unmerged);
         $analysis->validate(); // Validation fails to detect the unmerged annotations.
-        
-        // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array. 
+
+        // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array.
         $analysis->process(new CleanUnmerged());
         $between = $analysis->split();
         $this->assertCount(2, $between->merged->annotations, 'Generated @SWG\Swagger + @SWG\Info');
@@ -48,7 +48,7 @@ END;
         $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\License(), expected to be inside @SWG\Info in ');
         $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Contact(), expected to be inside @SWG\Info in ');
         $analysis->validate();
-        
+
         // When a processor places a previously unmerged annotation into the swagger obect.
         $license = $analysis->getAnnotationsOfType('Swagger\Annotations\License')[0];
         $contact = $analysis->getAnnotationsOfType('Swagger\Annotations\Contact')[0];
