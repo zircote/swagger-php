@@ -121,7 +121,7 @@ Generates:
             "description": "A list with products"
           },
           "default": {
-            "description": "unexpected error"
+            "description": "an \"unexpected\" error"
           }
         }
       }
