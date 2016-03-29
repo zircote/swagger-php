@@ -97,10 +97,10 @@ abstract class AbstractAnnotation implements JsonSerializable
         foreach ($properties as $property => $value) {
             if (property_exists($this, $property)) {
                 $this->$property = $value;
-                if (is_array($value))  {
+                if (is_array($value)) {
                     foreach ($value as $key => $annotation) {
                         if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
-                            $this->$property[$key] = $this->nested($annotation, $nestedContext);
+                            $this->{$property}[$key] = $this->nested($annotation, $nestedContext);
                         }
                     }
                 }
