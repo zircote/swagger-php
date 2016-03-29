@@ -31,6 +31,3 @@ script:
   - sh -c "if [ '$PHPUNIT' = '1' ]; then phpunit; fi"
 
   - sh -c "if [ '$PHPCS' = '1' ]; then ./vendor/squizlabs/php_codesniffer/scripts/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests; fi"
-
-notifications:
-  email: false
