@@ -5,12 +5,14 @@
  */
 
 namespace Swagger\Annotations;
+use Swagger\Processors\ExtractDynamic;
 
 /**
  * @Annotation
  */
 class DynamicDefinition extends Schema
 {
+
     /**
      * The key into Swagger->definitions array.
      * @var string
@@ -26,4 +28,11 @@ class DynamicDefinition extends Schema
     public static $_parents = [
         'Swagger\Annotations\Swagger'
     ];
+
+    public function __construct(array $properties)
+    {
+        parent::__construct($properties);
+        ExtractDynamic::addDefinition($this->definition, $this);
+    }
+
 }

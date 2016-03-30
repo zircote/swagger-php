@@ -112,8 +112,14 @@ class Swagger extends AbstractAnnotation
      */
     public $_analysis;
 
+    /**
+     * A dynamic object to hold data types produced and consumed by operations.
+     * @var DynamicDefinition[]
+     */
+    public $_dynamics = [];
+
     /** @inheritdoc */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis', '_dynamics'];
     
     /** @inheritdoc */
     public static $_required = ['swagger', 'info', 'paths'];
@@ -127,7 +133,8 @@ class Swagger extends AbstractAnnotation
         'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
         'Swagger\Annotations\Response' => ['responses', 'response'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\SecurityScheme' => ['securityDefinitions', 'securityDefinition']
+        'Swagger\Annotations\SecurityScheme' => ['securityDefinitions', 'securityDefinition'],
+        'Swagger\Annotations\DynamicDefinition' => ['_dynamics', 'definition']
     ];
 
     /** @inheritdoc */

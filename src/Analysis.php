@@ -17,6 +17,7 @@ use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
+use Swagger\Processors\ExtractDynamic;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoSwagger;
 
@@ -285,6 +286,7 @@ class Analysis
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
+                new ExtractDynamic(),
                 new MergeIntoSwagger(),
                 new BuildPaths(),
                 new AugmentDefinitions(),

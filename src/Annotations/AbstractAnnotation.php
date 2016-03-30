@@ -527,4 +527,36 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
         return $annotation;
     }
+
+    /**
+     * Clones the object returning a new instance.
+     *
+     * @return $this;
+     */
+    public function __clone()
+    {
+        return new $this($this->clone_object(get_object_vars($this)));
+    }
+
+    /**
+     * Clones the object given
+     *
+     * @param $object
+     * @return array
+     */
+    private function clone_object($object) {
+        foreach ($object as $key => $value) {
+            if ($value instanceof AbstractAnnotation) {
+                $value = clone $value;
+            } else if ($value instanceof stdClass) {
+                $value = $this->clone_object(new $value);
+            } else if (is_array($value)) {
+                $value = $this->clone_object($value);
+            }
+            if (is_array($object)) $object[$key] = $value;
+            else $object->$key = $value;
+        }
+
+        return $object;
+    }
 }
