@@ -33,6 +33,7 @@ class ExtractDynamic
             $definition = self::$definitions[$dynamic->use];
 
             $object = get_object_vars(clone $definition);
+
             $list = $this->read($object);
 
             foreach ($dynamic->stringRefs() as $key => $value) {
@@ -103,7 +104,7 @@ class ExtractDynamic
      * @param array|\stdClass $obj
      * @return array
      */
-    private function read(&$obj)
+    private function read($obj)
     {
         $array = [];
 
