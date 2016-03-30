@@ -110,9 +110,7 @@ class ExtractDynamic
 
         foreach ($obj as $key => &$value) {
             if (is_array($value) || $value instanceof AbstractAnnotation || $value instanceof \stdClass) {
-                foreach ($this->read($value) as $a => &$b) {
-                    $array[$a] = &$b;
-                }
+                $array = array_merge($array, $this->read($value));
             } else if (preg_match('/\{\{(.*?)\}\}/', $value, $matches)) {
                 $id = $matches[1];
                 $array[$id] = &$value;
