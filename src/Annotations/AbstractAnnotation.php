@@ -253,10 +253,6 @@ abstract class AbstractAnnotation implements JsonSerializable
                 }
             }
         }
-        // Strip properties that are for internal (swagger-php) use.
-        foreach (static::$_blacklist as $property) {
-            unset($data->$property);
-        }
         // Inject vendor properties.
         unset($data->x);
         if (is_array($this->x)) {
@@ -291,6 +287,11 @@ abstract class AbstractAnnotation implements JsonSerializable
             $data->$dollarRef = $data->ref;
             unset($data->ref);
         }
+        // Strip properties that are for internal (swagger-php) use.
+        foreach (static::$_blacklist as $property) {
+            unset($data->$property);
+        }
+
         return $data;
     }
 
