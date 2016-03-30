@@ -34,6 +34,13 @@ class Dynamic extends AbstractAnnotation
     /** @inheritdoc */
     public static $_parents = [];
 
+    /**
+     * Stringified version of the refs
+     *
+     * @var
+     */
+    private $string_refs;
+
     public function __construct(array $properties)
     {
         parent::__construct($properties);
@@ -67,5 +74,21 @@ class Dynamic extends AbstractAnnotation
     public function jsonSerialize()
     {
         return $this->ref_value;
+    }
+
+    /**
+     * Returns the refs as a string
+     *
+     * @return array
+     */
+    public function string_refs() {
+        if (!is_null($this->string_refs)) return $this->string_refs;
+
+        $array = [];
+        foreach ($this->refs as $key => $value) {
+            $array[$key] = "$value";
+        }
+
+        return $this->string_refs = $array;
     }
 }

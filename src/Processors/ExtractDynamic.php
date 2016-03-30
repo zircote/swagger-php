@@ -16,6 +16,8 @@ use Swagger\Annotations\Dynamic;
  */
 class ExtractDynamic
 {
+    const PRE = "dynamic-definition-";
+
     private static $definitions = [];
     private static $dynamics = [];
     private $_inc = 0;
@@ -33,17 +35,24 @@ class ExtractDynamic
             $object = get_object_vars(clone $definition);
             $list = $this->read($object);
 
-            foreach ($dynamic->refs as $key => $value) {
+            foreach ($dynamic->string_refs() as $key => $value) {
 
-                $list[$key] = "$value";
+                $name = $this->cached_name($dynamic);
 
-                $name = $dynamic->use . $this->_inc++;
+                if ($name == false) {
 
-                $object['definition'] = $name;
+                    $list[$key] = $value;
 
-                $analysis->addAnnotation(new Definition($object), $object['_context']);
+                    $name = self::PRE . $this->_inc++;
 
-                $analysis->annotations->detach($definition); //remove the dynamic instance.
+                    $object['definition'] = $name;
+
+                    $analysis->addAnnotation(new Definition($object), $object['_context']);
+
+                    $analysis->annotations->detach($definition); //remove the dynamic instance.
+
+                    $this->cache_definition($name, $dynamic);
+                }
 
                 $dynamic->setRef($name);
             }
@@ -52,6 +61,39 @@ class ExtractDynamic
 
 
     }
+
+    /**
+     * Caches the definition in case the same environment is created before.
+     *
+     * @param $name
+     * @param Dynamic $dynamic
+     */
+    public function cache_definition($name, Dynamic $dynamic) {
+        $this->created[$this->hash($dynamic)] = $name;
+    }
+
+    /**
+     * Creates a hash for the given input values.
+     *
+     * @param Dynamic $dynamic
+     * @return string
+     */
+    private function hash(Dynamic $dynamic) {
+        $data = [$dynamic->use, $dynamic->string_refs()];
+        return md5(serialize($data));
+    }
+
+    /**
+     * Gets the cached names depending on what values.
+     *
+     * @param Dynamic $dynamic
+     * @return string|bool
+     */
+    public function cached_name(Dynamic $dynamic) {
+        $hash = $this->hash($dynamic);
+        return isset($this->created[$hash])? $this->created[$hash]: false;
+    }
+
 
     /**
      * Reads the object and returns a reference to all of the values surrounded with {{}}
