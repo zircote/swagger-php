@@ -40,7 +40,7 @@
 
 ## 2.0.1
 
- - Minimal support for traits (no inheritance)  
+ - Minimal support for traits (no inheritance)
 
 ## 2.0.0
 
