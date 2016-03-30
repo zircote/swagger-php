@@ -5,6 +5,7 @@
  */
 
 namespace Swagger\Annotations;
+
 use Swagger\Processors\ExtractDynamic;
 
 /**
@@ -62,7 +63,8 @@ class Dynamic extends AbstractAnnotation
      *
      * @param $string
      */
-    public function setRef($string) {
+    public function setRef($string)
+    {
         $this->ref_value = "#/definitions/" . $string;
     }
 
@@ -81,8 +83,11 @@ class Dynamic extends AbstractAnnotation
      *
      * @return array
      */
-    public function string_refs() {
-        if (!is_null($this->string_refs)) return $this->string_refs;
+    public function stringRefs()
+    {
+        if (!is_null($this->string_refs)) {
+            return $this->string_refs;
+        }
 
         $array = [];
         foreach ($this->refs as $key => $value) {

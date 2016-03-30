@@ -35,9 +35,9 @@ class ExtractDynamic
             $object = get_object_vars(clone $definition);
             $list = $this->read($object);
 
-            foreach ($dynamic->string_refs() as $key => $value) {
+            foreach ($dynamic->stringRefs() as $key => $value) {
 
-                $name = $this->cached_name($dynamic);
+                $name = $this->cachedName($dynamic);
 
                 if ($name == false) {
 
@@ -51,7 +51,7 @@ class ExtractDynamic
 
                     $analysis->annotations->detach($definition); //remove the dynamic instance.
 
-                    $this->cache_definition($name, $dynamic);
+                    $this->cacheDefinition($name, $dynamic);
                 }
 
                 $dynamic->setRef($name);
@@ -67,7 +67,8 @@ class ExtractDynamic
      * @param $name
      * @param Dynamic $dynamic
      */
-    public function cache_definition($name, Dynamic $dynamic) {
+    public function cacheDefinition($name, Dynamic $dynamic)
+    {
         $this->created[$this->hash($dynamic)] = $name;
     }
 
@@ -77,8 +78,9 @@ class ExtractDynamic
      * @param Dynamic $dynamic
      * @return string
      */
-    private function hash(Dynamic $dynamic) {
-        $data = [$dynamic->use, $dynamic->string_refs()];
+    private function hash(Dynamic $dynamic)
+    {
+        $data = [$dynamic->use, $dynamic->stringRefs()];
         return md5(serialize($data));
     }
 
@@ -88,7 +90,8 @@ class ExtractDynamic
      * @param Dynamic $dynamic
      * @return string|bool
      */
-    public function cached_name(Dynamic $dynamic) {
+    public function cachedName(Dynamic $dynamic)
+    {
         $hash = $this->hash($dynamic);
         return isset($this->created[$hash])? $this->created[$hash]: false;
     }
@@ -100,7 +103,8 @@ class ExtractDynamic
      * @param array|\stdClass $obj
      * @return array
      */
-    private function read(&$obj) {
+    private function read(&$obj)
+    {
         $array = [];
 
         foreach ($obj as $key => &$value) {
@@ -108,7 +112,7 @@ class ExtractDynamic
                 foreach ($this->read($value) as $a => &$b) {
                     $array[$a] = &$b;
                 }
-            } else if (preg_match('/\{\{(.*?)\}\}/',$value, $matches)) {
+            } else if (preg_match('/\{\{(.*?)\}\}/', $value, $matches)) {
                 $id = $matches[1];
                 $array[$id] = &$value;
             }
@@ -122,7 +126,8 @@ class ExtractDynamic
      *
      * @param $dynamic
      */
-    public static function addDynamic($dynamic) {
+    public static function addDynamic($dynamic)
+    {
         self::$dynamics[] = $dynamic;
     }
 
@@ -132,7 +137,8 @@ class ExtractDynamic
      * @param $key
      * @param $definition
      */
-    public static function addDefinition($key, $definition) {
+    public static function addDefinition($key, $definition)
+    {
         self::$definitions[$key] = $definition;
     }
 }

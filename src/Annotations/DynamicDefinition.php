@@ -5,6 +5,7 @@
  */
 
 namespace Swagger\Annotations;
+
 use Swagger\Processors\ExtractDynamic;
 
 /**
@@ -34,5 +35,4 @@ class DynamicDefinition extends Schema
         parent::__construct($properties);
         ExtractDynamic::addDefinition($this->definition, $this);
     }
-
 }
