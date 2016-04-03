@@ -10,6 +10,7 @@ use Swagger\Analysis;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Definition;
 use Swagger\Annotations\Dynamic;
+use Swagger\Annotations\Property;
 
 /**
  *
@@ -34,29 +35,29 @@ class ExtractDynamic
 
             $object = get_object_vars(clone $definition);
 
-            $list = $this->read($object);
+            $name = $this->cachedName($dynamic);
 
-            foreach ($dynamic->stringRefs() as $key => $value) {
+            if ($name == false) { //if it doesnt exist then create the values
+                $list = $this->read($object);
 
-                $name = $this->cachedName($dynamic);
-
-                if ($name == false) {
-
+                //set each value in the definition to the ref
+                foreach ($dynamic->stringRefs() as $key => $value) {
                     $list[$key] = $value;
-
-                    $name = self::PRE . $this->_inc++;
-
-                    $object['definition'] = $name;
-
-                    $analysis->addAnnotation(new Definition($object), $object['_context']);
-
-                    $analysis->annotations->detach($definition); //remove the dynamic instance.
-
-                    $this->cacheDefinition($name, $dynamic);
                 }
 
-                $dynamic->setRef($name);
+                //define the name
+                $name = self::PRE . $this->_inc++;
+
+                $object['definition'] = $name;
+
+                $analysis->addAnnotation(new Definition($object), $object['_context']);
+
+                //caches the definition incase it is used again
+                $this->cacheDefinition($name, $dynamic);
             }
+
+            //sets the reference to the dynamic definition
+            $dynamic->setRef($name);
 
         }
 
