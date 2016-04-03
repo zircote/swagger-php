@@ -536,7 +536,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      */
     public function __clone()
     {
-        return new $this($this->cloneObject(get_object_vars($this)));
+        $this->cloneObject($this);
     }
 
     /**
