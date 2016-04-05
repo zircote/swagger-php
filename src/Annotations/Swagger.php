@@ -116,7 +116,7 @@ class Swagger extends AbstractAnnotation
      * A dynamic object to hold data types produced and consumed by operations.
      * @var DynamicDefinition[]
      */
-    public $dynamicDefinitions = [];
+    public $dynamicDefinitions;
 
     /** @inheritdoc */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
