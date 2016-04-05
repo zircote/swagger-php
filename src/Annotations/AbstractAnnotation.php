@@ -482,7 +482,6 @@ abstract class AbstractAnnotation implements JsonSerializable
             return true;
         }
         switch ($type) {
-
             case 'string':
                 return is_string($value);
 
