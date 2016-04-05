@@ -58,9 +58,7 @@ class ExtractDynamic
 
             //sets the reference to the dynamic definition
             $dynamic->setRef($name);
-
         }
-
     }
 
     /**
