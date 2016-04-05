@@ -91,10 +91,16 @@ The documentation website resides within the `gh-pages` branch.
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
 
+Running tests can be done with this command in the root of the project:
+
+```bash
+./bin/phpunit
+```
+
 To run the phpcs tests on your local machine execute:
 
 ```bash
-./vendor/squizlabs/php_codesniffer/scripts/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
 ```
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
