@@ -26,8 +26,7 @@ class Dynamic extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_types = [
-        'use' => 'string',
-        'refs' => 'array'
+        'use' => 'string'
     ];
 
     private $ref_value = "";
