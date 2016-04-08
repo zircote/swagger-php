@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Partials &mdash; Swagger-PHP  documentation</title>
+    <title>Installation &mdash; Swagger-PHP  documentation</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Swagger-PHP  documentation" href="index.html" />
-    <link rel="prev" title="Annotations" href="annotations.html" />
+    <link rel="next" title="Using Swagger-PHP" href="using_swagger.html" />
+    <link rel="prev" title="Welcome to Swagger-PHP’s documentation!" href="index.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -41,7 +42,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="annotations.html" title="Annotations"
+          <a href="using_swagger.html" title="Using Swagger-PHP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Swagger-PHP’s documentation!"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
@@ -52,54 +56,35 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="partials">
-<h1>Partials<a class="headerlink" href="#partials" title="Permalink to this headline">¶</a></h1>
-<p>To avoid duplication swagger-php introduces partials.</p>
-<div class="section" id="defining-a-partial">
-<h2>Defining a partial<a class="headerlink" href="#defining-a-partial" title="Permalink to this headline">¶</a></h2>
-<p>Any swagger annotation can become a partial by addding the property &#8220;partial&#8221;.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
-<span class="sd"> * @SWG\Parameter(partial=&quot;path_id&quot;, name=&quot;id&quot;, paramType=&quot;path&quot;, type=&quot;integer&quot;)</span>
-<span class="sd"> * @SWG\ResponseMessage(partial=&quot;error404&quot;, code=404, message=&quot;Entity not found&quot;)</span>
-<span class="sd"> */</span>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the documentation for (older / unsupported) swagger-php v1.x<br>Go to the <a href="../">swagger-php v2.x documentation</a></p>
+</div>
+<div class="section" id="via-composer-recommended">
+<h2>Via Composer (Recommended)<a class="headerlink" href="#via-composer-recommended" title="Permalink to this headline">¶</a></h2>
+<p>First download and install <a class="reference external" href="http://getcomposer.org">Composer</a> add zircote/swagger-php to your <em>composer.json</em></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;zircote/swagger-php&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Finally run <em>composer install</em> to update the composer dependencies and implement the <em>vendor/autoload.php</em> in your</dt>
+<dd>projects bootstrap.</dd>
+</dl>
+</div>
+<div class="section" id="via-phar">
+<h2>Via Phar<a class="headerlink" href="#via-phar" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest <a class="reference external" href="https://github.com/zircote/swagger-php/raw/master/swagger.phar">swagger.phar</a></p>
+<div class="highlight-bash"><div class="highlight"><pre>% php swagger.phar --help
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-a-partial">
-<h2>Using a partial<a class="headerlink" href="#using-a-partial" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-php"><div class="highlight"><pre><span class="sd">/**</span>
-<span class="sd"> * @SWG\Operation(</span>
-<span class="sd"> *   method=&quot;GET&quot;,</span>
-<span class="sd"> *   nickname=&quot;partialDemo&quot;</span>
-<span class="sd"> *   @SWG\Partial(&quot;path_id&quot;),</span>
-<span class="sd"> *   @SWG\Partial(&quot;error404&quot;),</span>
-<span class="sd"> * )</span>
-<span class="sd"> */</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-json"><div class="highlight"><pre>operations: [
-  {
-    method: &quot;GET&quot;,
-    nickname: &quot;partialDemo&quot;,
-    parameters: [
-      {
-        paramType: &quot;path&quot;,
-        name: &quot;id&quot;,
-        type: &quot;integer&quot;
-      }
-    ],
-    responseMessages: [
-      {
-        code: 404,
-        message: &quot;Entity not found&quot;
-
-      }
-    ]
-  }
-]
-</pre></div>
-</div>
+<div class="section" id="manual-unsupported">
+<h2>Manual (Unsupported)<a class="headerlink" href="#manual-unsupported" title="Permalink to this headline">¶</a></h2>
+<p>Download/clone the source from <a class="reference external" href="https://github.com/zircote/swagger-php/">GitHub</a>, install <a class="reference external" href="http://www.doctrine-project.org/projects/common.html">Doctrine Annotations</a> and configure a PSR compatible class loader.</p>
 </div>
 </div>
 
@@ -111,16 +96,20 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Partials</a><ul>
-<li><a class="reference internal" href="#defining-a-partial">Defining a partial</a></li>
-<li><a class="reference internal" href="#using-a-partial">Using a partial</a></li>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#via-composer-recommended">Via Composer (Recommended)</a></li>
+<li><a class="reference internal" href="#via-phar">Via Phar</a></li>
+<li><a class="reference internal" href="#manual-unsupported">Manual (Unsupported)</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="annotations.html"
-                        title="previous chapter">Annotations</a></p>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Swagger-PHP&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="using_swagger.html"
+                        title="next chapter">Using Swagger-PHP</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -145,7 +134,10 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="annotations.html" title="Annotations"
+          <a href="using_swagger.html" title="Using Swagger-PHP"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Swagger-PHP’s documentation!"
              >previous</a> |</li>
         <li><a href="index.html">Swagger-PHP  documentation</a> &raquo;</li> 
       </ul>
