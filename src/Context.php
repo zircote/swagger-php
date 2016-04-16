@@ -63,7 +63,7 @@ class Context
     {
         return property_exists($this, $type);
     }
-    
+
     /**
      * Check if a property is NOT set directly on this context and but its parent context.
      *
@@ -174,8 +174,13 @@ class Context
             if (substr($line, 0, 1) === '@') {
                 break;
             }
-            $description .= $line . ' ';
+            if ($line === '') {
+                $description = trim($description) . "\n";
+            } else {
+                $description .= $line . ' ';
+            }
         }
+
         $description = trim($description);
         if ($description === '') {
             return null;
