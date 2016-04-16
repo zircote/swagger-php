@@ -21,12 +21,28 @@ class AugmentOperations
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            if ($operation->summary === null) {
-                $operation->summary = $operation->_context->extractDescription('summary');
+            list($contextSummary, $contextDescription) = $this->splitDescription($operation->_context->extractDescription());
+
+            if (null === $operation->summary && $contextSummary) {
+                $operation->summary = $contextSummary;
             }
-            if ($operation->description === null) {
-                $operation->description = $operation->_context->extractDescription('description');
+            if (null === $operation->description && $contextDescription) {
+                $operation->description = $contextDescription;
             }
         }
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return string[]
+     */
+    private function splitDescription($description)
+    {
+        if (!$description || false === strpos($description, "\n")) {
+            return array($description, '');
+        }
+
+        return explode("\n", $description, 2);
     }
 }

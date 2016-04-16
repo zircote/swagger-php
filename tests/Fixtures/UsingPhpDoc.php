@@ -7,14 +7,23 @@ namespace SwaggerFixtures;
 class UsingPhpDoc
 {
     /**
-     * Get protected item
+     * Example summary
      *
      * Example description...
      * More description...
      *
-     * @SWG\Get(path="api/test", @SWG\Response(response="200", description="a response"))
+     * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
      */
-    public function methodWithSwaggerAnnotation()
+    public function methodWithDescription()
+    {
+    }
+
+    /**
+     * Example summary
+     *
+     * @SWG\Get(path="api/test2", @SWG\Response(response="200", description="a response"))
+     */
+    public function methodWithSummary()
     {
     }
 }

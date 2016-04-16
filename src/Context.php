@@ -162,37 +162,23 @@ class Context
     }
 
     /**
-     * @param string $type One of 'all', 'summary' or 'description'
-     *
      * @return string|null
      */
-    public function extractDescription($type = 'all')
+    public function extractDescription()
     {
         $lines = explode("\n", $this->comment);
         unset($lines[0]);
-        $descriptions = array(
-            'summary' => array(),
-            'description' => array(),
-        );
-        $currentType = 'summary';
+        $description = '';
         foreach ($lines as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
                 break;
             }
             if ($line === '') {
-                $currentType = 'description';
+                $description = trim($description) . "\n";
+            } else {
+                $description .= $line . ' ';
             }
-            $descriptions[$currentType][] = $line;
-        }
-
-        switch ($type) {
-            case 'summary':
-            case 'description':
-                $description = implode(' ', $descriptions[$type]);
-                break;
-            default:
-                $description = implode(' ', $descriptions['summary']) . ' ' . implode(' ', $descriptions['description']);
         }
 
         $description = trim($description);
