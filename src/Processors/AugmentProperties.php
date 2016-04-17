@@ -88,7 +88,7 @@ class AugmentProperties
                 }
             }
             if ($property->description === null) {
-                $property->description = $context->extractDescription();
+                $property->description = $context->phpdocContent();
             }
         }
     }

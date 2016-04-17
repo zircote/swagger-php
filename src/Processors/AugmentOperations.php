@@ -20,34 +20,12 @@ class AugmentOperations
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            $context = $this->splitDescription($operation->_context->extractDescription());
-
-            if (null === $operation->summary && $context['summary']) {
-                $operation->summary = $context['summary'];
+            if (null === $operation->summary) {
+                $operation->summary = $operation->_context->phpdocSummary();
             }
-            if (null === $operation->description && $context['description']) {
-                $operation->description = $context['description'];
+            if (null === $operation->description) {
+                $operation->description = $operation->_context->phpdocDescription();
             }
         }
-    }
-
-    /**
-     * @param string $description
-     *
-     * @return string[]
-     */
-    private function splitDescription($description)
-    {
-        if (!$description) {
-            return ['summary' => '', 'description' => ''];
-        }
-        $lines = explode("\n", $description, 3);
-        if (count($lines) == 1) {
-            return ['summary' => $description, 'description' => ''];
-        }
-        if (count($lines) == 3 && $lines[1] === '') { // Single line summary - blank line - description
-            return ['summary' => $lines[0], 'description' => $lines[2]];
-        }
-        return ['summary' => '', 'description' => $description];
     }
 }
