@@ -213,7 +213,7 @@ class Parameter extends AbstractAnnotation
         $valid = parent::validate($parents, $skip);
         if (empty($this->ref)) {
             if ($this->in === 'body') {
-                if ($this->schema === null) {
+                if ($this->schema === null && $this->type !== 'file') {
                     Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }
