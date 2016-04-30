@@ -49,14 +49,16 @@ class HandleReferences
     private function getAllImports(Analysis $analysis) {
         //for all importable content
         foreach ($this->import_in_order as $key => $import_name) {
+
+            //initialise the import name
+            $this->references[$import_name] = [];
+            $this->head_references[$import_name] = [];
+
             if (!is_null($analysis->swagger->$import_name)) {
-                //initialise the import name
-                $this->references[$import_name] = [];
-                $this->head_references[$import_name] = [];
                 /** @var Response $item */
                 foreach ($analysis->swagger->$import_name as $item) {
                     //if that identified value exists, or if the name isn't set then give blank id
-                    if (isset($this->references[$import_name][$item->$key]) || is_null($item->response)) {
+                    if (isset($this->references[$import_name][$item->$key]) || is_null($item->$key)) {
                         $this->references[$import_name][] = $this->link($item);
                     } else { //else assign to id
                         $this->references[$import_name][$item->$key] = $this->link($item);
@@ -118,14 +120,18 @@ class HandleReferences
 
         /** @var Schema $item */
         foreach ($params as $item) {
-            $array = array_merge($array, $item->properties);
+            if (!is_null($item->properties)) {
+                $array = array_merge($array, $item->properties);
+            }
             if ($this->checkSyntax($item->ref)) {
                 $this->references[$this->import_in_order['definition']][] = $this->link($item);
             }
         }
 
         //nest the next loop
-        $this->propertyRetrieve($array);
+        if (count($params)) {
+            $this->propertyRetrieve($array);
+        }
     }
 
     /**
@@ -194,11 +200,14 @@ class HandleReferences
      */
     private function importReferences()
     {
-        $queue = $this->head_references;
+        foreach ($this->import_in_order as $key => $import_name) {
+            //get the list to import from
+            $queue = $this->head_references[$import_name];
 
-        //while has items in the queue
-        while (count($queue)) {
-            $this->iterateQueue($queue);
+            //while has items in the queue
+            while (count($queue)) {
+                $this->iterateQueue($queue);
+            }
         }
     }
 
