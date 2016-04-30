@@ -253,6 +253,10 @@ abstract class AbstractAnnotation implements JsonSerializable
                 }
             }
         }
+        // Strip properties that are for internal (swagger-php) use.
+        foreach (static::$_blacklist as $property) {
+            unset($data->$property);
+        }
         // Inject vendor properties.
         unset($data->x);
         if (is_array($this->x)) {
@@ -287,11 +291,6 @@ abstract class AbstractAnnotation implements JsonSerializable
             $data->$dollarRef = $data->ref;
             unset($data->ref);
         }
-        // Strip properties that are for internal (swagger-php) use.
-        foreach (static::$_blacklist as $property) {
-            unset($data->$property);
-        }
-
         return $data;
     }
 
@@ -526,41 +525,5 @@ abstract class AbstractAnnotation implements JsonSerializable
             $annotation->_context = $nestedContext;
         }
         return $annotation;
-    }
-
-    /**
-     * Clones the object returning a new instance.
-     *
-     * @return $this;
-     */
-    public function __clone()
-    {
-        $this->cloneObject($this);
-    }
-
-    /**
-     * Clones the object given
-     *
-     * @param $object
-     * @return array
-     */
-    private function cloneObject($object)
-    {
-        foreach ($object as $key => $value) {
-            if ($value instanceof AbstractAnnotation) {
-                $value = clone $value;
-            } else if ($value instanceof stdClass) {
-                $value = $this->cloneObject(new $value);
-            } else if (is_array($value)) {
-                $value = $this->cloneObject($value);
-            }
-            if (is_array($object)) {
-                $object[$key] = $value;
-            } else {
-                $object->$key = $value;
-            }
-        }
-
-        return $object;
     }
 }

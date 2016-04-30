@@ -58,6 +58,5 @@ class Xml extends AbstractAnnotation
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Definition',
         'Swagger\Annotations\Items',
-        'Swagger\Annotations\DynamicDefinition',
     ];
 }

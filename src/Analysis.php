@@ -13,11 +13,12 @@ use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
-use Swagger\Processors\ExtractDynamic;
+use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoSwagger;
 
@@ -286,12 +287,13 @@ class Analysis
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
-                new ExtractDynamic(),
                 new MergeIntoSwagger(),
+                new HandleReferences(),
                 new BuildPaths(),
                 new AugmentDefinitions(),
                 new AugmentProperties(),
                 new InheritProperties(),
+                new AugmentOperations(),
                 new AugmentParameters(),
                 new CleanUnmerged(),
             ];

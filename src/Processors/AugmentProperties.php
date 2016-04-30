@@ -37,6 +37,7 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
+        /** @var Definition $definition */
         foreach ($analysis->swagger->definitions as $definition) {
             if ($definition->definition) {
                 $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/' . $definition->definition;
@@ -44,6 +45,7 @@ class AugmentProperties
         }
         
         $allProperties = $analysis->getAnnotationsOfType('\Swagger\Annotations\Property');
+        /** @var \Swagger\Annotations\Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
             // Use the property names for @SWG\Property()
@@ -86,7 +88,7 @@ class AugmentProperties
                 }
             }
             if ($property->description === null) {
-                $property->description = $context->extractDescription();
+                $property->description = $context->phpdocContent();
             }
         }
     }

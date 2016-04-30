@@ -30,7 +30,6 @@ class Items extends Schema
         'Swagger\Annotations\Definition',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\Header',
-        'Swagger\Annotations\DynamicDefinition',
     ];
 
     /** @inheritdoc */

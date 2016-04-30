@@ -51,6 +51,5 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
         'Swagger\Annotations\Items',
-        'Swagger\Annotations\DynamicDefinition',
     ];
 }

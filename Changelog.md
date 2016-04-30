@@ -1,5 +1,8 @@
 # Changelog
 
+ - Augment Operations summary and description based on the comment. #293
+ - Bugfixes #300
+
 ## 2.0.7
 
  - Add support for xml (and externalDocs and properties) inside a @SWG\Items. #279
