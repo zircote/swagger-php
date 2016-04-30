@@ -31,7 +31,7 @@ class HandleReferences
         if (!is_null($analysis->swagger->responses)) {
             /** @var Response $response */
             foreach ($analysis->swagger->responses as $response) {
-                $this->responses[$response->response] = [null, $response, []];
+                $this->responses[$response->response] = $this->link($response);
             }
         }
 
@@ -69,9 +69,9 @@ class HandleReferences
             $response = $data[1];
 
             if (preg_match('/^\$/', $response->ref)) {
-                $params = explode("/", strtolower($response->ref));
+                $params = explode("/", $response->ref);
 
-                $this->loadParent($data, $params[1], $params[2]);
+                $this->loadParent($data, strtolower($params[1]), $params[2]);
             } else {
                 $this->head_responses[] = &$data;
             }
