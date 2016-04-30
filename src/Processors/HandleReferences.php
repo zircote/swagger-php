@@ -89,9 +89,11 @@ class HandleReferences
      */
     private function loadResponses(Operation $operation)
     {
-        foreach ($operation->responses as $item) {
-            if ($this->checkSyntax($item->ref)) {
-                $this->references[$this->import_in_order['response']][] = $this->link($item);
+        if (!is_null($operation->responses)) {
+            foreach ($operation->responses as $item) {
+                if ($this->checkSyntax($item->ref)) {
+                    $this->references[$this->import_in_order['response']][] = $this->link($item);
+                }
             }
         }
     }
@@ -103,9 +105,11 @@ class HandleReferences
      */
     private function loadParameters(Operation $operation)
     {
-        foreach ($operation->parameters as $item) {
-            if ($this->checkSyntax($item->ref)) {
-                $this->references[$this->import_in_order['parameter']][] = $this->link($item);
+        if (!is_null($operation->parameters)) {
+            foreach ($operation->parameters as $item) {
+                if ($this->checkSyntax($item->ref)) {
+                    $this->references[$this->import_in_order['parameter']][] = $this->link($item);
+                }
             }
         }
     }
@@ -117,9 +121,13 @@ class HandleReferences
      */
     private function loadSchemas(Operation $operation)
     {
-        /** @var Response $item */
-        foreach ($operation->responses as $item) {
-            $this->propertyRetrieve([$item->schema]);
+        if (!is_null($operation->responses)) {
+            /** @var Response $item */
+            foreach ($operation->responses as $item) {
+                if (!is_null($item->schema)) {
+                    $this->propertyRetrieve([$item->schema]);
+                }
+            }
         }
     }
 
