@@ -6,17 +6,11 @@
 
 namespace Swagger\Processors;
 
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Get;
 use Swagger\Annotations\Operation;
 use Swagger\Annotations\Path;
-use Swagger\Annotations\Post;
 use Swagger\Annotations\Property;
-use Swagger\Annotations\Put;
 use Swagger\Annotations\Response;
 use Swagger\Annotations\Schema;
-use Swagger\Annotations\Swagger;
-use Swagger\Annotations\Definition;
 use Swagger\Analysis;
 
 /**
