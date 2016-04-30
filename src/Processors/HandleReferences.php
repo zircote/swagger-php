@@ -82,6 +82,11 @@ class HandleReferences
         }
     }
 
+    /**
+     * Loads all the responses into the mapping
+     *
+     * @param Operation $operation
+     */
     private function loadResponses(Operation $operation)
     {
         foreach ($operation->responses as $item) {
@@ -91,6 +96,11 @@ class HandleReferences
         }
     }
 
+    /**
+     * Loads all the parameters into the mapping
+     *
+     * @param Operation $operation
+     */
     private function loadParameters(Operation $operation)
     {
         foreach ($operation->parameters as $item) {
@@ -100,6 +110,11 @@ class HandleReferences
         }
     }
 
+    /**
+     * Loads all the schemas into the mapping
+     *
+     * @param Operation $operation
+     */
     private function loadSchemas(Operation $operation)
     {
         /** @var Response $item */
@@ -108,6 +123,11 @@ class HandleReferences
         }
     }
 
+    /**
+     * Retrieves all the sub properties
+     *
+     * @param array $params
+     */
     private function propertyRetrieve(array $params)
     {
         $array = [];
