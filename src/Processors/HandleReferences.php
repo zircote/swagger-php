@@ -40,10 +40,10 @@ class HandleReferences
      *
      * @param Analysis $analysis
      */
-    private function getAllImports(Analysis $analysis) {
+    private function getAllImports(Analysis $analysis)
+    {
         //for all importable content
         foreach ($this->import_in_order as $key => $import_name) {
-
             //initialise the import name
             $this->references[$import_name] = [];
             $this->head_references[$import_name] = [];
@@ -269,7 +269,6 @@ class HandleReferences
      */
     private function importSchema(Schema $parent, Schema $child)
     {
-
         $temp = [];
 
         //add all in a temporary array
