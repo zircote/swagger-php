@@ -28,15 +28,19 @@ class HandleReferences
 
     public function __invoke(Analysis $analysis)
     {
-        /** @var Response $response */
-        foreach ($analysis->swagger->responses as $response) {
-            $this->responses[$response->response] = [null, $response, []];
+        if (!is_null($analysis->swagger->responses)) {
+            /** @var Response $response */
+            foreach ($analysis->swagger->responses as $response) {
+                $this->responses[$response->response] = [null, $response, []];
+            }
         }
 
-        /** @var Get|Put|Post $path */
-        foreach ($analysis->swagger->paths as $path) {
-            foreach ($path->responses as $response) {
-                $this->responses[$response->response] = $this->link($response);
+        if (!is_null($analysis->swagger->paths)) {
+            /** @var Get|Put|Post $path */
+            foreach ($analysis->swagger->paths as $path) {
+                foreach ($path->responses as $response) {
+                    $this->responses[$response->response] = $this->link($response);
+                }
             }
         }
 
