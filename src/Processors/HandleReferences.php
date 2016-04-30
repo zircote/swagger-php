@@ -6,7 +6,9 @@
 
 namespace Swagger\Processors;
 
+use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Get;
+use Swagger\Annotations\Operation;
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Post;
 use Swagger\Annotations\Property;
@@ -22,34 +24,108 @@ use Swagger\Analysis;
  */
 class HandleReferences
 {
+    /** @var array The allowed imports in order of import */
+    private $import_in_order = [
+        'parameter' => 'parameters',
+        'definition' => 'definitions',
+        'response' => 'responses'
+    ];
 
-    private $responses = [];
-    private $head_responses = [];
+    private $references = [];
+    private $head_references = [];
 
     public function __invoke(Analysis $analysis)
     {
-        if (!is_null($analysis->swagger->responses)) {
-            /** @var Response $response */
-            foreach ($analysis->swagger->responses as $response) {
-                if (isset($this->responses[$response->response]) || is_null($response->response)) {
-                    $this->responses[] = $this->link($response);
-                } else {
-                    $this->responses[$response->response] = $this->link($response);
+        $this->getAllImports($analysis);
+        $this->mapReferences();
+        $this->importReferences();
+    }
+
+    /**
+     * Gets all the possible importable objects and adds them to the lists.
+     *
+     * @param Analysis $analysis
+     */
+    private function getAllImports(Analysis $analysis) {
+        //for all importable content
+        foreach ($this->import_in_order as $key => $import_name) {
+            if (!is_null($analysis->swagger->$import_name)) {
+                //initialise the import name
+                $this->references[$import_name] = [];
+                $this->head_references[$import_name] = [];
+                /** @var Response $item */
+                foreach ($analysis->swagger->$import_name as $item) {
+                    //if that identified value exists, or if the name isn't set then give blank id
+                    if (isset($this->references[$import_name][$item->$key]) || is_null($item->response)) {
+                        $this->references[$import_name][] = $this->link($item);
+                    } else { //else assign to id
+                        $this->references[$import_name][$item->$key] = $this->link($item);
+                    }
                 }
             }
         }
 
         if (!is_null($analysis->swagger->paths)) {
-            /** @var Get|Put|Post $path */
+            /** @var Path $path */
             foreach ($analysis->swagger->paths as $path) {
-                foreach ($path->responses as $response) {
-                    $this->responses[] = $this->link($response);
+                foreach ($path as $key => $value) {
+                    if ($value instanceof Operation && !is_null($value->responses)) {
+                        //load each importable item if it is set
+                        if (isset($this->import_in_order['response'])) {
+                            $this->loadResponses($value);
+                        }
+                        if (isset($this->import_in_order['parameter'])) {
+                            $this->loadParameters($value);
+                        }
+                        if (isset($this->import_in_order['definition'])) {
+                            $this->loadSchemas($value);
+                        }
+                    }
                 }
             }
         }
+    }
 
-        $this->mapResponses();
-        $this->importReferences();
+    private function loadResponses(Operation $operation)
+    {
+        foreach ($operation->responses as $item) {
+            if ($this->checkSyntax($item->ref)) {
+                $this->references[$this->import_in_order['response']][] = $this->link($item);
+            }
+        }
+    }
+
+    private function loadParameters(Operation $operation)
+    {
+        foreach ($operation->parameters as $item) {
+            if ($this->checkSyntax($item->ref)) {
+                $this->references[$this->import_in_order['parameter']][] = $this->link($item);
+            }
+        }
+    }
+
+    private function loadSchemas(Operation $operation)
+    {
+        /** @var Response $item */
+        foreach ($operation->responses as $item) {
+            $this->propertyRetrieve([$item->schema]);
+        }
+    }
+
+    private function propertyRetrieve(array $params)
+    {
+        $array = [];
+
+        /** @var Schema $item */
+        foreach ($params as $item) {
+            $array = array_merge($array, $item->properties);
+            if ($this->checkSyntax($item->ref)) {
+                $this->references[$this->import_in_order['definition']][] = $this->link($item);
+            }
+        }
+
+        //nest the next loop
+        $this->propertyRetrieve($array);
     }
 
     /**
@@ -66,20 +142,34 @@ class HandleReferences
     /**
      * Maps the response to each parent child.
      */
-    private function mapResponses()
+    private function mapReferences()
     {
-        foreach ($this->responses as &$data) {
-            /** @var Response $response */
-            $response = $data[1];
+        foreach ($this->import_in_order as $key => $import_name) {
+            foreach ($this->references[$import_name] as &$data) {
+                /** @var Response $item */
+                $item = $data[1];
 
-            if (preg_match('/^\$/', $response->ref)) {
-                $params = explode("/", $response->ref);
 
-                $this->loadParent($data, strtolower($params[1]), $params[2]);
-            } else {
-                $this->head_responses[] = &$data;
+                if (!isset($item->ref)) {
+                    $this->head_references[$import_name][] = &$data;
+                } else if ($this->checkSyntax($item->ref)) {
+                    $params = explode("/", $item->ref);
+
+                    $this->loadParent($data, strtolower($params[1]), $params[2]);
+                }
             }
         }
+    }
+
+    /**
+     * Checks the syntax of the string to make sure it starts with a $
+     *
+     * @param $string
+     * @return int
+     */
+    private function checkSyntax($string)
+    {
+        return preg_match('/^\$/', $string);
     }
 
     /**
@@ -91,11 +181,11 @@ class HandleReferences
      */
     private function loadParent(&$child, $type, $parent_name)
     {
-        if (isset($this->$type) && isset($this->{$type}[$parent_name])) {
+        if (isset($this->references[$type]) && isset($this->references[$type][$parent_name])) {
             //link the parent
-            $child[0] = &$this->{$type}[$parent_name];
+            $child[0] = &$this->references[$type][$parent_name];
             //add to list of children
-            $this->{$type}[$parent_name][2][] = &$child;
+            $this->references[$type][$parent_name][2][] = &$child;
         }
     }
 
@@ -104,7 +194,7 @@ class HandleReferences
      */
     private function importReferences()
     {
-        $queue = $this->head_responses;
+        $queue = $this->head_references;
 
         //while has items in the queue
         while (count($queue)) {
@@ -206,7 +296,7 @@ class HandleReferences
     private function isEmpty(Property $property)
     {
         return !isset($property->type)
-            && !isset($property->description)
-            && $property->default == \SWAGGER\UNDEFINED;
+        && !isset($property->description)
+        && $property->default == \SWAGGER\UNDEFINED;
     }
 }
