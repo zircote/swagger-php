@@ -31,7 +31,11 @@ class HandleReferences
         if (!is_null($analysis->swagger->responses)) {
             /** @var Response $response */
             foreach ($analysis->swagger->responses as $response) {
-                $this->responses[$response->response] = $this->link($response);
+                if (isset($this->responses[$response->response]) || is_null($response->response)) {
+                    $this->responses[] = $this->link($response);
+                } else {
+                    $this->responses[$response->response] = $this->link($response);
+                }
             }
         }
 
@@ -39,7 +43,7 @@ class HandleReferences
             /** @var Get|Put|Post $path */
             foreach ($analysis->swagger->paths as $path) {
                 foreach ($path->responses as $response) {
-                    $this->responses[$response->response] = $this->link($response);
+                    $this->responses[] = $this->link($response);
                 }
             }
         }
