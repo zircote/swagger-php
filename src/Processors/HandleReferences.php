@@ -68,7 +68,7 @@ class HandleReferences
             /** @var Response $response */
             $response = $data[1];
 
-            if (preg_match('/^\$/',$response->ref)) {
+            if (preg_match('/^\$/', $response->ref)) {
                 $params = explode("/", strtolower($response->ref));
 
                 $this->loadParent($data, $params[1], $params[2]);
@@ -187,7 +187,9 @@ class HandleReferences
                 }
             }
             //if it doesn't already exist then add it
-            if (!$found) $child->properties[] = $temp_item;
+            if (!$found) {
+                $child->properties[] = $temp_item;
+            }
         }
     }
 
