@@ -200,7 +200,7 @@ class HandleReferences
 
             //while has items in the queue
             while (count($queue)) {
-                $this->iterateQueue($queue);
+                $this->iterateQueue($queue, $key);
             }
         }
     }
@@ -210,7 +210,7 @@ class HandleReferences
      *
      * @param array $queue
      */
-    private function iterateQueue(&$queue)
+    private function iterateQueue(&$queue, $current_key)
     {
         $item = array_pop($queue);
 
@@ -231,8 +231,8 @@ class HandleReferences
                     $this->importSchema($value, $response->schema);
                 } else if ($key != "response") {
                     if (is_array($value)) {
-                        $response->$key = array_merge($response->$key, $parent_response->$key);
-                    } else if (!isset($response->$key)) {
+                        $response->$key = array_merge($response->$key?: [], $parent_response->$key);
+                    } else if (!isset($response->$key) && $key != $current_key) {
                         $response->$key = $parent_response->$key;
                     }
                 }
