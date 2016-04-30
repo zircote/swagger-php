@@ -209,6 +209,7 @@ class HandleReferences
      * Iterates the pending queue, popping the first element of the list.
      *
      * @param array $queue
+     * @param $current_key
      */
     private function iterateQueue(&$queue, $current_key)
     {
@@ -279,7 +280,7 @@ class HandleReferences
         foreach ($temp as $name => $temp_item) {
             $found = false;
             foreach ($child->properties as $property) {
-                if ($property->property != $name) {
+                if ($property->property == $name) {
                     $found = true;
                 }
             }
