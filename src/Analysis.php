@@ -288,8 +288,8 @@ class Analysis
             // Add default processors.
             self::$processors = [
                 new MergeIntoSwagger(),
-                new HandleReferences(),
                 new BuildPaths(),
+                new HandleReferences(),
                 new AugmentDefinitions(),
                 new AugmentProperties(),
                 new InheritProperties(),
