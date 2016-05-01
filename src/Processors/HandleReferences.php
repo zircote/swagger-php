@@ -257,7 +257,12 @@ class HandleReferences
             $parent_response = $parent[1];
             foreach ($parent_response as $key => $value) {
                 if ($key == "schema") {
-                    $this->importSchema($value, $response->schema);
+                    if (!is_null($value)) {
+                        if (is_null($response->schema)) {
+                            $response->schema = new Schema([]);
+                        }
+                        $this->importSchema($value, $response->schema);
+                    }
                 } else if ($key != "response") {
                     if (is_array($value)) {
                         $response->$key = array_merge($response->$key?: [], $parent_response->$key);
@@ -280,8 +285,10 @@ class HandleReferences
         $temp = [];
 
         //add all in a temporary array
-        foreach ($child->properties as $key => $value) {
-            $temp[$value->property] = $value;
+        if (!is_null($child->properties)) {
+            foreach ($child->properties as $key => $value) {
+                $temp[$value->property] = $value;
+            }
         }
 
         //reset the properties
