@@ -91,6 +91,12 @@ The documentation website resides within the `gh-pages` branch.
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
 
+Running tests can be done with this command in the root of the project:
+
+```bash
+bin/phpunit
+```
+
 To run the phpcs tests on your local machine execute:
 
 ```bash
