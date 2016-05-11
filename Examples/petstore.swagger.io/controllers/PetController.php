@@ -10,7 +10,7 @@ final class PetController
      *     path="/pet/findByTags",
      *     summary="Finds Pets by tags",
      *     tags={"pet"},
-     *     description="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
+     *     description="Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
      *     operationId="findPetsByTags",
      *     consumes={"application/xml", "application/json"},
      *     produces={"application/xml", "application/json"},
@@ -50,7 +50,7 @@ final class PetController
      * @SWG\Get(
      *     path="/pet/findByStatus",
      *     summary="Finds Pets by status",
-     *     description="Multiple status values can be provided with comma seperated strings",
+     *     description="Multiple status values can be provided with comma separated strings",
      *     operationId="findPetsByStatus",
      *     consumes={"application/xml", "application/json"},
      *     produces={"application/xml", "application/json"},
