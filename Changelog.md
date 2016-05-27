@@ -1,10 +1,11 @@
 # Changelog
 
- - Augment Operations summary and description based on the comment. #293
- - Bugfixes #300
 
 ## 2.0.7
 
+ - Beter validation of type="file" #305
+ - Augment Operations summary and description based on the comment. #293
+ - Bugfixes #300
  - Add support for xml (and externalDocs and properties) inside a @SWG\Items. #279
  - Nested properties are no longer injected into the Definition #297
  - Fixed nesting issue with verbose property notation #297
