@@ -34,7 +34,7 @@
     },
     "require-dev": {
         "zendframework/zend-form": "<2.8",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": ">=2.7"
     },
     "autoload-dev": {
         "psr-4": {
