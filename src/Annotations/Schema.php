@@ -1,7 +1,5 @@
 <?php
 
-use Swagger\Annotations\AbstractAnnotation;
-
 /**
  * @license Apache 2.0
  */
