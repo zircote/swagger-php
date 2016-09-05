@@ -30,10 +30,10 @@ if (defined('Swagger\UNDEFINED') === false) {
      */
     function scan($directory, $options = array())
     {
-        $analyser = @$options['analyser'] ?: new StaticAnalyser();
-        $analysis = @$options['analysis'] ?: new Analysis();
-        $processors = @$options['processors'] ?: Analysis::processors();
-        $exclude = @$options['exclude'] ?: null;
+        $analyser = array_key_exists('analyser', $options) ? new StaticAnalyser() : null;
+        $analysis = array_key_exists('analysis', $options) ? new Analysis() : null;
+        $processors = array_key_exists('processors', $options) ? Analysis::processors() : null;
+        $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
 
         // Crawl directory and parse all files
         $finder = Util::finder($directory, $exclude);
