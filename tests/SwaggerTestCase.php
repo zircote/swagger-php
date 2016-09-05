@@ -187,7 +187,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
                     if (gettype($value[0]) === 'string') {
                         $sortFn = 'strcasecmp';
                     } else {
-                        $sortFn = @$sortMap[$property];
+                        $sortFn = isset($sortMap[$property]) ? $sortMap[$property] : null;
                     }
                     if ($sortFn) {
                         usort($value, $sortFn);

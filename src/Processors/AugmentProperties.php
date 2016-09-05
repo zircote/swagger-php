@@ -75,7 +75,8 @@ class AugmentProperties
                         }
                         $property->type = $type;
                     } elseif ($property->ref === null && $typeMatches[2] === '') {
-                        $property->ref = @$refs[strtolower($context->fullyQualifiedName($type))];
+                        $tmpKey = strtolower($context->fullyQualifiedName($type));
+                        $property->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
                     }
                     if ($typeMatches[2] === '[]') {
                         if ($property->items === null) {
@@ -84,7 +85,8 @@ class AugmentProperties
                                 '_context' => new Context(['generated' => true], $context)
                             ]);
                             if ($property->items->type === null) {
-                                $property->items->ref = @$refs[strtolower($context->fullyQualifiedName($type))];
+                                $tmpKey = strtolower($context->fullyQualifiedName($type));
+                                $property->items->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
                             }
                         }
                         $property->type = 'array';
