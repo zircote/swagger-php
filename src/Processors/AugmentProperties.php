@@ -30,6 +30,10 @@ class AugmentProperties
         'date' => ['string', 'date'],
         'datetime' => ['string', 'date-time'],
         '\datetime' => ['string', 'date-time'],
+        'datetimeimmutable' => ['string', 'date-time'],
+        '\datetimeimmutable' => ['string', 'date-time'],
+        'datetimeinterface' => ['string', 'date-time'],
+        '\datetimeinterface' => ['string', 'date-time'],
         'number' => 'number',
         'object' => 'object'
     ];
