@@ -83,12 +83,12 @@ $ swagger --bootstrap constants.php
 You shouldn't place all annotations inside one big @SWG\Swagger() annotation block, but scatter them throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
 
-The big benefit swagger-php provides is that the documentation lives close the the code implementing the api.
+The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
 
 ### Arrays and Objects
 
-Placing multiple annotation of the same type will result in an array or object.
-For objects, the convension for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
+Placing multiple annotations of the same type will result in an array of objects.
+For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
 
 ```php
 /**
@@ -133,7 +133,7 @@ Generates:
 
 ### Swagger-PHP detects values based on context
 
-swagger-php looks at context of the comment which reduces duplication.
+swagger-php looks at the context of the comment which reduces duplication.
 
 ```php
 /**
