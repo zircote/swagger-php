@@ -93,6 +93,9 @@ class AugmentProperties
                     }
                 }
             }
+            if ($property->example === null && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $context->comment, $varMatches)) {
+                $property->example = $varMatches['example'];
+            }
             if ($property->description === null) {
                 $property->description = $context->phpdocContent();
             }
