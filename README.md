@@ -44,7 +44,7 @@ See the Examples directory for more.
 
 ### Usage from php
 
-Generate always-up-to-date the swagger documentation dynamicly.
+Generate always-up-to-date the swagger documentation dynamically.
 
 ```php
 <?php
