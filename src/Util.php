@@ -75,7 +75,7 @@ class Util
             $finder = new Finder();
             $finder->sortByName();
         }
-        $finder->files();
+        $finder->files()->name('*.php');
         if (is_string($directory)) {
             if (is_file($directory)) { // Scan a single file?
                 $finder->append([$directory]);
