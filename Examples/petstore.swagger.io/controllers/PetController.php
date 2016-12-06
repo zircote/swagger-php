@@ -61,10 +61,12 @@ final class PetController
      *         description="Status values that need to be considered for filter",
      *         required=false,
      *         type="array",
-     *         @SWG\Items(type="string"),
-     *         collectionFormat="multi",
-     *         default="available",
-     *         enum={"available", "pending", "sold"}
+     *         @SWG\Items(
+     *             type="string",
+     *             default="available",
+     *             enum={"available", "pending", "sold"}
+     *         ),
+     *         collectionFormat="multi"
      *     ),
      *     @SWG\Response(
      *         response=200,
