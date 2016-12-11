@@ -2,15 +2,16 @@
 
 /**
  * @SWG\Swagger(
- *     basePath="/api",
- *     host="petstore.swagger.wordnik.com",
- *     schemes={"http"},
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
- *         @SWG\Contact(name="wordnik api team", url="http://developer.wordnik.com"),
- *         @SWG\License(name="Creative Commons 4.0 International", url="http://creativecommons.org/licenses/by/4.0/")
+ *         @SWG\License(name="MIT")
  *     ),
+ *     host="petstore.swagger.io",
+ *     basePath="/v1",
+ *     schemes={"http"},
+ *     consumes={"application/json"},
+ *     produces={"application/json"},
  *     @SWG\Definition(
  *         definition="Error",
  *         required={"code", "message"},
@@ -23,6 +24,10 @@
  *             property="message",
  *             type="string"
  *         )
+ *     ),
+ *     @SWG\Definition(definition="Pets",
+ *         type="array",
+ *         @SWG\Items(ref="#/definitions/Pet")
  *     )
  * )
  */

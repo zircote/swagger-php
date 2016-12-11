@@ -3,7 +3,7 @@
 /**
  * @SWG\Swagger(
  *     basePath="/api",
- *     host="petstore.swagger.wordnik.com",
+ *     host="petstore.swagger.io",
  *     schemes={"http"},
  *     produces={"application/json"},
  *     consumes={"application/json"},
@@ -11,12 +11,13 @@
  *         version="1.0.0",
  *         title="Swagger Petstore",
  *         description="A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
- *         termsOfService="http://helloreverb.com/terms/",
- *         @SWG\Contact(name="Wordnik API Team"),
+ *         termsOfService="http://swagger.io/terms/",
+ *         @SWG\Contact(name="Swagger API Team"),
  *         @SWG\License(name="MIT")
  *     ),
  *     @SWG\Definition(
- *         definition="errorModel",
+ *         definition="ErrorModel",
+ *         type="object",
  *         required={"code", "message"},
  *         @SWG\Property(
  *             property="code",

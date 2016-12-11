@@ -2,19 +2,14 @@
 
 /**
  * @SWG\Definition(
- *   required={"id","name"},
- *   @SWG\ExternalDocumentation(
- *     description="find more info here",
- *     url="https://swagger.io/about"
- *   )
+ *   definition="NewPet",
+ *   type="object",
+ *   required={"name"}
  * )
  */
 class Pet
 {
 
-    /**
-     * @SWG\Property(type="integer", format="int64")
-     */
     public $id;
     /**
      * @SWG\Property(type="string")
@@ -26,3 +21,17 @@ class Pet
      */
     public $tag;
 }
+
+/**
+ *  @SWG\Definition(
+ *   definition="Pet",
+ *   type="object",
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/NewPet"),
+ *       @SWG\Schema(
+ *           required={"id"},
+ *           @SWG\Property(property="id", format="int64", type="integer")
+ *       )
+ *   }
+ * )
+ */

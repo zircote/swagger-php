@@ -4,6 +4,7 @@ namespace PetstoreIO;
 
 /**
  * @SWG\Definition(
+ *   type="object",
  *   @SWG\Xml(name="Category")
  * )
  */

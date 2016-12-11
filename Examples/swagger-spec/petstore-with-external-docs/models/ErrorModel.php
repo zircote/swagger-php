@@ -1,6 +1,6 @@
 <?php
 /**
- * @SWG\Definition(required={"code", "message"});
+ * @SWG\Definition(required={"code", "message"}, type="object")
  */
 class ErrorModel extends Exception
 {

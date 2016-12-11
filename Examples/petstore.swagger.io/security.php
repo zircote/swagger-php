@@ -12,7 +12,7 @@
  * @SWG\SecurityScheme(
  *   securityDefinition="petstore_auth",
  *   type="oauth2",
- *   authorizationUrl="http://petstore.swagger.io/api/oauth/dialog",
+ *   authorizationUrl="http://petstore.swagger.io/oauth/dialog",
  *   flow="implicit",
  *   scopes={
  *     "read:pets": "read your pets",

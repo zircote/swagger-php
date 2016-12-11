@@ -7,14 +7,7 @@ class PetWithDocsController
 {
 
     /**
-     * @SWG\Definition(
-     *   definition="NewPet",
-     *   allOf={
-     *     @SWG\Schema(ref="#/definitions/Pet"),
-     *     @SWG\Schema(required={"name"}, @SWG\Property(property="id", format="int64", type="integer"))
-     *   },
-     * )
-     * * @SWG\Post(
+     * @SWG\Post(
      *     path="/pets",
      *     operationId="addPet",
      *     description="Creates a new pet in the store.  Duplicates are allowed",

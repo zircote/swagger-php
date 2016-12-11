@@ -33,14 +33,14 @@ class SimplePetsController
      *         description="pet response",
      *         @SWG\Schema(
      *             type="array",
-     *             @SWG\Items(ref="#/definitions/pet")
+     *             @SWG\Items(ref="#/definitions/Pet")
      *         ),
      *     ),
      *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
      *         @SWG\Schema(
-     *             ref="#/definitions/errorModel"
+     *             ref="#/definitions/ErrorModel"
      *         )
      *     )
      * )
@@ -71,12 +71,12 @@ class SimplePetsController
      *     @SWG\Response(
      *         response=200,
      *         description="pet response",
-     *         @SWG\Schema(ref="#/definitions/pet")
+     *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/errorModel")
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */
@@ -95,32 +95,18 @@ class SimplePetsController
      *         in="body",
      *         description="Pet to add to the store",
      *         required=true,
-     *         @SWG\Schema(ref="#/definitions/petInput"),
+     *         @SWG\Schema(ref="#/definitions/NewPet")
      *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="pet response",
-     *         @SWG\Schema(ref="#/definitions/pet")
+     *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
      *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/errorModel")
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
-     * )
-     * @SWG\Definition(
-     *     definition="petInput",
-     *     allOf={
-     *         @SWG\Schema(ref="pet"),
-     *         @SWG\Schema(
-     *             required={"name"},
-     *             @SWG\Property(
-     *                 property="id",
-     *                 type="integer",
-     *                 format="int64"
-     *             )
-     *         )
-     *     }
      * )
      */
     public function addPet()
@@ -147,7 +133,7 @@ class SimplePetsController
      *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/errorModel")
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */

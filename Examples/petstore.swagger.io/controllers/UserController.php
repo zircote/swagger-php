@@ -16,7 +16,7 @@ class UserController
      *     in="body",
      *     name="body",
      *     description="Created user object",
-     *     required=false,
+     *     required=true,
      *     @SWG\Schema(ref="#/definitions/User")
      *   ),
      *   @SWG\Response(response="default", description="successful operation")
@@ -37,7 +37,7 @@ class UserController
      *     in="body",
      *     name="body",
      *     description="List of user object",
-     *     required=false,
+     *     required=true,
      *     @SWG\Schema(
      *       type="array",
      *       @SWG\Items(ref="#/definitions/User")
@@ -61,7 +61,7 @@ class UserController
      *     in="body",
      *     name="body",
      *     description="List of user object",
-     *     required=false,
+     *     required=true,
      *     @SWG\Schema(
      *       type="array",
      *       @SWG\Items(ref="#/definitions/User")
@@ -82,14 +82,14 @@ class UserController
      *     name="username",
      *     in="query",
      *     description="The user name for login",
-     *     required=false,
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Parameter(
      *     name="password",
      *     in="query",
      *     description="The password for login in clear text",
-     *     required=false,
+     *     required=true,
      *     type="string"
      *   ),
      *   @SWG\Response(
@@ -106,7 +106,7 @@ class UserController
      *       header="X-Expires-After",
      *       type="string",
      *       format="date-time",
-     *       description="date in UTC when toekn expires"
+     *       description="date in UTC when token expires"
      *     )
      *   ),
      *   @SWG\Response(response=400, description="Invalid username/password supplied")
@@ -164,7 +164,7 @@ class UserController
      *   @SWG\Parameter(
      *     name="username",
      *     in="path",
-     *     description="name that need to be deleted",
+     *     description="name that need to be updated",
      *     required=true,
      *     type="string"
      *   ),
@@ -172,7 +172,7 @@ class UserController
      *     in="body",
      *     name="body",
      *     description="Updated user object",
-     *     required=false,
+     *     required=true,
      *     @SWG\Schema(ref="#/definitions/User")
      *   ),
      *   @SWG\Response(response=400, description="Invalid user supplied"),

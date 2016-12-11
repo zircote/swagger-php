@@ -3,15 +3,11 @@
 namespace Petstore;
 
 /**
- * @SWG\Definition(definition="pet", required={"id", "name"})
+ * @SWG\Definition(definition="NewPet", type="object", required={"name"})
  */
 class SimplePet
 {
 
-    /**
-     * @SWG\Property(format="int64")
-     * @var int
-     */
     public $id;
 
     /**
@@ -26,3 +22,17 @@ class SimplePet
      */
     public $tag;
 }
+
+/**
+ *  @SWG\Definition(
+ *   definition="Pet",
+ *   type="object",
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/NewPet"),
+ *       @SWG\Schema(
+ *           required={"id"},
+ *           @SWG\Property(property="id", format="int64", type="integer")
+ *       )
+ *   }
+ * )
+ */

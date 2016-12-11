@@ -3,9 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(
- *   @SWG\Xml(name="##default")
- * )
+ * @SWG\Definition(type="object")
  */
 class ApiResponse
 {

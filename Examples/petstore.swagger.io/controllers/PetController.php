@@ -10,15 +10,14 @@ final class PetController
      *     path="/pet/findByTags",
      *     summary="Finds Pets by tags",
      *     tags={"pet"},
-     *     description="Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
+     *     description="Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
      *     operationId="findPetsByTags",
-     *     consumes={"application/xml", "application/json"},
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         name="tags",
      *         in="query",
      *         description="Tags to filter by",
-     *         required=false,
+     *         required=true,
      *         type="array",
      *         @SWG\Items(type="string"),
      *         collectionFormat="multi"
@@ -39,7 +38,8 @@ final class PetController
      *         {
      *             "petstore_auth": {"write:pets", "read:pets"}
      *         }
-     *     }
+     *     },
+     *     deprecated=true
      * )
      */
     public function findByTags()
@@ -50,21 +50,22 @@ final class PetController
      * @SWG\Get(
      *     path="/pet/findByStatus",
      *     summary="Finds Pets by status",
-     *     description="Multiple status values can be provided with comma seperated strings",
+     *     description="Multiple status values can be provided with comma separated strings",
      *     operationId="findPetsByStatus",
-     *     consumes={"application/xml", "application/json"},
      *     produces={"application/xml", "application/json"},
      *     tags={"pet"},
      *     @SWG\Parameter(
      *         name="status",
      *         in="query",
      *         description="Status values that need to be considered for filter",
-     *         required=false,
+     *         required=true,
      *         type="array",
-     *         @SWG\Items(type="string"),
-     *         collectionFormat="multi",
-     *         default="available",
-     *         enum={"available", "pending", "sold"}
+     *         @SWG\Items(
+     *             type="string",
+     *             enum={"available", "pending", "sold"},
+     *             default="available"
+     *         ),
+     *         collectionFormat="multi"
      *     ),
      *     @SWG\Response(
      *         response=200,
@@ -94,11 +95,6 @@ final class PetController
      *     description="Returns a single pet",
      *     operationId="getPetById",
      *     tags={"pet"},
-     *     consumes={
-     *         "application/xml",
-     *         "application/json",
-     *         "application/x-www-form-urlencoded"
-     *     },
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         description="ID of pet to return",
@@ -122,8 +118,7 @@ final class PetController
      *         description="Pet not found"
      *     ),
      *     security={
-     *       {"api_key": {}},
-     *       {"petstore_auth": {"write:pets", "read:pets"}}
+     *       {"api_key": {}}
      *     }
      * )
      */
@@ -144,7 +139,7 @@ final class PetController
      *         name="body",
      *         in="body",
      *         description="Pet object that needs to be added to the store",
-     *         required=false,
+     *         required=true,
      *         @SWG\Schema(ref="#/definitions/Pet"),
      *     ),
      *     @SWG\Response(
@@ -171,7 +166,7 @@ final class PetController
      *         name="body",
      *         in="body",
      *         description="Pet object that needs to be added to the store",
-     *         required=false,
+     *         required=true,
      *         @SWG\Schema(ref="#/definitions/Pet"),
      *     ),
      *     @SWG\Response(
@@ -199,7 +194,6 @@ final class PetController
      *     summary="Deletes a pet",
      *     description="",
      *     operationId="deletePet",
-     *     consumes={"application/xml", "application/json", "multipart/form-data", "application/x-www-form-urlencoded"},
      *     produces={"application/xml", "application/json"},
      *     tags={"pet"},
      *     @SWG\Parameter(
@@ -213,13 +207,16 @@ final class PetController
      *     @SWG\Parameter(
      *         name="api_key",
      *         in="header",
-     *         description="",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Response(
      *         response=400,
-     *         description="Invalid pet value"
+     *         description="Invalid ID supplied"
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Pet not found"
      *     ),
      *     security={{"petstore_auth":{"write:pets", "read:pets"}}}
      * )
@@ -242,7 +239,8 @@ final class PetController
      *     in="path",
      *     description="ID of pet that needs to be updated",
      *     required=true,
-     *     type="string"
+     *     type="integer",
+     *     format="int64"
      *   ),
      *   @SWG\Parameter(
      *     name="name",
