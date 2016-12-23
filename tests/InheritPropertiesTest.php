@@ -49,7 +49,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         // this class has docblocks
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/ChildWithDocBlocks.php');
         // this one doesn't
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/ParentWithoutDocBlocks.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/AncestorWithoutDocBlocks.php'));
 
         $analysis->process([
             new MergeIntoSwagger(),

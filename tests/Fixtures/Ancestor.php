@@ -4,7 +4,7 @@ namespace SwaggerFixtures;
 /**
  * An intermediate class
  */
-class Parent extends GrandParent
+class Ancestor extends GrandAncestor
 {
 
     /**

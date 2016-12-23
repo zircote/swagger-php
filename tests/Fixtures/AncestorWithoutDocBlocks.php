@@ -1,7 +1,7 @@
 <?php
 namespace SwaggerFixtures;
 
-class ParentWithoutDocBlocks extends GrandParent
+class AncestorWithoutDocBlocks extends GrandAncestor
 {
     public $firstname;
 }

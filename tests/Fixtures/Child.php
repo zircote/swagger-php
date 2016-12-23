@@ -5,7 +5,7 @@ namespace AnotherNamespace;
 /**
  * @SWG\Definition()
  */
-class Child extends \SwaggerFixtures\Parent
+class Child extends \SwaggerFixtures\Ancestor
 {
 
     /**
