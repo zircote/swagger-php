@@ -18,7 +18,7 @@ matrix:
 
   include:
     - php: 7.0
-      env: PHPCS=1 PHPUNIT=0
+      env: PHPCS=1 PHPUNIT=1
 
   allow_failures:
     - php: hhvm
