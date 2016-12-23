@@ -17,7 +17,7 @@ class ValidateRelationsTest extends SwaggerTestCase
      * @dataProvider getAnnotations
      * @param string $class
      */
-    public function testParents($class)
+    public function testAncestors($class)
     {
         foreach ($class::$_parents as $parent) {
             $found = false;
