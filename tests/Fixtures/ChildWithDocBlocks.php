@@ -5,7 +5,7 @@ namespace AnotherNamespace;
 /**
  * @SWG\Definition()
  */
-class ChildWithDocBlocks extends \SwaggerFixtures\ParentWithoutDocBlocks
+class ChildWithDocBlocks extends \SwaggerFixtures\AncestorWithoutDocBlocks
 {
 
     /**

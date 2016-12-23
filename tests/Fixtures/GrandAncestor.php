@@ -1,7 +1,7 @@
 <?php
 namespace SwaggerFixtures;
 
-class GrandParent
+class GrandAncestor
 {
 
     /**
