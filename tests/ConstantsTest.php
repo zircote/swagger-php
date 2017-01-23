@@ -11,7 +11,7 @@ use Swagger\StaticAnalyser;
 
 class ConstantsTest extends SwaggerTestCase
 {
-    public const URL = 'http://example.com';
+    const URL = 'http://example.com';
 
     private static $counter = 0;
 
@@ -52,34 +52,29 @@ class ConstantsTest extends SwaggerTestCase
         }
     }
 
-    /**
-     * Constants and dynamic imports only works with whitelisted namespaces.
-     */
-    public function testDynamicImports() {
+    public function testDynamicImports()
+    {
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = false;
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
-        // @todo Only tests that $whitelist=false doen't trigger errors,
-        // no constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in Swagger\Annotation namespace has a constant.
+        // @todo Only tests that $whitelist=false doesn't trigger errors,
+        // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in Swagger\Annotation namespace has a constant.
 
-        // Scanning without whitelisting causes issues, uncomment next like for issues.
+        // Scanning without whitelisting causes issues, to check uncomment next.
         // $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
         Analyser::$whitelist = $backup;
-
     }
 
     public function testDefaultImports()
     {
         $backup = Analyser::$defaultImports;
-        // Inject
-        //   use Swagger\Annotations\Contact;
-        //   use sWaGGerTests\ConstantsTesT as CTest;
-        Analyser::$defaultImports = ['contact' => 'Swagger\Annotations\Contact', 'ctest' => 'sWaGGerTests\ConstantsTesT'];
-
+        Analyser::$defaultImports = [
+            'contact' => 'Swagger\Annotations\Contact', // use Swagger\Annotations\Contact;
+            'ctest' => 'sWaGGerTests\ConstantsTesT' // use sWaGGerTests\ConstantsTesT as CTest;
+        ];
         $annotations = $this->parseComment('@Contact(url=CTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
         Analyser::$defaultImports = $backup;
     }
-
 }

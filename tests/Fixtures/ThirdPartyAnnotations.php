@@ -33,12 +33,11 @@ class ThirdPartyAnnotations
      * @Annotation\Options({"label":"Your email address:"})
      */
     public $email;
-    
+
     /**
      * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
      */
     public function methodWithSwaggerAnnotation()
     {
-        //todo: Allow Class::constant notation, like `description=StringLength::TOO_LONG`
     }
 }
