@@ -6,6 +6,7 @@ namespace SwaggerFixtures;
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
+use Zend\Validator\StringLength;
 
 /**
  * @Annotation\Name("user")
@@ -38,5 +39,6 @@ class ThirdPartyAnnotations
      */
     public function methodWithSwaggerAnnotation()
     {
+        //todo: Allow Class::constant notation, like `description=StringLength::TOO_LONG`
     }
 }

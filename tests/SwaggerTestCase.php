@@ -123,7 +123,6 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
     {
         $analyser = new Analyser();
         $context = Context::detect(1);
-        $context->line -= 1; // correct generated lines: "<?php\n" and "/**\n"
         return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
 

@@ -41,5 +41,8 @@
         "psr-4": {
             "SwaggerTests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests"
     }
 }

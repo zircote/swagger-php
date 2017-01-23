@@ -59,7 +59,7 @@ class StaticAnalyser
         $analysis = new Analysis();
         reset($tokens);
         $token = '';
-        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
+        $imports = Analyser::$defaultImports; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
         $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
@@ -213,10 +213,14 @@ class StaticAnalyser
                     }
 
                     $parseContext->uses[$alias] = $target;
-                    foreach (Analyser::$whitelist as $namespace) {
-                        if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
-                            $imports[strtolower($alias)] = $target;
-                            break;
+                    if (Analyser::$whitelist === false) {
+                        $imports[strtolower($alias)] = $target;
+                    } else {
+                        foreach (Analyser::$whitelist as $namespace) {
+                            if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
+                                $imports[strtolower($alias)] = $target;
+                                break;
+                            }
                         }
                     }
                 }
