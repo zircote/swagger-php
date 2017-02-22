@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.9
+
+ - Added support for PHP 7.1 and dropped support for PHP 5.5 and below
+ - Added `composer test` script
+ - Addes support for custom DocParser->setImports() #360
+
 ## 2.0.8
 
  - Dynamic Definitions / partial support #301

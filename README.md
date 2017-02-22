@@ -103,4 +103,10 @@ To run the phpcs tests on your local machine execute:
 ./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
 ```
 
+To run both unittests and linting execute:
+
+```bash
+composer test
+```
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
