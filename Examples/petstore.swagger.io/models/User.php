@@ -21,7 +21,7 @@ class User
     public $username;
 
     /**
-     * @SWG\Property
+     * @SWG\Property()
      * @var string
      */
     public $firstName;
