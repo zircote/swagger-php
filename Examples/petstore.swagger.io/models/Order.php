@@ -41,7 +41,7 @@ class Order
     /**
      * Order Status
      * @var string
-     * @SWG\Property(enum={"placed","approved","delivered"})
+     * @SWG\Property(enum={"placed", "approved", "delivered"})
      */
     public $status;
 }

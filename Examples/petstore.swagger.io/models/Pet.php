@@ -28,13 +28,13 @@ class Pet
 
     /**
      * @var string[]
-     * @SWG\Property(@SWG\Xml(name="photoUrl",wrapped=true))
+     * @SWG\Property(@SWG\Xml(name="photoUrl", wrapped=true))
      */
     public $photoUrls;
 
     /**
      * @var Tag[]
-     * @SWG\Property(@SWG\Xml(name="tag",wrapped=true))
+     * @SWG\Property(@SWG\Xml(name="tag", wrapped=true))
      */
     public $tags;
 

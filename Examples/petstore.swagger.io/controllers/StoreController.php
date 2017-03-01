@@ -52,7 +52,7 @@ abstract class StoreController
      *     description="successful operation",
      *     @SWG\Schema(ref="#/definitions/Order")
      *   ),
-     *   @SWG\Response(response=400,  description="Invalid Order")
+     *   @SWG\Response(response=400, description="Invalid Order")
      * )
      */
     public function placeOrder()
