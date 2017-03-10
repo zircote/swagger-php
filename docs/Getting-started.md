@@ -179,7 +179,7 @@ As if you'd written:
      * @SWG\Property(
      *   property="name",
      *   type="string",
-     *   descriptions="The product name" 
+     *   description="The product name" 
      * )
      */
     public $name;
