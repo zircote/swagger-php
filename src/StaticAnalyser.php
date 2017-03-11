@@ -90,6 +90,12 @@ class StaticAnalyser
                     continue;
                 }
                 $token = $this->nextToken($tokens, $parseContext);
+
+                if (is_string($token) && $token === '{') {
+                    // php7 anonymous classes (i.e. new class { public function foo() {} };)
+                    continue;
+                }
+
                 $definitionContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);

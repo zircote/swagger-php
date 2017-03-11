@@ -58,4 +58,14 @@ class StaticAnalyserTest extends SwaggerTestCase
         $this->assertSame('\SwaggerFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
         $this->assertCount(2, $context->annotations);
     }
+
+    public function testAnonymousClassProducesNoError()
+    {
+        try {
+            $analyser = new StaticAnalyser(__DIR__ . '/Fixtures/php7.php');
+            $this->assertTrue(true);
+        } catch (\Exception $e) {
+            $this->fail("Analyser produced an error: {$e->getMessage()}");
+        }
+    }
 }
