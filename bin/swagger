@@ -79,7 +79,7 @@ if ($error) {
 if ($options['help']) {
     $help = <<<EOF
 
-usage: swagger [/path/to/project] [--output ./swagger.json] ...
+usage: swagger [/path/to/project] [/path/additional/1] [/path/additional/n] [--output ./swagger.json] ...
 
   --output (-o)     Path to store the generated documentation.
   --stdout          Write to the standard output.
