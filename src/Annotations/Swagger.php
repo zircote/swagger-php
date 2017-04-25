@@ -116,7 +116,7 @@ class Swagger extends AbstractAnnotation
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
     
     /** @inheritdoc */
-    public static $_required = ['openapi', 'info', 'paths'];
+    public static $_required = ['swagger', 'info', 'paths'];
 
     /** @inheritdoc */
     public static $_nested = [
