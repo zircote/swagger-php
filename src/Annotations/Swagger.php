@@ -21,7 +21,7 @@ class Swagger extends AbstractAnnotation
      * Specifies the Swagger Specification version being used. It can be used by the Swagger UI and other clients to interpret the API listing.
      * @var string
      */
-    public $openapi = '3.0.0-RC1';
+    public $swagger = '2.0';
 
     /**
      * Provides metadata about the API. The metadata can be used by the clients if needed.
