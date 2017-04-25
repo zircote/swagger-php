@@ -1,5 +1,5 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0",
     "info": {
         "title": "Example of using references in swagger-php",
         "version": "1.0.0"
