@@ -96,6 +96,10 @@ class Serializer
     {
         $annotation = new $class([]);
         foreach ($c as $property => $value) {
+            if ($property === '$ref') {
+                $property = 'ref';
+            }
+            
             if (substr($property, 0, 2) === 'x-') {
                 $custom = substr($property, 2);
                 $annotation->x[$custom] = $value;
