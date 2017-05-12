@@ -91,4 +91,12 @@ JSON;
             $this->getExpected()->__toString()
         );
     }
+
+    public function testPetstoreExample()
+    {
+        $serializer = new Serializer();
+        $swagger = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
+        $this->assertInstanceOf('Swagger\Annotations\Swagger', $swagger);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $swagger);
+    }
 }
