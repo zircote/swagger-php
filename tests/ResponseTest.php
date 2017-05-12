@@ -8,7 +8,6 @@ namespace SwaggerTests;
 
 class ResponseTest extends SwaggerTestCase
 {
-
     public function testMisspelledDefault()
     {
         $annotations = $this->parseComment('@SWG\Get(@SWG\Response(response="Default", description="description"))');

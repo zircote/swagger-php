@@ -8,7 +8,6 @@ namespace SwaggerTests;
 
 class AugmentParameterTest extends SwaggerTestCase
 {
-
     public function testAugmentParameter()
     {
         $swagger = \Swagger\scan(__DIR__ . '/Fixtures/UsingRefs.php');

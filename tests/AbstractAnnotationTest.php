@@ -8,7 +8,6 @@ namespace SwaggerTests;
 
 class AbstractAnnotationTest extends SwaggerTestCase
 {
-
     public function testVendorFields()
     {
         $annotations = $this->parseComment('@SWG\Get(x={"internal-id": 123})');

@@ -11,7 +11,6 @@ use Swagger\Analyser;
 
 class AnalyserTest extends SwaggerTestCase
 {
-
     public function testParseContents()
     {
         $annotations = $this->parseComment('@SWG\Parameter(description="This is my parameter")');

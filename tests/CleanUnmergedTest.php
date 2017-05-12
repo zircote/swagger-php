@@ -13,7 +13,6 @@ use Exception;
 
 class CleanUnmergedTest extends SwaggerTestCase
 {
-
     public function testCleanUnmergedProcessor()
     {
         $comment = <<<END

@@ -10,7 +10,6 @@ use Swagger\Util;
 
 class UtilTest extends SwaggerTestCase
 {
-
     public function testExclude()
     {
         $swagger = \Swagger\scan(__DIR__ . '/Fixtures', ['exclude' => ['Customer.php', 'UsingRefs.php', 'UsingPhpDoc.php', 'GrandAncestor.php']]);

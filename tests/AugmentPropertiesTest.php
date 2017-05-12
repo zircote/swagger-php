@@ -13,7 +13,6 @@ use Swagger\StaticAnalyser;
 
 class AugmentPropertiesTest extends SwaggerTestCase
 {
-
     public function testAugmentProperties()
     {
         $analyser = new StaticAnalyser();

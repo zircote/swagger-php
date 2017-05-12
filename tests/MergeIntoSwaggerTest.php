@@ -13,7 +13,6 @@ use Swagger\Processors\MergeIntoSwagger;
 
 class MergeIntoSwaggerTest extends SwaggerTestCase
 {
-
     public function testProcessor()
     {
         $swagger = new Swagger([]);

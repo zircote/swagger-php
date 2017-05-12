@@ -11,7 +11,6 @@ use Swagger\StaticAnalyser;
 
 class AnalysisTest extends SwaggerTestCase
 {
-
     public function testRegisterProcessor()
     {
         $counter = 0;

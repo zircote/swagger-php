@@ -178,7 +178,7 @@ class HandleReferences
 
                 if (!isset($item->ref)) {
                     $this->head_references[$import_name][] = &$data;
-                } else if ($this->checkSyntax($item->ref)) {
+                } elseif ($this->checkSyntax($item->ref)) {
                     $params = explode("/", $item->ref);
 
                     $this->loadParent($data, strtolower($params[1]), $params[2]);
@@ -261,10 +261,10 @@ class HandleReferences
                         }
                         $this->importSchema($value, $response->schema);
                     }
-                } else if ($key != "response") {
+                } elseif ($key != "response") {
                     if (is_array($value)) {
                         $response->$key = array_merge($response->$key?: [], $parent_response->$key);
-                    } else if (!isset($response->$key) && $key != $current_key) {
+                    } elseif (!isset($response->$key) && $key != $current_key) {
                         $response->$key = $parent_response->$key;
                     }
                 }

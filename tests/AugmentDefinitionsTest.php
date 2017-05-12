@@ -12,7 +12,6 @@ use Swagger\StaticAnalyser;
 
 class AugmentDefinitionsTest extends SwaggerTestCase
 {
-
     public function testAugmentDefinitions()
     {
         $analyser = new StaticAnalyser();

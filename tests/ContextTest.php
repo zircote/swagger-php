@@ -10,7 +10,6 @@ use Swagger\Context;
 
 class ContextTest extends SwaggerTestCase
 {
-
     public function testDetect()
     {
         $context = Context::detect();

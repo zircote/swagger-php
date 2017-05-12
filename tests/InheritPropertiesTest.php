@@ -15,7 +15,6 @@ use Swagger\StaticAnalyser;
 
 class InheritPropertiesTest extends SwaggerTestCase
 {
-
     public function testInheritProperties()
     {
         $analyser = new StaticAnalyser();

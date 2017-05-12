@@ -13,7 +13,6 @@ use Swagger\StaticAnalyser;
 
 class NestedPropertyTest extends SwaggerTestCase
 {
-
     public function testNestedProperties()
     {
         $analyser = new StaticAnalyser();

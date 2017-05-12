@@ -8,7 +8,6 @@ namespace SwaggerTests;
 
 class CommandlineInterfaceTest extends SwaggerTestCase
 {
-
     protected function setUp()
     {
         if (defined('HHVM_VERSION')) {

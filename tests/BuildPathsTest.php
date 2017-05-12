@@ -16,7 +16,6 @@ use Swagger\Processors\MergeIntoSwagger;
 
 class BuildPathsTest extends SwaggerTestCase
 {
-
     public function testMergePathsWithSamePath()
     {
         $swagger = new Swagger([]);

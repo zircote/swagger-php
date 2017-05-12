@@ -8,7 +8,6 @@ namespace SwaggerTests;
 
 class ItemsTest extends SwaggerTestCase
 {
-
     public function testTypeArray()
     {
         $annotations = $this->parseComment('@SWG\Items(type="array")');

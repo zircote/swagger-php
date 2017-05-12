@@ -348,7 +348,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             $keyField = $nested[1];
             foreach ($this->$property as $key => $item) {
                 if (is_array($item) && is_numeric($key) === false) {
-                    Logger::notice($this->identity() . '->' . $property . ' is set to an object, use nested @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $annotationClass) . ' annotation(s) in ' . $this->_context);
+                    Logger::notice($this->identity() . '->' . $property . ' is an object literal, use nested @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
                 } elseif (empty($item->$keyField)) {
                     Logger::notice($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
