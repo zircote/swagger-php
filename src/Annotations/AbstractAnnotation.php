@@ -276,11 +276,15 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $keyField = $nested[1];
             $object = new stdClass();
-            foreach ($this->$property as $item) {
-                $key = $item->$keyField;
-                if ($key && empty($object->$key)) {
-                    $object->$key = $item->jsonSerialize();
-                    unset($object->$key->$keyField);
+            foreach ($this->$property as $key => $item) {
+                if (is_numeric($key) === false && is_array($item)) {
+                    $object->$key = $item;
+                } else {
+                    $key = $item->$keyField;
+                    if ($key && empty($object->$key)) {
+                        $object->$key = $item->jsonSerialize();
+                        unset($object->$key->$keyField);
+                    }
                 }
             }
             $data->$property = $object;
@@ -332,7 +336,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
         // Report conflicting key
 
-        foreach (static::$_nested as $nested) {
+        foreach (static::$_nested as $annotationClass => $nested) {
             if (is_string($nested) || count($nested) === 1) {
                 continue;
             }
@@ -342,8 +346,11 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $keys = [];
             $keyField = $nested[1];
-            foreach ($this->$property as $item) {
-                if (empty($item->$keyField)) {
+            foreach ($this->$property as $key => $item) {
+                if (is_array($item) && is_numeric($key) === false) {
+                    Logger::notice($this->identity() . '->' . $property . ' is set to an object, use nested @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $annotationClass) . ' annotation(s) in ' . $this->_context);
+                    $keys[$key] = $item;
+                } elseif (empty($item->$keyField)) {
                     Logger::notice($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->$keyField])) {
                     Logger::notice('Multiple ' . $item->_identity([]) . ' with the same ' . $keyField . '="' . $item->$keyField . "\":\n  " . $item->_context . "\n  " . $keys[$item->$keyField]->_context);
@@ -409,7 +416,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     {
         $parents = $path;
         array_pop($parents);
-        
+
         $valid = true;
         $blacklist = [];
         if (is_object($fields)) {
@@ -419,7 +426,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             $skip[] = $fields;
             $blacklist = property_exists($fields, '_blacklist') ? $fields::$_blacklist : [];
         }
-        
+
         foreach ($fields as $field => $value) {
             if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
