@@ -6,11 +6,14 @@ Using swagger-php to generate the [example for swagger-ui](http://petstore.swagg
 
 Using swagger-php to generate the [examples in the spec](https://github.com/swagger-api/swagger-spec/tree/master/examples/v2.0/json)
 
-## petstore
+### petstore
 The smallest example, contains only 1 operation.
 
-## petstore-simple
+### petstore-simple
 An example with 4 operations on 2 paths.
 
-## petstore-with-external-docs
+### petstore-with-external-docs
 Very similar to petstore-simple but with externalDocs
+
+## using-refs
+Example demonstrating different use-cases of $ref to keep your documentation [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
