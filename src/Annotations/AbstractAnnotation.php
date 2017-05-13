@@ -520,6 +520,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 throw new Exception('Invalid type "' . $type . '"');
         }
     }
+
     /**
      * Wrap the context with a reference to the annotation it is nested in.
      * @param AbstractAnnotation $annotation

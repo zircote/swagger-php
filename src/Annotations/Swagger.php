@@ -106,7 +106,7 @@ class Swagger extends AbstractAnnotation
      * @var ExternalDocumentation
      */
     public $externalDocs;
-    
+
     /**
      * @var Analysis
      */
@@ -114,7 +114,7 @@ class Swagger extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
-    
+
     /** @inheritdoc */
     public static $_required = ['swagger', 'info', 'paths'];
 
@@ -149,5 +149,71 @@ class Swagger extends AbstractAnnotation
         if (file_put_contents($filename, $this) === false) {
             throw new Exception('Failed to saveAs("' . $filename . '")');
         }
+    }
+
+    /**
+     * Look up an annotation with a $ref url.
+     *
+     * @param string $ref The $ref value, for example: "#/definitions/Product"
+     * @throws Exception
+     */
+    public function ref($ref)
+    {
+        if (substr($ref, 0, 2) !== '#/') {
+            // @todo Add support for external (http) refs?
+            throw new Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
+        }
+        return $this->resolveRef($ref, '#/', $this, []);
+    }
+
+    /**
+     * Recursive helper for ref()
+     *
+     * @param string $prefix The resolved path of the ref.
+     * @param string $path A partial ref
+     * @param * $container the container to resolve the ref in.
+     * @param Array $mapping
+     */
+    private static function resolveRef($ref, $resolved, $container, $mapping)
+    {
+        if ($ref === $resolved) {
+            return $container;
+        }
+        $path = substr($ref, strlen($resolved));
+        $slash = strpos($path, '/');
+
+        $subpath = $slash === false ? $path : substr($path, 0, $slash);
+        $property = urldecode($subpath);
+        $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
+
+        if (is_object($container)) {
+            if (property_exists($container, $property) === false) {
+                throw new Exception('$ref "' . $unresolved . '" not found');
+            }
+            if ($slash === false) {
+                return $container->$property;
+            }
+            $mapping = [];
+            if ($container instanceof AbstractAnnotation) {
+                foreach ($container::$_nested as $className => $nested) {
+                    if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
+                        $mapping[$className] = $nested[1];
+                    }
+                }
+            }
+            return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
+        } elseif (is_array($container)) {
+            if (array_key_exists($property, $container)) {
+                return self::resolveRef($ref, $unresolved, $container[$property], []);
+            }
+            foreach ($mapping as $className => $keyField) {
+                foreach ($container as $key => $item) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $className && $item->$keyField === $property) {
+                        return self::resolveRef($ref, $unresolved, $item, []);
+                    }
+                }
+            }
+        }
+        throw new Exception('$ref "' . $unresolved . '" not found');
     }
 }
