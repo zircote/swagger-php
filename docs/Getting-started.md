@@ -1,6 +1,6 @@
 # Getting started
 
-The goal of swagger-php is the generate a swagger.json using phpdoc annotations.
+The goal of swagger-php is to generate a swagger.json using phpdoc annotations.
 
 To output:
 
@@ -25,9 +25,9 @@ Write:
  */
 ```
 
-Note that Doctrine annotation supports arrays, but uses the `{` and `}` instead of `[` and `]`.
+Note that Doctrine annotation supports arrays, but uses `{` and `}` instead of `[` and `]`.
 
-And although doctrine also supports objects, but also uses `{` and `}` and requires the properties to be surrounded with `"`.
+And although doctrine also supports objects, but also uses `{` and `}` and requires the property names to be surrounded with `"`.
 
 **DON'T** write:
 
