@@ -40,7 +40,8 @@ Add annotations to your php files.
  * )
  */
 ```
-See the Examples directory for more.
+See the [Getting started guide](docs/Getting-started.md) and [Examples directory](Examples/) for more examples.
+
 
 ### Usage from php
 
@@ -80,6 +81,8 @@ echo $swagger;
   * http://swagger.io/
   * https://github.com/swagger-api/swagger-spec/
   * http://bfanger.github.io/swagger-explained/
+  * [Related projects](docs/Related-projects.md)
+  * https://www.marcoraddatz.com/en/2015/07/21/integrate-swagger-into-laravel/
 
 ## Contributing
 
