@@ -205,12 +205,12 @@ class Parameter extends AbstractAnnotation
     ];
 
     /** @inheritdoc */
-    public function validate($parents = [], $skip = [])
+    public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;
         }
-        $valid = parent::validate($parents, $skip);
+        $valid = parent::validate($parents, $skip, $ref);
         if (empty($this->ref)) {
             if ($this->in === 'body') {
                 if ($this->schema === null) {

@@ -9,6 +9,7 @@ $options = array(
     'bootstrap' => false,
     'help' => false,
     'version' => false,
+    'debug' => false,
 );
 $aliases = array(
     'o' => 'output',
@@ -16,6 +17,7 @@ $aliases = array(
     'b' => 'bootstrap',
     'v' => 'version',
     'h' => 'help',
+    'd' => 'debug'
 );
 $needsArgument = array(
     'output',
@@ -134,8 +136,12 @@ set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes) {
         exit($errno);
     }
 });
-set_exception_handler(function ($exception) {
-    error_log('[EXCEPTION] '.$exception->getMessage() .' in '.$exception->getFile().' on line '.$exception->getLine());
+set_exception_handler(function ($exception) use ($options) {
+    if ($options['debug']) {
+        error_log($exception);
+    } else {
+        error_log('[EXCEPTION] '.$exception->getMessage() .' in '.$exception->getFile().' on line '.$exception->getLine());
+    }
     exit($exception->getCode() ?: 1);
 });
 \Swagger\Logger::getInstance()->log = function ($entry, $type) {

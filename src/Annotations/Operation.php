@@ -150,7 +150,7 @@ abstract class Operation extends AbstractAnnotation
         return $data;
     }
 
-    public function validate($parents = [], $skip = [])
+    public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;

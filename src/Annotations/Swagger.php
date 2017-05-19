@@ -8,6 +8,7 @@ namespace Swagger\Annotations;
 
 use Exception;
 use Swagger\Analysis;
+use Swagger\Logger;
 
 /**
  * @Annotation
@@ -139,6 +140,15 @@ class Swagger extends AbstractAnnotation
         'produces' => '[string]',
     ];
 
+    /** @inheritdoc */
+    public function validate($parents = null, $skip = null, $ref = null)
+    {
+        if ($parents !== null || $skip !== null || $ref !== null) {
+            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+            return false;
+        }
+        return parent::validate([], [], '#');
+    }
     /**
      * Save the swagger documentation to a file.
      * @param string $filename
@@ -188,7 +198,7 @@ class Swagger extends AbstractAnnotation
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new Exception('$ref "' . $unresolved . '" not found');
+                throw new Exception('$ref "' . $unresolved . '" ');
             }
             if ($slash === false) {
                 return $container->$property;

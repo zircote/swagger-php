@@ -305,7 +305,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      * @return boolean
      * @throws Exception
      */
-    public function validate($parents = [], $skip = [])
+    public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;
@@ -359,7 +359,15 @@ abstract class AbstractAnnotation implements JsonSerializable
                 }
             }
         }
-        if (empty($this->ref)) {
+        if (isset($this->ref)) {
+            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0  && $parents[0] instanceof Swagger) { // Internal reference
+                try {
+                    $parents[0]->ref($this->ref);
+                } catch (Exception $exception) {
+                    Logger::notice($exception->getMessage().' for '.$this->identity().' in '.$this->_context);
+                }
+            }
+        } else {
             // Report missing required fields (when not a $ref)
             foreach (static::$_required as $property) {
                 if ($this->$property === null || $this->$property === UNDEFINED) {
@@ -401,22 +409,19 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
         }
         $parents[] = $this;
-        return self::_validate($this, $parents, $skip) ? $valid : false;
+        return self::_validate($this, $parents, $skip, $ref) ? $valid : false;
     }
 
     /**
      * Recursively validate all annotation properties.
      *
      * @param array|object $fields
-     * @param array $path The path of annotations above this annotation in the tree.
+     * @param array $parents The path of annotations above this annotation in the tree.
      * @param array [$skip] Array with objects which are already validated
      * @return boolean
      */
-    private static function _validate($fields, $path, $skip)
+    private static function _validate($fields, $parents, $skip, $baseRef)
     {
-        $parents = $path;
-        array_pop($parents);
-
         $valid = true;
         $blacklist = [];
         if (is_object($fields)) {
@@ -431,15 +436,16 @@ abstract class AbstractAnnotation implements JsonSerializable
             if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
             }
+            $ref = $baseRef !== '' ? $baseRef.'/'.urlencode($field) : urlencode($field);
             if (is_object($value)) {
                 if (method_exists($value, 'validate')) {
-                    if (!$value->validate($path, $skip)) {
+                    if (!$value->validate($parents, $skip, $ref)) {
                         $valid = false;
                     }
-                } elseif (!self::_validate($value, $parents, $skip)) {
+                } elseif (!self::_validate($value, $parents, $skip, $ref)) {
                     $valid = false;
                 }
-            } elseif (is_array($value) && !self::_validate($value, $parents, $skip)) {
+            } elseif (is_array($value) && !self::_validate($value, $parents, $skip, $ref)) {
                 $valid = false;
             }
         }

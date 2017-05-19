@@ -79,6 +79,10 @@
       */
      Route::get('/users/{user_id}', 'UserController@show');
 
+/**
+ * @SWG\Definition(definition="Error")
+ * @SWG\Definition(definition="User")
+ */
 //
 // @codingStandardsIgnoreEnd
 //

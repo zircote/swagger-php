@@ -33,7 +33,7 @@ class Items extends Schema
     ];
 
     /** @inheritdoc */
-    public function validate($parents = [], $skip = [])
+    public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;

@@ -1,6 +1,13 @@
 # Changelog
 
+## 2.0.11
+
+ - Implemented Swagger->ref(). $swagger->ref('#/info/contact') === $swagger->info->contact
+ - Added validation of internal refs.
+ - Misc typos and improved unittests #399, #402
+
 ## 2.0.10
+
  - Fix errors when parsing php7 anonymous class #380, #390
  - Added support for linked files and directories #393
  - Added support for $ref in deserialize() #369
