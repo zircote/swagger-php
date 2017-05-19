@@ -20,7 +20,7 @@ class BuildPaths
     {
         $paths = [];
         // Merge @SWG\Paths with the same path.
-        foreach ($analysis->swagger->paths as $annotation) {
+        foreach ($analysis->openapi->paths as $annotation) {
             if (empty($annotation->path)) {
                 Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
             } elseif (isset($paths[$annotation->path])) {
@@ -47,6 +47,6 @@ class BuildPaths
                 }
             }
         }
-        $analysis->swagger->paths = array_values($paths);
+        $analysis->openapi->paths = array_values($paths);
     }
 }

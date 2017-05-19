@@ -9,7 +9,7 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  *
- * A Swagger "Response Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#responseObject
+ * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#responseObject
  */
 class Response extends AbstractAnnotation
 {
@@ -74,6 +74,6 @@ class Response extends AbstractAnnotation
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
-        'Swagger\Annotations\Swagger'
+        'Swagger\Annotations\OpenApi'
     ];
 }

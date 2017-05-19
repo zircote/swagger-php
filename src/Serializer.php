@@ -31,7 +31,7 @@ class Serializer
     const RESPONSE = 'Swagger\Annotations\Response';
     const SCHEMA = 'Swagger\Annotations\Schema';
     const SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
-    const SWAGGER = 'Swagger\Annotations\Swagger';
+    const SWAGGER = 'Swagger\Annotations\OpenApi';
     const TAG = 'Swagger\Annotations\Tag';
     const XML = 'Swagger\Annotations\Xml';
 
@@ -91,7 +91,7 @@ class Serializer
      *
      * @throws \Exception
      */
-    public function deserializeFile($filename, $className = 'Swagger\Annotations\Swagger')
+    public function deserializeFile($filename, $className = 'Swagger\Annotations\OpenApi')
     {
         if (!$this->isValidClassName($className)) {
             throw new \Exception($className.' is not defined in Swagger PHP Annotations');

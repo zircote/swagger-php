@@ -45,11 +45,11 @@ class StaticAnalyserTest extends SwaggerTestCase
         // Allow Swagger to parse 3rd party annotations
         // might contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';
-        $swagger = \Swagger\scan(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
-        $this->assertSame('api/3rd-party', $swagger->paths[0]->path);
-        $this->assertCount(10, $swagger->_unmerged);
+        $openapi = \Swagger\scan(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
+        $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
+        $this->assertCount(10, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
-        $analysis = $swagger->_analysis;
+        $analysis = $openapi->_analysis;
         $annotations = $analysis->getAnnotationsOfType('Zend\Form\Annotation\Name');
         $this->assertCount(1, $annotations);
         $context = $analysis->getContext($annotations[0]);

@@ -10,7 +10,7 @@ use Swagger\Annotations\Info;
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class InheritPropertiesTest extends SwaggerTestCase
@@ -22,7 +22,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         $analysis->process([
-            new MergeIntoSwagger(),
+            new MergeIntoOpenApi(),
             new AugmentDefinitions(),
             new AugmentProperties()
         ]);
@@ -33,7 +33,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->process(new InheritProperties());
         $this->assertCount(3, $childDefinition->properties);
         
-        $analysis->swagger->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
         $analysis->validate();
     }
 
@@ -51,7 +51,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/AncestorWithoutDocBlocks.php'));
 
         $analysis->process([
-            new MergeIntoSwagger(),
+            new MergeIntoOpenApi(),
             new AugmentDefinitions(),
             new AugmentProperties()
         ]);
@@ -64,7 +64,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->process(new InheritProperties());
         $this->assertCount(1, $childDefinition->properties);
 
-        $analysis->swagger->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
         $analysis->validate();
     }
 }

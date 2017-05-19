@@ -10,7 +10,7 @@ namespace Swagger\Annotations;
  * @Annotation
  * Allows referencing an external resource for extended documentation.
  *
- * A Swagger "External Documentation Object":  * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#external-documentation-object
+ * A "External Documentation Object":  * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
  */
 class ExternalDocumentation extends AbstractAnnotation
 {
@@ -37,7 +37,7 @@ class ExternalDocumentation extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger',
+        'Swagger\Annotations\OpenApi',
         'Swagger\Annotations\Tag',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Definition',

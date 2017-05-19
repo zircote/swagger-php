@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *     schemes={"http"},
  *     host="petstore.swagger.io",
  *     basePath="/v2",

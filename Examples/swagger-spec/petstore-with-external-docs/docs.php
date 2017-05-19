@@ -16,7 +16,7 @@
  *   ),
  *   termsOfService="http://swagger.io/terms/"
  * )
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *   host="petstore.swagger.io",
  *   basePath="/api",
  *   schemes={"http"},

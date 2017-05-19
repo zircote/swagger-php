@@ -46,7 +46,7 @@ class Items extends Schema
             }
             $parent = end($parents);
             if (is_object($parent) && ($parent instanceof Parameter && $parent->in !== 'body' || $parent instanceof Header)) {
-                // This is a "Items Object" https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#items-object
+                // This is a "Items Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#items-object
                 // A limited subset of JSON-Schema's items object.
                 $allowedTypes = ['string', 'number', 'integer', 'boolean', 'array'];
                 if (in_array($this->type, $allowedTypes) === false) {

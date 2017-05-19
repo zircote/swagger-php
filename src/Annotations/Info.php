@@ -9,7 +9,7 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  *
- * A Swagger "Info Object":  https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#infoObject
+ * An "Info Object":  https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#infoObject
  */
 class Info extends AbstractAnnotation
 {
@@ -67,6 +67,6 @@ class Info extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger'
+        'Swagger\Annotations\OpenApi'
     ];
 }

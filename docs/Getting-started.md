@@ -1,6 +1,6 @@
 # Getting started
 
-The goal of swagger-php is to generate a swagger.json using phpdoc annotations.
+The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
 
 To output:
 
@@ -17,7 +17,7 @@ Write:
 
 ```php
 /**
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *   schemes={"http"},
  *   host="example.com",
  *   basePath="/api"
@@ -33,10 +33,10 @@ And although doctrine also supports objects, but also uses `{` and `}` and requi
 
 ```php
 /**
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *   info={
- *     "title"="My first swagger documented API",
- *     "version"="1.0.0"
+ *     "title": "My first swagger-php documented API",
+ *     "version": "1.0.0"
  *   }
  * )
  */
@@ -46,9 +46,9 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 
 ```php
 /**
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *   @SWG\Info(
- *     title="My first swagger documented API",
+ *     title="My first swagger-php documented API",
  *     version="1.0.0"
  *   )
  * )
@@ -69,7 +69,7 @@ define("API_HOST", ($env === "production") ? "example.com" : "localhost");
 
 ```php
 /**
- * @SWG\Swagger(host=API_HOST)
+ * @SWG\OpenApi(host=API_HOST)
  */
 ```
 
@@ -81,8 +81,8 @@ $ swagger --bootstrap constants.php
 
 ## Annotation placement
 
-You shouldn't place all annotations inside one big @SWG\Swagger() annotation block, but scatter them throughout your codebase.
-swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
+You shouldn't place all annotations inside one big @SWG\OpenApi() annotation block, but scatter them throughout your codebase.
+swagger-php will scan your project and merge all annotations into one @SWG\OpenApi annotation.
 
 The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
 

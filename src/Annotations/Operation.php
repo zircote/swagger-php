@@ -12,7 +12,7 @@ use Swagger\Logger;
  * @Annotation
  * Base class for the @SWG\Get(),  @SWG\Post(),  @SWG\Put(),  @SWG\Delete(), @SWG\Patch()
  *
- * A Swagger "Operation Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#operationObject
+ * A "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#operationObject
  */
 abstract class Operation extends AbstractAnnotation
 {

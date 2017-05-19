@@ -8,7 +8,7 @@ namespace SwaggerTests;
 
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class AugmentPropertiesTest extends SwaggerTestCase
@@ -17,9 +17,9 @@ class AugmentPropertiesTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
-        $analysis->process(new MergeIntoSwagger());
-        $this->assertCount(1, $analysis->swagger->definitions);
-        $customer = $analysis->swagger->definitions[0];
+        $analysis->process(new MergeIntoOpenApi());
+        $this->assertCount(1, $analysis->openapi->definitions);
+        $customer = $analysis->openapi->definitions[0];
         $this->assertSame(null, $customer->properties, 'Sanity check. @SWG\Property\'s not yet erged ');
         $analysis->process(new AugmentDefinitions());
         $analysis->process(new AugmentProperties());

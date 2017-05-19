@@ -9,7 +9,7 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  *
- * A Swagger "Tag Object":  https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#tagObject
+ * A "Tag Object":  https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject
  */
 class Tag extends AbstractAnnotation
 {
@@ -42,7 +42,7 @@ class Tag extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger'
+        'Swagger\Annotations\OpenApi'
     ];
 
     /** @inheritdoc */

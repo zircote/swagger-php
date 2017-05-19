@@ -42,7 +42,7 @@ class AugmentProperties
     {
         $refs = [];
         /** @var Definition $definition */
-        foreach ($analysis->swagger->definitions as $definition) {
+        foreach ($analysis->openapi->definitions as $definition) {
             if ($definition->definition) {
                 $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/' . $definition->definition;
             }

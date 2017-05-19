@@ -9,7 +9,7 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  *
- * A Swagger "XML Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#xmlObject
+ * A "XML Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject
  */
 class Xml extends AbstractAnnotation
 {

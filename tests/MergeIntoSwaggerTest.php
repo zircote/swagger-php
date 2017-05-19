@@ -7,25 +7,25 @@
 namespace SwaggerTests;
 
 use Swagger\Annotations\Info;
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Swagger\Analysis;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 
 class MergeIntoSwaggerTest extends SwaggerTestCase
 {
     public function testProcessor()
     {
-        $swagger = new Swagger([]);
+        $openapi = new OpenApi([]);
         $info = new Info([]);
         $analysis = new Analysis([
-            $swagger,
+            $openapi,
             $info
         ]);
-        $this->assertNull($analysis->swagger);
-        $this->assertNull($swagger->info);
-        $analysis->process(new MergeIntoSwagger());
-        $this->assertInstanceOf('Swagger\Annotations\Swagger', $analysis->swagger);
-        $this->assertSame($info, $swagger->info);
+        $this->assertNull($analysis->openapi);
+        $this->assertNull($openapi->info);
+        $analysis->process(new MergeIntoOpenApi());
+        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $analysis->openapi);
+        $this->assertSame($info, $openapi->info);
         $this->assertCount(0, $analysis->unmerged()->annotations);
     }
 }

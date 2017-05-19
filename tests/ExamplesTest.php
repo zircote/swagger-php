@@ -18,9 +18,9 @@ class ExamplesTest extends SwaggerTestCase
      */
     public function testExample($example, $output)
     {
-        $swagger = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
-//        die((string) $swagger);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $swagger);
+        $openapi = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
+//        die((string) $openapi);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $openapi);
     }
 
     /**

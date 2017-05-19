@@ -25,8 +25,8 @@ class ContextTest extends SwaggerTestCase
 
     public function testFullyQualifiedName()
     {
-        $swagger = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
-        $context = $swagger->definitions[0]->_context;
+        $openapi = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
+        $context = $openapi->definitions[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
         $this->assertSame('\SwaggerFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));

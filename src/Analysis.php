@@ -11,7 +11,7 @@ use Exception;
 use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
@@ -20,7 +20,7 @@ use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
@@ -39,10 +39,10 @@ class Analysis
     public $classes = [];
 
     /**
-     * The target Swagger annotation.
-     * @var Swagger
+     * The target OpenApi annotation.
+     * @var OpenApi
      */
-    public $swagger;
+    public $openapi;
 
     /**
      * Registry for the post-processing operations.
@@ -135,8 +135,8 @@ class Analysis
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
-        if ($this->swagger === null && $analysis->swagger) {
-            $this->swagger = $analysis->swagger;
+        if ($this->openapi === null && $analysis->openapi) {
+            $this->openapi = $analysis->openapi;
             $analysis->target->_context->analysis = $this;
         }
     }
@@ -223,13 +223,13 @@ class Analysis
      */
     public function merged()
     {
-        if (!$this->swagger) {
+        if (!$this->openapi) {
             throw new Exception('No swagger target set. Run the MergeIntoSwagger processor');
         }
-        $unmerged = $this->swagger->_unmerged;
-        $this->swagger->_unmerged = [];
-        $analysis = new Analysis([$this->swagger]);
-        $this->swagger->_unmerged = $unmerged;
+        $unmerged = $this->openapi->_unmerged;
+        $this->openapi->_unmerged = [];
+        $analysis = new Analysis([$this->openapi]);
+        $this->openapi->_unmerged = $unmerged;
         return $analysis;
     }
 
@@ -288,7 +288,7 @@ class Analysis
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
-                new MergeIntoSwagger(),
+                new MergeIntoOpenApi(),
                 new BuildPaths(),
                 new HandleReferences(),
                 new AugmentDefinitions(),
@@ -327,10 +327,10 @@ class Analysis
 
     public function validate()
     {
-        if ($this->swagger) {
-            return $this->swagger->validate();
+        if ($this->openapi) {
+            return $this->openapi->validate();
         }
-        Logger::notice('No swagger target set. Run the MergeIntoSwagger processor before validate()');
+        Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
         return false;
     }
 }

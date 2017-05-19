@@ -3,5 +3,5 @@
 /bin/phpcbf
 /bin/phpcs
 /bin/phpunit
-/swagger.json
+/openapi.json
 

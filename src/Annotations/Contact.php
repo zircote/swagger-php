@@ -10,7 +10,7 @@ namespace Swagger\Annotations;
  * @Annotation
  * Contact information for the exposed API.
  *
- * A Swagger "Contact Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#contactObject
+ * A "Contact Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#contactObject
  */
 class Contact extends AbstractAnnotation
 {

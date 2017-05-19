@@ -6,7 +6,7 @@
 
 namespace Swagger;
 
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
 
 if (defined('Swagger\UNDEFINED') === false) {
@@ -26,7 +26,7 @@ if (defined('Swagger\UNDEFINED') === false) {
      *   analyser: defaults to StaticAnalyser
      *   analysis: defaults to a new Analysis
      *   processors: defaults to the registered processors in Analysis
-     * @return Swagger
+     * @return OpenApi
      */
     function scan($directory, $options = array())
     {
@@ -44,6 +44,6 @@ if (defined('Swagger\UNDEFINED') === false) {
         $analysis->process($processors);
         // Validation (Generate notices & warnings)
         $analysis->validate();
-        return $analysis->swagger;
+        return $analysis->openapi;
     }
 }

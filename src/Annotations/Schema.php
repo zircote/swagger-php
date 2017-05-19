@@ -13,7 +13,7 @@ namespace Swagger\Annotations;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
+ * A "Schema Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#schemaObject
  * JSON Schema: http://json-schema.org/latest/json-schema-validation.html
  */
 class Schema extends AbstractAnnotation

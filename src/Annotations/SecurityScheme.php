@@ -8,12 +8,12 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- * A Swagger "Security Scheme Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#securitySchemeObject
+ * A "Security Scheme Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#securitySchemeObject
  */
 class SecurityScheme extends AbstractAnnotation
 {
     /**
-     * The key into Swagger->securityDefinitions array.
+     * The key into OpenApi->securityDefinitions array.
      * @var string
      */
     public $securityDefinition;
@@ -80,7 +80,7 @@ class SecurityScheme extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger',
+        'Swagger\Annotations\OpenApi',
     ];
 
     /** {@inheritdoc} */

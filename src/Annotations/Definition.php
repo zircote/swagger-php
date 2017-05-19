@@ -12,7 +12,7 @@ namespace Swagger\Annotations;
 class Definition extends Schema
 {
     /**
-     * The key into Swagger->definitions array.
+     * The key in the OpenApi->definitions array.
      * @var string
      */
     public $definition;
@@ -24,6 +24,6 @@ class Definition extends Schema
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger'
+        'Swagger\Annotations\OpenApi'
     ];
 }

@@ -10,38 +10,38 @@ use Swagger\Analysis;
 use Swagger\Annotations\Get;
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Post;
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Swagger\Processors\BuildPaths;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 
 class BuildPathsTest extends SwaggerTestCase
 {
     public function testMergePathsWithSamePath()
     {
-        $swagger = new Swagger([]);
-        $swagger->paths = [
+        $openapi = new OpenApi([]);
+        $openapi->paths = [
             new Path(['path' => '/comments']),
             new Path(['path' => '/comments'])
         ];
-        $analysis = new Analysis([$swagger]);
-        $analysis->swagger = $swagger;
+        $analysis = new Analysis([$openapi]);
+        $analysis->openapi = $openapi;
         $analysis->process(new BuildPaths());
-        $this->assertCount(1, $swagger->paths);
-        $this->assertSame('/comments', $swagger->paths[0]->path);
+        $this->assertCount(1, $openapi->paths);
+        $this->assertSame('/comments', $openapi->paths[0]->path);
     }
 
     public function testMergeOperationsWithSamePath()
     {
-        $swagger = new Swagger([]);
+        $openapi = new OpenApi([]);
         $analysis = new Analysis([
-            $swagger,
+            $openapi,
             new Get(['path' => '/comments']),
             new Post(['path' => '/comments'])
         ]);
-        $analysis->process(new MergeIntoSwagger());
+        $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new BuildPaths());
-        $this->assertCount(1, $swagger->paths);
-        $path = $swagger->paths[0];
+        $this->assertCount(1, $openapi->paths);
+        $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);
         $this->assertInstanceOf('\Swagger\Annotations\Path', $path);
         $this->assertInstanceOf('\Swagger\Annotations\Get', $path->get);

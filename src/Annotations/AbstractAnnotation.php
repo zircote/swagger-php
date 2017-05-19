@@ -21,7 +21,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     /**
      * Allows extensions to the Swagger Schema.
      * The keys inside the array will be prefixed with `x-`.
-     * For further details see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#vendorExtensions.
+     * For further details see https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#vendorExtensions.
      * @var array
      */
     public $x;
@@ -38,7 +38,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     public $_unmerged = [];
 
     /**
-     * The properties which are required by [the spec](https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md)
+     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md)
      * @var array
      */
     public static $_required = [];
@@ -375,7 +375,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                     foreach (static::$_nested as $class => $nested) {
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
                         if ($property === $nestedProperty) {
-                            if ($this instanceof Swagger) {
+                            if ($this instanceof OpenApi) {
                                 $message = 'Required @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() not found';
                             } elseif (is_array($nested)) {
                                 $message = $this->identity() . ' requires at least one @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() in ' . $this->_context;

@@ -15,10 +15,10 @@ class AugmentParameters
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->swagger->parameters) {
+        if ($analysis->openapi->parameters) {
             $keys = [];
             $parametersWithoutKey = [];
-            foreach ($analysis->swagger->parameters as $parameter) {
+            foreach ($analysis->openapi->parameters as $parameter) {
                 if ($parameter->parameter) {
                     $keys[$parameter->parameter] = $parameter;
                 } else {

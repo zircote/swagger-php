@@ -7,7 +7,7 @@
 namespace Swagger\Processors;
 
 use Swagger\Annotations\Property;
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Swagger\Annotations\Definition;
 use Swagger\Analysis;
 use Traversable;

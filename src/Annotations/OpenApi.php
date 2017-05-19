@@ -14,12 +14,12 @@ use Swagger\Logger;
  * @Annotation
  * This is the root document object for the API specification.
  *
- * A Swagger "Swagger Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#swagger-object-
+ * A  "OpenApi Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object
  */
-class Swagger extends AbstractAnnotation
+class OpenApi extends AbstractAnnotation
 {
     /**
-     * Specifies the Swagger Specification version being used. It can be used by the Swagger UI and other clients to interpret the API listing.
+     * Specifies the OpenAPI Specification version being used. It can be used by the Swagger UI and other clients to interpret the API listing.
      * @var string
      */
     public $openapi = '3.0';

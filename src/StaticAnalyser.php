@@ -69,7 +69,7 @@ class StaticAnalyser
         $analysis = new Analysis();
         reset($tokens);
         $token = '';
-        $imports = Analyser::$defaultImports; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
+        $imports = Analyser::$defaultImports; // Use @SWG\* for swagger-php annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
         $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.

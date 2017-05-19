@@ -24,10 +24,10 @@ class AbstractAnnotationTest extends SwaggerTestCase
 
     public function testUmergedAnnotation()
     {
-        $swagger = $this->createSwaggerWithInfo();
-        $swagger->merge($this->parseComment('@SWG\Items()'));
+        $openapi = $this->createSwaggerWithInfo();
+        $openapi->merge($this->parseComment('@SWG\Items()'));
         $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Items(), expected to be inside @SWG\\');
-        $swagger->validate();
+        $openapi->validate();
     }
 
     public function testConflictedNesting()

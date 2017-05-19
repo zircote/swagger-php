@@ -8,7 +8,7 @@ namespace SwaggerTests;
 
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class NestedPropertyTest extends SwaggerTestCase
@@ -17,12 +17,12 @@ class NestedPropertyTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/NestedProperty.php');
-        $analysis->process(new MergeIntoSwagger());
+        $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new AugmentDefinitions());
         $analysis->process(new AugmentProperties());
         
-        $this->assertCount(1, $analysis->swagger->definitions);
-        $definition = $analysis->swagger->definitions[0];
+        $this->assertCount(1, $analysis->openapi->definitions);
+        $definition = $analysis->openapi->definitions[0];
         $this->assertEquals('NestedProperty', $definition->definition);
         $this->assertCount(1, $definition->properties);
 

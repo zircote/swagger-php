@@ -36,7 +36,7 @@ class SerializerTest extends SwaggerTestCase
         $resp->schema = $schema;
         $path->post->responses = [$resp];
 
-        $expected = new Annotations\Swagger([]);
+        $expected = new Annotations\OpenApi([]);
         $expected->openapi= '3.0';
         $expected->paths = [
             $path,
@@ -103,9 +103,9 @@ class SerializerTest extends SwaggerTestCase
 }
 JSON;
 
-        $annotation = $serializer->deserialize($json, 'Swagger\Annotations\Swagger');
+        $annotation = $serializer->deserialize($json, 'Swagger\Annotations\OpenApi');
 
-        $this->assertInstanceOf('Swagger\Annotations\Swagger', $annotation);
+        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->__toString(),
             $this->getExpected()->__toString()
@@ -115,8 +115,8 @@ JSON;
     public function testPetstoreExample()
     {
         $serializer = new Serializer();
-        $swagger = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
-        $this->assertInstanceOf('Swagger\Annotations\Swagger', $swagger);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $swagger);
+        $openapi = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
+        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $openapi);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $openapi);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @SWG\Swagger(
+ * @SWG\OpenApi(
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",

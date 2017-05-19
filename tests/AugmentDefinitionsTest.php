@@ -7,7 +7,7 @@
 namespace SwaggerTests;
 
 use Swagger\Processors\AugmentDefinitions;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class AugmentDefinitionsTest extends SwaggerTestCase
@@ -16,9 +16,9 @@ class AugmentDefinitionsTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
-        $analysis->process(new MergeIntoSwagger());
-        $this->assertCount(1, $analysis->swagger->definitions);
-        $customer = $analysis->swagger->definitions[0];
+        $analysis->process(new MergeIntoOpenApi());
+        $this->assertCount(1, $analysis->openapi->definitions);
+        $customer = $analysis->openapi->definitions[0];
         $this->assertNull($customer->properties, 'Sanity check. @SWG\Property\'s not yet merged ');
         $analysis->process(new AugmentDefinitions());
         $this->assertSame('Customer', $customer->definition, '@SWG\Definition()->definition based on classname');

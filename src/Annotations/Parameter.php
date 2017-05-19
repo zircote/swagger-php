@@ -12,7 +12,7 @@ use \Swagger\Logger;
  * @Annotation
  * Describes a single operation parameter.
  *
- * A Swagger "Parameter Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
+ * A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#parameterObject
  */
 class Parameter extends AbstractAnnotation
 {
@@ -201,7 +201,7 @@ class Parameter extends AbstractAnnotation
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
-        'Swagger\Annotations\Swagger'
+        'Swagger\Annotations\OpenApi'
     ];
 
     /** @inheritdoc */
