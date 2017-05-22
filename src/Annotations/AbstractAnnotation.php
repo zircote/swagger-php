@@ -127,7 +127,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function __get($property)
     {
         $properties = get_object_vars($this);
-        Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', exising properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
+        Logger::notice('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
     public function __set($property, $value)
