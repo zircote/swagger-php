@@ -11,6 +11,7 @@ use Exception;
 use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\CustomAnnotation;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentOperations;
@@ -31,6 +32,11 @@ class Analysis
      * @var SplObjectStorage
      */
     public $annotations;
+
+    /**
+     * @var CustomAnnotationHandlerInterface
+     */
+    public static $customAnnotationHandler = null;
 
     /**
      * Class definitions
@@ -71,6 +77,10 @@ class Analysis
      */
     public function addAnnotation($annotation, $context)
     {
+        if (($annotation instanceof CustomAnnotation) && self::$customAnnotationHandler) {
+            $this->addAnnotations(self::$customAnnotationHandler->migrate($annotation), $context);
+        }
+
         if ($this->annotations->contains($annotation)) {
             return;
         }
