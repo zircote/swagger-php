@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Annotations\AbstractAnnotation;
+
 /**
  * @Annotation
  * The definition of input and output data types.
