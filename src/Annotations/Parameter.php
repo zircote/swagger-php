@@ -16,6 +16,12 @@ use \Swagger\Logger;
  */
 class Parameter extends AbstractAnnotation
 {
+    const IN_QUERY = 'query';
+    const IN_HEADER = 'header';
+    const IN_PATH= 'path';
+    const IN_FORMDATA = 'formData';
+    const IN_BODY = 'body';
+
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
      * @var string
