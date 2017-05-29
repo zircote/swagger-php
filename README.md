@@ -49,7 +49,7 @@ Generate always-up-to-date documentation.
 
 ```php
 <?php
-require("vendor/autoload.php");
+require __DIR__ . '/vendor/autoload.php';
 $swagger = \Swagger\scan('/path/to/project');
 header('Content-Type: application/json');
 echo $swagger;
