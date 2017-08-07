@@ -101,7 +101,7 @@ class StaticAnalyser
                 }
                 $token = $this->nextToken($tokens, $parseContext);
 
-                if (is_string($token) && $token === '{') {
+                if (is_string($token) && ($token === '(' || $token === '{')) {
                     // php7 anonymous classes (i.e. new class { public function foo() {} };)
                     continue;
                 }
