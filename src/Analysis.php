@@ -18,6 +18,7 @@ use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
+use Swagger\Processors\HandleFormat;
 use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoSwagger;
@@ -297,6 +298,7 @@ class Analysis
                 new AugmentOperations(),
                 new AugmentParameters(),
                 new CleanUnmerged(),
+                new HandleFormat(),
             ];
         }
         return self::$processors;

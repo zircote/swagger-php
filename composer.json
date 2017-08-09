@@ -1,5 +1,5 @@
 {
-    "name": "zircote/swagger-php",
+    "name": "ownfire/swagger-php",
     "type": "library",
     "license": "Apache2",
     "bin": ["bin/swagger"],
