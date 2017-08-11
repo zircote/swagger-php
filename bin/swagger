@@ -39,7 +39,7 @@ try {
                 throw new Exception('Unknown option: "' . $arg . '"');
             }
         } else {
-            $paths[] = $arg;
+            $paths = explode(',', $arg);
             continue;
         }
         if (array_key_exists($option, $options) === false) {
@@ -81,7 +81,7 @@ if ($error) {
 if ($options['help']) {
     $help = <<<EOF
 
-Usage: swagger [--option value] [/path/to/project ...]
+Usage: swagger [--option value] [/path/to/project,/path/to/another/project ...]
 
 Options:
   --output (-o)     Path to store the generated documentation.
