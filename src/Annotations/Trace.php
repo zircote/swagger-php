@@ -9,10 +9,10 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  */
-class Patch extends Operation
+class Trace extends Operation
 {
     /** @inheritdoc */
-    public $method = 'patch';
+    public $method = 'trace';
 
     /** @inheritdoc */
     public static $_parents = [

@@ -21,7 +21,7 @@ AnnotationRegistry::registerLoader(function ($class) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
             $loaded = class_exists($class);
             if (!$loaded && $namespace === 'Swagger\Annotations\\') {
-                if (in_array(strtolower(substr($class, 20)), ['definition', 'securityscheme'])) { // Detected an 2.x annotation?
+                if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
                     throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                 }
             }

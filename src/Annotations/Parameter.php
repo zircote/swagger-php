@@ -23,7 +23,7 @@ class Parameter extends AbstractAnnotation
     public $ref;
 
     /**
-     * The key into Swagger->parameters or Path->parameters array.
+     * The key into Components->parameters or Path->parameters array.
      * @var string
      */
     public $parameter;
@@ -193,15 +193,16 @@ class Parameter extends AbstractAnnotation
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Components',
+        'Swagger\Annotations\PathItem',
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
         'Swagger\Annotations\Post',
         'Swagger\Annotations\Put',
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Path',
         'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options'
+        'Swagger\Annotations\Options',
+        'Swagger\Annotations\Trace',
     ];
 
     /** @inheritdoc */

@@ -19,16 +19,16 @@ class MergeIntoComponents
     public function __invoke(Analysis $analysis)
     {
         $components = $analysis->openapi->components;
+        if (!$components) {
+            $components = new Components([]);
+            $components->_context->generated = true;
+        }
         $classes = array_keys(Components::$_nested);
         foreach ($analysis->annotations as $annotation) {
             $class = get_class($annotation);
             if (in_array($class, $classes) && $annotation->_context->is('nested') === false) { // A top level annotation.
-                list($collection, $property) = Components::$_nested[$class];
-                // $value = $annotation->$property;
-                // if ($value === null || $value === UNDEFINED) {
-                //     continue;
-                // }
-                array_push($components->$collection, $annotation);
+                $components->merge([$annotation], true);
+                $analysis->openapi->components = $components;
             }
         }
     }

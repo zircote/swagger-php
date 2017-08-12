@@ -8,7 +8,7 @@ namespace SwaggerTests;
 
 use Swagger\Analysis;
 use Swagger\Annotations\Get;
-use Swagger\Annotations\Path;
+use Swagger\Annotations\PathItem;
 use Swagger\Annotations\Post;
 use Swagger\Annotations\OpenApi;
 use Swagger\Processors\BuildPaths;
@@ -20,8 +20,8 @@ class BuildPathsTest extends SwaggerTestCase
     {
         $openapi = new OpenApi([]);
         $openapi->paths = [
-            new Path(['path' => '/comments']),
-            new Path(['path' => '/comments'])
+            new PathItem(['path' => '/comments']),
+            new PathItem(['path' => '/comments'])
         ];
         $analysis = new Analysis([$openapi]);
         $analysis->openapi = $openapi;
@@ -43,7 +43,7 @@ class BuildPathsTest extends SwaggerTestCase
         $this->assertCount(1, $openapi->paths);
         $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);
-        $this->assertInstanceOf('\Swagger\Annotations\Path', $path);
+        $this->assertInstanceOf('\Swagger\Annotations\PathItem', $path);
         $this->assertInstanceOf('\Swagger\Annotations\Get', $path->get);
         $this->assertInstanceOf('\Swagger\Annotations\Post', $path->post);
         $this->assertNull($path->put);

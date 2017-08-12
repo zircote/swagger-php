@@ -41,10 +41,12 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
-        /** @var Schema $schema */
-        foreach ($analysis->openapi->components->schemas as $schema) {
-            if ($schema->schema) {
-                $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))] = '#/components/schemas/' . $schema->schema;
+        if ($analysis->openapi->components && $analysis->openapi->components->schemas) {
+            /** @var Schema $schema */
+            foreach ($analysis->openapi->components->schemas as $schema) {
+                if ($schema->schema) {
+                    $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))] = '#/components/schemas/' . $schema->schema;
+                }
             }
         }
 

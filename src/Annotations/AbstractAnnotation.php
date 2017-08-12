@@ -14,14 +14,15 @@ use Swagger\Context;
 use Swagger\Logger;
 
 /**
- * The swagger annotation base class.
+ * The openapi annotation base class.
  */
 abstract class AbstractAnnotation implements JsonSerializable
 {
     /**
-     * Allows extensions to the Swagger Schema.
+     * While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
+     * For further details see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions
      * The keys inside the array will be prefixed with `x-`.
-     * For further details see https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#vendorExtensions.
+     *
      * @var array
      */
     public $x;
@@ -38,7 +39,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     public $_unmerged = [];
 
     /**
-     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md)
+     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
      * @var array
      */
     public static $_required = [];
@@ -59,7 +60,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      * Examples:
      *   'Swagger\Annotation\Info' => 'info', // Set @SWG\Info annotation as the info property.
      *   'Swagger\Annotation\Parameter' => ['parameters'],  // Append @SWG\Parameter annotations the parameters array.
-     *   'Swagger\Annotation\Path' => ['paths', 'path'],  // Append @SWG\Path annotations the paths array and use path as key.
+     *   'Swagger\Annotation\PathItem' => ['paths', 'path'],  // Append @SWG\PathItem annotations the paths array and use path as key.
      * @var array
      */
     public static $_nested = [];

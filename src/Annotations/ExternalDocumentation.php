@@ -50,6 +50,7 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
+        'Swagger\Annotations\Trace',
         'Swagger\Annotations\Items',
     ];
 }

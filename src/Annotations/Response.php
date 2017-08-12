@@ -75,5 +75,6 @@ class Response extends AbstractAnnotation
         'Swagger\Annotations\Delete',
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
+        'Swagger\Annotations\Trace',
     ];
 }

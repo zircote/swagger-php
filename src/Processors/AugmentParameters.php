@@ -15,7 +15,7 @@ class AugmentParameters
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->openapi->components->parameters) {
+        if ($analysis->openapi->components && $analysis->openapi->components->parameters) {
             $keys = [];
             $parametersWithoutKey = [];
             foreach ($analysis->openapi->components->parameters as $parameter) {

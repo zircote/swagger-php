@@ -10,18 +10,20 @@ namespace Swagger\Annotations;
  * @Annotation
  * License information for the exposed API.
  *
- * A "License Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#licenseObject
+ * A "License Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#license-object
  */
 class License extends AbstractAnnotation
 {
     /**
      * The license name used for the API.
+     *
      * @var string
      */
     public $name;
 
     /**
      * A URL to the license used for the API.
+     *
      * @var string
      */
     public $url;

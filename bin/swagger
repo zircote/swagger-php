@@ -160,10 +160,10 @@ $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 $counter = 0;
 
 // Output report
-foreach ($openapi->paths as $path) {
-    foreach ($path as $method => $operation) {
+foreach ($openapi->paths as $pathItem) {
+    foreach ($pathItem as $method => $operation) {
         if ($operation !== null && in_array($method, $methods)) {
-            error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $path->path);
+            error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $pathItem->path);
             $counter++;
         }
     }

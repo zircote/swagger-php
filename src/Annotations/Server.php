@@ -39,6 +39,30 @@ class Server extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi'
+        'Swagger\Annotations\OpenApi',
+        'Swagger\Annotations\PathItem',
+        'Swagger\Annotations\Operation',
+        'Swagger\Annotations\Get',
+        'Swagger\Annotations\Post',
+        'Swagger\Annotations\Put',
+        'Swagger\Annotations\Delete',
+        'Swagger\Annotations\Patch',
+        'Swagger\Annotations\Head',
+        'Swagger\Annotations\Options',
+        'Swagger\Annotations\Trace',
+    ];
+
+    /** @inheritdoc */
+    public static $_nested = [
+        'Swagger\Annotations\ServerVariable' => ['variables', 'serverVariable'],
+    ];
+
+    /** @inheritdoc */
+    public static $_required = ['url'];
+
+    /** @inheritdoc */
+    public static $_types = [
+        'url' => 'string',
+        'description' => 'string',
     ];
 }

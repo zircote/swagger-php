@@ -6,20 +6,20 @@
 
 namespace Swagger\Processors;
 
-use Swagger\Annotations\Path;
+use Swagger\Annotations\PathItem;
 use Swagger\Logger;
 use Swagger\Context;
 use Swagger\Analysis;
 
 /**
- * Build the swagger->paths using the detected @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
+ * Build the swagger->paths using the detected @SWG\PathItem and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
  */
 class BuildPaths
 {
     public function __invoke(Analysis $analysis)
     {
         $paths = [];
-        // Merge @SWG\Paths with the same path.
+        // Merge @SWG\PathItems with the same path.
         foreach ($analysis->openapi->paths as $annotation) {
             if (empty($annotation->path)) {
                 Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
@@ -31,12 +31,12 @@ class BuildPaths
             }
         }
 
-        // Merge @SWG\Operations into existing @SWG\Paths or create a new one.
+        // Merge @SWG\Operations into existing @SWG\PathItems or create a new one.
         $operations = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Operation');
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {
-                    $paths[$operation->path] = new Path([
+                    $paths[$operation->path] = new PathItem([
                         'path' => $operation->path,
                         '_context' => new Context(['generated' => true], $operation->_context)
                     ]);

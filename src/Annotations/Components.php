@@ -19,63 +19,63 @@ class Components extends AbstractAnnotation
      *
      * @var Schema[]
      */
-    public $schemas = [];
+    public $schemas;
 
     /**
      * Reusable Responses.
      *
      * @var Response[]
      */
-    public $responses = [];
+    public $responses;
 
     /**
      * Reusable Parameters.
      *
      * @var Parameter[]
      */
-    public $parameters = [];
+    public $parameters;
 
     /**
      * Reusable Examples.
      *
      * @var Example[]
      */
-    public $examples = [];
+    public $examples;
 
     /**
      * Reusable Request Bodys.
      *
      * @var Request[]
      */
-    public $requestBodies = [];
+    public $requestBodies;
 
     /**
      * Reusable Headers.
      *
      * @var Header[]
      */
-    public $headers = [];
+    public $headers;
 
     /**
      * Reusable Security Schemes.
      *
      * @var SecurityScheme[]
      */
-    public $securitySchemes = [];
+    public $securitySchemes;
 
     /**
      * Reusable Links.
      *
      * @var Link[]
      */
-    public $links = [];
+    public $links;
 
     /**
      * Reusable Callbacks.
      *
      * @var Callback[]
      */
-    public $callbacks = [];
+    public $callbacks;
 
     /** @inheritdoc */
     public static $_parents = [
@@ -89,16 +89,6 @@ class Components extends AbstractAnnotation
         'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
         // 'Swagger\Annotations\Request' => ['requestBodys', 'request'],
         'Swagger\Annotations\Header' => ['headers', 'header'],
+        'Swagger\Annotations\SecurityScheme' => ['securitySchemes', 'securityScheme'],
     ];
-
-    public function jsonSerialize()
-    {
-        $serialized = parent::jsonSerialize();
-        foreach (self::$_nested as list($property)) {
-            if (count($this->$property) === 0) {
-                unset($serialized[$property]);
-            }
-        }
-        return $serialized;
-    }
 }

@@ -21,7 +21,7 @@ class MergeIntoComponentsTest extends SwaggerTestCase
             $openapi,
             $response
         ]);
-        $this->assertCount(0, $openapi->components->responses);
+        $this->assertNull($openapi->components);
         $analysis->process(new MergeIntoComponents());
         $this->assertCount(1, $openapi->components->responses);
         $this->assertSame($response, $openapi->components->responses[0]);

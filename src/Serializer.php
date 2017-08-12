@@ -11,7 +11,6 @@ namespace Swagger;
 class Serializer
 {
     const CONTACT = 'Swagger\Annotations\Contact';
-    const DEFINITION = 'Swagger\Annotations\Schema';
     const DELETE = 'Swagger\Annotations\Delete';
     const EXTERNALDOCUMENTATION = 'Swagger\Annotations\ExternalDocumentation';
     const GET = 'Swagger\Annotations\Get';
@@ -24,14 +23,14 @@ class Serializer
     const OPTIONS = 'Swagger\Annotations\Options';
     const PARAMETER = 'Swagger\Annotations\Parameter';
     const PATCH = 'Swagger\Annotations\Patch';
-    const PATH = 'Swagger\Annotations\Path';
+    const PATHITEM = 'Swagger\Annotations\PathItem';
     const POST = 'Swagger\Annotations\Post';
     const PROPERTY = 'Swagger\Annotations\Property';
     const PUT = 'Swagger\Annotations\Put';
     const RESPONSE = 'Swagger\Annotations\Response';
     const SCHEMA = 'Swagger\Annotations\Schema';
     const SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
-    const SWAGGER = 'Swagger\Annotations\OpenApi';
+    const OPENAPI = 'Swagger\Annotations\OpenApi';
     const TAG = 'Swagger\Annotations\Tag';
     const XML = 'Swagger\Annotations\Xml';
 

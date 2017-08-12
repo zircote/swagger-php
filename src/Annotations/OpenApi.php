@@ -64,7 +64,7 @@ class OpenApi extends AbstractAnnotation
      * Only one of the security requirement objects need to be satisfied to authorize a request.
      * Individual operations can override this definition.
      *
-     * @var SecurityRequirement[]
+     * @var array
      */
     public $security;
 
@@ -101,23 +101,14 @@ class OpenApi extends AbstractAnnotation
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
         'Swagger\Annotations\Server' => ['servers', 'server'],
-        'Swagger\Annotations\Path' => ['paths', 'path'],
+        'Swagger\Annotations\PathItem' => ['paths', 'path'],
         'Swagger\Annotations\Components' => 'components',
         'Swagger\Annotations\Tag' => ['tags'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\SecurityRequirement' => ['security', 'securityRequirement']
     ];
 
     /** @inheritdoc */
     public static $_types = [];
-
-    public function __construct($properties)
-    {
-        parent::__construct($properties);
-        if ($this->components === null) {
-            $this->components = new Components(['_context'=> new Context(['nested' => $this], $this->_context)]);
-        }
-    }
 
     /** @inheritdoc */
     public function validate($parents = null, $skip = null, $ref = null)
