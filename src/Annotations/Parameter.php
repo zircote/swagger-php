@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -192,6 +192,7 @@ class Parameter extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
+        'Swagger\Annotations\Components',
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
         'Swagger\Annotations\Post',
@@ -200,8 +201,7 @@ class Parameter extends AbstractAnnotation
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Path',
         'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\OpenApi'
+        'Swagger\Annotations\Options'
     ];
 
     /** @inheritdoc */

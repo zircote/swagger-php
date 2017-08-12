@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -10,13 +10,13 @@ namespace Swagger\Annotations;
  * @Annotation
  * A "Security Scheme Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#securitySchemeObject
  */
-class SecurityScheme extends AbstractAnnotation
+class SecurityRequirement extends AbstractAnnotation
 {
     /**
-     * The key into OpenApi->securityDefinitions array.
+     * The key into OpenApi->security array.
      * @var string
      */
-    public $securityDefinition;
+    public $securityRequirement;
 
     /**
      * The type of the security scheme.

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -40,7 +40,7 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\OpenApi',
         'Swagger\Annotations\Tag',
         'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',

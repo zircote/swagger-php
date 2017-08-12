@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace SwaggerFixures;
 
 use Exception;
@@ -8,36 +8,36 @@ use Swagger\Annotations as SWG;
 
 /**
  * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @SWG\Definition()
+ * @SWG\Schema()
  */
 class Customer
 {
-    
+
     /**
      * The firstname of the customer.
      * @var string
      * @SWG\Property()
      */
     public $firstname;
-    
+
     /**
      * @var string The lastname of the customer.
      * @SWG\Property()
      */
     public $lastname;
-    
+
     /**
      * @SWG\Property()
      * @var string[]
      */
     public $tags;
-    
+
     /**
      * @SWG\Property()
      * @var Customer
      */
     public $submittedBy;
-    
+
     /**
      * @SWG\Property()
      * @var Customer[]

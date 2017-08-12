@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -27,7 +27,7 @@ class Items extends Schema
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Schema',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\Header',
     ];

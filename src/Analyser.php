@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -21,8 +21,8 @@ AnnotationRegistry::registerLoader(function ($class) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
             $loaded = class_exists($class);
             if (!$loaded && $namespace === 'Swagger\Annotations\\') {
-                if (in_array(strtolower(substr($class, 20)), ['model', 'resource', 'api'])) { // Detected an 1.x annotation?
-                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v2.md");
+                if (in_array(strtolower(substr($class, 20)), ['definition', 'securityscheme'])) { // Detected an 2.x annotation?
+                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                 }
             }
             return $loaded;
@@ -98,7 +98,7 @@ class Analyser
             return $annotations;
         } catch (Exception $e) {
             self::$context = null;
-            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote($context, '/') . '\.$/', $e->getMessage(), $matches)) {
+            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string)$context, '/') . '\.$/', $e->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
                 $errorPos = $matches[2];
                 $atPos = strpos($comment, '@');

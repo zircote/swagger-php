@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -20,13 +20,13 @@ class ContextTest extends SwaggerTestCase
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
         $this->assertSame('SwaggerTests', $context->namespace);
-//        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
+        //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
     public function testFullyQualifiedName()
     {
         $openapi = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
-        $context = $openapi->definitions[0]->_context;
+        $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
         $this->assertSame('\SwaggerFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
@@ -56,7 +56,7 @@ END
 /**
  * A description spread across
  * multiple lines.
- *           
+ *
  * even blank lines
  *
  * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))

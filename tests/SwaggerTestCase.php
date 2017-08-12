@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -7,7 +7,7 @@
 namespace SwaggerTests;
 
 use Closure;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Exception;
 use Swagger\Annotations\AbstractAnnotation;
@@ -16,7 +16,7 @@ use Swagger\Context;
 use Swagger\Logger;
 use Swagger\Analyser;
 
-class SwaggerTestCase extends PHPUnit_Framework_TestCase
+class SwaggerTestCase extends TestCase
 {
 
     /**

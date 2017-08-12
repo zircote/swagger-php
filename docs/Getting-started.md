@@ -127,8 +127,7 @@ Generates:
         }
       }
     }
-  },
-  "definitions": []
+  }
 }
 ```
 
@@ -138,7 +137,7 @@ swagger-php looks at the context of the comment which reduces duplication.
 
 ```php
 /**
- * @SWG\Definition()
+ * @SWG\Schema()
  */
 class Product {
 
@@ -193,8 +192,8 @@ The spec solves most of this by using `$ref`s
 
 ```php
     /**
-     * @SWG\Definition(
-     *   definition="product_id",
+     * @SWG\Schema(
+     *   schema="product_id",
      *   type="integer",
      *   format="int64",
      *   description="The unique identifier of a product in our catalog"
@@ -208,21 +207,23 @@ Results in:
 {
     "openapi": "3.0",
     "paths": {},
-    "definitions": {
-        "product_id": {
-            "description": "The unique identifier of a product in our catalog",
-            "type": "integer",
-            "format": "int64"
+    "components": {
+        "schemas": {
+            "product_id": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "integer",
+                "format": "int64"
+            }
         }
     }
 }
 ```
 
-Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/definitions/product_id`
+Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/components/schemas/product_id`
 
 ```php
     /**
-     * @SWG\Property(ref="#/definitions/product_id")
+     * @SWG\Property(ref="#/components/schemas/product_id")
      */
     public $id;
 ```

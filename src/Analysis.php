@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -12,7 +12,7 @@ use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\OpenApi;
-use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
@@ -20,6 +20,7 @@ use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
+use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
 
 /**
@@ -76,6 +77,9 @@ class Analysis
         }
         if ($annotation instanceof AbstractAnnotation) {
             $context = $annotation->_context;
+            if ($this->openapi === null && $annotation instanceof OpenApi) {
+                $this->openapi = $annotation;
+            }
         } else {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
@@ -289,10 +293,11 @@ class Analysis
             // Add default processors.
             self::$processors = [
                 new MergeIntoOpenApi(),
-                new BuildPaths(),
-                new HandleReferences(),
-                new AugmentDefinitions(),
+                new MergeIntoComponents(),
+                new AugmentSchemas(),
                 new AugmentProperties(),
+                new BuildPaths(),
+                // new HandleReferences(),
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),
@@ -332,5 +337,10 @@ class Analysis
         }
         Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
         return false;
+    }
+
+    public function __toString()
+    {
+        return json_encode($this->openapi, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }

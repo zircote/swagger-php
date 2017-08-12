@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -56,7 +56,7 @@ class Xml extends AbstractAnnotation
     public static $_parents = [
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
-        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Schema',
         'Swagger\Annotations\Items',
     ];
 }

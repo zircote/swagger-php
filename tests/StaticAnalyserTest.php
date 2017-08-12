@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -16,7 +16,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php\n/*\n * @SWG\Parameter() */", new Context([]));
+        $analyser->fromCode("<?php declare(strict_types=1);\n/*\n * @SWG\Parameter() */", new Context([]));
     }
 
     public function testIndentationCorrection()
@@ -25,7 +25,7 @@ class StaticAnalyserTest extends SwaggerTestCase
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/routes.php');
         $this->assertCount(18, $analysis->annotations);
     }
-    
+
     public function testTrait()
     {
         $analyser = new StaticAnalyser();
@@ -34,7 +34,7 @@ class StaticAnalyserTest extends SwaggerTestCase
         $property = $analysis->getAnnotationsOfType('Swagger\Annotations\Property')[0];
         $this->assertSame('Hello', $property->_context->trait);
     }
-    
+
     public function testThirdPartyAnnotations()
     {
         $backup = Analyser::$whitelist;

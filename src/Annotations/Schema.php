@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -23,6 +23,12 @@ class Schema extends AbstractAnnotation
      * @var string
      */
     public $ref;
+
+    /**
+     * The key into Components->schemas array.
+     * @var string
+     */
+    public $schema;
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
@@ -201,13 +207,13 @@ class Schema extends AbstractAnnotation
      * @var Schema[]
      */
     public $anyOf;
- 
+
     /**
      * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
      * @var type
      */
     public $oneOf;
-    
+
     /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64
      * @var bool|object
@@ -243,6 +249,7 @@ class Schema extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
+        'Swagger\Annotations\Components',
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
     ];

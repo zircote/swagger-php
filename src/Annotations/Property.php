@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -19,7 +19,7 @@ class Property extends Schema
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Schema',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Items',

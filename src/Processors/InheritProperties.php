@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -8,7 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Property;
 use Swagger\Annotations\OpenApi;
-use Swagger\Annotations\Definition;
+use Swagger\Annotations\Schema;
 use Swagger\Analysis;
 use Traversable;
 

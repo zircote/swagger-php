@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 namespace SwaggerFixures;
 
 /**
- * @SWG\Definition
+ * @SWG\Schema
  */
 trait Hello
 {

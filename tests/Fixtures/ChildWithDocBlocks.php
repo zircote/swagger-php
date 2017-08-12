@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AnotherNamespace;
 
 /**
- * @SWG\Definition()
+ * @SWG\Schema()
  */
 class ChildWithDocBlocks extends \SwaggerFixtures\AncestorWithoutDocBlocks
 {

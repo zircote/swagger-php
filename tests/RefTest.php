@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -29,7 +29,7 @@ END;
         $analysis = new Analysis();
         $analysis->addAnnotation($openapi, Context::detect());
         $analysis->process();
-        
+
         $analysis->validate();
         $response = $openapi->ref('#/paths/%2fapi%2fendpoint/get/responses/default');
         $this->assertInstanceOf(Response::class, $response);

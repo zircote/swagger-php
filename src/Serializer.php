@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swagger;
 
@@ -11,7 +11,7 @@ namespace Swagger;
 class Serializer
 {
     const CONTACT = 'Swagger\Annotations\Contact';
-    const DEFINITION = 'Swagger\Annotations\Definition';
+    const DEFINITION = 'Swagger\Annotations\Schema';
     const DELETE = 'Swagger\Annotations\Delete';
     const EXTERNALDOCUMENTATION = 'Swagger\Annotations\ExternalDocumentation';
     const GET = 'Swagger\Annotations\Get';

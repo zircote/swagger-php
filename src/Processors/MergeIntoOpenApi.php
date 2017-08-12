@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -17,46 +17,33 @@ class MergeIntoOpenApi
 {
     public function __invoke(Analysis $analysis)
     {
-        // Set the first OpenApi annotation as target.
-        $openapi = $analysis->openapi;
-        if (!$openapi) {
-            foreach ($analysis->annotations as $annotation) {
-                if ($annotation instanceof OpenApi) {
-                    $openapi = $annotation;
-                    $annotation->_context->analysis = $analysis;
-                    break;
-                }
-            }
-            if (!$openapi) {
-                $openapi = new OpenApi(['_context' => new Context(['analysis' => $analysis])]);
-                $analysis->annotations->attach($openapi);
-            }
+        // Auto-create the OpenApi annotation.
+        if (!$analysis->openapi) {
+            $context = new Context(['analysis' => $analysis]);
+            $analysis->addAnnotation(new OpenApi(['_context' => $context]), $context);
         }
-        $analysis->openapi = $openapi;
-        $analysis->openapi->_analysis = $analysis;
+        $openapi = $analysis->openapi;
+        $openapi->_analysis = $analysis;
 
-        // Merge all annotations into the target openapi
-        $remaining = [];
+        // Merge annotations into the target openapi
+        $merge = [];
+        $classes = array_keys(OpenApi::$_nested);
         foreach ($analysis->annotations as $annotation) {
             if ($annotation === $openapi) {
                 continue;
             }
             if ($annotation instanceof OpenApi) {
                 $paths = $annotation->paths;
-                $definitions = $annotation->definitions;
                 unset($annotation->paths);
-                unset($annotation->definitions);
                 $openapi->mergeProperties($annotation);
                 foreach ($paths as $path) {
                     $openapi->paths[] = $path;
                 }
-                foreach ($definitions as $definition) {
-                    $openapi->definitions[] = $definition;
-                }
-            } elseif (property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) { // A top level annotation.
-                $remaining[] = $annotation;
+            } elseif (in_array(get_class($annotation), $classes) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) { // A top level annotation.
+                // Also merge @SWG\Info, @SWG\Server and other directly nested annotations.
+                $merge[] = $annotation;
             }
         }
-        $openapi->merge($remaining, true);
+        $openapi->merge($merge, true);
     }
 }

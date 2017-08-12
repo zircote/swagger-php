@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -153,6 +153,7 @@ class Header extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
+        'Swagger\Annotations\Components',
         'Swagger\Annotations\Response'
     ];
 }

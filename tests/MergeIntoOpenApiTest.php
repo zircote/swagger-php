@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -11,7 +11,7 @@ use Swagger\Annotations\OpenApi;
 use Swagger\Analysis;
 use Swagger\Processors\MergeIntoOpenApi;
 
-class MergeIntoSwaggerTest extends SwaggerTestCase
+class MergeIntoOpenApiTest extends SwaggerTestCase
 {
     public function testProcessor()
     {
@@ -21,10 +21,10 @@ class MergeIntoSwaggerTest extends SwaggerTestCase
             $openapi,
             $info
         ]);
-        $this->assertNull($analysis->openapi);
+        $this->assertSame($openapi, $analysis->openapi);
         $this->assertNull($openapi->info);
         $analysis->process(new MergeIntoOpenApi());
-        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $analysis->openapi);
+        $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame($info, $openapi->info);
         $this->assertCount(0, $analysis->unmerged()->annotations);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -22,7 +22,7 @@ class AnalyserTest extends SwaggerTestCase
 
     public function testDeprecatedAnnotationWarning()
     {
-        $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\\Resource() is deprecated.');
-        $annotations = $this->parseComment('@SWG\Resource()');
+        $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\Definition() is deprecated.');
+        $annotations = $this->parseComment('@SWG\Definition()');
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -9,16 +9,16 @@ namespace Swagger\Processors;
 use Swagger\Analysis;
 
 /**
- * Use the parameter->name as keyfield (parameter->parameter) when used in swagger object.
+ * Use the parameter->name as keyfield (parameter->parameter) when used as reusable component (openapi->components->parameters)
  */
 class AugmentParameters
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->openapi->parameters) {
+        if ($analysis->openapi->components->parameters) {
             $keys = [];
             $parametersWithoutKey = [];
-            foreach ($analysis->openapi->parameters as $parameter) {
+            foreach ($analysis->openapi->components->parameters as $parameter) {
                 if ($parameter->parameter) {
                     $keys[$parameter->parameter] = $parameter;
                 } else {

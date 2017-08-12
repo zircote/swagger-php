@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -6,7 +6,7 @@
 
 namespace Swagger\Processors;
 
-use Swagger\Annotations\Definition;
+use Swagger\Annotations\Schema;
 use Swagger\Annotations\Items;
 use Swagger\Context;
 use Swagger\Analysis;
@@ -41,13 +41,13 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
-        /** @var Definition $definition */
-        foreach ($analysis->openapi->definitions as $definition) {
-            if ($definition->definition) {
-                $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/' . $definition->definition;
+        /** @var Schema $schema */
+        foreach ($analysis->openapi->components->schemas as $schema) {
+            if ($schema->schema) {
+                $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))] = '#/components/schemas/' . $schema->schema;
             }
         }
-        
+
         $allProperties = $analysis->getAnnotationsOfType('\Swagger\Annotations\Property');
         /** @var \Swagger\Annotations\Property $property */
         foreach ($allProperties as $property) {
