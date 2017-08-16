@@ -6,6 +6,8 @@
 
 namespace Swagger\Annotations;
 
+use Swagger\Logger;
+
 /**
  * @Annotation
  * The definition of input and output data types.
@@ -234,4 +236,13 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
     ];
+
+    public function validate($parents = [], $skip = [], $ref = '')
+    {
+        if ($this->type === 'array' && $this->items === null) {
+            Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            return false;
+        }
+        return parent::validate($parents, $skip, $ref);
+    }
 }

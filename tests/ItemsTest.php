@@ -8,10 +8,17 @@ namespace SwaggerTests;
 
 class ItemsTest extends SwaggerTestCase
 {
-    public function testTypeArray()
+    public function testItemTypeArray()
     {
         $annotations = $this->parseComment('@SWG\Items(type="array")');
         $this->assertSwaggerLogEntryStartsWith('@SWG\Items() is required when @SWG\Items() has type "array" in ');
+        $annotations[0]->validate();
+    }
+
+    public function testSchemaTypeArray()
+    {
+        $annotations = $this->parseComment('@SWG\Schema(type="array")');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Items() is required when @SWG\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
