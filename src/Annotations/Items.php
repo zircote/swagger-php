@@ -24,9 +24,7 @@ class Items extends Schema
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Property',
-        'Swagger\Annotations\Schema',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\Header',

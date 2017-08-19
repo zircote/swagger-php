@@ -8,8 +8,8 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- *
  * An "Info Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#info-object
+ *
  * The object provides metadata about the API.
  * The metadata may be used by the clients if needed, and may be presented in editing or documentation generation tools for convenience.
  */

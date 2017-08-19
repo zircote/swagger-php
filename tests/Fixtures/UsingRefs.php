@@ -24,10 +24,8 @@ class UsingRefs
  * @SWG\Parameter(
  *   name="ItemName",
  *   in="path",
- *   type="string",
  *   required=true,
  *   description="protected item name",
- *   maxLength=256
  * )
  */
 

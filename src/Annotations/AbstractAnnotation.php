@@ -258,6 +258,12 @@ abstract class AbstractAnnotation implements JsonSerializable
         foreach (static::$_blacklist as $property) {
             unset($data->$property);
         }
+        // Correct empty array to empty objects.
+        foreach (static::$_types as $property => $type) {
+            if ($type === 'object' && is_array($data->$property) && empty($data->$property)) {
+                $data->$property = new stdClass;
+            }
+        }
         // Inject vendor properties.
         unset($data->x);
         if (is_array($this->x)) {
@@ -283,7 +289,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 } else {
                     $key = $item->$keyField;
                     if ($key && empty($object->$key)) {
-                        $object->$key = $item->jsonSerialize();
+                        $object->$key = $item; //->jsonSerialize();
                         unset($object->$key->$keyField);
                     }
                 }

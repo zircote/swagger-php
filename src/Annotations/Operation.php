@@ -6,7 +6,7 @@
 
  namespace Swagger\Annotations;
 
- use Swagger\Logger;
+use Swagger\Logger;
 
  /**
  * @Annotation

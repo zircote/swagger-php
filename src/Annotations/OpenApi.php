@@ -26,7 +26,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var string
      */
-    public $openapi = '3.0';
+    public $openapi = '3.0.0';
 
     /**
      * Provides metadata about the API. The metadata may be used by tooling as required.

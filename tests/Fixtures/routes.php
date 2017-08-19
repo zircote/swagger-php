@@ -20,12 +20,11 @@
     * 			name="id",
     * 			in="path",
     * 			required=true,
-    * 			type="string",
     * 			description="UUID",
     * 		),
     * 		@SWG\Parameter(
     * 			name="user",
-    * 			in="body",
+    * 			in="cookie",
     * 			required=true,
     * 			@SWG\Schema(ref="#/definitions/User"),
     *		),
@@ -57,7 +56,6 @@
 	 * 			name="id",
 	 * 			in="path",
 	 * 			required=true,
-	 * 			type="string",
 	 * 			description="UUID",
 	 * 		),
 	 * 		@SWG\Response(

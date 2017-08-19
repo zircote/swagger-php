@@ -16,7 +16,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php declare(strict_types=1);\n/*\n * @SWG\Parameter() */", new Context([]));
+        $analyser->fromCode("<?php\n/*\n * @SWG\Parameter() */", new Context([]));
     }
 
     public function testIndentationCorrection()

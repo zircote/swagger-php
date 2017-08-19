@@ -100,7 +100,7 @@ class Analyser
             self::$context = null;
             if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string)$context, '/') . '\.$/', $e->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
-                $errorPos = $matches[2];
+                $errorPos = (int)$matches[2];
                 $atPos = strpos($comment, '@');
                 $context->line += substr_count($comment, "\n", 0, $atPos + $errorPos);
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));

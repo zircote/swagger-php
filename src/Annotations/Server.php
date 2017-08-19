@@ -50,6 +50,7 @@ class Server extends AbstractAnnotation
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
         'Swagger\Annotations\Trace',
+        'Swagger\Annotations\Link',
     ];
 
     /** @inheritdoc */

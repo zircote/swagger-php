@@ -250,7 +250,7 @@ class Schema extends AbstractAnnotation
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Components',
-        'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
+        'Swagger\Annotations\MediaType',
     ];
 }

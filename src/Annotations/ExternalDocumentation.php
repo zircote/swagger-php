@@ -10,7 +10,7 @@ namespace Swagger\Annotations;
  * @Annotation
  * Allows referencing an external resource for extended documentation.
  *
- * A "External Documentation Object":  * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
+ * A "External Documentation Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
  */
 class ExternalDocumentation extends AbstractAnnotation
 {

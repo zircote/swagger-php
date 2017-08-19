@@ -75,20 +75,12 @@ class SecurityScheme extends AbstractAnnotation
         'description' => 'string',
         'name' => 'string',
         'in' => ['query', 'header'],
-        'flow' => ['implicit', 'password', 'application', 'accessCode']
+        'flow' => ['implicit', 'password', 'application', 'accessCode'],
+        'scopes' => 'object'
     ];
 
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Components',
     ];
-
-    /** {@inheritdoc} */
-    public function jsonSerialize()
-    {
-        if (is_array($this->scopes) && empty($this->scopes)) {
-            $this->scopes = new \StdClass();
-        }
-        return parent::jsonSerialize();
-    }
 }

@@ -1,3 +1,7 @@
+## openapi-spec
+
+Using swagger-php to generate the [examples in the spec](https://github.com/OAI/OpenAPI-Specification/tree/master/examples/v3.0)
+
 ## petstore.swagger.io
 
 Using swagger-php to generate the [example for swagger-ui](http://petstore.swagger.io/)
