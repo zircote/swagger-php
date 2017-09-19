@@ -24,7 +24,7 @@
     "require": {
         "php": ">=5.6",
         "doctrine/annotations": "*",
-        "symfony/finder": "*"
+        "symfony/finder": ">=2.2"
     },
     "autoload": {
         "psr-4": {
