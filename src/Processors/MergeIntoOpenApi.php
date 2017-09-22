@@ -11,7 +11,7 @@ use Swagger\Analysis;
 use Swagger\Context;
 
 /**
- * Merge all @SWG\OpenApi annotations into one.
+ * Merge all @OAS\OpenApi annotations into one.
  */
 class MergeIntoOpenApi
 {
@@ -40,7 +40,7 @@ class MergeIntoOpenApi
                     $openapi->paths[] = $path;
                 }
             } elseif (in_array(get_class($annotation), $classes) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) { // A top level annotation.
-                // Also merge @SWG\Info, @SWG\Server and other directly nested annotations.
+                // Also merge @OAS\Info, @OAS\Server and other directly nested annotations.
                 $merge[] = $annotation;
             }
         }

@@ -13,7 +13,7 @@ class AnalyserTest extends SwaggerTestCase
 {
     public function testParseContents()
     {
-        $annotations = $this->parseComment('@SWG\Parameter(description="This is my parameter")');
+        $annotations = $this->parseComment('@OAS\Parameter(description="This is my parameter")');
         $this->assertInternalType('array', $annotations);
         $parameter = $annotations[0];
         $this->assertInstanceOf('Swagger\Annotations\Parameter', $parameter);
@@ -22,7 +22,7 @@ class AnalyserTest extends SwaggerTestCase
 
     public function testDeprecatedAnnotationWarning()
     {
-        $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\Definition() is deprecated.');
-        $annotations = $this->parseComment('@SWG\Definition()');
+        $this->assertSwaggerLogEntryStartsWith('The annotation @OAS\Definition() is deprecated.');
+        $annotations = $this->parseComment('@OAS\Definition()');
     }
 }

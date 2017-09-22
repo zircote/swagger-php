@@ -16,7 +16,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php\n/*\n * @SWG\Parameter() */", new Context([]));
+        $analyser->fromCode("<?php\n/*\n * @OAS\Parameter() */", new Context([]));
     }
 
     public function testIndentationCorrection()
@@ -41,7 +41,7 @@ class StaticAnalyserTest extends SwaggerTestCase
         Analyser::$whitelist = ['Swagger\Annotations\\'];
         $analyser = new StaticAnalyser();
         $defaultAnalysis = $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
-        $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @SWG annotations, skip the others.');
+        $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OAS annotations, skip the others.');
         // Allow Swagger to parse 3rd party annotations
         // might contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';

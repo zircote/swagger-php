@@ -23,9 +23,9 @@ class AugmentSchemasTest extends SwaggerTestCase
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertNull($customer->schema, 'Sanity check. No scheme was defined');
-        $this->assertNull($customer->properties, 'Sanity check. @SWG\Property\'s not yet merged ');
+        $this->assertNull($customer->properties, 'Sanity check. @OAS\Property\'s not yet merged ');
         $analysis->process(new AugmentSchemas());
-        $this->assertSame('Customer', $customer->schema, '@SWG\Schema()->schema based on classname');
-        $this->assertCount(5, $customer->properties, '@SWG\Property()s are merged into the @SWG\Schema of the class');
+        $this->assertSame('Customer', $customer->schema, '@OAS\Schema()->schema based on classname');
+        $this->assertCount(5, $customer->properties, '@OAS\Property()s are merged into the @OAS\Schema of the class');
     }
 }

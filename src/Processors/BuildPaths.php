@@ -12,14 +12,14 @@ use Swagger\Context;
 use Swagger\Analysis;
 
 /**
- * Build the swagger->paths using the detected @SWG\PathItem and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
+ * Build the swagger->paths using the detected @OAS\PathItem and @OAS\Operations (like @OAS\Get, @OAS\Post, etc)
  */
 class BuildPaths
 {
     public function __invoke(Analysis $analysis)
     {
         $paths = [];
-        // Merge @SWG\PathItems with the same path.
+        // Merge @OAS\PathItems with the same path.
         foreach ($analysis->openapi->paths as $annotation) {
             if (empty($annotation->path)) {
                 Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
@@ -31,7 +31,7 @@ class BuildPaths
             }
         }
 
-        // Merge @SWG\Operations into existing @SWG\PathItems or create a new one.
+        // Merge @OAS\Operations into existing @OAS\PathItems or create a new one.
         $operations = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Operation');
         foreach ($operations as $operation) {
             if ($operation->path) {

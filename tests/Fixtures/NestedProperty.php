@@ -3,17 +3,17 @@
 namespace AnotherNamespace;
 
 /**
- * @SWG\Schema()
+ * @OAS\Schema()
  */
 class NestedProperty
 {
 
     /**
      * @var bool
-     * @SWG\Property(
-     *     @SWG\Property(
+     * @OAS\Property(
+     *     @OAS\Property(
      *         property="babyProperty",
-     *         @SWG\Property(
+     *         @OAS\Property(
      *             property="theBabyOfBaby",
      *             properties={@Swagger\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
      *         )

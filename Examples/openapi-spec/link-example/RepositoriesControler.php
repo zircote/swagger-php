@@ -13,25 +13,25 @@ class RepositoriesController
 {
 
     /**
-     * @SWG\Get(path="/2.0/repositories/{username}",
+     * @OAS\Get(path="/2.0/repositories/{username}",
      *   operationId="getRepositoriesByOwner",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Response(response=200,
+     *   @OAS\Response(response=200,
      *     description="repositories owned by the supplied user",
-     *     @SWG\MediaType(mediaType="application/json",
-     *       @SWG\Schema(type="array",
-     *         @SWG\Items(ref="#/components/schemas/repository")
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(type="array",
+     *         @OAS\Items(ref="#/components/schemas/repository")
      *       )
      *     ),
-     *     @SWG\Link(link="userRepository", ref="#/components/links/UserRepository")
+     *     @OAS\Link(link="userRepository", ref="#/components/links/UserRepository")
      *   )
      * )
      *
-     * @SWG\Link(link="UserRepositories",
+     * @OAS\Link(link="UserRepositories",
      *   operationId="getRepositoriesByOwner",
      *   parameters={"username"="$response.body#/username"}
      * )
@@ -41,29 +41,29 @@ class RepositoriesController
     }
 
     /**
-     ** @SWG\Get(path="/2.0/repositories/{username}/{slug}",
+     ** @OAS\Get(path="/2.0/repositories/{username}/{slug}",
      *   operationId="getRepository",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="slug",
+     *   @OAS\Parameter(name="slug",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Response(response=200,
+     *   @OAS\Response(response=200,
      *       description="The repository",
-     *       @SWG\MediaType(mediaType="application/json",
-     *           @SWG\Schema(ref="#/components/schemas/repository")
+     *       @OAS\MediaType(mediaType="application/json",
+     *           @OAS\Schema(ref="#/components/schemas/repository")
      *       ),
-     *       @SWG\Link(link="repositoryPullRequests", ref="#/components/links/RepositoryPullRequests")
+     *       @OAS\Link(link="repositoryPullRequests", ref="#/components/links/RepositoryPullRequests")
      *     )
      *   )
      * )
      *
-     * @SWG\Link(link="UserRepository",
+     * @OAS\Link(link="UserRepository",
      *   operationId="getRepository",
      *   parameters={
      *     "username"="$response.body#/owner/username",
@@ -76,35 +76,35 @@ class RepositoriesController
     }
 
     /**
-     * @SWG\Get(path="/2.0/repositories/{username}/{slug}/pullrequests",
+     * @OAS\Get(path="/2.0/repositories/{username}/{slug}/pullrequests",
      *   operationId="getPullRequestsByRepository",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="slug",
+     *   @OAS\Parameter(name="slug",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="state",
+     *   @OAS\Parameter(name="state",
      *     in="query",
-     *     @SWG\Schema(type="string",
+     *     @OAS\Schema(type="string",
      *       enum={"open", "merged", "declined"}
      *     )
      *   ),
-     *   @SWG\Response(response=200,
+     *   @OAS\Response(response=200,
      *     description="an array of pull request objects",
-     *     @SWG\MediaType(mediaType="application/json",
-     *       @SWG\Schema(type="array",
-     *         @SWG\Items(ref="#/components/schemas/pullrequest")
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(type="array",
+     *         @OAS\Items(ref="#/components/schemas/pullrequest")
      *       )
      *     )
      *   )
      * )
      *
-     * @SWG\Link(link="RepositoryPullRequests",
+     * @OAS\Link(link="RepositoryPullRequests",
      *   operationId="getPullRequestsByRepository",
      *   parameters={
      *     "username"="$response.body#/owner/username",
@@ -117,29 +117,29 @@ class RepositoriesController
     }
 
     /**
-     * @SWG\Get(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}",
+     * @OAS\Get(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}",
      *   operationId="getPullRequestsById",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="slug",
+     *   @OAS\Parameter(name="slug",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="pid",
+     *   @OAS\Parameter(name="pid",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Response(response=200,
+     *   @OAS\Response(response=200,
      *     description="a pull request object",
-     *     @SWG\MediaType(mediaType="application/json",
-     *       @SWG\Schema(ref="#/components/schemas/pullrequest")
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(ref="#/components/schemas/pullrequest")
      *     ),
-     *     @SWG\Link(link="pullRequestMerge", ref="#/components/links/PullRequestMerge")
+     *     @OAS\Link(link="pullRequestMerge", ref="#/components/links/PullRequestMerge")
      *   )
      * )
      */
@@ -148,29 +148,29 @@ class RepositoriesController
     }
 
     /**
-     * @SWG\Post(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge",
+     * @OAS\Post(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge",
      *   operationId="mergePullRequest",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="slug",
+     *   @OAS\Parameter(name="slug",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Parameter(name="pid",
+     *   @OAS\Parameter(name="pid",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Response(response=204,
+     *   @OAS\Response(response=204,
      *     description="the PR was successfully merged"
      *   )
      * )
      *
-     * @SWG\Link(link="PullRequestMerge",
+     * @OAS\Link(link="PullRequestMerge",
      *   operationId="mergePullRequest",
      *   parameters={
      *     "username"="$response.body#/author/username",

@@ -5,13 +5,13 @@ class GrandAncestor
 {
 
     /**
-     * @SWG\Property();
+     * @OAS\Property();
      * @var string
      */
     public $firstname;
 
     /**
-     * @SWG\Property(property="lastname");
+     * @OAS\Property(property="lastname");
      * @var string
      */
     public $lastname;

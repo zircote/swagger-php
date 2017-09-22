@@ -18,7 +18,7 @@ class AugmentSchemas
     public function __invoke(Analysis $analysis)
     {
         $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
-        // Use the class names for @SWG\Schema()
+        // Use the class names for @OAS\Schema()
         foreach ($schemas as $schema) {
             if ($schema->schema === null) {
                 if ($schema->_context->is('class')) {
@@ -31,7 +31,7 @@ class AugmentSchemas
                 // }
             }
         }
-        // Merge unmerged @SWG\Property annotations into the @SWG\Schema of the class
+        // Merge unmerged @OAS\Property annotations into the @OAS\Schema of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Property');
         foreach ($unmergedProperties as $property) {
             if ($property->_context->nested) {

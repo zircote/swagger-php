@@ -12,6 +12,6 @@ class AugmentParameterTest extends SwaggerTestCase
     {
         $openapi = \Swagger\scan(__DIR__ . '/Fixtures/UsingRefs.php');
         $this->assertCount(1, $openapi->components->parameters, 'Swagger contains 1 reusable parameter specification');
-        $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @SWG\Parameter()->parameter is specified, use @SWG\Parameter()->name');
+        $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @OAS\Parameter()->parameter is specified, use @OAS\Parameter()->name');
     }
 }

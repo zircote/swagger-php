@@ -69,7 +69,7 @@ class StaticAnalyser
         $analysis = new Analysis();
         reset($tokens);
         $token = '';
-        $imports = Analyser::$defaultImports; // Use @SWG\* for swagger-php annotations (unless overwritten by a use statement)
+        $imports = Analyser::$defaultImports; // Use @OAS\* for swagger-php annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
         $schemaContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
@@ -278,7 +278,7 @@ class StaticAnalyser
             return $this->nextToken($tokens, $context);
         }
         if ($token[0] === T_COMMENT) {
-            $pos = strpos($token[1], '@SWG\\');
+            $pos = strpos($token[1], '@OAS\\');
             if ($pos) {
                 $line = $context->line ? $context->line + $token[2] : $token[2];
                 $commentContext = new Context(['line' => $line], $context);

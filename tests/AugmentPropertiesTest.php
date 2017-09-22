@@ -49,9 +49,9 @@ class AugmentPropertiesTest extends SwaggerTestCase
 
         $analysis->process(new AugmentProperties());
 
-        $this->assertSame('firstname', $firstname->property, '@SWG\Property()->property based on propertyname');
-        $this->assertSame('The firstname of the customer.', $firstname->description, '@SWG\Property()->description based on @var description');
-        $this->assertSame('string', $firstname->type, '@SWG\Property()->type based on @var declaration');
+        $this->assertSame('firstname', $firstname->property, '@OAS\Property()->property based on propertyname');
+        $this->assertSame('The firstname of the customer.', $firstname->description, '@OAS\Property()->description based on @var description');
+        $this->assertSame('string', $firstname->type, '@OAS\Property()->type based on @var declaration');
 
         $this->assertSame('lastname', $lastname->property);
         $this->assertSame('The lastname of the customer.', $lastname->description);

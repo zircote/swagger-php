@@ -9,19 +9,19 @@ class UsersController
 {
 
     /**
-     * @SWG\Get(path="/2.0/users/{username}",
+     * @OAS\Get(path="/2.0/users/{username}",
      *   operationId="getUserByName",
-     *   @SWG\Parameter(name="username",
+     *   @OAS\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @SWG\Schema(type="string")
+     *     @OAS\Schema(type="string")
      *   ),
-     *   @SWG\Response(response="200",
+     *   @OAS\Response(response="200",
      *     description="The User",
-     *     @SWG\MediaType(mediaType="application/json",
-     *       @SWG\Schema(ref="#/components/schemas/user")
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(ref="#/components/schemas/user")
      *     ),
-     *     @SWG\Link(link="userRepositories", ref="#/components/links/UserRepositories")
+     *     @OAS\Link(link="userRepositories", ref="#/components/links/UserRepositories")
      *   )
      * )
      */

@@ -30,13 +30,13 @@ composer global require zircote/swagger-php
 Add annotations to your php files.
 ```php
 /**
- * @SWG\Info(title="My First API", version="0.1")
+ * @OAS\Info(title="My First API", version="0.1")
  */
 
 /**
- * @SWG\Get(
+ * @OAS\Get(
  *     path="/api/resource.json",
- *     @SWG\Response(response="200", description="An example resource")
+ *     @OAS\Response(response="200", description="An example resource")
  * )
  */
 ```

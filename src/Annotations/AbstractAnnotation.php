@@ -58,9 +58,9 @@ abstract class AbstractAnnotation implements JsonSerializable
     /**
      * Declarative mapping of Annotation types to properties.
      * Examples:
-     *   'Swagger\Annotation\Info' => 'info', // Set @SWG\Info annotation as the info property.
-     *   'Swagger\Annotation\Parameter' => ['parameters'],  // Append @SWG\Parameter annotations the parameters array.
-     *   'Swagger\Annotation\PathItem' => ['paths', 'path'],  // Append @SWG\PathItem annotations the paths array and use path as key.
+     *   'Swagger\Annotation\Info' => 'info', // Set @OAS\Info annotation as the info property.
+     *   'Swagger\Annotation\Parameter' => ['parameters'],  // Append @OAS\Parameter annotations the parameters array.
+     *   'Swagger\Annotation\PathItem' => ['paths', 'path'],  // Append @OAS\PathItem annotations the paths array and use path as key.
      * @var array
      */
     public static $_nested = [];
@@ -327,13 +327,13 @@ abstract class AbstractAnnotation implements JsonSerializable
             $class = get_class($annotation);
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
-                Logger::notice('Only one @' . str_replace('Swagger\Annotations\\', 'SWG\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
+                Logger::notice('Only one @' . str_replace('Swagger\Annotations\\', 'OAS\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$_parents)) {
                     $shortNotations = [];
                     foreach ($class::$_parents as $_class) {
-                        $shortNotations[] = '@' . str_replace('Swagger\Annotations\\', 'SWG\\', $_class);
+                        $shortNotations[] = '@' . str_replace('Swagger\Annotations\\', 'OAS\\', $_class);
                     }
                     $message .= ', expected to be inside ' . implode(', ', $shortNotations);
                 }
@@ -355,7 +355,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             $keyField = $nested[1];
             foreach ($this->$property as $key => $item) {
                 if (is_array($item) && is_numeric($key) === false) {
-                    Logger::notice($this->identity() . '->' . $property . ' is an object literal, use nested @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $annotationClass) . '() annotation(s) in ' . $this->_context);
+                    Logger::notice($this->identity() . '->' . $property . ' is an object literal, use nested @' . str_replace('Swagger\\Annotations\\', 'OAS\\', $annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
                 } elseif (empty($item->$keyField)) {
                     Logger::notice($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
@@ -383,11 +383,11 @@ abstract class AbstractAnnotation implements JsonSerializable
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
                         if ($property === $nestedProperty) {
                             if ($this instanceof OpenApi) {
-                                $message = 'Required @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() not found';
+                                $message = 'Required @' . str_replace('Swagger\\Annotations\\', 'OAS\\', $class) . '() not found';
                             } elseif (is_array($nested)) {
-                                $message = $this->identity() . ' requires at least one @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires at least one @' . str_replace('Swagger\\Annotations\\', 'OAS\\', $class) . '() in ' . $this->_context;
                             } else {
-                                $message = $this->identity() . ' requires a @' . str_replace('Swagger\\Annotations\\', 'SWG\\', $class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires a @' . str_replace('Swagger\\Annotations\\', 'OAS\\', $class) . '() in ' . $this->_context;
                             }
                             break;
                         }
@@ -461,7 +461,7 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Return a identity for easy debugging.
-     * Example: "@SWG\Get(path="/pets")"
+     * Example: "@OAS\Get(path="/pets")"
      * @return string
      */
     public function identity()
@@ -483,7 +483,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $fields[] = $property . '=' . (is_string($value) ? '"' . $value . '"' : $value);
             }
         }
-        return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '(' . implode(',', $fields) . ')';
+        return '@' . str_replace('Swagger\\Annotations\\', 'OAS\\', get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
     private function validateType($type, $value)

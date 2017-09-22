@@ -36,8 +36,8 @@ class ContextTest extends SwaggerTestCase
         $this->assertSame('\SwaggerFixures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('Logger'));
         $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
-        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwgLogger'));
-        $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
+        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwaggerLogger'));
+        $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('OAS\QualifiedAlias'));
     }
 
     public function testPhpdocContent()
@@ -46,7 +46,7 @@ class ContextTest extends SwaggerTestCase
     /**
      * A single line.
      *
-     * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+     * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
      */
 END
         ]);
@@ -59,7 +59,7 @@ END
  *
  * even blank lines
  *
- * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
  */
 END
         ]);
@@ -70,7 +70,7 @@ END
  * A single line spread across \
  * multiple lines.
  *
- * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
  */
 END
         ]);

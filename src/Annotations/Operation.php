@@ -10,7 +10,7 @@ use Swagger\Logger;
 
  /**
  * @Annotation
- * Base class for the @SWG\Get(),  @SWG\Post(),  @SWG\Put(),  @SWG\Delete(), @SWG\Patch(), etc
+ * Base class for the @OAS\Get(),  @OAS\Post(),  @OAS\Put(),  @OAS\Delete(), @OAS\Patch(), etc
  *
  * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object
  * Describes a single API operation on a path.

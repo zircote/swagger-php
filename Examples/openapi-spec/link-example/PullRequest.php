@@ -2,31 +2,31 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @SWG\Schema(schema="pullrequest", type="object")
+ * @OAS\Schema(schema="pullrequest", type="object")
  */
 class Repository
 {
 
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var integer
      */
     public $id;
 
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var string
      */
     public $title;
 
     /**
-    * @SWG\Property()
+    * @OAS\Property()
     * @var Repository
     */
     public $repository;
 
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var User
      */
     public $author;

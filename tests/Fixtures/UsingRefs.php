@@ -2,17 +2,17 @@
 namespace SwaggerFixtures;
 
 /**
- * @SWG\Info(title="Using a parameter definition", version="unittest")
+ * @OAS\Info(title="Using a parameter definition", version="unittest")
  */
 class UsingRefs
 {
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *   path="/pi/{item_name}",
      *   summary="Get protected item",
-     *   @SWG\Parameter(ref="#/parameters/ItemName"),
-     *   @SWG\Response(response="default", ref="#/responses/Item")
+     *   @OAS\Parameter(ref="#/parameters/ItemName"),
+     *   @OAS\Response(response="default", ref="#/responses/Item")
      * )
      */
     public function getProtectedItem()
@@ -21,7 +21,7 @@ class UsingRefs
 }
 
 /**
- * @SWG\Parameter(
+ * @OAS\Parameter(
  *   name="ItemName",
  *   in="path",
  *   required=true,
@@ -30,7 +30,7 @@ class UsingRefs
  */
 
 /**
- * @SWG\Response (
+ * @OAS\Response (
  *   response="Item",
  *   description="A protected item"
  * )

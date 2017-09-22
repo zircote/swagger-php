@@ -54,7 +54,7 @@ class AugmentProperties
         /** @var \Swagger\Annotations\Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
-            // Use the property names for @SWG\Property()
+            // Use the property names for @OAS\Property()
             if ($property->property === null) {
                 $property->property = $context->property;
             }

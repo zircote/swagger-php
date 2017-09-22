@@ -2,7 +2,7 @@
 namespace SwaggerFixtures;
 
 /**
- * @SWG\Info(title="Fixture for AugmentOperationTest", version="test")
+ * @OAS\Info(title="Fixture for AugmentOperationTest", version="test")
  */
 class UsingPhpDoc
 {
@@ -12,7 +12,7 @@ class UsingPhpDoc
      * Example description...
      * More description...
      *
-     * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+     * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
      */
     public function methodWithDescription()
     {
@@ -21,7 +21,7 @@ class UsingPhpDoc
     /**
      * Example summary
      *
-     * @SWG\Get(path="api/test2", @SWG\Response(response="200", description="a response"))
+     * @OAS\Get(path="api/test2", @OAS\Response(response="200", description="a response"))
      */
     public function methodWithSummary()
     {

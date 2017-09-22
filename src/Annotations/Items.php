@@ -39,7 +39,7 @@ class Items extends Schema
         $valid = parent::validate($parents, $skip);
         if (!$this->ref) {
             if ($this->type === 'array' && $this->items === null) {
-                Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+                Logger::notice('@OAS\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
                 $valid = false;
             }
             $parent = end($parents);
@@ -48,7 +48,7 @@ class Items extends Schema
                 // A limited subset of JSON-Schema's items object.
                 $allowedTypes = ['string', 'number', 'integer', 'boolean', 'array'];
                 if (in_array($this->type, $allowedTypes) === false) {
-                    Logger::notice('@SWG\Items()->type="'.$this->type.'" not allowed inside a '.$parent->_identity([]).' must be "'.implode('", "', $allowedTypes).'" in ' . $this->_context);
+                    Logger::notice('@OAS\Items()->type="'.$this->type.'" not allowed inside a '.$parent->_identity([]).' must be "'.implode('", "', $allowedTypes).'" in ' . $this->_context);
                     $valid = false;
                 }
             }

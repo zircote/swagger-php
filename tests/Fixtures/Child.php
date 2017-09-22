@@ -3,14 +3,14 @@
 namespace AnotherNamespace;
 
 /**
- * @SWG\Schema()
+ * @OAS\Schema()
  */
 class Child extends \SwaggerFixtures\Ancestor
 {
 
     /**
      * @var bool
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $isBaby;
 }

@@ -2,7 +2,7 @@
 namespace SwaggerFixtures;
 
 /**
- * @SWG\Info(title="Fixture for ParserTest", version="test")
+ * @OAS\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
@@ -35,7 +35,7 @@ class ThirdPartyAnnotations
     public $email;
 
     /**
-     * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
+     * @OAS\Get(path="api/3rd-party", @OAS\Response(response="200", description="a response"))
      */
     public function methodWithSwaggerAnnotation()
     {

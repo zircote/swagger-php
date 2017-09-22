@@ -2,13 +2,13 @@
 namespace SwaggerFixures;
 
 /**
- * @SWG\Schema
+ * @OAS\Schema
  */
 trait Hello
 {
 
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $greet = 'Hello!';
 }

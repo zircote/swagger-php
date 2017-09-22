@@ -3,14 +3,14 @@
 namespace AnotherNamespace;
 
 /**
- * @SWG\Schema()
+ * @OAS\Schema()
  */
 class ChildWithDocBlocks extends \SwaggerFixtures\AncestorWithoutDocBlocks
 {
 
     /**
      * @var bool
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $isBaby;
 }

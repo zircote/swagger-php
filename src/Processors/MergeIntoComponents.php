@@ -12,7 +12,7 @@ use Swagger\Context;
 use Swagger\UNDEFINED;
 
 /**
- * Merge reusable annotation into @SWG\Schemas
+ * Merge reusable annotation into @OAS\Schemas
  */
 class MergeIntoComponents
 {

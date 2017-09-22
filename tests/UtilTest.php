@@ -13,6 +13,6 @@ class UtilTest extends SwaggerTestCase
     public function testExclude()
     {
         $openapi = \Swagger\scan(__DIR__ . '/Fixtures', ['exclude' => ['Customer.php', 'UsingRefs.php', 'UsingPhpDoc.php', 'GrandAncestor.php']]);
-        $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @SWG\Info() annotations');
+        $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OAS\Info() annotations');
     }
 }

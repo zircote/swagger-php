@@ -20,9 +20,9 @@ class RefTest extends SwaggerTestCase
         $this->assertInstanceOf(Info::class, $info);
 
         $comment = <<<END
-@SWG\Get(
+@OAS\Get(
     path="/api/endpoint",
-    @SWG\Response(response="default", description="A response")
+    @OAS\Response(response="default", description="A response")
 )
 END;
         $openapi->merge($this->parseComment($comment));
