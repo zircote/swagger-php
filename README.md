@@ -76,6 +76,14 @@ $swagger = $serializer->deserialize($jsonString, 'Swagger\Annotations\Swagger');
 echo $swagger;
 ```
 
+### Usage from docker
+
+Generate the swagger documentation to a static json file.
+
+```
+docker run -v `pwd`:/app -it tico/swagger-php --help
+```
+
 ## More on Swagger
 
   * http://swagger.io/
