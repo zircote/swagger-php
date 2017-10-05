@@ -81,7 +81,7 @@ echo $swagger;
 Generate the swagger documentation to a static json file.
 
 ```
-docker run -v `pwd`:/app -it tico/swagger-php --help
+docker run -v "$PWD":/app -it tico/swagger-php --help
 ```
 
 ## More on Swagger
