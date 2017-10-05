@@ -12,9 +12,8 @@ class PetController {
      *         description="Returned when successful"
      *     ),
      *     @SWG\Parameter(
-     *        name="JSON update body",
+     *        name="pet",
      *        in="body",
-     *        description="josn - information for a pet",
      *        required=true,
      *        @SWG\Schema(
      *           @Model(type=PetstoreWithExternalDocs\Model\Pet::class)
