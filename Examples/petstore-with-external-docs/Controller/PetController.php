@@ -5,8 +5,8 @@ class PetController {
 
    /**
      * @Operation(
-     *     tags={"DeliverySlip"},
-     *     summary="Send information after deliveryItems are processed and deliverySlip was scanned",
+     *     tags={"Pet"},
+     *     summary="Insert a new pet",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful"
