@@ -26,7 +26,7 @@ class PetController {
      * @param Request $request
      * @return JsonResponse
      */
-    public function insertPetSlipAction(Request $request) {
+    public function insertPetAction(Request $request) {
     
     }
 }
