@@ -62,7 +62,7 @@ class Schema extends AbstractAnnotation
     public $properties;
 
     /**
-     * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
+     * The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
      * @var string
      */
     public $type;
