@@ -71,6 +71,12 @@ class Parameter extends AbstractAnnotation
     public $format;
 
     /**
+     * Sets the ability to pass empty-valued parameters. This is valid only for either query or formData parameters and allows you to send a parameter with a name only or an empty value. Default value is false.
+     * @var boolean
+     */
+    public $allowEmptyValue;
+    
+    /**
      * Required if type is "array". Describes the type of items in the array.
      * @var \Swagger\Annotations\Items
      */
