@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.12
+
+ - Added field allowEmptyValue #451
+ - Improved compatibility with windows line-breaks #433
+ - Improved docs & validation #429, #450
+
 ## 2.0.11
 
  - Implemented Swagger->ref(). $swagger->ref('#/info/contact') === $swagger->info->contact
