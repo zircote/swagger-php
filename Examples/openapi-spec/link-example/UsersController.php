@@ -32,7 +32,7 @@ class UsersController
     /**
      * @OAS\Post(path="/2.0/user",
      *   operationId="createUser",
-     *   @OAS\RequestBody(
+     *   requestBody=@OAS\RequestBody(
      *     description="swäggins",
      *     required="true",
      *     @OAS\MediaType(mediaType="application/json",
