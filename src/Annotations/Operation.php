@@ -152,6 +152,7 @@ abstract class Operation extends AbstractAnnotation
     public static $_nested = [
         'Swagger\Annotations\Parameter' => ['parameters'],
         'Swagger\Annotations\Response' => ['responses', 'response'],
+        'Swagger\Annotations\RequestBody' => ['requestBody'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
         'Swagger\Annotations\Server' => ['servers'],
     ];

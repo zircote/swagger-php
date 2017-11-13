@@ -28,4 +28,27 @@ class UsersController
     public function getUserByName($username)
     {
     }
+
+    /**
+     * @OAS\Post(path="/2.0/user",
+     *   operationId="createUser",
+     *   @OAS\RequestBody(
+     *     description="swäggins",
+     *     required="true",
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(ref="#/components/schemas/user")
+     *     ),
+     *   ),
+     *   @OAS\Response(response="200",
+     *     description="The User",
+     *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(ref="#/components/schemas/user")
+     *     ),
+     *     @OAS\Link(link="userRepositories", ref="#/components/links/UserRepositories")
+     *   )
+     * )
+     */
+    public function createUser()
+    {
+    }
 }

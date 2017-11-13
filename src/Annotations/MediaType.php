@@ -60,6 +60,7 @@ class MediaType extends AbstractAnnotation
     ];
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Response'
+        'Swagger\Annotations\Response',
+        'Swagger\Annotations\RequestBody',
     ];
 }
