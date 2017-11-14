@@ -34,8 +34,11 @@ class UsersController
      *   operationId="createUser",
      *   requestBody=@OAS\RequestBody(
      *     description="swäggins",
-     *     required="true",
+     *     required=true,
      *     @OAS\MediaType(mediaType="application/json",
+     *       @OAS\Schema(ref="#/components/schemas/user")
+     *     ),
+     *     @OAS\MediaType(mediaType="application/xml",
      *       @OAS\Schema(ref="#/components/schemas/user")
      *     ),
      *   ),

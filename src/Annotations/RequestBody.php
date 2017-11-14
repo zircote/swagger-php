@@ -41,6 +41,12 @@ class RequestBody extends AbstractAnnotation
      */
     public $content;
 
+    /** @inheritdoc */
+    public static $_types = [
+        'description' => 'string',
+        'required' => 'boolean'
+    ];
+
         /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\MediaType' => ['content', 'mediaType'],
