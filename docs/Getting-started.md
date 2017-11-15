@@ -255,6 +255,32 @@ Results in:
 },
 ```
 
+You can also add an array as value. If you want to add the `x-logo` property you can do:
+
+```
+ * @SWG\Info(
+ *   title="X-Logo example",
+ *   version=1,
+ *   x={
+ *     "logo": {
+ *       "url": "/my_logo.svg"
+ *     }
+ *   }
+ * )
+ ```
+ 
+ Results in:
+
+```json
+"info": {
+    "title": "X-Logo example",
+    "version": 1,
+    "x-logo": {
+        "url": "/my_logo.svg"
+    }
+}
+```
+
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
 
 
