@@ -18,9 +18,7 @@ class UsersController
      *   ),
      *   @OAS\Response(response="200",
      *     description="The User",
-     *     @OAS\MediaType(mediaType="application/json",
-     *       @OAS\Schema(ref="#/components/schemas/user")
-     *     ),
+     *     @OAS\JsonContent(ref="#/components/schemas/user"),
      *     @OAS\Link(link="userRepositories", ref="#/components/links/UserRepositories")
      *   )
      * )

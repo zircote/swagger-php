@@ -22,10 +22,8 @@ class RepositoriesController
      *   ),
      *   @OAS\Response(response=200,
      *     description="repositories owned by the supplied user",
-     *     @OAS\MediaType(mediaType="application/json",
-     *       @OAS\Schema(type="array",
-     *         @OAS\Items(ref="#/components/schemas/repository")
-     *       )
+     *     @OAS\JsonContent(type="array",
+     *       @OAS\Items(ref="#/components/schemas/repository")
      *     ),
      *     @OAS\Link(link="userRepository", ref="#/components/links/UserRepository")
      *   )
@@ -55,9 +53,7 @@ class RepositoriesController
      *   ),
      *   @OAS\Response(response=200,
      *       description="The repository",
-     *       @OAS\MediaType(mediaType="application/json",
-     *           @OAS\Schema(ref="#/components/schemas/repository")
-     *       ),
+     *       @OAS\JsonContent(ref="#/components/schemas/repository"),
      *       @OAS\Link(link="repositoryPullRequests", ref="#/components/links/RepositoryPullRequests")
      *     )
      *   )
@@ -96,10 +92,8 @@ class RepositoriesController
      *   ),
      *   @OAS\Response(response=200,
      *     description="an array of pull request objects",
-     *     @OAS\MediaType(mediaType="application/json",
-     *       @OAS\Schema(type="array",
+     *     @OAS\JsonContent(type="array",
      *         @OAS\Items(ref="#/components/schemas/pullrequest")
-     *       )
      *     )
      *   )
      * )
@@ -136,9 +130,7 @@ class RepositoriesController
      *   ),
      *   @OAS\Response(response=200,
      *     description="a pull request object",
-     *     @OAS\MediaType(mediaType="application/json",
-     *       @OAS\Schema(ref="#/components/schemas/pullrequest")
-     *     ),
+     *     @OAS\JsonContent(ref="#/components/schemas/pullrequest"),
      *     @OAS\Link(link="pullRequestMerge", ref="#/components/links/PullRequestMerge")
      *   )
      * )

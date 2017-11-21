@@ -20,7 +20,7 @@ class Property extends Schema
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Schema',
+        'Swagger\Annotations\JsonContent',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Items',
     ];

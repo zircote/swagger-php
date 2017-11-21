@@ -22,6 +22,7 @@ use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
+use Swagger\Processors\MergeJsonContent;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
@@ -301,6 +302,7 @@ class Analysis
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),
+                new MergeJsonContent(),
                 new CleanUnmerged(),
             ];
         }

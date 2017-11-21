@@ -26,6 +26,7 @@ class Items extends Schema
     public static $_parents = [
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
+        'Swagger\Annotations\JsonContent',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\Header',
     ];
