@@ -239,7 +239,16 @@ The specification allows for [custom properties](http://swagger.io/specification
  * @SWG\Info(
  *   title="Example",
  *   version=1,
- *   x={"some-name":"a-value", "another": 2}
+ *   x={
+ *     "some-name": "a-value",
+ *     "another": 2,
+ *     "complex-type": {
+ *       "supported":{
+ *         {"version": "1.0", "level": "baseapi"},
+ *         {"version": "2.1", "level": "fullapi"},
+ *       }
+ *     }
+ *   }
  * )
  */
 ```
@@ -248,37 +257,20 @@ Results in:
 
 ```json
 "info": {
-    "title": "Example",
-    "version": 1,
-    "x-some-name": "a-value",
-    "x-another": 2
+  "title": "Example",
+  "version": 1,
+  "x-some-name": "a-value",
+  "x-another": 2,
+  "x-complex-type": {
+    "supported": [{
+      "version": "1.0",
+      "level": "baseapi"
+    }, {
+      "version": "2.1",
+      "level": "fullapi"
+    }]
+  }
 },
-```
-
-You can also add an array as value. If you want to add the `x-logo` property you can do:
-
-```
- * @SWG\Info(
- *   title="X-Logo example",
- *   version=1,
- *   x={
- *     "logo": {
- *       "url": "/my_logo.svg"
- *     }
- *   }
- * )
- ```
- 
- Results in:
-
-```json
-"info": {
-    "title": "X-Logo example",
-    "version": 1,
-    "x-logo": {
-        "url": "/my_logo.svg"
-    }
-}
 ```
 
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
