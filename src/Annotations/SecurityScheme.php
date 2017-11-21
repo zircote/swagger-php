@@ -16,7 +16,7 @@ class SecurityScheme extends AbstractAnnotation
      * The key into OpenApi->security array.
      * @var string
      */
-    public $securitySceme;
+    public $securityScheme;
 
     /**
      * The type of the security scheme.
