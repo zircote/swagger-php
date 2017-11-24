@@ -273,20 +273,22 @@ class StaticAnalyser
      */
     private function nextToken(&$tokens, $context)
     {
-        $token = next($tokens);
-        if ($token[0] === T_WHITESPACE) {
-            return $this->nextToken($tokens, $context);
-        }
-        if ($token[0] === T_COMMENT) {
-            $pos = strpos($token[1], '@SWG\\');
-            if ($pos) {
-                $line = $context->line ? $context->line + $token[2] : $token[2];
-                $commentContext = new Context(['line' => $line], $context);
-                Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+        while (true) {
+            $token = next($tokens);
+            if ($token[0] === T_WHITESPACE) {
+                continue;
             }
-            return $this->nextToken($tokens, $context);
+            if ($token[0] === T_COMMENT) {
+                $pos = strpos($token[1], '@SWG\\');
+                if ($pos) {
+                    $line = $context->line ? $context->line + $token[2] : $token[2];
+                    $commentContext = new Context(['line' => $line], $context);
+                    Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                }
+                continue;
+            }
+            return $token;
         }
-        return $token;
     }
 
     private function parseNamespace(&$tokens, &$token, $parseContext)
