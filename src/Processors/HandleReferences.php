@@ -193,6 +193,13 @@ class HandleReferences
         }
     }
 
+    /**
+     * Recursively iterates over the item. Getting all possible dynamic references from the object and its children.
+     * For each reference it will map its array data to the reference name.
+     *
+     * @param mixed $item
+     * @param null $data
+     */
     private function recursiveMap($item, &$data = null)
     {
         if (!is_object($item) && !is_array($item)) {
