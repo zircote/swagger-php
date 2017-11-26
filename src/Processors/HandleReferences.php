@@ -28,7 +28,7 @@ class HandleReferences
     private $references = [];
     private $head_references = [];
 
-    public function __invoke (Analysis $analysis)
+    public function __invoke(Analysis $analysis)
     {
         $this->getAllImports($analysis);
         $this->mapReferences();
@@ -40,7 +40,7 @@ class HandleReferences
      *
      * @param Analysis $analysis
      */
-    private function getAllImports (Analysis $analysis)
+    private function getAllImports(Analysis $analysis)
     {
         // for all importable content
         foreach ($this->import_in_order as $propertyName => $importName) {
@@ -84,7 +84,7 @@ class HandleReferences
      * @param $response
      * @return array
      */
-    private function link ($response)
+    private function link($response)
     {
         return [null, $response, []];
     }
@@ -94,7 +94,7 @@ class HandleReferences
      *
      * @param Operation $operation
      */
-    private function loadResponses (Operation $operation)
+    private function loadResponses(Operation $operation)
     {
         if (!is_null($operation->responses)) {
             foreach ($operation->responses as $item) {
@@ -111,7 +111,7 @@ class HandleReferences
      * @param $string
      * @return int
      */
-    private function checkSyntax ($string)
+    private function checkSyntax($string)
     {
         return isset($string) && preg_match('/^\$/', $string);
     }
@@ -121,7 +121,7 @@ class HandleReferences
      *
      * @param Operation $operation
      */
-    private function loadParameters (Operation $operation)
+    private function loadParameters(Operation $operation)
     {
         if (!is_null($operation->parameters)) {
             foreach ($operation->parameters as $item) {
@@ -137,7 +137,7 @@ class HandleReferences
      *
      * @param Operation $operation
      */
-    private function loadSchemas (Operation $operation)
+    private function loadSchemas(Operation $operation)
     {
         if (!is_null($operation->responses)) {
             /** @var Response $item */
@@ -154,7 +154,7 @@ class HandleReferences
      *
      * @param array $params
      */
-    private function propertyRetrieve (array $params)
+    private function propertyRetrieve(array $params)
     {
         $array = [];
 
@@ -177,7 +177,7 @@ class HandleReferences
     /**
      * Maps the response to each parent child.
      */
-    private function mapReferences ()
+    private function mapReferences()
     {
         foreach ($this->import_in_order as $key => $import_name) {
             foreach ($this->references[$import_name] as &$data) {
@@ -193,8 +193,11 @@ class HandleReferences
         }
     }
 
-    private function recursiveMap ($item, &$data = null) {
-        if (!is_object($item) && !is_array($item)) return;
+    private function recursiveMap($item, &$data = null)
+    {
+        if (!is_object($item) && !is_array($item)) {
+            return;
+        }
 
         if (is_object($item)) {
             if (property_exists($item, 'ref') && $this->checkSyntax($item->ref)) {
@@ -205,7 +208,9 @@ class HandleReferences
         }
 
         foreach ($item as $key => $value) {
-            if ($key == '_context') continue;
+            if ($key == '_context') {
+                continue;
+            }
             $this->recursiveMap($value);
         }
     }
@@ -219,17 +224,18 @@ class HandleReferences
      * @param $parent_name
      * @param $item
      */
-    private function loadParent (&$child, $type, $parent_name, $item)
+    private function loadParent(&$child, $type, $parent_name, $item)
     {
-        if (!isset($child)) $child = $this->link($item);
+        if (!isset($child)) {
+            $child = $this->link($item);
+        }
 
         if (isset($this->references[$type]) && isset($this->references[$type][$parent_name])) {
             //link the parent
             $child[0] = &$this->references[$type][$parent_name];
             //add to list of children
             $this->references[$type][$parent_name][2][] = &$child;
-        }
-        else {
+        } else {
             Logger::notice("Unable to the $type Reference \"$parent_name\" in " . $item->_context);
         }
     }
@@ -237,7 +243,7 @@ class HandleReferences
     /**
      * Imports the references from all of the responses
      */
-    private function importReferences ()
+    private function importReferences()
     {
         foreach ($this->import_in_order as $key => $import_name) {
             //get the list to import from
@@ -256,7 +262,7 @@ class HandleReferences
      * @param array $queue
      * @param $current_key
      */
-    private function iterateQueue (&$queue, $current_key)
+    private function iterateQueue(&$queue, $current_key)
     {
         $item = array_pop($queue);
         $queue = array_merge($queue, $item[2]);
@@ -269,7 +275,9 @@ class HandleReferences
         //Reset the ref
         $response->ref = null;
 
-        if (is_null($parent)) return;
+        if (is_null($parent)) {
+            return;
+        }
 
         $parent_obj = $parent[1];
 
@@ -279,7 +287,7 @@ class HandleReferences
                     $response->schema = $response->schema ?: new Schema([]);
                     $this->importSchema($value, $response->schema);
                 }
-            } elseif (!in_array($key, array_keys($this->import_in_order))){
+            } elseif (!in_array($key, array_keys($this->import_in_order))) {
                 if (property_exists($response, $key)) {
                     if (is_array($value)) {
                         $response->$key = array_merge($value, $response->$key ?: []);
@@ -297,7 +305,7 @@ class HandleReferences
      * @param Schema $parent
      * @param Schema $child
      */
-    private function importSchema (Schema $parent, Schema $child)
+    private function importSchema(Schema $parent, Schema $child)
     {
         $temp = [];
 
