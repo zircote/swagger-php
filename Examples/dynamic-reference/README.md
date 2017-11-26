@@ -88,3 +88,80 @@ Then you can extend the response in this example *POST* request by using the `$`
 As you can see `ref="$/responses/Json` is telling it to extend the base `Json` response.
 
 We follow the reference with a `Schema` layout which specifies that the `data` property will actually be a `Product`.
+
+### Example Output
+
+```json
+{
+  "paths": {
+    "/api/path": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "name": {
+                  "maximum": 64,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Example extended response",
+            "schema": {
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Product"
+                },
+                "errors": {
+                  "type": "object"
+                },
+                "success": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Post to URL"
+      }
+    }
+  },
+  "responses": {
+    "Json": {
+      "description": "the basic response",
+      "schema": {
+        "properties": {
+          "data": {},
+          "errors": {
+            "type": "object"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+```
