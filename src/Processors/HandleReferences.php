@@ -209,7 +209,6 @@ class HandleReferences
         if (is_object($item)) {
             if (property_exists($item, 'ref') && $this->checkSyntax($item->ref)) {
                 $params = explode("/", $item->ref);
-                echo get_class($item) . "\n";
                 $this->loadParent($data, strtolower($params[1]), $params[2], $item);
             }
         }
@@ -294,13 +293,11 @@ class HandleReferences
                     $response->schema = $response->schema ?: new Schema([]);
                     $this->importSchema($value, $response->schema);
                 }
-            } elseif (!in_array($key, array_keys($this->import_in_order))) {
-                if (property_exists($response, $key)) {
-                    if (is_array($value)) {
-                        $response->$key = array_merge($value, $response->$key ?: []);
-                    } elseif (!isset($response->$key) && $key != $current_key || $key == 'ref') {
-                        $response->$key = $value;
-                    }
+            } elseif (!in_array($key, array_keys($this->import_in_order)) && property_exists($response, $key)) {
+                if (is_array($value)) {
+                    $response->$key = array_merge($value, $response->$key ?: []);
+                } elseif (!isset($response->$key) && $key != $current_key || $key == 'ref') {
+                    $response->$key = $value;
                 }
             }
         }

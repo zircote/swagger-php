@@ -229,6 +229,18 @@ Which doesn't do anything by itself but now you can reference this piece by its 
 
 For more tips on refs, browse through the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
 
+Alternatively, you can extend the definition altering specific fields using the `$` in-place of the `#`
+```php
+    /**
+     * @SWG\Property(
+     *   ref="$/definitions/product_id",
+     *   format="int32"
+     * )
+     */
+    public $id;
+``` 
+
+For extensions tips and examples, browse through [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
 
 ## Vendor extensions
 
