@@ -1,4 +1,5 @@
 <?php
+namespace SwaggerFixtures;
 
 /**
  * @SWG\Info(title="Using a dynamic reference", version="unittest")
