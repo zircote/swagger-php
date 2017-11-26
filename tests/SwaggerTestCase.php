@@ -49,7 +49,6 @@ class SwaggerTestCase extends TestCase
         $actual = json_decode($json);
         $expectedJson = json_encode($this->sorted($expected, $expectedFile), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $actualJson = json_encode($this->sorted($actual, 'Swagger'), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        file_put_contents('test.json', $actualJson);
         $this->assertEquals($expectedJson, $actualJson, $message);
     }
 

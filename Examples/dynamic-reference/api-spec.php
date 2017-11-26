@@ -1,3 +1,7 @@
+    Dynamic References import all attributes from the reference object to the specified object.
+    It works similar to the `#ref` however allows for customization of properties and attributes.
+    The dynamic reference uses a `$` instead of `#` for the `ref` attribute.
+
 <?php
 
 /**
@@ -5,12 +9,9 @@
  *   version="1.0.0",
  *   title="Example of using references in swagger-php",
  * )
- */
-
-
-/**
+ *
  * @SWG\Definition(
- *   definition="CustomResponse",
+ *   definition="ExampleDefinition",
  *   @SWG\Property(
  *      property="status",
  *      type="string",
@@ -24,7 +25,8 @@
 ?>
 
     Define a default object which be our base structure.
-    In this case it is a response, which will contain a variable 'data' property.
+    In this case it is a response, which will contain a variable `data` property.
+    We are also showing how it is possible to extend Definitions on sub Schemas by extending the 'ExampleDefinition'.
 <?php
 /**
  * @SWG\Response(
@@ -54,8 +56,8 @@
 ?>
 
     Then you can extend the response in this example POST request by using the '$' ref.
-    As you can see `ref="$/responses/Json` is telling it to extend the base 'Json' response.
-    Inside the extension, the data property is overridden with the new Product reference.
+    As you can see `ref="$/responses/Json` is telling it to extend the base `Json` response.
+    We follow the reference with a `Schema` layout which specifies that the `data` property will actually be a `Product`.
 <?php
 /**
  * @SWG\Post(

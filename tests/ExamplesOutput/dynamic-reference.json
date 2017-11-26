@@ -1,5 +1,18 @@
 {
   "definitions": {
+    "ExampleDefinition": {
+      "properties": {
+        "status": {
+          "default": "available",
+          "description": "The status of a product",
+          "enum": [
+            "available",
+            "discontinued"
+          ],
+          "type": "string"
+        }
+      }
+    },
     "Product": {
       "properties": {
         "id": {
@@ -45,9 +58,20 @@
             "description": "Example extended response",
             "schema": {
               "properties": {
-                "data": {},
+                "data": {
+                  "$ref": "#/definitions/Product"
+                },
                 "errors": {
                   "type": "object"
+                },
+                "status": {
+                  "default": "available",
+                  "description": "The status of a product",
+                  "enum": [
+                    "available",
+                    "discontinued"
+                  ],
+                  "type": "string"
                 },
                 "success": {
                   "type": "boolean"
@@ -76,6 +100,15 @@
           "data": {},
           "errors": {
             "type": "object"
+          },
+          "status": {
+            "default": "available",
+            "description": "The status of a product",
+            "enum": [
+              "available",
+              "discontinued"
+            ],
+            "type": "string"
           },
           "success": {
             "type": "boolean"

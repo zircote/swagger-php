@@ -184,9 +184,9 @@ class HandleReferences
                 /** @var Response $item */
                 $item = $data[1];
 
-                if ($this->checkSyntax($item->ref)) {
-                    $this->recursiveMap($item, $data);
-                } else {
+                $this->recursiveMap($item, $data);
+
+                if (!$this->checkSyntax($item->ref)) {
                     $this->head_references[$import_name][] = &$data;
                 }
             }
@@ -197,7 +197,7 @@ class HandleReferences
         if (!is_object($item) && !is_array($item)) return;
 
         if (is_object($item)) {
-            if (property_exists($item, 'ref') && isset($item->ref)) {
+            if (property_exists($item, 'ref') && $this->checkSyntax($item->ref)) {
                 $params = explode("/", $item->ref);
                 echo get_class($item) . "\n";
                 $this->loadParent($data, strtolower($params[1]), $params[2], $item);
