@@ -2,14 +2,16 @@
 /**
  * @license Apache 2.0
  */
+
 namespace Swagger\Processors;
 
+use Swagger\Analysis;
 use Swagger\Annotations\Operation;
 use Swagger\Annotations\Path;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Response;
 use Swagger\Annotations\Schema;
-use Swagger\Analysis;
+use Swagger\Logger;
 
 /**
  * Copy the annotated properties from parent classes;
@@ -26,7 +28,7 @@ class HandleReferences
     private $references = [];
     private $head_references = [];
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke (Analysis $analysis)
     {
         $this->getAllImports($analysis);
         $this->mapReferences();
@@ -38,42 +40,38 @@ class HandleReferences
      *
      * @param Analysis $analysis
      */
-    private function getAllImports(Analysis $analysis)
+    private function getAllImports (Analysis $analysis)
     {
-        //for all importable content
-        foreach ($this->import_in_order as $key => $import_name) {
-            //initialise the import name
-            $this->references[$import_name] = [];
-            $this->head_references[$import_name] = [];
+        // for all importable content
+        foreach ($this->import_in_order as $propertyName => $importName) {
+            // initialise the import name
+            $this->references[$importName] = [];
+            $this->head_references[$importName] = [];
 
-            if (!is_null($analysis->swagger->$import_name)) {
+            if (!is_null($analysis->swagger->$importName)) {
                 /** @var Response $item */
-                foreach ($analysis->swagger->$import_name as $item) {
+                foreach ($analysis->swagger->$importName as $item) {
                     //if that identified value exists, or if the name isn't set then give blank id
-                    if (isset($this->references[$import_name][$item->$key]) || is_null($item->$key)) {
-                        $this->references[$import_name][] = $this->link($item);
-                    } else { //else assign to id
-                        $this->references[$import_name][$item->$key] = $this->link($item);
+                    if (!is_null($item->$propertyName) && isset($this->references[$importName][$item->$propertyName])) {
+                        Logger::notice("$propertyName is already defined for object \"" . get_class($item) . '" in ' . $item->_context);
+                    } else {
+                        $this->references[$importName][$item->$propertyName] = $this->link($item);
+//                        Logger::notice("$propertyName is NULL on object \"" . get_class($item) . '" in ' . $item->_context);
                     }
                 }
             }
         }
 
+        // All of the paths in the swagger, we need to iterate across
         if (!is_null($analysis->swagger->paths)) {
             /** @var Path $path */
             foreach ($analysis->swagger->paths as $path) {
-                foreach ($path as $key => $value) {
+                foreach ($path as $propertyName => $value) {
                     if ($value instanceof Operation && !is_null($value->responses)) {
                         //load each importable item if it is set
-                        if (isset($this->import_in_order['response'])) {
-                            $this->loadResponses($value);
-                        }
-                        if (isset($this->import_in_order['parameter'])) {
-                            $this->loadParameters($value);
-                        }
-                        if (isset($this->import_in_order['definition'])) {
-                            $this->loadSchemas($value);
-                        }
+                        $this->loadResponses($value);
+                        $this->loadParameters($value);
+                        $this->loadSchemas($value);
                     }
                 }
             }
@@ -81,11 +79,22 @@ class HandleReferences
     }
 
     /**
+     * Creates the Linked list array item.
+     *
+     * @param $response
+     * @return array
+     */
+    private function link ($response)
+    {
+        return [null, $response, []];
+    }
+
+    /**
      * Loads all the responses into the mapping
      *
      * @param Operation $operation
      */
-    private function loadResponses(Operation $operation)
+    private function loadResponses (Operation $operation)
     {
         if (!is_null($operation->responses)) {
             foreach ($operation->responses as $item) {
@@ -97,11 +106,22 @@ class HandleReferences
     }
 
     /**
+     * Checks the syntax of the string to make sure it starts with a $
+     *
+     * @param $string
+     * @return int
+     */
+    private function checkSyntax ($string)
+    {
+        return isset($string) && preg_match('/^\$/', $string);
+    }
+
+    /**
      * Loads all the parameters into the mapping
      *
      * @param Operation $operation
      */
-    private function loadParameters(Operation $operation)
+    private function loadParameters (Operation $operation)
     {
         if (!is_null($operation->parameters)) {
             foreach ($operation->parameters as $item) {
@@ -117,7 +137,7 @@ class HandleReferences
      *
      * @param Operation $operation
      */
-    private function loadSchemas(Operation $operation)
+    private function loadSchemas (Operation $operation)
     {
         if (!is_null($operation->responses)) {
             /** @var Response $item */
@@ -134,13 +154,13 @@ class HandleReferences
      *
      * @param array $params
      */
-    private function propertyRetrieve(array $params)
+    private function propertyRetrieve (array $params)
     {
         $array = [];
 
         /** @var Schema $item */
         foreach ($params as $item) {
-            if (!is_null($item->properties)) {
+            if (is_array($item->properties)) {
                 $array = array_merge($array, $item->properties);
             }
             if ($this->checkSyntax($item->ref)) {
@@ -149,76 +169,75 @@ class HandleReferences
         }
 
         //nest the next loop
-        if (count($params)) {
+        if (count($array)) {
             $this->propertyRetrieve($array);
         }
     }
 
     /**
-     * Creates the Linked list array item.
-     *
-     * @param $response
-     * @return array
-     */
-    private function link($response)
-    {
-        return [null, $response, []];
-    }
-
-    /**
      * Maps the response to each parent child.
      */
-    private function mapReferences()
+    private function mapReferences ()
     {
         foreach ($this->import_in_order as $key => $import_name) {
             foreach ($this->references[$import_name] as &$data) {
                 /** @var Response $item */
                 $item = $data[1];
 
-
-                if (!isset($item->ref)) {
+                if ($this->checkSyntax($item->ref)) {
+                    $this->recursiveMap($item, $data);
+                } else {
                     $this->head_references[$import_name][] = &$data;
-                } elseif ($this->checkSyntax($item->ref)) {
-                    $params = explode("/", $item->ref);
-
-                    $this->loadParent($data, strtolower($params[1]), $params[2]);
                 }
             }
         }
     }
 
-    /**
-     * Checks the syntax of the string to make sure it starts with a $
-     *
-     * @param $string
-     * @return int
-     */
-    private function checkSyntax($string)
-    {
-        return preg_match('/^\$/', $string);
+    private function recursiveMap ($item, &$data = null) {
+        if (!is_object($item) && !is_array($item)) return;
+
+        if (is_object($item)) {
+            if (property_exists($item, 'ref') && isset($item->ref)) {
+                $params = explode("/", $item->ref);
+                echo get_class($item) . "\n";
+                $this->loadParent($data, strtolower($params[1]), $params[2], $item);
+            }
+        }
+
+        foreach ($item as $key => $value) {
+            if ($key == '_context') continue;
+            $this->recursiveMap($value);
+        }
     }
 
     /**
-     * Links the child with the parent
+     * Combines all of the links, adding each reference to their respective parents.
+     * If the parent exists.
      *
      * @param $child
      * @param $type
      * @param $parent_name
+     * @param $item
      */
-    private function loadParent(&$child, $type, $parent_name)
+    private function loadParent (&$child, $type, $parent_name, $item)
     {
+        if (!isset($child)) $child = $this->link($item);
+
         if (isset($this->references[$type]) && isset($this->references[$type][$parent_name])) {
             //link the parent
             $child[0] = &$this->references[$type][$parent_name];
             //add to list of children
             $this->references[$type][$parent_name][2][] = &$child;
         }
+        else {
+            Logger::notice("Unable to the $type Reference \"$parent_name\" in " . $item->_context);
+        }
     }
 
     /**
      * Imports the references from all of the responses
      */
-    private function importReferences()
+    private function importReferences ()
     {
         foreach ($this->import_in_order as $key => $import_name) {
             //get the list to import from
@@ -237,35 +256,35 @@ class HandleReferences
      * @param array $queue
      * @param $current_key
      */
-    private function iterateQueue(&$queue, $current_key)
+    private function iterateQueue (&$queue, $current_key)
     {
         $item = array_pop($queue);
-
         $queue = array_merge($queue, $item[2]);
 
         /** @var Response $response */
         $response = $item[1];
-        /** @var Response $parent_response */
+        /** @var Response $parent_obj */
         $parent = $item[0];
 
         //Reset the ref
         $response->ref = null;
 
-        if (!is_null($parent)) {
-            $parent_response = $parent[1];
-            foreach ($parent_response as $key => $value) {
-                if ($key == "schema") {
-                    if (!is_null($value)) {
-                        if (is_null($response->schema)) {
-                            $response->schema = new Schema([]);
-                        }
-                        $this->importSchema($value, $response->schema);
-                    }
-                } elseif ($key != "response") {
+        if (is_null($parent)) return;
+
+        $parent_obj = $parent[1];
+
+        foreach ($parent_obj as $key => $value) {
+            if ($key == 'schema') {
+                if (!is_null($value)) {
+                    $response->schema = $response->schema ?: new Schema([]);
+                    $this->importSchema($value, $response->schema);
+                }
+            } elseif (!in_array($key, array_keys($this->import_in_order))){
+                if (property_exists($response, $key)) {
                     if (is_array($value)) {
-                        $response->$key = array_merge($response->$key?: [], $parent_response->$key);
-                    } elseif (!isset($response->$key) && $key != $current_key) {
-                        $response->$key = $parent_response->$key;
+                        $response->$key = array_merge($value, $response->$key ?: []);
+                    } elseif (!isset($response->$key) && $key != $current_key || $key == 'ref') {
+                        $response->$key = $value;
                     }
                 }
             }
@@ -278,25 +297,27 @@ class HandleReferences
      * @param Schema $parent
      * @param Schema $child
      */
-    private function importSchema(Schema $parent, Schema $child)
+    private function importSchema (Schema $parent, Schema $child)
     {
         $temp = [];
 
-        //add all in a temporary array
+        // add all in a temporary array
         if (!is_null($child->properties)) {
-            foreach ($child->properties as $key => $value) {
+            foreach ($child->properties as $value) {
                 $temp[$value->property] = $value;
             }
         }
 
-        //reset the properties
+        // reset the properties
         $child->properties = [];
 
         foreach ($parent as $key => $value) {
-            if ($key == "properties") {
+            if ($key == 'properties' && is_array($value)) {
                 /** @var Property[] $value */
                 foreach ($value as $property) {
-                    if ($this->isEmpty($property) && isset($temp[$property->property])) { //if it has the same field
+                    // if the parent property exists and the child property with the same name exists,
+                    // then will use the child property
+                    if (isset($temp[$property->property])) {
                         $child->properties[] = $temp[$property->property];
                         unset($temp[$property->property]);
                     } else {
@@ -308,31 +329,24 @@ class HandleReferences
             }
         }
 
+        $child->properties = $child->properties ?: [];
+
         //now we need to just add the ones in the temp array back in.
         foreach ($temp as $name => $temp_item) {
             $found = false;
+
+            // if there are no properties then skip
             foreach ($child->properties as $property) {
                 if ($property->property == $name) {
                     $found = true;
+                    break;
                 }
             }
+
             //if it doesn't already exist then add it
             if (!$found) {
                 $child->properties[] = $temp_item;
             }
         }
-    }
-
-    /**
-     * Checks if the value is empty.
-     *
-     * @param Property $property
-     * @return bool
-     */
-    private function isEmpty(Property $property)
-    {
-        return !isset($property->type)
-        && !isset($property->description)
-        && $property->default == \SWAGGER\UNDEFINED;
     }
 }
