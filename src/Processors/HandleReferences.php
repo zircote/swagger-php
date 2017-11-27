@@ -242,7 +242,7 @@ class HandleReferences
             //add to list of children
             $this->references[$type][$parent_name][2][] = &$child;
         } else {
-            Logger::notice("Unable to the $type Reference \"$parent_name\" in " . $item->_context);
+            Logger::notice("Unable to find the $type reference \"$parent_name\" in " . $item->_context);
         }
     }
 
