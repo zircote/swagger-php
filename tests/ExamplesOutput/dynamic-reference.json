@@ -1,0 +1,124 @@
+{
+  "definitions": {
+    "ExampleDefinition": {
+      "properties": {
+        "status": {
+          "default": "available",
+          "description": "The status of a product",
+          "enum": [
+            "available",
+            "discontinued"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "Product": {
+      "properties": {
+        "id": {
+          "description": "",
+          "format": "int64",
+          "type": "integer"
+        },
+        "status": {
+          "description": "",
+          "format": "boolean",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Example of using references in swagger-php",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/path": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "name": {
+                  "maximum": 64,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Example extended response",
+            "schema": {
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Product"
+                },
+                "errors": {
+                  "type": "object"
+                },
+                "status": {
+                  "default": "available",
+                  "description": "The status of a product",
+                  "enum": [
+                    "available",
+                    "discontinued"
+                  ],
+                  "type": "string"
+                },
+                "success": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Post to URL"
+      }
+    }
+  },
+  "responses": {
+    "Json": {
+      "description": "the basic response",
+      "schema": {
+        "properties": {
+          "data": {},
+          "errors": {
+            "type": "object"
+          },
+          "status": {
+            "default": "available",
+            "description": "The status of a product",
+            "enum": [
+              "available",
+              "discontinued"
+            ],
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "swagger": "2.0"
+}

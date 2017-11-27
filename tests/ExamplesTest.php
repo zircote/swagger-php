@@ -19,7 +19,6 @@ class ExamplesTest extends SwaggerTestCase
     public function testExample($example, $output)
     {
         $swagger = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
-//        die((string) $swagger);
         $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $swagger);
     }
 
@@ -35,6 +34,7 @@ class ExamplesTest extends SwaggerTestCase
             ['swagger-spec/petstore-simple', 'petstore-simple.json'],
             ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
             ['using-refs', 'using-refs.json'],
+            ['dynamic-reference', 'dynamic-reference.json'],
         ];
     }
 }
