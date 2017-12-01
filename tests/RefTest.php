@@ -21,7 +21,7 @@ class RefTest extends SwaggerTestCase
 
         $comment = <<<END
 @SWG\Get(
-    path="/api/endpoint",
+    path="/api/~/endpoint",
     @SWG\Response(response="default", description="A response")
 )
 END;
@@ -31,7 +31,9 @@ END;
         $analysis->process();
         
         $analysis->validate();
-        $response = $swagger->ref('#/paths/%2fapi%2fendpoint/get/responses/default');
+        // escape / as ~1
+        // escape ~ as ~0
+        $response = $swagger->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('A response', $response->description);
     }
