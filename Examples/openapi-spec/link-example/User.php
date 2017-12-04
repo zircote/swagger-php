@@ -2,7 +2,8 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @OAS\Schema(schema="user", type="object")
+ * @OAS\Schema(schema="user", type="object",
+ *  @OAS\Xml(name="User"))
  */
 class User
 {

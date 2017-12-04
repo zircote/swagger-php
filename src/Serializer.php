@@ -22,6 +22,7 @@ class Serializer
     const OPERATION = 'Swagger\Annotations\Operation';
     const OPTIONS = 'Swagger\Annotations\Options';
     const PARAMETER = 'Swagger\Annotations\Parameter';
+    const REQUESTBODY = 'Swagger\Annotations\RequestBody';
     const PATCH = 'Swagger\Annotations\Patch';
     const PATHITEM = 'Swagger\Annotations\PathItem';
     const POST = 'Swagger\Annotations\Post';
