@@ -12,7 +12,7 @@ use Swagger\Context;
 use Swagger\Analysis;
 
 /**
- * Build the swagger->paths using the detected @OAS\PathItem and @OAS\Operations (like @OAS\Get, @OAS\Post, etc)
+ * Build the openapi->paths using the detected @OAS\PathItem and @OAS\Operations (like @OAS\Get, @OAS\Post, etc)
  */
 class BuildPaths
 {

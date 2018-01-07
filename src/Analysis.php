@@ -18,7 +18,6 @@ use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
-use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
@@ -222,14 +221,14 @@ class Analysis
     }
 
     /**
-     * Build an analysis with only the annotations that are merged into the swagger annotation.
+     * Build an analysis with only the annotations that are merged into the OpenAPI annotation.
      *
      * @return Analysis
      */
     public function merged()
     {
         if (!$this->openapi) {
-            throw new Exception('No swagger target set. Run the MergeIntoSwagger processor');
+            throw new Exception('No openapi target set. Run the MergeIntoOpenApi processor');
         }
         $unmerged = $this->openapi->_unmerged;
         $this->openapi->_unmerged = [];

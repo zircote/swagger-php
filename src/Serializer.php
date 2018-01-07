@@ -30,6 +30,7 @@ class Serializer
     const RESPONSE = 'Swagger\Annotations\Response';
     const SCHEMA = 'Swagger\Annotations\Schema';
     const SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
+    const FLOW = 'Swagger\Annotations\Flow';
     const OPENAPI = 'Swagger\Annotations\OpenApi';
     const TAG = 'Swagger\Annotations\Tag';
     const XML = 'Swagger\Annotations\Xml';
