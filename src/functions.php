@@ -18,7 +18,7 @@ if (defined('Swagger\UNDEFINED') === false) {
     define('Swagger\Processors\UNDEFINED', UNDEFINED);
 
     /**
-     * Scan the filesystem for swagger annotations and build swagger-documentation.
+     * Scan the filesystem for OpenAPI annotations and build swagger-documentation.
      *
      * @param string|array|Finder $directory The directory(s) or filename(s)
      * @param array $options

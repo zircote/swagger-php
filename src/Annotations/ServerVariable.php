@@ -42,6 +42,16 @@ class ServerVariable extends AbstractAnnotation
      */
     public $variables;
 
+    /**
+     * An optional description for the server variable.
+     * CommonMark syntax MAY be used for rich text representation.
+     *
+     * @var string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $description;
+
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\Server'
