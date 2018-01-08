@@ -60,15 +60,15 @@ class Flow extends AbstractAnnotation
     public $scopes = [];
 
     /** @inheritdoc */
-    public static $_required = ['authorizationUrl', 'tokenUrl', 'scopes', 'name', 'flow'];
+    public static $_required = ['scopes', 'name', 'flow'];
 
     /** @inheritdoc */
     public static $_types = [
-        'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
-        'name' => 'string',
-        'refreshUrl' => 'string',
+        'flow'             => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
+        'name'             => 'string',
+        'refreshUrl'       => 'string',
         'authorizationUrl' => 'string',
-        'tokenUrl' => 'string',
+        'tokenUrl'         => 'string',
     ];
 
     /** @inheritdoc */

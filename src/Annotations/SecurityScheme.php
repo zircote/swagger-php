@@ -93,15 +93,15 @@ class SecurityScheme extends AbstractAnnotation
     public $openIdConnectUrl;
 
     /** @inheritdoc */
-    public static $_required = ['type', 'scheme', 'type', 'openIdConnectUrl'];
+    public static $_required = ['type', 'scheme', 'type'];
 
     /** @inheritdoc */
     public static $_types = [
-        'type'        => ['basic', 'apiKey', 'oauth2', 'openIdConnect'],
+        'type'        => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
         'description' => 'string',
-        'name'        => 'string',
-        'in'          => ['query', 'header'],
-        'scopes'      => 'object',
+        'name' => 'string',
+        'bearerFormat' => 'string',
+        'in' => ['query', 'header', 'cookie'],
     ];
 
     /** {@inheritdoc} */

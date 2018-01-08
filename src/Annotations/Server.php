@@ -14,7 +14,8 @@ namespace Swagger\Annotations;
 class Server extends AbstractAnnotation
 {
     /**
-     * A URL to the target host. This URL supports Server Variables and may be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served.
+     * A URL to the target host. This URL supports Server Variables and may be relative,
+     * to indicate that the host location is relative to the location where the OpenAPI document is being served.
      * Variable substitutions will be made when a variable is named in {brackets}.
      *
      * @var string
@@ -36,6 +37,18 @@ class Server extends AbstractAnnotation
      * @var array
      */
     public $variables;
+
+    /**
+     * Server name
+     *
+     * @var string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $server;
+
+
+    public $scopes;
 
     /** @inheritdoc */
     public static $_parents = [

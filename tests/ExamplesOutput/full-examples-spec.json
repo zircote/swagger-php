@@ -1,0 +1,175 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OpenAPI full spec example",
+        "description": "Full example openapi",
+        "termsOfService": "http://openapi-example.com/terms-of-service",
+        "contact": {
+            "name": "Test Dev 1",
+            "url": "https://openapi-example.com/test-dev-1",
+            "email": "test-dev-1@openapi-example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": {
+        "Test server": {
+            "url": "http://openapi-example.com",
+            "description": "Example server",
+            "variables": {
+                "test-variable": {
+                    "default": "test",
+                    "description": "Test server variable"
+                },
+                "enum-test-variable": {
+                    "enum": [
+                        "test",
+                        "example",
+                        "openapi"
+                    ],
+                    "default": "test",
+                    "description": "Test server variable"
+                }
+            }
+        }
+    },
+    "paths": {},
+    "components": {
+        "securitySchemes": {
+            "basicAuth": {
+                "type": "http",
+                "description": "Basic auth annotation",
+                "name": "basicAuth",
+                "scheme": "basic"
+            },
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "description": "Api key auth in query annotation",
+                "name": "apiKeyAuth",
+                "in": "query",
+                "scheme": "apiKey"
+            },
+            "apiKeyHeaderAuth": {
+                "type": "apiKey",
+                "description": "Api key auth in header annotation",
+                "name": "apiKeyHeaderAuth",
+                "in": "header",
+                "scheme": "apiKey"
+            },
+            "apiKeyCookieAuth": {
+                "type": "apiKey",
+                "description": "Api key auth in cookie annotation",
+                "name": "apiKeyCookieAuth",
+                "in": "cookie",
+                "scheme": "apiKey"
+            },
+            "bearerAuth": {
+                "type": "http",
+                "description": "Bearer auth",
+                "name": "bearerAuth",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            },
+            "oauth2Flows": {
+                "type": "oauth2",
+                "description": "OAUTH2 flows test",
+                "name": "oauth2Flows",
+                "flow": {
+                    "implicitGrantOauth2": {
+                        "authorizationUrl": "http://openapi-example.com/oauth2/authorize",
+                        "refreshUrl": "http://openapi-example.com/oauth2/refresh-token",
+                        "flow": "implicit",
+                        "scopes": [
+                            {
+                                "default": "Default scope"
+                            },
+                            {
+                                "userEdit": "Edit user profile"
+                            },
+                            {
+                                "meOnly": "Permission for current user account info only"
+                            }
+                        ]
+                    },
+                    "authorizationCodeGrantOauth2": {
+                        "authorizationUrl": "http://openapi-example.com/oauth2/authorize",
+                        "tokenUrl": "http://openapi-example.com/oauth2/access_token",
+                        "refreshUrl": "http://openapi-example.com/oauth2/refresh-token",
+                        "flow": "authorizationCode",
+                        "scopes": [
+                            {
+                                "default": "Default scope"
+                            },
+                            {
+                                "userEdit": "Edit user profile"
+                            },
+                            {
+                                "meOnly": "Permission for current user account info only"
+                            }
+                        ]
+                    },
+                    "passwordGrantOauth2": {
+                        "tokenUrl": "http://openapi-example.com/oauth2/access_token",
+                        "refreshUrl": "http://openapi-example.com/oauth2/refresh-token",
+                        "flow": "password",
+                        "scopes": [
+                            {
+                                "default": "Default scope"
+                            },
+                            {
+                                "userEdit": "Edit user profile"
+                            },
+                            {
+                                "meOnly": "Permission for current user account info only"
+                            }
+                        ]
+                    },
+                    "clientCredentialsGrantOauth2": {
+                        "tokenUrl": "http://openapi-example.com/oauth2/access_token",
+                        "refreshUrl": "http://openapi-example.com/oauth2/refresh-token",
+                        "flow": "clientCredentials",
+                        "scopes": [
+                            {
+                                "default": "Default scope"
+                            },
+                            {
+                                "userEdit": "Edit user profile"
+                            },
+                            {
+                                "meOnly": "Permission for current user account info only"
+                            }
+                        ]
+                    }
+                },
+                "scheme": "oauth2"
+            }
+        }
+    },
+    "security": {
+        "type": "http",
+        "description": "Basic auth annotation",
+        "name": "basicAuth",
+        "scheme": "basic"
+    },
+    "tags": [
+        {
+            "name": "first-tag",
+            "description": "Test first tag",
+            "externalDocs": {
+                "description": "First Test external documentation",
+                "url": "http://openapi-example.com/docs/first"
+            }
+        },
+        {
+            "name": "second-tag",
+            "description": "Test second tag",
+            "externalDocs": {
+                "description": "Second Test external documentation",
+                "url": "http://openapi-example.com/docs/second"
+            }
+        }
+    ]
+}
