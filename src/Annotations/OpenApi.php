@@ -101,7 +101,6 @@ class OpenApi extends AbstractAnnotation
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
         'Swagger\Annotations\SecurityScheme' => 'security',
-        'Swagger\Annotations\Flow' => ['flow', 'flow'],
         'Swagger\Annotations\Server' => ['servers', 'server'],
         'Swagger\Annotations\PathItem' => ['paths', 'path'],
         'Swagger\Annotations\Components' => 'components',

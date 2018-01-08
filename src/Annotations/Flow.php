@@ -74,6 +74,5 @@ class Flow extends AbstractAnnotation
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\SecurityScheme',
-        'Swagger\Annotations\Components',
     ];
 }

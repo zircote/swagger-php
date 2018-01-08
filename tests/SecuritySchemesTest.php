@@ -95,7 +95,6 @@ SCHEME;
         $this->assertEquals('oauth2', $security->flow[0]->name);
         $this->assertEquals('http://auth.test.com/token', $security->flow[0]->tokenUrl);
         $this->assertEquals('http://auth.test.com/refresh-token', $security->flow[0]->refreshUrl);
-
     }
 
     public function testMultipleAnnotations()
@@ -143,7 +142,6 @@ SCHEME;
         $this->assertEquals('http://authClient.test.com', $security->flow[1]->authorizationUrl);
         $this->assertEquals('http://authClient.test.com/token', $security->flow[1]->tokenUrl);
         $this->assertEquals('http://authClient.test.com/refresh-token', $security->flow[1]->refreshUrl);
-
     }
 
     /**
