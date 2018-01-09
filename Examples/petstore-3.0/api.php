@@ -43,14 +43,11 @@ out more about Swagger at
  *     )
  * )
  * @OAS\Server(
- *     server="swaggerHUBApi",
  *     description="SwaggerHUB API Mocking",
  *     url="https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0"
  * )
- */
-
-/**
- * @OAS\Schemes(
- *     schemes={"http", "https"}
+ * @OAS\ExternalDocumentation(
+ *     description="Find out more about Swagger",
+ *     url="http://swagger.io"
  * )
  */

@@ -38,18 +38,6 @@ class Server extends AbstractAnnotation
      */
     public $variables;
 
-    /**
-     * Server name
-     *
-     * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public $server;
-
-
-    public $scopes;
-
     /** @inheritdoc */
     public static $_parents = [
         'Swagger\Annotations\OpenApi',
@@ -68,7 +56,7 @@ class Server extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\ServerVariable' => ['variables', 'serverVariable'],
+        'Swagger\Annotations\ServerVariable' => ['variables'],
     ];
 
     /** @inheritdoc */

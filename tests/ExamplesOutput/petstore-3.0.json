@@ -13,29 +13,249 @@
         },
         "version": "1.0.0"
     },
-    "servers": {
-        "swaggerHUBApi": {
+    "servers": [
+        {
             "url": "https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0",
             "description": "SwaggerHUB API Mocking"
         }
-    },
+    ],
     "paths": {},
     "components": {
+        "schemas": {
+            "ApiResponse": {
+                "title": "Api response",
+                "description": "Api response",
+                "properties": {
+                    "code": {
+                        "title": "Code",
+                        "description": "Code",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "description": "Message",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Category": {
+                "title": "Pets Category",
+                "description": "Pets Category",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "title": "Category name",
+                        "description": "Category name",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Category"
+                }
+            },
+            "Order": {
+                "title": "Order model",
+                "description": "Order model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    },
+                    "petId": {
+                        "title": "Pet ID",
+                        "description": "Pet ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    },
+                    "quantity": {
+                        "title": "Quantity",
+                        "description": "Quantity",
+                        "type": "integer",
+                        "format": "in32",
+                        "default": 12
+                    },
+                    "shipDate": {
+                        "title": "Pet ID",
+                        "description": "Shipping date",
+                        "type": "string",
+                        "format": "datetime",
+                        "default": "2017-02-02 18:31:45"
+                    },
+                    "status": {
+                        "title": "Pet ID",
+                        "description": "Order status",
+                        "type": "string",
+                        "default": "placed",
+                        "enum": [
+                            "placed",
+                            "approved",
+                            "delivered"
+                        ]
+                    },
+                    "complete": {
+                        "title": "Complete status",
+                        "description": "Complete status",
+                        "type": "boolean",
+                        "format": "int64",
+                        "default": "false"
+                    }
+                }
+            },
+            "Pet": {
+                "title": "Pet model",
+                "description": "Pet model",
+                "required": [
+                    "name",
+                    "photoUrls"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "category": {
+                        "title": "Category",
+                        "description": "Category relation",
+                        "$ref": "#/components/schemas/Category"
+                    },
+                    "name": {
+                        "title": "Pet name",
+                        "description": "Pet name",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "photoUrls": {
+                        "title": "Photo urls",
+                        "description": "Photo urls",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "default": "images/image-1.png"
+                        },
+                        "xml": {
+                            "name": "photoUrl",
+                            "wrapped": true
+                        }
+                    },
+                    "tags": {
+                        "title": "Pet tags",
+                        "description": "Pet tags",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tag"
+                        },
+                        "xml": {
+                            "name": "tag",
+                            "wrapped": true
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Pet"
+                }
+            },
+            "Tag": {
+                "title": "Tag",
+                "description": "Tag",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Tag"
+                }
+            },
+            "User": {
+                "title": "User model",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "username": {
+                        "title": "Username",
+                        "description": "Username",
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "title": "First name",
+                        "description": "First name",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "title": "Last name",
+                        "description": "Last name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "Password",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Phone",
+                        "type": "string",
+                        "format": "msisdn"
+                    },
+                    "userStatus": {
+                        "title": "User status",
+                        "description": "User status",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "petstore_auth": {
                 "type": "oauth2",
-                "name": "petstore_auth",
-                "flow": [
-                    {
+                "flows": {
+                    "implicit": {
                         "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-                        "flow": "implicit",
                         "scopes": {
                             "write:pets": "modify pets in your account",
                             "read:pets": "read your pets"
-                        },
-                        "name": "auth"
+                        }
                     }
-                ]
+                }
             },
             "api_key": {
                 "type": "apiKey",
@@ -66,8 +286,8 @@
             }
         }
     ],
-    "schemes": [
-        "http",
-        "https"
-    ]
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
 }

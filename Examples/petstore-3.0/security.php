@@ -9,7 +9,6 @@
  *     name="petstore_auth",
  *     securityScheme="petstore_auth",
  *     @OAS\Flow(
- *         name="auth",
  *         flow="implicit",
  *         authorizationUrl="http://petstore.swagger.io/oauth/dialog",
  *         scopes={
