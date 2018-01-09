@@ -53,5 +53,6 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Trace',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
     ];
 }

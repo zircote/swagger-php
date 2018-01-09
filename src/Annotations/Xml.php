@@ -59,5 +59,6 @@ class Xml extends AbstractAnnotation
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
     ];
 }

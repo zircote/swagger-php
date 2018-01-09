@@ -91,8 +91,17 @@ class OpenApi extends AbstractAnnotation
      */
     public $_analysis;
 
+    /**
+     * Schemes
+     *
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $schemes;
+
     /** @inheritdoc */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis', 'security'];
 
     /** @inheritdoc */
     public static $_required = ['openapi', 'info', 'paths'];
@@ -106,6 +115,7 @@ class OpenApi extends AbstractAnnotation
         'Swagger\Annotations\Components' => 'components',
         'Swagger\Annotations\Tag' => ['tags'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
+        'Swagger\Annotations\Schemes' => 'schemes'
     ];
 
     /** @inheritdoc */

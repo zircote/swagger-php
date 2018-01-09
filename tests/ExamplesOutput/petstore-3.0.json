@@ -1,0 +1,73 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger Petstore",
+        "description": "This is a sample Petstore server.  You can find\nout more about Swagger at\n[http://swagger.io](http://swagger.io) or on\n[irc.freenode.net, #swagger](http://swagger.io/irc/).",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "apiteam@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": {
+        "swaggerHUBApi": {
+            "url": "https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0",
+            "description": "SwaggerHUB API Mocking"
+        }
+    },
+    "paths": {},
+    "components": {
+        "securitySchemes": {
+            "petstore_auth": {
+                "type": "oauth2",
+                "name": "petstore_auth",
+                "flow": [
+                    {
+                        "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+                        "flow": "implicit",
+                        "scopes": {
+                            "write:pets": "modify pets in your account",
+                            "read:pets": "read your pets"
+                        },
+                        "name": "auth"
+                    }
+                ]
+            },
+            "api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "pet",
+            "description": "Everything about your Pets",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        },
+        {
+            "name": "store",
+            "description": "Access to Petstore orders"
+        },
+        {
+            "name": "user",
+            "description": "Operations about user",
+            "externalDocs": {
+                "description": "Find out more about store",
+                "url": "http://swagger.io"
+            }
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ]
+}

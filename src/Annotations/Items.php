@@ -27,6 +27,7 @@ class Items extends Schema
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\Header',
     ];

@@ -36,15 +36,7 @@ class Flow extends AbstractAnnotation
     public $refreshUrl;
 
     /**
-     * Flow name in documentation
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Flow na
-     * me. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials']
+     * Flow name. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials']
      *
      * @var string
      */
@@ -59,8 +51,20 @@ class Flow extends AbstractAnnotation
      */
     public $scopes = [];
 
+    /**
+     * Flow name in documentation
+     *
+     * @var string
+     */
+    public $name;
+
     /** @inheritdoc */
-    public static $_required = ['scopes', 'name', 'flow'];
+    public static $_required = ['scopes', 'flow', 'name'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static $_blacklist = ['_context', '_unmerged'];
 
     /** @inheritdoc */
     public static $_types = [

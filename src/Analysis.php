@@ -12,19 +12,21 @@ use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\OpenApi;
-use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
+use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Processors\InheritProperties;
 use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\MergeJsonContent;
+use Swagger\Processors\MergeXmlContent;
 
 /**
- * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
+ * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
+ * functions for the processors.
  */
 class Analysis
 {
@@ -35,18 +37,21 @@ class Analysis
 
     /**
      * Class definitions
+     *
      * @var array
      */
     public $classes = [];
 
     /**
      * The target OpenApi annotation.
+     *
      * @var OpenApi
      */
     public $openapi;
 
     /**
      * Registry for the post-processing operations.
+     *
      * @var Closure[]
      */
     private static $processors;
@@ -68,7 +73,7 @@ class Analysis
 
     /**
      * @param AbstractAnnotation $annotation
-     * @param Context $context
+     * @param Context            $context
      */
     public function addAnnotation($annotation, $context)
     {
@@ -98,20 +103,20 @@ class Analysis
                     }
                 }
                 continue;
-            } elseif (is_array($value)) {
+            } else if (is_array($value)) {
                 foreach ($value as $item) {
                     if ($item instanceof AbstractAnnotation) {
                         $this->addAnnotation($item, $context);
                     }
                 }
-            } elseif ($value instanceof AbstractAnnotation) {
+            } else if ($value instanceof AbstractAnnotation) {
                 $this->addAnnotation($value, $context);
             }
         }
     }
 
     /**
-     * @param array $annotations
+     * @param array   $annotations
      * @param Context $context
      */
     public function addAnnotations($annotations, $context)
@@ -174,8 +179,9 @@ class Analysis
 
     /**
      *
-     * @param string $class
+     * @param string  $class
      * @param boolean $strict Innon-strict mode childclasses are also detected.
+     *
      * @return array
      */
     public function getAnnotationsOfType($class, $strict = false)
@@ -200,6 +206,7 @@ class Analysis
     /**
      *
      * @param object $annotation
+     *
      * @return \Swagger\Context
      */
     public function getContext($annotation)
@@ -268,6 +275,7 @@ class Analysis
 
     /**
      * Apply the processor(s)
+     *
      * @param Closure|Closure[] $processors One or more processors
      */
     public function process($processors = null)
@@ -285,6 +293,7 @@ class Analysis
 
     /**
      * Get direct access to the processors array.
+     *
      * @return array reference
      */
     public static function &processors()
@@ -302,6 +311,7 @@ class Analysis
                 new AugmentOperations(),
                 new AugmentParameters(),
                 new MergeJsonContent(),
+                new MergeXmlContent(),
                 new CleanUnmerged(),
             ];
         }
@@ -310,6 +320,7 @@ class Analysis
 
     /**
      * Register a processor
+     *
      * @param Closure $processor
      */
     public static function registerProcessor($processor)
@@ -319,6 +330,7 @@ class Analysis
 
     /**
      * Unregister a processor
+     *
      * @param Closure $processor
      */
     public static function unregisterProcessor($processor)
