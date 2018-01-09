@@ -67,7 +67,6 @@ INFO;
 /**
  * @OAS\SecurityScheme(
  *     @OAS\Flow(
- *         name="oauth2",
  *         flow="implicit",
  *         tokenUrl="http://auth.test.com/token",
  *         refreshUrl="http://auth.test.com/refresh-token"
@@ -90,11 +89,10 @@ SCHEME;
         $security = $analysis[0];
         $this->assertInstanceOf(SecurityScheme::class, $security);
 
-        $this->assertCount(1, $security->flow);
-        $this->assertEquals('implicit', $security->flow[0]->flow);
-        $this->assertEquals('oauth2', $security->flow[0]->name);
-        $this->assertEquals('http://auth.test.com/token', $security->flow[0]->tokenUrl);
-        $this->assertEquals('http://auth.test.com/refresh-token', $security->flow[0]->refreshUrl);
+        $this->assertCount(1, $security->flows);
+        $this->assertEquals('implicit', $security->flows[0]->flow);
+        $this->assertEquals('http://auth.test.com/token', $security->flows[0]->tokenUrl);
+        $this->assertEquals('http://auth.test.com/refresh-token', $security->flows[0]->refreshUrl);
     }
 
     public function testMultipleAnnotations()
@@ -103,13 +101,11 @@ SCHEME;
 /**
  * @OAS\SecurityScheme(
  *     @OAS\Flow(
- *         name="oauth2",
  *         flow="implicit",
  *         tokenUrl="http://auth.test.com/token",
  *         refreshUrl="http://auth.test.com/refresh-token"
  *     ),
  *     @OAS\Flow(
- *         name="oauth2Client",
  *         flow="client_credentials",
  *         authorizationUrl="http://authClient.test.com",
  *         tokenUrl="http://authClient.test.com/token",
@@ -132,16 +128,14 @@ SCHEME;
         /** @var \Swagger\Annotations\SecurityScheme $security */
         $security = $analysis[0];
 
-        $this->assertCount(2, $security->flow);
-        $this->assertEquals('implicit', $security->flow[0]->flow);
-        $this->assertEquals('oauth2', $security->flow[0]->name);
-        $this->assertEquals('http://auth.test.com/token', $security->flow[0]->tokenUrl);
-        $this->assertEquals('http://auth.test.com/refresh-token', $security->flow[0]->refreshUrl);
-        $this->assertEquals('client_credentials', $security->flow[1]->flow);
-        $this->assertEquals('oauth2Client', $security->flow[1]->name);
-        $this->assertEquals('http://authClient.test.com', $security->flow[1]->authorizationUrl);
-        $this->assertEquals('http://authClient.test.com/token', $security->flow[1]->tokenUrl);
-        $this->assertEquals('http://authClient.test.com/refresh-token', $security->flow[1]->refreshUrl);
+        $this->assertCount(2, $security->flows);
+        $this->assertEquals('implicit', $security->flows[0]->flow);
+        $this->assertEquals('http://auth.test.com/token', $security->flows[0]->tokenUrl);
+        $this->assertEquals('http://auth.test.com/refresh-token', $security->flows[0]->refreshUrl);
+        $this->assertEquals('client_credentials', $security->flows[1]->flow);
+        $this->assertEquals('http://authClient.test.com', $security->flows[1]->authorizationUrl);
+        $this->assertEquals('http://authClient.test.com/token', $security->flows[1]->tokenUrl);
+        $this->assertEquals('http://authClient.test.com/refresh-token', $security->flows[1]->refreshUrl);
     }
 
     /**

@@ -98,6 +98,7 @@ class SecurityScheme extends AbstractAnnotation
     /** {@inheritdoc} */
     public static $_parents = [
         'Swagger\Annotations\Components',
+        'Swagger\Annotations\OpenApi',
     ];
 
     /**
