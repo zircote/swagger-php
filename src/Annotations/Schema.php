@@ -312,7 +312,8 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Xml' => 'xml'
+        'Swagger\Annotations\Xml' => 'xml',
+        'Swagger\Annotations\AdditionalProperties' => 'additionalProperties'
     ];
 
     /** @inheritdoc */

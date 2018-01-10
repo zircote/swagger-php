@@ -13,12 +13,14 @@ class Serializer
     const CONTACT = 'Swagger\Annotations\Contact';
     const DELETE = 'Swagger\Annotations\Delete';
     const EXTERNALDOCUMENTATION = 'Swagger\Annotations\ExternalDocumentation';
+    const FLOW = 'Swagger\Annotations\Flow';
     const GET = 'Swagger\Annotations\Get';
     const HEAD = 'Swagger\Annotations\Head';
     const HEADER = 'Swagger\Annotations\Header';
     const INFO = 'Swagger\Annotations\Info';
     const ITEMS = 'Swagger\Annotations\Items';
     const LICENSE = 'Swagger\Annotations\License';
+    const OPENAPI = 'Swagger\Annotations\OpenApi';
     const OPERATION = 'Swagger\Annotations\Operation';
     const OPTIONS = 'Swagger\Annotations\Options';
     const PARAMETER = 'Swagger\Annotations\Parameter';
@@ -27,11 +29,10 @@ class Serializer
     const POST = 'Swagger\Annotations\Post';
     const PROPERTY = 'Swagger\Annotations\Property';
     const PUT = 'Swagger\Annotations\Put';
+    const REQUESTBODY = 'Swagger\Annotations\RequestBody';
     const RESPONSE = 'Swagger\Annotations\Response';
     const SCHEMA = 'Swagger\Annotations\Schema';
     const SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
-    const FLOW = 'Swagger\Annotations\Flow';
-    const OPENAPI = 'Swagger\Annotations\OpenApi';
     const TAG = 'Swagger\Annotations\Tag';
     const XML = 'Swagger\Annotations\Xml';
 
