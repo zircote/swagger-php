@@ -321,5 +321,6 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Components',
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\MediaType',
+        'Swagger\Annotations\Header',
     ];
 }

@@ -94,14 +94,18 @@ class User
      *         @OAS\Header(
      *             header="X-Rate-Limit",
      *             description="calls per hour allowed by the user",
-     *             type="integer",
-     *             format="int32"
+     *             @OAS\Schema(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
      *         ),
      *         @OAS\Header(
      *             header="X-Expires-After",
      *             description="date in UTC when token expires",
-     *             type="string",
-     *             format="datetime"
+     *             @OAS\Schema(
+     *                 type="string",
+     *                 format="datetime"
+     *             )
      *         ),
      *         @OAS\MediaType(
      *             mediaType="application/json",

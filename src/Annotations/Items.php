@@ -29,8 +29,7 @@ class Items extends Schema
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\JsonContent',
         'Swagger\Annotations\XmlContent',
-        'Swagger\Annotations\Items',
-        'Swagger\Annotations\Header',
+        'Swagger\Annotations\Items'
     ];
 
     /** @inheritdoc */

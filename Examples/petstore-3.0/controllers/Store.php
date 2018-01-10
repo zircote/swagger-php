@@ -17,7 +17,7 @@ class Store
 {
     /**
      * @OAS\Get(
-     *     path="store",
+     *     path="/store",
      *     tags={"store"},
      *     summary="Returns pet inventories by status",
      *     description="Returns a map of status codes to quantities",
@@ -151,6 +151,7 @@ class Store
      *     @OAS\Parameter(
      *         name="orderId",
      *         in="path",
+     *         required=true,
      *         description="ID of the order that needs to be deleted",
      *         @OAS\Schema(
      *             type="integer",

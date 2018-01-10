@@ -397,7 +397,7 @@
                 ]
             }
         },
-        "store": {
+        "/store": {
             "get": {
                 "tags": [
                     "store"
@@ -522,6 +522,7 @@
                         "name": "orderId",
                         "in": "path",
                         "description": "ID of the order that needs to be deleted",
+                        "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64",
@@ -614,13 +615,17 @@
                         "headers": {
                             "X-Rate-Limit": {
                                 "description": "calls per hour allowed by the user",
-                                "type": "integer",
-                                "format": "int32"
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
                             },
                             "X-Expires-After": {
                                 "description": "date in UTC when token expires",
-                                "type": "string",
-                                "format": "datetime"
+                                "schema": {
+                                    "type": "string",
+                                    "format": "datetime"
+                                }
                             }
                         },
                         "content": {
