@@ -3,7 +3,6 @@ language: php
 php:
   - 7.0
   - 7.1
-  - hhvm
 
 sudo: false
 
@@ -17,9 +16,6 @@ matrix:
   include:
     - php: 7.1
       env: PHPCS=1 PHPUNIT=0
-
-  allow_failures:
-    - php: hhvm
 
 before_script:
   - composer self-update
