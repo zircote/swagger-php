@@ -2,19 +2,28 @@
 namespace UsingRefs;
 
 /**
- * @SWG\Path(
+ * @OAS\PathItem(
  *   path="/products/{product_id}",
- *   @SWG\Parameter(ref="#/parameters/product_id_in_path_required")
+ *   @OAS\Parameter(ref="#/components/parameters/product_id_in_path_required")
  * )
  */
 
 class ProductController {
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OAS\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OAS\MediaType(
+     *          mediaType="application/json",
+     *          @OAS\Schema(
+     *            ref="#/components/responses/product"
+     *          )
+     *       )
+     *   )
      * )
      */
     public function getProduct($id) {
@@ -22,11 +31,20 @@ class ProductController {
     }
 
     /**
-     * @SWG\Patch(
+     * @OAS\Patch(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OAS\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OAS\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OAS\MediaType(
+     *          mediaType="application/json",
+     *          @OAS\Schema(
+     *            ref="#/components/responses/product"
+     *          )
+     *       )
+     *   )
      * )
      */
     public function updateProduct($id) {
@@ -34,11 +52,20 @@ class ProductController {
     }
 
     /**
-     * @SWG\Post(
+     * @OAS\Post(
      *   tags={"Products"},
      *   path="/products",
-     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OAS\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OAS\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OAS\MediaType(
+     *          mediaType="application/json",
+     *          @OAS\Schema(
+     *            ref="#/components/responses/product"
+     *          )
+     *       )
+     *   )
      * )
      */
     public function addProduct($id) {
