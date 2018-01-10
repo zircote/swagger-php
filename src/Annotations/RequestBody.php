@@ -71,6 +71,7 @@ class RequestBody extends AbstractAnnotation
         'Swagger\Annotations\Options',
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Post',
+        'Swagger\Annotations\Trace',
         'Swagger\Annotations\Put',
     ];
 

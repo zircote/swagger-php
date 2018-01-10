@@ -21,4 +21,12 @@ class XmlContent extends Schema
 
     /** @inheritdoc */
     public static $_parents = [];
+
+    /** @inheritdoc */
+    public static $_nested = [
+        'Swagger\Annotations\Items' => 'items',
+        'Swagger\Annotations\Property' => ['properties', 'property'],
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
+        'Swagger\Annotations\Xml' => 'xml',
+    ];
 }

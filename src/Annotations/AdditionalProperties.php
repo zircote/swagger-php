@@ -5,7 +5,6 @@
 
 namespace Swagger\Annotations;
 
-
 /**
  * Class AdditionalProperties
  *
@@ -17,7 +16,16 @@ namespace Swagger\Annotations;
  */
 class AdditionalProperties extends Schema
 {
+    /** @inheritdoc */
     public static $_parents = [
-        'Schema\Annotations\Schema'
+        'Swagger\Annotations\Schema'
+    ];
+
+    /** @inheritdoc */
+    public static $_nested = [
+        'Swagger\Annotations\Items' => 'items',
+        'Swagger\Annotations\Property' => ['properties', 'property'],
+        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
+        'Swagger\Annotations\Xml' => 'xml',
     ];
 }

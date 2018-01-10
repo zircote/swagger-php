@@ -5,7 +5,6 @@
 
 namespace Swagger\Annotations;
 
-
 /**
  * Class Examples
  *
