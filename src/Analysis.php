@@ -23,6 +23,7 @@ use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\MergeJsonContent;
 use Swagger\Processors\MergeXmlContent;
+use Swagger\Processors\OperationId;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -103,13 +104,13 @@ class Analysis
                     }
                 }
                 continue;
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 foreach ($value as $item) {
                     if ($item instanceof AbstractAnnotation) {
                         $this->addAnnotation($item, $context);
                     }
                 }
-            } else if ($value instanceof AbstractAnnotation) {
+            } elseif ($value instanceof AbstractAnnotation) {
                 $this->addAnnotation($value, $context);
             }
         }
@@ -312,6 +313,7 @@ class Analysis
                 new AugmentParameters(),
                 new MergeJsonContent(),
                 new MergeXmlContent(),
+                new OperationId(),
                 new CleanUnmerged(),
             ];
         }
