@@ -10,6 +10,7 @@ $options = array(
     'help' => false,
     'version' => false,
     'debug' => false,
+    'operationid' => false,
 );
 $aliases = array(
     'o' => 'output',
@@ -86,6 +87,8 @@ Usage: swagger [--option value] [/path/to/project ...]
 Options:
   --output (-o)     Path to store the generated documentation.
   --stdout          Write to the standard output.
+  --operationid     Overrides the "operationid" property based on 
+                    the PHP Annotation Context
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
@@ -154,6 +157,7 @@ set_exception_handler(function ($exception) use ($options) {
 
 
 $exclude = $options['exclude'] ? explode(',', $options['exclude']) : null;
+define('OVERRIDE_OPERATIONID', $options["operationid"]);
 
 $swagger = Swagger\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
