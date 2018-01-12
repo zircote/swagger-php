@@ -59,7 +59,7 @@ abstract class Operation extends AbstractAnnotation
      * Tools and libraries MAY use the operation id to uniquely identify an operation.
      * @var string
      */
-    public $operationId;
+    public $operationId = UNDEFINED;
 
     /**
      * A list of MIME types the operation can consume.
@@ -147,6 +147,9 @@ abstract class Operation extends AbstractAnnotation
         $data = parent::jsonSerialize();
         unset($data->method);
         unset($data->path);
+        if (isset($data->operationId) && $data->operationId === null) {
+            unset($data->operationId);
+        }
         return $data;
     }
 
