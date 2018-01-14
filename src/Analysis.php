@@ -11,7 +11,6 @@ use Exception;
 use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Operation;
 use Swagger\Annotations\Swagger;
 use Swagger\Processors\AugmentDefinitions;
 use Swagger\Processors\AugmentOperations;
@@ -75,7 +74,6 @@ class Analysis
         if ($this->annotations->contains($annotation)) {
             return;
         }
-
         if ($annotation instanceof AbstractAnnotation) {
             $context = $annotation->_context;
         } else {
