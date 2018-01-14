@@ -76,10 +76,6 @@ class Analysis
             return;
         }
 
-        if ($annotation instanceof Operation && defined('OVERRIDE_OPERATIONID') && OVERRIDE_OPERATIONID) {
-            $annotation->operationId = $context->namespace . "\\" . $context->class . "::" . $context->method;
-        }
-
         if ($annotation instanceof AbstractAnnotation) {
             $context = $annotation->_context;
         } else {
