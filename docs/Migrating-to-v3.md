@@ -16,4 +16,18 @@ The spefication uses the term "Path Item Object", updated the annotation to refl
 ### @SWG\Definition() is removed
 Use @OAS\Schema() instead of @OAS\Definition() and update the references from "#/definitons/something" to "#/components/schemas/something".
 
+### @SWG\Path is removed
+Use @OAS\PAthItem instead of @OAS\Path and update reference from
 
+### consumes, produces field is removed from open-api specification
+Use @OAS\MediaType for set data format.
+
+### Parameters rename references
+Rename `#/parameters/{parameter_name}` to `#/components/parameters/{parameter_name}`
+
+### Responses rename references
+Rename `#/responses/{response}` to `#/components/responses/{response}`
+
+### More detail about different:
+
+[A Visual Guide to What's New in Swagger 3.0](https://blog.readme.io/an-example-filled-guide-to-swagger-3-2/)

@@ -2,13 +2,6 @@
 
 namespace OpenApi\LinkExample;
 
-/**
-
- *
- *
- *
-
- */
 class RepositoriesController
 {
 
