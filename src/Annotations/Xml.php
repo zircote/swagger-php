@@ -54,10 +54,12 @@ class Xml extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
+        'Swagger\Annotations\AdditionalProperties',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Schema',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
     ];
 }

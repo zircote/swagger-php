@@ -40,7 +40,7 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\OpenApi',
         'Swagger\Annotations\Tag',
         'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Schema',
+        'Swagger\Annotations\AdditionalProperties',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
@@ -53,5 +53,6 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Trace',
         'Swagger\Annotations\Items',
         'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
     ];
 }

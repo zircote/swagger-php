@@ -154,6 +154,7 @@ abstract class Operation extends AbstractAnnotation
         'Swagger\Annotations\Response' => ['responses', 'response'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
         'Swagger\Annotations\Server' => ['servers'],
+        'Swagger\Annotations\RequestBody' => 'requestBody',
     ];
 
     /** @inheritdoc */

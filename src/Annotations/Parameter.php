@@ -202,7 +202,8 @@ class Parameter extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Schema' => 'schema'
+        'Swagger\Annotations\Schema' => 'schema',
+        'Swagger\Annotations\Examples' => ['examples'],
     ];
 
     /** @inheritdoc */

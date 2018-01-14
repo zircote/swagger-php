@@ -44,7 +44,7 @@ class Analyser
     public static $whitelist = ['Swagger\Annotations\\'];
 
     /**
-     * Use @OAS\* for swagger annotations (unless overwritten by a use statement).
+     * Use @OAS\* for OpenAPI annotations (unless overwritten by a use statement).
      */
     public static $defaultImports = ['oas' => 'Swagger\Annotations'];
 

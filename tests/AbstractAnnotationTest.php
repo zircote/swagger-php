@@ -61,8 +61,8 @@ END;
         $comment = <<<END
 @OAS\Response(
     description="The headers in response must have unique header values",
-    @OAS\Header(header="X-CSRF-Token", type="string", description="first"),
-    @OAS\Header(header="X-CSRF-Token", type="string", description="second")
+    @OAS\Header(header="X-CSRF-Token", @OAS\Schema(type="string"), description="first"),
+    @OAS\Header(header="X-CSRF-Token", @OAS\Schema(type="string"), description="second")
 )
 END;
         $annotations = $this->parseComment($comment);

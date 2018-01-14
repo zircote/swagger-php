@@ -8,11 +8,11 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- * Shorthand for a json response.
+ * Shorthand for a xml response.
  *
- * Use as an Schema inside a Response and the MediaType "application/json" will be generated.
+ * Use as an Schema inside a Response and the MediaType "application/xml" will be generated.
  */
-class JsonContent extends Schema
+class XmlContent extends Schema
 {
     /**
      * @var object

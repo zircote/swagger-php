@@ -57,9 +57,11 @@ class MediaType extends AbstractAnnotation
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Schema' => 'schema',
+        'Swagger\Annotations\Examples' => ['examples'],
     ];
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Response'
+        'Swagger\Annotations\Response',
+        'Swagger\Annotations\RequestBody',
     ];
 }

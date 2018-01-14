@@ -64,7 +64,7 @@ class OpenApi extends AbstractAnnotation
      * Only one of the security requirement objects need to be satisfied to authorize a request.
      * Individual operations can override this definition.
      *
-     * @var array
+     * @var \Swagger\Annotations\SecurityScheme
      */
     public $security;
 
@@ -91,8 +91,17 @@ class OpenApi extends AbstractAnnotation
      */
     public $_analysis;
 
+    /**
+     * Schemes
+     *
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public $schemes;
+
     /** @inheritdoc */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis', 'security'];
 
     /** @inheritdoc */
     public static $_required = ['openapi', 'info', 'paths'];
@@ -100,7 +109,8 @@ class OpenApi extends AbstractAnnotation
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Info' => 'info',
-        'Swagger\Annotations\Server' => ['servers', 'server'],
+        'Swagger\Annotations\SecurityScheme' => 'security',
+        'Swagger\Annotations\Server' => ['servers'],
         'Swagger\Annotations\PathItem' => ['paths', 'path'],
         'Swagger\Annotations\Components' => 'components',
         'Swagger\Annotations\Tag' => ['tags'],
@@ -120,7 +130,7 @@ class OpenApi extends AbstractAnnotation
         return parent::validate([], [], '#');
     }
     /**
-     * Save the swagger documentation to a file.
+     * Save the OpenAPI documentation to a file.
      * @param string $filename
      * @throws Exception
      */

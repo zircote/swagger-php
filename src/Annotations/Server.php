@@ -14,7 +14,8 @@ namespace Swagger\Annotations;
 class Server extends AbstractAnnotation
 {
     /**
-     * A URL to the target host. This URL supports Server Variables and may be relative, to indicate that the host location is relative to the location where the OpenAPI document is being served.
+     * A URL to the target host. This URL supports Server Variables and may be relative,
+     * to indicate that the host location is relative to the location where the OpenAPI document is being served.
      * Variable substitutions will be made when a variable is named in {brackets}.
      *
      * @var string
@@ -55,7 +56,7 @@ class Server extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\ServerVariable' => ['variables', 'serverVariable'],
+        'Swagger\Annotations\ServerVariable' => ['variables'],
     ];
 
     /** @inheritdoc */

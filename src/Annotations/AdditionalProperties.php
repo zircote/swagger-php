@@ -1,26 +1,25 @@
-<?php declare(strict_types=1);
-
+<?php
 /**
- * @license Apache 2.0
+ * @author Donii Sergii <doniysa@gmail.com>
  */
 
 namespace Swagger\Annotations;
 
 /**
- * @Annotation
- * Shorthand for a json response.
+ * Class AdditionalProperties
  *
- * Use as an Schema inside a Response and the MediaType "application/json" will be generated.
+ * @package Swagger\Annotations
+ *
+ * @author  Donii Sergii <doniysa@gmail.com>
+ *
+ * @Annotation
  */
-class JsonContent extends Schema
+class AdditionalProperties extends Schema
 {
-    /**
-     * @var object
-     */
-    public $examples;
-
     /** @inheritdoc */
-    public static $_parents = [];
+    public static $_parents = [
+        'Swagger\Annotations\Schema'
+    ];
 
     /** @inheritdoc */
     public static $_nested = [
