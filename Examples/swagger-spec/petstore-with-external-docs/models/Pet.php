@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @SWG\Definition(
+ * @OAS\Schema(
  *   definition="NewPet",
  *   type="object",
  *   required={"name"}
@@ -12,25 +12,25 @@ class Pet
 
     public $id;
     /**
-     * @SWG\Property(type="string")
+     * @OAS\Property(type="string")
      */
     public $name;
 
     /**
-     * @SWG\Property(type="string")
+     * @OAS\Property(type="string")
      */
     public $tag;
 }
 
 /**
- *  @SWG\Definition(
+ *  @OAS\Schema(
  *   definition="Pet",
  *   type="object",
  *   allOf={
- *       @SWG\Schema(ref="#/definitions/NewPet"),
- *       @SWG\Schema(
+ *       @OAS\Schema(ref="#/definitions/NewPet"),
+ *       @OAS\Schema(
  *           required={"id"},
- *           @SWG\Property(property="id", format="int64", type="integer")
+ *           @OAS\Property(property="id", format="int64", type="integer")
  *       )
  *   }
  * )

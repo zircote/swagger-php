@@ -1,30 +1,30 @@
 <?php
 
 /**
- * @SWG\OpenApi(
+ * @OAS\OpenApi(
  *     basePath="/api",
  *     host="petstore.swagger.io",
  *     schemes={"http"},
  *     produces={"application/json"},
  *     consumes={"application/json"},
- *     @SWG\Info(
+ *     @OAS\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
  *         description="A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
  *         termsOfService="http://swagger.io/terms/",
- *         @SWG\Contact(name="Swagger API Team"),
- *         @SWG\License(name="MIT")
+ *         @OAS\Contact(name="Swagger API Team"),
+ *         @OAS\License(name="MIT")
  *     ),
- *     @SWG\Definition(
+ *     @OAS\Schema(
  *         definition="ErrorModel",
  *         type="object",
  *         required={"code", "message"},
- *         @SWG\Property(
+ *         @OAS\Property(
  *             property="code",
  *             type="integer",
  *             format="int32"
  *         ),
- *         @SWG\Property(
+ *         @OAS\Property(
  *             property="message",
  *             type="string"
  *         )

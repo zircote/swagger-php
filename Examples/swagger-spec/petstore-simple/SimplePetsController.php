@@ -6,21 +6,21 @@ class SimplePetsController
 {
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *     path="/pets",
      *     description="Returns all pets from the system that the user has access to",
      *     operationId="findPets",
      *     produces={"application/json", "application/xml", "text/xml", "text/html"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         name="tags",
      *         in="query",
      *         description="tags to filter by",
      *         required=false,
      *         type="array",
-     *         @SWG\Items(type="string"),
+     *         @OAS\Items(type="string"),
      *         collectionFormat="csv"
      *     ),
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         name="limit",
      *         in="query",
      *         description="maximum number of results to return",
@@ -28,18 +28,18 @@ class SimplePetsController
      *         type="integer",
      *         format="int32"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @SWG\Schema(
+     *         @OAS\Schema(
      *             type="array",
-     *             @SWG\Items(ref="#/definitions/Pet")
+     *             @OAS\Items(ref="#/definitions/Pet")
      *         ),
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(
+     *         @OAS\Schema(
      *             ref="#/definitions/ErrorModel"
      *         )
      *     )
@@ -50,11 +50,11 @@ class SimplePetsController
     }
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *     path="/pets/{id}",
      *     description="Returns a user based on a single ID, if the user does not have access to the pet",
      *     operationId="findPetById",
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="ID of pet to fetch",
      *         format="int64",
      *         in="path",
@@ -68,15 +68,15 @@ class SimplePetsController
      *         "text/html",
      *         "text/xml"
      *     },
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @SWG\Schema(ref="#/definitions/Pet")
+     *         @OAS\Schema(ref="#/definitions/Pet")
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */
@@ -85,27 +85,27 @@ class SimplePetsController
     }
 
     /**
-     * @SWG\Post(
+     * @OAS\Post(
      *     path="/pets",
      *     operationId="addPet",
      *     description="Creates a new pet in the store.  Duplicates are allowed",
      *     produces={"application/json"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         name="pet",
      *         in="body",
      *         description="Pet to add to the store",
      *         required=true,
-     *         @SWG\Schema(ref="#/definitions/NewPet")
+     *         @OAS\Schema(ref="#/definitions/NewPet")
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @SWG\Schema(ref="#/definitions/Pet")
+     *         @OAS\Schema(ref="#/definitions/Pet")
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */
@@ -114,11 +114,11 @@ class SimplePetsController
     }
 
     /**
-     * @SWG\Delete(
+     * @OAS\Delete(
      *     path="/pets/{id}",
      *     description="deletes a single pet based on the ID supplied",
      *     operationId="deletePet",
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="ID of pet to delete",
      *         format="int64",
      *         in="path",
@@ -126,14 +126,14 @@ class SimplePetsController
      *         required=true,
      *         type="integer"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=204,
      *         description="pet deleted"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */

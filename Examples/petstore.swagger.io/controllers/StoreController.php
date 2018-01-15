@@ -6,17 +6,16 @@ abstract class StoreController
 {
 
     /**
-     * @SWG\Get(path="/store/inventory",
+     * @OAS\Get(path="/store/inventory",
      *   tags={"store"},
      *   summary="Returns pet inventories by status",
      *   description="Returns a map of status codes to quantities",
      *   operationId="getInventory",
-     *   produces={"application/json"},
      *   parameters={},
-     *   @SWG\Response(
+     *   @OAS\Response(
      *     response=200,
      *     description="successful operation",
-     *     @SWG\Schema(
+     *     @OAS\Schema(
      *       type="object",
      *       additionalProperties={
      *         "type":"integer",
@@ -34,25 +33,23 @@ abstract class StoreController
     }
 
     /**
-     * @SWG\Post(path="/store/order",
+     * @OAS\Post(path="/store/order",
      *   tags={"store"},
      *   summary="Place an order for a pet",
      *   description="",
      *   operationId="placeOrder",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="order placed for purchasing the pet",
-     *     required=true,
-     *     @SWG\Schema(ref="#/definitions/Order")
+     *   @OAS\RequestBody(
+     *       request="StoreOrderBody",
+     *       required=true,
+     *       description="order placed for purchasing the pet",
+     *       @OAS\Schema(ref="#/components/schemes/Order")
      *   ),
-     *   @SWG\Response(
+     *   @OAS\Response(
      *     response=200,
      *     description="successful operation",
-     *     @SWG\Schema(ref="#/definitions/Order")
+     *     @OAS\Schema(ref="#/components/schemes/Order")
      *   ),
-     *   @SWG\Response(response=400, description="Invalid Order")
+     *   @OAS\Response(response=400, description="Invalid Order")
      * )
      */
     public function placeOrder()
@@ -60,13 +57,12 @@ abstract class StoreController
     }
 
     /**
-     * @SWG\Get(path="/store/order/{orderId}",
+     * @OAS\Get(path="/store/order/{orderId}",
      *   tags={"store"},
      *   summary="Find purchase order by ID",
      *   description="For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions",
      *   operationId="getOrderById",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OAS\Parameter(
      *     name="orderId",
      *     in="path",
      *     description="ID of pet that needs to be fetched",
@@ -76,15 +72,15 @@ abstract class StoreController
      *     minimum=1.0,
      *     maximum=10.0,
      *   ),
-     *   @SWG\Response(
+     *   @OAS\Response(
      *     response=200,
      *     description="successful operation",
-     *     @SWG\Schema(
+     *     @OAS\Schema(
      *       ref="#/definitions/Order"
      *     )
      *   ),
-     *   @SWG\Response(response=400, description="Invalid ID supplied"),
-     *   @SWG\Response(response=404, description="Order not found")
+     *   @OAS\Response(response=400, description="Invalid ID supplied"),
+     *   @OAS\Response(response=404, description="Order not found")
      * )
      */
     public function getOrderById()
@@ -92,13 +88,12 @@ abstract class StoreController
     }
 
     /**
-     * @SWG\Delete(path="/store/order/{orderId}",
+     * @OAS\Delete(path="/store/order/{orderId}",
      *   tags={"store"},
      *   summary="Delete purchase order by ID",
      *   description="For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors",
      *   operationId="deleteOrder",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OAS\Parameter(
      *     name="orderId",
      *     in="path",
      *     description="ID of the order that needs to be deleted",
@@ -107,8 +102,8 @@ abstract class StoreController
      *     format="int64",
      *     minimum=1.0
      *   ),
-     *   @SWG\Response(response=400, description="Invalid ID supplied"),
-     *   @SWG\Response(response=404, description="Order not found")
+     *   @OAS\Response(response=400, description="Invalid ID supplied"),
+     *   @OAS\Response(response=404, description="Order not found")
      * )
      */
     public function deleteOrder()

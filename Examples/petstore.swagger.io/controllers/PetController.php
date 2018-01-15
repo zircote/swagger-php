@@ -6,38 +6,37 @@ final class PetController
 {
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *     path="/pet/findByTags",
      *     summary="Finds Pets by tags",
      *     tags={"pet"},
      *     description="Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
      *     operationId="findPetsByTags",
-     *     produces={"application/xml", "application/json"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         name="tags",
      *         in="query",
      *         description="Tags to filter by",
      *         required=true,
-     *         type="array",
-     *         @SWG\Items(type="string"),
-     *         collectionFormat="multi"
+     *         @OAS\Schema(
+     *           type="array",
+     *           @OAS\Items(type="string"),
+     *         ),
+     *         form="array"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="successful operation",
-     *         @SWG\Schema(
+     *         @OAS\Schema(
      *             type="array",
-     *             @SWG\Items(ref="#/definitions/Pet")
+     *             @OAS\Items(ref="#/definitions/Pet")
      *         ),
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="400",
      *         description="Invalid tag value",
      *     ),
      *     security={
-     *         {
-     *             "petstore_auth": {"write:pets", "read:pets"}
-     *         }
+     *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     deprecated=true
      * )
@@ -47,35 +46,39 @@ final class PetController
     }
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *     path="/pet/findByStatus",
      *     summary="Finds Pets by status",
      *     description="Multiple status values can be provided with comma separated strings",
      *     operationId="findPetsByStatus",
-     *     produces={"application/xml", "application/json"},
      *     tags={"pet"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         name="status",
      *         in="query",
      *         description="Status values that need to be considered for filter",
      *         required=true,
+     *         @OAS\Schema(
      *         type="array",
-     *         @SWG\Items(
-     *             type="string",
-     *             enum={"available", "pending", "sold"},
-     *             default="available"
+     *           @OAS\Items(
+     *               type="string",
+     *               enum={"available", "pending", "sold"},
+     *               default="available"
+     *           ),
      *         ),
-     *         collectionFormat="multi"
+     *         form="array"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="successful operation",
-     *         @SWG\Schema(
-     *             type="array",
-     *             @SWG\Items(ref="#/definitions/Pet")
-     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(
+     *                type="array",
+     *                @OAS\Items(ref="#/definitions/Pet")
+     *             ),
+     *         )
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="400",
      *         description="Invalid status value",
      *     ),
@@ -89,31 +92,35 @@ final class PetController
     }
 
     /**
-     * @SWG\Get(
+     * @OAS\Get(
      *     path="/pet/{petId}",
      *     summary="Find pet by ID",
      *     description="Returns a single pet",
      *     operationId="getPetById",
      *     tags={"pet"},
-     *     produces={"application/xml", "application/json"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="ID of pet to return",
      *         in="path",
      *         name="petId",
      *         required=true,
-     *         type="integer",
-     *         format="int64"
+     *         @OAS\Schema(
+     *           type="integer",
+     *           format="int64"
+     *         )
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=200,
      *         description="successful operation",
-     *         @SWG\Schema(ref="#/definitions/Pet")
+     *         @OAS\MediaType(
+     *            mediaType="application/json",
+     *            @OAS\Schema(ref="#/definitions/Pet")
+     *         )
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="400",
      *         description="Invalid ID supplied"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="404",
      *         description="Pet not found"
      *     ),
@@ -127,22 +134,20 @@ final class PetController
     }
 
     /**
-     * @SWG\Post(
+     * @OAS\Post(
      *     path="/pet",
      *     tags={"pet"},
      *     operationId="addPet",
      *     summary="Add a new pet to the store",
      *     description="",
      *     consumes={"application/json", "application/xml"},
-     *     produces={"application/xml", "application/json"},
-     *     @SWG\Parameter(
-     *         name="body",
-     *         in="body",
+     *     @OAS\RequestBody(
+     *         request="body",
      *         description="Pet object that needs to be added to the store",
      *         required=true,
-     *         @SWG\Schema(ref="#/definitions/Pet"),
+     *         @OAS\Schema(ref="#/components/schemes/Pet"),
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=405,
      *         description="Invalid input",
      *     ),
@@ -154,30 +159,33 @@ final class PetController
     }
 
     /**
-     * @SWG\Put(
+     * @OAS\Put(
      *     path="/pet",
      *     tags={"pet"},
      *     operationId="updatePet",
      *     summary="Update an existing pet",
      *     description="",
-     *     consumes={"application/json", "application/xml"},
-     *     produces={"application/xml", "application/json"},
-     *     @SWG\Parameter(
-     *         name="body",
-     *         in="body",
+     *     @OAS\RequestBody(
+     *         request="body",
      *         description="Pet object that needs to be added to the store",
-     *         required=true,
-     *         @SWG\Schema(ref="#/definitions/Pet"),
+     *         @OAS\MediaType(
+     *            mediaType="application/json"
+     *            @OAS\Schema(ref="#/definitions/Pet", required=true),
+     *         ),
+     *         @OAS\MediaType(
+     *            mediaType="application/xml"
+     *            @OAS\Schema(ref="#/definitions/Pet", required=true),
+     *         )
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=400,
      *         description="Invalid ID supplied",
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=404,
      *         description="Pet not found",
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=405,
      *         description="Validation exception",
      *     ),
@@ -189,32 +197,34 @@ final class PetController
     }
 
     /**
-     * @SWG\Delete(
+     * @OAS\Delete(
      *     path="/pet/{petId}",
      *     summary="Deletes a pet",
      *     description="",
      *     operationId="deletePet",
-     *     produces={"application/xml", "application/json"},
      *     tags={"pet"},
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="Pet id to delete",
      *         in="path",
      *         name="petId",
      *         required=true,
-     *         type="integer",
-     *         format="int64"
+     *         @OAS\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
      *     ),
-     *     @SWG\Parameter(
-     *         name="api_key",
-     *         in="header",
+     *     @OAS\Header(
+     *         header="api_key",
      *         required=false,
-     *         type="string"
+     *         @OAS\Schema(
+     *             type="string"
+     *         )
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response=404,
      *         description="Pet not found"
      *     ),
@@ -226,15 +236,15 @@ final class PetController
     }
 
     /**
-     * @SWG\Post(
+     * @OAS\Post(
      *   path="/pet/{petId}",
      *   tags={"pet"},
      *   summary="Updates a pet in the store with form data",
      *   description="",
      *   operationId="updatePetWithForm",
+     *   @OAS\
      *   consumes={"application/x-www-form-urlencoded"},
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OAS\Parameter(
      *     name="petId",
      *     in="path",
      *     description="ID of pet that needs to be updated",
@@ -242,21 +252,21 @@ final class PetController
      *     type="integer",
      *     format="int64"
      *   ),
-     *   @SWG\Parameter(
+     *   @OAS\Parameter(
      *     name="name",
      *     in="formData",
      *     description="Updated name of the pet",
      *     required=false,
      *     type="string"
      *   ),
-     *   @SWG\Parameter(
+     *   @OAS\Parameter(
      *     name="status",
      *     in="formData",
      *     description="Updated status of the pet",
      *     required=false,
      *     type="string"
      *   ),
-     *   @SWG\Response(response="405",description="Invalid input"),
+     *   @OAS\Response(response="405",description="Invalid input"),
      *   security={{
      *     "petstore_auth": {"write:pets", "read:pets"}
      *   }}
@@ -267,26 +277,26 @@ final class PetController
     }
 
     /**
-     * @SWG\Post(
+     * @OAS\Post(
      *     path="/pet/{petId}/uploadImage",
      *     consumes={"multipart/form-data"},
      *     description="",
      *     operationId="uploadFile",
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="Additional data to pass to server",
      *         in="formData",
      *         name="additionalMetadata",
      *         required=false,
      *         type="string"
      *     ),
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="file to upload",
      *         in="formData",
      *         name="file",
      *         required=false,
      *         type="file"
      *     ),
-     *     @SWG\Parameter(
+     *     @OAS\Parameter(
      *         description="ID of pet to update",
      *         format="int64",
      *         in="path",
@@ -294,11 +304,10 @@ final class PetController
      *         required=true,
      *         type="integer"
      *     ),
-     *     produces={"application/json"},
-     *     @SWG\Response(
+     *     @OAS\Response(
      *         response="200",
      *         description="successful operation",
-     *         @SWG\Schema(ref="#/definitions/ApiResponse")
+     *         @OAS\Schema(ref="#/definitions/ApiResponse")
      *     ),
      *     security={
      *         {

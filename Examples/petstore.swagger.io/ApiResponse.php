@@ -3,25 +3,25 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(type="object")
+ * @OAS\Schema(type="object")
  */
 class ApiResponse
 {
 
     /**
-     * @SWG\Property(format="int32")
+     * @OAS\Property(format="int32")
      * @var int
      */
     public $code;
 
     /**
-     * @SWG\Property
+     * @OAS\Property
      * @var string
      */
     public $type;
 
     /**
-     * @SWG\Property
+     * @OAS\Property
      * @var string
      */
     public $message;
