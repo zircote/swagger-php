@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -8,26 +8,29 @@ namespace Swagger\Annotations;
 
 /**
  * @Annotation
- * Contact information for the exposed API.
+ * A "Contact Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#contact-object
  *
- * A Swagger "Contact Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#contactObject
+ * Contact information for the exposed API.
  */
 class Contact extends AbstractAnnotation
 {
     /**
      * The identifying name of the contact person/organization.
+     *
      * @var string
      */
     public $name;
 
     /**
      * The URL pointing to the contact information.
+     *
      * @var string
      */
     public $url;
 
     /**
      * The email address of the contact person/organization.
+     *
      * @var string
      */
     public $email;

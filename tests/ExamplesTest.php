@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -18,9 +18,9 @@ class ExamplesTest extends SwaggerTestCase
      */
     public function testExample($example, $output)
     {
-        $swagger = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
-//        die((string) $swagger);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $swagger);
+        $openapi = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
+        //        die((string) $openapi);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $openapi);
     }
 
     /**
@@ -30,11 +30,12 @@ class ExamplesTest extends SwaggerTestCase
     public function getExamples()
     {
         return [
-            ['petstore.swagger.io', 'petstore.swagger.io.json'],
-            ['swagger-spec/petstore', 'petstore.json'],
-            ['swagger-spec/petstore-simple', 'petstore-simple.json'],
-            ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
-            ['using-refs', 'using-refs.json'],
+            ['openapi-spec', 'openapi-spec.json'],
+            // ['petstore.swagger.io', 'petstore.swagger.io.json'],
+            // ['swagger-spec/petstore', 'petstore.json'],
+            // ['swagger-spec/petstore-simple', 'petstore-simple.json'],
+            // ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
+            // ['using-refs', 'using-refs.json'],
         ];
     }
 }

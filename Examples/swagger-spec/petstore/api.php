@@ -1,33 +1,36 @@
 <?php
 
 /**
- * @SWG\Swagger(
- *     @SWG\Info(
+ * @OAS\OpenApi(
+ *     @OAS\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
- *         @SWG\License(name="MIT")
+ *         @OAS\License(name="MIT")
  *     ),
- *     host="petstore.swagger.io",
- *     basePath="/v1",
- *     schemes={"http"},
- *     consumes={"application/json"},
- *     produces={"application/json"},
- *     @SWG\Definition(
- *         definition="Error",
- *         required={"code", "message"},
- *         @SWG\Property(
- *             property="code",
- *             type="integer",
- *             format="int32"
- *         ),
- *         @SWG\Property(
- *             property="message",
- *             type="string"
- *         )
+ *     @OAS\Server(
+ *         description="Api server",
+ *         url="petstore.swagger.io",
  *     ),
- *     @SWG\Definition(definition="Pets",
- *         type="array",
- *         @SWG\Items(ref="#/definitions/Pet")
- *     )
  * )
+ */
+
+/**
+ *  @OAS\Schema(
+ *      schema="Error",
+ *      required={"code", "message"},
+ *      @OAS\Property(
+ *          property="code",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OAS\Property(
+ *          property="message",
+ *          type="string"
+ *      )
+ *  ),
+ *  @OAS\Schema(
+ *      schema="Pets",
+ *      type="array",
+ *      @OAS\Items(ref="#/components/schemas/Pet")
+ *  )
  */

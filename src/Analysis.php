@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -11,19 +11,22 @@ use Exception;
 use SplObjectStorage;
 use stdClass;
 use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Swagger;
-use Swagger\Processors\AugmentDefinitions;
+use Swagger\Annotations\OpenApi;
 use Swagger\Processors\AugmentOperations;
 use Swagger\Processors\AugmentParameters;
 use Swagger\Processors\AugmentProperties;
+use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\CleanUnmerged;
-use Swagger\Processors\HandleReferences;
 use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoComponents;
+use Swagger\Processors\MergeIntoOpenApi;
+use Swagger\Processors\MergeJsonContent;
+use Swagger\Processors\MergeXmlContent;
 
 /**
- * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
+ * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
+ * functions for the processors.
  */
 class Analysis
 {
@@ -34,18 +37,21 @@ class Analysis
 
     /**
      * Class definitions
+     *
      * @var array
      */
     public $classes = [];
 
     /**
-     * The target Swagger annotation.
-     * @var Swagger
+     * The target OpenApi annotation.
+     *
+     * @var OpenApi
      */
-    public $swagger;
+    public $openapi;
 
     /**
      * Registry for the post-processing operations.
+     *
      * @var Closure[]
      */
     private static $processors;
@@ -67,7 +73,7 @@ class Analysis
 
     /**
      * @param AbstractAnnotation $annotation
-     * @param Context $context
+     * @param Context            $context
      */
     public function addAnnotation($annotation, $context)
     {
@@ -76,6 +82,9 @@ class Analysis
         }
         if ($annotation instanceof AbstractAnnotation) {
             $context = $annotation->_context;
+            if ($this->openapi === null && $annotation instanceof OpenApi) {
+                $this->openapi = $annotation;
+            }
         } else {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
@@ -94,20 +103,20 @@ class Analysis
                     }
                 }
                 continue;
-            } elseif (is_array($value)) {
+            } else if (is_array($value)) {
                 foreach ($value as $item) {
                     if ($item instanceof AbstractAnnotation) {
                         $this->addAnnotation($item, $context);
                     }
                 }
-            } elseif ($value instanceof AbstractAnnotation) {
+            } else if ($value instanceof AbstractAnnotation) {
                 $this->addAnnotation($value, $context);
             }
         }
     }
 
     /**
-     * @param array $annotations
+     * @param array   $annotations
      * @param Context $context
      */
     public function addAnnotations($annotations, $context)
@@ -135,8 +144,8 @@ class Analysis
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
-        if ($this->swagger === null && $analysis->swagger) {
-            $this->swagger = $analysis->swagger;
+        if ($this->openapi === null && $analysis->openapi) {
+            $this->openapi = $analysis->openapi;
             $analysis->target->_context->analysis = $this;
         }
     }
@@ -170,8 +179,9 @@ class Analysis
 
     /**
      *
-     * @param string $class
+     * @param string  $class
      * @param boolean $strict Innon-strict mode childclasses are also detected.
+     *
      * @return array
      */
     public function getAnnotationsOfType($class, $strict = false)
@@ -196,6 +206,7 @@ class Analysis
     /**
      *
      * @param object $annotation
+     *
      * @return \Swagger\Context
      */
     public function getContext($annotation)
@@ -217,19 +228,19 @@ class Analysis
     }
 
     /**
-     * Build an analysis with only the annotations that are merged into the swagger annotation.
+     * Build an analysis with only the annotations that are merged into the OpenAPI annotation.
      *
      * @return Analysis
      */
     public function merged()
     {
-        if (!$this->swagger) {
-            throw new Exception('No swagger target set. Run the MergeIntoSwagger processor');
+        if (!$this->openapi) {
+            throw new Exception('No openapi target set. Run the MergeIntoOpenApi processor');
         }
-        $unmerged = $this->swagger->_unmerged;
-        $this->swagger->_unmerged = [];
-        $analysis = new Analysis([$this->swagger]);
-        $this->swagger->_unmerged = $unmerged;
+        $unmerged = $this->openapi->_unmerged;
+        $this->openapi->_unmerged = [];
+        $analysis = new Analysis([$this->openapi]);
+        $this->openapi->_unmerged = $unmerged;
         return $analysis;
     }
 
@@ -264,6 +275,7 @@ class Analysis
 
     /**
      * Apply the processor(s)
+     *
      * @param Closure|Closure[] $processors One or more processors
      */
     public function process($processors = null)
@@ -281,6 +293,7 @@ class Analysis
 
     /**
      * Get direct access to the processors array.
+     *
      * @return array reference
      */
     public static function &processors()
@@ -288,14 +301,17 @@ class Analysis
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
-                new MergeIntoSwagger(),
-                new BuildPaths(),
-                new HandleReferences(),
-                new AugmentDefinitions(),
+                new MergeIntoOpenApi(),
+                new MergeIntoComponents(),
+                new AugmentSchemas(),
                 new AugmentProperties(),
+                new BuildPaths(),
+                // new HandleReferences(),
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),
+                new MergeJsonContent(),
+                new MergeXmlContent(),
                 new CleanUnmerged(),
             ];
         }
@@ -304,6 +320,7 @@ class Analysis
 
     /**
      * Register a processor
+     *
      * @param Closure $processor
      */
     public static function registerProcessor($processor)
@@ -313,6 +330,7 @@ class Analysis
 
     /**
      * Unregister a processor
+     *
      * @param Closure $processor
      */
     public static function unregisterProcessor($processor)
@@ -327,10 +345,15 @@ class Analysis
 
     public function validate()
     {
-        if ($this->swagger) {
-            return $this->swagger->validate();
+        if ($this->openapi) {
+            return $this->openapi->validate();
         }
-        Logger::notice('No swagger target set. Run the MergeIntoSwagger processor before validate()');
+        Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
         return false;
+    }
+
+    public function __toString()
+    {
+        return json_encode($this->openapi, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }

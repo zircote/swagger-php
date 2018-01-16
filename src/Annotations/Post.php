@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -16,6 +16,6 @@ class Post extends Operation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Path'
+        'Swagger\Annotations\PathItem'
     ];
 }

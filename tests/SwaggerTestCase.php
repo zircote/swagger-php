@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -7,16 +7,16 @@
 namespace SwaggerTests;
 
 use Closure;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Exception;
 use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Swagger\Context;
 use Swagger\Logger;
 use Swagger\Analyser;
 
-class SwaggerTestCase extends PHPUnit_Framework_TestCase
+class SwaggerTestCase extends TestCase
 {
 
     /**
@@ -32,7 +32,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
     /**
      *
      * @param string $expectedFile File containing the excepted json.
-     * @param Swagger $actualSwagger
+     * @param OpenApi $actualSwagger
      * @param string $message
      */
     public function assertSwaggerEqualsFile($expectedFile, $actualSwagger, $message = '')
@@ -132,7 +132,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
      */
     protected function createSwaggerWithInfo()
     {
-        $swagger = new Swagger([
+        $openapi = new OpenApi([
             'info' => new \Swagger\Annotations\Info([
                 'title' => 'Swagger-PHP Test-API',
                 'version' => 'test',
@@ -140,7 +140,7 @@ class SwaggerTestCase extends PHPUnit_Framework_TestCase
             ]),
             '_context' => new Context(['unittest' => true])
         ]);
-        return $swagger;
+        return $openapi;
     }
 
     /**

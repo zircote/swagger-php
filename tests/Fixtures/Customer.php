@@ -1,45 +1,45 @@
-<?php
+<?php declare(strict_types=1);
 namespace SwaggerFixures;
 
 use Exception;
-use Swagger\Logger as SwgLogger;
+use Swagger\Logger as SwaggerLogger;
 use \Swagger\Logger;
-use Swagger\Annotations as SWG;
+use Swagger\Annotations as OAS;
 
 /**
- * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @SWG\Definition()
+ * @OAS\Info(title="Fixture for ClassPropertiesTest", version="test")
+ * @OAS\Schema()
  */
 class Customer
 {
-    
+
     /**
      * The firstname of the customer.
      * @var string
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $firstname;
-    
+
     /**
      * @var string The lastname of the customer.
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $lastname;
-    
+
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var string[]
      */
     public $tags;
-    
+
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var Customer
      */
     public $submittedBy;
-    
+
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      * @var Customer[]
      */
     public $friends;
@@ -49,9 +49,9 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        $test = new SwgLogger();
+        $test = new SwaggerLogger();
         $test2 = new Logger();
-        $test3 = new SWG\Contact();
+        $test3 = new OAS\Contact();
         throw new Exception();
     }
 }

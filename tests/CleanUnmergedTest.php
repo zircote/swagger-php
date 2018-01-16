@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -6,7 +6,7 @@
 
 namespace SwaggerTests;
 
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Analysis;
 use Exception;
@@ -16,13 +16,13 @@ class CleanUnmergedTest extends SwaggerTestCase
     public function testCleanUnmergedProcessor()
     {
         $comment = <<<END
-@SWG\Info(
+@OAS\Info(
     title="Info only has one contact field.",
     version="test",
 )
-@SWG\License(
+@OAS\License(
     name="MIT",
-    @SWG\Contact(
+    @OAS\Contact(
         name="Batman"
     )
 )
@@ -30,36 +30,36 @@ class CleanUnmergedTest extends SwaggerTestCase
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(3, $analysis->annotations);
-        $analysis->process(new MergeIntoSwagger());
+        $analysis->process(new MergeIntoOpenApi());
         $this->assertCount(4, $analysis->annotations);
         $before = $analysis->split();
-        $this->assertCount(2, $before->merged->annotations, 'Generated @SWG\Swagger + @SWG\Info');
-        $this->assertCount(2, $before->unmerged->annotations, '@SWG\License + @SWG\Contact');
-        $this->assertCount(0, $analysis->swagger->_unmerged);
+        $this->assertCount(2, $before->merged->annotations, 'Generated @OAS\OpenApi and @OAS\Info');
+        $this->assertCount(2, $before->unmerged->annotations, '@OAS\License + @OAS\Contact');
+        $this->assertCount(0, $analysis->openapi->_unmerged);
         $analysis->validate(); // Validation fails to detect the unmerged annotations.
 
         // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array.
         $analysis->process(new CleanUnmerged());
         $between = $analysis->split();
-        $this->assertCount(2, $between->merged->annotations, 'Generated @SWG\Swagger + @SWG\Info');
-        $this->assertCount(2, $between->unmerged->annotations, '@SWG\License + @SWG\Contact');
-        $this->assertCount(2, $analysis->swagger->_unmerged); // 1 would also be oke, Could a'Only the @SWG\License'
-        $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\License(), expected to be inside @SWG\Info in ');
-        $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\Contact(), expected to be inside @SWG\Info in ');
+        $this->assertCount(2, $between->merged->annotations, 'Generated @OAS\OpenApi and @OAS\Info');
+        $this->assertCount(2, $between->unmerged->annotations, '@OAS\License + @OAS\Contact');
+        $this->assertCount(2, $analysis->openapi->_unmerged); // 1 would also be oke, Could a'Only the @OAS\License'
+        $this->assertSwaggerLogEntryStartsWith('Unexpected @OAS\License(), expected to be inside @OAS\Info in ');
+        $this->assertSwaggerLogEntryStartsWith('Unexpected @OAS\Contact(), expected to be inside @OAS\Info in ');
         $analysis->validate();
 
         // When a processor places a previously unmerged annotation into the swagger obect.
         $license = $analysis->getAnnotationsOfType('Swagger\Annotations\License')[0];
         $contact = $analysis->getAnnotationsOfType('Swagger\Annotations\Contact')[0];
-        $analysis->swagger->info->contact = $contact;
+        $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);
         $analysis->process(new CleanUnmerged());
         $this->assertCount(0, $license->_unmerged);
         $after = $analysis->split();
-        $this->assertCount(3, $after->merged->annotations, 'Generated @SWG\Swagger + @SWG\Info + @SWG\Contact');
-        $this->assertCount(1, $after->unmerged->annotations, '@SWG\License');
-        $this->assertCount(1, $analysis->swagger->_unmerged);
-        $this->assertSwaggerLogEntryStartsWith('Unexpected @SWG\License(), expected to be inside @SWG\Info in ');
+        $this->assertCount(3, $after->merged->annotations, 'Generated @OAS\OpenApi, @OAS\Info and @OAS\Contact');
+        $this->assertCount(1, $after->unmerged->annotations, '@OAS\License');
+        $this->assertCount(1, $analysis->openapi->_unmerged);
+        $this->assertSwaggerLogEntryStartsWith('Unexpected @OAS\License(), expected to be inside @OAS\Info in ');
         $analysis->validate();
     }
 }

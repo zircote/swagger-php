@@ -1,14 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 namespace SwaggerFixures;
 
 /**
- * @SWG\Definition
+ * @OAS\Schema
  */
 trait Hello
 {
 
     /**
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $greet = 'Hello!';
 }

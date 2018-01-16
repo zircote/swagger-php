@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -6,7 +6,7 @@
 
 namespace Swagger;
 
-use Swagger\Annotations\Swagger;
+use Swagger\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
 
 if (defined('Swagger\UNDEFINED') === false) {
@@ -18,7 +18,7 @@ if (defined('Swagger\UNDEFINED') === false) {
     define('Swagger\Processors\UNDEFINED', UNDEFINED);
 
     /**
-     * Scan the filesystem for swagger annotations and build swagger-documentation.
+     * Scan the filesystem for OpenAPI annotations and build swagger-documentation.
      *
      * @param string|array|Finder $directory The directory(s) or filename(s)
      * @param array $options
@@ -26,7 +26,7 @@ if (defined('Swagger\UNDEFINED') === false) {
      *   analyser: defaults to StaticAnalyser
      *   analysis: defaults to a new Analysis
      *   processors: defaults to the registered processors in Analysis
-     * @return Swagger
+     * @return OpenApi
      */
     function scan($directory, $options = array())
     {
@@ -44,6 +44,6 @@ if (defined('Swagger\UNDEFINED') === false) {
         $analysis->process($processors);
         // Validation (Generate notices & warnings)
         $analysis->validate();
-        return $analysis->swagger;
+        return $analysis->openapi;
     }
 }

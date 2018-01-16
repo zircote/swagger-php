@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -20,13 +20,13 @@ class ContextTest extends SwaggerTestCase
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
         $this->assertSame('SwaggerTests', $context->namespace);
-//        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
+        //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
     public function testFullyQualifiedName()
     {
-        $swagger = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
-        $context = $swagger->definitions[0]->_context;
+        $openapi = \Swagger\scan(__DIR__.'/Fixtures/Customer.php');
+        $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
         $this->assertSame('\SwaggerFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
@@ -36,8 +36,8 @@ class ContextTest extends SwaggerTestCase
         $this->assertSame('\SwaggerFixures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('Logger'));
         $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
-        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwgLogger'));
-        $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('SWG\QualifiedAlias'));
+        $this->assertSame('\Swagger\Logger', $context->fullyQualifiedName('SwaggerLogger'));
+        $this->assertSame('\Swagger\Annotations\QualifiedAlias', $context->fullyQualifiedName('OAS\QualifiedAlias'));
     }
 
     public function testPhpdocContent()
@@ -46,7 +46,7 @@ class ContextTest extends SwaggerTestCase
     /**
      * A single line.
      *
-     * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+     * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
      */
 END
         ]);
@@ -56,10 +56,10 @@ END
 /**
  * A description spread across
  * multiple lines.
- *           
+ *
  * even blank lines
  *
- * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
  */
 END
         ]);
@@ -70,7 +70,7 @@ END
  * A single line spread across \
  * multiple lines.
  *
- * @SWG\Get(path="api/test1", @SWG\Response(response="200", description="a response"))
+ * @OAS\Get(path="api/test1", @OAS\Response(response="200", description="a response"))
  */
 END
         ]);

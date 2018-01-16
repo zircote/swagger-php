@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AnotherNamespace;
 
 /**
- * @SWG\Definition()
+ * @OAS\Schema()
  */
 class Child extends \SwaggerFixtures\Ancestor
 {
 
     /**
      * @var bool
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $isBaby;
 }

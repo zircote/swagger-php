@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -29,9 +29,9 @@ class CleanUnmerged
                 }
             }
         }
-        $analysis->swagger->_unmerged = [];
+        $analysis->openapi->_unmerged = [];
         foreach ($unmerged as $annotation) {
-            $analysis->swagger->_unmerged[] = $annotation;
+            $analysis->openapi->_unmerged[] = $annotation;
         }
     }
 }

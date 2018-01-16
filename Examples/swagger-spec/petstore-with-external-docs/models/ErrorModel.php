@@ -1,16 +1,16 @@
 <?php
 /**
- * @SWG\Definition(required={"code", "message"}, type="object")
+ * @OAS\Schema(required={"code", "message"}, type="object")
  */
 class ErrorModel extends Exception
 {
     /**
-     * @SWG\Property(format="int32");
+     * @OAS\Property(format="int32");
      * @var int
      */
     public $code;
     /**
-     * @SWG\Property();
+     * @OAS\Property();
      * @var string
      */
     public $message;

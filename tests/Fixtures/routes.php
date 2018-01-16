@@ -11,63 +11,61 @@
 
    /**
     *
-    *	@SWG\Put(
+    *	@OAS\Put(
     * 		path="/users/{id}",
     * 		tags={"users"},
     * 		operationId="updateUser",
     * 		summary="Update user entry",
-    * 		@SWG\Parameter(
+    * 		@OAS\Parameter(
     * 			name="id",
     * 			in="path",
     * 			required=true,
-    * 			type="string",
     * 			description="UUID",
     * 		),
-    * 		@SWG\Parameter(
+    * 		@OAS\Parameter(
     * 			name="user",
-    * 			in="body",
+    * 			in="cookie",
     * 			required=true,
-    * 			@SWG\Schema(ref="#/definitions/User"),
+    * 			@OAS\Schema(ref="#/definitions/User"),
     *		),
-    * 		@SWG\Response(
+    * 		@OAS\Response(
     * 			response=200,
     * 			description="success",
     * 		),
-    * 		@SWG\Response(
+    * 		@OAS\Response(
     * 			response="default",
     * 			description="error",
-    * 			@SWG\Schema(ref="#/definitions/Error"),
+    * 			@OAS\Schema(ref="#/definitions/Error"),
     * 		),
     * 	)
-    * @SWG\Options(
+    * @OAS\Options(
     * path="/users/{id}",
-    * @SWG\Response(response=200,description="Some CORS stuff")
+    * @OAS\Response(response=200,description="Some CORS stuff")
     * )
     */
    Route::put('/users/{user_id}', 'UserController@update');
 
 	/**
 	 *
-	 * 	@SWG\Delete(
+	 * 	@OAS\Delete(
 	 * 		path="/users/{id}",
 	 * 		tags={"users"},
 	 * 		operationId="deleteUser",
 	 * 		summary="Remove user entry",
-	 * 		@SWG\Parameter(
+	 * 		@OAS\Parameter(
 	 * 			name="id",
 	 * 			in="path",
 	 * 			required=true,
-	 * 			type="string",
 	 * 			description="UUID",
 	 * 		),
-	 * 		@SWG\Response(
+	 * 		@OAS\Response(
 	 * 			response=200,
 	 * 			description="success",
 	 * 		),
-	 * 		@SWG\Response(
+	 * 		@OAS\Response(
 	 * 			response="default",
 	 * 			description="error",
-	 * 			@SWG\Schema(ref="#/definitions/Error"),
+	 * 			@OAS\Schema(ref="#/definitions/Error"),
 	 * 		),
 	 * 	)
 	 *
@@ -75,13 +73,13 @@
 	Route::delete('/users/{user_id}', 'UserController@destroy');
 
       /**
-      *@SWG\Head(path="/users/{id}",@SWG\Response(response=200,description="Only checking if it exists"))
+      *@OAS\Head(path="/users/{id}",@OAS\Response(response=200,description="Only checking if it exists"))
       */
      Route::get('/users/{user_id}', 'UserController@show');
 
 /**
- * @SWG\Definition(definition="Error")
- * @SWG\Definition(definition="User")
+ * @OAS\Schema(schema="Error")
+ * @OAS\Schema(schema="User")
  */
 //
 // @codingStandardsIgnoreEnd

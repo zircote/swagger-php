@@ -1,15 +1,13 @@
 # Getting started
 
-The goal of swagger-php is to generate a swagger.json using phpdoc annotations.
+The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
 
 To output:
 
 ```json
 {
-   "swagger": "2.0",
-   "schemes": ["http"],
-   "host": "example.com",
-   "basePath": "/api"
+   "openapi": "3.0",
+   "host": "example.com"
 }
 ```
 
@@ -17,10 +15,8 @@ Write:
 
 ```php
 /**
- * @SWG\Swagger(
- *   schemes={"http"},
+ * @OAS\OpenApi(
  *   host="example.com",
- *   basePath="/api"
  * )
  */
 ```
@@ -33,22 +29,22 @@ And although doctrine also supports objects, but also uses `{` and `}` and requi
 
 ```php
 /**
- * @SWG\Swagger(
+ * @OAS\OpenApi(
  *   info={
- *     "title"="My first swagger documented API",
- *     "version"="1.0.0"
+ *     "title": "My first swagger-php documented API",
+ *     "version": "1.0.0"
  *   }
  * )
  */
 ```
 
-But use the annotation with the same name as the property, such as `@SWG\Info` for `info`:
+But use the annotation with the same name as the property, such as `@OAS\Info` for `info`:
 
 ```php
 /**
- * @SWG\Swagger(
- *   @SWG\Info(
- *     title="My first swagger documented API",
+ * @OAS\OpenApi(
+ *   @OAS\Info(
+ *     title="My first swagger-php documented API",
  *     version="1.0.0"
  *   )
  * )
@@ -56,7 +52,7 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 ```
 
 This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
-For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
+For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @OAS\Info(), expecting "title", ..."
 
 
 ## Using variables in annotations
@@ -69,7 +65,7 @@ define("API_HOST", ($env === "production") ? "example.com" : "localhost");
 
 ```php
 /**
- * @SWG\Swagger(host=API_HOST)
+ * @OAS\OpenApi(host=API_HOST)
  */
 ```
 
@@ -81,26 +77,26 @@ $ swagger --bootstrap constants.php
 
 ## Annotation placement
 
-You shouldn't place all annotations inside one big @SWG\Swagger() annotation block, but scatter them throughout your codebase.
-swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
+You shouldn't place all annotations inside one big @OAS\OpenApi() annotation block, but scatter them throughout your codebase.
+swagger-php will scan your project and merge all annotations into one @OAS\OpenApi annotation.
 
 The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
 
 ### Arrays and Objects
 
 Placing multiple annotations of the same type will result in an array of objects.
-For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
+For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@OAS\Response`, `property` in a `@OAS\Property`, etc.
 
 ```php
 /**
- * @SWG\Get(
+ * @OAS\Get(
  *   path="/products",
  *   summary="list products",
- *   @SWG\Response(
+ *   @OAS\Response(
  *     response=200,
  *     description="A list with products"
  *   ),
- *   @SWG\Response(
+ *   @OAS\Response(
  *     response="default",
  *     description="an ""unexpected"" error"
  *   )
@@ -112,7 +108,7 @@ Generates:
 
 ```json
 {
-  "swagger": "2.0",
+  "openapi": "3.0",
   "paths": {
     "/products": {
       "get": {
@@ -127,8 +123,7 @@ Generates:
         }
       }
     }
-  },
-  "definitions": []
+  }
 }
 ```
 
@@ -138,14 +133,14 @@ swagger-php looks at the context of the comment which reduces duplication.
 
 ```php
 /**
- * @SWG\Definition()
+ * @OAS\Schema()
  */
 class Product {
 
     /**
      * The product name
      * @var string
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $name;
 }
@@ -155,7 +150,7 @@ results in:
 
 ```json
 {
-  "swagger": "2.0",
+  "openapi": "3.0",
   "definitions": {
     "Product": {
       "properties": {
@@ -177,7 +172,7 @@ As if you'd written:
      * The product name
      * @var string
      *
-     * @SWG\Property(
+     * @OAS\Property(
      *   property="name",
      *   type="string",
      *   description="The product name"
@@ -193,8 +188,8 @@ The spec solves most of this by using `$ref`s
 
 ```php
     /**
-     * @SWG\Definition(
-     *   definition="product_id",
+     * @OAS\Schema(
+     *   schema="product_id",
      *   type="integer",
      *   format="int64",
      *   description="The unique identifier of a product in our catalog"
@@ -206,23 +201,25 @@ Results in:
 
 ```json
 {
-    "swagger": "2.0",
+    "openapi": "3.0",
     "paths": {},
-    "definitions": {
-        "product_id": {
-            "description": "The unique identifier of a product in our catalog",
-            "type": "integer",
-            "format": "int64"
+    "components": {
+        "schemas": {
+            "product_id": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "integer",
+                "format": "int64"
+            }
         }
     }
 }
 ```
 
-Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/definitions/product_id`
+Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/components/schemas/product_id`
 
 ```php
     /**
-     * @SWG\Property(ref="#/definitions/product_id")
+     * @OAS\Property(ref="#/components/schemas/product_id")
      */
     public $id;
 ```
@@ -236,7 +233,7 @@ The specification allows for [custom properties](http://swagger.io/specification
 
 ```php
 /**
- * @SWG\Info(
+ * @OAS\Info(
  *   title="Example",
  *   version=1,
  *   x={"some-name":"a-value", "another": 2}

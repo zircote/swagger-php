@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -7,10 +7,10 @@
 namespace SwaggerTests;
 
 use Swagger\Annotations\Info;
-use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoSwagger;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class InheritPropertiesTest extends SwaggerTestCase
@@ -22,18 +22,18 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         $analysis->process([
-            new MergeIntoSwagger(),
-            new AugmentDefinitions(),
+            new MergeIntoOpenApi(),
+            new AugmentSchemas(),
             new AugmentProperties()
         ]);
-        $definitions = $analysis->getAnnotationsOfType('\Swagger\Annotations\Definition');
-        $childDefinition = $definitions[0];
-        $this->assertSame('Child', $childDefinition->definition);
-        $this->assertCount(1, $childDefinition->properties);
+        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $childSchema = $schemas[0];
+        $this->assertSame('Child', $childSchema->schema);
+        $this->assertCount(1, $childSchema->properties);
         $analysis->process(new InheritProperties());
-        $this->assertCount(3, $childDefinition->properties);
-        
-        $analysis->swagger->info = new Info(['title' => 'test', 'version' => 1]);
+        $this->assertCount(3, $childSchema->properties);
+
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
         $analysis->validate();
     }
 
@@ -51,20 +51,20 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/AncestorWithoutDocBlocks.php'));
 
         $analysis->process([
-            new MergeIntoSwagger(),
-            new AugmentDefinitions(),
+            new MergeIntoOpenApi(),
+            new AugmentSchemas(),
             new AugmentProperties()
         ]);
-        $definitions = $analysis->getAnnotationsOfType('\Swagger\Annotations\Definition');
-        $childDefinition = $definitions[0];
-        $this->assertSame('ChildWithDocBlocks', $childDefinition->definition);
-        $this->assertCount(1, $childDefinition->properties);
+        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $childSchema = $schemas[0];
+        $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
+        $this->assertCount(1, $childSchema->properties);
 
         // no error occurs
         $analysis->process(new InheritProperties());
-        $this->assertCount(1, $childDefinition->properties);
+        $this->assertCount(1, $childSchema->properties);
 
-        $analysis->swagger->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
         $analysis->validate();
     }
 }

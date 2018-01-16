@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -185,7 +185,7 @@ class Context
         }
         return $summary;
     }
-    
+
     /**
      * An optional longer piece of text providing more details on the associated element’s function. This is very useful when working with a complex element.
      * @return string|null
@@ -281,6 +281,9 @@ class Context
             $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
         } else {
             $namespace = '\\'; // global namespace
+        }
+        if ($class === null) {
+            return '';
         }
         if (strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;

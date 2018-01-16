@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @license Apache 2.0
  */
@@ -46,9 +46,9 @@ class HandleReferences
             $this->references[$import_name] = [];
             $this->head_references[$import_name] = [];
 
-            if (!is_null($analysis->swagger->$import_name)) {
+            if (!is_null($analysis->openapi->$import_name)) {
                 /** @var Response $item */
-                foreach ($analysis->swagger->$import_name as $item) {
+                foreach ($analysis->openapi->$import_name as $item) {
                     //if that identified value exists, or if the name isn't set then give blank id
                     if (isset($this->references[$import_name][$item->$key]) || is_null($item->$key)) {
                         $this->references[$import_name][] = $this->link($item);
@@ -59,9 +59,9 @@ class HandleReferences
             }
         }
 
-        if (!is_null($analysis->swagger->paths)) {
+        if (!is_null($analysis->openapi->paths)) {
             /** @var Path $path */
-            foreach ($analysis->swagger->paths as $path) {
+            foreach ($analysis->openapi->paths as $path) {
                 foreach ($path as $key => $value) {
                     if ($value instanceof Operation && !is_null($value->responses)) {
                         //load each importable item if it is set

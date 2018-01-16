@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 // Possible options and their default values.
 $options = array(
-    'output' => 'swagger.json',
+    'output' => 'openapi.json',
     'stdout' => false,
     'exclude' => null,
     'bootstrap' => false,
@@ -155,15 +155,16 @@ set_exception_handler(function ($exception) use ($options) {
 
 $exclude = $options['exclude'] ? explode(',', $options['exclude']) : null;
 
-$swagger = Swagger\scan($paths, ['exclude' => $exclude]);
+$openapi = Swagger\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
+
 $counter = 0;
 
 // Output report
-foreach ($swagger->paths as $path) {
-    foreach ($path as $method => $operation) {
+foreach ($openapi->paths as $pathItem) {
+    foreach ($pathItem as $method => $operation) {
         if ($operation !== null && in_array($method, $methods)) {
-            error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $path->path);
+            error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $pathItem->path);
             $counter++;
         }
     }
@@ -172,12 +173,12 @@ error_log('----------------------'.  str_repeat('-', strlen($counter)));
 error_log($counter.' operations documented');
 error_log('----------------------'.  str_repeat('-', strlen($counter)));
 if ($options['stdout']) {
-    echo $swagger;
+    echo $openapi;
 } else {
     if (is_dir($options['output'])) {
-        $options['output'] .= '/swagger.json';
+        $options['output'] .= '/openapi.json';
     }
-    $swagger->saveAs($options['output']);
+    $openapi->saveAs($options['output']);
     error_log('Written to '.realpath($options['output']));
 }
 error_log('');

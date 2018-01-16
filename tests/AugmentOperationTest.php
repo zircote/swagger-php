@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swaggertests;
+namespace SwaggerTests;
 
 use Swagger\Processors\AugmentOperations;
 use Swagger\StaticAnalyser;

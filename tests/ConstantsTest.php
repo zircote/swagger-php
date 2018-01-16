@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -21,33 +21,33 @@ class ConstantsTest extends SwaggerTestCase
         $const = 'SWAGGER_TEST_'.self::$counter;
         $this->assertFalse(defined($const));
         $this->assertSwaggerLogEntryStartsWith("[Semantical Error] Couldn't find constant ".$const);
-        $this->parseComment('@SWG\Contact(email='.$const.')');
+        $this->parseComment('@OAS\Contact(email='.$const.')');
 
         define($const, 'me@domain.org');
-        $annotations = $this->parseComment('@SWG\Contact(email='.$const.')');
+        $annotations = $this->parseComment('@OAS\Contact(email='.$const.')');
         $this->assertSame('me@domain.org', $annotations[0]->email);
     }
 
     public function testFQCNConstant()
     {
-        $annotations = $this->parseComment('@SWG\Contact(url=SwaggerTests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@OAS\Contact(url=SwaggerTests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
 
-        $annotations = $this->parseComment('@SWG\Contact(url=\SwaggerTests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@OAS\Contact(url=\SwaggerTests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 
     public function testInvalidClass()
     {
         $this->assertSwaggerLogEntryStartsWith("[Semantical Error] Couldn't find constant ConstantsTest::URL");
-        $this->parseComment('@SWG\Contact(url=ConstantsTest::URL)');
+        $this->parseComment('@OAS\Contact(url=ConstantsTest::URL)');
     }
 
     public function testAutoloadConstant()
     {
         if (class_exists('Zend\Validator\Timezone', false)) {
             $this->markTestSkipped();
-            $annotations = $this->parseComment('@SWG\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
+            $annotations = $this->parseComment('@OAS\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
             $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
         }
     }

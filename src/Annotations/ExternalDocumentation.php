@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -10,7 +10,7 @@ namespace Swagger\Annotations;
  * @Annotation
  * Allows referencing an external resource for extended documentation.
  *
- * A Swagger "External Documentation Object":  * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#external-documentation-object
+ * A "External Documentation Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
  */
 class ExternalDocumentation extends AbstractAnnotation
 {
@@ -37,10 +37,10 @@ class ExternalDocumentation extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Swagger',
+        'Swagger\Annotations\OpenApi',
         'Swagger\Annotations\Tag',
         'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\AdditionalProperties',
         'Swagger\Annotations\Property',
         'Swagger\Annotations\Operation',
         'Swagger\Annotations\Get',
@@ -50,6 +50,9 @@ class ExternalDocumentation extends AbstractAnnotation
         'Swagger\Annotations\Patch',
         'Swagger\Annotations\Head',
         'Swagger\Annotations\Options',
+        'Swagger\Annotations\Trace',
         'Swagger\Annotations\Items',
+        'Swagger\Annotations\JsonContent',
+        'Swagger\Annotations\XmlContent',
     ];
 }

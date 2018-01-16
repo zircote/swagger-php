@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -15,8 +15,8 @@ use Swagger\Logger;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A Swagger "Schema Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#schemaObject
- * JSON Schema: http://json-schema.org/latest/json-schema-validation.html
+ * A "Schema Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#schemaObject
+ * JSON Schema: http://json-schema.org/
  */
 class Schema extends AbstractAnnotation
 {
@@ -25,6 +25,12 @@ class Schema extends AbstractAnnotation
      * @var string
      */
     public $ref;
+
+    /**
+     * The key into Components->schemas array.
+     * @var string
+     */
+    public $schema;
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
@@ -163,19 +169,38 @@ class Schema extends AbstractAnnotation
     public $multipleOf;
 
     /**
-     * Adds support for polymorphism. The discriminator is the schema property name that is used to differentiate between other schemas that inherit this schema. The property name used MUST be defined at this schema and it MUST be in the required property list. When used, the value MUST be the name of this schema or any schema that inherits it.
-     * @var string
+     * Adds support for polymorphism.
+     * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
+     * See Composition and Inheritance for more details.
      */
     public $discriminator;
 
     /**
-     * Relevant only for Schema "properties" definitions. Declares the property as "read only". This means that it MAY be sent as part of a response but MUST NOT be sent as part of the request. Properties marked as readOnly being true SHOULD NOT be in the required list of the defined schema. Default value is false.
+     * Relevant only for Schema "properties" definitions.
+     * Declares the property as "read only".
+     * This means that it may be sent as part of a response but should not be sent as part of the request.
+     * If the property is marked as readOnly being true and is in the required list, the required will take effect on the response only.
+     * A property must not be marked as both readOnly and writeOnly being true.
+     * Default value is false.
      * @var boolean
      */
     public $readOnly;
 
+     /**
+     * Relevant only for Schema "properties" definitions.
+     * Declares the property as "write only".
+     * Therefore, it may be sent as part of a request but should not be sent as part of the response.
+     * If the property is marked as writeOnly being true and is in the required list, the required will take effect on the request only.
+     * A property must not be marked as both readOnly and writeOnly being true.
+     * Default value is false.
+     * @var boolean
+     */
+    public $writeOnly;
+
     /**
-     * This MAY be used only on properties schemas. It has no effect on root schemas. Adds Additional metadata to describe the XML representation format of this property.
+     * This may be used only on properties schemas.
+     * It has no effect on root schemas.
+     * Adds additional metadata to describe the XML representation of this property.
      * @var Xml
      */
     public $xml;
@@ -187,10 +212,24 @@ class Schema extends AbstractAnnotation
     public $externalDocs;
 
     /**
-     * A free-form property to include a an example of an instance for this schema.
-     * @var array
+     * A free-form property to include an example of an instance for this schema.
+     * To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to contain the example with escaping where necessary.
      */
     public $example;
+
+    /**
+     * Allows sending a null value for the defined schema.
+     * Default value is false.
+     * @var boolean
+     */
+    public $nullable;
+
+    /**
+    * Specifies that a schema is deprecated and should be transitioned out of usage.
+    * Default value is false.
+    * @var boolean
+    */
+    public $deprecated;
 
     /**
      * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
@@ -199,10 +238,57 @@ class Schema extends AbstractAnnotation
     public $allOf;
 
     /**
+     * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
+     * @var Schema[]
+     */
+    public $anyOf;
+
+    /**
+     * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
+     * @var type
+     */
+    public $oneOf;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29
+     */
+    public $not;
+
+    /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64
      * @var bool|object
      */
     public $additionalProperties;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10
+     */
+    public $additionalItems;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14
+     */
+    public $contains;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19
+     */
+    public $patternProperties;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21
+     */
+    public $dependencies;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22
+     */
+    public $propertyNames;
+
+    /**
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24
+     */
+    public $const;
 
     /** @inheritdoc */
     public static $_types = [
@@ -228,13 +314,16 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Xml' => 'xml'
+        'Swagger\Annotations\Xml' => 'xml',
+        'Swagger\Annotations\AdditionalProperties' => 'additionalProperties'
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Response',
+        'Swagger\Annotations\Components',
         'Swagger\Annotations\Parameter',
+        'Swagger\Annotations\MediaType',
+        'Swagger\Annotations\Header',
     ];
 
     public function validate($parents = [], $skip = [], $ref = '')
