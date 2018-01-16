@@ -2,9 +2,6 @@
 
 /**
  * @OAS\OpenApi(
- *     schemes={"http"},
- *     host="petstore.swagger.io",
- *     basePath="/v2",
  *     @OAS\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
@@ -17,6 +14,10 @@
  *             name="Apache 2.0",
  *             url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *         )
+ *     ),
+ *     @OAS\Server(
+ *         description="OpenApi host",
+ *         url="https://petstore.swagger.io/v3"
  *     ),
  *     @OAS\ExternalDocumentation(
  *         description="Find out more about Swagger",

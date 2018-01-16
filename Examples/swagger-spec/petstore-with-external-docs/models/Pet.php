@@ -2,7 +2,7 @@
 
 /**
  * @OAS\Schema(
- *   definition="NewPet",
+ *   schema="NewPet",
  *   type="object",
  *   required={"name"}
  * )
@@ -24,10 +24,10 @@ class Pet
 
 /**
  *  @OAS\Schema(
- *   definition="Pet",
+ *   schema="Pet",
  *   type="object",
  *   allOf={
- *       @OAS\Schema(ref="#/definitions/NewPet"),
+ *       @OAS\Schema(ref="#/components/schemas/NewPet"),
  *       @OAS\Schema(
  *           required={"id"},
  *           @OAS\Property(property="id", format="int64", type="integer")

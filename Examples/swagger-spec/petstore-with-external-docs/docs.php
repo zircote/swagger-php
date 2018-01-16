@@ -17,11 +17,10 @@
  *   termsOfService="http://swagger.io/terms/"
  * )
  * @OAS\OpenApi(
- *   host="petstore.swagger.io",
- *   basePath="/api",
- *   schemes={"http"},
- *   produces={"application/json"},
- *   consumes={"application/json"},
+ *   @OAS\Server(
+ *       url="petstore.swagger.io",
+ *       description="API server"
+ *   ),
  *   @OAS\ExternalDocumentation(
  *     description="find more info here",
  *     url="https://swagger.io/about"

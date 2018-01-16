@@ -39,15 +39,17 @@ abstract class StoreController
      *   description="",
      *   operationId="placeOrder",
      *   @OAS\RequestBody(
-     *       request="StoreOrderBody",
      *       required=true,
      *       description="order placed for purchasing the pet",
-     *       @OAS\Schema(ref="#/components/schemes/Order")
+     *       @OAS\MediaType(
+     *           mediaType="application/json",
+     *           @OAS\Schema(ref="#/components/schemas/Order")
+     *       )
      *   ),
      *   @OAS\Response(
      *     response=200,
      *     description="successful operation",
-     *     @OAS\Schema(ref="#/components/schemes/Order")
+     *     @OAS\Schema(ref="#/components/schemas/Order")
      *   ),
      *   @OAS\Response(response=400, description="Invalid Order")
      * )
@@ -67,16 +69,18 @@ abstract class StoreController
      *     in="path",
      *     description="ID of pet that needs to be fetched",
      *     required=true,
-     *     type="integer",
-     *     format="int64",
-     *     minimum=1.0,
-     *     maximum=10.0,
+     *     @OAS\Schema(
+     *         type="integer",
+     *         format="int64",
+     *         minimum=1.0,
+     *         maximum=10.0
+     *     )
      *   ),
      *   @OAS\Response(
      *     response=200,
      *     description="successful operation",
      *     @OAS\Schema(
-     *       ref="#/definitions/Order"
+     *       ref="#/components/schemas/Order"
      *     )
      *   ),
      *   @OAS\Response(response=400, description="Invalid ID supplied"),
@@ -96,11 +100,13 @@ abstract class StoreController
      *   @OAS\Parameter(
      *     name="orderId",
      *     in="path",
-     *     description="ID of the order that needs to be deleted",
      *     required=true,
-     *     type="integer",
-     *     format="int64",
-     *     minimum=1.0
+     *     description="ID of the order that needs to be deleted",
+     *     @OAS\Schema(
+     *         type="integer",
+     *         format="int64",
+     *         minimum=1.0
+     *     )
      *   ),
      *   @OAS\Response(response=400, description="Invalid ID supplied"),
      *   @OAS\Response(response=404, description="Order not found")

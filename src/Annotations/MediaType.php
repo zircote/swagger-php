@@ -53,7 +53,6 @@ class MediaType extends AbstractAnnotation
      */
     public $encoding;
 
-
     /** @inheritdoc */
     public static $_nested = [
         'Swagger\Annotations\Schema' => 'schema',

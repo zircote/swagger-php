@@ -91,15 +91,6 @@ class OpenApi extends AbstractAnnotation
      */
     public $_analysis;
 
-    /**
-     * Schemes
-     *
-     * @var array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public $schemes;
-
     /** @inheritdoc */
     public static $_blacklist = ['_context', '_unmerged', '_analysis', 'security'];
 

@@ -158,9 +158,6 @@ $exclude = $options['exclude'] ? explode(',', $options['exclude']) : null;
 $openapi = Swagger\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 
-if (is_object($openapi->schemes)) {
-    $openapi->schemes = $openapi->schemes->schemes;
-}
 $counter = 0;
 
 // Output report

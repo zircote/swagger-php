@@ -11,23 +11,29 @@ class PetWithDocsController
      *     path="/pets",
      *     operationId="addPet",
      *     description="Creates a new pet in the store.  Duplicates are allowed",
-     *     produces={"application/json"},
-     *     @OAS\Parameter(
-     *         name="pet",
-     *         in="body",
+     *     @OAS\RequestBody(
      *         description="Pet to add to the store",
      *         required=true,
-     *         @OAS\Schema(ref="#/definitions/NewPet"),
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/NewPet"),
+     *         )
      *     ),
      *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\Schema(ref="#/definitions/Pet")
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         )
      *     ),
      *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         )
      *     )
      * )
      */
@@ -42,27 +48,53 @@ class PetWithDocsController
      *     operationId="findPetById",
      *     @OAS\Parameter(
      *         description="ID of pet to fetch",
-     *         format="int64",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         type="integer"
+     *         @OAS\Schema(
+     *             format="int64",
+     *             type="integer"
+     *         )
      *     ),
-     *     produces={
-     *         "application/json",
-     *         "application/xml",
-     *         "text/html",
-     *         "text/xml"
-     *     },
      *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\Schema(ref="#/definitions/Pet")
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/html",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/xml",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
      *     ),
      *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/xml",
+     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/html",
+     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         ),
      *     )
      * )
      */
@@ -75,38 +107,86 @@ class PetWithDocsController
      *     path="/pets",
      *     description="Returns all pets from the system that the user has access to",
      *     operationId="findPets",
-     *     produces={"application/json", "application/xml", "text/xml", "text/html"},
      *     @OAS\Parameter(
      *         name="tags",
      *         in="query",
      *         description="tags to filter by",
      *         required=false,
-     *         type="array",
-     *         @OAS\Items(type="string"),
-     *         collectionFormat="csv"
+     *         @OAS\Schema(
+     *             type="array",
+     *             @OAS\Items(type="string"),
+     *         ),
+     *         style="form"
      *     ),
      *     @OAS\Parameter(
      *         name="limit",
      *         in="query",
      *         description="maximum number of results to return",
      *         required=false,
-     *         type="integer",
-     *         format="int32"
+     *         @OAS\Schema(
+     *             type="integer",
+     *             format="int32"
+     *         )
      *     ),
      *     @OAS\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\Schema(
-     *             type="array",
-     *             @OAS\Items(ref="#/definitions/Pet")
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(
+     *                 type="array",
+     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *             ),
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(
+     *                 type="array",
+     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *             ),
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/xml",
+     *             @OAS\Schema(
+     *                 type="array",
+     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *             ),
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/html",
+     *             @OAS\Schema(
+     *                 type="array",
+     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *             ),
      *         ),
      *     ),
      *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\Schema(
-     *             ref="#/definitions/ErrorModel"
-     *         )
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(
+     *                 ref="#/components/schemas/ErrorModel"
+     *             )
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(
+     *                 ref="#/components/schemas/ErrorModel"
+     *             )
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/xml",
+     *             @OAS\Schema(
+     *                 ref="#/components/schemas/ErrorModel"
+     *             )
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="text/html",
+     *             @OAS\Schema(
+     *                 ref="#/components/schemas/ErrorModel"
+     *             )
+     *         ),
      *     ),
      *     @OAS\ExternalDocumentation(
      *         description="find more info here",
@@ -125,11 +205,13 @@ class PetWithDocsController
      *     operationId="deletePet",
      *     @OAS\Parameter(
      *         description="ID of pet to delete",
-     *         format="int64",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         type="integer"
+     *         @OAS\Schema(
+     *             format="int64",
+     *             type="integer"
+     *         )
      *     ),
      *     @OAS\Response(
      *         response=204,
@@ -138,7 +220,7 @@ class PetWithDocsController
      *     @OAS\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\Schema(ref="#/definitions/ErrorModel")
+     *         @OAS\Schema(ref="#/components/schemas/ErrorModel")
      *     )
      * )
      */

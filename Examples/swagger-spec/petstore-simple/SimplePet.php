@@ -3,7 +3,7 @@
 namespace Petstore;
 
 /**
- * @OAS\Schema(definition="NewPet", type="object", required={"name"})
+ * @OAS\Schema(schema="NewPet", type="object", required={"name"})
  */
 class SimplePet
 {
@@ -25,10 +25,10 @@ class SimplePet
 
 /**
  *  @OAS\Schema(
- *   definition="Pet",
+ *   schema="Pet",
  *   type="object",
  *   allOf={
- *       @OAS\Schema(ref="#/definitions/NewPet"),
+ *       @OAS\Schema(ref="#/components/schemas/NewPet"),
  *       @OAS\Schema(
  *           required={"id"},
  *           @OAS\Property(property="id", format="int64", type="integer")

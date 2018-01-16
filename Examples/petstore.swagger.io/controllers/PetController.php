@@ -21,14 +21,14 @@ final class PetController
      *           type="array",
      *           @OAS\Items(type="string"),
      *         ),
-     *         form="array"
+     *         style="form"
      *     ),
      *     @OAS\Response(
      *         response=200,
      *         description="successful operation",
      *         @OAS\Schema(
      *             type="array",
-     *             @OAS\Items(ref="#/definitions/Pet")
+     *             @OAS\Items(ref="#/components/schemas/Pet")
      *         ),
      *     ),
      *     @OAS\Response(
@@ -65,7 +65,7 @@ final class PetController
      *               default="available"
      *           ),
      *         ),
-     *         form="array"
+     *         style="form"
      *     ),
      *     @OAS\Response(
      *         response=200,
@@ -74,7 +74,7 @@ final class PetController
      *             mediaType="application/json",
      *             @OAS\Schema(
      *                type="array",
-     *                @OAS\Items(ref="#/definitions/Pet")
+     *                @OAS\Items(ref="#/components/schemas/Pet")
      *             ),
      *         )
      *     ),
@@ -113,7 +113,7 @@ final class PetController
      *         description="successful operation",
      *         @OAS\MediaType(
      *            mediaType="application/json",
-     *            @OAS\Schema(ref="#/definitions/Pet")
+     *            @OAS\Schema(ref="#/components/schemas/Pet")
      *         )
      *     ),
      *     @OAS\Response(
@@ -140,12 +140,25 @@ final class PetController
      *     operationId="addPet",
      *     summary="Add a new pet to the store",
      *     description="",
-     *     consumes={"application/json", "application/xml"},
      *     @OAS\RequestBody(
-     *         request="body",
      *         description="Pet object that needs to be added to the store",
      *         required=true,
-     *         @OAS\Schema(ref="#/components/schemes/Pet"),
+     *         @OAS\MediaType(
+     *             mediaType="application/json",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         ),
+     *     ),
+     *     @OAS\RequestBody(
+     *         description="Pet object that needs to be added to the store",
+     *         required=true,
+     *         @OAS\MediaType(
+     *             mediaType="application/xml",
+     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *         )
      *     ),
      *     @OAS\Response(
      *         response=405,
@@ -166,15 +179,15 @@ final class PetController
      *     summary="Update an existing pet",
      *     description="",
      *     @OAS\RequestBody(
-     *         request="body",
+     *         required=true,
      *         description="Pet object that needs to be added to the store",
      *         @OAS\MediaType(
-     *            mediaType="application/json"
-     *            @OAS\Schema(ref="#/definitions/Pet", required=true),
+     *            mediaType="application/json",
+     *            @OAS\Schema(ref="#/components/schemas/Pet"),
      *         ),
      *         @OAS\MediaType(
-     *            mediaType="application/xml"
-     *            @OAS\Schema(ref="#/definitions/Pet", required=true),
+     *            mediaType="application/xml",
+     *            @OAS\Schema(ref="#/components/schemas/Pet"),
      *         )
      *     ),
      *     @OAS\Response(
@@ -215,6 +228,7 @@ final class PetController
      *     ),
      *     @OAS\Header(
      *         header="api_key",
+     *         description="Api key header",
      *         required=false,
      *         @OAS\Schema(
      *             type="string"
@@ -242,29 +256,34 @@ final class PetController
      *   summary="Updates a pet in the store with form data",
      *   description="",
      *   operationId="updatePetWithForm",
-     *   @OAS\
-     *   consumes={"application/x-www-form-urlencoded"},
+     *   @OAS\RequestBody(
+     *       required=false,
+     *       @OAS\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OAS\Schema(
+     *               type="object",
+     *               @OAS\Property(
+     *                   property="name",
+     *                   description="Updated name of the pet",
+     *                   type="string"
+     *               ),
+     *               @OAS\Property(
+     *                   property="status",
+     *                   description="Updated status of the pet",
+     *                   type="string"
+     *               ),
+     *           )
+     *       )
+     *   ),
      *   @OAS\Parameter(
      *     name="petId",
      *     in="path",
      *     description="ID of pet that needs to be updated",
      *     required=true,
-     *     type="integer",
-     *     format="int64"
-     *   ),
-     *   @OAS\Parameter(
-     *     name="name",
-     *     in="formData",
-     *     description="Updated name of the pet",
-     *     required=false,
-     *     type="string"
-     *   ),
-     *   @OAS\Parameter(
-     *     name="status",
-     *     in="formData",
-     *     description="Updated status of the pet",
-     *     required=false,
-     *     type="string"
+     *     @OAS\Schema(
+     *         type="integer",
+     *         format="int64"
+     *     )
      *   ),
      *   @OAS\Response(response="405",description="Invalid input"),
      *   security={{
@@ -279,35 +298,44 @@ final class PetController
     /**
      * @OAS\Post(
      *     path="/pet/{petId}/uploadImage",
-     *     consumes={"multipart/form-data"},
      *     description="",
+     *     summary="uploads an image",
      *     operationId="uploadFile",
-     *     @OAS\Parameter(
-     *         description="Additional data to pass to server",
-     *         in="formData",
-     *         name="additionalMetadata",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @OAS\Parameter(
-     *         description="file to upload",
-     *         in="formData",
-     *         name="file",
-     *         required=false,
-     *         type="file"
+     *     @OAS\RequestBody(
+     *         required=true,
+     *         @OAS\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OAS\Schema(
+     *                 type="object",
+     *                 @OAS\Property(
+     *                     description="Additional data to pass to server",
+     *                     property="additionalMetadata",
+     *                     type="string"
+     *                 ),
+     *                 @OAS\Property(
+     *                     description="file to upload",
+     *                     property="file",
+     *                     type="string",
+     *                     format="file",
+     *                 ),
+     *                 required={"file"}
+     *             )
+     *         )
      *     ),
      *     @OAS\Parameter(
      *         description="ID of pet to update",
-     *         format="int64",
      *         in="path",
      *         name="petId",
      *         required=true,
-     *         type="integer"
+     *         @OAS\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
      *     ),
      *     @OAS\Response(
      *         response="200",
      *         description="successful operation",
-     *         @OAS\Schema(ref="#/definitions/ApiResponse")
+     *         @OAS\Schema(ref="#/components/schemas/ApiResponse")
      *     ),
      *     security={
      *         {
@@ -317,7 +345,6 @@ final class PetController
      *             }
      *         }
      *     },
-     *     summary="uploads an image",
      *     tags={
      *         "pet"
      *     }

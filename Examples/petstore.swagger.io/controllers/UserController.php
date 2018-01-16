@@ -11,12 +11,15 @@ class UserController
      *   summary="Create user",
      *   description="This can only be done by the logged in user.",
      *   operationId="createUser",
-     *   @OAS\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="Created user object",
-     *     required=true,
-     *     @OAS\Schema(ref="#/definitions/User")
+     *   @OAS\RequestBody(
+     *       required=true,
+     *       description="Created user object",
+     *       @OAS\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OAS\Schema(
+     *               ref="#/components/schemas/User"
+     *           )
+     *       )
      *   ),
      *   @OAS\Response(response="default", description="successful operation")
      * )
@@ -31,15 +34,16 @@ class UserController
      *   summary="Creates list of users with given input array",
      *   description="",
      *   operationId="createUsersWithArrayInput",
-     *   @OAS\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="List of user object",
-     *     required=true,
-     *     @OAS\Schema(
-     *       type="array",
-     *       @OAS\Items(ref="#/definitions/User")
-     *     )
+     *   @OAS\RequestBody(
+     *       description="List of user object",
+     *       required=true,
+     *       @OAS\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OAS\Schema(
+     *               type="array",
+     *               @OAS\Items(ref="#/components/schemas/User")
+     *           )
+     *       )
      *   ),
      *   @OAS\Response(response="default", description="successful operation")
      * )
@@ -54,19 +58,23 @@ class UserController
      *   summary="Creates list of users with given input array",
      *   description="",
      *   operationId="createUsersWithListInput",
-     *   @OAS\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="List of user object",
-     *     required=true,
-     *     @OAS\Schema(
-     *       type="array",
-     *       @OAS\Items(ref="#/definitions/User")
-     *     )
+     *   @OAS\RequestBody(
+     *       required=true,
+     *       description="List of user object",
+     *       @OAS\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OAS\Schema(
+     *               type="array",
+     *               @OAS\Items(ref="#/components/schemas/User")
+     *           )
+     *       )
      *   ),
      *   @OAS\Response(response="default", description="successful operation")
      * )
      */
+    public function createUsersWithListInput()
+    {
+    }
 
     /**
      * @OAS\Get(path="/user/login",
@@ -76,17 +84,20 @@ class UserController
      *   operationId="loginUser",
      *   @OAS\Parameter(
      *     name="username",
+     *     required=true,
      *     in="query",
      *     description="The user name for login",
-     *     required=true,
-     *     type="string"
+     *     @OAS\Schema(
+     *         type="string"
+     *     )
      *   ),
      *   @OAS\Parameter(
      *     name="password",
      *     in="query",
+     *     @OAS\Schema(
+     *         type="string",
+     *     ),
      *     description="The password for login in clear text",
-     *     required=true,
-     *     type="string"
      *   ),
      *   @OAS\Response(
      *     response=200,
@@ -94,14 +105,18 @@ class UserController
      *     @OAS\Schema(type="string"),
      *     @OAS\Header(
      *       header="X-Rate-Limit",
-     *       type="integer",
-     *       format="int32",
+     *       @OAS\Schema(
+     *           type="integer",
+     *           format="int32"
+     *       ),
      *       description="calls per hour allowed by the user"
      *     ),
      *     @OAS\Header(
      *       header="X-Expires-After",
-     *       type="string",
-     *       format="date-time",
+     *       @OAS\Schema(
+     *          type="string",
+     *          format="date-time",
+     *       ),
      *       description="date in UTC when token expires"
      *     )
      *   ),
@@ -137,9 +152,11 @@ class UserController
      *     in="path",
      *     description="The name that needs to be fetched. Use user1 for testing. ",
      *     required=true,
-     *     type="string"
+     *     @OAS\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @OAS\Response(response=200, description="successful operation", @OAS\Schema(ref="#/definitions/User")),
+     *   @OAS\Response(response=200, description="successful operation", @OAS\Schema(ref="#/components/schemas/User")),
      *   @OAS\Response(response=400, description="Invalid username supplied"),
      *   @OAS\Response(response=404, description="User not found")
      * )
@@ -159,17 +176,22 @@ class UserController
      *     in="path",
      *     description="name that need to be updated",
      *     required=true,
-     *     type="string"
-     *   ),
-     *   @OAS\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="Updated user object",
-     *     required=true,
-     *     @OAS\Schema(ref="#/definitions/User")
+     *     @OAS\Schema(
+     *         type="string"
+     *     )
      *   ),
      *   @OAS\Response(response=400, description="Invalid user supplied"),
-     *   @OAS\Response(response=404, description="User not found")
+     *   @OAS\Response(response=404, description="User not found"),
+     *   @OAS\RequestBody(
+     *       required=true,
+     *       description="Updated user object",
+     *       @OAS\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OAS\Schema(
+     *               ref="#/components/schemas/User"
+     *           )
+     *       )
+     *   ),
      * )
      */
     public function updateUser()
@@ -187,7 +209,9 @@ class UserController
      *     in="path",
      *     description="The name that needs to be deleted",
      *     required=true,
-     *     type="string"
+     *     @OAS\Schema(
+     *         type="string"
+     *     )
      *   ),
      *   @OAS\Response(response=400, description="Invalid username supplied"),
      *   @OAS\Response(response=404, description="User not found")
