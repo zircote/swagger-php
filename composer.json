@@ -1,5 +1,5 @@
 {
-    "name": "sonrac/swagger-php",
+    "name": "zircote/swagger-php",
     "type": "library",
     "license": "Apache2",
     "bin": ["bin/swagger"],
