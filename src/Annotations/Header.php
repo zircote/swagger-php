@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * @license Apache 2.0
  */
@@ -24,6 +23,13 @@ class Header extends AbstractAnnotation
     public $description;
 
     /**
+     * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
+     *
+     * @var bool
+     */
+    public $required;
+
+    /**
      * Schema object
      *
      * @var \Swagger\Annotations\Schema
@@ -31,6 +37,23 @@ class Header extends AbstractAnnotation
      * @author Donii Sergii <doniysa@gmail.com>
      */
     public $schema;
+
+    /**
+     * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
+     *
+     * @var bool
+     */
+    public $deprecated;
+
+    /**
+     * Sets the ability to pass empty-valued parameters.
+     * This is valid only for query parameters and allows sending a parameter with an empty value.
+     * Default value is false. If style is used, and if behavior is n/a
+     * (cannot be serialized), the value of allowEmptyValue SHALL be ignored.
+     *
+     * @var bool
+     */
+    public $allowEmptyValue;
 
     /** @inheritdoc */
     public static $_required = ['header', 'schema'];

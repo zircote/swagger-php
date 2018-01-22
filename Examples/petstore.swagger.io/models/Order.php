@@ -3,45 +3,45 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(type="object", @SWG\Xml(name="Order"))
+ * @OAS\Schema(type="object", @OAS\Xml(name="Order"))
  */
 class Order
 {
 
     /**
-     * @SWG\Property(format="int64")
+     * @OAS\Property(format="int64")
      * @var int
      */
     public $id;
 
     /**
-     * @SWG\Property(format="int64")
+     * @OAS\Property(format="int64")
      * @var int
      */
     public $petId;
 
     /**
-     * @SWG\Property(default=false)
+     * @OAS\Property(default=false)
      * @var bool
      */
     public $complete;
 
     /**
-     * @SWG\Property(format="int32")
+     * @OAS\Property(format="int32")
      * @var int
      */
     public $quantity;
 
     /**
      * @var \DateTime
-     * @SWG\Property()
+     * @OAS\Property()
      */
     public $shipDate;
 
     /**
      * Order Status
      * @var string
-     * @SWG\Property(enum={"placed", "approved", "delivered"})
+     * @OAS\Property(enum={"placed", "approved", "delivered"})
      */
     public $status;
 }
