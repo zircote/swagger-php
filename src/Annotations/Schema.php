@@ -184,7 +184,7 @@ class Schema extends AbstractAnnotation
      */
     public $readOnly;
 
-     /**
+    /**
      * Relevant only for Schema "properties" definitions.
      * Declares the property as "write only".
      * Therefore, it may be sent as part of a request but should not be sent as part of the response.

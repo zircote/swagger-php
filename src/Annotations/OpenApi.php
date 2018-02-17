@@ -95,8 +95,6 @@ class OpenApi extends AbstractAnnotation
      * Schemes
      *
      * @var array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $schemes;
 

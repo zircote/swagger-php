@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30\controllers;
-
 
 /**
  * Class User
@@ -37,8 +37,6 @@ class User
      *         )
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function createUser()
     {
@@ -58,8 +56,6 @@ class User
      *         ref="#/components/requestBodies/UserArray"
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function createUsersWithListInput()
     {
@@ -125,8 +121,6 @@ class User
      *         description="Invalid username/password supplied"
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function loginUser()
     {
@@ -143,8 +137,6 @@ class User
      *         description="successful operation"
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function logoutUser()
     {
@@ -188,8 +180,6 @@ class User
      *         description="User not found"
      *     ),
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function getUserByName()
     {
@@ -229,8 +219,6 @@ class User
      *         )
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function updateUser()
     {
@@ -260,8 +248,6 @@ class User
      *         description="User not found",
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function deleteUser()
     {

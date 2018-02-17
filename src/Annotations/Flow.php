@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swagger\Annotations;
 
@@ -47,7 +47,7 @@ class Flow extends AbstractAnnotation
      *
      * @var array
      *
-     * @author Donii Sergii <doniysa@gmail.com>
+     * @license Apache 2.0
      */
     public $scopes = [];
 

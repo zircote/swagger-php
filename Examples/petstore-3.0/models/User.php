@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30;
-
 
 /**
  * Class User
@@ -29,8 +29,6 @@ class User
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $id;
 
@@ -41,8 +39,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $username;
 
@@ -53,8 +49,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $firstName;
 
@@ -65,8 +59,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $lastName;
 
@@ -78,8 +70,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $email;
 
@@ -92,8 +82,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $password;
 
@@ -105,8 +93,6 @@ class User
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $phone;
 
@@ -118,8 +104,6 @@ class User
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $userStatus;
 }

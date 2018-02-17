@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30;
-
 
 /**
  * Class Pet
@@ -34,8 +34,6 @@ class Pet
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $id;
 
@@ -46,8 +44,6 @@ class Pet
      * )
      *
      * @var \Petstore30\Category
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $category;
 
@@ -59,8 +55,6 @@ class Pet
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $name;
 
@@ -79,8 +73,6 @@ class Pet
      * )
      *
      * @var array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $photoUrls;
 
@@ -95,8 +87,6 @@ class Pet
      * )
      *
      * @var \Petstore30\Tag[]
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $tags;
 }

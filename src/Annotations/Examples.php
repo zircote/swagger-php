@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Swagger\Annotations;
@@ -20,8 +21,6 @@ class Examples extends AbstractAnnotation
      * Short description for the example.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $summary;
 
@@ -32,8 +31,6 @@ class Examples extends AbstractAnnotation
      * the example, escaping where necessary.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $description;
 
@@ -45,8 +42,6 @@ class Examples extends AbstractAnnotation
      * where necessary.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $value;
 
@@ -57,8 +52,6 @@ class Examples extends AbstractAnnotation
      * The value field and externalValue field are mutually exclusive.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $externalValue;
 

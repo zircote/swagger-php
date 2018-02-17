@@ -8,7 +8,7 @@
 
 use Swagger\Logger;
 
- /**
+/**
  * @Annotation
  * Base class for the @OAS\Get(),  @OAS\Post(),  @OAS\Put(),  @OAS\Delete(), @OAS\Patch(), etc
  *
