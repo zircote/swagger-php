@@ -288,7 +288,11 @@ abstract class AbstractAnnotation implements JsonSerializable
                 } else {
                     $key = $item->$keyField;
                     if ($key && empty($object->$key)) {
-                        $object->$key = $item; //->jsonSerialize();
+                        if (method_exists($item, 'jsonSerialize')) {
+                            $object->$key = $item->jsonSerialize();
+                        } else {
+                            $object->$key = $item;
+                        }
                         unset($object->$key->$keyField);
                     }
                 }

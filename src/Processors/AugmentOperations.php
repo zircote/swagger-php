@@ -16,7 +16,7 @@ class AugmentOperations
 {
     public function __invoke(Analysis $analysis)
     {
-        $allOperations = $analysis->getAnnotationsOfType('\Swagger\Annotations\Operation');
+        $allOperations = $analysis->getAnnotationsOfType(Operation::class);
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {

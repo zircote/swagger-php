@@ -153,12 +153,32 @@ set_exception_handler(function ($exception) use ($options) {
     }
     exit($exception->getCode() ?: 1);
 });
-\Swagger\Logger::getInstance()->log = function ($entry, $type) {
+\Swagger\Logger::getInstance()->log = function ($entry, $type) use ($options) {
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
     if ($entry instanceof Exception) {
-        $entry = $entry->getMessage();
+        error_log('[' . $type . '] ' . $entry->getMessage());
+        if ($options['debug']) {
+            error_log('Stack trace:'.PHP_EOL.$entry->getTraceAsString());
+        }
+    } else {
+        error_log('[' . $type . '] ' . $entry);
+        if ($options['debug']) {
+            // Show backtrace in debug mode
+            $e = (string)(new Exception('trace'));
+            $trace = explode("\n", substr($e, strpos($e, 'Stack trace:')));
+            foreach ($trace as $i => $entry) {
+                if ($i === 0) {
+                    error_log($entry);
+                }
+                if ($i <= 3) {
+                    continue;
+                }
+                preg_match('/#([0-9]+) (.*)$/', $entry, $match);
+                error_log('#' .($match[1] - 2).' '.$match[2]);
+            }
+        }
     }
-    error_log('[' . $type . '] ' . $entry . PHP_EOL);
+    error_log('');
 };
 $exclude = null;
 if ($options['exclude']) {
