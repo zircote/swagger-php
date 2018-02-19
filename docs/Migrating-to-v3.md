@@ -11,23 +11,23 @@ The namespace is renamed from SWG (Swagger) to OAS (OpenApiSpecification)
 ### @SWG\Swagger() is renamed to @OAS\OpenApi()
 
 ### @SWG\Path() is renamed to @OAS\PathItem()
-The spefication uses the term "Path Item Object", updated the annotation to reflect that.
+The specification uses the term "Path Item Object", updated the annotation to reflect that.
 
 ### @SWG\Definition() is removed
 Use @OAS\Schema() instead of @OAS\Definition() and update the references from "#/definitons/something" to "#/components/schemas/something".
 
 ### @SWG\Path is removed
-Use @OAS\PAthItem instead of @OAS\Path and update reference from
+Use @OAS\PathItem instead of @OAS\Path and update references.
 
-### consumes, produces field is removed from open-api specification
-Use @OAS\MediaType for set data format.
+### Consumes, produces field is removed from OpenAPI specification
+Use @OAS\MediaType to set data format.
 
-### Parameters rename references
+### Rename parameter references
 Rename `#/parameters/{parameter_name}` to `#/components/parameters/{parameter_name}`
 
-### Responses rename references
+### Rename response references
 Rename `#/responses/{response}` to `#/components/responses/{response}`
 
-### More detail about different:
+### More details about differences:
 
 [A Visual Guide to What's New in Swagger 3.0](https://blog.readme.io/an-example-filled-guide-to-swagger-3-2/)
