@@ -30,6 +30,7 @@ class ExamplesTest extends SwaggerTestCase
     public function getExamples()
     {
         return [
+            ['misc', 'misc.json'],
             ['openapi-spec', 'openapi-spec.json'],
             // ['petstore.swagger.io', 'petstore.swagger.io.json'],
             // ['swagger-spec/petstore', 'petstore.json'],
