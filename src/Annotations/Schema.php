@@ -170,6 +170,7 @@ class Schema extends AbstractAnnotation
      * Adds support for polymorphism.
      * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
      * See Composition and Inheritance for more details.
+     * @var Discriminator
      */
     public $discriminator;
 
@@ -309,6 +310,7 @@ class Schema extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
+        'Swagger\Annotations\Discriminator' => 'discriminator',
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
