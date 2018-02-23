@@ -170,6 +170,7 @@ class Schema extends AbstractAnnotation
      * Adds support for polymorphism.
      * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
      * See Composition and Inheritance for more details.
+     * @var Discriminator
      */
     public $discriminator;
 
