@@ -310,6 +310,7 @@ class Schema extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
+        'Swagger\Annotations\Discriminator' => 'discriminator',
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
