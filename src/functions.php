@@ -39,8 +39,8 @@ if (defined('Swagger\UNDEFINED') === false) {
         // Crawl directory and parse all files
         $finder = Util::finder($directory, $exclude);
         foreach ($finder as $file) {
-            if(!is_null($excludeFiles) && is_array($excludeFiles)) {
-                if(!in_array($file->getBasename(), $excludeFiles)) {
+            if (!is_null($excludeFiles) && is_array($excludeFiles)) {
+                if (!in_array($file->getBasename(), $excludeFiles)) {
                     $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
                 }
             }
