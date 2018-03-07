@@ -34,11 +34,18 @@ if (defined('Swagger\UNDEFINED') === false) {
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
         $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
+        $excludeFiles = array_key_exists('excludeFiles', $options) ? $options['excludeFiles'] : null;
 
         // Crawl directory and parse all files
         $finder = Util::finder($directory, $exclude);
         foreach ($finder as $file) {
-            $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
+            if (!is_null($excludeFiles) && is_array($excludeFiles)) {
+                if (!in_array($file->getBasename(), $excludeFiles)) {
+                    $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
+                }
+            } else {
+                $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
+            }
         }
         // Post processing
         $analysis->process($processors);
