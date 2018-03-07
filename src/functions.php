@@ -43,8 +43,7 @@ if (defined('Swagger\UNDEFINED') === false) {
                 if (!in_array($file->getBasename(), $excludeFiles)) {
                     $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
                 }
-            }
-            else {
+            } else {
                 $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
             }
         }
