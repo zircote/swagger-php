@@ -8,6 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\MediaType;
 use Swagger\Annotations\JsonContent;
+use Swagger\Annotations\RequestBody;
 use Swagger\Annotations\Response;
 use Swagger\Analysis;
 use Swagger\Context;
@@ -22,7 +23,7 @@ class MergeJsonContent
         $annotations = $analysis->getAnnotationsOfType(JsonContent::class);
         foreach ($annotations as $jsonContent) {
             $response = $jsonContent->_context->nested;
-            if (!($response instanceof Response)) {
+            if (!($response instanceof Response) && !($response instanceof RequestBody)) {
                 continue;
             }
             if ($response->content === null) {
