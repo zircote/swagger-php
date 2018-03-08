@@ -19,7 +19,8 @@ class AdditionalProperties extends Schema
 {
     /** @inheritdoc */
     public static $_parents = [
-        'OpenApi\Annotations\Schema'
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\Property'
     ];
 
     /** @inheritdoc */

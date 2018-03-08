@@ -31,6 +31,7 @@ class Property extends Schema
     public static $_nested = [
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],
+        'OpenApi\Annotations\AdditionalProperties' => 'additionalProperties',
         'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
         'OpenApi\Annotations\Xml' => 'xml',
         'OpenApi\Annotations\Discriminator' => 'discriminator'
