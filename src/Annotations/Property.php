@@ -31,6 +31,7 @@ class Property extends Schema
     public static $_nested = [
         'Swagger\Annotations\Items' => 'items',
         'Swagger\Annotations\Property' => ['properties', 'property'],
+        'Swagger\Annotations\AdditionalProperties' => 'additionalProperties',
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
         'Swagger\Annotations\Xml' => 'xml',
     ];

@@ -19,7 +19,8 @@ class AdditionalProperties extends Schema
 {
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Schema'
+        'Swagger\Annotations\Schema',
+        'Swagger\Annotations\Property'
     ];
 
     /** @inheritdoc */
