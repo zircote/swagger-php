@@ -14,6 +14,12 @@ namespace Swagger\Annotations;
  */
 class JsonContent extends Schema
 {
+
+    /**
+     * @var object
+     */
+    public $example;
+
     /**
      * @var object
      */

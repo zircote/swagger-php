@@ -32,9 +32,11 @@ class MergeJsonContent
             $response->content['application/json'] = new MediaType([
                 'mediaType' => 'application/json',
                 'schema' => $jsonContent,
+                'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
                 '_context' => new Context(['generated' => true], $jsonContent->_context)
             ]);
+            $jsonContent->example = null;
             $jsonContent->examples = null;
 
             $index = array_search($jsonContent, $response->_unmerged, true);
