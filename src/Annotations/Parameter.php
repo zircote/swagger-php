@@ -197,6 +197,7 @@ class Parameter extends AbstractAnnotation
         'name' => 'string',
         'in' => ['query', 'header', 'path', 'cookie'],
         'description' => 'string',
+        'style' => ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited', 'deepObject'],
         'required' => 'boolean',
     ];
 
