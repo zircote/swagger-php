@@ -15,15 +15,12 @@ namespace Swagger\Annotations;
  */
 class RequestBody extends AbstractAnnotation
 {
-
     public $ref;
 
     /**
      * Request body model name.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $request;
 

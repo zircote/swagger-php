@@ -56,7 +56,7 @@ class Server extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\ServerVariable' => ['variables'],
+        'Swagger\Annotations\ServerVariable' => ['variables', 'serverVariable'],
     ];
 
     /** @inheritdoc */

@@ -7,6 +7,7 @@
 namespace Swagger\Processors;
 
 use Swagger\Annotations\PathItem;
+use Swagger\Annotations\Operation;
 use Swagger\Logger;
 use Swagger\Context;
 use Swagger\Analysis;
@@ -32,7 +33,7 @@ class BuildPaths
         }
 
         // Merge @OAS\Operations into existing @OAS\PathItems or create a new one.
-        $operations = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Operation');
+        $operations = $analysis->unmerged()->getAnnotationsOfType(Operation::class);
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {

@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30;
-
 
 /**
  * Class ApiResponse
@@ -29,8 +29,6 @@ class ApiResponse
      * )
      *
      * @var int
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $code;
 
@@ -41,8 +39,6 @@ class ApiResponse
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $type;
 
@@ -53,8 +49,6 @@ class ApiResponse
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $message;
 }

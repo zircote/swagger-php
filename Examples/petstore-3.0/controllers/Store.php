@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30\controllers;
-
 
 /**
  * Class Store
@@ -40,8 +40,6 @@ class Store
      *         {"api_key": {}}
      *     }
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function getInventory()
     {
@@ -80,8 +78,6 @@ class Store
      *         )
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function placeOrder()
     {
@@ -132,8 +128,6 @@ class Store
      *         description="Order not found"
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function getOrderById()
     {
@@ -168,8 +162,6 @@ class Store
      *         description="Order not found"
      *     )
      * ),
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function deleteOrder()
     {
