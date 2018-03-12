@@ -15,10 +15,19 @@ class ItemsTest extends SwaggerTestCase
         $annotations[0]->validate();
     }
 
-//    public function testTypeObject()
-//    {
-//        $notAllowedInQuery = $this->parseComment('@OAS\Parameter(name="param",in="query",type="array",@OAS\Items(type="object"))');
-//        $this->assertSwaggerLogEntryStartsWith('@OAS\Items()->type="object" not allowed inside a @OAS\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
-//        $notAllowedInQuery[0]->validate();
-//    }
+    public function testRefDefinitionInProperty()
+    {
+        $analyser = new StaticAnalyser();
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/UsingVar.php');
+        $analysis->process();
+        var_dump($analysis->openapi->components->schemas[0]->properties);
+        $this->assertCount(1, $analysis->openapi->components->schemas);
+        $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);
+        $this->assertInternalType('array', $analysis->openapi->components->schemas[0]->properties);
+        $this->assertCount(2, $analysis->openapi->components->schemas[0]->properties);
+        $this->assertEquals('name', $analysis->openapi->components->schemas[0]->properties[0]->property);
+        $this->assertEquals('createdAt', $analysis->openapi->components->schemas[0]->properties[1]->property);
+        $this->assertEquals('#/components/schemas/date', $analysis->openapi->components->schemas[0]->properties[1]->ref);
+
+    }
 }
