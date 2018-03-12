@@ -22,7 +22,6 @@ class ItemsTest extends SwaggerTestCase
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/UsingVar.php');
         $analysis->process();
-        var_dump($analysis->openapi->components->schemas[0]->properties);
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);
         $this->assertInternalType('array', $analysis->openapi->components->schemas[0]->properties);
