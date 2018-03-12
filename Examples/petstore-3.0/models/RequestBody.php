@@ -1,6 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
+ */
+
+/**
  *
  * @OAS\RequestBody(
  *     request="Pet",

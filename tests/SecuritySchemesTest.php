@@ -20,8 +20,6 @@ class SecuritySchemesTest extends SwaggerTestCase
 {
     /**
      * Test parse servers
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function testParseServers()
     {
@@ -58,8 +56,6 @@ INFO;
 
     /**
      * Test parse security scheme
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function testImplicitFlowAnnotation()
     {
@@ -144,8 +140,6 @@ SCHEME;
      * @param string $comment
      *
      * @return array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private function getAnalysis($comment)
     {

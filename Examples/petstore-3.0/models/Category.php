@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30;
-
 
 /**
  * Class Category
@@ -32,8 +32,6 @@ class Category
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $id;
 
@@ -44,8 +42,6 @@ class Category
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $name;
 }

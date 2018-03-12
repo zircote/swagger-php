@@ -33,8 +33,6 @@ class Header extends AbstractAnnotation
      * Schema object
      *
      * @var \Swagger\Annotations\Schema
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $schema;
 

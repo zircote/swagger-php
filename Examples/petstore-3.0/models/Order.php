@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30;
-
 
 /**
  * Class Order
@@ -28,8 +28,6 @@ class Order
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $id;
 
@@ -42,8 +40,6 @@ class Order
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $petId;
 
@@ -56,8 +52,6 @@ class Order
      * )
      *
      * @var integer
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $quantity;
 
@@ -72,8 +66,6 @@ class Order
      * )
      *
      * @var \DateTime
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $shipDate;
 
@@ -87,8 +79,6 @@ class Order
      * )
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $status;
 
@@ -101,8 +91,6 @@ class Order
      * )
      *
      * @var boolean
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     private $complete;
 }

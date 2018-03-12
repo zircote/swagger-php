@@ -8,6 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Schema;
 use Swagger\Annotations\Items;
+use Swagger\Annotations\Property;
 use Swagger\Context;
 use Swagger\Analysis;
 
@@ -50,7 +51,7 @@ class AugmentProperties
             }
         }
 
-        $allProperties = $analysis->getAnnotationsOfType('\Swagger\Annotations\Property');
+        $allProperties = $analysis->getAnnotationsOfType(Property::class);
         /** @var \Swagger\Annotations\Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;

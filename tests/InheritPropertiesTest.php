@@ -7,6 +7,7 @@
 namespace SwaggerTests;
 
 use Swagger\Annotations\Info;
+use Swagger\Annotations\Schema;
 use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\InheritProperties;
@@ -26,7 +27,7 @@ class InheritPropertiesTest extends SwaggerTestCase
             new AugmentSchemas(),
             new AugmentProperties()
         ]);
-        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
@@ -55,7 +56,7 @@ class InheritPropertiesTest extends SwaggerTestCase
             new AugmentSchemas(),
             new AugmentProperties()
         ]);
-        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);

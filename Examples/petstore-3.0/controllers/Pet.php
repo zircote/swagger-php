@@ -1,10 +1,10 @@
 <?php
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Petstore30\controllers;
-
 
 /**
  * Class Pet
@@ -30,8 +30,6 @@ class Pet
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"}
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function addPet()
     {
@@ -60,8 +58,6 @@ class Pet
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"}
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function updatePet()
     {
@@ -120,8 +116,6 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     }
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function findPetsByStatus()
     {
@@ -179,8 +173,6 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     }
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function findByTags()
     {
@@ -233,8 +225,6 @@ class Pet
      * )
      *
      * @param int $id
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function getPetById($id)
     {
@@ -283,8 +273,6 @@ class Pet
      *         )
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function updatePetWithForm()
     {
@@ -326,8 +314,6 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function deletePet()
     {
@@ -374,8 +360,6 @@ class Pet
      *         )
      *     )
      * )
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function uploadFile()
     {

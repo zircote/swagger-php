@@ -47,8 +47,6 @@ class ServerVariable extends AbstractAnnotation
      * CommonMark syntax MAY be used for rich text representation.
      *
      * @var string
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
      */
     public $description;
 

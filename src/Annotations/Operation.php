@@ -8,7 +8,7 @@
 
 use Swagger\Logger;
 
- /**
+/**
  * @Annotation
  * Base class for the @OAS\Get(),  @OAS\Post(),  @OAS\Put(),  @OAS\Delete(), @OAS\Patch(), etc
  *
@@ -68,7 +68,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationId;
+    public $operationId = UNDEFINED;
 
     /**
      * A list of parameters that are applicable for this operation.
@@ -163,6 +163,9 @@ abstract class Operation extends AbstractAnnotation
         $data = parent::jsonSerialize();
         unset($data->method);
         unset($data->path);
+        if (isset($data->operationId) && $data->operationId === null) {
+            unset($data->operationId);
+        }
         return $data;
     }
 
