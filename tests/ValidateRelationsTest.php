@@ -14,7 +14,7 @@ class ValidateRelationsTest extends SwaggerTestCase
 
     /**
      *
-     * @dataProvider getAnnotations
+     * @dataProvider getAnnotationClasses
      * @param string $class
      */
     public function testAncestors($class)
@@ -35,7 +35,7 @@ class ValidateRelationsTest extends SwaggerTestCase
 
     /**
      *
-     * @dataProvider getAnnotations
+     * @dataProvider getAnnotationClasses
      * @param string $class
      */
     public function testNested($class)
@@ -58,7 +58,7 @@ class ValidateRelationsTest extends SwaggerTestCase
      * dataProvider for testExample
      * @return array
      */
-    public function getAnnotations()
+    public function getAnnotationClasses()
     {
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');

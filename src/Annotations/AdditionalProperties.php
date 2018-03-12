@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
- * @author Donii Sergii <doniysa@gmail.com>
+ * @license Apache 2.0
  */
 
 namespace Swagger\Annotations;

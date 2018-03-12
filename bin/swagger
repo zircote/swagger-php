@@ -2,29 +2,33 @@
 <?php
 error_reporting(E_ALL);
 // Possible options and their default values.
-$options = array(
+
+$options = [
     'output' => 'openapi.json',
     'stdout' => false,
-    'exclude' => null,
+    'exclude' => [],
     'bootstrap' => false,
     'help' => false,
     'version' => false,
     'debug' => false,
-);
-$aliases = array(
+    'processor' => [],
+];
+$aliases = [
     'o' => 'output',
     'e' => 'exclude',
     'b' => 'bootstrap',
     'v' => 'version',
     'h' => 'help',
-    'd' => 'debug'
-);
-$needsArgument = array(
+    'd' => 'debug',
+    'p' => 'processor'
+];
+$needsArgument = [
     'output',
     'exclude',
     'bootstrap',
-);
-$paths = array();
+    'processor',
+];
+$paths = [];
 $error = false;
 try {
     // Parse cli arguments
@@ -49,7 +53,11 @@ try {
             if (empty($argv[$i + 1]) || $argv[$i + 1][0] === '-') {
                 throw new Exception('Missing argument for "' . $arg . '"');
             }
-            $options[$option] = $argv[$i + 1];
+            if (is_array($options[$option])) {
+                $options[$option][] = $argv[$i + 1];
+            } else {
+                $options[$option] = $argv[$i + 1];
+            }
             $i++;
         } else {
             $options[$option] = true;
@@ -90,6 +98,7 @@ Options:
                     ex: --exclude vendor,library/Zend
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
                     ex: --bootstrap config/constants.php
+  --processor       Register an additional processor.
   --version (-v)    Display Swagger-PHP version.
   --help (-h)       Display this help message.
 
@@ -144,16 +153,53 @@ set_exception_handler(function ($exception) use ($options) {
     }
     exit($exception->getCode() ?: 1);
 });
-\Swagger\Logger::getInstance()->log = function ($entry, $type) {
+\Swagger\Logger::getInstance()->log = function ($entry, $type) use ($options) {
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
     if ($entry instanceof Exception) {
-        $entry = $entry->getMessage();
+        error_log('[' . $type . '] ' . $entry->getMessage());
+        if ($options['debug']) {
+            error_log('Stack trace:'.PHP_EOL.$entry->getTraceAsString());
+        }
+    } else {
+        error_log('[' . $type . '] ' . $entry);
+        if ($options['debug']) {
+            // Show backtrace in debug mode
+            $e = (string)(new Exception('trace'));
+            $trace = explode("\n", substr($e, strpos($e, 'Stack trace:')));
+            foreach ($trace as $i => $entry) {
+                if ($i === 0) {
+                    error_log($entry);
+                }
+                if ($i <= 3) {
+                    continue;
+                }
+                preg_match('/#([0-9]+) (.*)$/', $entry, $match);
+                error_log('#' .($match[1] - 2).' '.$match[2]);
+            }
+        }
     }
-    error_log('[' . $type . '] ' . $entry . PHP_EOL);
+    error_log('');
 };
+$exclude = null;
+if ($options['exclude']) {
+    $exclude = $options['exclude'];
+    if (strpos($exclude[0], ',') !== false) {
+        $exploded = explode(',', $exclude[0]);
+        error_log('[NOTICE] Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]);
+        $exclude[0] = array_shift($exploded);
+        $exclude = array_merge($exclude, $exploded);
+    }
+}
 
-
-$exclude = $options['exclude'] ? explode(',', $options['exclude']) : null;
+foreach ($options["processor"] as $processor) {
+    $class = '\Swagger\Processors\\'.$processor;
+    if (class_exists($class)) {
+        $processor = new $class();
+    } elseif (class_exists($processor)) {
+        $processor = new $processor();
+    }
+    \Swagger\Analysis::registerProcessor($processor);
+}
 
 $openapi = Swagger\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];

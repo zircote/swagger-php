@@ -28,7 +28,7 @@ if (defined('Swagger\UNDEFINED') === false) {
      *   processors: defaults to the registered processors in Analysis
      * @return OpenApi
      */
-    function scan($directory, $options = array())
+    function scan($directory, $options = [])
     {
         $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser();
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();

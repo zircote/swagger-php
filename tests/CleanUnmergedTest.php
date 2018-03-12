@@ -6,6 +6,8 @@
 
 namespace SwaggerTests;
 
+use Swagger\Annotations\License;
+use Swagger\Annotations\Contact;
 use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\CleanUnmerged;
 use Swagger\Analysis;
@@ -49,8 +51,8 @@ END;
         $analysis->validate();
 
         // When a processor places a previously unmerged annotation into the swagger obect.
-        $license = $analysis->getAnnotationsOfType('Swagger\Annotations\License')[0];
-        $contact = $analysis->getAnnotationsOfType('Swagger\Annotations\Contact')[0];
+        $license = $analysis->getAnnotationsOfType(License::class)[0];
+        $contact = $analysis->getAnnotationsOfType(Contact::class)[0];
         $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);
         $analysis->process(new CleanUnmerged());

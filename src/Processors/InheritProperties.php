@@ -19,7 +19,7 @@ class InheritProperties
 {
     public function __invoke(Analysis $analysis)
     {
-        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
                 $existing = [];

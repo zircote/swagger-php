@@ -6,6 +6,7 @@
 
 namespace SwaggerTests;
 
+use Swagger\Annotations\Property;
 use Swagger\Analyser;
 use Swagger\Context;
 use Swagger\StaticAnalyser;
@@ -31,7 +32,7 @@ class StaticAnalyserTest extends SwaggerTestCase
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
-        $property = $analysis->getAnnotationsOfType('Swagger\Annotations\Property')[0];
+        $property = $analysis->getAnnotationsOfType(Property::class)[0];
         $this->assertSame('Hello', $property->_context->trait);
     }
 

@@ -3,6 +3,7 @@ language: php
 php:
   - 7.0
   - 7.1
+  - 7.2
 
 sudo: false
 
@@ -14,7 +15,7 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 7.1
+    - php: 7.2
       env: PHPCS=1 PHPUNIT=0
 
 before_script:
