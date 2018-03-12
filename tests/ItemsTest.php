@@ -29,6 +29,5 @@ class ItemsTest extends SwaggerTestCase
         $this->assertEquals('name', $analysis->openapi->components->schemas[0]->properties[0]->property);
         $this->assertEquals('createdAt', $analysis->openapi->components->schemas[0]->properties[1]->property);
         $this->assertEquals('#/components/schemas/date', $analysis->openapi->components->schemas[0]->properties[1]->ref);
-
     }
 }
