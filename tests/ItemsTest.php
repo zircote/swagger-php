@@ -6,6 +6,8 @@
 
 namespace SwaggerTests;
 
+use Swagger\StaticAnalyser;
+
 class ItemsTest extends SwaggerTestCase
 {
     public function testTypeArray()
