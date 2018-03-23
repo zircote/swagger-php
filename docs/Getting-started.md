@@ -7,9 +7,7 @@ To output:
 ```json
 {
    "openapi": "3.0",
-   "schemes": ["http"],
-   "host": "example.com",
-   "basePath": "/api"
+   "host": "example.com"
 }
 ```
 
@@ -18,9 +16,7 @@ Write:
 ```php
 /**
  * @OAS\OpenApi(
- *   schemes={"http"},
  *   host="example.com",
- *   basePath="/api"
  * )
  */
 ```
