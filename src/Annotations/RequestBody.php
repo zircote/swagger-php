@@ -43,10 +43,9 @@ class RequestBody extends AbstractAnnotation
     public $required;
 
     /**
-     * A map containing descriptions of potential response payloads.
-     * The key is a media type or media type range and the value describes it.
-     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides
-     * text/*
+     * The content of the request body.
+     * The key is a media type or media type range and the value describes it. For requests that match multiple keys,
+     * only the most specific key is applicable. e.g. text/plain overrides text/*
      *
      * @var MediaType[]
      */

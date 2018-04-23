@@ -7,7 +7,7 @@
  */
 
 /**
- *  @OAS\Server(
+ * @OAS\Server(
  *      url="{schema}://host.dev",
  *      description="OpenApi parameters",
  *      @OAS\ServerVariable(
@@ -15,5 +15,5 @@
  *          enum="['https', 'http']",
  *          default="https"
  *      )
-* )
-*/
+ * )
+ */
