@@ -244,7 +244,7 @@ class Schema extends AbstractAnnotation
 
     /**
      * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
-     * @var type
+     * @var Schema[]
      */
     public $oneOf;
 

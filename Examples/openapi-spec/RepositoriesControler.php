@@ -4,11 +4,11 @@ namespace OpenApi\LinkExample;
 
 class RepositoriesController
 {
-
     /**
      * @OAS\Get(path="/2.0/repositories/{username}",
      *   operationId="getRepositoriesByOwner",
-     *   @OAS\Parameter(name="username",
+     *   @OAS\Parameter(
+     *     name="username",
      *     in="path",
      *     required=true,
      *     @OAS\Schema(type="string")
@@ -21,7 +21,6 @@ class RepositoriesController
      *     @OAS\Link(link="userRepository", ref="#/components/links/UserRepository")
      *   )
      * )
-     *
      * @OAS\Link(link="UserRepositories",
      *   operationId="getRepositoriesByOwner",
      *   parameters={"username"="$response.body#/username"}
@@ -51,7 +50,6 @@ class RepositoriesController
      *     )
      *   )
      * )
-     *
      * @OAS\Link(link="UserRepository",
      *   operationId="getRepository",
      *   parameters={
@@ -90,7 +88,6 @@ class RepositoriesController
      *     )
      *   )
      * )
-     *
      * @OAS\Link(link="RepositoryPullRequests",
      *   operationId="getPullRequestsByRepository",
      *   parameters={
@@ -154,7 +151,6 @@ class RepositoriesController
      *     description="the PR was successfully merged"
      *   )
      * )
-     *
      * @OAS\Link(link="PullRequestMerge",
      *   operationId="mergePullRequest",
      *   parameters={
@@ -168,6 +164,7 @@ class RepositoriesController
     {
     }
 }
+
 ?>
 
 
