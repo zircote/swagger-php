@@ -46,7 +46,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available paths and operations for the API.
      *
-     * @var Path[]
+     * @var PathItem[]
      */
     public $paths = [];
 
@@ -64,7 +64,7 @@ class OpenApi extends AbstractAnnotation
      * Only one of the security requirement objects need to be satisfied to authorize a request.
      * Individual operations can override this definition.
      *
-     * @var \Swagger\Annotations\SecurityScheme
+     * @var SecurityScheme
      */
     public $security;
 
