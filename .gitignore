@@ -4,3 +4,7 @@
 !/bin/swagger
 /openapi.json
 /swagger.json
+
+# Intellij editor configuration files
+.idea
+*.iml
