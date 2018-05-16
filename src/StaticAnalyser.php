@@ -94,7 +94,7 @@ class StaticAnalyser
             if (in_array($token[0], [T_ABSTRACT, T_FINAL])) {
                 $token = $this->nextToken($tokens, $parseContext); // Skip "abstract" and "final" keywords
             }
-            if ($token[0] === T_CLASS) { // Doc-comment before a class?
+            if ($token[0] === T_CLASS || $token[0] === T_TRAIT) { // Doc-comment before a class?
                 if (is_array($previousToken) && $previousToken[0] === T_DOUBLE_COLON) {
                     //php 5.5 class name resolution (i.e. ClassName::class)
                     continue;
@@ -123,17 +123,6 @@ class StaticAnalyser
                     $definitionContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
                     $classDefinition['extends'] = $definitionContext->fullyQualifiedName($definitionContext->extends);
                 }
-                if ($comment) {
-                    $definitionContext->line = $line;
-                    $this->analyseComment($analysis, $analyser, $comment, $definitionContext);
-                    $comment = false;
-                    continue;
-                }
-            }
-            if ($token[0] === T_TRAIT) {
-                $classDefinition = false;
-                $token = $this->nextToken($tokens, $parseContext);
-                $definitionContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($comment) {
                     $definitionContext->line = $line;
                     $this->analyseComment($analysis, $analyser, $comment, $definitionContext);

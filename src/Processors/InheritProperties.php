@@ -30,9 +30,17 @@ class InheritProperties
                         }
                     }
                 }
-                $classes = $analysis->getSuperClasses($schema->_context->fullyQualifiedName($schema->_context->class));
-                foreach ($classes as $class) {
-                    foreach ($class['properties'] as $property) {
+                
+                $className = $schema->_context->fullyQualifiedName($schema->_context->class);
+                //Get inherited/exteneded classes to combine properties
+                $inheritedClasses = $analysis->getSuperClasses($className);
+                //Get Traits to combine properties
+                $usedTraits = $analysis->getUsedTraits($className);
+
+                $defintions = array_merge($inheritedClasses, $usedTraits);
+
+                foreach ($defintions as $defintion) {
+                    foreach ($defintion['properties'] as $property) {
                         if (is_array($property->annotations) === false && !($property->annotations instanceof Traversable)) {
                             continue;
                         }
