@@ -170,11 +170,12 @@ class Analysis
 
     public function getUsedTraits($class)
     {
-        if(!class_exists($class))
+        if (!class_exists($class)) {
             return [];
+        }
         $usedTraits = class_uses($class);
         $definitions = [];
-        foreach($usedTraits as $usedTrait){
+        foreach ($usedTraits as $usedTrait) {
             $usedTrait = '\\'.$usedTrait;
             $usedDefinition = isset($this->classes[$usedTrait]) ? $this->classes[$usedTrait] : null;
             if ($usedDefinition) {
