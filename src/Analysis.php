@@ -168,6 +168,20 @@ class Analysis
         return $definitions;
     }
 
+    public function getUsedTraits($class)
+    {
+        $usedTraits = class_uses($class);
+        $definitions = [];
+        foreach($usedTraits as $usedTrait){
+            $usedTrait = '\\'.$usedTrait;
+            $usedDefinition = isset($this->classes[$usedTrait]) ? $this->classes[$usedTrait] : null;
+            if ($usedDefinition) {
+                $definitions[$usedTrait] = $usedDefinition;
+            }
+        }
+        return $definitions;
+    }
+
     /**
      *
      * @param string $class
