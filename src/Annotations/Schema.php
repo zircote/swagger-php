@@ -156,6 +156,8 @@ class Schema extends AbstractAnnotation
      */
     public $enum;
 
+
+
     /**
      * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this property's value is an integer.
      * @var number
@@ -199,7 +201,25 @@ class Schema extends AbstractAnnotation
     public $allOf;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor64
+     * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
+     * @var Schema[]
+     */
+    public $anyOf;
+
+    /**
+     * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
+     * @var type
+     */
+    public $oneOf;
+
+    /**
+     * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
+     * @var boolean
+     */
+    public $deprecated;
+
+    /**
+     * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
      * @var bool|object
      */
     public $additionalProperties;
@@ -221,6 +241,7 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
+        'deprecated' => 'boolean'
     ];
 
     /** @inheritdoc */

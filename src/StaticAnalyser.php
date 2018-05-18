@@ -74,10 +74,12 @@ class StaticAnalyser
         $parseContext->uses = [];
         $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
         $classDefinition = false;
+        $traitDefinition = false;
         $comment = false;
         $line = 0;
         $lineOffset = $parseContext->line ? : 0;
         while ($token !== false) {
+
             $previousToken = $token;
             $token = $this->nextToken($tokens, $parseContext);
             if (is_array($token) === false) { // Ignore tokens like "{", "}", etc
@@ -105,7 +107,6 @@ class StaticAnalyser
                     // php7 anonymous classes (i.e. new class() { public function foo() {} };)
                     continue;
                 }
-
                 $definitionContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
@@ -115,7 +116,7 @@ class StaticAnalyser
                     'extends' => null,
                     'properties' => [],
                     'methods' => [],
-                    'context' => $definitionContext
+                    'context' => $definitionContext,
                 ];
                 // @todo detect end-of-class and reset $definitionContext
                 $token = $this->nextToken($tokens, $parseContext);
@@ -131,9 +132,17 @@ class StaticAnalyser
                 }
             }
             if ($token[0] === T_TRAIT) {
-                $classDefinition = false;
                 $token = $this->nextToken($tokens, $parseContext);
                 $definitionContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($traitDefinition) {
+                    $analysis->addTraitDefinition($traitDefinition);
+                }
+                $traitDefinition = [
+                    'trait' => $token[1],
+                    'properties' => [],
+                    'methods' => [],
+                    'context' => $definitionContext,
+                ];
                 if ($comment) {
                     $definitionContext->line = $line;
                     $this->analyseComment($analysis, $analyser, $comment, $definitionContext);
@@ -151,6 +160,9 @@ class StaticAnalyser
                             ], $definitionContext);
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
+                    }
+                    if ($traitDefinition) {
+                        $traitDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
                     if ($comment) {
                         $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
@@ -173,6 +185,9 @@ class StaticAnalyser
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
+                    if ($traitDefinition) {
+                        $traitDefinition['properties'][$propertyContext->property] = $propertyContext;
+                    }
                     if ($comment) {
                         $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
                         $comment = false;
@@ -186,6 +201,9 @@ class StaticAnalyser
                                 ], $definitionContext);
                         if ($classDefinition) {
                             $classDefinition['methods'][$token[1]] = $methodContext;
+                        }
+                        if ($traitDefinition) {
+                            $traitDefinition['methods'][$token[1]] = $methodContext;
                         }
                         if ($comment) {
                             $this->analyseComment($analysis, $analyser, $comment, $methodContext);
@@ -203,6 +221,9 @@ class StaticAnalyser
                             ], $definitionContext);
                     if ($classDefinition) {
                         $classDefinition['methods'][$token[1]] = $methodContext;
+                    }
+                    if ($traitDefinition) {
+                        $traitDefinition['methods'][$token[1]] = $methodContext;
                     }
                     if ($comment) {
                         $this->analyseComment($analysis, $analyser, $comment, $methodContext);
@@ -229,6 +250,11 @@ class StaticAnalyser
                     }
 
                     $parseContext->uses[$alias] = $target;
+
+                    // i'm in the case use trait
+                    if($alias == $target)
+                        $classDefinition['traits'][] = $alias;
+
                     if (Analyser::$whitelist === false) {
                         $imports[strtolower($alias)] = $target;
                     } else {
@@ -249,6 +275,9 @@ class StaticAnalyser
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
+        }
+        if ($traitDefinition) {
+            $analysis->addTraitDefinition($traitDefinition);
         }
         return $analysis;
     }

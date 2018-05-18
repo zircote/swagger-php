@@ -32,6 +32,7 @@ class InheritProperties
                 }
                 $classes = $analysis->getSuperClasses($schema->_context->fullyQualifiedName($schema->_context->class));
                 foreach ($classes as $class) {
+
                     foreach ($class['properties'] as $property) {
                         if (is_array($property->annotations) === false && !($property->annotations instanceof Traversable)) {
                             continue;

@@ -31,6 +31,7 @@ namespace Swagger;
  * @property string $extends
  * @property string $method
  * @property string $property
+ * @property string $trait
  * @property Annotations\AbstractAnnotation[] $annotations
  */
 class Context
@@ -185,7 +186,7 @@ class Context
         }
         return $summary;
     }
-    
+
     /**
      * An optional longer piece of text providing more details on the associated element’s function. This is very useful when working with a complex element.
      * @return string|null
