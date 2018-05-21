@@ -3,7 +3,7 @@
 namespace OpenApiFixures;
 
 /**
- * @OA\Schema
+ * @OA\Schema(schema="trait")
  */
 trait Hello
 {

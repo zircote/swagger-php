@@ -24,6 +24,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
+use OpenApi\Processors\ImportTraits;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -42,6 +43,13 @@ class Analysis
      * @var array
      */
     public $classes = [];
+
+    /**
+     * Trait definitions
+     *
+     * @var array
+     */
+    public $traits = [];
 
     /**
      * The target OpenApi annotation.
@@ -137,6 +145,15 @@ class Analysis
     }
 
     /**
+     * @param array $definition
+     */
+    public function addTraitDefinition($definition)
+    {
+        $trait = $definition['context']->fullyQualifiedName($definition['trait']);
+        $this->traits[$trait] = $definition;
+    }
+
+    /**
      * @param Analysis $analysis
      */
     public function addAnalysis($analysis)
@@ -145,6 +162,7 @@ class Analysis
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
+        $this->traits = array_merge($this->traits, $analysis->traits);
         if ($this->openapi === null && $analysis->openapi) {
             $this->openapi = $analysis->openapi;
             $analysis->target->_context->analysis = $this;
@@ -160,6 +178,7 @@ class Analysis
                 $definitions = array_merge($definitions, $this->getSubClasses($subclass));
             }
         }
+
         return $definitions;
     }
 
@@ -175,6 +194,28 @@ class Analysis
             return [];
         }
         $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
+
+        return $definitions;
+    }
+
+    public function getTraitsOfClass($class)
+    {
+        $definitions = [];
+        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
+        if (!$classDefinition || empty($classDefinition['traits'])) {
+            return $definitions;
+        }
+
+        $classTraits = $classDefinition['traits'];
+        foreach ($this->traits as $trait) {
+            foreach ($classTraits as $classTrait => $name) {
+                if ($trait['trait'] === $name) {
+                    $traitDefinition[$name] = $trait;
+                    $definitions = array_merge($definitions, $traitDefinition);
+                }
+            }
+        }
+
         return $definitions;
     }
 
@@ -201,6 +242,7 @@ class Analysis
                 }
             }
         }
+
         return $annotations;
     }
 
@@ -242,6 +284,7 @@ class Analysis
         $this->openapi->_unmerged = [];
         $analysis = new Analysis([$this->openapi]);
         $this->openapi->_unmerged = $unmerged;
+
         return $analysis;
     }
 
@@ -271,6 +314,7 @@ class Analysis
                 $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
             }
         }
+
         return $result;
     }
 
@@ -304,10 +348,12 @@ class Analysis
             self::$processors = [
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
+                new ImportTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),
                 // new HandleReferences(),
+
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),
@@ -317,6 +363,7 @@ class Analysis
                 new CleanUnmerged(),
             ];
         }
+
         return self::$processors;
     }
 
@@ -351,6 +398,7 @@ class Analysis
             return $this->openapi->validate();
         }
         Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+
         return false;
     }
 
