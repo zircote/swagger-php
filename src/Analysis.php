@@ -24,6 +24,7 @@ use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\MergeJsonContent;
 use Swagger\Processors\MergeXmlContent;
 use Swagger\Processors\OperationId;
+use Swagger\Processors\ImportTraits;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -42,6 +43,12 @@ class Analysis
      * @var array
      */
     public $classes = [];
+
+    /**
+     * Trait definitions
+     * @var array
+     */
+    public $traits = [];
 
     /**
      * The target OpenApi annotation.
@@ -137,6 +144,15 @@ class Analysis
     }
 
     /**
+     * @param array $definition
+     */
+    public function addTraitDefinition($definition)
+    {
+        $trait = $definition['context']->fullyQualifiedName($definition['trait']);
+        $this->traits[$trait] = $definition;
+    }
+
+    /**
      * @param Analysis $analysis
      */
     public function addAnalysis($analysis)
@@ -145,6 +161,7 @@ class Analysis
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
+        $this->traits = array_merge($this->traits, $analysis->traits);
         if ($this->openapi === null && $analysis->openapi) {
             $this->openapi = $analysis->openapi;
             $analysis->target->_context->analysis = $this;
@@ -175,6 +192,27 @@ class Analysis
             return [];
         }
         $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
+        return $definitions;
+    }
+
+    public function getTraitsOfClass($class)
+    {
+        $definitions = [];
+        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
+        if (!$classDefinition || empty($classDefinition['traits'])) {
+            return $definitions;
+        }
+
+        $classTraits = $classDefinition['traits'];
+        foreach ($this->traits as $trait) {
+                foreach ($classTraits as $classTrait => $name) {
+                        if($trait['trait'] === $name) {
+                                $traitDefinition[$name] = $trait;
+                                $definitions = array_merge($definitions, $traitDefinition);
+                            }
+            }
+        }
+
         return $definitions;
     }
 
@@ -308,6 +346,7 @@ class Analysis
                 new AugmentProperties(),
                 new BuildPaths(),
                 // new HandleReferences(),
+                new ImportTraits(),
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),
