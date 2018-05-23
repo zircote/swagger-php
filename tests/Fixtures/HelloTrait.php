@@ -2,7 +2,7 @@
 namespace SwaggerFixures;
 
 /**
- * @OAS\Schema
+ * @OAS\Schema(schema="trait")
  */
 trait Hello
 {

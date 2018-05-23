@@ -286,7 +286,10 @@ class Context
 		
         if($this->class === null)
         	$this->class = '';
-      
+
+        if($class === null)
+            return '';
+
         if (strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;
         }
