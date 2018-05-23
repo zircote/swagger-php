@@ -1,11 +1,14 @@
 <?php
+
 namespace Swagger\Processors;
+
 use Swagger\Analyser;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Swagger;
 use Swagger\Annotations\Definition;
 use Swagger\Analysis;
 use Traversable;
+
 class ImportTraits
 {
     public function __invoke(Analysis $analysis)
@@ -13,7 +16,7 @@ class ImportTraits
         $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
         foreach ($schemas as $schema) {
             $existing = [];
-            if($schema->_context->is('class')) {
+            if ($schema->_context->is('class')) {
                 $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class));
                 foreach ($traits as $trait) {
                     foreach ($trait['properties'] as $property) {

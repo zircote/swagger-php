@@ -342,11 +342,12 @@ class Analysis
             self::$processors = [
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
+                new ImportTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),
                 // new HandleReferences(),
-                new ImportTraits(),
+
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),

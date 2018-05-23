@@ -31,6 +31,7 @@ namespace Swagger;
  * @property string $extends
  * @property string $method
  * @property string $property
+ * @property string $trait
  * @property Annotations\AbstractAnnotation[] $annotations
  */
 class Context
@@ -282,9 +283,10 @@ class Context
         } else {
             $namespace = '\\'; // global namespace
         }
-        if ($class === null) {
-            return '';
-        }
+		
+        if($this->class === null)
+        	$this->class = '';
+      
         if (strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;
         }
