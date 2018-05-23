@@ -253,7 +253,7 @@ class StaticAnalyser
                     $parseContext->uses[$alias] = $target;
 
                     // i'm in the case use trait
-                    if ($alias == $target)
+                    if ($alias == $target && $classDefinition)
                         $classDefinition['traits'][] = $alias;
 
                     if (Analyser::$whitelist === false) {
