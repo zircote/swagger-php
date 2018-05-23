@@ -20,31 +20,32 @@ namespace Swagger;
  *      |- propertyContext
  *      |- methodContext
  *
- * @property string $comment  The PHP DocComment
- * @property string $filename
- * @property int $line
- * @property int $character
+ * @property string                           $comment  The PHP DocComment
+ * @property string                           $filename
+ * @property int                              $line
+ * @property int                              $character
  *
- * @property string $namespace
- * @property array $uses
- * @property string $class
- * @property string $extends
- * @property string $method
- * @property string $property
- * @property string $trait
+ * @property string                           $namespace
+ * @property array                            $uses
+ * @property string                           $class
+ * @property string                           $extends
+ * @property string                           $method
+ * @property string                           $property
+ * @property string                           $trait
  * @property Annotations\AbstractAnnotation[] $annotations
  */
 class Context
 {
     /**
      * Prototypical inheritance for properties.
+     *
      * @var Context
      */
     private $_parent;
 
     /**
-     * @param array $properties new properties for this context.
-     * @param Context $parent The parent context
+     * @param array   $properties new properties for this context.
+     * @param Context $parent     The parent context
      */
     public function __construct($properties = [], $parent = null)
     {
@@ -58,6 +59,7 @@ class Context
      * Check if a property is set directly on this context and not its parent context.
      *
      * @param string $type Example: $c->is('method') or $c->is('class')
+     *
      * @return bool
      */
     public function is($type)
@@ -69,6 +71,7 @@ class Context
      * Check if a property is NOT set directly on this context and but its parent context.
      *
      * @param string $type Example: $c->not('method') or $c->not('class')
+     *
      * @return bool
      */
     public function not($type)
@@ -80,6 +83,7 @@ class Context
      * Return the context containing the specified property.
      *
      * @param string $property
+     *
      * @return boolean|\Swagger\Context
      */
     public function with($property)
@@ -90,6 +94,7 @@ class Context
         if ($this->_parent) {
             return $this->_parent->with($property);
         }
+
         return false;
     }
 
@@ -101,6 +106,7 @@ class Context
         if ($this->_parent) {
             return $this->_parent->getRootContext();
         }
+
         return $this;
     }
 
@@ -135,6 +141,7 @@ class Context
                 $location .= ':' . $this->character;
             }
         }
+
         return $location;
     }
 
@@ -142,6 +149,7 @@ class Context
      * Traverse the context tree to get the property value.
      *
      * @param string $property
+     *
      * @return mixed
      */
     public function __get($property)
@@ -149,6 +157,7 @@ class Context
         if ($this->_parent) {
             return $this->_parent->$property;
         }
+
         return null;
     }
 
@@ -164,6 +173,7 @@ class Context
 
     /**
      * A short piece of text, usually one line, providing the basic function of the associated element.
+     *
      * @return string|null
      */
     public function phpdocSummary()
@@ -175,7 +185,7 @@ class Context
         $lines = explode("\n", $content);
         $summary = '';
         foreach ($lines as $line) {
-            $summary .= $line."\n";
+            $summary .= $line . "\n";
             if ($line === '' || substr($line, -1) === '.') {
                 return trim($summary);
             }
@@ -184,11 +194,13 @@ class Context
         if ($summary === '') {
             return null;
         }
+
         return $summary;
     }
 
     /**
      * An optional longer piece of text providing more details on the associated element’s function. This is very useful when working with a complex element.
+     *
      * @return string|null
      */
     public function phpdocDescription()
@@ -201,18 +213,20 @@ class Context
         if ($description === '') {
             return null;
         }
+
         return $description;
     }
 
     /**
      * The text contents of the phpdoc comment (excl. tags)
+     *
      * @return string|null
      */
     public function phpdocContent()
     {
         $comment = explode("\n", $this->comment);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
-        $i = count($comment) -1;
+        $i = count($comment) - 1;
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
         $lines = [];
         $append = false;
@@ -223,7 +237,7 @@ class Context
             }
             if ($append) {
                 $i = count($lines) - 1;
-                $lines[$i] = substr($lines[$i], 0, -1).$line;
+                $lines[$i] = substr($lines[$i], 0, -1) . $line;
             } else {
                 $lines[] = $line;
             }
@@ -233,12 +247,15 @@ class Context
         if ($description === '') {
             return null;
         }
+
         return $description;
     }
 
     /**
      * Create a Context based on the debug_backtrace
+     *
      * @param int $index
+     *
      * @return \Swagger\Context
      */
     public static function detect($index = 0)
@@ -266,6 +283,7 @@ class Context
                 $context->namespace = implode('\\', $fqn);
             }
         }
+
         // @todo extract namespaces and use statements
         return $context;
     }
@@ -273,7 +291,8 @@ class Context
     /**
      * Resolve the fully qualified name.
      *
-     * @param string $class  The class name
+     * @param string $class The class name
+     *
      * @return string
      */
     public function fullyQualifiedName($class)
@@ -283,12 +302,14 @@ class Context
         } else {
             $namespace = '\\'; // global namespace
         }
-		
-        if($this->class === null)
-        	$this->class = '';
 
-        if($class === null)
+        if ($this->class === null) {
+            $this->class = '';
+        }
+
+        if ($class === null) {
             return '';
+        }
 
         if (strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;
@@ -317,6 +338,7 @@ class Context
                 }
             }
         }
+
         return $namespace . $class;
     }
 }

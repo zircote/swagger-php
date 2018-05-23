@@ -46,6 +46,7 @@ class Analysis
 
     /**
      * Trait definitions
+     *
      * @var array
      */
     public $traits = [];
@@ -177,6 +178,7 @@ class Analysis
                 $definitions = array_merge($definitions, $this->getSubClasses($subclass));
             }
         }
+
         return $definitions;
     }
 
@@ -192,6 +194,7 @@ class Analysis
             return [];
         }
         $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
+
         return $definitions;
     }
 
@@ -205,11 +208,11 @@ class Analysis
 
         $classTraits = $classDefinition['traits'];
         foreach ($this->traits as $trait) {
-                foreach ($classTraits as $classTrait => $name) {
-                        if($trait['trait'] === $name) {
-                                $traitDefinition[$name] = $trait;
-                                $definitions = array_merge($definitions, $traitDefinition);
-                            }
+            foreach ($classTraits as $classTrait => $name) {
+                if ($trait['trait'] === $name) {
+                    $traitDefinition[$name] = $trait;
+                    $definitions = array_merge($definitions, $traitDefinition);
+                }
             }
         }
 
@@ -239,6 +242,7 @@ class Analysis
                 }
             }
         }
+
         return $annotations;
     }
 
@@ -280,6 +284,7 @@ class Analysis
         $this->openapi->_unmerged = [];
         $analysis = new Analysis([$this->openapi]);
         $this->openapi->_unmerged = $unmerged;
+
         return $analysis;
     }
 
@@ -309,6 +314,7 @@ class Analysis
                 $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
             }
         }
+
         return $result;
     }
 
@@ -357,6 +363,7 @@ class Analysis
                 new CleanUnmerged(),
             ];
         }
+
         return self::$processors;
     }
 
@@ -391,6 +398,7 @@ class Analysis
             return $this->openapi->validate();
         }
         Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+
         return false;
     }
 

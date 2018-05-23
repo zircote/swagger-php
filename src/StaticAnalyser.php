@@ -25,6 +25,7 @@ class StaticAnalyser
      * Extract and process all doc-comments from a file.
      *
      * @param string $filename Path to a php file.
+     *
      * @return Analysis
      */
     public function fromFile($filename)
@@ -40,27 +41,31 @@ class StaticAnalyser
             }
         }
         $tokens = token_get_all(file_get_contents($filename));
+
         return $this->fromTokens($tokens, new Context(['filename' => $filename]));
     }
 
     /**
      * Extract and process all doc-comments from the contents.
      *
-     * @param string $code PHP code. (including <?php tags)
+     * @param string  $code    PHP code. (including <?php tags)
      * @param Context $context The original location of the contents.
+     *
      * @return Analysis
      */
     public function fromCode($code, $context)
     {
         $tokens = token_get_all($code);
+
         return $this->fromTokens($tokens, $context);
     }
 
     /**
      * Shared implementation for parseFile() & parseContents().
      *
-     * @param array $tokens The result of a token_get_all()
+     * @param array   $tokens The result of a token_get_all()
      * @param Context $parseContext
+     *
      * @return Analysis
      */
     protected function fromTokens($tokens, $parseContext)
@@ -112,11 +117,11 @@ class StaticAnalyser
                     $analysis->addClassDefinition($classDefinition);
                 }
                 $classDefinition = [
-                    'class' => $token[1],
-                    'extends' => null,
+                    'class'      => $token[1],
+                    'extends'    => null,
                     'properties' => [],
-                    'methods' => [],
-                    'context' => $schemaContext
+                    'methods'    => [],
+                    'context'    => $schemaContext,
                 ];
                 // @todo detect end-of-class and reset $schemaContext
                 $token = $this->nextToken($tokens, $parseContext);
@@ -139,10 +144,10 @@ class StaticAnalyser
                     $analysis->addTraitDefinition($traitDefinition);
                 }
                 $traitDefinition = [
-                    'trait' => $token[1],
+                    'trait'      => $token[1],
                     'properties' => [],
-                    'methods' => [],
-                    'context' => $schemaContext,
+                    'methods'    => [],
+                    'context'    => $schemaContext,
                 ];
                 if ($comment) {
                     $schemaContext->line = $line;
@@ -156,8 +161,8 @@ class StaticAnalyser
                 if ($token[0] === T_VARIABLE) { // static property
                     $propertyContext = new Context([
                         'property' => substr($token[1], 1),
-                        'static' => true,
-                        'line' => $line
+                        'static'   => true,
+                        'line'     => $line,
                     ], $schemaContext);
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
@@ -181,7 +186,7 @@ class StaticAnalyser
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context([
                         'property' => substr($token[1], 1),
-                        'line' => $line
+                        'line'     => $line,
                     ], $schemaContext);
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
@@ -198,7 +203,7 @@ class StaticAnalyser
                     if ($token[0] === T_STRING) {
                         $methodContext = new Context([
                             'method' => $token[1],
-                            'line' => $line
+                            'line'   => $line,
                         ], $schemaContext);
                         if ($classDefinition) {
                             $classDefinition['methods'][$token[1]] = $methodContext;
@@ -218,7 +223,7 @@ class StaticAnalyser
                 if ($token[0] === T_STRING) {
                     $methodContext = new Context([
                         'method' => $token[1],
-                        'line' => $line
+                        'line'   => $line,
                     ], $schemaContext);
                     if ($classDefinition) {
                         $classDefinition['methods'][$token[1]] = $methodContext;
@@ -253,8 +258,9 @@ class StaticAnalyser
                     $parseContext->uses[$alias] = $target;
 
                     // i'm in the case use trait
-                    if ($alias == $target && $classDefinition)
+                    if ($alias == $target && $classDefinition) {
                         $classDefinition['traits'][] = $alias;
+                    }
 
                     if (Analyser::$whitelist === false) {
                         $imports[strtolower($alias)] = $target;
@@ -280,6 +286,7 @@ class StaticAnalyser
         if ($traitDefinition) {
             $analysis->addTraitDefinition($traitDefinition);
         }
+
         return $analysis;
     }
 
@@ -287,8 +294,8 @@ class StaticAnalyser
      *
      * @param Analysis $analysis
      * @param Analyser $analyser
-     * @param string $comment
-     * @param Context $context
+     * @param string   $comment
+     * @param Context  $context
      */
     private function analyseComment($analysis, $analyser, $comment, $context)
     {
@@ -298,8 +305,9 @@ class StaticAnalyser
     /**
      * The next non-whitespace, non-comment token.
      *
-     * @param array $tokens
+     * @param array   $tokens
      * @param Context $context
+     *
      * @return string|array The next token (or false)
      */
     private function nextToken(&$tokens, $context)
@@ -318,6 +326,7 @@ class StaticAnalyser
                 }
                 continue;
             }
+
             return $token;
         }
     }
@@ -332,6 +341,7 @@ class StaticAnalyser
             }
             $namespace .= $token[1];
         }
+
         return $namespace;
     }
 
@@ -364,6 +374,7 @@ class StaticAnalyser
                 break;
             }
         }
+
         return $statements;
     }
 }
