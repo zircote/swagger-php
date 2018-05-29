@@ -204,6 +204,10 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $this->_unmerged = array_merge($this->_unmerged, $value);
                 continue;
             }
+            if (is_array($currentValues[$property]) && is_array($value)) {
+                $this->$property = array_merge($currentValues[$property], $value);
+                continue;
+            }
             if ($currentValues[$property] !== $value) { // New value is not the same?
                 if ($defaultValues[$property] === $value) { // but is the same as the default?
                     continue; // Keep current, no notice
