@@ -19,6 +19,8 @@ use Swagger\Analyser;
 class SwaggerTestCase extends TestCase
 {
 
+    protected $countExceptions = 0;
+
     /**
      * @var array
      */
@@ -109,7 +111,7 @@ class SwaggerTestCase extends TestCase
 
     protected function tearDown()
     {
-        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }

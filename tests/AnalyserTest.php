@@ -22,6 +22,7 @@ class AnalyserTest extends SwaggerTestCase
 
     public function testDeprecatedAnnotationWarning()
     {
+        $this->countExceptions = 1;
         $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\Definition() is deprecated.');
         $annotations = $this->parseComment('@SWG\Definition()');
     }
