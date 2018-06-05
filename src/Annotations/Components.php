@@ -46,7 +46,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Request Bodys.
      *
-     * @var Request[]
+     * @var RequestBody[]
      */
     public $requestBodies;
 
