@@ -26,7 +26,10 @@ You can define top-level parameters which can be references with $ref="#/paramet
  *   request="product_in_body",
  *   required=true,
  *   description="product_request",
- *   ref="#/components/schemas/Product"
+ *   @OAS\MediaType(
+ *     mediaType="application/json",
+ *     @OAS\Schema(ref="#/components/schemas/Product")
+ *   )
  * )
  */
 ?>
