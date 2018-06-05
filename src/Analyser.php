@@ -22,7 +22,7 @@ AnnotationRegistry::registerLoader(function ($class) {
             $loaded = class_exists($class);
             if (!$loaded && $namespace === 'Swagger\Annotations\\') {
                 if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
-                    throw new Exception('The annotation @OAS\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                 }
             }
             return $loaded;
