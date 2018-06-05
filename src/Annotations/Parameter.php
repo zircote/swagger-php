@@ -23,7 +23,7 @@ class Parameter extends AbstractAnnotation
     public $ref;
 
     /**
-     * The key into Components->parameters or Path->parameters array.
+     * The key into Components->parameters or PathItem->parameters array.
      * @var string
      */
     public $parameter;

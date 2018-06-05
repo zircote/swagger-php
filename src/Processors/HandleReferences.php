@@ -7,7 +7,7 @@
 namespace Swagger\Processors;
 
 use Swagger\Annotations\Operation;
-use Swagger\Annotations\Path;
+use Swagger\Annotations\PathItem;
 use Swagger\Annotations\Property;
 use Swagger\Annotations\Response;
 use Swagger\Annotations\Schema;
@@ -62,7 +62,7 @@ class HandleReferences
         }
 
         if (!is_null($analysis->openapi->paths)) {
-            /** @var Path $path */
+            /** @var PathItem $path */
             foreach ($analysis->openapi->paths as $path) {
                 foreach ($path as $key => $value) {
                     if ($value instanceof Operation && !is_null($value->responses)) {

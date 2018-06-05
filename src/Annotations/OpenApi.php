@@ -8,7 +8,6 @@ namespace Swagger\Annotations;
 
 use Exception;
 use Swagger\Analysis;
-use Swagger\Context;
 use Swagger\Logger;
 
 /**
@@ -46,7 +45,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available paths and operations for the API.
      *
-     * @var Path[]
+     * @var PathItem[]
      */
     public $paths = [];
 

@@ -18,7 +18,6 @@ class CommandlineInterfaceTest extends SwaggerTestCase
 
     public function testStdout()
     {
-        $this->markTestSkipped('@todo update example for v3');
         exec(__DIR__ . '/../bin/swagger --stdout ' . escapeshellarg(__DIR__ . '/../Examples/swagger-spec/petstore-simple') . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
         $json = json_decode(implode("\n", $output));
@@ -28,7 +27,6 @@ class CommandlineInterfaceTest extends SwaggerTestCase
 
     public function testOutputTofile()
     {
-        $this->markTestSkipped('@todo update example for v3');
         $filename = sys_get_temp_dir() . '/swagger-php-clitest.json';
         exec(__DIR__ . '/../bin/swagger -o ' . escapeshellarg($filename) . ' ' . escapeshellarg(__DIR__ . '/../Examples/swagger-spec/petstore-simple') . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
