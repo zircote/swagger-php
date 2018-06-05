@@ -6,9 +6,9 @@
 
 namespace SwaggerTests;
 
-use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\AugmentSchemas;
+use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
@@ -17,7 +17,7 @@ class NestedPropertyTest extends SwaggerTestCase
     public function testNestedProperties()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/NestedProperty.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/NestedProperty.php');
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());

@@ -57,7 +57,7 @@ class ConstantsTest extends SwaggerTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = false;
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
         // @todo Only tests that $whitelist=false doesn't trigger errors,
         // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in Swagger\Annotation namespace has a constant.
 
@@ -71,7 +71,7 @@ class ConstantsTest extends SwaggerTestCase
         $backup = Analyser::$defaultImports;
         Analyser::$defaultImports = [
             'contact' => 'Swagger\Annotations\Contact', // use Swagger\Annotations\Contact;
-            'ctest' => 'sWaGGerTests\ConstantsTesT' // use sWaGGerTests\ConstantsTesT as CTest;
+            'ctest'   => 'sWaGGerTests\ConstantsTesT' // use sWaGGerTests\ConstantsTesT as CTest;
         ];
         $annotations = $this->parseComment('@Contact(url=CTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);

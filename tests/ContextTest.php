@@ -88,11 +88,11 @@ END
         $this->assertEquals('This is a multi-line DocComment.', $multi->phpdocContent());
 
         $emptyWhiteline = new Context(['comment' => <<<END
-/**
- * This is a summary
- *
- * This is a description
- */
+    /**
+     * This is a summary
+     *
+     * This is a description
+     */
 END
         ]);
         $this->assertEquals('This is a summary', $emptyWhiteline->phpdocSummary());

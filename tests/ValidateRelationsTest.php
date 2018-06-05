@@ -15,6 +15,7 @@ class ValidateRelationsTest extends SwaggerTestCase
     /**
      *
      * @dataProvider getAnnotationClasses
+     *
      * @param string $class
      */
     public function testAncestors($class)
@@ -28,7 +29,7 @@ class ValidateRelationsTest extends SwaggerTestCase
                 }
             }
             if ($found === false) {
-                $this->fail($class . ' not found in ' . $parent . "::\$_nested. Found:\n  " . implode("\n  ", array_keys($parent::$_nested)));
+                $this->fail($class.' not found in '.$parent."::\$_nested. Found:\n  ".implode("\n  ", array_keys($parent::$_nested)));
             }
         }
     }
@@ -36,6 +37,7 @@ class ValidateRelationsTest extends SwaggerTestCase
     /**
      *
      * @dataProvider getAnnotationClasses
+     *
      * @param string $class
      */
     public function testNested($class)
@@ -49,25 +51,26 @@ class ValidateRelationsTest extends SwaggerTestCase
                 }
             }
             if ($found === false) {
-                $this->fail($class . ' not found in ' . $nested . "::\$parent. Found:\n  " . implode("\n  ", $nested::$_parents));
+                $this->fail($class.' not found in '.$nested."::\$parent. Found:\n  ".implode("\n  ", $nested::$_parents));
             }
         }
     }
 
     /**
      * dataProvider for testExample
+     *
      * @return array
      */
     public function getAnnotationClasses()
     {
         $classes = [];
-        $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');
+        $dir = new \DirectoryIterator(__DIR__.'/../src/Annotations');
         foreach ($dir as $entry) {
             if ($entry->getFilename() === 'AbstractAnnotation.php') {
                 continue;
             }
             if ($entry->getExtension() === 'php') {
-                $classes[] = ['Swagger\Annotations\\' . substr($entry->getFilename(), 0, -4)];
+                $classes[] = ['Swagger\Annotations\\'.substr($entry->getFilename(), 0, -4)];
             }
         }
         return $classes;

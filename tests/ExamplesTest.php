@@ -13,18 +13,20 @@ class ExamplesTest extends SwaggerTestCase
      * Test the processed Examples against json files in ExamplesOutput.
      *
      * @dataProvider getExamples
+     *
      * @param string $example Example path
-     * @param string $output Expected output (path to a json file)
+     * @param string $output  Expected output (path to a json file)
      */
     public function testExample($example, $output)
     {
-        $openapi = \Swagger\scan(__DIR__ . '/../Examples/' . $example);
+        $openapi = \Swagger\scan(__DIR__.'/../Examples/'.$example);
         //        die((string) $openapi);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $openapi);
+        $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }
 
     /**
      * dataProvider for testExample
+     *
      * @return array
      */
     public function getExamples()

@@ -38,7 +38,7 @@ class SerializerTest extends SwaggerTestCase
         $path->post->responses = [$resp];
 
         $expected = new Annotations\OpenApi([]);
-        $expected->openapi= '3.0.0';
+        $expected->openapi = '3.0.0';
         $expected->paths = [
             $path,
         ];
@@ -132,6 +132,6 @@ JSON;
         $serializer = new Serializer();
         $openapi = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
         $this->assertInstanceOf('Swagger\Annotations\OpenApi', $openapi);
-        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $openapi);
+        $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json', $openapi);
     }
 }

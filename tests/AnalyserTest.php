@@ -6,9 +6,6 @@
 
 namespace SwaggerTests;
 
-use Swagger\Context;
-use Swagger\Analyser;
-
 class AnalyserTest extends SwaggerTestCase
 {
     public function testParseContents()

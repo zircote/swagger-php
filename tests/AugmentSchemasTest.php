@@ -6,10 +6,9 @@
 
 namespace SwaggerTests;
 
-use Swagger\Processors\AugmentProperties;
 use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\Processors\MergeIntoComponents;
+use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
 
 class AugmentSchemasTest extends SwaggerTestCase
@@ -17,7 +16,7 @@ class AugmentSchemasTest extends SwaggerTestCase
     public function testAugmentSchemas()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
         $analysis->process(new MergeIntoOpenApi()); // create openapi->components
         $analysis->process(new MergeIntoComponents()); // Merge standalone Scheme's into openapi->components
         $this->assertCount(1, $analysis->openapi->components->schemas);
