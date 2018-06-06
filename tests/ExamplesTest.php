@@ -34,11 +34,11 @@ class ExamplesTest extends SwaggerTestCase
         return [
             ['misc', 'misc.json'],
             ['openapi-spec', 'openapi-spec.json'],
-            // ['petstore.swagger.io', 'petstore.swagger.io.json'],
-            // ['swagger-spec/petstore', 'petstore.json'],
-            // ['swagger-spec/petstore-simple', 'petstore-simple.json'],
-            // ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
-            // ['using-refs', 'using-refs.json'],
+             ['petstore.swagger.io', 'petstore.swagger.io.json'],
+             ['swagger-spec/petstore', 'petstore.json'],
+             ['swagger-spec/petstore-simple', 'petstore-simple.json'],
+             ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
+             ['using-refs', 'using-refs.json'],
         ];
     }
 }
