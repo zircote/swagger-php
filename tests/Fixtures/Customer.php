@@ -16,6 +16,7 @@ class Customer
     /**
      * The firstname of the customer.
      * @var string
+     * @example test_user
      * @SWG\Property()
      */
     public $firstname;
