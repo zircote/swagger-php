@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * A "Security Scheme Object":
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject
  */

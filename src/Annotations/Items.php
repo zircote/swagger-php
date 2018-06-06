@@ -7,9 +7,11 @@
 namespace Swagger\Annotations;
 
 use Swagger\Logger;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * The description of an item in a Schema with type "array"
  */
 class Items extends Schema

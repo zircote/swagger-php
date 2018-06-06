@@ -8,8 +8,11 @@ namespace Swagger\Annotations;
 
 use \Swagger\Logger;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object
  * Describes a single operation parameter.
  * A unique parameter is defined by a combination of a name and location.

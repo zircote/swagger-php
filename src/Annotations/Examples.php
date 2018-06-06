@@ -6,14 +6,13 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
- * Class Examples
- *
- * @package Swagger\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
+ * Class Examples
+ * Example object https://swagger.io/docs/specification/adding-examples/
  */
 class Examples extends AbstractAnnotation
 {

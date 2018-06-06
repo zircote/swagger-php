@@ -2,15 +2,13 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
+ * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * Class Flow
  * Security scheme flow object.
- *
- * @package Swagger\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
- * @Annotation
  */
 class Flow extends AbstractAnnotation
 {

@@ -6,14 +6,16 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
+ * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * Class AdditionalProperties
+ * Additional properties.
+ * https://swagger.io/docs/specification/data-models/dictionaries/
  *
  * @package Swagger\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
- * @Annotation
  */
 class AdditionalProperties extends Schema
 {

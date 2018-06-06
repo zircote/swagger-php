@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  */
 class Post extends Operation
 {

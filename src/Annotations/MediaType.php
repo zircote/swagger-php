@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * A "Media Type Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#media-type-object
  *
  * Each Media Type Object provides schema and examples for the media type identified by its key.

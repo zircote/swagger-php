@@ -164,9 +164,9 @@ class SwaggerTestCase extends TestCase
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-                //                'responses' => function ($a, $b) {
-                //                    return strcasecmp($a->name, $b->name);
-                //                },
+                'responses' => function ($a, $b) {
+                    return strcasecmp($a->name, $b->name);
+                },
                 'headers'    => function ($a, $b) {
                     return strcasecmp($a->header, $b->header);
                 },
@@ -209,5 +209,20 @@ class SwaggerTestCase extends TestCase
             }
         }
         return (object)$data;
+    }
+
+    /**
+     * Get scheme analysis
+     *
+     * @param string $comment
+     *
+     * @return array
+     */
+    protected function getAnalysis($comment)
+    {
+        $analyser = new Analyser();
+        $analysis = $analyser->fromComment($comment, null);
+
+        return $analysis;
     }
 }

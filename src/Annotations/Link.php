@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * A "Link Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#link-object
  *
  * The Link object represents a possible design-time link for a response.
