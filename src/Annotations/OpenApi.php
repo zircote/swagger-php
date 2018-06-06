@@ -6,13 +6,14 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
 use Exception;
 use Swagger\Analysis;
-use Swagger\Context;
 use Swagger\Logger;
 
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * This is the root document object for the API specification.
  *
  * A  "OpenApi Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object

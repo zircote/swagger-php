@@ -8,9 +8,9 @@ namespace SwaggerTests;
 
 use Swagger\Analysis;
 use Swagger\Annotations\Get;
+use Swagger\Annotations\OpenApi;
 use Swagger\Annotations\PathItem;
 use Swagger\Annotations\Post;
-use Swagger\Annotations\OpenApi;
 use Swagger\Processors\BuildPaths;
 use Swagger\Processors\MergeIntoOpenApi;
 
@@ -21,7 +21,7 @@ class BuildPathsTest extends SwaggerTestCase
         $openapi = new OpenApi([]);
         $openapi->paths = [
             new PathItem(['path' => '/comments']),
-            new PathItem(['path' => '/comments'])
+            new PathItem(['path' => '/comments']),
         ];
         $analysis = new Analysis([$openapi]);
         $analysis->openapi = $openapi;
@@ -36,7 +36,7 @@ class BuildPathsTest extends SwaggerTestCase
         $analysis = new Analysis([
             $openapi,
             new Get(['path' => '/comments']),
-            new Post(['path' => '/comments'])
+            new Post(['path' => '/comments']),
         ]);
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new BuildPaths());

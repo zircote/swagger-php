@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * The discriminator is a specific object in a schema which is used to inform the consumer of
  * the specification of an alternative schema based on the value associated with it.
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.

@@ -6,12 +6,11 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\License;
-use Swagger\Annotations\Contact;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\Processors\CleanUnmerged;
 use Swagger\Analysis;
-use Exception;
+use Swagger\Annotations\Contact;
+use Swagger\Annotations\License;
+use Swagger\Processors\CleanUnmerged;
+use Swagger\Processors\MergeIntoOpenApi;
 
 class CleanUnmergedTest extends SwaggerTestCase
 {

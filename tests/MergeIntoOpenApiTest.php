@@ -6,9 +6,9 @@
 
 namespace SwaggerTests;
 
+use Swagger\Analysis;
 use Swagger\Annotations\Info;
 use Swagger\Annotations\OpenApi;
-use Swagger\Analysis;
 use Swagger\Processors\MergeIntoOpenApi;
 
 class MergeIntoOpenApiTest extends SwaggerTestCase
@@ -19,7 +19,7 @@ class MergeIntoOpenApiTest extends SwaggerTestCase
         $info = new Info([]);
         $analysis = new Analysis([
             $openapi,
-            $info
+            $info,
         ]);
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertNull($openapi->info);

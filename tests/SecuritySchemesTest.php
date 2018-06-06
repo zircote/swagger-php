@@ -133,19 +133,4 @@ SCHEME;
         $this->assertEquals('http://authClient.test.com/token', $security->flows[1]->tokenUrl);
         $this->assertEquals('http://authClient.test.com/refresh-token', $security->flows[1]->refreshUrl);
     }
-
-    /**
-     * Get scheme analysis
-     *
-     * @param string $comment
-     *
-     * @return array
-     */
-    private function getAnalysis($comment)
-    {
-        $analyser = new Analyser();
-        $analysis = $analyser->fromComment($comment, null);
-
-        return $analysis;
-    }
 }

@@ -6,8 +6,8 @@
 
 namespace SwaggerTests;
 
-use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\AugmentProperties;
+use Swagger\Processors\AugmentSchemas;
 use Swagger\Processors\MergeIntoComponents;
 use Swagger\Processors\MergeIntoOpenApi;
 use Swagger\StaticAnalyser;
@@ -17,7 +17,7 @@ class AugmentPropertiesTest extends SwaggerTestCase
     public function testAugmentProperties()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());

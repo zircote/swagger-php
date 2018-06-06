@@ -10,6 +10,7 @@
                 "tags": [
                     "Products"
                 ],
+                "operationId": "UsingRefs\\ProductController::getProduct",
                 "responses": {
                     "default": {
                         "description": "successful operation",
@@ -27,6 +28,7 @@
                 "tags": [
                     "Products"
                 ],
+                "operationId": "UsingRefs\\ProductController::updateProduct",
                 "parameters": [
                     {
                         "$ref": "#/components/requestBodies/product_in_body"
@@ -56,6 +58,7 @@
                 "tags": [
                     "Products"
                 ],
+                "operationId": "UsingRefs\\ProductController::addProduct",
                 "parameters": [
                     {
                         "$ref": "#/components/requestBodies/product_in_body"
@@ -135,7 +138,13 @@
             "product_in_body": {
                 "description": "product_request",
                 "required": true,
-                "$ref": "#/components/schemas/Product"
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    }
+                }
             }
         }
     }

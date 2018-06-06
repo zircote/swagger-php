@@ -6,8 +6,11 @@
 
 namespace Swagger\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
+ * @Target({"CLASS", "ANNOTATION", "PROPERTY"})
  * The definition of input and output data types.
  * These types can be objects, but also primitives and arrays.
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.

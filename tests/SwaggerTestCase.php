@@ -7,17 +7,19 @@
 namespace SwaggerTests;
 
 use Closure;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Exception;
+use Swagger\Analyser;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\OpenApi;
 use Swagger\Context;
 use Swagger\Logger;
-use Swagger\Analyser;
 
 class SwaggerTestCase extends TestCase
 {
+
+    protected $countExceptions = 0;
 
     /**
      * @var array
@@ -31,16 +33,16 @@ class SwaggerTestCase extends TestCase
 
     /**
      *
-     * @param string $expectedFile File containing the excepted json.
+     * @param string  $expectedFile File containing the excepted json.
      * @param OpenApi $actualSwagger
-     * @param string $message
+     * @param string  $message
      */
     public function assertSwaggerEqualsFile($expectedFile, $actualSwagger, $message = '')
     {
         $expected = json_decode(file_get_contents($expectedFile));
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
-            $this->fail('File: "' . $expectedFile . '" doesn\'t contain valid json, error ' . $error);
+            $this->fail('File: "'.$expectedFile.'" doesn\'t contain valid json, error '.$error);
         }
         $json = json_encode($actualSwagger);
         if ($json === false) {
@@ -94,13 +96,13 @@ class SwaggerTestCase extends TestCase
                 $assertion($entry, $type);
             } else {
                 $map = [
-                    E_USER_NOTICE => 'notice',
+                    E_USER_NOTICE  => 'notice',
                     E_USER_WARNING => 'warning',
                 ];
                 if (isset($map[$type])) {
-                    $this->fail('Unexpected \Swagger\Logger::' . $map[$type] . '("' . $entry . '")');
+                    $this->fail('Unexpected \Swagger\Logger::'.$map[$type].'("'.$entry.'")');
                 } else {
-                    $this->fail('Unexpected \Swagger\Logger->getInstance()->log("' . $entry . '",' . $type . ')');
+                    $this->fail('Unexpected \Swagger\Logger->getInstance()->log("'.$entry.'",'.$type.')');
                 }
             }
         };
@@ -109,7 +111,7 @@ class SwaggerTestCase extends TestCase
 
     protected function tearDown()
     {
-        $this->assertCount(0, $this->expectedLogMessages, count($this->expectedLogMessages) . ' Swagger\Logger messages were not triggered');
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' Swagger\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }
@@ -117,13 +119,14 @@ class SwaggerTestCase extends TestCase
     /**
      *
      * @param string $comment Contents of a comment block
+     *
      * @return AbstractAnnotation[]
      */
     protected function parseComment($comment)
     {
         $analyser = new Analyser();
         $context = Context::detect(1);
-        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
+        return $analyser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
     }
 
     /**
@@ -133,12 +136,12 @@ class SwaggerTestCase extends TestCase
     protected function createSwaggerWithInfo()
     {
         $openapi = new OpenApi([
-            'info' => new \Swagger\Annotations\Info([
-                'title' => 'Swagger-PHP Test-API',
-                'version' => 'test',
-                '_context' => new Context(['unittest' => true])
+            'info'     => new \Swagger\Annotations\Info([
+                'title'    => 'Swagger-PHP Test-API',
+                'version'  => 'test',
+                '_context' => new Context(['unittest' => true]),
             ]),
-            '_context' => new Context(['unittest' => true])
+            '_context' => new Context(['unittest' => true]),
         ]);
         return $openapi;
     }
@@ -146,8 +149,10 @@ class SwaggerTestCase extends TestCase
     /**
      * Sorts the object to improve matching and debugging the differences.
      * Used by assertSwaggerEqualsFile
+     *
      * @param stdClass $object
      * @param string   $origin
+     *
      * @return stdClass The sorted object
      */
     protected function sorted(stdClass $object, $origin = 'unknown')
@@ -159,29 +164,29 @@ class SwaggerTestCase extends TestCase
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-//                'responses' => function ($a, $b) {
-//                    return strcasecmp($a->name, $b->name);
-//                },
-                'headers' => function ($a, $b) {
-                    return strcasecmp($a->header, $b->header);
-                },
-                'tags' => function ($a, $b) {
+                'responses' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-                'allOf' => function ($a, $b) {
+                'headers'    => function ($a, $b) {
+                    return strcasecmp($a->header, $b->header);
+                },
+                'tags'       => function ($a, $b) {
+                    return strcasecmp($a->name, $b->name);
+                },
+                'allOf'      => function ($a, $b) {
                     return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
                 },
-                'security' => function ($a, $b) {
+                'security'   => function ($a, $b) {
                     return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
-                }
+                },
             ];
         }
-        $data = unserialize(serialize((array) $object));
+        $data = unserialize(serialize((array)$object));
         ksort($data);
         foreach ($data as $property => $value) {
             if (is_object($value)) {
-                $data[$property] = $this->sorted($value, $origin . '->' . $property);
-            } elseif (is_array($value)) {
+                $data[$property] = $this->sorted($value, $origin.'->'.$property);
+            } else if (is_array($value)) {
                 if (count($value) > 1) {
                     if (gettype($value[0]) === 'string') {
                         $sortFn = 'strcasecmp';
@@ -192,17 +197,32 @@ class SwaggerTestCase extends TestCase
                         usort($value, $sortFn);
                         $data[$property] = $value;
                     } else {
-                        echo 'no sort for ' . $origin . '->' . $property . "\n";
+                        echo 'no sort for '.$origin.'->'.$property."\n";
                         die;
                     }
                 }
                 foreach ($value as $i => $element) {
                     if (is_object($element)) {
-                        $data[$property][$i] = $this->sorted($element, $origin . '->' . $property . '[' . $i . ']');
+                        $data[$property][$i] = $this->sorted($element, $origin.'->'.$property.'['.$i.']');
                     }
                 }
             }
         }
-        return (object) $data;
+        return (object)$data;
+    }
+
+    /**
+     * Get scheme analysis
+     *
+     * @param string $comment
+     *
+     * @return array
+     */
+    protected function getAnalysis($comment)
+    {
+        $analyser = new Analyser();
+        $analysis = $analyser->fromComment($comment, null);
+
+        return $analysis;
     }
 }

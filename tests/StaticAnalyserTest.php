@@ -6,8 +6,8 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\Property;
 use Swagger\Analyser;
+use Swagger\Annotations\Property;
 use Swagger\Context;
 use Swagger\StaticAnalyser;
 
@@ -23,14 +23,14 @@ class StaticAnalyserTest extends SwaggerTestCase
     public function testIndentationCorrection()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/routes.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/routes.php');
         $this->assertCount(18, $analysis->annotations);
     }
 
     public function testTrait()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/HelloTrait.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType(Property::class)[0];
         $this->assertSame('Hello', $property->_context->trait);
@@ -41,12 +41,12 @@ class StaticAnalyserTest extends SwaggerTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = ['Swagger\Annotations\\'];
         $analyser = new StaticAnalyser();
-        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
+        $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OAS annotations, skip the others.');
         // Allow Swagger to parse 3rd party annotations
         // might contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';
-        $openapi = \Swagger\scan(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
+        $openapi = \Swagger\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(10, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
@@ -63,7 +63,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new StaticAnalyser(__DIR__ . '/Fixtures/php7.php');
+            $analyser = new StaticAnalyser(__DIR__.'/Fixtures/php7.php');
             $this->assertTrue(true);
         } catch (\Exception $e) {
             $this->fail("Analyser produced an error: {$e->getMessage()}");

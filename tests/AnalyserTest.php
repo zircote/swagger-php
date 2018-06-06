@@ -6,9 +6,6 @@
 
 namespace SwaggerTests;
 
-use Swagger\Context;
-use Swagger\Analyser;
-
 class AnalyserTest extends SwaggerTestCase
 {
     public function testParseContents()
@@ -22,7 +19,8 @@ class AnalyserTest extends SwaggerTestCase
 
     public function testDeprecatedAnnotationWarning()
     {
-        $this->assertSwaggerLogEntryStartsWith('The annotation @OAS\Definition() is deprecated.');
-        $annotations = $this->parseComment('@OAS\Definition()');
+        $this->countExceptions = 1;
+        $this->assertSwaggerLogEntryStartsWith('The annotation @SWG\Definition() is deprecated.');
+        $this->parseComment('@SWG\Definition()');
     }
 }

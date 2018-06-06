@@ -31,9 +31,9 @@ class AnalysisTest extends SwaggerTestCase
     public function testGetSubclasses()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Child.php');
+        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/GrandAncestor.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/Ancestor.php'));
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 
@@ -46,9 +46,9 @@ class AnalysisTest extends SwaggerTestCase
     public function testGetAncestorClasses()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Child.php');
+        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/GrandAncestor.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/Ancestor.php'));
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 

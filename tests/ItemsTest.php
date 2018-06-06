@@ -20,7 +20,7 @@ class ItemsTest extends SwaggerTestCase
     public function testRefDefinitionInProperty()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/UsingVar.php');
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/UsingVar.php');
         $analysis->process();
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);

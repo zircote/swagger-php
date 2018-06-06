@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace SwaggerFixtures;
 
 /**
@@ -6,7 +7,6 @@ namespace SwaggerFixtures;
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
-use Zend\Validator\StringLength;
 
 /**
  * @Annotation\Name("user")

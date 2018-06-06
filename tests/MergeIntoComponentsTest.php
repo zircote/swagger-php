@@ -6,9 +6,9 @@
 
 namespace SwaggerTests;
 
-use Swagger\Annotations\Response;
-use Swagger\Annotations\OpenApi;
 use Swagger\Analysis;
+use Swagger\Annotations\OpenApi;
+use Swagger\Annotations\Response;
 use Swagger\Processors\MergeIntoComponents;
 
 class MergeIntoComponentsTest extends SwaggerTestCase
@@ -19,7 +19,7 @@ class MergeIntoComponentsTest extends SwaggerTestCase
         $response = new Response(['response' => '2xx']);
         $analysis = new Analysis([
             $openapi,
-            $response
+            $response,
         ]);
         $this->assertNull($openapi->components);
         $analysis->process(new MergeIntoComponents());
