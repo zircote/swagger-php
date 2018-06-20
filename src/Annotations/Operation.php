@@ -93,7 +93,7 @@ abstract class Operation extends AbstractAnnotation
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
-     * @var array
+     * @var \Swagger\Annotations\Response[]
      */
     public $responses;
 
