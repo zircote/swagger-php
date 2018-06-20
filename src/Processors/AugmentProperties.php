@@ -7,10 +7,11 @@
 namespace Swagger\Processors;
 
 use Swagger\Annotations\Schema;
+use Swagger\Analysis;
+use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Property;
 use Swagger\Context;
-use Swagger\Analysis;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
@@ -96,6 +97,11 @@ class AugmentProperties
                     }
                 }
             }
+
+            if ($property->example === null && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $context->comment, $varMatches)) {
+                $property->example = $varMatches['example'];
+            }
+
             if ($property->description === null) {
                 $property->description = $context->phpdocContent();
             }
