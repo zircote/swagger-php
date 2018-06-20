@@ -76,7 +76,15 @@ $openapi = $serializer->deserialize($jsonString, 'Swagger\Annotations\OpenApi');
 echo $openapi;
 ```
 
-## More on OpenAPI
+### Usage from [docker](https://docker.com)
+
+Generate the swagger documentation to a static json file.
+
+```
+docker run -v "$PWD":/app -it tico/swagger-php --help
+```
+
+## More on OpenApi
 
   * https://www.openapis.org
   * https://github.com/swagger-api/swagger-spec/

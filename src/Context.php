@@ -171,7 +171,7 @@ class Context
         if (!$content) {
             return null;
         }
-        $lines = explode("\n", $content);
+        $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
         foreach ($lines as $line) {
             $summary .= $line."\n";
@@ -209,7 +209,7 @@ class Context
      */
     public function phpdocContent()
     {
-        $comment = explode("\n", $this->comment);
+        $comment = preg_split('/(\n|\r\n)/', $this->comment);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) -1;
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'

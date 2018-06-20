@@ -40,10 +40,6 @@ class Items extends Schema
         }
         $valid = parent::validate($parents, $skip);
         if (!$this->ref) {
-            if ($this->type === 'array' && $this->items === null) {
-                Logger::notice('@OAS\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
-                $valid = false;
-            }
             $parent = end($parents);
             if (is_object($parent) && ($parent instanceof Parameter && $parent->in !== 'body' || $parent instanceof Header)) {
                 // This is a "Items Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#items-object

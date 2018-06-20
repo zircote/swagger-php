@@ -10,11 +10,25 @@ use Swagger\StaticAnalyser;
 
 class ItemsTest extends SwaggerTestCase
 {
-    public function testTypeArray()
+    public function testItemTypeArray()
     {
         $annotations = $this->parseComment('@OAS\Items(type="array")');
         $this->assertSwaggerLogEntryStartsWith('@OAS\Items() is required when @OAS\Items() has type "array" in ');
         $annotations[0]->validate();
+    }
+
+    public function testSchemaTypeArray()
+    {
+        $annotations = $this->parseComment('@SWG\Schema(type="array")');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Items() is required when @SWG\Schema() has type "array" in ');
+        $annotations[0]->validate();
+    }
+
+    public function testTypeObject()
+    {
+        $notAllowedInQuery = $this->parseComment('@SWG\Parameter(name="param",in="query",type="array",@SWG\Items(type="object"))');
+        $this->assertSwaggerLogEntryStartsWith('@SWG\Items()->type="object" not allowed inside a @SWG\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
+        $notAllowedInQuery[0]->validate();
     }
 
     public function testRefDefinitionInProperty()
