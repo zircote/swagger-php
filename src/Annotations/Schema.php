@@ -331,7 +331,7 @@ class Schema extends AbstractAnnotation
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if ($this->type === 'array' && $this->items === null) {
-            Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            Logger::notice('@OAS\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
             return false;
         }
         return parent::validate($parents, $skip, $ref);

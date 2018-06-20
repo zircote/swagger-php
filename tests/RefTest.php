@@ -34,7 +34,6 @@ END;
         // escape / as ~1
         // escape ~ as ~0
         $response = $openapi->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
-        $response = $openapi->ref('#/paths/%2fapi%2fendpoint/get/responses/default');
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('A response', $response->description);
     }

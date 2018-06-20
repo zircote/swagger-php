@@ -19,15 +19,16 @@ class ItemsTest extends SwaggerTestCase
 
     public function testSchemaTypeArray()
     {
-        $annotations = $this->parseComment('@SWG\Schema(type="array")');
-        $this->assertSwaggerLogEntryStartsWith('@SWG\Items() is required when @SWG\Schema() has type "array" in ');
+        $annotations = $this->parseComment('@OAS\Schema(type="array")');
+        $this->assertSwaggerLogEntryStartsWith('@OAS\Items() is required when @OAS\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testTypeObject()
     {
-        $notAllowedInQuery = $this->parseComment('@SWG\Parameter(name="param",in="query",type="array",@SWG\Items(type="object"))');
-        $this->assertSwaggerLogEntryStartsWith('@SWG\Items()->type="object" not allowed inside a @SWG\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
+        $this->countExceptions = 1;
+        $notAllowedInQuery = $this->parseComment('@OAS\Parameter(name="param",in="query",@OAS\Schema(type="array",@OAS\Items(type="object")))');
+        $this->assertSwaggerLogEntryStartsWith('@OAS\Items()->type="object" not allowed inside a @OAS\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
         $notAllowedInQuery[0]->validate();
     }
 
