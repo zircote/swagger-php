@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -52,7 +52,7 @@ class ServerVariable extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Server'
+        'OpenApi\Annotations\Server'
     ];
 
     /** @inheritdoc */

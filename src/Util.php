@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 /**
  * Context
@@ -79,7 +79,7 @@ class Context
      * Return the context containing the specified property.
      *
      * @param string $property
-     * @return boolean|\Swagger\Context
+     * @return boolean|\OpenApi\Context
      */
     public function with($property)
     {
@@ -93,7 +93,7 @@ class Context
     }
 
     /**
-     * @return \Swagger\Context
+     * @return \OpenApi\Context
      */
     public function getRootContext()
     {
@@ -238,7 +238,7 @@ class Context
     /**
      * Create a Context based on the debug_backtrace
      * @param int $index
-     * @return \Swagger\Context
+     * @return \OpenApi\Context
      */
     public static function detect($index = 0)
     {

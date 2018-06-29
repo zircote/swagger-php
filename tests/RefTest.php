@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Response;
-use Swagger\Context;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\Response;
+use OpenApi\Context;
 
-class RefTest extends SwaggerTestCase
+class RefTest extends OpenApiTestCase
 {
     public function testRef()
     {
@@ -20,9 +20,9 @@ class RefTest extends SwaggerTestCase
         $this->assertInstanceOf(Info::class, $info);
 
         $comment = <<<END
-@OAS\Get(
+@OA\Get(
     path="/api/~/endpoint",
-    @OAS\Response(response="default", description="A response")
+    @OA\Response(response="default", description="A response")
 )
 END;
         $openapi->merge($this->parseComment($comment));

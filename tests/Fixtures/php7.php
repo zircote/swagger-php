@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SwaggerFixures;
+namespace OpenApiFixures;
 
 $o = new class
 {

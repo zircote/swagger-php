@@ -3,14 +3,14 @@
 namespace AnotherNamespace;
 
 /**
- * @OAS\Schema()
+ * @OA\Schema()
  */
-class ChildWithDocBlocks extends \SwaggerFixtures\AncestorWithoutDocBlocks
+class ChildWithDocBlocks extends \OpenApiFixtures\AncestorWithoutDocBlocks
 {
 
     /**
      * @var bool
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $isBaby;
 }

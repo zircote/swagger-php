@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -12,7 +12,7 @@ namespace Swagger\Annotations;
  *
  * The Link object represents a possible design-time link for a response.
  * The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known relationship and traversal mechanism between responses and other operations.
- * Unlike dynamic links (i.e. links provided in the response payload), the OAS linking mechanism does not require link information in the runtime response.
+ * Unlike dynamic links (i.e. links provided in the response payload), the OA linking mechanism does not require link information in the runtime response.
  * For computing links, and providing instructions to execute them, a runtime expression is used for accessing values in an operation and using them as parameters while invoking the linked operation.
  */
 class Link extends AbstractAnnotation
@@ -31,7 +31,7 @@ class Link extends AbstractAnnotation
     public $link;
 
     /**
-     * A relative or absolute reference to an OAS operation.
+     * A relative or absolute reference to an OA operation.
      * This field is mutually exclusive of the operationId field, and must point to an Operation Object.
      * Relative operationRef values may be used to locate an existing Operation Object in the OpenAPI definition.
      *
@@ -40,7 +40,7 @@ class Link extends AbstractAnnotation
     public $operationRef;
 
     /**
-     * The name of an existing, resolvable OAS operation, as defined with a unique operationId.
+     * The name of an existing, resolvable OA operation, as defined with a unique operationId.
      * This field is mutually exclusive of the operationRef field.
      *
      * @var string
@@ -76,12 +76,12 @@ class Link extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Server' => 'server',
+        'OpenApi\Annotations\Server' => 'server',
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Response'
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Response'
     ];
 }

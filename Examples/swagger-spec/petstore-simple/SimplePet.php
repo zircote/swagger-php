@@ -3,7 +3,7 @@
 namespace Petstore;
 
 /**
- * @OAS\Schema(schema="NewPet", type="object", required={"name"})
+ * @OA\Schema(schema="NewPet", type="object", required={"name"})
  */
 class SimplePet
 {
@@ -11,27 +11,27 @@ class SimplePet
     public $id;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;
 
     /**
      * @var string
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $tag;
 }
 
 /**
- *  @OAS\Schema(
+ *  @OA\Schema(
  *   schema="Pet",
  *   type="object",
  *   allOf={
- *       @OAS\Schema(ref="#/components/schemas/NewPet"),
- *       @OAS\Schema(
+ *       @OA\Schema(ref="#/components/schemas/NewPet"),
+ *       @OA\Schema(
  *           required={"id"},
- *           @OAS\Property(property="id", format="int64", type="integer")
+ *           @OA\Property(property="id", format="int64", type="integer")
  *       )
  *   }
  * )

@@ -4,23 +4,23 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\PathItem;
-use Swagger\Annotations\Operation;
-use Swagger\Logger;
-use Swagger\Context;
-use Swagger\Analysis;
+use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations\Operation;
+use OpenApi\Logger;
+use OpenApi\Context;
+use OpenApi\Analysis;
 
 /**
- * Build the openapi->paths using the detected @OAS\PathItem and @OAS\Operations (like @OAS\Get, @OAS\Post, etc)
+ * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc)
  */
 class BuildPaths
 {
     public function __invoke(Analysis $analysis)
     {
         $paths = [];
-        // Merge @OAS\PathItems with the same path.
+        // Merge @OA\PathItems with the same path.
         foreach ($analysis->openapi->paths as $annotation) {
             if (empty($annotation->path)) {
                 Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
@@ -32,7 +32,7 @@ class BuildPaths
             }
         }
 
-        // Merge @OAS\Operations into existing @OAS\PathItems or create a new one.
+        // Merge @OA\Operations into existing @OA\PathItems or create a new one.
         $operations = $analysis->unmerged()->getAnnotationsOfType(Operation::class);
         foreach ($operations as $operation) {
             if ($operation->path) {

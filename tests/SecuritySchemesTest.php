@@ -4,19 +4,19 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analyser;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\SecurityScheme;
-use Swagger\Annotations\Server;
+use OpenApi\Analyser;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\SecurityScheme;
+use OpenApi\Annotations\Server;
 
 /**
  * Class SecuritySchemesTest
  *
  * Security openapi test
  */
-class SecuritySchemesTest extends SwaggerTestCase
+class SecuritySchemesTest extends OpenApiTestCase
 {
     /**
      * Test parse servers
@@ -25,15 +25,15 @@ class SecuritySchemesTest extends SwaggerTestCase
     {
         $comment = <<<INFO
 /**
- * @OAS\Info(
+ * @OA\Info(
  *     title="Simple api",
  *     description="Simple api description",
  * )
- * @OAS\Server(
+ * @OA\Server(
  *     url="http://example.com",
  *     description="First host"
  * )
- * @OAS\Server(
+ * @OA\Server(
  *     url="http://example-second.com",
  *     description="Second host"
  * )
@@ -61,8 +61,8 @@ INFO;
     {
         $comment = <<<SCHEME
 /**
- * @OAS\SecurityScheme(
- *     @OAS\Flow(
+ * @OA\SecurityScheme(
+ *     @OA\Flow(
  *         flow="implicit",
  *         tokenUrl="http://auth.test.com/token",
  *         refreshUrl="http://auth.test.com/refresh-token"
@@ -81,7 +81,7 @@ SCHEME;
 
         $analysis = $this->getAnalysis($comment);
         $this->assertCount(1, $analysis);
-        /** @var \Swagger\Annotations\SecurityScheme $security */
+        /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $analysis[0];
         $this->assertInstanceOf(SecurityScheme::class, $security);
 
@@ -95,13 +95,13 @@ SCHEME;
     {
         $comment = <<<SCHEME
 /**
- * @OAS\SecurityScheme(
- *     @OAS\Flow(
+ * @OA\SecurityScheme(
+ *     @OA\Flow(
  *         flow="implicit",
  *         tokenUrl="http://auth.test.com/token",
  *         refreshUrl="http://auth.test.com/refresh-token"
  *     ),
- *     @OAS\Flow(
+ *     @OA\Flow(
  *         flow="client_credentials",
  *         authorizationUrl="http://authClient.test.com",
  *         tokenUrl="http://authClient.test.com/token",
@@ -121,7 +121,7 @@ SCHEME;
 
         $analysis = $this->getAnalysis($comment);
         $this->assertCount(1, $analysis);
-        /** @var \Swagger\Annotations\SecurityScheme $security */
+        /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $analysis[0];
 
         $this->assertCount(2, $security->flows);

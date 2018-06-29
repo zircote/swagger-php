@@ -4,12 +4,12 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\StaticAnalyser;
+use OpenApi\Analysis;
+use OpenApi\StaticAnalyser;
 
-class AnalysisTest extends SwaggerTestCase
+class AnalysisTest extends OpenApiTestCase
 {
     public function testRegisterProcessor()
     {
@@ -37,10 +37,10 @@ class AnalysisTest extends SwaggerTestCase
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 
-        $subclasses = $analysis->getSubClasses('\SwaggerFixtures\GrandAncestor');
+        $subclasses = $analysis->getSubClasses('\OpenApiFixtures\GrandAncestor');
         $this->assertCount(2, $subclasses, 'GrandAncestor has 2 subclasses');
-        $this->assertSame(['\SwaggerFixtures\Ancestor', '\AnotherNamespace\Child'], array_keys($subclasses));
-        $this->assertSame(['\AnotherNamespace\Child'], array_keys($analysis->getSubClasses('\SwaggerFixtures\Ancestor')));
+        $this->assertSame(['\OpenApiFixtures\Ancestor', '\AnotherNamespace\Child'], array_keys($subclasses));
+        $this->assertSame(['\AnotherNamespace\Child'], array_keys($analysis->getSubClasses('\OpenApiFixtures\Ancestor')));
     }
 
     public function testGetAncestorClasses()
@@ -54,7 +54,7 @@ class AnalysisTest extends SwaggerTestCase
 
         $superclasses = $analysis->getSuperClasses('\AnotherNamespace\Child');
         $this->assertCount(2, $superclasses, 'Child has a chain of 2 super classes');
-        $this->assertSame(['\SwaggerFixtures\Ancestor', '\SwaggerFixtures\GrandAncestor'], array_keys($superclasses));
-        $this->assertSame(['\SwaggerFixtures\GrandAncestor'], array_keys($analysis->getSuperClasses('\SwaggerFixtures\Ancestor')));
+        $this->assertSame(['\OpenApiFixtures\Ancestor', '\OpenApiFixtures\GrandAncestor'], array_keys($superclasses));
+        $this->assertSame(['\OpenApiFixtures\GrandAncestor'], array_keys($analysis->getSuperClasses('\OpenApiFixtures\Ancestor')));
     }
 }

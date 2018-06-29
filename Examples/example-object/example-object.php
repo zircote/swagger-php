@@ -1,27 +1,27 @@
 <?php
 
-use Swagger\Annotations as OAS;
+use OpenApi\Annotations as OA;
 
 /**
- * @OAS\Info(
+ * @OA\Info(
  *     version="1.0",
  *     title="Example for response examples value"
  * )
  */
 
 /**
- * @OAS\Post(
+ * @OA\Post(
  *     path="/users",
  *     summary="Adds a new user",
- *     @OAS\RequestBody(
- *         @OAS\MediaType(
+ *     @OA\RequestBody(
+ *         @OA\MediaType(
  *             mediaType="application/json",
- *             @OAS\Schema(
- *                 @OAS\Property(
+ *             @OA\Schema(
+ *                 @OA\Property(
  *                     property="id",
  *                     type="string"
  *                 ),
- *                 @OAS\Property(
+ *                 @OA\Property(
  *                     property="name",
  *                     type="string"
  *                 ),
@@ -29,7 +29,7 @@ use Swagger\Annotations as OAS;
  *             )
  *         )
  *     ),
- *     @OAS\Response(
+ *     @OA\Response(
  *         response=200,
  *         description="OK"
  *     )

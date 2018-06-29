@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -39,6 +39,6 @@ class License extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Info'
+        'OpenApi\Annotations\Info'
     ];
 }

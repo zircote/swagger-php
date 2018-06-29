@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -59,20 +59,20 @@ class RequestBody extends AbstractAnnotation
     ];
 
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Head',
-        'Swagger\Annotations\Operation',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Trace',
-        'Swagger\Annotations\Put',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Delete',
+        'OpenApi\Annotations\Get',
+        'OpenApi\Annotations\Head',
+        'OpenApi\Annotations\Operation',
+        'OpenApi\Annotations\Options',
+        'OpenApi\Annotations\Patch',
+        'OpenApi\Annotations\Post',
+        'OpenApi\Annotations\Trace',
+        'OpenApi\Annotations\Put',
     ];
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\MediaType' => ['content', 'mediaType'],
+        'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
     ];
 }

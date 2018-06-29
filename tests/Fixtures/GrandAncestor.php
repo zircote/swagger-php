@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace SwaggerFixtures;
+namespace OpenApiFixtures;
 
 class GrandAncestor
 {
 
     /**
-     * @OAS\Property();
+     * @OA\Property();
      * @var string
      */
     public $firstname;
 
     /**
-     * @OAS\Property(property="lastname");
+     * @OA\Property(property="lastname");
      * @var string
      */
     public $lastname;

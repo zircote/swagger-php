@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-class ExamplesTest extends SwaggerTestCase
+class ExamplesTest extends OpenApiTestCase
 {
 
     /**
@@ -19,7 +19,7 @@ class ExamplesTest extends SwaggerTestCase
      */
     public function testExample($example, $output)
     {
-        $openapi = \Swagger\scan(__DIR__.'/../Examples/'.$example);
+        $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
         //        die((string) $openapi);
         $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }

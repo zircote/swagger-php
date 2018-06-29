@@ -4,31 +4,31 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\StaticAnalyser;
+use OpenApi\StaticAnalyser;
 
-class ItemsTest extends SwaggerTestCase
+class ItemsTest extends OpenApiTestCase
 {
     public function testItemTypeArray()
     {
-        $annotations = $this->parseComment('@OAS\Items(type="array")');
-        $this->assertSwaggerLogEntryStartsWith('@OAS\Items() is required when @OAS\Items() has type "array" in ');
+        $annotations = $this->parseComment('@OA\Items(type="array")');
+        $this->assertOpenApiLogEntryStartsWith('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testSchemaTypeArray()
     {
-        $annotations = $this->parseComment('@OAS\Schema(type="array")');
-        $this->assertSwaggerLogEntryStartsWith('@OAS\Items() is required when @OAS\Schema() has type "array" in ');
+        $annotations = $this->parseComment('@OA\Schema(type="array")');
+        $this->assertOpenApiLogEntryStartsWith('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testTypeObject()
     {
         $this->countExceptions = 1;
-        $notAllowedInQuery = $this->parseComment('@OAS\Parameter(name="param",in="query",@OAS\Schema(type="array",@OAS\Items(type="object")))');
-        $this->assertSwaggerLogEntryStartsWith('@OAS\Items()->type="object" not allowed inside a @OAS\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
+        $notAllowedInQuery = $this->parseComment('@OA\Parameter(name="param",in="query",@OA\Schema(type="array",@OA\Items(type="object")))');
+        $this->assertOpenApiLogEntryStartsWith('@OA\Items()->type="object" not allowed inside a @OA\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
         $notAllowedInQuery[0]->validate();
     }
 

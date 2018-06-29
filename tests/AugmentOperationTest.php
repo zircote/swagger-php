@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Annotations\Operation;
-use Swagger\Processors\AugmentOperations;
-use Swagger\StaticAnalyser;
+use OpenApi\Annotations\Operation;
+use OpenApi\Processors\AugmentOperations;
+use OpenApi\StaticAnalyser;
 
-class AugmentOperationTest extends SwaggerTestCase
+class AugmentOperationTest extends OpenApiTestCase
 {
     public function testAugmentOperation()
     {

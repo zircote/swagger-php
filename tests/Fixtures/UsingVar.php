@@ -6,10 +6,10 @@
  * Time: 10:25 AM
  */
 
-namespace SwaggerTests\Fixtures;
+namespace OpenApiTests\Fixtures;
 
 /**
- * @OAS\Schema(
+ * @OA\Schema(
  *   schema="UsingVar",
  *   type="object",
  *   required={"name"}
@@ -19,13 +19,13 @@ class UsingVar
 {
     /**
      * @var string
-     * @OAS\Property
+     * @OA\Property
      */
     private $name;
 
     /**
      * @var \DateTimeInterface
-     * @OAS\Property(ref="#/components/schemas/date")
+     * @OA\Property(ref="#/components/schemas/date")
      */
     private $createdAt;
 }

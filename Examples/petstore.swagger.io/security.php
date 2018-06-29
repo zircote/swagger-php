@@ -1,6 +1,6 @@
 <?php
 /**
- * @OAS\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityScheme="api_key",
  *   type="apiKey",
  *   in="header",
@@ -9,10 +9,10 @@
  */
 
 /**
- * @OAS\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityScheme="petstore_auth",
  *   type="oauth2",
- *   @OAS\Flow(
+ *   @OA\Flow(
  *      authorizationUrl="http://petstore.swagger.io/oauth/dialog",
  *      flow="implicit",
  *      scopes={

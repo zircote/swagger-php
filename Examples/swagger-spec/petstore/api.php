@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @OAS\OpenApi(
- *     @OAS\Info(
+ * @OA\OpenApi(
+ *     @OA\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
- *         @OAS\License(name="MIT")
+ *         @OA\License(name="MIT")
  *     ),
- *     @OAS\Server(
+ *     @OA\Server(
  *         description="Api server",
  *         url="petstore.swagger.io",
  *     ),
@@ -15,22 +15,22 @@
  */
 
 /**
- *  @OAS\Schema(
+ *  @OA\Schema(
  *      schema="Error",
  *      required={"code", "message"},
- *      @OAS\Property(
+ *      @OA\Property(
  *          property="code",
  *          type="integer",
  *          format="int32"
  *      ),
- *      @OAS\Property(
+ *      @OA\Property(
  *          property="message",
  *          type="string"
  *      )
  *  ),
- *  @OAS\Schema(
+ *  @OA\Schema(
  *      schema="Pets",
  *      type="array",
- *      @OAS\Items(ref="#/components/schemas/Pet")
+ *      @OA\Items(ref="#/components/schemas/Pet")
  *  )
  */

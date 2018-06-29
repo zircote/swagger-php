@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -54,12 +54,12 @@ class Xml extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\AdditionalProperties',
-        'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Property',
-        'Swagger\Annotations\Schema',
-        'Swagger\Annotations\Items',
-        'Swagger\Annotations\JsonContent',
-        'Swagger\Annotations\XmlContent',
+        'OpenApi\Annotations\AdditionalProperties',
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\Property',
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\Items',
+        'OpenApi\Annotations\JsonContent',
+        'OpenApi\Annotations\XmlContent',
     ];
 }

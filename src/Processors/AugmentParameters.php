@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Analysis;
+use OpenApi\Analysis;
 
 /**
  * Use the parameter->name as keyfield (parameter->parameter) when used as reusable component (openapi->components->parameters)

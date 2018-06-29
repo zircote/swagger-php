@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\OpenApi;
-use Swagger\Processors\MergeIntoOpenApi;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Processors\MergeIntoOpenApi;
 
-class MergeIntoOpenApiTest extends SwaggerTestCase
+class MergeIntoOpenApiTest extends OpenApiTestCase
 {
     public function testProcessor()
     {

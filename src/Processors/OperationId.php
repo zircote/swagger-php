@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Operation;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Operation;
 
 /**
- * Generate the OperationId based on the context of the Swagger comment.
+ * Generate the OperationId based on the context of the OpenApi comment.
  */
 class OperationId
 {
@@ -18,7 +18,7 @@ class OperationId
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
 
-        /** @var \Swagger\Annotations\Operation $operation */
+        /** @var \OpenApi\Annotations\Operation $operation */
         foreach ($allOperations as $operation) {
             if ($operation->operationId !== UNDEFINED) {
                 continue;

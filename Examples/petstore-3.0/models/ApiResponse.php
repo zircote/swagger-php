@@ -13,7 +13,7 @@ namespace Petstore30;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
- * @OAS\Schema(
+ * @OA\Schema(
  *     type="object",
  *     description="Api response",
  *     title="Api response"
@@ -22,7 +22,7 @@ namespace Petstore30;
 class ApiResponse
 {
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     description="Code",
      *     title="Code",
      *     format="int32"
@@ -33,7 +33,7 @@ class ApiResponse
     private $code;
 
     /**
-     * OAS\Property(
+     * OA\Property(
      *    description="Type",
      *    title="Type",
      * )
@@ -43,7 +43,7 @@ class ApiResponse
     private $type;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     description="Message",
      *     title="Message"
      * )

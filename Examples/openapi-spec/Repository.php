@@ -2,19 +2,19 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @OAS\Schema(schema="repository", type="object")
+ * @OA\Schema(schema="repository", type="object")
  */
 class Repository
 {
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $slug;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var User
      */
     public $owner;

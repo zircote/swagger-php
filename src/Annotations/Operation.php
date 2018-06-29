@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
- namespace Swagger\Annotations;
+ namespace OpenApi\Annotations;
 
-use Swagger\Logger;
+use OpenApi\Logger;
 
 /**
  * @Annotation
- * Base class for the @OAS\Get(),  @OAS\Post(),  @OAS\Put(),  @OAS\Delete(), @OAS\Patch(), etc
+ * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc
  *
  * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object
  * Describes a single API operation on a path.
@@ -93,7 +93,7 @@ abstract class Operation extends AbstractAnnotation
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
-     * @var \Swagger\Annotations\Response[]
+     * @var \OpenApi\Annotations\Response[]
      */
     public $responses;
 
@@ -150,11 +150,11 @@ abstract class Operation extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Parameter' => ['parameters'],
-        'Swagger\Annotations\Response' => ['responses', 'response'],
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Server' => ['servers'],
-        'Swagger\Annotations\RequestBody' => 'requestBody',
+        'OpenApi\Annotations\Parameter' => ['parameters'],
+        'OpenApi\Annotations\Response' => ['responses', 'response'],
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        'OpenApi\Annotations\Server' => ['servers'],
+        'OpenApi\Annotations\RequestBody' => 'requestBody',
     ];
 
     /** @inheritdoc */

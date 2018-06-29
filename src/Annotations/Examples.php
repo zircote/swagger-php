@@ -4,12 +4,12 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * Class Examples
  *
- * @package Swagger\Annotations
+ * @package OpenApi\Annotations
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
@@ -65,8 +65,8 @@ class Examples extends AbstractAnnotation
     public static $_required = ['summary'];
 
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Parameter',
-        'Swagger\Annotations\MediaType',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Parameter',
+        'OpenApi\Annotations\MediaType',
     ];
 }

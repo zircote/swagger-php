@@ -16,12 +16,12 @@ namespace Petstore30\controllers;
 class Pet
 {
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/pet",
      *     tags={"pet"},
      *     summary="Add a new pet to the store",
      *     operationId="addPet",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
      *     ),
@@ -36,20 +36,20 @@ class Pet
     }
 
     /**
-     * @OAS\Put(
+     * @OA\Put(
      *     path="/pet",
      *     tags={"pet"},
      *     summary="Update an existing pet",
      *     operationId="updatePet",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Pet not found"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=405,
      *         description="Validation exception"
      *     ),
@@ -64,51 +64,51 @@ class Pet
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/pet/findByStatus",
      *     tags={"pet"},
      *     summary="Finds Pets by status",
      *     description="Multiple status values can be provided with comma separated string",
      *     operationId="findPetsByStatus",
      *     deprecated=true,
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="status",
      *         in="query",
      *         description="Status values that needed to be considered for filter",
      *         required=true,
      *         explode=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="array",
      *             default="available",
-     *             @OAS\Items(
+     *             @OA\Items(
      *                 type="string",
      *                 enum = {"available", "pending", "sold"},
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(
+     *                 @OA\Items(
      *                    ref="#/components/schemas/Pet"
      *                 )
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(
+     *                 @OA\Items(
      *                    ref="#/components/schemas/Pet"
      *                 )
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid status value"
      *     ),
@@ -122,7 +122,7 @@ class Pet
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/pet/findByTags",
      *     tags={"pet"},
      *     summary="Finds Pets by tags",
@@ -130,42 +130,42 @@ class Pet
     Muliple tags can be provided with comma separated strings. Use\ \ tag1,
     tag2, tag3 for testing.",
      *     operationId="findByTags",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="tags",
      *         in="query",
      *         description="Tags to filter by",
      *         required=true,
      *         explode=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="array",
-     *             @OAS\Items(
+     *             @OA\Items(
      *                 type="string",
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(
+     *                 @OA\Items(
      *                    ref="#/components/schemas/Pet"
      *                 )
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(
+     *                 @OA\Items(
      *                    ref="#/components/schemas/Pet"
      *                 )
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid status value"
      *     ),
@@ -179,43 +179,43 @@ class Pet
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Find pet by ID",
      *     description="Returns a single pet",
      *     operationId="getPetById",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="petId",
      *         in="path",
      *         description="ID of pet to return",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Pet"
      *             ),
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Pet"
      *             ),
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplier"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Pet not found"
      *     ),
@@ -231,40 +231,40 @@ class Pet
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Updates a pet in the store with form data",
      *     operationId="updatePetWithForm",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="petId",
      *         in="path",
      *         description="ID of pet that needs to be updated",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
      *     ),
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="Input data format",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/x-www-form-urlencoded",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="object",
-     *                 @OAS\Property(
+     *                 @OA\Property(
      *                     property="name",
      *                     description="Updated name of the pet",
      *                     type="string",
      *                 ),
-     *                 @OAS\Property(
+     *                 @OA\Property(
      *                     property="status",
      *                     description="Updated status of the pet",
      *                     type="string"
@@ -279,34 +279,34 @@ class Pet
     }
 
     /**
-     * @OAS\Delete(
+     * @OA\Delete(
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Deletes a pet",
      *     operationId="deletePet",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="api_key",
      *         in="header",
      *         required=false,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="petId",
      *         in="path",
      *         description="Pet id to delete",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         ),
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied",
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Pet not found",
      *     ),
@@ -320,28 +320,28 @@ class Pet
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/pet/{petId}/uploadImage",
      *     tags={"pet"},
      *     summary="uploads an image",
      *     operationId="uploadFile",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="petId",
      *         in="path",
      *         description="ID of pet to update",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64",
      *             example=1
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/ApiResponse"
      *             )
      *         )
@@ -349,11 +349,11 @@ class Pet
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="Upload images request body",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/octet-stream",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="string",
      *                 format="binary"
      *             )

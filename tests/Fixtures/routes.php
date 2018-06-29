@@ -11,61 +11,61 @@
 
    /**
     *
-    *	@OAS\Put(
+    *	@OA\Put(
     * 		path="/users/{id}",
     * 		tags={"users"},
     * 		operationId="updateUser",
     * 		summary="Update user entry",
-    * 		@OAS\Parameter(
+    * 		@OA\Parameter(
     * 			name="id",
     * 			in="path",
     * 			required=true,
     * 			description="UUID",
     * 		),
-    * 		@OAS\Parameter(
+    * 		@OA\Parameter(
     * 			name="user",
     * 			in="cookie",
     * 			required=true,
-    * 			@OAS\Schema(ref="#/definitions/User"),
+    * 			@OA\Schema(ref="#/definitions/User"),
     *		),
-    * 		@OAS\Response(
+    * 		@OA\Response(
     * 			response=200,
     * 			description="success",
     * 		),
-    * 		@OAS\Response(
+    * 		@OA\Response(
     * 			response="default",
     * 			description="error",
-    * 			@OAS\Schema(ref="#/definitions/Error"),
+    * 			@OA\Schema(ref="#/definitions/Error"),
     * 		),
     * 	)
-    * @OAS\Options(
+    * @OA\Options(
     * path="/users/{id}",
-    * @OAS\Response(response=200,description="Some CORS stuff")
+    * @OA\Response(response=200,description="Some CORS stuff")
     * )
     */
    Route::put('/users/{user_id}', 'UserController@update');
 
 	/**
 	 *
-	 * 	@OAS\Delete(
+	 * 	@OA\Delete(
 	 * 		path="/users/{id}",
 	 * 		tags={"users"},
 	 * 		operationId="deleteUser",
 	 * 		summary="Remove user entry",
-	 * 		@OAS\Parameter(
+	 * 		@OA\Parameter(
 	 * 			name="id",
 	 * 			in="path",
 	 * 			required=true,
 	 * 			description="UUID",
 	 * 		),
-	 * 		@OAS\Response(
+	 * 		@OA\Response(
 	 * 			response=200,
 	 * 			description="success",
 	 * 		),
-	 * 		@OAS\Response(
+	 * 		@OA\Response(
 	 * 			response="default",
 	 * 			description="error",
-	 * 			@OAS\Schema(ref="#/definitions/Error"),
+	 * 			@OA\Schema(ref="#/definitions/Error"),
 	 * 		),
 	 * 	)
 	 *
@@ -73,13 +73,13 @@
 	Route::delete('/users/{user_id}', 'UserController@destroy');
 
       /**
-      *@OAS\Head(path="/users/{id}",@OAS\Response(response=200,description="Only checking if it exists"))
+      *@OA\Head(path="/users/{id}",@OA\Response(response=200,description="Only checking if it exists"))
       */
      Route::get('/users/{user_id}', 'UserController@show');
 
 /**
- * @OAS\Schema(schema="Error")
- * @OAS\Schema(schema="User")
+ * @OA\Schema(schema="Error")
+ * @OA\Schema(schema="User")
  */
 //
 // @codingStandardsIgnoreEnd

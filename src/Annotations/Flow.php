@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * Class Flow
  * Security scheme flow object.
  *
- * @package Swagger\Annotations
+ * @package OpenApi\Annotations
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
@@ -69,6 +69,6 @@ class Flow extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\SecurityScheme',
+        'OpenApi\Annotations\SecurityScheme',
     ];
 }

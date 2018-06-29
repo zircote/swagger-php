@@ -16,22 +16,22 @@ namespace Petstore30\controllers;
 class User
 {
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/user",
      *     tags={"user"},
      *     summary="Create user",
      *     description="This can only be done by the logged in user.",
      *     operationId="createUser",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="successful operation"
      *     ),
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="Create user object",
      *         required=true,
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/User"
      *             )
      *         )
@@ -43,16 +43,16 @@ class User
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/user/createWithArray",
      *     tags={"user"},
      *     summary="Create list of users with given input array",
      *     operationId="createUsersWithListInput",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="successful operation"
      *     ),
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         ref="#/components/requestBodies/UserArray"
      *     )
      * )
@@ -62,61 +62,61 @@ class User
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/user/login",
      *     tags={"user"},
      *     summary="Logs user into system",
      *     operationId="loginUser",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="username",
      *         in="query",
      *         description="The user name for login",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="query",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string",
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\Header(
+     *         @OA\Header(
      *             header="X-Rate-Limit",
      *             description="calls per hour allowed by the user",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="integer",
      *                 format="int32"
      *             )
      *         ),
-     *         @OAS\Header(
+     *         @OA\Header(
      *             header="X-Expires-After",
      *             description="date in UTC when token expires",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="string",
      *                 format="datetime"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="string"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="string"
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid username/password supplied"
      *     )
@@ -127,12 +127,12 @@ class User
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/user/logout",
      *     tags={"user"},
      *     summary="Logs out current logged in user session",
      *     operationId="logoutUser",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="successful operation"
      *     )
@@ -143,39 +143,39 @@ class User
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/user/{username}",
      *     summary="Get user by user name",
      *     operationId="getUserByName",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="username",
      *         in="path",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/User"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/User"
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid username supplied"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="User not found"
      *     ),
@@ -186,34 +186,34 @@ class User
     }
 
     /**
-     * @OAS\Put(
+     * @OA\Put(
      *     path="/user/{username}",
      *     summary="Updated user",
      *     description="This can pnly be done by the logged in user.",
      *     operationId="updateUser",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="username",
      *         in="path",
      *         description="name that to be updated",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid user supplied"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="User not found"
      *     ),
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="Updated user object",
      *         required=true,
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/User"
      *             )
      *         )
@@ -225,25 +225,25 @@ class User
     }
 
     /**
-     * @OAS\Delete(
+     * @OA\Delete(
      *     path="/user/{username}",
      *     summary="Delete user",
      *     description="This can only be done by the logged in user.",
      *     operationId="deleteUser",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="username",
      *         in="path",
      *         description="The name that needs to be deleted",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid username supplied",
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="User not found",
      *     )

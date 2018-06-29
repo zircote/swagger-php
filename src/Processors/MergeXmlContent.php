@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\MediaType;
-use Swagger\Annotations\JsonContent;
-use Swagger\Annotations\Response;
-use Swagger\Analysis;
-use Swagger\Annotations\XmlContent;
-use Swagger\Context;
+use OpenApi\Annotations\MediaType;
+use OpenApi\Annotations\JsonContent;
+use OpenApi\Annotations\Response;
+use OpenApi\Analysis;
+use OpenApi\Annotations\XmlContent;
+use OpenApi\Context;
 
 /**
  * Split JsonContent into Schema and MediaType

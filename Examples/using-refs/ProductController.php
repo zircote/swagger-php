@@ -2,24 +2,24 @@
 namespace UsingRefs;
 
 /**
- * @OAS\PathItem(
+ * @OA\PathItem(
  *   path="/products/{product_id}",
- *   @OAS\Parameter(ref="#/components/parameters/product_id_in_path_required")
+ *   @OA\Parameter(ref="#/components/parameters/product_id_in_path_required")
  * )
  */
 
 class ProductController {
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @OAS\Response(
+     *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OAS\MediaType(
+     *       @OA\MediaType(
      *          mediaType="application/json",
-     *          @OAS\Schema(
+     *          @OA\Schema(
      *            ref="#/components/responses/product"
      *          )
      *       )
@@ -31,16 +31,16 @@ class ProductController {
     }
 
     /**
-     * @OAS\Patch(
+     * @OA\Patch(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @OAS\Parameter(ref="#/components/requestBodies/product_in_body"),
-     *   @OAS\Response(
+     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OAS\MediaType(
+     *       @OA\MediaType(
      *          mediaType="application/json",
-     *          @OAS\Schema(
+     *          @OA\Schema(
      *            ref="#/components/responses/product"
      *          )
      *       )
@@ -52,16 +52,16 @@ class ProductController {
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *   tags={"Products"},
      *   path="/products",
-     *   @OAS\Parameter(ref="#/components/requestBodies/product_in_body"),
-     *   @OAS\Response(
+     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OAS\MediaType(
+     *       @OA\MediaType(
      *          mediaType="application/json",
-     *          @OAS\Schema(
+     *          @OA\Schema(
      *            ref="#/components/responses/product"
      *          )
      *       )

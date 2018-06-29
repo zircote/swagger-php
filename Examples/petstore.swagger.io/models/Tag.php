@@ -3,22 +3,22 @@
 namespace PetstoreIO;
 
 /**
- * @OAS\Schema(
+ * @OA\Schema(
  *   type="object",
- *   @OAS\Xml(name="Tag")
+ *   @OA\Xml(name="Tag")
  * )
  */
 class Tag
 {
 
     /**
-     * @OAS\Property(format="int64")
+     * @OA\Property(format="int64")
      * @var int
      */
     public $id;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;

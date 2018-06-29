@@ -6,8 +6,8 @@ To output:
 
 ```json
 {
-   "openapi": "3.0",
-   "host": "example.com"
+  "openapi": "3.0",
+  "host": "example.com"
 }
 ```
 
@@ -15,7 +15,7 @@ Write:
 
 ```php
 /**
- * @OAS\OpenApi(
+ * @OA\OpenApi(
  *   host="example.com",
  * )
  */
@@ -29,7 +29,7 @@ And although doctrine also supports objects, but also uses `{` and `}` and requi
 
 ```php
 /**
- * @OAS\OpenApi(
+ * @OA\OpenApi(
  *   info={
  *     "title": "My first swagger-php documented API",
  *     "version": "1.0.0"
@@ -38,12 +38,12 @@ And although doctrine also supports objects, but also uses `{` and `}` and requi
  */
 ```
 
-But use the annotation with the same name as the property, such as `@OAS\Info` for `info`:
+But use the annotation with the same name as the property, such as `@OA\Info` for `info`:
 
 ```php
 /**
- * @OAS\OpenApi(
- *   @OAS\Info(
+ * @OA\OpenApi(
+ *   @OA\Info(
  *     title="My first swagger-php documented API",
  *     version="1.0.0"
  *   )
@@ -52,8 +52,7 @@ But use the annotation with the same name as the property, such as `@OAS\Info` f
 ```
 
 This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
-For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @OAS\Info(), expecting "title", ..."
-
+For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @OA\Info(), expecting "title", ..."
 
 ## Using variables in annotations
 
@@ -65,38 +64,38 @@ define("API_HOST", ($env === "production") ? "example.com" : "localhost");
 
 ```php
 /**
- * @OAS\OpenApi(host=API_HOST)
+ * @OA\OpenApi(host=API_HOST)
  */
 ```
 
 When you're using the CLI you'll need to include the php file with the constants using the `--bootstrap` options:
+
 ```
 $ swagger --bootstrap constants.php
 ```
 
-
 ## Annotation placement
 
-You shouldn't place all annotations inside one big @OAS\OpenApi() annotation block, but scatter them throughout your codebase.
-swagger-php will scan your project and merge all annotations into one @OAS\OpenApi annotation.
+You shouldn't place all annotations inside one big @OA\OpenApi() annotation block, but scatter them throughout your codebase.
+swagger-php will scan your project and merge all annotations into one @OA\OpenApi annotation.
 
 The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
 
 ### Arrays and Objects
 
 Placing multiple annotations of the same type will result in an array of objects.
-For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@OAS\Response`, `property` in a `@OAS\Property`, etc.
+For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@OA\Response`, `property` in a `@OA\Property`, etc.
 
 ```php
 /**
- * @OAS\Get(
+ * @OA\Get(
  *   path="/products",
  *   summary="list products",
- *   @OAS\Response(
+ *   @OA\Response(
  *     response=200,
  *     description="A list with products"
  *   ),
- *   @OAS\Response(
+ *   @OA\Response(
  *     response="default",
  *     description="an ""unexpected"" error"
  *   )
@@ -133,14 +132,14 @@ swagger-php looks at the context of the comment which reduces duplication.
 
 ```php
 /**
- * @OAS\Schema()
+ * @OA\Schema()
  */
 class Product {
 
     /**
      * The product name
      * @var string
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $name;
 }
@@ -167,12 +166,11 @@ results in:
 As if you'd written:
 
 ```php
-
     /**
      * The product name
      * @var string
      *
-     * @OAS\Property(
+     * @OA\Property(
      *   property="name",
      *   type="string",
      *   description="The product name"
@@ -188,7 +186,7 @@ The spec solves most of this by using `$ref`s
 
 ```php
     /**
-     * @OAS\Schema(
+     * @OA\Schema(
      *   schema="product_id",
      *   type="integer",
      *   format="int64",
@@ -201,17 +199,17 @@ Results in:
 
 ```json
 {
-    "openapi": "3.0",
-    "paths": {},
-    "components": {
-        "schemas": {
-            "product_id": {
-                "description": "The unique identifier of a product in our catalog",
-                "type": "integer",
-                "format": "int64"
-            }
-        }
+  "openapi": "3.0",
+  "paths": {},
+  "components": {
+    "schemas": {
+      "product_id": {
+        "description": "The unique identifier of a product in our catalog",
+        "type": "integer",
+        "format": "int64"
+      }
     }
+  }
 }
 ```
 
@@ -219,7 +217,7 @@ Which doesn't do anything by itself but now you can reference this piece by its 
 
 ```php
     /**
-     * @OAS\Property(ref="#/components/schemas/product_id")
+     * @OA\Property(ref="#/components/schemas/product_id")
      */
     public $id;
 ```
@@ -227,15 +225,16 @@ Which doesn't do anything by itself but now you can reference this piece by its 
 For more tips on refs, browse through the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
 
 Alternatively, you can extend the definition altering specific fields using the `$` in-place of the `#`
+
 ```php
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *   ref="$/definitions/product_id",
      *   format="int32"
      * )
      */
     public $id;
-``` 
+```
 
 For extensions tips and examples, browse through [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
 
@@ -245,7 +244,7 @@ The specification allows for [custom properties](http://swagger.io/specification
 
 ```php
 /**
- * @OAS\Info(
+ * @OA\Info(
  *   title="Example",
  *   version=1,
  *   x={
@@ -283,7 +282,6 @@ Results in:
 ```
 
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
-
 
 ## More information about Swagger
 

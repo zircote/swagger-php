@@ -4,17 +4,17 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Schema;
-use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\StaticAnalyser;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\Schema;
+use OpenApi\Processors\AugmentProperties;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\InheritProperties;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\StaticAnalyser;
 
-class InheritPropertiesTest extends SwaggerTestCase
+class InheritPropertiesTest extends OpenApiTestCase
 {
     public function testInheritProperties()
     {

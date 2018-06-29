@@ -4,41 +4,41 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 /**
  * Class AnnotationDeserializer is used to deserialize a json string
- * to a specific Swagger PHP Annotation class and vice versa.
+ * to a specific Swagger-PHP Annotation class and vice versa.
  *
  * @link https://github.com/zircote/swagger-php
  */
 class Serializer
 {
-    const CONTACT = 'Swagger\Annotations\Contact';
-    const DELETE = 'Swagger\Annotations\Delete';
-    const EXTERNALDOCUMENTATION = 'Swagger\Annotations\ExternalDocumentation';
-    const FLOW = 'Swagger\Annotations\Flow';
-    const GET = 'Swagger\Annotations\Get';
-    const HEAD = 'Swagger\Annotations\Head';
-    const HEADER = 'Swagger\Annotations\Header';
-    const INFO = 'Swagger\Annotations\Info';
-    const ITEMS = 'Swagger\Annotations\Items';
-    const LICENSE = 'Swagger\Annotations\License';
-    const OPENAPI = 'Swagger\Annotations\OpenApi';
-    const OPERATION = 'Swagger\Annotations\Operation';
-    const OPTIONS = 'Swagger\Annotations\Options';
-    const PARAMETER = 'Swagger\Annotations\Parameter';
-    const PATCH = 'Swagger\Annotations\Patch';
-    const PATHITEM = 'Swagger\Annotations\PathItem';
-    const POST = 'Swagger\Annotations\Post';
-    const PROPERTY = 'Swagger\Annotations\Property';
-    const PUT = 'Swagger\Annotations\Put';
-    const REQUESTBODY = 'Swagger\Annotations\RequestBody';
-    const RESPONSE = 'Swagger\Annotations\Response';
-    const SCHEMA = 'Swagger\Annotations\Schema';
-    const SECURITYSCHEME = 'Swagger\Annotations\SecurityScheme';
-    const TAG = 'Swagger\Annotations\Tag';
-    const XML = 'Swagger\Annotations\Xml';
+    const CONTACT = 'OpenApi\Annotations\Contact';
+    const DELETE = 'OpenApi\Annotations\Delete';
+    const EXTERNALDOCUMENTATION = 'OpenApi\Annotations\ExternalDocumentation';
+    const FLOW = 'OpenApi\Annotations\Flow';
+    const GET = 'OpenApi\Annotations\Get';
+    const HEAD = 'OpenApi\Annotations\Head';
+    const HEADER = 'OpenApi\Annotations\Header';
+    const INFO = 'OpenApi\Annotations\Info';
+    const ITEMS = 'OpenApi\Annotations\Items';
+    const LICENSE = 'OpenApi\Annotations\License';
+    const OPENAPI = 'OpenApi\Annotations\OpenApi';
+    const OPERATION = 'OpenApi\Annotations\Operation';
+    const OPTIONS = 'OpenApi\Annotations\Options';
+    const PARAMETER = 'OpenApi\Annotations\Parameter';
+    const PATCH = 'OpenApi\Annotations\Patch';
+    const PATHITEM = 'OpenApi\Annotations\PathItem';
+    const POST = 'OpenApi\Annotations\Post';
+    const PROPERTY = 'OpenApi\Annotations\Property';
+    const PUT = 'OpenApi\Annotations\Put';
+    const REQUESTBODY = 'OpenApi\Annotations\RequestBody';
+    const RESPONSE = 'OpenApi\Annotations\Response';
+    const SCHEMA = 'OpenApi\Annotations\Schema';
+    const SECURITYSCHEME = 'OpenApi\Annotations\SecurityScheme';
+    const TAG = 'OpenApi\Annotations\Tag';
+    const XML = 'OpenApi\Annotations\Xml';
 
     private static $cachedNames;
 
@@ -81,7 +81,7 @@ class Serializer
     public function deserialize($jsonString, $className)
     {
         if (!$this->isValidClassName($className)) {
-            throw new \Exception($className.' is not defined in Swagger PHP Annotations');
+            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
         }
         return $this->doDeserialize(json_decode($jsonString), $className);
     }
@@ -96,10 +96,10 @@ class Serializer
      *
      * @throws \Exception
      */
-    public function deserializeFile($filename, $className = 'Swagger\Annotations\OpenApi')
+    public function deserializeFile($filename, $className = 'OpenApi\Annotations\OpenApi')
     {
         if (!$this->isValidClassName($className)) {
-            throw new \Exception($className.' is not defined in Swagger PHP Annotations');
+            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
         }
         $jsonString = file_get_contents($filename);
         return $this->doDeserialize(json_decode($jsonString), $className);

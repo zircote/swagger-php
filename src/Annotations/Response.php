@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -71,22 +71,22 @@ class Response extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\MediaType' => ['content', 'mediaType'],
-        'Swagger\Annotations\Header' => ['headers', 'header'],
-        'Swagger\Annotations\Link' => ['links', 'link'],
+        'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
+        'OpenApi\Annotations\Header' => ['headers', 'header'],
+        'OpenApi\Annotations\Link' => ['links', 'link'],
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Operation',
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Put',
-        'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\Trace',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Operation',
+        'OpenApi\Annotations\Get',
+        'OpenApi\Annotations\Post',
+        'OpenApi\Annotations\Put',
+        'OpenApi\Annotations\Patch',
+        'OpenApi\Annotations\Delete',
+        'OpenApi\Annotations\Head',
+        'OpenApi\Annotations\Options',
+        'OpenApi\Annotations\Trace',
     ];
 }

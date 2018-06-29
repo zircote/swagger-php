@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -55,12 +55,12 @@ class MediaType extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Schema' => 'schema',
-        'Swagger\Annotations\Examples' => ['examples'],
+        'OpenApi\Annotations\Schema' => 'schema',
+        'OpenApi\Annotations\Examples' => ['examples'],
     ];
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Response',
-        'Swagger\Annotations\RequestBody',
+        'OpenApi\Annotations\Response',
+        'OpenApi\Annotations\RequestBody',
     ];
 }

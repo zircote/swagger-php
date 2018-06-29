@@ -1,16 +1,16 @@
 <?php
 /**
- * @OAS\Info(
+ * @OA\Info(
  *   title="Testing annotations from bugreports",
  *    version="1.0.0"
  * )
  */
 
 /**
- * @OAS\Server(
+ * @OA\Server(
  *      url="{schema}://host.dev",
  *      description="OpenApi parameters",
- *      @OAS\ServerVariable(
+ *      @OA\ServerVariable(
  *          serverVariable="schema",
  *          enum="['https', 'http']",
  *          default="https"

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
@@ -13,14 +13,14 @@ use Exception;
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
     if (Analyser::$whitelist === false) {
-        $whitelist = ['Swagger\Annotations\\'];
+        $whitelist = ['OpenApi\Annotations\\'];
     } else {
         $whitelist = Analyser::$whitelist;
     }
     foreach ($whitelist as $namespace) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
             $loaded = class_exists($class);
-            if (!$loaded && $namespace === 'Swagger\Annotations\\') {
+            if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
                 if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
                     throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                 }
@@ -41,12 +41,12 @@ class Analyser
      * Set to false to load all detected classes.
      * @var array|false
      */
-    public static $whitelist = ['Swagger\Annotations\\'];
+    public static $whitelist = ['OpenApi\Annotations\\'];
 
     /**
-     * Use @OAS\* for OpenAPI annotations (unless overwritten by a use statement).
+     * Use @OA\* for OpenAPI annotations (unless overwritten by a use statement).
      */
-    public static $defaultImports = ['oas' => 'Swagger\Annotations'];
+    public static $defaultImports = ['oa' => 'OpenApi\Annotations'];
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.

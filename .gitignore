@@ -1,6 +1,5 @@
 /vendor
 /composer.lock
 /bin/*
-!/bin/swagger
+!/bin/openapi
 /openapi.json
-/swagger.json

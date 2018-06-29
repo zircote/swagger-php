@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -42,11 +42,11 @@ class Tag extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi'
+        'OpenApi\Annotations\OpenApi'
     ];
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs'
     ];
 }

@@ -16,20 +16,20 @@ namespace Petstore30\controllers;
 class Store
 {
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/store",
      *     tags={"store"},
      *     summary="Returns pet inventories by status",
      *     description="Returns a map of status codes to quantities",
      *     operationId="getInventory",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *          description="successful operation",
-     *          @OAS\MediaType(
+     *          @OA\MediaType(
      *              mediaType="application/json",
-     *              @OAS\Schema(
+     *              @OA\Schema(
      *                  type="object",
-     *                  @OAS\AdditionalProperties(
+     *                  @OA\AdditionalProperties(
      *                      type="integer",
      *                      format="int32"
      *                  )
@@ -46,33 +46,33 @@ class Store
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/store/order",
      *     tags={"store"},
      *     summary="Place an order for a pet",
      *     operationId="placeOrder",
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Order"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Order"
      *             )
      *         )
      *     ),
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="order placed for purchasing th pet",
      *         required=true,
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Order"
      *             )
      *         )
@@ -84,46 +84,46 @@ class Store
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/store/order/{orderId}",
      *     tags={"store"},
      *     description=">-
     For valid response try integer IDs with value >= 1 and <= 10.\ \ Other
     values will generated exceptions",
      *     operationId="getOrderById",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="orderId",
      *         in="path",
      *         description="ID of pet that needs to be fetched",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64",
      *             maximum=1,
      *             minimum=10
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Order"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/Order"
      *             )
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Order not found"
      *     )
@@ -134,7 +134,7 @@ class Store
     }
 
     /**
-     * @OAS\Delete(
+     * @OA\Delete(
      *     path="/store/order/{orderId}",
      *     tags={"store"},
      *     summary="Delete purchase order by ID",
@@ -142,22 +142,22 @@ class Store
     For valid response try integer IDs with positive integer value.\ \
     Negative or non-integer values will generate API errors",
      *     operationId="deleteOrder",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="orderId",
      *         in="path",
      *         required=true,
      *         description="ID of the order that needs to be deleted",
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64",
      *             minimum=1
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Order not found"
      *     )

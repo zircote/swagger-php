@@ -89,7 +89,7 @@ if ($error) {
 if ($options['help']) {
     $help = <<<EOF
 
-Usage: swagger [--option value] [/path/to/project ...]
+Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
   --output (-o)     Path to store the generated documentation.
@@ -111,7 +111,7 @@ if (count($paths) === 0) {
     $paths[] = getcwd();
     echo "Scanning files in '".$paths[0]."' ...\n";
 }
-if (class_exists('Swagger\Logger') === false) {
+if (class_exists('OpenApi\Logger') === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
         require_once(__DIR__.'/../vendor/autoload.php');
     } else {
@@ -153,7 +153,7 @@ set_exception_handler(function ($exception) use ($options) {
     }
     exit($exception->getCode() ?: 1);
 });
-\Swagger\Logger::getInstance()->log = function ($entry, $type) use ($options) {
+\OpenApi\Logger::getInstance()->log = function ($entry, $type) use ($options) {
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
     if ($entry instanceof Exception) {
         error_log('[' . $type . '] ' . $entry->getMessage());
@@ -192,16 +192,16 @@ if ($options['exclude']) {
 }
 
 foreach ($options["processor"] as $processor) {
-    $class = '\Swagger\Processors\\'.$processor;
+    $class = '\OpenApi\Processors\\'.$processor;
     if (class_exists($class)) {
         $processor = new $class();
     } elseif (class_exists($processor)) {
         $processor = new $processor();
     }
-    \Swagger\Analysis::registerProcessor($processor);
+    \OpenApi\Analysis::registerProcessor($processor);
 }
 
-$openapi = Swagger\scan($paths, ['exclude' => $exclude]);
+$openapi = OpenApi\scan($paths, ['exclude' => $exclude]);
 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 
 $counter = 0;

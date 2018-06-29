@@ -4,20 +4,20 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Response;
-use Swagger\Processors\MergeJsonContent;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Response;
+use OpenApi\Processors\MergeJsonContent;
 
-class MergeJsonContentTest extends SwaggerTestCase
+class MergeJsonContentTest extends OpenApiTestCase
 {
     public function testJsonContent()
     {
         $comment = <<<END
-        @OAS\Response(response=200,
-            @OAS\JsonContent(type="array",
-                @OAS\Items(ref="#/components/schemas/repository")
+        @OA\Response(response=200,
+            @OA\JsonContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
             )
         )
 END;
@@ -36,10 +36,10 @@ END;
     public function testMultipleMediaTypes()
     {
         $comment = <<<END
-        @OAS\Response(response=200,
-            @OAS\MediaType(mediaType="image/png"),
-            @OAS\JsonContent(type="array",
-                @OAS\Items(ref="#/components/schemas/repository")
+        @OA\Response(response=200,
+            @OA\MediaType(mediaType="image/png"),
+            @OA\JsonContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
             )
         )
 END;

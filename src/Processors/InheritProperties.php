@@ -4,12 +4,12 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\Property;
-use Swagger\Annotations\OpenApi;
-use Swagger\Annotations\Schema;
-use Swagger\Analysis;
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Schema;
+use OpenApi\Analysis;
 use Traversable;
 
 /**

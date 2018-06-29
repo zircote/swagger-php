@@ -4,15 +4,15 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\MergeIntoComponents;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\StaticAnalyser;
+use OpenApi\Processors\AugmentProperties;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\StaticAnalyser;
 
-class AugmentPropertiesTest extends SwaggerTestCase
+class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
@@ -49,10 +49,10 @@ class AugmentPropertiesTest extends SwaggerTestCase
 
         $analysis->process(new AugmentProperties());
 
-        $this->assertSame('firstname', $firstname->property, '@OAS\Property()->property based on propertyname');
+        $this->assertSame('firstname', $firstname->property, '@OA\Property()->property based on propertyname');
         $this->assertEquals('test_user', $firstname->example);
-        $this->assertSame('The firstname of the customer.', $firstname->description, '@OAS\Property()->description based on @var description');
-        $this->assertSame('string', $firstname->type, '@OAS\Property()->type based on @var declaration');
+        $this->assertSame('The firstname of the customer.', $firstname->description, '@OA\Property()->description based on @var description');
+        $this->assertSame('string', $firstname->type, '@OA\Property()->type based on @var declaration');
 
         $this->assertSame('lastname', $lastname->property);
         $this->assertSame('The lastname of the customer.', $lastname->description);

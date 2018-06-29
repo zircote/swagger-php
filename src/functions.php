@@ -4,21 +4,21 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
-use Swagger\Annotations\OpenApi;
+use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
 
-if (defined('Swagger\UNDEFINED') === false) {
+if (defined('OpenApi\UNDEFINED') === false) {
     /**
      * Special value to differentiate between null and undefined.
      */
-    define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
-    define('Swagger\Annotations\UNDEFINED', UNDEFINED);
-    define('Swagger\Processors\UNDEFINED', UNDEFINED);
+    define('OpenApi\UNDEFINED', '{OPEN-API-UNDEFINED-46EC-07AB32D2-D50C}');
+    define('OpenApi\Annotations\UNDEFINED', UNDEFINED);
+    define('OpenApi\Processors\UNDEFINED', UNDEFINED);
 
     /**
-     * Scan the filesystem for OpenAPI annotations and build swagger-documentation.
+     * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *
      * @param string|array|Finder $directory The directory(s) or filename(s)
      * @param array $options

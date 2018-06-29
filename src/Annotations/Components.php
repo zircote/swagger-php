@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
  * A Components Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#components-object
  *
- * Holds a set of reusable objects for different aspects of the OAS.
+ * Holds a set of reusable objects for different aspects of the OA.
  * All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object.
  */
 class Components extends AbstractAnnotation
@@ -80,18 +80,18 @@ class Components extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi'
+        'OpenApi\Annotations\OpenApi'
     ];
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Schema' => ['schemas', 'schema'],
-        'Swagger\Annotations\Response' => ['responses', 'response'],
-        'Swagger\Annotations\Parameter' => ['parameters', 'parameter'],
-        'Swagger\Annotations\RequestBody' => ['requestBodies', 'request'],
-        'Swagger\Annotations\Examples' => ['examples'],
-        'Swagger\Annotations\Header' => ['headers', 'header'],
-        'Swagger\Annotations\SecurityScheme' => ['securitySchemes', 'securityScheme'],
-        'Swagger\Annotations\Link' => ['links', 'link'],
+        'OpenApi\Annotations\Schema' => ['schemas', 'schema'],
+        'OpenApi\Annotations\Response' => ['responses', 'response'],
+        'OpenApi\Annotations\Parameter' => ['parameters', 'parameter'],
+        'OpenApi\Annotations\RequestBody' => ['requestBodies', 'request'],
+        'OpenApi\Annotations\Examples' => ['examples'],
+        'OpenApi\Annotations\Header' => ['headers', 'header'],
+        'OpenApi\Annotations\SecurityScheme' => ['securitySchemes', 'securityScheme'],
+        'OpenApi\Annotations\Link' => ['links', 'link'],
     ];
 }

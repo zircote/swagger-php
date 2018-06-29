@@ -4,15 +4,15 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Operation;
-use Swagger\Annotations\PathItem;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Schema;
-use Swagger\Logger;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Operation;
+use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\Response;
+use OpenApi\Annotations\Schema;
+use OpenApi\Logger;
 
 /**
  * Copy the annotated properties from parent classes;
@@ -39,7 +39,7 @@ class HandleReferences
     /**
      * Gets all the possible importable objects and adds them to the lists.
      *
-     * @param \Swagger\Analysis $analysis
+     * @param \OpenApi\Analysis $analysis
      */
     private function getAllImports(Analysis $analysis)
     {
@@ -63,7 +63,7 @@ class HandleReferences
             }
         }
 
-        // All of the paths in the swagger, we need to iterate across
+        // All of the paths in the openapi, we need to iterate across
         if (!is_null($analysis->openapi->paths)) {
             /** @var Path $path */
             foreach ($analysis->openapi->paths as $path) {

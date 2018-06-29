@@ -3,14 +3,14 @@
 namespace AnotherNamespace;
 
 /**
- * @OAS\Schema()
+ * @OA\Schema()
  */
-class Child extends \SwaggerFixtures\Ancestor
+class Child extends \OpenApiFixtures\Ancestor
 {
 
     /**
      * @var bool
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $isBaby;
 }

@@ -3,7 +3,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -32,7 +32,7 @@ class Header extends AbstractAnnotation
     /**
      * Schema object
      *
-     * @var \Swagger\Annotations\Schema
+     * @var \OpenApi\Annotations\Schema
      */
     public $schema;
 
@@ -64,12 +64,12 @@ class Header extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Schema' => 'schema'
+        'OpenApi\Annotations\Schema' => 'schema'
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Response'
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Response'
     ];
 }

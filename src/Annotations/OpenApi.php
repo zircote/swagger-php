@@ -4,11 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 use Exception;
-use Swagger\Analysis;
-use Swagger\Logger;
+use OpenApi\Analysis;
+use OpenApi\Logger;
 
 /**
  * @Annotation
@@ -98,13 +98,13 @@ class OpenApi extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Info' => 'info',
-        'Swagger\Annotations\SecurityScheme' => 'security',
-        'Swagger\Annotations\Server' => ['servers'],
-        'Swagger\Annotations\PathItem' => ['paths', 'path'],
-        'Swagger\Annotations\Components' => 'components',
-        'Swagger\Annotations\Tag' => ['tags'],
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
+        'OpenApi\Annotations\Info' => 'info',
+        'OpenApi\Annotations\SecurityScheme' => 'security',
+        'OpenApi\Annotations\Server' => ['servers'],
+        'OpenApi\Annotations\PathItem' => ['paths', 'path'],
+        'OpenApi\Annotations\Components' => 'components',
+        'OpenApi\Annotations\Tag' => ['tags'],
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
     ];
 
     /** @inheritdoc */

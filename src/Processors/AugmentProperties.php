@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\Schema;
-use Swagger\Analysis;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Property;
-use Swagger\Context;
+use OpenApi\Annotations\Schema;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Definition;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
+use OpenApi\Context;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
@@ -53,10 +53,10 @@ class AugmentProperties
         }
 
         $allProperties = $analysis->getAnnotationsOfType(Property::class);
-        /** @var \Swagger\Annotations\Property $property */
+        /** @var \OpenApi\Annotations\Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
-            // Use the property names for @OAS\Property()
+            // Use the property names for @OA\Property()
             if ($property->property === null) {
                 $property->property = $context->property;
             }

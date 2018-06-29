@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 use Closure;
 use Exception;
@@ -51,7 +51,7 @@ class Logger
     }
 
     /**
-     * Log a Swagger warning.
+     * Log a OpenApi warning.
      * @param Exception|string $entry
      */
     public static function warning($entry)
@@ -60,7 +60,7 @@ class Logger
     }
 
     /**
-     * Log a Swagger notice.
+     * Log a OpenApi notice.
      * @param Exception|string $entry
      */
     public static function notice($entry)

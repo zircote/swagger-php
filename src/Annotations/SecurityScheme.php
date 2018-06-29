@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -92,13 +92,13 @@ class SecurityScheme extends AbstractAnnotation
 
     /** {@inheritdoc} */
     public static $_nested = [
-        'Swagger\Annotations\Flow' => ['flows', 'flow'],
+        'OpenApi\Annotations\Flow' => ['flows', 'flow'],
     ];
 
     /** {@inheritdoc} */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\OpenApi',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\OpenApi',
     ];
 
     /**

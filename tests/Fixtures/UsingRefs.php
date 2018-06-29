@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace SwaggerFixtures;
+namespace OpenApiFixtures;
 
 /**
- * @OAS\Info(title="Using a parameter definition", version="unittest")
+ * @OA\Info(title="Using a parameter definition", version="unittest")
  */
 class UsingRefs
 {
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *   path="/pi/{item_name}",
      *   summary="Get protected item",
-     *   @OAS\Parameter(ref="#/parameters/ItemName"),
-     *   @OAS\Response(response="default", ref="#/responses/Item")
+     *   @OA\Parameter(ref="#/parameters/ItemName"),
+     *   @OA\Response(response="default", ref="#/responses/Item")
      * )
      */
     public function getProtectedItem()
@@ -22,7 +22,7 @@ class UsingRefs
 }
 
 /**
- * @OAS\Parameter(
+ * @OA\Parameter(
  *   name="ItemName",
  *   in="path",
  *   required=true,
@@ -31,7 +31,7 @@ class UsingRefs
  */
 
 /**
- * @OAS\Response (
+ * @OA\Response (
  *   response="Item",
  *   description="A protected item"
  * )

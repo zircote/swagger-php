@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -37,22 +37,22 @@ class ExternalDocumentation extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi',
-        'Swagger\Annotations\Tag',
-        'Swagger\Annotations\Schema',
-        'Swagger\Annotations\AdditionalProperties',
-        'Swagger\Annotations\Property',
-        'Swagger\Annotations\Operation',
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Put',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\Trace',
-        'Swagger\Annotations\Items',
-        'Swagger\Annotations\JsonContent',
-        'Swagger\Annotations\XmlContent',
+        'OpenApi\Annotations\OpenApi',
+        'OpenApi\Annotations\Tag',
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\AdditionalProperties',
+        'OpenApi\Annotations\Property',
+        'OpenApi\Annotations\Operation',
+        'OpenApi\Annotations\Get',
+        'OpenApi\Annotations\Post',
+        'OpenApi\Annotations\Put',
+        'OpenApi\Annotations\Delete',
+        'OpenApi\Annotations\Patch',
+        'OpenApi\Annotations\Head',
+        'OpenApi\Annotations\Options',
+        'OpenApi\Annotations\Trace',
+        'OpenApi\Annotations\Items',
+        'OpenApi\Annotations\JsonContent',
+        'OpenApi\Annotations\XmlContent',
     ];
 }

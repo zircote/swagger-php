@@ -4,17 +4,17 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Get;
-use Swagger\Annotations\OpenApi;
-use Swagger\Annotations\PathItem;
-use Swagger\Annotations\Post;
-use Swagger\Processors\BuildPaths;
-use Swagger\Processors\MergeIntoOpenApi;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Get;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations\Post;
+use OpenApi\Processors\BuildPaths;
+use OpenApi\Processors\MergeIntoOpenApi;
 
-class BuildPathsTest extends SwaggerTestCase
+class BuildPathsTest extends OpenApiTestCase
 {
     public function testMergePathsWithSamePath()
     {
@@ -43,9 +43,9 @@ class BuildPathsTest extends SwaggerTestCase
         $this->assertCount(1, $openapi->paths);
         $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);
-        $this->assertInstanceOf('\Swagger\Annotations\PathItem', $path);
-        $this->assertInstanceOf('\Swagger\Annotations\Get', $path->get);
-        $this->assertInstanceOf('\Swagger\Annotations\Post', $path->post);
+        $this->assertInstanceOf('\OpenApi\Annotations\PathItem', $path);
+        $this->assertInstanceOf('\OpenApi\Annotations\Get', $path->get);
+        $this->assertInstanceOf('\OpenApi\Annotations\Post', $path->post);
         $this->assertNull($path->put);
     }
 }

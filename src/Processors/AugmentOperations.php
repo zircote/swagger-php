@@ -4,10 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Operation;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Operation;
 
 /**
  * Use the operation context to extract useful information and inject that into the annotation.

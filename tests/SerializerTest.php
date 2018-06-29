@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Swaggertests;
+namespace OpenApitests;
 
-use Swagger\Annotations;
-use Swagger\Serializer;
+use OpenApi\Annotations;
+use OpenApi\Serializer;
 
-class SerializerTest extends SwaggerTestCase
+class SerializerTest extends OpenApiTestCase
 {
     private function getExpected()
     {
@@ -118,9 +118,9 @@ class SerializerTest extends SwaggerTestCase
 JSON;
 
 //        $this->markTestSkipped('@todo');
-        $annotation = $serializer->deserialize($json, 'Swagger\Annotations\OpenApi');
+        $annotation = $serializer->deserialize($json, 'OpenApi\Annotations\OpenApi');
 
-        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $annotation);
+        $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->__toString(),
             $this->getExpected()->__toString()
@@ -131,7 +131,7 @@ JSON;
     {
         $serializer = new Serializer();
         $openapi = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
-        $this->assertInstanceOf('Swagger\Annotations\OpenApi', $openapi);
+        $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $openapi);
         $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json', $openapi);
     }
 }

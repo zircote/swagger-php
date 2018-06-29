@@ -4,20 +4,20 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analyser;
-use Swagger\Annotations\Property;
-use Swagger\Context;
-use Swagger\StaticAnalyser;
+use OpenApi\Analyser;
+use OpenApi\Annotations\Property;
+use OpenApi\Context;
+use OpenApi\StaticAnalyser;
 
-class StaticAnalyserTest extends SwaggerTestCase
+class StaticAnalyserTest extends OpenApiTestCase
 {
     public function testWrongCommentType()
     {
         $analyser = new StaticAnalyser();
-        $this->assertSwaggerLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php\n/*\n * @OAS\Parameter() */", new Context([]));
+        $this->assertOpenApiLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
+        $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context([]));
     }
 
     public function testIndentationCorrection()
@@ -39,14 +39,14 @@ class StaticAnalyserTest extends SwaggerTestCase
     public function testThirdPartyAnnotations()
     {
         $backup = Analyser::$whitelist;
-        Analyser::$whitelist = ['Swagger\Annotations\\'];
+        Analyser::$whitelist = ['OpenApi\Annotations\\'];
         $analyser = new StaticAnalyser();
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
-        $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OAS annotations, skip the others.');
+        $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
         // Allow Swagger to parse 3rd party annotations
         // might contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';
-        $openapi = \Swagger\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(10, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
@@ -54,9 +54,9 @@ class StaticAnalyserTest extends SwaggerTestCase
         $annotations = $analysis->getAnnotationsOfType('Zend\Form\Annotation\Name');
         $this->assertCount(1, $annotations);
         $context = $analysis->getContext($annotations[0]);
-        $this->assertInstanceOf('Swagger\Context', $context);
+        $this->assertInstanceOf('OpenApi\Context', $context);
         $this->assertSame('ThirdPartyAnnotations', $context->class);
-        $this->assertSame('\SwaggerFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
+        $this->assertSame('\OpenApiFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
         $this->assertCount(2, $context->annotations);
     }
 

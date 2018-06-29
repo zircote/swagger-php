@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @OAS\Schema(
+ * @OA\Schema(
  *   schema="NewPet",
  *   type="object",
  *   required={"name"}
@@ -12,25 +12,25 @@ class Pet
 
     public $id;
     /**
-     * @OAS\Property(type="string")
+     * @OA\Property(type="string")
      */
     public $name;
 
     /**
-     * @OAS\Property(type="string")
+     * @OA\Property(type="string")
      */
     public $tag;
 }
 
 /**
- *  @OAS\Schema(
+ *  @OA\Schema(
  *   schema="Pet",
  *   type="object",
  *   allOf={
- *       @OAS\Schema(ref="#/components/schemas/NewPet"),
- *       @OAS\Schema(
+ *       @OA\Schema(ref="#/components/schemas/NewPet"),
+ *       @OA\Schema(
  *           required={"id"},
- *           @OAS\Property(property="id", format="int64", type="integer")
+ *           @OA\Property(property="id", format="int64", type="integer")
  *       )
  *   }
  * )

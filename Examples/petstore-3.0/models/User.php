@@ -13,7 +13,7 @@ namespace Petstore30;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
- * @OAS\Schema(
+ * @OA\Schema(
  *     title="User model",
  *     description="User model",
  *     type="object"
@@ -22,7 +22,7 @@ namespace Petstore30;
 class User
 {
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     format="int64",
      *     description="ID",
      *     title="ID",
@@ -33,7 +33,7 @@ class User
     private $id;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     description="Username",
      *     title="Username",
      * )
@@ -43,7 +43,7 @@ class User
     private $username;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     description="First name",
      *     title="First name",
      * )
@@ -53,7 +53,7 @@ class User
     private $firstName;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     description="Last name",
      *     title="Last name",
      * )
@@ -63,7 +63,7 @@ class User
     private $lastName;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     format="email",
      *     description="Email",
      *     title="Email",
@@ -74,7 +74,7 @@ class User
     private $email;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     format="int64",
      *     description="Password",
      *     title="Password",
@@ -86,7 +86,7 @@ class User
     private $password;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     format="msisdn",
      *     description="Phone",
      *     title="Phone",
@@ -97,7 +97,7 @@ class User
     private $phone;
 
     /**
-     * @OAS\Property(
+     * @OA\Property(
      *     format="int32",
      *     description="User status",
      *     title="User status",

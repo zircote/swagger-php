@@ -3,24 +3,24 @@
 namespace petstore;
 
 /**
- * @OAS\Schema(required={"id", "name"})
+ * @OA\Schema(required={"id", "name"})
  */
 class Pet
 {
 
     /**
-     * @OAS\Property(type="integer", format="int64")
+     * @OA\Property(type="integer", format="int64")
      */
     public $id;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $tag;

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -110,20 +110,20 @@ class PathItem extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Get' => 'get',
-        'Swagger\Annotations\Post' => 'post',
-        'Swagger\Annotations\Put' => 'put',
-        'Swagger\Annotations\Delete' => 'delete',
-        'Swagger\Annotations\Patch' => 'patch',
-        'Swagger\Annotations\Trace' => 'trace',
-        'Swagger\Annotations\Head' => 'head',
-        'Swagger\Annotations\Options' => 'options',
-        'Swagger\Annotations\Parameter' => ['parameters'],
-        'Swagger\Annotations\Server' => ['servers'],
+        'OpenApi\Annotations\Get' => 'get',
+        'OpenApi\Annotations\Post' => 'post',
+        'OpenApi\Annotations\Put' => 'put',
+        'OpenApi\Annotations\Delete' => 'delete',
+        'OpenApi\Annotations\Patch' => 'patch',
+        'OpenApi\Annotations\Trace' => 'trace',
+        'OpenApi\Annotations\Head' => 'head',
+        'OpenApi\Annotations\Options' => 'options',
+        'OpenApi\Annotations\Parameter' => ['parameters'],
+        'OpenApi\Annotations\Server' => ['servers'],
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi'
+        'OpenApi\Annotations\OpenApi'
     ];
 }

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -40,23 +40,23 @@ class Server extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi',
-        'Swagger\Annotations\PathItem',
-        'Swagger\Annotations\Operation',
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Put',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\Trace',
-        'Swagger\Annotations\Link',
+        'OpenApi\Annotations\OpenApi',
+        'OpenApi\Annotations\PathItem',
+        'OpenApi\Annotations\Operation',
+        'OpenApi\Annotations\Get',
+        'OpenApi\Annotations\Post',
+        'OpenApi\Annotations\Put',
+        'OpenApi\Annotations\Delete',
+        'OpenApi\Annotations\Patch',
+        'OpenApi\Annotations\Head',
+        'OpenApi\Annotations\Options',
+        'OpenApi\Annotations\Trace',
+        'OpenApi\Annotations\Link',
     ];
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\ServerVariable' => ['variables', 'serverVariable'],
+        'OpenApi\Annotations\ServerVariable' => ['variables', 'serverVariable'],
     ];
 
     /** @inheritdoc */

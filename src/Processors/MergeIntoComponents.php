@@ -4,15 +4,15 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\Components;
-use Swagger\Analysis;
-use Swagger\Context;
-use Swagger\UNDEFINED;
+use OpenApi\Annotations\Components;
+use OpenApi\Analysis;
+use OpenApi\Context;
+use OpenApi\UNDEFINED;
 
 /**
- * Merge reusable annotation into @OAS\Schemas
+ * Merge reusable annotation into @OA\Schemas
  */
 class MergeIntoComponents
 {

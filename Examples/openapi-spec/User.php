@@ -2,19 +2,19 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @OAS\Schema(schema="user", type="object")
+ * @OA\Schema(schema="user", type="object")
  */
 class User
 {
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $username;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string
      */
     public $uuid;

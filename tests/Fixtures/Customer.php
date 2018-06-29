@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace SwaggerFixures;
+namespace OpenApiFixures;
 
 use Exception;
-use Swagger\Annotations as OAS;
-use Swagger\Logger;
-use Swagger\Logger as SwaggerLogger;
+use OpenApi\Annotations as OA;
+use OpenApi\Logger;
+use OpenApi\Logger as SwaggerLogger;
 
 /**
- * @OAS\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @OAS\Schema()
+ * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
+ * @OA\Schema()
  */
 class Customer
 {
@@ -19,30 +19,30 @@ class Customer
      *
      * @var string
      * @example test_user
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $firstname;
 
     /**
      * @var string The lastname of the customer.
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $lastname;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var string[]
      */
     public $tags;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var Customer
      */
     public $submittedBy;
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      * @var Customer[]
      */
     public $friends;
@@ -54,7 +54,7 @@ class Customer
     {
         $test = new SwaggerLogger();
         $test2 = new Logger();
-        $test3 = new OAS\Contact();
+        $test3 = new OA\Contact();
         throw new Exception();
     }
 }

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -69,12 +69,12 @@ class Info extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Contact' => 'contact',
-        'Swagger\Annotations\License' => 'license'
+        'OpenApi\Annotations\Contact' => 'contact',
+        'OpenApi\Annotations\License' => 'license'
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\OpenApi'
+        'OpenApi\Annotations\OpenApi'
     ];
 }

@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
-use \Swagger\Logger;
+use OpenApi\Logger;
 
 /**
  * @Annotation
@@ -203,23 +203,23 @@ class Parameter extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Schema' => 'schema',
-        'Swagger\Annotations\Examples' => ['examples'],
+        'OpenApi\Annotations\Schema' => 'schema',
+        'OpenApi\Annotations\Examples' => ['examples'],
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\PathItem',
-        'Swagger\Annotations\Operation',
-        'Swagger\Annotations\Get',
-        'Swagger\Annotations\Post',
-        'Swagger\Annotations\Put',
-        'Swagger\Annotations\Delete',
-        'Swagger\Annotations\Patch',
-        'Swagger\Annotations\Head',
-        'Swagger\Annotations\Options',
-        'Swagger\Annotations\Trace',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\PathItem',
+        'OpenApi\Annotations\Operation',
+        'OpenApi\Annotations\Get',
+        'OpenApi\Annotations\Post',
+        'OpenApi\Annotations\Put',
+        'OpenApi\Annotations\Delete',
+        'OpenApi\Annotations\Patch',
+        'OpenApi\Annotations\Head',
+        'OpenApi\Annotations\Options',
+        'OpenApi\Annotations\Trace',
     ];
 
     /** @inheritdoc */

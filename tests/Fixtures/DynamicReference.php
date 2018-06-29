@@ -1,46 +1,46 @@
 <?php
-namespace SwaggerFixtures;
+namespace OpenApiFixtures;
 
-use Swagger\Annotations as OAS;
+use OpenApi\Annotations as OA;
 
 /**
- * @OAS\Info(title="Using a dynamic reference", version="unittest")
+ * @OA\Info(title="Using a dynamic reference", version="unittest")
  */
 class DynamicReference
 {
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/api/path",
      *     summary="Post to URL",
-     *     @OAS\MediaType(
+     *     @OA\MediaType(
      *         mediaType="multipart/form-data",
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *              schema="body",
-     *              @OAS\Property(
+     *              @OA\Property(
      *                  property="name",
      *                  type="string",
      *                  maximum=64
      *              ),
-     *              @OAS\Property(
+     *              @OA\Property(
      *                  property="description",
      *                  type="string"
      *              )
      *          )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *          response=200,
      *          description="Example extended response",
      *          ref="$/components/responses/Json",
-     *          @OAS\MediaType(
+     *          @OA\MediaType(
      *              mediaType="application/json",
-     *              @OAS\Schema(
+     *              @OA\Schema(
      *                  ref="$/components/schemas/Product",
-     *                  @OAS\Property(
+     *                  @OA\Property(
      *                      property="data",
      *                      ref="#/components/schemas/Product"
      *                  ),
-     *                  @OAS\Property(
+     *                  @OA\Property(
      *                      property="test",
      *                      ref="$/components/schemas/TestProperty"
      *                  )
@@ -56,9 +56,9 @@ class DynamicReference
 }
 
 /**
- * @OAS\Schema(
+ * @OA\Schema(
  *   schema="Product",
- *   @OAS\Property(
+ *   @OA\Property(
  *      property="status",
  *      type="string",
  *      description="The status of a product",
@@ -69,7 +69,7 @@ class DynamicReference
  */
 
 /**
- * @OAS\Schema(
+ * @OA\Schema(
  *   schema="TestProperty",
  *   type="string",
  *   description="The status of a product",
@@ -79,24 +79,24 @@ class DynamicReference
  */
 
 /**
- * @OAS\Response(
+ * @OA\Response(
  *      response="Json",
  *      description="the basic response",
- *      @OAS\MediaType(
+ *      @OA\MediaType(
  *          mediaType="application/json",
- *          @OAS\Schema(
- *              @OAS\Property(
+ *          @OA\Schema(
+ *              @OA\Property(
  *                  type="boolean",
  *                  property="success"
  *              ),
- *              @OAS\Property(
+ *              @OA\Property(
  *                  property="data"
  *              ),
- *              @OAS\Property(
+ *              @OA\Property(
  *                  property="errors",
  *                  type="object"
  *              ),
- *              @OAS\Property(
+ *              @OA\Property(
  *                  property="token",
  *                  type="string"
  *              )

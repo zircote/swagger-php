@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\MergeIntoComponents;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\StaticAnalyser;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\StaticAnalyser;
 
-class AugmentSchemasTest extends SwaggerTestCase
+class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas()
     {
@@ -22,9 +22,9 @@ class AugmentSchemasTest extends SwaggerTestCase
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertNull($customer->schema, 'Sanity check. No scheme was defined');
-        $this->assertNull($customer->properties, 'Sanity check. @OAS\Property\'s not yet merged ');
+        $this->assertNull($customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
         $analysis->process(new AugmentSchemas());
-        $this->assertSame('Customer', $customer->schema, '@OAS\Schema()->schema based on classname');
-        $this->assertCount(5, $customer->properties, '@OAS\Property()s are merged into the @OAS\Schema of the class');
+        $this->assertSame('Customer', $customer->schema, '@OA\Schema()->schema based on classname');
+        $this->assertCount(5, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 }

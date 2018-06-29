@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
@@ -19,19 +19,19 @@ class Property extends Schema
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\AdditionalProperties',
-        'Swagger\Annotations\Schema',
-        'Swagger\Annotations\JsonContent',
-        'Swagger\Annotations\XmlContent',
-        'Swagger\Annotations\Property',
-        'Swagger\Annotations\Items',
+        'OpenApi\Annotations\AdditionalProperties',
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\JsonContent',
+        'OpenApi\Annotations\XmlContent',
+        'OpenApi\Annotations\Property',
+        'OpenApi\Annotations\Items',
     ];
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Items' => 'items',
-        'Swagger\Annotations\Property' => ['properties', 'property'],
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Xml' => 'xml',
+        'OpenApi\Annotations\Items' => 'items',
+        'OpenApi\Annotations\Property' => ['properties', 'property'],
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        'OpenApi\Annotations\Xml' => 'xml',
     ];
 }

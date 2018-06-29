@@ -4,20 +4,20 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Response;
-use Swagger\Processors\MergeXmlContent;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Response;
+use OpenApi\Processors\MergeXmlContent;
 
-class MergeXmlContentTest extends SwaggerTestCase
+class MergeXmlContentTest extends OpenApiTestCase
 {
     public function testXmlContent()
     {
         $comment = <<<END
-        @OAS\Response(response=200,
-            @OAS\XmlContent(type="array",
-                @OAS\Items(ref="#/components/schemas/repository")
+        @OA\Response(response=200,
+            @OA\XmlContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
             )
         )
 END;
@@ -36,10 +36,10 @@ END;
     public function testMultipleMediaTypes()
     {
         $comment = <<<END
-        @OAS\Response(response=200,
-            @OAS\MediaType(mediaType="image/png"),
-            @OAS\XmlContent(type="array",
-                @OAS\Items(ref="#/components/schemas/repository")
+        @OA\Response(response=200,
+            @OA\MediaType(mediaType="image/png"),
+            @OA\XmlContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
             )
         )
 END;

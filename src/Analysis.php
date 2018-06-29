@@ -4,26 +4,26 @@
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 use Closure;
 use Exception;
 use SplObjectStorage;
 use stdClass;
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\OpenApi;
-use Swagger\Processors\AugmentOperations;
-use Swagger\Processors\AugmentParameters;
-use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\BuildPaths;
-use Swagger\Processors\CleanUnmerged;
-use Swagger\Processors\InheritProperties;
-use Swagger\Processors\MergeIntoComponents;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\Processors\MergeJsonContent;
-use Swagger\Processors\MergeXmlContent;
-use Swagger\Processors\OperationId;
+use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Processors\AugmentOperations;
+use OpenApi\Processors\AugmentParameters;
+use OpenApi\Processors\AugmentProperties;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\BuildPaths;
+use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\InheritProperties;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\Processors\MergeJsonContent;
+use OpenApi\Processors\MergeXmlContent;
+use OpenApi\Processors\OperationId;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -208,7 +208,7 @@ class Analysis
      *
      * @param object $annotation
      *
-     * @return \Swagger\Context
+     * @return \OpenApi\Context
      */
     public function getContext($annotation)
     {

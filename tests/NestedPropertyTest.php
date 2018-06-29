@@ -4,15 +4,15 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Processors\AugmentProperties;
-use Swagger\Processors\AugmentSchemas;
-use Swagger\Processors\MergeIntoComponents;
-use Swagger\Processors\MergeIntoOpenApi;
-use Swagger\StaticAnalyser;
+use OpenApi\Processors\AugmentProperties;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\StaticAnalyser;
 
-class NestedPropertyTest extends SwaggerTestCase
+class NestedPropertyTest extends OpenApiTestCase
 {
     public function testNestedProperties()
     {

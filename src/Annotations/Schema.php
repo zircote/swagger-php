@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
-use Swagger\Logger;
+use OpenApi\Logger;
 
 /**
  * @Annotation
@@ -312,26 +312,26 @@ class Schema extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_nested = [
-        'Swagger\Annotations\Discriminator' => 'discriminator',
-        'Swagger\Annotations\Items' => 'items',
-        'Swagger\Annotations\Property' => ['properties', 'property'],
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs',
-        'Swagger\Annotations\Xml' => 'xml',
-        'Swagger\Annotations\AdditionalProperties' => 'additionalProperties'
+        'OpenApi\Annotations\Discriminator' => 'discriminator',
+        'OpenApi\Annotations\Items' => 'items',
+        'OpenApi\Annotations\Property' => ['properties', 'property'],
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        'OpenApi\Annotations\Xml' => 'xml',
+        'OpenApi\Annotations\AdditionalProperties' => 'additionalProperties'
     ];
 
     /** @inheritdoc */
     public static $_parents = [
-        'Swagger\Annotations\Components',
-        'Swagger\Annotations\Parameter',
-        'Swagger\Annotations\MediaType',
-        'Swagger\Annotations\Header',
+        'OpenApi\Annotations\Components',
+        'OpenApi\Annotations\Parameter',
+        'OpenApi\Annotations\MediaType',
+        'OpenApi\Annotations\Header',
     ];
 
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if ($this->type === 'array' && $this->items === null) {
-            Logger::notice('@OAS\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            Logger::notice('@OA\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
             return false;
         }
         return parent::validate($parents, $skip, $ref);

@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace SwaggerFixures;
+namespace OpenApiFixures;
 
 /**
- * @OAS\Schema
+ * @OA\Schema
  */
 trait Hello
 {
 
     /**
-     * @OAS\Property()
+     * @OA\Property()
      */
     public $greet = 'Hello!';
 }

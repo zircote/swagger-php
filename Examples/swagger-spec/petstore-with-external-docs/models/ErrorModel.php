@@ -1,16 +1,16 @@
 <?php
 /**
- * @OAS\Schema(required={"code", "message"}, type="object")
+ * @OA\Schema(required={"code", "message"}, type="object")
  */
 class ErrorModel extends Exception
 {
     /**
-     * @OAS\Property(format="int32");
+     * @OA\Property(format="int32");
      * @var int
      */
     public $code;
     /**
-     * @OAS\Property();
+     * @OA\Property();
      * @var string
      */
     public $message;

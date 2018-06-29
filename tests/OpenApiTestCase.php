@@ -4,21 +4,20 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
 use Closure;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Swagger\Analyser;
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\OpenApi;
-use Swagger\Context;
-use Swagger\Logger;
+use OpenApi\Analyser;
+use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
+use OpenApi\Logger;
 
-class SwaggerTestCase extends TestCase
+class OpenApiTestCase extends TestCase
 {
-
     protected $countExceptions = 0;
 
     /**
@@ -76,7 +75,7 @@ class SwaggerTestCase extends TestCase
         };
     }
 
-    public function assertSwaggerLogEntryStartsWith($entryPrefix, $message = '')
+    public function assertOpenApiLogEntryStartsWith($entryPrefix, $message = '')
     {
         $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
             if ($entry instanceof Exception) {
@@ -100,9 +99,9 @@ class SwaggerTestCase extends TestCase
                     E_USER_WARNING => 'warning',
                 ];
                 if (isset($map[$type])) {
-                    $this->fail('Unexpected \Swagger\Logger::'.$map[$type].'("'.$entry.'")');
+                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
                 } else {
-                    $this->fail('Unexpected \Swagger\Logger->getInstance()->log("'.$entry.'",'.$type.')');
+                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
                 }
             }
         };
@@ -111,7 +110,7 @@ class SwaggerTestCase extends TestCase
 
     protected function tearDown()
     {
-        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' Swagger\Logger messages were not triggered');
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }
@@ -136,7 +135,7 @@ class SwaggerTestCase extends TestCase
     protected function createSwaggerWithInfo()
     {
         $openapi = new OpenApi([
-            'info'     => new \Swagger\Annotations\Info([
+            'info'     => new \OpenApi\Annotations\Info([
                 'title'    => 'Swagger-PHP Test-API',
                 'version'  => 'test',
                 '_context' => new Context(['unittest' => true]),
@@ -186,7 +185,7 @@ class SwaggerTestCase extends TestCase
         foreach ($data as $property => $value) {
             if (is_object($value)) {
                 $data[$property] = $this->sorted($value, $origin.'->'.$property);
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 if (count($value) > 1) {
                     if (gettype($value[0]) === 'string') {
                         $sortFn = 'strcasecmp';

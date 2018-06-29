@@ -3,19 +3,19 @@
 namespace AnotherNamespace;
 
 /**
- * @OAS\Schema()
+ * @OA\Schema()
  */
 class NestedProperty
 {
 
     /**
      * @var bool
-     * @OAS\Property(
-     *     @OAS\Property(
+     * @OA\Property(
+     *     @OA\Property(
      *         property="babyProperty",
-     *         @OAS\Property(
+     *         @OA\Property(
      *             property="theBabyOfBaby",
-     *             properties={@Swagger\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
+     *             properties={@OpenApi\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
      *         )
      *     ),
      * )

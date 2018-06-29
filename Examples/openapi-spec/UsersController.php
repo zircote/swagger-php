@@ -9,17 +9,17 @@ class UsersController
 {
 
     /**
-     * @OAS\Get(path="/2.0/users/{username}",
+     * @OA\Get(path="/2.0/users/{username}",
      *   operationId="getUserByName",
-     *   @OAS\Parameter(name="username",
+     *   @OA\Parameter(name="username",
      *     in="path",
      *     required=true,
-     *     @OAS\Schema(type="string")
+     *     @OA\Schema(type="string")
      *   ),
-     *   @OAS\Response(response="200",
+     *   @OA\Response(response="200",
      *     description="The User",
-     *     @OAS\JsonContent(ref="#/components/schemas/user"),
-     *     @OAS\Link(link="userRepositories", ref="#/components/links/UserRepositories")
+     *     @OA\JsonContent(ref="#/components/schemas/user"),
+     *     @OA\Link(link="userRepositories", ref="#/components/links/UserRepositories")
      *   )
      * )
      */

@@ -6,87 +6,87 @@ class SimplePetsController
 {
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/pets",
      *     description="Returns all pets from the system that the user has access to",
      *     operationId="findPets",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="tags",
      *         in="query",
      *         description="tags to filter by",
      *         required=false,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="array",
-     *             @OAS\Items(type="string"),
+     *             @OA\Items(type="string"),
      *         ),
      *         style="form"
      *     ),
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         name="limit",
      *         in="query",
      *         description="maximum number of results to return",
      *         required=false,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int32"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             ),
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             ),
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             ),
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 type="array",
-     *                 @OAS\Items(ref="#/components/schemas/Pet")
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             ),
      *         ),
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/ErrorModel"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/ErrorModel"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/ErrorModel"
      *             )
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OAS\Schema(
+     *             @OA\Schema(
      *                 ref="#/components/schemas/ErrorModel"
      *             )
      *         )
@@ -98,58 +98,58 @@ class SimplePetsController
     }
 
     /**
-     * @OAS\Get(
+     * @OA\Get(
      *     path="/pets/{id}",
      *     description="Returns a user based on a single ID, if the user does not have access to the pet",
      *     operationId="findPetById",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         description="ID of pet to fetch",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             type="integer",
      *             format="int64",
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *             @OA\Schema(ref="#/components/schemas/Pet")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *             @OA\Schema(ref="#/components/schemas/Pet")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *             @OA\Schema(ref="#/components/schemas/Pet")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *             @OA\Schema(ref="#/components/schemas/Pet")
      *         ),
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
      *     )
      * )
@@ -159,32 +159,32 @@ class SimplePetsController
     }
 
     /**
-     * @OAS\Post(
+     * @OA\Post(
      *     path="/pets",
      *     operationId="addPet",
      *     description="Creates a new pet in the store.  Duplicates are allowed",
-     *     @OAS\RequestBody(
+     *     @OA\RequestBody(
      *         description="Pet to add to the store",
      *         required=true,
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
-     *             @OAS\Schema(ref="#/components/schemas/NewPet")
+     *             @OA\Schema(ref="#/components/schemas/NewPet")
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(ref="#/components/schemas/Pet")
+     *             @OA\Schema(ref="#/components/schemas/Pet")
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\MediaType(
+     *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         )
      *     )
      * )
@@ -194,28 +194,28 @@ class SimplePetsController
     }
 
     /**
-     * @OAS\Delete(
+     * @OA\Delete(
      *     path="/pets/{id}",
      *     description="deletes a single pet based on the ID supplied",
      *     operationId="deletePet",
-     *     @OAS\Parameter(
+     *     @OA\Parameter(
      *         description="ID of pet to delete",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         @OAS\Schema(
+     *         @OA\Schema(
      *             format="int64",
      *             type="integer"
      *         )
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response=204,
      *         description="pet deleted"
      *     ),
-     *     @OAS\Response(
+     *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OAS\Schema(ref="#/components/schemas/ErrorModel")
+     *         @OA\Schema(ref="#/components/schemas/ErrorModel")
      *     )
      * )
      */

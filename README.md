@@ -8,10 +8,10 @@ Generate interactive [OpenAPI](https://www.openapis.org) documentation for your 
 
 ## Features
 
- - Compatible with the OpenAPI 3.0 specification.
- - Exceptional error reporting (with hints, context)
- - Extracts information from code & existing phpdoc annotations.
- - Command-line interface available.
+- Compatible with the OpenAPI 3.0 specification.
+- Exceptional error reporting (with hints, context)
+- Extracts information from code & existing phpdoc annotations.
+- Command-line interface available.
 
 ## Installation (with [Composer](https://getcomposer.org))
 
@@ -28,20 +28,21 @@ composer global require zircote/swagger-php
 ## Usage
 
 Add annotations to your php files.
+
 ```php
 /**
- * @OAS\Info(title="My First API", version="0.1")
+ * @OA\Info(title="My First API", version="0.1")
  */
 
 /**
- * @OAS\Get(
+ * @OA\Get(
  *     path="/api/resource.json",
- *     @OAS\Response(response="200", description="An example resource")
+ *     @OA\Response(response="200", description="An example resource")
  * )
  */
 ```
-See the [Getting started guide](docs/Getting-started.md) and [Examples directory](Examples/) for more examples.
 
+See the [Getting started guide](docs/Getting-started.md) and [Examples directory](Examples/) for more examples.
 
 ### Usage from php
 
@@ -50,10 +51,11 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = \Swagger\scan('/path/to/project');
+$openapi = \OpenApi\scan('/path/to/project');
 header('Content-Type: application/json');
 echo $openapi;
 ```
+
 ### Usage from the Command Line Interface
 
 Generate the swagger documentation to a static json file.
@@ -69,10 +71,10 @@ Generate the OpenApi annotation object from a json string, which makes it easier
 ```php
 <?php
 
-use Swagger\Serializer;
+use OpenApi\Serializer;
 
 $serializer = new Serializer();
-$openapi = $serializer->deserialize($jsonString, 'Swagger\Annotations\OpenApi');
+$openapi = $serializer->deserialize($jsonString, 'OpenApi\Annotations\OpenApi');
 echo $openapi;
 ```
 
@@ -86,11 +88,11 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 
 ## More on OpenApi
 
-  * https://www.openapis.org
-  * https://github.com/swagger-api/swagger-spec/
-  * http://bfanger.github.io/swagger-explained/
-  * [Related projects](docs/Related-projects.md)
-  * https://www.marcoraddatz.com/en/2015/07/21/integrate-swagger-into-laravel/
+- https://www.openapis.org
+- https://github.com/swagger-api/swagger-spec/
+- http://bfanger.github.io/swagger-explained/
+- [Related projects](docs/Related-projects.md)
+- https://www.marcoraddatz.com/en/2015/07/21/integrate-swagger-into-laravel/
 
 ## Contributing
 

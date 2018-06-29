@@ -4,12 +4,12 @@
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
 /**
  * Test if the nesting/parent relations are coherent.
  */
-class ValidateRelationsTest extends SwaggerTestCase
+class ValidateRelationsTest extends OpenApiTestCase
 {
 
     /**
@@ -70,7 +70,7 @@ class ValidateRelationsTest extends SwaggerTestCase
                 continue;
             }
             if ($entry->getExtension() === 'php') {
-                $classes[] = ['Swagger\Annotations\\'.substr($entry->getFilename(), 0, -4)];
+                $classes[] = ['OpenApi\Annotations\\'.substr($entry->getFilename(), 0, -4)];
             }
         }
         return $classes;
