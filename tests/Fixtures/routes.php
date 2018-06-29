@@ -26,7 +26,7 @@
     * 			name="user",
     * 			in="cookie",
     * 			required=true,
-    * 			@OA\Schema(ref="#/definitions/User"),
+    * 			@OA\Schema(ref="#/components/schemas/User"),
     *		),
     * 		@OA\Response(
     * 			response=200,
@@ -35,7 +35,7 @@
     * 		@OA\Response(
     * 			response="default",
     * 			description="error",
-    * 			@OA\Schema(ref="#/definitions/Error"),
+    * 			@OA\Schema(ref="#/components/schemas/Error"),
     * 		),
     * 	)
     * @OA\Options(
@@ -45,32 +45,32 @@
     */
    Route::put('/users/{user_id}', 'UserController@update');
 
-	/**
-	 *
-	 * 	@OA\Delete(
-	 * 		path="/users/{id}",
-	 * 		tags={"users"},
-	 * 		operationId="deleteUser",
-	 * 		summary="Remove user entry",
-	 * 		@OA\Parameter(
-	 * 			name="id",
-	 * 			in="path",
-	 * 			required=true,
-	 * 			description="UUID",
-	 * 		),
-	 * 		@OA\Response(
-	 * 			response=200,
-	 * 			description="success",
-	 * 		),
-	 * 		@OA\Response(
-	 * 			response="default",
-	 * 			description="error",
-	 * 			@OA\Schema(ref="#/definitions/Error"),
-	 * 		),
-	 * 	)
-	 *
-	 */
-	Route::delete('/users/{user_id}', 'UserController@destroy');
+    /**
+     *
+     * 	@OA\Delete(
+     * 		path="/users/{id}",
+     * 		tags={"users"},
+     * 		operationId="deleteUser",
+     * 		summary="Remove user entry",
+     * 		@OA\Parameter(
+     * 			name="id",
+     * 			in="path",
+     * 			required=true,
+     * 			description="UUID",
+     * 		),
+     * 		@OA\Response(
+     * 			response=200,
+     * 			description="success",
+     * 		),
+     * 		@OA\Response(
+     * 			response="default",
+     * 			description="error",
+     * 			@OA\Schema(ref="#/components/schemas/Error"),
+     * 		),
+     * 	)
+     *
+     */
+    Route::delete('/users/{user_id}', 'UserController@destroy');
 
       /**
       *@OA\Head(path="/users/{id}",@OA\Response(response=200,description="Only checking if it exists"))

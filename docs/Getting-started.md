@@ -71,7 +71,7 @@ define("API_HOST", ($env === "production") ? "example.com" : "localhost");
 When you're using the CLI you'll need to include the php file with the constants using the `--bootstrap` options:
 
 ```
-$ swagger --bootstrap constants.php
+$ openapi --bootstrap constants.php
 ```
 
 ## Annotation placement
@@ -126,7 +126,7 @@ Generates:
 }
 ```
 
-### Swagger-PHP detects values based on context
+### Detects values based on context
 
 swagger-php looks at the context of the comment which reduces duplication.
 

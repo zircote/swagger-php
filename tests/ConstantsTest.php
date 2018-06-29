@@ -47,9 +47,9 @@ class ConstantsTest extends OpenApiTestCase
     {
         if (class_exists('Zend\Validator\Timezone', false)) {
             $this->markTestSkipped();
-            $annotations = $this->parseComment('@OA\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
-            $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
         }
+        $annotations = $this->parseComment('@OA\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
+        $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 
     public function testDynamicImports()

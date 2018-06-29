@@ -10,9 +10,6 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 {
     protected function setUp()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped();
-        }
         parent::setUp();
     }
 

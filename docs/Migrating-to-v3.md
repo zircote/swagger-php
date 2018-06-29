@@ -1,6 +1,6 @@
 # Migrating to Swagger-PHP v3.x
 
-Swagger-PHP 3.x generates a openapi.json file that follows the OpenAPI Version 3.0.0 Specification.
+Swagger-PHP 3.x generates a openapi.json file that follows the [OpenAPI Version 3.0.x Specification](https://github.com/OAI/OpenAPI-Specification).
 
 If you need to output the older 2.x specification use OpenApi-php 2.x
 
@@ -36,7 +36,7 @@ Rename `#/parameters/{parameter_name}` to `#/components/parameters/{parameter_na
 
 Rename `#/responses/{response}` to `#/components/responses/{response}`
 
-### Renamed commandline utility
+### Renamed cli
 
 Renamed swagger to openapi
 

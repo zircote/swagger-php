@@ -12,8 +12,8 @@ class UsingRefs
      * @OA\Get(
      *   path="/pi/{item_name}",
      *   summary="Get protected item",
-     *   @OA\Parameter(ref="#/parameters/ItemName"),
-     *   @OA\Response(response="default", ref="#/responses/Item")
+     *   @OA\Parameter(ref="#/components/parameters/ItemName"),
+     *   @OA\Response(response="default", ref="#/components/responses/Item")
      * )
      */
     public function getProtectedItem()

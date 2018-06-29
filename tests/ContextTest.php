@@ -36,7 +36,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('\OpenApiFixures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('Logger'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
-        $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('SwaggerLogger'));
+        $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('OpenApiLogger'));
         $this->assertSame('\OpenApi\Annotations\QualifiedAlias', $context->fullyQualifiedName('OA\QualifiedAlias'));
     }
 

@@ -5,7 +5,7 @@
   "bin": [
     "bin/openapi"
   ],
-  "description": "Swagger-PHP - Generate interactive documentation for your RESTful API using phpdoc annotations",
+  "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
   "keywords": [
     "json",
     "rest",

@@ -37,7 +37,7 @@ class ThirdPartyAnnotations
     /**
      * @OA\Get(path="api/3rd-party", @OA\Response(response="200", description="a response"))
      */
-    public function methodWithSwaggerAnnotation()
+    public function methodWithOpenApiAnnotation()
     {
     }
 }

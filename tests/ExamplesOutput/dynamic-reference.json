@@ -5,10 +5,7 @@
         "status": {
           "default": "available",
           "description": "The status of a product",
-          "enum": [
-            "available",
-            "discontinued"
-          ],
+          "enum": ["available", "discontinued"],
           "type": "string"
         }
       }
@@ -59,7 +56,7 @@
             "schema": {
               "properties": {
                 "data": {
-                  "$ref": "#/definitions/Product"
+                  "$ref": "#/components/schemas/Product"
                 },
                 "errors": {
                   "type": "object"
@@ -67,10 +64,7 @@
                 "status": {
                   "default": "available",
                   "description": "The status of a product",
-                  "enum": [
-                    "available",
-                    "discontinued"
-                  ],
+                  "enum": ["available", "discontinued"],
                   "type": "string"
                 },
                 "success": {
@@ -104,10 +98,7 @@
           "status": {
             "default": "available",
             "description": "The status of a product",
-            "enum": [
-              "available",
-              "discontinued"
-            ],
+            "enum": ["available", "discontinued"],
             "type": "string"
           },
           "success": {

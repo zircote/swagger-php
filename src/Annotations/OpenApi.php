@@ -134,7 +134,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * Look up an annotation with a $ref url.
      *
-     * @param string $ref The $ref value, for example: "#/definitions/Product"
+     * @param string $ref The $ref value, for example: "#/components/schemas/Product"
      * @throws Exception
      */
     public function ref($ref)

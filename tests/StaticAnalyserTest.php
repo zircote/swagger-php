@@ -43,8 +43,8 @@ class StaticAnalyserTest extends OpenApiTestCase
         $analyser = new StaticAnalyser();
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
-        // Allow Swagger to parse 3rd party annotations
-        // might contain useful info that could be extracted with a custom processor
+        // Allow the analyser to parse 3rd party annotations, which might
+        // contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';
         $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);

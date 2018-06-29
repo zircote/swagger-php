@@ -33,12 +33,12 @@ You can define top-level parameters which can be references with $ref="#/paramet
  * )
  */
 ?>
-You can define top-level responses which can be references with $ref="#/responses/$response"
+You can define top-level responses which can be references with $ref="#/components/responses/$response"
 
-I find it usefull to add @OA\Response(ref="#/responses/todo") to the operations when i'm starting out with writting the swagger documentation.
+I find it usefull to add @OA\Response(ref="#/components/responses/todo") to the operations when i'm starting out with writting the swagger documentation.
 As it bypasses the "@OA\Get() requires at least one @OA\Response()" error and you'll get a nice list of the available api calls in swagger-ui.
 
-Then later, a search for '#/responses/todo' will reveal the operations I haven't documented yet.
+Then later, a search for '#/components/responses/todo' will reveal the operations I haven't documented yet.
 <?php
 /**
  * @OA\Response(

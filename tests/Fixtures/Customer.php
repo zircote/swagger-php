@@ -5,7 +5,7 @@ namespace OpenApiFixures;
 use Exception;
 use OpenApi\Annotations as OA;
 use OpenApi\Logger;
-use OpenApi\Logger as SwaggerLogger;
+use OpenApi\Logger as OpenApiLogger;
 
 /**
  * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
@@ -52,7 +52,7 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        $test = new SwaggerLogger();
+        $test = new OpenApiLogger();
         $test2 = new Logger();
         $test3 = new OA\Contact();
         throw new Exception();

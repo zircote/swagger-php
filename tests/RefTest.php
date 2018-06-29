@@ -15,7 +15,7 @@ class RefTest extends OpenApiTestCase
 {
     public function testRef()
     {
-        $openapi = $this->createSwaggerWithInfo();
+        $openapi = $this->createOpenApiWithInfo();
         $info = $openapi->ref('#/info');
         $this->assertInstanceOf(Info::class, $info);
 

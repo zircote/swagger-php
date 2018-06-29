@@ -9,7 +9,7 @@ class Ancestor extends GrandAncestor
 {
 
     /**
-     * Without swagger annotations
+     * Without annotations
      */
     public $firstname;
 }

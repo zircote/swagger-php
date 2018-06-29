@@ -37,7 +37,7 @@ class ItemsTest extends OpenApiTestCase
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__.'/Fixtures/UsingVar.php');
         $analysis->process();
-        $this->assertCount(1, $analysis->openapi->components->schemas);
+        $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);
         $this->assertInternalType('array', $analysis->openapi->components->schemas[0]->properties);
         $this->assertCount(2, $analysis->openapi->components->schemas[0]->properties);

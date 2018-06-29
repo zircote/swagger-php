@@ -20,8 +20,7 @@ class ExamplesTest extends OpenApiTestCase
     public function testExample($example, $output)
     {
         $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
-        //        die((string) $openapi);
-        $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
+        $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }
 
     /**

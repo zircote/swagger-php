@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: sonrac
- * Date: 3/12/18
- * Time: 10:25 AM
- */
 
 namespace OpenApiTests\Fixtures;
 
@@ -29,3 +23,10 @@ class UsingVar
      */
     private $createdAt;
 }
+
+/**
+ * @OA\Schema(
+ *   schema="date",
+ *   type="datetime"
+ * )
+ */

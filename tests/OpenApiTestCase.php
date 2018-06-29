@@ -33,27 +33,27 @@ class OpenApiTestCase extends TestCase
     /**
      *
      * @param string  $expectedFile File containing the excepted json.
-     * @param OpenApi $actualSwagger
+     * @param OpenApi $actualOpenApi
      * @param string  $message
      */
-    public function assertSwaggerEqualsFile($expectedFile, $actualSwagger, $message = '')
+    public function assertOpenApiEqualsFile($expectedFile, $actualOpenApi, $message = '')
     {
         $expected = json_decode(file_get_contents($expectedFile));
         $error = json_last_error();
         if ($error !== JSON_ERROR_NONE) {
             $this->fail('File: "'.$expectedFile.'" doesn\'t contain valid json, error '.$error);
         }
-        $json = json_encode($actualSwagger);
+        $json = json_encode($actualOpenApi);
         if ($json === false) {
-            $this->fail('Failed to encode swagger object');
+            $this->fail('Failed to encode openapi object');
         }
         $actual = json_decode($json);
         $expectedJson = json_encode($this->sorted($expected, $expectedFile), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $actualJson = json_encode($this->sorted($actual, 'Swagger'), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $actualJson = json_encode($this->sorted($actual, 'OpenApi'), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $this->assertEquals($expectedJson, $actualJson, $message);
     }
 
-    public function assertSwaggerLog($expectedEntry, $expectedType, $message = '')
+    public function assertOpenApiLog($expectedEntry, $expectedType, $message = '')
     {
         $this->expectedLogMessages[] = function ($actualEntry, $actualType) use ($expectedEntry, $expectedType, $message) {
             $this->assertSame($expectedEntry, $actualEntry, $message);
@@ -61,14 +61,14 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function assertSwaggerLogType($expectedType, $message = '')
+    public function assertOpenApiLogType($expectedType, $message = '')
     {
         $this->expectedLogMessages[] = function ($entry, $actualType) use ($expectedType, $message) {
             $this->assertSame($expectedType, $actualType, $message);
         };
     }
 
-    public function assertSwaggerLogEntry($expectedEntry, $message = '')
+    public function assertOpenApiLogEntry($expectedEntry, $message = '')
     {
         $this->expectedLogMessages[] = function ($actualEntry, $type) use ($expectedEntry, $message) {
             $this->assertSame($expectedEntry, $actualEntry, $message);
@@ -129,14 +129,14 @@ class OpenApiTestCase extends TestCase
     }
 
     /**
-     * Create a Swagger object with Info.
+     * Create a OpenApi object with Info.
      * (So it will pass validation.)
      */
-    protected function createSwaggerWithInfo()
+    protected function createOpenApiWithInfo()
     {
         $openapi = new OpenApi([
             'info'     => new \OpenApi\Annotations\Info([
-                'title'    => 'Swagger-PHP Test-API',
+                'title'    => 'swagger-php Test-API',
                 'version'  => 'test',
                 '_context' => new Context(['unittest' => true]),
             ]),
@@ -147,7 +147,7 @@ class OpenApiTestCase extends TestCase
 
     /**
      * Sorts the object to improve matching and debugging the differences.
-     * Used by assertSwaggerEqualsFile
+     * Used by assertOpenApiEqualsFile
      *
      * @param stdClass $object
      * @param string   $origin

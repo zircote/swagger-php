@@ -19,7 +19,7 @@ Generate interactive [OpenAPI](https://www.openapis.org) documentation for your 
 composer require zircote/swagger-php
 ```
 
-For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `swagger` executable can be located by your system.
+For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `openapi` executable can be located by your system.
 
 ```sh
 composer global require zircote/swagger-php
@@ -58,10 +58,10 @@ echo $openapi;
 
 ### Usage from the Command Line Interface
 
-Generate the swagger documentation to a static json file.
+Generate the documentation to a static json file.
 
 ```sh
-./vendor/bin/swagger --help
+./vendor/bin/openapi --help
 ```
 
 ### Usage from the Deserializer

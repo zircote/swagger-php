@@ -24,7 +24,7 @@ class AbstractAnnotationTest extends OpenApiTestCase
 
     public function testUmergedAnnotation()
     {
-        $openapi = $this->createSwaggerWithInfo();
+        $openapi = $this->createOpenApiWithInfo();
         $openapi->merge($this->parseComment('@OA\Items()'));
         $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\Items(), expected to be inside @OA\\');
         $openapi->validate();

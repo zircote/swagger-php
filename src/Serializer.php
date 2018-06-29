@@ -8,7 +8,7 @@ namespace OpenApi;
 
 /**
  * Class AnnotationDeserializer is used to deserialize a json string
- * to a specific Swagger-PHP Annotation class and vice versa.
+ * to a specific Annotation class and vice versa.
  *
  * @link https://github.com/zircote/swagger-php
  */

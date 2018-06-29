@@ -132,6 +132,6 @@ JSON;
         $serializer = new Serializer();
         $openapi = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
         $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $openapi);
-        $this->assertSwaggerEqualsFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json', $openapi);
+        $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json', $openapi);
     }
 }

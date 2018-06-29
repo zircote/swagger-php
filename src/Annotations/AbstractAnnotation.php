@@ -370,7 +370,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
         }
         if (isset($this->ref)) {
-            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0  && $parents[0] instanceof Swagger) { // Internal reference
+            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0  && $parents[0] instanceof OpenApi) { // Internal reference
                 try {
                     $parents[0]->ref($this->ref);
                 } catch (Exception $exception) {
