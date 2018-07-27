@@ -7,7 +7,7 @@
  * )
  */
 ?>
-You can define top-level parameters which can be references with $ref="#/parameters/$parameter"
+You can define top-level parameters which can be references with $ref="#/components/parameters/$parameter"
 <?php
 /**
  * @OA\Parameter(
