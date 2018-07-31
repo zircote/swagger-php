@@ -222,7 +222,7 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     public function __toString()
     {
-        return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return preg_replace(["/\\\\\\\\[nr]/", "/(\\\\[nr])+\s+\*\s+/"], ['\n','\n\n'], json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     public function __debugInfo()
