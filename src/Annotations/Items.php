@@ -19,7 +19,8 @@ class Items extends Schema
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],
         'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml'
+        'OpenApi\Annotations\Xml' => 'xml',
+        'OpenApi\Annotations\Discriminator' => 'discriminator'
     ];
 
     /** @inheritdoc */
