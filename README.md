@@ -12,16 +12,17 @@ Generate interactive [OpenAPI](https://www.openapis.org) documentation for your 
 - Exceptional error reporting (with hints, context)
 - Extracts information from code & existing phpdoc annotations.
 - Command-line interface available.
+- [Documentation](http://zircote.com/swagger-php/)
 
 ## Installation (with [Composer](https://getcomposer.org))
 
-```sh
+```bash
 composer require zircote/swagger-php
 ```
 
 For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `openapi` executable can be located by your system.
 
-```sh
+```bash
 composer global require zircote/swagger-php
 ```
 
@@ -42,7 +43,7 @@ Add annotations to your php files.
  */
 ```
 
-See the [Getting started guide](docs/Getting-started.md) and [Examples directory](Examples/) for more examples.
+Visit the [Documentation website](http://zircote.com/swagger-php/) for the [Getting started guide](http://zircote.com/swagger-php/Getting-started.html) or look at the [Examples directory](Examples/) for more examples.
 
 ### Usage from php
 
@@ -60,7 +61,7 @@ echo $openapi;
 
 Generate the documentation to a static json file.
 
-```sh
+```bash
 ./vendor/bin/openapi --help
 ```
 

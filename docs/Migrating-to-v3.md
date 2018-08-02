@@ -6,7 +6,7 @@ If you need to output the older 2.x specification use OpenApi-php 2.x
 
 ## Changed annotations
 
-## SWG is renamed to OA
+### SWG is renamed to OA
 
 The namespace is renamed from SWG (Swagger) to OA (OpenApi)
 

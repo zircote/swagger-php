@@ -246,7 +246,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         $classVars = get_class_vars(get_class($this));
         foreach (get_object_vars($this) as $property => $value) {
             if ($value !== UNDEFINED) {
-                if ($classVars[$property] === UNDEFINED) { // When default is undefined, null is allowed.
+                if (array_key_exists($property, $classVars) && $classVars[$property] === UNDEFINED) { // When default is undefined, null is allowed.
                     $data->$property = $value;
                 } elseif ($value !== null) {
                     $data->$property = $value;

@@ -1,60 +1,83 @@
-# Getting started
+# Guide
+
+## Installation
+
+We recommend adding swagger-php to your project with [Composer](https://getcomposer.org))
+
+```bash
+composer require zircote/swagger-php
+```
+
+## Usage
+
+Generate always-up-to-date documentation.
+
+```php
+<?php
+require("vendor/autoload.php");
+$openapi = \OpenApi\scan('/path/to/project');
+header('Content-Type: application/json');
+echo $openapi;
+```
+
+## CLI
+
+Instead of generating the documentation dynamicly we also provide a command line interface.
+This writes the documentation to a static json file.
+
+```bash
+./vendor/bin/openapi --help
+```
+
+For cli usage from anywhere install swagger-php globally and add the `~/.composer/vendor/bin` directory to the PATH in your environment.
+
+```bash
+composer global require zircote/swagger-php
+```
+
+## Annotations
 
 The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
 
-To output:
+When you write:
+
+```php
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
+
+/**
+ * @OA\Get(
+ *     path="/api/resource.json",
+ *     @OA\Response(response="200", description="An example resource")
+ * )
+ */
+```
+
+swagger-php will generate:
 
 ```json
 {
-  "openapi": "3.0",
-  "host": "example.com"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "My First API",
+    "version": "0.1"
+  },
+  "paths": {
+    "/api/resource.json": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "An example resource"
+          }
+        }
+      }
+    }
+  }
 }
 ```
 
-Write:
-
-```php
-/**
- * @OA\OpenApi(
- *   host="example.com",
- * )
- */
-```
-
-Note that Doctrine annotation supports arrays, but uses `{` and `}` instead of `[` and `]`.
-
-And although doctrine also supports objects, but also uses `{` and `}` and requires the property names to be surrounded with `"`.
-
-**DON'T** write:
-
-```php
-/**
- * @OA\OpenApi(
- *   info={
- *     "title": "My first swagger-php documented API",
- *     "version": "1.0.0"
- *   }
- * )
- */
-```
-
-But use the annotation with the same name as the property, such as `@OA\Info` for `info`:
-
-```php
-/**
- * @OA\OpenApi(
- *   @OA\Info(
- *     title="My first swagger-php documented API",
- *     version="1.0.0"
- *   )
- * )
- */
-```
-
-This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
-For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @OA\Info(), expecting "title", ..."
-
-## Using variables in annotations
+### Using variables
 
 You can use constants inside doctrine annotations.
 
@@ -64,17 +87,17 @@ define("API_HOST", ($env === "production") ? "example.com" : "localhost");
 
 ```php
 /**
- * @OA\OpenApi(host=API_HOST)
+ * @OA\Server(url=API_HOST)
  */
 ```
 
 When you're using the CLI you'll need to include the php file with the constants using the `--bootstrap` options:
 
-```
-$ openapi --bootstrap constants.php
+```bash
+openapi --bootstrap constants.php
 ```
 
-## Annotation placement
+### Annotation placement
 
 You shouldn't place all annotations inside one big @OA\OpenApi() annotation block, but scatter them throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @OA\OpenApi annotation.
@@ -83,8 +106,49 @@ The big benefit swagger-php provides is that the documentation lives close to th
 
 ### Arrays and Objects
 
+Doctrine annotation supports arrays, but uses `{` and `}` instead of `[` and `]`.
+
+And although doctrine also supports objects, which also uses `{` and `}` and requires the property names to be surrounded with `"`.
+
+::: warning DON'T WRITE
+
+```php
+/**
+ * @OA\Info(
+ *   title="My first API",
+ *   version="1.0.0",
+ *   contact={
+ *     "email": "support@example.com"
+ *   }
+ * )
+ */
+```
+
+:::
+
+This "works" but most objects have an annotation with the same name as the property, such as `@OA\Contact` for `contact`:
+
+::: tip WRITE
+
+```php
+/**
+ * @OA\Info(
+ *   title="My first API",
+ *   version="1.0.0",
+ *   @OA\Contact(
+ *     email="support@example.com"
+ *   )
+ * )
+ */
+```
+
+:::
+
+This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
+For example if you'd write `emial="support@example.com"` swagger-php whould generate a notice with `Unexpected field "emial" for @OA\Contact(), expecting "name", "email", ...`
+
 Placing multiple annotations of the same type will result in an array of objects.
-For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@OA\Response`, `property` in a `@OA\Property`, etc.
+For objects, the key is define by the field with the name as the annotation: `response` in a `@OA\Response`, `property` in a `@OA\Property`, etc.
 
 ```php
 /**
@@ -150,12 +214,14 @@ results in:
 ```json
 {
   "openapi": "3.0",
-  "definitions": {
-    "Product": {
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The product name"
+  "components": {
+    "schema": {
+      "Product": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The product name"
+          }
         }
       }
     }
@@ -229,7 +295,7 @@ Alternatively, you can extend the definition altering specific fields using the 
 ```php
     /**
      * @OA\Property(
-     *   ref="$/definitions/product_id",
+     *   ref="$/components/schemas/product_id",
      *   format="int32"
      * )
      */
@@ -283,7 +349,7 @@ Results in:
 
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
 
-## More information about Swagger
+## More information
 
 To see which output maps to which annotation checkout [swagger-explained](http://bfanger.github.io/swagger-explained/)
 Which also contain snippets of the [swagger specification](http://swagger.io/specification/)

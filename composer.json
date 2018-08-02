@@ -1,7 +1,7 @@
 {
   "name": "zircote/swagger-php",
   "type": "library",
-  "license": "Apache2",
+  "license": "Apache-2.0",
   "bin": [
     "bin/openapi"
   ],
