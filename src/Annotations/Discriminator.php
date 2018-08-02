@@ -41,6 +41,8 @@ class Discriminator extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_parents = [
-        'OpenApi\Annotations\Schema'
+        'OpenApi\Annotations\Schema',
+        'OpenApi\Annotations\Property',
+        'OpenApi\Annotations\Items',
     ];
 }

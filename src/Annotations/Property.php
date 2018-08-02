@@ -33,5 +33,6 @@ class Property extends Schema
         'OpenApi\Annotations\Property' => ['properties', 'property'],
         'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
         'OpenApi\Annotations\Xml' => 'xml',
+        'OpenApi\Annotations\Discriminator' => 'discriminator'
     ];
 }
