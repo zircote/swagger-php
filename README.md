@@ -9,10 +9,10 @@ Generate interactive [OpenAPI](https://www.openapis.org) documentation for your 
 ## Features
 
 - Compatible with the OpenAPI 3.0 specification.
-- Exceptional error reporting (with hints, context)
 - Extracts information from code & existing phpdoc annotations.
 - Command-line interface available.
-- [Documentation](http://zircote.com/swagger-php/)
+- [Documentation site](http://zircote.com/swagger-php/) with a getting started guide.
+- Exceptional error reporting (with hints, context)
 
 ## Installation (with [Composer](https://getcomposer.org))
 

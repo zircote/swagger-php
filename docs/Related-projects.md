@@ -1,9 +1,13 @@
+---
+sidebar: false
+---
+
 # Related projects
 
 | Project                 | Description                                               |
 | ----------------------- | --------------------------------------------------------- |
 | [Swagger UI][1]         | The webinterface for reading the generated documentation  |
-| [Swagger Explained](2)  | Browse the spec by using an swagger.json.                 |
+| [Swagger Explained][2]  | Browse the spec by using an swagger.json.                 |
 | [silex2swagger][3]      | Generate swagger documentation from Silex Annotations     |
 | [yii2-swagger][4]       | swagger-php intergation with yii2                         |
 | [Lumen swagger][5]      | swagger-php integration with lumen/laravel                |

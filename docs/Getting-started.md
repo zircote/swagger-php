@@ -1,4 +1,4 @@
-# Guide
+# Getting started
 
 ## Installation
 
@@ -12,13 +12,15 @@ composer require zircote/swagger-php
 
 Generate always-up-to-date documentation.
 
-```php
+```php{3-5}
 <?php
 require("vendor/autoload.php");
 $openapi = \OpenApi\scan('/path/to/project');
 header('Content-Type: application/json');
 echo $openapi;
 ```
+
+This will scan the php-files in the given folder(s), look for OpenApi annotations and output a json file.
 
 ## CLI
 
@@ -35,11 +37,11 @@ For cli usage from anywhere install swagger-php globally and add the `~/.compose
 composer global require zircote/swagger-php
 ```
 
-## Annotations
+## Write annotations
 
 The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
 
-When you write:
+#### When you write:
 
 ```php
 /**
@@ -54,7 +56,7 @@ When you write:
  */
 ```
 
-swagger-php will generate:
+#### swagger-php will generate:
 
 ```json
 {
@@ -167,7 +169,7 @@ For objects, the key is define by the field with the name as the annotation: `re
  */
 ```
 
-Generates:
+#### Results in:
 
 ```json
 {
@@ -209,7 +211,7 @@ class Product {
 }
 ```
 
-results in:
+#### Results in:
 
 ```json
 {
@@ -229,7 +231,7 @@ results in:
 }
 ```
 
-As if you'd written:
+#### As if you'd written:
 
 ```php
     /**
@@ -245,10 +247,10 @@ As if you'd written:
     public $name;
 ```
 
-## Don't Repeat Yourself
+## Reusing annotations ($ref)
 
 It's common that multiple requests have some overlap in either the request or the response.
-The spec solves most of this by using `$ref`s
+To keep thing DRY (Don't Repeat Yourself) the specification included referencing other parts of the json using `$ref`s
 
 ```php
     /**
@@ -261,7 +263,7 @@ The spec solves most of this by using `$ref`s
      */
 ```
 
-Results in:
+#### Results in:
 
 ```json
 {
@@ -290,7 +292,7 @@ Which doesn't do anything by itself but now you can reference this piece by its 
 
 For more tips on refs, browse through the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
 
-Alternatively, you can extend the definition altering specific fields using the `$` in-place of the `#`
+In swagger-php you can extend the components by altering specific fields using the `$` in-place of the `#`. But first try to use composition with [allOf](https://swagger.io/specification/#schemaComposition)
 
 ```php
     /**
@@ -302,7 +304,7 @@ Alternatively, you can extend the definition altering specific fields using the 
     public $id;
 ```
 
-For extensions tips and examples, browse through [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
+For extensions tips and examples, look at the [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
 
 ## Vendor extensions
 
@@ -327,7 +329,7 @@ The specification allows for [custom properties](http://swagger.io/specification
  */
 ```
 
-Results in:
+#### Results in:
 
 ```json
 "info": {
