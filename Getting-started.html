@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Getting started | Swagger-PHP v3.x</title>
+    <meta name="description" content="Generate interactive OpenAPI documentation for your RESTful API using doctrine annotations.">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.e4472f66.css" as="style"><link rel="preload" href="/assets/js/app.82fc3409.js" as="script"><link rel="preload" href="/assets/js/5.d9128a4e.js" as="script"><link rel="prefetch" href="/assets/js/4.7074f5a6.js"><link rel="prefetch" href="/assets/js/2.413b4e91.js"><link rel="prefetch" href="/assets/js/3.d6c49e51.js"><link rel="prefetch" href="/assets/js/6.2429f467.js"><link rel="prefetch" href="/assets/js/7.26d76b23.js"><link rel="prefetch" href="/assets/js/8.71888c06.js"><link rel="prefetch" href="/assets/js/9.e7f8d1e6.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.e4472f66.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Swagger-PHP v3.x</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/Getting-started.html" class="nav-link router-link-exact-active router-link-active">Guide</a></div><div class="nav-item"><a href="http://swagger.io/specification/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Specification
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><a href="https://github.com/zircote/swagger-php" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/Getting-started.html" class="nav-link router-link-exact-active router-link-active">Guide</a></div><div class="nav-item"><a href="http://swagger.io/specification/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Specification
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><a href="https://github.com/zircote/swagger-php" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first"><p class="sidebar-heading open"><span>Getting started</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/Getting-started.html#installation" class="sidebar-link">Installation</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/Getting-started.html#usage" class="sidebar-link">Usage</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/Getting-started.html#cli" class="sidebar-link">CLI</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/Getting-started.html#write-annotations" class="sidebar-link">Write annotations</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/Getting-started.html#using-variables" class="sidebar-link">Using variables</a></li><li class="sidebar-sub-header"><a href="/Getting-started.html#annotation-placement" class="sidebar-link">Annotation placement</a></li><li class="sidebar-sub-header"><a href="/Getting-started.html#arrays-and-objects" class="sidebar-link">Arrays and Objects</a></li><li class="sidebar-sub-header"><a href="/Getting-started.html#detects-values-based-on-context" class="sidebar-link">Detects values based on context</a></li></ul></li><li><a href="/Getting-started.html#reusing-annotations-ref" class="sidebar-link">Reusing annotations ($ref)</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/Getting-started.html#vendor-extensions" class="sidebar-link">Vendor extensions</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/Getting-started.html#more-information" class="sidebar-link">More information</a><ul class="sidebar-sub-headers"></ul></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="getting-started"><a href="#getting-started" aria-hidden="true" class="header-anchor">#</a> Getting started</h1> <h2 id="installation"><a href="#installation" aria-hidden="true" class="header-anchor">#</a> Installation</h2> <p>We recommend adding swagger-php to your project with <a href="https://getcomposer.org" target="_blank" rel="noopener noreferrer">Composer<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>)</p> <div class="language-bash extra-class"><pre class="language-bash"><code>composer require zircote/swagger-php
+</code></pre></div><h2 id="usage"><a href="#usage" aria-hidden="true" class="header-anchor">#</a> Usage</h2> <p>Generate always-up-to-date documentation.</p> <div class="language-php extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br></div><pre class="language-php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">require</span><span class="token punctuation">(</span><span class="token double-quoted-string string">&quot;vendor/autoload.php&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$openapi</span> <span class="token operator">=</span> \<span class="token package">OpenApi<span class="token punctuation">\</span>scan</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'/path/to/project'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">header</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'Content-Type: application/json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token variable">$openapi</span><span class="token punctuation">;</span>
+</span></code></pre></div><p>This will scan the php-files in the given folder(s), look for OpenApi annotations and output a json file.</p> <h2 id="cli"><a href="#cli" aria-hidden="true" class="header-anchor">#</a> CLI</h2> <p>Instead of generating the documentation dynamicly we also provide a command line interface.
+This writes the documentation to a static json file.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>./vendor/bin/openapi --help
+</code></pre></div><p>For cli usage from anywhere install swagger-php globally and add the <code>~/.composer/vendor/bin</code> directory to the PATH in your environment.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>composer global require zircote/swagger-php
+</code></pre></div><h2 id="write-annotations"><a href="#write-annotations" aria-hidden="true" class="header-anchor">#</a> Write annotations</h2> <p>The goal of swagger-php is to generate a openapi.json using phpdoc annotations.</p> <h4 id="when-you-write"><a href="#when-you-write" aria-hidden="true" class="header-anchor">#</a> When you write:</h4> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Info(title=&quot;My First API&quot;, version=&quot;0.1&quot;)
+ */</span>
+
+<span class="token comment">/**
+ * @OA\Get(
+ *     path=&quot;/api/resource.json&quot;,
+ *     @OA\Response(response=&quot;200&quot;, description=&quot;An example resource&quot;)
+ * )
+ */</span>
+</code></pre></div><h4 id="swagger-php-will-generate"><a href="#swagger-php-will-generate" aria-hidden="true" class="header-anchor">#</a> swagger-php will generate:</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;openapi&quot;</span><span class="token operator">:</span> <span class="token string">&quot;3.0.0&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;info&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;title&quot;</span><span class="token operator">:</span> <span class="token string">&quot;My First API&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;0.1&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paths&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;/api/resource.json&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;get&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;responses&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;200&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;An example resource&quot;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="using-variables"><a href="#using-variables" aria-hidden="true" class="header-anchor">#</a> Using variables</h3> <p>You can use constants inside doctrine annotations.</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token function">define</span><span class="token punctuation">(</span><span class="token double-quoted-string string">&quot;API_HOST&quot;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token variable">$env</span> <span class="token operator">===</span> <span class="token double-quoted-string string">&quot;production&quot;</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token double-quoted-string string">&quot;example.com&quot;</span> <span class="token punctuation">:</span> <span class="token double-quoted-string string">&quot;localhost&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Server(url=API_HOST)
+ */</span>
+</code></pre></div><p>When you're using the CLI you'll need to include the php file with the constants using the <code>--bootstrap</code> options:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>openapi --bootstrap constants.php
+</code></pre></div><h3 id="annotation-placement"><a href="#annotation-placement" aria-hidden="true" class="header-anchor">#</a> Annotation placement</h3> <p>You shouldn't place all annotations inside one big @OA\OpenApi() annotation block, but scatter them throughout your codebase.
+swagger-php will scan your project and merge all annotations into one @OA\OpenApi annotation.</p> <p>The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.</p> <h3 id="arrays-and-objects"><a href="#arrays-and-objects" aria-hidden="true" class="header-anchor">#</a> Arrays and Objects</h3> <p>Doctrine annotation supports arrays, but uses <code>{</code> and <code>}</code> instead of <code>[</code> and <code>]</code>.</p> <p>And although doctrine also supports objects, which also uses <code>{</code> and <code>}</code> and requires the property names to be surrounded with <code>&quot;</code>.</p> <div class="warning custom-block"><p class="custom-block-title">DON'T WRITE</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Info(
+ *   title=&quot;My first API&quot;,
+ *   version=&quot;1.0.0&quot;,
+ *   contact={
+ *     &quot;email&quot;: &quot;support@example.com&quot;
+ *   }
+ * )
+ */</span>
+</code></pre></div></div> <p>This &quot;works&quot; but most objects have an annotation with the same name as the property, such as <code>@OA\Contact</code> for <code>contact</code>:</p> <div class="tip custom-block"><p class="custom-block-title">WRITE</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Info(
+ *   title=&quot;My first API&quot;,
+ *   version=&quot;1.0.0&quot;,
+ *   @OA\Contact(
+ *     email=&quot;support@example.com&quot;
+ *   )
+ * )
+ */</span>
+</code></pre></div></div> <p>This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
+For example if you'd write <code>emial=&quot;support@example.com&quot;</code> swagger-php whould generate a notice with <code>Unexpected field &quot;emial&quot; for @OA\Contact(), expecting &quot;name&quot;, &quot;email&quot;, ...</code></p> <p>Placing multiple annotations of the same type will result in an array of objects.
+For objects, the key is define by the field with the name as the annotation: <code>response</code> in a <code>@OA\Response</code>, <code>property</code> in a <code>@OA\Property</code>, etc.</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Get(
+ *   path=&quot;/products&quot;,
+ *   summary=&quot;list products&quot;,
+ *   @OA\Response(
+ *     response=200,
+ *     description=&quot;A list with products&quot;
+ *   ),
+ *   @OA\Response(
+ *     response=&quot;default&quot;,
+ *     description=&quot;an &quot;&quot;unexpected&quot;&quot; error&quot;
+ *   )
+ * )
+ */</span>
+</code></pre></div><h4 id="results-in"><a href="#results-in" aria-hidden="true" class="header-anchor">#</a> Results in:</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;openapi&quot;</span><span class="token operator">:</span> <span class="token string">&quot;3.0&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paths&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;/products&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;get&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;summary&quot;</span><span class="token operator">:</span> <span class="token string">&quot;list products&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;responses&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;200&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;A list with products&quot;</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">&quot;default&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;an \&quot;unexpected\&quot; error&quot;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="detects-values-based-on-context"><a href="#detects-values-based-on-context" aria-hidden="true" class="header-anchor">#</a> Detects values based on context</h3> <p>swagger-php looks at the context of the comment which reduces duplication.</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Schema()
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">Product</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * The product name
+     * @var string
+     * @OA\Property()
+     */</span>
+    <span class="token keyword">public</span> <span class="token variable">$name</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="results-in-2"><a href="#results-in-2" aria-hidden="true" class="header-anchor">#</a> Results in:</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;openapi&quot;</span><span class="token operator">:</span> <span class="token string">&quot;3.0&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;components&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;schema&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;Product&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;properties&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;The product name&quot;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="as-if-you-d-written"><a href="#as-if-you-d-written" aria-hidden="true" class="header-anchor">#</a> As if you'd written:</h4> <div class="language-php extra-class"><pre class="language-php"><code>    <span class="token comment">/**
+     * The product name
+     * @var string
+     *
+     * @OA\Property(
+     *   property=&quot;name&quot;,
+     *   type=&quot;string&quot;,
+     *   description=&quot;The product name&quot;
+     * )
+     */</span>
+    <span class="token keyword">public</span> <span class="token variable">$name</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="reusing-annotations-ref"><a href="#reusing-annotations-ref" aria-hidden="true" class="header-anchor">#</a> Reusing annotations ($ref)</h2> <p>It's common that multiple requests have some overlap in either the request or the response.
+To keep thing DRY (Don't Repeat Yourself) the specification included referencing other parts of the json using <code>$ref</code>s</p> <div class="language-php extra-class"><pre class="language-php"><code>    <span class="token comment">/**
+     * @OA\Schema(
+     *   schema=&quot;product_id&quot;,
+     *   type=&quot;integer&quot;,
+     *   format=&quot;int64&quot;,
+     *   description=&quot;The unique identifier of a product in our catalog&quot;
+     * )
+     */</span>
+</code></pre></div><h4 id="results-in-3"><a href="#results-in-3" aria-hidden="true" class="header-anchor">#</a> Results in:</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;openapi&quot;</span><span class="token operator">:</span> <span class="token string">&quot;3.0&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;paths&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;components&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;schemas&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;product_id&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;The unique identifier of a product in our catalog&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;integer&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;format&quot;</span><span class="token operator">:</span> <span class="token string">&quot;int64&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Which doesn't do anything by itself but now you can reference this piece by its path in the json <code>#/components/schemas/product_id</code></p> <div class="language-php extra-class"><pre class="language-php"><code>    <span class="token comment">/**
+     * @OA\Property(ref=&quot;#/components/schemas/product_id&quot;)
+     */</span>
+    <span class="token keyword">public</span> <span class="token variable">$id</span><span class="token punctuation">;</span>
+</code></pre></div><p>For more tips on refs, browse through the <a href="https://github.com/zircote/swagger-php/tree/master/Examples/using-refs" target="_blank" rel="noopener noreferrer">using-refs example<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>.</p> <p>In swagger-php you can extend the components by altering specific fields using the <code>$</code> in-place of the <code>#</code>. But first try to use composition with <a href="https://swagger.io/specification/#schemaComposition" target="_blank" rel="noopener noreferrer">allOf<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <div class="language-php extra-class"><pre class="language-php"><code>    <span class="token comment">/**
+     * @OA\Property(
+     *   ref=&quot;$/components/schemas/product_id&quot;,
+     *   format=&quot;int32&quot;
+     * )
+     */</span>
+    <span class="token keyword">public</span> <span class="token variable">$id</span><span class="token punctuation">;</span>
+</code></pre></div><p>For extensions tips and examples, look at the <a href="https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference" target="_blank" rel="noopener noreferrer">using-dynamic-refs example<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>.</p> <h2 id="vendor-extensions"><a href="#vendor-extensions" aria-hidden="true" class="header-anchor">#</a> Vendor extensions</h2> <p>The specification allows for <a href="http://swagger.io/specification/#vendorExtensions" target="_blank" rel="noopener noreferrer">custom properties<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> as long as they start with &quot;x-&quot; therefor all swagger-php annotations have an <code>x</code> property which will unfold into &quot;x-&quot; properties.</p> <div class="language-php extra-class"><pre class="language-php"><code><span class="token comment">/**
+ * @OA\Info(
+ *   title=&quot;Example&quot;,
+ *   version=1,
+ *   x={
+ *     &quot;some-name&quot;: &quot;a-value&quot;,
+ *     &quot;another&quot;: 2,
+ *     &quot;complex-type&quot;: {
+ *       &quot;supported&quot;:{
+ *         {&quot;version&quot;: &quot;1.0&quot;, &quot;level&quot;: &quot;baseapi&quot;},
+ *         {&quot;version&quot;: &quot;2.1&quot;, &quot;level&quot;: &quot;fullapi&quot;},
+ *       }
+ *     }
+ *   }
+ * )
+ */</span>
+</code></pre></div><h4 id="results-in-4"><a href="#results-in-4" aria-hidden="true" class="header-anchor">#</a> Results in:</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token property">&quot;info&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">&quot;title&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Example&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;version&quot;</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;x-some-name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;a-value&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;x-another&quot;</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;x-complex-type&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;supported&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+      <span class="token property">&quot;version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1.0&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;level&quot;</span><span class="token operator">:</span> <span class="token string">&quot;baseapi&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2.1&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;level&quot;</span><span class="token operator">:</span> <span class="token string">&quot;fullapi&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code></pre></div><p>The <a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html" target="_blank" rel="noopener noreferrer">Amazon API Gateway<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> for example, makes use of these.</p> <h2 id="more-information"><a href="#more-information" aria-hidden="true" class="header-anchor">#</a> More information</h2> <p>To see which output maps to which annotation checkout <a href="http://bfanger.github.io/swagger-explained/" target="_blank" rel="noopener noreferrer">swagger-explained<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>
+Which also contain snippets of the <a href="http://swagger.io/specification/" target="_blank" rel="noopener noreferrer">swagger specification<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></div> <div class="page-edit"><!----> <!----></div> <!----> </div> <!----></div></div>
+    <script src="/assets/js/5.d9128a4e.js" defer></script><script src="/assets/js/app.82fc3409.js" defer></script>
+  </body>
+</html>
