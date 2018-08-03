@@ -8,7 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Annotations\Schema;
 use OpenApi\Analysis;
-use OpenApi\Annotations\Definition;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use OpenApi\Context;
@@ -60,16 +59,21 @@ class AugmentProperties
             if ($property->property === null) {
                 $property->property = $context->property;
             }
-
+            if ($property->ref !== null) {
+                continue;
+            }
             if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
-                if ($property->description === null && isset($varMatches['description'])) {
-                    $property->description = trim($varMatches['description']);
-                }
                 if ($property->type === null) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
                     $type = $typeMatches[1];
 
-                    if (array_key_exists(strtolower($type), static::$types)) {
+                    if (array_key_exists(strtolower($type), static::$types) === false) {
+                        $key = strtolower($context->fullyQualifiedName($type));
+                        if ($property->ref === null && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
+                            $property->ref = $refs[$key];
+                            continue;
+                        }
+                    } else {
                         $type = static::$types[strtolower($type)];
                         if (is_array($type)) {
                             if ($property->format === null) {
@@ -78,9 +82,6 @@ class AugmentProperties
                             $type = $type[0];
                         }
                         $property->type = $type;
-                    } elseif ($property->ref === null && $typeMatches[2] === '') {
-                        $tmpKey = strtolower($context->fullyQualifiedName($type));
-                        $property->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
                     }
                     if ($typeMatches[2] === '[]') {
                         if ($property->items === null) {
@@ -89,12 +90,15 @@ class AugmentProperties
                                 '_context' => new Context(['generated' => true], $context)
                             ]);
                             if ($property->items->type === null) {
-                                $tmpKey = strtolower($context->fullyQualifiedName($type));
-                                $property->items->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
+                                $key = strtolower($context->fullyQualifiedName($type));
+                                $property->items->ref = array_key_exists($key, $refs) ? $refs[$key] : null;
                             }
                         }
                         $property->type = 'array';
                     }
+                }
+                if ($property->description === null && isset($varMatches['description'])) {
+                    $property->description = trim($varMatches['description']);
                 }
             }
 

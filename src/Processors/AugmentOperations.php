@@ -20,10 +20,10 @@ class AugmentOperations
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            if (null === $operation->summary) {
+            if ($operation->summary === null) {
                 $operation->summary = $operation->_context->phpdocSummary();
             }
-            if (null === $operation->description) {
+            if ($operation->description === null) {
                 $operation->description = $operation->_context->phpdocDescription();
             }
         }

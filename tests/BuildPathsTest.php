@@ -43,9 +43,9 @@ class BuildPathsTest extends OpenApiTestCase
         $this->assertCount(1, $openapi->paths);
         $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);
-        $this->assertInstanceOf('\OpenApi\Annotations\PathItem', $path);
-        $this->assertInstanceOf('\OpenApi\Annotations\Get', $path->get);
-        $this->assertInstanceOf('\OpenApi\Annotations\Post', $path->post);
+        $this->assertInstanceOf(PathItem::class, $path);
+        $this->assertInstanceOf(Get::class, $path->get);
+        $this->assertInstanceOf(Post::class, $path->post);
         $this->assertNull($path->put);
     }
 }
