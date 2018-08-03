@@ -8,7 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Annotations\Schema;
 use OpenApi\Analysis;
-use OpenApi\Annotations\Definition;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use OpenApi\Context;
@@ -102,7 +101,7 @@ class AugmentProperties
                 $property->example = $varMatches['example'];
             }
 
-            if ($property->description === null) {
+            if ($property->description === null && empty($property->ref)) {
                 $property->description = $context->phpdocContent();
             }
         }
