@@ -1,6 +1,6 @@
 [![Build Status](https://img.shields.io/travis/zircote/swagger-php/master.svg?style=flat-square)](https://travis-ci.org/zircote/swagger-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg?style=flat-square)](https://packagist.org/packages/zircote/swagger-php)
-[![License](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](LICENSE-2.0.txt)
+[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square)](LICENSE-2.0.txt)
 
 # swagger-php
 
@@ -87,35 +87,22 @@ Generate the swagger documentation to a static json file.
 docker run -v "$PWD":/app -it tico/swagger-php --help
 ```
 
-## More on OpenApi
+## More on OpenApi & Swagger
 
 - https://www.openapis.org
-- https://github.com/swagger-api/swagger-spec/
-- http://bfanger.github.io/swagger-explained/
+- https://swagger.io
+- https://github.com/OAI/OpenAPI-Specification/
 - [Related projects](docs/Related-projects.md)
-- https://www.marcoraddatz.com/en/2015/07/21/integrate-swagger-into-laravel/
 
 ## Contributing
 
 Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
 or pull requests.
 
-The documentation website resides within the `gh-pages` branch.
+The documentation website is build from the `docs` folder with [vuepress](https://vuepress.vuejs.org).
 
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
-
-Running tests can be done with this command in the root of the project:
-
-```bash
-./bin/phpunit
-```
-
-To run the phpcs tests on your local machine execute:
-
-```bash
-./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
-```
 
 To run both unittests and linting execute:
 
@@ -123,4 +110,14 @@ To run both unittests and linting execute:
 composer test
 ```
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+Running only unittests:
+
+```bash
+./bin/phpunit
+```
+
+Running only linting:
+
+```bash
+./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+```
