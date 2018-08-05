@@ -58,12 +58,18 @@ class OpenApi extends AbstractAnnotation
 
 
     /**
-     * A declaration of which security mechanisms can be used across the API.
-     * The list of values includes alternative security requirement objects that can be used.
-     * Only one of the security requirement objects need to be satisfied to authorize a request.
-     * Individual operations can override this definition.
+     * Lists the required security schemes to execute this operation.
+     * The name used for each property must correspond to a security scheme declared
+     * in the Security Schemes under the Components Object.
+     * Security Requirement Objects that contain multiple schemes require that
+     * all schemes must be satisfied for a request to be authorized.
+     * This enables support for scenarios where multiple query parameters or
+     * HTTP headers are required to convey security information.
+     * When a list of Security Requirement Objects is defined on the Open API object or
+     * Operation Object, only one of Security Requirement Objects in the list needs to
+     * be satisfied to authorize the request.
      *
-     * @var SecurityScheme
+     * @var array
      */
     public $security;
 
@@ -91,7 +97,7 @@ class OpenApi extends AbstractAnnotation
     public $_analysis;
 
     /** @inheritdoc */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis', 'security'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
 
     /** @inheritdoc */
     public static $_required = ['openapi', 'info', 'paths'];
@@ -99,7 +105,6 @@ class OpenApi extends AbstractAnnotation
     /** @inheritdoc */
     public static $_nested = [
         'OpenApi\Annotations\Info' => 'info',
-        'OpenApi\Annotations\SecurityScheme' => 'security',
         'OpenApi\Annotations\Server' => ['servers'],
         'OpenApi\Annotations\PathItem' => ['paths', 'path'],
         'OpenApi\Annotations\Components' => 'components',

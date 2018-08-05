@@ -98,7 +98,6 @@ class SecurityScheme extends AbstractAnnotation
     /** {@inheritdoc} */
     public static $_parents = [
         'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\OpenApi',
     ];
 
     /**
