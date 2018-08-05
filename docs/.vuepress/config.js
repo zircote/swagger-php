@@ -8,6 +8,10 @@ module.exports = {
     nav: [
       { text: "Guide", link: "/Getting-started" },
       {
+        text: "OpenApi",
+        link: "https://swagger.io/docs/specification/about/"
+      },
+      {
         text: "Specification",
         link: "http://swagger.io/specification/"
       },

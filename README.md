@@ -89,9 +89,10 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 
 ## More on OpenApi & Swagger
 
-- https://www.openapis.org
 - https://swagger.io
-- https://github.com/OAI/OpenAPI-Specification/
+- https://www.openapis.org
+- [OpenApi Documentation](https://swagger.io/docs/)
+- [OpenApi Specification](http://swagger.io/specification/)
 - [Related projects](docs/Related-projects.md)
 
 ## Contributing
@@ -99,7 +100,7 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
 or pull requests.
 
-The documentation website is build from the `docs` folder with [vuepress](https://vuepress.vuejs.org).
+The documentation website is build from the [docs](docs/) folder with [vuepress](https://vuepress.vuejs.org).
 
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.

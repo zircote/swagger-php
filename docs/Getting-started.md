@@ -351,7 +351,16 @@ The specification allows for [custom properties](http://swagger.io/specification
 
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
 
-## More information
+## OpenApi
 
-To see which output maps to which annotation checkout [swagger-explained](http://bfanger.github.io/swagger-explained/)
-Which also contain snippets of the [swagger specification](http://swagger.io/specification/)
+To learn about what you can to generate and which options to use and how?  
+Look at the [docs on swagger.io](https://swagger.io/docs/)
+
+It has sections about:
+
+- [Basic structure](https://swagger.io/docs/specification/basic-structure/)
+- [Describing parameters](https://swagger.io/docs/specification/describing-parameters/)
+- [Describing responses](https://swagger.io/docs/specification/describing-responses/)
+- and [more](https://swagger.io/docs/specification/about/)
+
+For more detailed information look at the [OpenApi Specification](http://swagger.io/specification/)

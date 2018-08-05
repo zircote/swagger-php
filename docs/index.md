@@ -5,7 +5,8 @@ actionLink: /Getting-started
 features:
 - title: OpenAPI specification
   details: 
-    Compatible with the OpenAPI Specification version 3. formerly known as Swagger.
+    Compatible with the OpenAPI Specification version 3.
+    formerly known as Swagger.
 - title: Use @Annotations
   details: Write the documentation inside the php source files which helps to keep the documentation in sync.
 - title: Useful error messages
@@ -48,6 +49,8 @@ And view and interact with your API using [Swagger UI ](https://swagger.io/tools
 ## Links
 
 - [Getting started guide](Getting-started.md)
+- [OpenApi Documentation](https://swagger.io/docs/)
+- [OpenApi Specification](http://swagger.io/specification/)
 - [Migration from 2.x to 3.x](Migrating-to-v3.md)
 - [Learn by example](https://github.com/zircote/swagger-php/tree/master/Examples) lots of example of how to generate
 - [Related projects](Related-projects.md)
