@@ -301,9 +301,16 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
         // $ref
         if (isset($data->ref)) {
+            $data2 = new stdClass();
             $dollarRef = '$ref';
-            $data->$dollarRef = $data->ref;
+            $data2->$dollarRef = $data->ref;
             unset($data->ref);
+
+            $props = get_object_vars($data);
+            foreach ($props as $k => $v) {
+                $data2->$k = $v;
+            }
+            $data = $data2;
         }
         return $data;
     }
