@@ -31,6 +31,12 @@ class Schema extends AbstractAnnotation
      * @var string
      */
     public $schema;
+    
+    /**
+     * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
+     * @var Schema[]
+     */
+    public $allOf;
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
@@ -231,12 +237,6 @@ class Schema extends AbstractAnnotation
     * @var boolean
     */
     public $deprecated;
-
-    /**
-     * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
-     * @var Schema[]
-     */
-    public $allOf;
 
     /**
      * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
