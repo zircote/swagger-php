@@ -89,13 +89,10 @@ class Pet
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(
-     *                    ref="#/components/schemas/Pet"
-     *                 )
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                ref="#/components/schemas/Pet"
      *             )
      *         ),
      *         @OA\MediaType(

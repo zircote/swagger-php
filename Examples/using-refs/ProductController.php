@@ -8,7 +8,8 @@ namespace UsingRefs;
  * )
  */
 
-class ProductController {
+class ProductController
+{
 
     /**
      * @OA\Get(
@@ -17,17 +18,12 @@ class ProductController {
      *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OA\MediaType(
-     *          mediaType="application/json",
-     *          @OA\Schema(
-     *            ref="#/components/responses/product"
-     *          )
-     *       )
+     *       @OA\JsonContent(ref="#/components/responses/product")
      *   )
      * )
      */
-    public function getProduct($id) {
-
+    public function getProduct($id)
+    {
     }
 
     /**
@@ -38,17 +34,12 @@ class ProductController {
      *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OA\MediaType(
-     *          mediaType="application/json",
-     *          @OA\Schema(
-     *            ref="#/components/responses/product"
-     *          )
-     *       )
+     *       @OA\JsonContent(ref="#/components/responses/product")
      *   )
      * )
      */
-    public function updateProduct($id) {
-
+    public function updateProduct($id)
+    {
     }
 
     /**
@@ -59,17 +50,11 @@ class ProductController {
      *   @OA\Response(
      *       response="default",
      *       description="successful operation",
-     *       @OA\MediaType(
-     *          mediaType="application/json",
-     *          @OA\Schema(
-     *            ref="#/components/responses/product"
-     *          )
-     *       )
+     *       @OA\JsonContent(ref="#/components/responses/product")
      *   )
      * )
      */
-    public function addProduct($id) {
-
+    public function addProduct($id)
+    {
     }
-
 }
