@@ -36,7 +36,6 @@ class Discriminator extends AbstractAnnotation
     /** @inheritdoc */
     public static $_types = [
         'propertyName' => 'string',
-        'mapping' => '[string]'
     ];
 
     /** @inheritdoc */
