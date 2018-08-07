@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Example for nullable variables with example",
+    "version": "1.0"
+  },
+  "components": {
+    "schemas": {
+      "NullableExamples": {
+        "properties": {
+          "notNullable": {},
+          "nullableWithExample": {
+            "example": "hello",
+            "nullable": true
+          },
+          "variable": {
+            "example": null,
+            "nullable": true
+          }
+        }
+      }
+    }
+  },
+  "paths": {}
+}

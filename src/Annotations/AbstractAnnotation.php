@@ -305,6 +305,11 @@ abstract class AbstractAnnotation implements JsonSerializable
             $data->$dollarRef = $data->ref;
             unset($data->ref);
         }
+
+        if (isset($data->nullable) && !isset($data->example)) {
+            $data->example = null;
+        }
+
         return $data;
     }
 

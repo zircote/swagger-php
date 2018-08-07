@@ -100,4 +100,10 @@ END;
 //        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @OA\Parameter()->in != "body" in ');
         $parameter->validate();
     }
+
+    public function testItReturnExpectedExamplesOnNullableParameters()
+    {
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/NullableExamples.php');
+        $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/nullable-variables.json', $openapi);
+    }
 }
