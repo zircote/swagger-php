@@ -42,6 +42,30 @@ class AugmentSchemas
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {
+                        if ($annotation->_context->nested) {
+                            //we should'not merge property into nested schemas
+                            continue;
+                        }
+
+                        if ($annotation->allOf) {
+                            $schema = null;
+                            foreach ($annotation->allOf as $nestedSchema) {
+                                if ($nestedSchema->ref) {
+                                    continue;
+                                }
+
+                                $schema = $nestedSchema;
+                            }
+
+                            if (null === $schema) {
+                                $schema = new Schema(['_context' => $annotation->_context]);
+                                $annotation->allOf[] = $schema;
+                            }
+
+                            $schema->merge([$property], true);
+                            break;
+                        }
+
                         $annotation->merge([$property], true);
                         break;
                     }

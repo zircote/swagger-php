@@ -6,6 +6,7 @@
 
 namespace OpenApi\Processors;
 
+use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Schema;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Items;
@@ -46,7 +47,8 @@ class AugmentProperties
             /** @var Schema $schema */
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema) {
-                    $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))] = '#/components/schemas/' . $schema->schema;
+                    $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
+                        = Components::SCHEMA_REF . $schema->schema;
                 }
             }
         }

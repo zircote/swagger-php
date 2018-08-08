@@ -16,6 +16,13 @@ namespace OpenApi\Annotations;
 class Components extends AbstractAnnotation
 {
     /**
+     * Schema reference
+     *
+     * @var string
+     */
+    const SCHEMA_REF = '#/components/schemas/';
+
+    /**
      * Reusable Schemas.
      *
      * @var Schema[]
@@ -39,7 +46,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Examples.
      *
-     * @var Example[]
+     * @var Examples[]
      */
     public $examples;
 
