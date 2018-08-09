@@ -41,10 +41,7 @@ abstract class StoreController
      *   @OA\RequestBody(
      *       required=true,
      *       description="order placed for purchasing the pet",
-     *       @OA\MediaType(
-     *           mediaType="application/json",
-     *           @OA\Schema(ref="#/components/schemas/Order")
-     *       )
+     *       @OA\JsonContent(ref="#/components/schemas/Order")
      *   ),
      *   @OA\Response(
      *     response=200,
@@ -79,9 +76,7 @@ abstract class StoreController
      *   @OA\Response(
      *     response=200,
      *     description="successful operation",
-     *     @OA\Schema(
-     *       ref="#/components/schemas/Order"
-     *     )
+     *     @OA\Schema(ref="#/components/schemas/Order")
      *   ),
      *   @OA\Response(response=400, description="Invalid ID supplied"),
      *   @OA\Response(response=404, description="Order not found")

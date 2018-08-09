@@ -14,26 +14,17 @@ class PetWithDocsController
      *     @OA\RequestBody(
      *         description="Pet to add to the store",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/NewPet"),
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/NewPet")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Pet")
      *     ),
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel")
      *     )
      * )
      */
@@ -59,10 +50,7 @@ class PetWithDocsController
      *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Pet"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
      *             @OA\Schema(ref="#/components/schemas/Pet")
@@ -83,10 +71,7 @@ class PetWithDocsController
      *             mediaType="application/xml",
      *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\MediaType(
      *             mediaType="text/xml",
      *             @OA\Schema(ref="#/components/schemas/ErrorModel")
@@ -131,12 +116,9 @@ class PetWithDocsController
      *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             ),
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
      *         @OA\MediaType(
      *             mediaType="application/xml",
@@ -165,27 +147,16 @@ class PetWithDocsController
      *         description="unexpected error",
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
      *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
      *     ),
      *     @OA\ExternalDocumentation(

@@ -63,29 +63,18 @@ class SimplePetsController
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
      *         @OA\MediaType(
      *             mediaType="text/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         ),
      *         @OA\MediaType(
      *             mediaType="text/html",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ErrorModel"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
      *         )
      *     )
      * )
@@ -165,18 +154,12 @@ class SimplePetsController
      *     @OA\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Pet")
      *     ),
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel")
      *     )
      * )
      */

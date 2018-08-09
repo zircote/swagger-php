@@ -29,12 +29,7 @@ class User
      *     @OA\RequestBody(
      *         description="Create user object",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/User"
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     )
      * )
      */
@@ -52,9 +47,7 @@ class User
      *         response="default",
      *         description="successful operation"
      *     ),
-     *     @OA\RequestBody(
-     *         ref="#/components/requestBodies/UserArray"
-     *     )
+     *     @OA\RequestBody(ref="#/components/requestBodies/UserArray")
      * )
      */
     public function createUsersWithListInput()
@@ -103,11 +96,8 @@ class User
      *                 format="datetime"
      *             )
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="string"
-     *             )
+     *         @OA\JsonContent(
+     *             type="string"
      *         ),
      *         @OA\MediaType(
      *             mediaType="application/xml",
@@ -158,17 +148,10 @@ class User
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/User"
-     *             )
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/User"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/User"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/User")
      *         )
      *     ),
      *     @OA\Response(
@@ -211,12 +194,7 @@ class User
      *     @OA\RequestBody(
      *         description="Updated user object",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/User"
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     )
      * )
      */

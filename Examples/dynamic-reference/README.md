@@ -1,5 +1,9 @@
 # Dynamic References
 
+::: warning
+This page is not yet updated to v3 syntax
+:::
+
 _Dynamic References_ import all attributes from the reference object to the specified object.
 
 It works similar to the `#ref` however allows for customization of properties and attributes.

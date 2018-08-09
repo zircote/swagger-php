@@ -25,14 +25,11 @@ class Store
      *     @OA\Response(
      *         response=200,
      *          description="successful operation",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  type="object",
-     *                  @OA\AdditionalProperties(
-     *                      type="integer",
-     *                      format="int32"
-     *                  )
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\AdditionalProperties(
+     *                  type="integer",
+     *                  format="int32"
      *              )
      *          )
      *     ),
@@ -54,28 +51,16 @@ class Store
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Order"
-     *             )
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Order"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/Order")
      *         )
      *     ),
      *     @OA\RequestBody(
      *         description="order placed for purchasing th pet",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Order"
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
      *     )
      * )
      */
@@ -106,17 +91,10 @@ class Store
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Order"
-     *             )
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Order"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Order"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/Order")
      *         )
      *     ),
      *     @OA\Response(

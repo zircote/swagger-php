@@ -70,12 +70,9 @@ final class PetController
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                type="array",
-     *                @OA\Items(ref="#/components/schemas/Pet")
-     *             ),
+     *         @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/Pet")
      *         )
      *     ),
      *     @OA\Response(
@@ -111,10 +108,7 @@ final class PetController
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *            mediaType="application/json",
-     *            @OA\Schema(ref="#/components/schemas/Pet")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Pet")
      *     ),
      *     @OA\Response(
      *         response="400",
@@ -143,10 +137,7 @@ final class PetController
      *     @OA\RequestBody(
      *         description="Pet object that needs to be added to the store",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Pet"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
      *             @OA\Schema(ref="#/components/schemas/Pet")
@@ -181,10 +172,7 @@ final class PetController
      *     @OA\RequestBody(
      *         required=true,
      *         description="Pet object that needs to be added to the store",
-     *         @OA\MediaType(
-     *            mediaType="application/json",
-     *            @OA\Schema(ref="#/components/schemas/Pet"),
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Pet"),
      *         @OA\MediaType(
      *            mediaType="application/xml",
      *            @OA\Schema(ref="#/components/schemas/Pet"),

@@ -247,6 +247,38 @@ class Product {
     public $name;
 ```
 
+### Shortcuts
+
+The `@OA\MediaType` is used to describe the content:
+
+```php
+/**
+ * @OA\Response(
+ *     response=200,
+ *     description="successful operation",
+ *     @OA\MediaType(
+ *         mediaType="application/json",
+ *         @OA\Schema(ref="#/components/schemas/User"),
+ *     )
+ * ),  
+ */
+```
+
+But because most API requests and responses are JSON, the `@OA\JsonContent` allows you to write:
+
+```php
+/**
+ * @OA\Response(
+ *     response=200,
+ *     description="successful operation",
+ *     @OA\JsonContent(ref="#/components/schemas/User"),
+ * )
+ */
+```
+
+`@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
+and generates the same output.
+
 ## Reusing annotations ($ref)
 
 It's common that multiple requests have some overlap in either the request or the response.

@@ -30,9 +30,7 @@ class PetsController
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\Schema(
-     *             ref="#/components/schemas/Error"
-     *         )
+     *         @OA\Schema(ref="#/components/schemas/Error")
      *     )
      * )
      */

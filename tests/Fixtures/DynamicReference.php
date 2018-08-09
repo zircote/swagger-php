@@ -32,18 +32,15 @@ class DynamicReference
      *          response=200,
      *          description="Example extended response",
      *          ref="$/components/responses/Json",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  ref="$/components/schemas/Product",
-     *                  @OA\Property(
-     *                      property="data",
-     *                      ref="#/components/schemas/Product"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="test",
-     *                      ref="$/components/schemas/TestProperty"
-     *                  )
+     *          @OA\JsonContent(
+     *              ref="$/components/schemas/Product",
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/Product"
+     *              ),
+     *              @OA\Property(
+     *                  property="test",
+     *                  ref="$/components/schemas/TestProperty"
      *              )
      *          ),
      *     ),
@@ -82,24 +79,21 @@ class DynamicReference
  * @OA\Response(
  *      response="Json",
  *      description="the basic response",
- *      @OA\MediaType(
- *          mediaType="application/json",
- *          @OA\Schema(
- *              @OA\Property(
- *                  type="boolean",
- *                  property="success"
- *              ),
- *              @OA\Property(
- *                  property="data"
- *              ),
- *              @OA\Property(
- *                  property="errors",
- *                  type="object"
- *              ),
- *              @OA\Property(
- *                  property="token",
- *                  type="string"
- *              )
+ *      @OA\JsonContent(
+ *          @OA\Property(
+ *              type="boolean",
+ *              property="success"
+ *          ),
+ *          @OA\Property(
+ *              property="data"
+ *          ),
+ *          @OA\Property(
+ *              property="errors",
+ *              type="object"
+ *          ),
+ *          @OA\Property(
+ *              property="token",
+ *              type="string"
  *          )
  *      )
  * )

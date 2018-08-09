@@ -91,17 +91,13 @@ class Pet
      *         description="successful operation",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(
-     *                ref="#/components/schemas/Pet"
-     *             )
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
      *         @OA\MediaType(
      *             mediaType="application/xml",
      *             @OA\Schema(
      *                 type="array",
-     *                 @OA\Items(
-     *                    ref="#/components/schemas/Pet"
-     *                 )
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             )
      *         )
      *     ),
@@ -143,22 +139,15 @@ class Pet
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(
-     *                    ref="#/components/schemas/Pet"
-     *                 )
-     *             )
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
      *         @OA\MediaType(
      *             mediaType="application/xml",
      *             @OA\Schema(
      *                 type="array",
-     *                 @OA\Items(
-     *                    ref="#/components/schemas/Pet"
-     *                 )
+     *                 @OA\Items(ref="#/components/schemas/Pet")
      *             )
      *         )
      *     ),
@@ -195,17 +184,10 @@ class Pet
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Pet"
-     *             ),
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Pet"),
      *         @OA\MediaType(
      *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/Pet"
-     *             ),
+     *             @OA\Schema(ref="#/components/schemas/Pet"),
      *         )
      *     ),
      *     @OA\Response(
@@ -336,12 +318,7 @@ class Pet
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/ApiResponse"
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
      *     ),
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}

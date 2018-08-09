@@ -26,10 +26,7 @@ You can define top-level parameters which can be references with $ref="#/compone
  *   request="product_in_body",
  *   required=true,
  *   description="product_request",
- *   @OA\MediaType(
- *     mediaType="application/json",
- *     @OA\Schema(ref="#/components/schemas/Product")
- *   )
+ *   @OA\JsonContent(ref="#/components/schemas/Product")
  * )
  */
 ?>
@@ -44,10 +41,7 @@ Then later, a search for '#/components/responses/todo' will reveal the operation
  * @OA\Response(
  *   response="product",
  *   description="All information about a product",
- *   @OA\MediaType(
- *     mediaType="application/json",
- *     @OA\Schema(ref="#/components/schemas/Product")
- *   )
+ *   @OA\JsonContent(ref="#/components/schemas/Product")
  * )
  *
  * @OA\Response(

@@ -13,7 +13,10 @@ class UsingRefs
      *   path="/pi/{item_name}",
      *   summary="Get protected item",
      *   @OA\Parameter(ref="#/components/parameters/ItemName"),
-     *   @OA\Response(response="default", ref="#/components/responses/Item")
+     *   @OA\Response(
+     *     response="default",
+     *     ref="#/components/responses/Item"
+     *   )
      * )
      */
     public function getProtectedItem()

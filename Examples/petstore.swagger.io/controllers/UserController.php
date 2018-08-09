@@ -16,9 +16,7 @@ class UserController
      *       description="Created user object",
      *       @OA\MediaType(
      *           mediaType="multipart/form-data",
-     *           @OA\Schema(
-     *               ref="#/components/schemas/User"
-     *           )
+     *           @OA\Schema(ref="#/components/schemas/User")
      *       )
      *   ),
      *   @OA\Response(response="default", description="successful operation")
@@ -187,9 +185,7 @@ class UserController
      *       description="Updated user object",
      *       @OA\MediaType(
      *           mediaType="multipart/form-data",
-     *           @OA\Schema(
-     *               ref="#/components/schemas/User"
-     *           )
+     *           @OA\Schema(ref="#/components/schemas/User")
      *       )
      *   ),
      * )
