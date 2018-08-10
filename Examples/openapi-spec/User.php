@@ -2,7 +2,7 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @OA\Schema(schema="user", type="object")
+ * @OA\Schema(schema="user")
  */
 class User
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @OA\Schema(required={"code", "message"}, type="object")
+ * @OA\Schema(required={"code", "message"})
  */
 class ErrorModel extends Exception
 {

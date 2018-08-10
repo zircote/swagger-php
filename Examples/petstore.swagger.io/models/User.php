@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @OA\Schema(type="object", @OA\Xml(name="User"))
+ * @OA\Schema(@OA\Xml(name="User"))
  */
 class User
 {

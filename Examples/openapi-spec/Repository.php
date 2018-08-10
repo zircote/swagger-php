@@ -2,7 +2,7 @@
 namespace OpenApi\LinkExample;
 
 /**
- * @OA\Schema(schema="repository", type="object")
+ * @OA\Schema(schema="repository")
  */
 class Repository
 {

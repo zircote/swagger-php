@@ -265,12 +265,12 @@
                     "description": "Pet object that needs to be added to the store",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "application/xml": {
                             "schema": {
                                 "$ref": "#/components/schemas/Pet"
                             }
                         },
-                        "application/xml": {
+                        "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Pet"
                             }
@@ -308,12 +308,12 @@
                     "description": "Pet object that needs to be added to the store",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "application/xml": {
                             "schema": {
                                 "$ref": "#/components/schemas/Pet"
                             }
                         },
-                        "application/xml": {
+                        "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Pet"
                             }

@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @OA\Schema(type="object", @OA\Xml(name="Order"))
+ * @OA\Schema(@OA\Xml(name="Order"))
  */
 class Order
 {

@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @OA\Schema(required={"name", "photoUrls"}, type="object", @OA\Xml(name="Pet"))
+ * @OA\Schema(required={"name", "photoUrls"}, @OA\Xml(name="Pet"))
  */
 class Pet
 {

@@ -3,11 +3,10 @@
 namespace Petstore;
 
 /**
- * @OA\Schema(schema="NewPet", type="object", required={"name"})
+ * @OA\Schema(schema="NewPet", required={"name"})
  */
 class SimplePet
 {
-
     public $id;
 
     /**

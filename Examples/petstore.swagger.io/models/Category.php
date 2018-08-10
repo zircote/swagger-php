@@ -4,7 +4,6 @@ namespace PetstoreIO;
 
 /**
  * @OA\Schema(
- *   type="object",
  *   @OA\Xml(name="Category")
  * )
  */

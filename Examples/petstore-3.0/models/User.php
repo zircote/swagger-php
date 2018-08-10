@@ -16,7 +16,6 @@ namespace Petstore30;
  * @OA\Schema(
  *     title="User model",
  *     description="User model",
- *     type="object"
  * )
  */
 class User

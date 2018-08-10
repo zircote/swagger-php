@@ -16,7 +16,6 @@ namespace Petstore30;
  * @OA\Schema(
  *     description="Pet model",
  *     title="Pet model",
- *     type="object",
  *     required={"name", "photoUrls"},
  *     @OA\Xml(
  *         name="Pet"

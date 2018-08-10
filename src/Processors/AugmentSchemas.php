@@ -27,9 +27,6 @@ class AugmentSchemas
                 } elseif ($schema->_context->is('trait')) {
                     $schema->schema = $schema->_context->trait;
                 }
-                // if ($schema->type === null) {
-                //     $schema->type = 'object';
-                // }
             }
         }
         // Merge unmerged @OA\Property annotations into the @OA\Schema of the class
@@ -69,6 +66,19 @@ class AugmentSchemas
                         $annotation->merge([$property], true);
                         break;
                     }
+                }
+            }
+        }
+        foreach ($schemas as $schema) {
+            if ($schema->type === null) {
+                if (is_array($schema->properties) && count($schema->properties) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->patternProperties) && count($schema->patternProperties) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
+                    $schema->type = 'object';
                 }
             }
         }

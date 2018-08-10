@@ -20,7 +20,6 @@
 /**
  * @OA\Schema(
  *     schema="ErrorModel",
- *     type="object",
  *     required={"code", "message"},
  *     @OA\Property(
  *         property="code",

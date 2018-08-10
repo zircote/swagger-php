@@ -59,14 +59,6 @@
                     "200": {
                         "description": "pet response",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Pet"
-                                    }
-                                }
-                            },
                             "application/xml": {
                                 "schema": {
                                     "type": "array",
@@ -84,6 +76,14 @@
                                 }
                             },
                             "text/html": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pet"
+                                    }
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
@@ -101,17 +101,17 @@
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
                             },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorModel"
-                                }
-                            },
                             "text/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
                             },
                             "text/html": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorModel"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
@@ -178,11 +178,6 @@
                     "200": {
                         "description": "pet response",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Pet"
-                                }
-                            },
                             "application/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Pet"
@@ -194,6 +189,11 @@
                                 }
                             },
                             "text/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pet"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Pet"
                                 }
@@ -208,17 +208,17 @@
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
                             },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorModel"
-                                }
-                            },
                             "text/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
                             },
                             "text/html": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorModel"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ErrorModel"
                                 }
@@ -300,7 +300,8 @@
                                 "type": "integer",
                                 "format": "int64"
                             }
-                        }
+                        },
+                        "type": "object"
                     }
                 ]
             }

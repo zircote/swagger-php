@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @OA\Schema(type="object")
+ * @OA\Schema()
  */
 class ApiResponse
 {

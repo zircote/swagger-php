@@ -3,13 +3,11 @@
 /**
  * @OA\Schema(
  *   schema="NewPet",
- *   type="object",
  *   required={"name"}
  * )
  */
 class Pet
 {
-
     public $id;
     /**
      * @OA\Property(type="string")

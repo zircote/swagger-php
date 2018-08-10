@@ -5,7 +5,6 @@ namespace OpenApiTests\Fixtures;
 /**
  * @OA\Schema(
  *   schema="UsingVar",
- *   type="object",
  *   required={"name"}
  * )
  */

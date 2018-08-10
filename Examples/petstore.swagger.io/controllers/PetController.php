@@ -294,7 +294,6 @@ final class PetController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 type="object",
      *                 @OA\Property(
      *                     description="Additional data to pass to server",
      *                     property="additionalMetadata",

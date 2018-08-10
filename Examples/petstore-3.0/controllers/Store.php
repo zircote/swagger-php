@@ -26,7 +26,6 @@ class Store
      *         response=200,
      *          description="successful operation",
      *          @OA\JsonContent(
-     *              type="object",
      *              @OA\AdditionalProperties(
      *                  type="integer",
      *                  format="int32"

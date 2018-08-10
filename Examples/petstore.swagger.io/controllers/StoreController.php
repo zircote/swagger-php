@@ -16,7 +16,6 @@ abstract class StoreController
      *     response=200,
      *     description="successful operation",
      *     @OA\Schema(
-     *       type="object",
      *       additionalProperties={
      *         "type":"integer",
      *         "format":"int32"

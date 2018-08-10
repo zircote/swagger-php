@@ -113,7 +113,8 @@
                     "tag": {
                         "type": "string"
                     }
-                }
+                },
+                "type": "object"
             },
             "Error": {
                 "required": [
@@ -128,7 +129,8 @@
                     "message": {
                         "type": "string"
                     }
-                }
+                },
+                "type": "object"
             },
             "Pets": {
                 "type": "array",

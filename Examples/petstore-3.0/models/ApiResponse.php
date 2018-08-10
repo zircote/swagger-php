@@ -14,7 +14,6 @@ namespace Petstore30;
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(
- *     type="object",
  *     description="Api response",
  *     title="Api response"
  * )
