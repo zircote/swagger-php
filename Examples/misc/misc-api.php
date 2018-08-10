@@ -12,7 +12,7 @@
  *      description="OpenApi parameters",
  *      @OA\ServerVariable(
  *          serverVariable="schema",
- *          enum="['https', 'http']",
+ *          enum={"https", "http"},
  *          default="https"
  *      )
  * )

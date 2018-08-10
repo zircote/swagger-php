@@ -1,21 +1,23 @@
 {
-  "openapi": "3.0.0",
-
-  "info": {
-    "title": "Testing annotations from bugreports",
-    "version": "1.0.0"
-  },
-  "paths": {},
-  "servers": [
-    {
-      "url": "{schema}://host.dev",
-      "description": "OpenApi parameters",
-      "variables": {
-        "schema": {
-          "enum": "['https', 'http']",
-          "default": "https"
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Testing annotations from bugreports",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "{schema}://host.dev",
+            "description": "OpenApi parameters",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "https"
+                }
+            }
         }
-      }
-    }
-  ]
+    ],
+    "paths": {}
 }
