@@ -361,9 +361,9 @@ abstract class AbstractAnnotation implements JsonSerializable
                     Logger::notice($this->identity() . '->' . $property . ' is an object literal, use nested @' . str_replace('OpenApi\\Annotations\\', 'OA\\', $annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
                 } elseif (empty($item->$keyField)) {
-                    Logger::notice($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
+                    Logger::warning($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->$keyField])) {
-                    Logger::notice('Multiple ' . $item->_identity([]) . ' with the same ' . $keyField . '="' . $item->$keyField . "\":\n  " . $item->_context . "\n  " . $keys[$item->$keyField]->_context);
+                    Logger::warning('Multiple ' . $item->_identity([]) . ' with the same ' . $keyField . '="' . $item->$keyField . "\":\n  " . $item->_context . "\n  " . $keys[$item->$keyField]->_context);
                 } else {
                     $keys[$item->$keyField] = $item;
                 }
