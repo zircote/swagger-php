@@ -37,10 +37,12 @@ class BuildPaths
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {
-                    $paths[$operation->path] = new PathItem([
-                        'path' => $operation->path,
-                        '_context' => new Context(['generated' => true], $operation->_context)
-                    ]);
+                    $paths[$operation->path] = new PathItem(
+                        [
+                            'path' => $operation->path,
+                            '_context' => new Context(['generated' => true], $operation->_context)
+                        ]
+                    );
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {

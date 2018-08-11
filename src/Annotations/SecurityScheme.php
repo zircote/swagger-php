@@ -95,14 +95,14 @@ class SecurityScheme extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc} 
+     * @inheritdoc
      */
     public static $_nested = [
         'OpenApi\Annotations\Flow' => ['flows', 'flow'],
     ];
 
     /**
-     * {@inheritdoc} 
+     * @inheritdoc
      */
     public static $_parents = [
         'OpenApi\Annotations\Components',

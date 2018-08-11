@@ -11,25 +11,27 @@ use Doctrine\Common\Annotations\DocParser;
 use Exception;
 
 // Load all whitelisted annotations
-AnnotationRegistry::registerLoader(function ($class) {
-    if (Analyser::$whitelist === false) {
-        $whitelist = ['OpenApi\Annotations\\'];
-    } else {
-        $whitelist = Analyser::$whitelist;
-    }
-    foreach ($whitelist as $namespace) {
-        if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-            $loaded = class_exists($class);
-            if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
-                if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
-                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                }
-            }
-            return $loaded;
+AnnotationRegistry::registerLoader(
+    function ($class) {
+        if (Analyser::$whitelist === false) {
+            $whitelist = ['OpenApi\Annotations\\'];
+        } else {
+            $whitelist = Analyser::$whitelist;
         }
+        foreach ($whitelist as $namespace) {
+            if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
+                $loaded = class_exists($class);
+                if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
+                    if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
+                        throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                    }
+                }
+                return $loaded;
+            }
+        }
+        return false;
     }
-    return false;
-});
+);
 
 /**
  * Extract swagger-php annotations from a [PHPDoc](http://en.wikipedia.org/wiki/PHPDoc) using Doctrine's DocParser.
@@ -39,6 +41,7 @@ class Analyser
     /**
      * List of namespaces that should be detected by the doctrine annotation parser.
      * Set to false to load all detected classes.
+     *
      * @var array|false
      */
     public static $whitelist = ['OpenApi\Annotations\\'];
@@ -50,6 +53,7 @@ class Analyser
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
+     *
      * @var Context
      */
     public static $context;
@@ -72,8 +76,8 @@ class Analyser
     /**
      * Use doctrine to parse the comment block and return the detected annotations.
      *
-     * @param string $comment a T_DOC_COMMENT.
-     * @param Context $context
+     * @param  string  $comment a T_DOC_COMMENT.
+     * @param  Context $context
      * @return array Annotations
      */
     public function fromComment($comment, $context = null)
@@ -88,11 +92,15 @@ class Analyser
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
-            $comment = preg_replace_callback('/^[\t ]*\*[\t ]+/m', function ($match) {
-                // Replace leading tabs with spaces.
-                // Workaround for http://www.doctrine-project.org/jira/browse/DCOM-255
-                return str_replace("\t", ' ', $match[0]);
-            }, $comment);
+            $comment = preg_replace_callback(
+                '/^[\t ]*\*[\t ]+/m',
+                function ($match) {
+                    // Replace leading tabs with spaces.
+                    // Workaround for http://www.doctrine-project.org/jira/browse/DCOM-255
+                    return str_replace("\t", ' ', $match[0]);
+                },
+                $comment
+            );
             $annotations = $this->docParser->parse($comment, $context);
             self::$context = null;
             return $annotations;

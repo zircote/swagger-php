@@ -18,7 +18,6 @@ class OperationId
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
 
-        /** @var \OpenApi\Annotations\Operation $operation */
         foreach ($allOperations as $operation) {
             if ($operation->operationId !== UNDEFINED) {
                 continue;

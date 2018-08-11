@@ -63,7 +63,7 @@ class StaticAnalyser
     /**
      * Shared implementation for parseFile() & parseContents().
      *
-     * @param array   $tokens The result of a token_get_all()
+     * @param array   $tokens       The result of a token_get_all()
      * @param Context $parseContext
      *
      * @return Analysis
@@ -159,11 +159,14 @@ class StaticAnalyser
             if ($token[0] === T_STATIC) {
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_VARIABLE) { // static property
-                    $propertyContext = new Context([
-                        'property' => substr($token[1], 1),
-                        'static'   => true,
-                        'line'     => $line,
-                    ], $schemaContext);
+                    $propertyContext = new Context(
+                        [
+                            'property' => substr($token[1], 1),
+                            'static'   => true,
+                            'line'     => $line,
+                        ],
+                        $schemaContext
+                    );
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
@@ -184,10 +187,13 @@ class StaticAnalyser
                     $token = $this->nextToken($tokens, $parseContext);
                 }
                 if ($token[0] === T_VARIABLE) { // instance property
-                    $propertyContext = new Context([
-                        'property' => substr($token[1], 1),
-                        'line'     => $line,
-                    ], $schemaContext);
+                    $propertyContext = new Context(
+                        [
+                            'property' => substr($token[1], 1),
+                            'line'     => $line,
+                        ],
+                        $schemaContext
+                    );
                     if ($classDefinition) {
                         $classDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
@@ -201,10 +207,13 @@ class StaticAnalyser
                 } elseif ($token[0] === T_FUNCTION) {
                     $token = $this->nextToken($tokens, $parseContext);
                     if ($token[0] === T_STRING) {
-                        $methodContext = new Context([
-                            'method' => $token[1],
-                            'line'   => $line,
-                        ], $schemaContext);
+                        $methodContext = new Context(
+                            [
+                                'method' => $token[1],
+                                'line'   => $line,
+                            ],
+                            $schemaContext
+                        );
                         if ($classDefinition) {
                             $classDefinition['methods'][$token[1]] = $methodContext;
                         }
@@ -221,10 +230,13 @@ class StaticAnalyser
             } elseif ($token[0] === T_FUNCTION) {
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] === T_STRING) {
-                    $methodContext = new Context([
-                        'method' => $token[1],
-                        'line'   => $line,
-                    ], $schemaContext);
+                    $methodContext = new Context(
+                        [
+                            'method' => $token[1],
+                            'line'   => $line,
+                        ],
+                        $schemaContext
+                    );
                     if ($classDefinition) {
                         $classDefinition['methods'][$token[1]] = $methodContext;
                     }

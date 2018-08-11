@@ -19,7 +19,9 @@ use OpenApi\Logger;
  */
 class HandleReferences
 {
-    /** @var array The allowed imports in order of import */
+    /**
+     * @var array The allowed imports in order of import
+     */
     private $import_in_order = [
         'parameter' => 'parameters',
         'definition' => 'definitions',
@@ -50,14 +52,13 @@ class HandleReferences
             $this->head_references[$importName] = [];
 
             if (!is_null($analysis->openapi->$importName)) {
-                /** @var Response $item */
                 foreach ($analysis->openapi->$importName as $item) {
                     //if that identified value exists, or if the name isn't set then give blank id
                     if (!is_null($item->$propertyName) && isset($this->references[$importName][$item->$propertyName])) {
                         Logger::notice("$propertyName is already defined for object \"" . get_class($item) . '" in ' . $item->_context);
                     } else {
                         $this->references[$importName][$item->$propertyName] = $this->link($item);
-//                        Logger::notice("$propertyName is NULL on object \"" . get_class($item) . '" in ' . $item->_context);
+                        //                        Logger::notice("$propertyName is NULL on object \"" . get_class($item) . '" in ' . $item->_context);
                     }
                 }
             }
@@ -65,7 +66,6 @@ class HandleReferences
 
         // All of the paths in the openapi, we need to iterate across
         if (!is_null($analysis->openapi->paths)) {
-            /** @var Path $path */
             foreach ($analysis->openapi->paths as $path) {
                 foreach ($path as $propertyName => $value) {
                     if ($value instanceof Operation && !is_null($value->responses)) {
@@ -82,7 +82,7 @@ class HandleReferences
     /**
      * Creates the Linked list array item.
      *
-     * @param $response
+     * @param  $response
      * @return array
      */
     private function link($response)
@@ -109,7 +109,7 @@ class HandleReferences
     /**
      * Checks the syntax of the string to make sure it starts with a $
      *
-     * @param $string
+     * @param  $string
      * @return int
      */
     private function checkSyntax($string)
@@ -141,7 +141,6 @@ class HandleReferences
     private function loadSchemas(Operation $operation)
     {
         if (!is_null($operation->responses)) {
-            /** @var Response $item */
             foreach ($operation->responses as $item) {
                 if (!is_null($item->schema)) {
                     $this->propertyRetrieve([$item->schema]);
@@ -158,8 +157,6 @@ class HandleReferences
     private function propertyRetrieve(array $params)
     {
         $array = [];
-
-        /** @var Schema $item */
         foreach ($params as $item) {
             if (is_array($item->properties)) {
                 $array = array_merge($array, $item->properties);
@@ -169,7 +166,7 @@ class HandleReferences
             }
         }
 
-        //nest the next loop
+        // nest the next loop
         if (count($array)) {
             $this->propertyRetrieve($array);
         }
@@ -182,7 +179,6 @@ class HandleReferences
     {
         foreach ($this->import_in_order as $key => $import_name) {
             foreach ($this->references[$import_name] as &$data) {
-                /** @var Response $item */
                 $item = $data[1];
 
                 $this->recursiveMap($item, $data);
@@ -199,7 +195,7 @@ class HandleReferences
      * For each reference it will map its array data to the reference name.
      *
      * @param mixed $item
-     * @param null $data
+     * @param null  $data
      */
     private function recursiveMap($item, &$data = null)
     {
@@ -266,7 +262,7 @@ class HandleReferences
     /**
      * Iterates the pending queue, popping the first element of the list.
      *
-     * @param array $queue
+     * @param array       $queue
      * @param $current_key
      */
     private function iterateQueue(&$queue, $current_key)
@@ -274,9 +270,7 @@ class HandleReferences
         $item = array_pop($queue);
         $queue = array_merge($queue, $item[2]);
 
-        /** @var Response $response */
         $response = $item[1];
-        /** @var Response $parent_obj */
         $parent = $item[0];
 
         //Reset the ref
@@ -326,7 +320,6 @@ class HandleReferences
 
         foreach ($parent as $key => $value) {
             if ($key == 'properties' && is_array($value)) {
-                /** @var Property[] $value */
                 foreach ($value as $property) {
                     // if the parent property exists and the child property with the same name exists,
                     // then will use the child property

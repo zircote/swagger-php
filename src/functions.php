@@ -20,8 +20,8 @@ if (defined('OpenApi\UNDEFINED') === false) {
     /**
      * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *
-     * @param string|array|Finder $directory The directory(s) or filename(s)
-     * @param array $options
+     * @param  string|array|Finder $directory The directory(s) or filename(s)
+     * @param  array               $options
      *   exclude: string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
      *   analyser: defaults to StaticAnalyser
      *   analysis: defaults to a new Analysis

@@ -507,20 +507,15 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             return true;
         }
-        switch ($type) {
-        case 'string':
+        if ($type === 'string') {
             return is_string($value);
-
-        case 'boolean':
+        } elseif ($type === 'boolean') {
             return is_bool($value);
-
-        case 'integer':
+        } elseif ($type === 'integer') {
             return is_int($value);
-
-        case 'number':
+        } elseif ($type === 'number') {
             return is_numeric($value);
-
-        case 'array':
+        } elseif ($type === 'array') {
             if (is_array($value) === false) {
                 return false;
             }
@@ -532,11 +527,9 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $count++;
             }
             return true;
-
-        case 'scheme':
+        } elseif ($type === 'scheme') {
             return in_array($value, ['http', 'https', 'ws', 'wss']);
-
-        default:
+        } else {
             throw new Exception('Invalid type "' . $type . '"');
         }
     }

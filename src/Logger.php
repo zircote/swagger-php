@@ -16,6 +16,7 @@ class Logger
 {
     /**
      * Singleton
+     *
      * @var Logger
      */
     public static $instance;
@@ -52,6 +53,7 @@ class Logger
 
     /**
      * Log a OpenApi warning.
+     *
      * @param Exception|string $entry
      */
     public static function warning($entry)
@@ -61,6 +63,7 @@ class Logger
 
     /**
      * Log a OpenApi notice.
+     *
      * @param Exception|string $entry
      */
     public static function notice($entry)
