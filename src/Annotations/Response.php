@@ -16,16 +16,17 @@ class Response extends AbstractAnnotation
 {
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     *
      * @var string
      */
-    public $ref;
+    public $ref = UNDEFINED;
 
     /**
      * The key into Operations->responses array.
      *
      * @var string a HTTP Status Code or "default"
      */
-    public $response;
+    public $response = UNDEFINED;
 
     /**
      * A short description of the response.
@@ -33,7 +34,7 @@ class Response extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Maps a header name to its definition.
@@ -42,7 +43,7 @@ class Response extends AbstractAnnotation
      *
      * @var Header[]
      */
-    public $headers;
+    public $headers = UNDEFINED;
 
     /**
      * A map containing descriptions of potential response payloads.
@@ -51,7 +52,7 @@ class Response extends AbstractAnnotation
      *
      * @var MediaType[]
      */
-    public $content;
+    public $content = UNDEFINED;
 
     /**
      * A map of operations links that can be followed from the response.
@@ -59,24 +60,32 @@ class Response extends AbstractAnnotation
      *
      * @var array
      */
-    public $links;
+    public $links = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['description'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'description' => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
         'OpenApi\Annotations\Header' => ['headers', 'header'],
         'OpenApi\Annotations\Link' => ['links', 'link'],
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Components',
         'OpenApi\Annotations\Operation',

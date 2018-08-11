@@ -19,25 +19,31 @@ class License extends AbstractAnnotation
      *
      * @var string
      */
-    public $name;
+    public $name = UNDEFINED;
 
     /**
      * A URL to the license used for the API.
      *
      * @var string
      */
-    public $url;
+    public $url = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'name' => 'string',
         'url' => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['name'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Info'
     ];

@@ -3,12 +3,7 @@
 namespace OpenApi\Annotations;
 
 /**
- * Class Flow
  * Security scheme flow object.
- *
- * @package OpenApi\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @Annotation
  */
@@ -19,28 +14,28 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $authorizationUrl;
+    public $authorizationUrl = UNDEFINED;
 
     /**
      * The authorization URL to be used this flow
      *
      * @var string
      */
-    public $tokenUrl;
+    public $tokenUrl = UNDEFINED;
 
     /**
      * The token URL to be used this flow
      *
      * @var string
      */
-    public $refreshUrl;
+    public $refreshUrl = UNDEFINED;
 
     /**
      * Flow name. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials']
      *
      * @var string
      */
-    public $flow;
+    public $flow = UNDEFINED;
 
     /**
      * Authorization scopes
@@ -51,7 +46,9 @@ class Flow extends AbstractAnnotation
      */
     public $scopes = [];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['scopes', 'flow'];
 
     /**
@@ -59,7 +56,9 @@ class Flow extends AbstractAnnotation
      */
     public static $_blacklist = ['_context', '_unmerged'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'flow'             => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
         'refreshUrl'       => 'string',
@@ -67,7 +66,9 @@ class Flow extends AbstractAnnotation
         'tokenUrl'         => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\SecurityScheme',
     ];

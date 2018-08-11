@@ -13,7 +13,7 @@ if (defined('OpenApi\UNDEFINED') === false) {
     /**
      * Special value to differentiate between null and undefined.
      */
-    define('OpenApi\UNDEFINED', '{OPEN-API-UNDEFINED-46EC-07AB32D2-D50C}');
+    define('OpenApi\UNDEFINED', '@OA\UNDEFINED🙈');
     define('OpenApi\Annotations\UNDEFINED', UNDEFINED);
     define('OpenApi\Processors\UNDEFINED', UNDEFINED);
 

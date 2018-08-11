@@ -15,16 +15,17 @@ class ServerVariable extends AbstractAnnotation
 {
     /**
      * The key into Server->variables array.
+     *
      * @var string
      */
-    public $serverVariable;
+    public $serverVariable = UNDEFINED;
 
     /**
      * An enumeration of string values to be used if the substitution options are from a limited set.
      *
      * @var string[]
      */
-    public $enum;
+    public $enum = UNDEFINED;
 
     /**
      * The default value to use for substitution, and to send, if an alternate value is not supplied.
@@ -32,7 +33,7 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var string
      */
-    public $default;
+    public $default = UNDEFINED;
 
     /**
      * A map between a variable name and its value.
@@ -40,7 +41,7 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var array
      */
-    public $variables;
+    public $variables = UNDEFINED;
 
     /**
      * An optional description for the server variable.
@@ -48,17 +49,23 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Server'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['default'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'default' => 'string',
         'description' => 'string',

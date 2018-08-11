@@ -20,77 +20,77 @@ class PathItem extends AbstractAnnotation
      *
      * @var string
      */
-    public $path;
+    public $path = UNDEFINED;
 
     /**
      * An optional, string summary, intended to apply to all operations in this path.
      *
      * @var string
      */
-    public $summary;
+    public $summary = UNDEFINED;
 
     /**
      * A definition of a GET operation on this path.
      *
      * @var Get
      */
-    public $get;
+    public $get = UNDEFINED;
 
     /**
      * A definition of a PUT operation on this path.
      *
      * @var Put
      */
-    public $put;
+    public $put = UNDEFINED;
 
     /**
      * A definition of a POST operation on this path.
      *
      * @var Post
      */
-    public $post;
+    public $post = UNDEFINED;
 
     /**
      * A definition of a DELETE operation on this path.
      *
      * @var Delete
      */
-    public $delete;
+    public $delete = UNDEFINED;
 
     /**
      * A definition of a OPTIONS operation on this path.
      *
      * @var Options
      */
-    public $options;
+    public $options = UNDEFINED;
 
     /**
      * A definition of a HEAD operation on this path.
      *
      * @var Head
      */
-    public $head;
+    public $head = UNDEFINED;
 
     /**
      * A definition of a PATCH operation on this path.
      *
      * @var Patch
      */
-    public $patch;
+    public $patch = UNDEFINED;
 
     /**
      * A definition of a TRACE operation on this path.
      *
      * @var Trace
      */
-    public $trace;
+    public $trace = UNDEFINED;
 
     /**
      * An alternative server array to service all operations in this path.
      *
      * @var Server[]
      */
-    public $servers;
+    public $servers = UNDEFINED;
 
     /**
      * A list of parameters that are applicable for all the operations described under this path.
@@ -101,14 +101,18 @@ class PathItem extends AbstractAnnotation
      *
      * @var Parameter[]
      */
-    public $parameters;
+    public $parameters = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'path' => 'string'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Get' => 'get',
         'OpenApi\Annotations\Post' => 'post',
@@ -122,7 +126,9 @@ class PathItem extends AbstractAnnotation
         'OpenApi\Annotations\Server' => ['servers'],
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi'
     ];

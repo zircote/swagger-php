@@ -18,15 +18,17 @@ class Parameter extends AbstractAnnotation
 {
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     *
      * @var string
      */
-    public $ref;
+    public $ref = UNDEFINED;
 
     /**
      * The key into Components->parameters or PathItem->parameters array.
+     *
      * @var string
      */
-    public $parameter;
+    public $parameter = UNDEFINED;
 
     /**
      * The name of the parameter.
@@ -37,7 +39,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $name;
+    public $name = UNDEFINED;
 
     /**
      * The location of the parameter.
@@ -45,7 +47,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $in;
+    public $in = UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -54,7 +56,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Determines whether this parameter is mandatory.
@@ -63,14 +65,14 @@ class Parameter extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $required;
+    public $required = UNDEFINED;
 
     /**
      * Specifies that a parameter is deprecated and should be transitioned out of usage.
      *
      * @var boolean
      */
-    public $deprecated;
+    public $deprecated = UNDEFINED;
 
     /**
      * Sets the ability to pass empty-valued parameters.
@@ -79,7 +81,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $allowEmptyValue;
+    public $allowEmptyValue = UNDEFINED;
 
     
     /**
@@ -88,7 +90,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $style;
+    public $style = UNDEFINED;
 
     /**
      * When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
@@ -98,7 +100,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $explode;
+    public $explode = UNDEFINED;
 
     /**
      * Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
@@ -107,14 +109,14 @@ class Parameter extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $allowReserved;
+    public $allowReserved = UNDEFINED;
 
     /**
      * The schema defining the type used for the parameter.
      *
      * @var Schema
      */
-    public $schema;
+    public $schema = UNDEFINED;
 
     /**
      * Example of the media type.
@@ -123,7 +125,7 @@ class Parameter extends AbstractAnnotation
      * Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.
      * To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.
      */
-    public $example;
+    public $example = UNDEFINED;
 
     /**
      * Examples of the media type.
@@ -133,7 +135,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $examples;
+    public $examples = UNDEFINED;
 
     /**
      * A map containing the representations for the parameter.
@@ -142,23 +144,23 @@ class Parameter extends AbstractAnnotation
      *
      * @var MediaType[]
      */
-    public $content;
+    public $content = UNDEFINED;
 
     /**
      * Path-style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.7
      */
-    public $matrix;
+    public $matrix = UNDEFINED;
 
     /**
      * Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5
      */
-    public $label;
+    public $label = UNDEFINED;
 
     /**
      * Form style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.8
      * This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.
      */
-    public $form;
+    public $form = UNDEFINED;
 
     /**
      * Simple style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.2
@@ -166,7 +168,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $simple;
+    public $simple = UNDEFINED;
 
     /**
      * Space separated array values.
@@ -174,7 +176,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $spaceDelimited;
+    public $spaceDelimited = UNDEFINED;
 
     /**
      * Pipe separated array values.
@@ -182,17 +184,21 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $pipeDelimited;
+    public $pipeDelimited = UNDEFINED;
 
     /**
      * Provides a simple way of rendering nested objects using form parameters.
      */
-    public $deepObject;
+    public $deepObject = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['name', 'in'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'name' => 'string',
         'in' => ['query', 'header', 'path', 'cookie'],
@@ -201,13 +207,17 @@ class Parameter extends AbstractAnnotation
         'required' => 'boolean',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Schema' => 'schema',
         'OpenApi\Annotations\Examples' => ['examples'],
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Components',
         'OpenApi\Annotations\PathItem',
@@ -222,40 +232,44 @@ class Parameter extends AbstractAnnotation
         'OpenApi\Annotations\Trace',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;
         }
         $valid = parent::validate($parents, $skip, $ref);
-        if (empty($this->ref)) {
+        if ($this->ref === UNDEFINED) {
             if ($this->in === 'body') {
-                if ($this->schema === null) {
+                if ($this->schema === UNDEFINED) {
                     Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }
             } else {
                 //                $validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'];
-//                if ($this->type === null) {
-//                    Logger::notice($this->identity() . '->type is required when ' . $this->_identity([]) . '->in == "' . $this->in . '" in ' . $this->_context);
-//                    $valid = false;
-//                } elseif ($this->type === 'array' && $this->items === null) {
-//                    Logger::notice($this->identity() . '->items required when ' . $this->_identity([]) . '->type == "array" in ' . $this->_context);
-//                    $valid = false;
-//                } elseif (in_array($this->type, $validTypes) === false) {
-//                    $valid = false;
-//                    Logger::notice($this->identity() . '->type must be "' . implode('", "', $validTypes) . '" when ' . $this->_identity([]) . '->in != "body" in ' . $this->_context);
-//                } elseif ($this->type === 'file' && $this->in !== 'formData') {
-//                    Logger::notice($this->identity() . '->in must be "formData" when ' . $this->_identity([]) . '->type == "file" in ' . $this->_context);
-//                    $valid = false;
-//                }
+                //                if ($this->type === null) {
+                //                    Logger::notice($this->identity() . '->type is required when ' . $this->_identity([]) . '->in == "' . $this->in . '" in ' . $this->_context);
+                //                    $valid = false;
+                //                } elseif ($this->type === 'array' && $this->items === null) {
+                //                    Logger::notice($this->identity() . '->items required when ' . $this->_identity([]) . '->type == "array" in ' . $this->_context);
+                //                    $valid = false;
+                //                } elseif (in_array($this->type, $validTypes) === false) {
+                //                    $valid = false;
+                //                    Logger::notice($this->identity() . '->type must be "' . implode('", "', $validTypes) . '" when ' . $this->_identity([]) . '->in != "body" in ' . $this->_context);
+                //                } elseif ($this->type === 'file' && $this->in !== 'formData') {
+                //                    Logger::notice($this->identity() . '->in must be "formData" when ' . $this->_identity([]) . '->type == "file" in ' . $this->_context);
+                //                    $valid = false;
+                //                }
             }
         }
         return $valid;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function identity()
     {
         return parent::_identity(['name', 'in']);

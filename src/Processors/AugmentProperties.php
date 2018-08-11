@@ -43,10 +43,9 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
-        if ($analysis->openapi->components && $analysis->openapi->components->schemas) {
-            /** @var Schema $schema */
+        if ($analysis->openapi->components !== UNDEFINED && $analysis->openapi->components->schemas !== UNDEFINED) {
             foreach ($analysis->openapi->components->schemas as $schema) {
-                if ($schema->schema) {
+                if ($schema->schema !== UNDEFINED) {
                     $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
                         = Components::SCHEMA_REF . $schema->schema;
                 }
@@ -54,31 +53,30 @@ class AugmentProperties
         }
 
         $allProperties = $analysis->getAnnotationsOfType(Property::class);
-        /** @var \OpenApi\Annotations\Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
             // Use the property names for @OA\Property()
-            if ($property->property === null) {
+            if ($property->property === UNDEFINED) {
                 $property->property = $context->property;
             }
-            if ($property->ref !== null) {
+            if ($property->ref !== UNDEFINED) {
                 continue;
             }
             if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
-                if ($property->type === null) {
+                if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
                     $type = $typeMatches[1];
 
                     if (array_key_exists(strtolower($type), static::$types) === false) {
                         $key = strtolower($context->fullyQualifiedName($type));
-                        if ($property->ref === null && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
+                        if ($property->ref === UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
                             $property->ref = $refs[$key];
                             continue;
                         }
                     } else {
                         $type = static::$types[strtolower($type)];
                         if (is_array($type)) {
-                            if ($property->format === null) {
+                            if ($property->format === UNDEFINED) {
                                 $property->format = $type[1];
                             }
                             $type = $type[0];
@@ -86,12 +84,14 @@ class AugmentProperties
                         $property->type = $type;
                     }
                     if ($typeMatches[2] === '[]') {
-                        if ($property->items === null) {
-                            $property->items = new Items([
+                        if ($property->items === UNDEFINED) {
+                            $property->items = new Items(
+                                [
                                 'type' => $property->type,
                                 '_context' => new Context(['generated' => true], $context)
-                            ]);
-                            if ($property->items->type === null) {
+                                ]
+                            );
+                            if ($property->items->type === UNDEFINED) {
                                 $key = strtolower($context->fullyQualifiedName($type));
                                 $property->items->ref = array_key_exists($key, $refs) ? $refs[$key] : null;
                             }
@@ -99,16 +99,16 @@ class AugmentProperties
                         $property->type = 'array';
                     }
                 }
-                if ($property->description === null && isset($varMatches['description'])) {
+                if ($property->description === UNDEFINED && isset($varMatches['description'])) {
                     $property->description = trim($varMatches['description']);
                 }
             }
 
-            if ($property->example === null && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $context->comment, $varMatches)) {
+            if ($property->example === UNDEFINED && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $context->comment, $varMatches)) {
                 $property->example = $varMatches['example'];
             }
 
-            if ($property->description === null) {
+            if ($property->description === UNDEFINED) {
                 $property->description = $context->phpdocContent();
             }
         }

@@ -11,6 +11,7 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\StaticAnalyser;
+use const OpenApi\UNDEFINED;
 
 class NestedPropertyTest extends OpenApiTestCase
 {
@@ -43,6 +44,6 @@ class NestedPropertyTest extends OpenApiTestCase
         // verbose not-recommend notations
         $theBabyOfBabyBaby = $theBabyOfBaby->properties[0];
         $this->assertEquals('theBabyOfBabyBaby', $theBabyOfBabyBaby->property);
-        $this->assertNull($theBabyOfBabyBaby->properties);
+        $this->assertSame(UNDEFINED, $theBabyOfBabyBaby->properties);
     }
 }

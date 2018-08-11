@@ -27,70 +27,74 @@ class Components extends AbstractAnnotation
      *
      * @var Schema[]
      */
-    public $schemas;
+    public $schemas = UNDEFINED;
 
     /**
      * Reusable Responses.
      *
      * @var Response[]
      */
-    public $responses;
+    public $responses = UNDEFINED;
 
     /**
      * Reusable Parameters.
      *
      * @var Parameter[]
      */
-    public $parameters;
+    public $parameters = UNDEFINED;
 
     /**
      * Reusable Examples.
      *
      * @var Examples[]
      */
-    public $examples;
+    public $examples = UNDEFINED;
 
     /**
      * Reusable Request Bodys.
      *
      * @var RequestBody[]
      */
-    public $requestBodies;
+    public $requestBodies = UNDEFINED;
 
     /**
      * Reusable Headers.
      *
      * @var Header[]
      */
-    public $headers;
+    public $headers = UNDEFINED;
 
     /**
      * Reusable Security Schemes.
      *
      * @var SecurityScheme[]
      */
-    public $securitySchemes;
+    public $securitySchemes = UNDEFINED;
 
     /**
      * Reusable Links.
      *
      * @var Link[]
      */
-    public $links;
+    public $links = UNDEFINED;
 
     /**
      * Reusable Callbacks.
      *
      * @var Callback[]
      */
-    public $callbacks;
+    public $callbacks = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Schema' => ['schemas', 'schema'],
         'OpenApi\Annotations\Response' => ['responses', 'response'],

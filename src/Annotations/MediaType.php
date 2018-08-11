@@ -17,16 +17,17 @@ class MediaType extends AbstractAnnotation
 
     /**
      * The key into Operation->content array.
+     *
      * @var string
      */
-    public $mediaType;
+    public $mediaType = UNDEFINED;
 
     /**
      * The schema defining the type used for the request body.
      *
      * @var Schema
      */
-    public $schema;
+    public $schema = UNDEFINED;
 
     /**
      * Example of the media type.
@@ -34,7 +35,7 @@ class MediaType extends AbstractAnnotation
      * The example object is mutually exclusive of the examples object.
      * Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.
      */
-    public $example;
+    public $example = UNDEFINED;
 
     /**
      * Examples of the media type.
@@ -44,21 +45,25 @@ class MediaType extends AbstractAnnotation
      *
      * @var array
      */
-    public $examples;
+    public $examples = UNDEFINED;
 
     /**
      * A map between a property name and its encoding information.
      * The key, being the property name, must exist in the schema as a property.
      * The encoding object shall only apply to requestBody objects when the media type is multipart or application/x-www-form-urlencoded.
      */
-    public $encoding;
+    public $encoding = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Schema' => 'schema',
         'OpenApi\Annotations\Examples' => ['examples'],
     ];
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Response',
         'OpenApi\Annotations\RequestBody',

@@ -7,23 +7,21 @@
 namespace OpenApi\Annotations;
 
 /**
- * Class AdditionalProperties
- *
- * @package OpenApi\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
  * @Annotation
  */
 class AdditionalProperties extends Schema
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Schema',
         'OpenApi\Annotations\Property'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],

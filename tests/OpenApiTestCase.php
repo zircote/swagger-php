@@ -7,6 +7,7 @@
 namespace OpenApiTests;
 
 use Closure;
+use DirectoryIterator;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -31,8 +32,7 @@ class OpenApiTestCase extends TestCase
     private $originalLogger;
 
     /**
-     *
-     * @param string  $expectedFile File containing the excepted json.
+     * @param string  $expectedFile  File containing the excepted json.
      * @param OpenApi $actualOpenApi
      * @param string  $message
      */
@@ -134,14 +134,18 @@ class OpenApiTestCase extends TestCase
      */
     protected function createOpenApiWithInfo()
     {
-        $openapi = new OpenApi([
-            'info'     => new \OpenApi\Annotations\Info([
+        $openapi = new OpenApi(
+            [
+            'info'     => new \OpenApi\Annotations\Info(
+                [
                 'title'    => 'swagger-php Test-API',
                 'version'  => 'test',
                 '_context' => new Context(['unittest' => true]),
-            ]),
+                ]
+            ),
             '_context' => new Context(['unittest' => true]),
-        ]);
+            ]
+        );
         return $openapi;
     }
 
@@ -208,5 +212,22 @@ class OpenApiTestCase extends TestCase
             }
         }
         return (object)$data;
+    }
+
+    public function allAnnotations()
+    {
+        $data = [];
+        $dir = new DirectoryIterator(__DIR__.'/../src/Annotations');
+        foreach ($dir as $entry) {
+            if ($entry->isFile() === false) {
+                continue;
+            }
+            $class = substr($entry->getFilename(), 0, -4);
+            if (in_array($class, ['AbstractAnnotation','Operation'])) {
+                continue; // skip abstract classes
+            }
+            $data[] = ['OpenApi\\Annotations\\'.$class];
+        }
+        return $data;
     }
 }

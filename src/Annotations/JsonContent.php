@@ -18,17 +18,21 @@ class JsonContent extends Schema
     /**
      * @var object
      */
-    public $example;
+    public $example = UNDEFINED;
 
     /**
      * @var object
      */
-    public $examples;
+    public $examples = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],

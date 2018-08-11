@@ -21,7 +21,7 @@ class AugmentSchemas
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         // Use the class names for @OA\Schema()
         foreach ($schemas as $schema) {
-            if ($schema->schema === null) {
+            if ($schema->schema === UNDEFINED) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
                 } elseif ($schema->_context->is('trait')) {
@@ -44,17 +44,17 @@ class AugmentSchemas
                             continue;
                         }
 
-                        if ($annotation->allOf) {
+                        if ($annotation->allOf !== UNDEFINED) {
                             $schema = null;
                             foreach ($annotation->allOf as $nestedSchema) {
-                                if ($nestedSchema->ref) {
+                                if ($nestedSchema->ref !== UNDEFINED) {
                                     continue;
                                 }
 
                                 $schema = $nestedSchema;
                             }
 
-                            if (null === $schema) {
+                            if ($schema === null) {
                                 $schema = new Schema(['_context' => $annotation->_context]);
                                 $annotation->allOf[] = $schema;
                             }
@@ -70,7 +70,7 @@ class AugmentSchemas
             }
         }
         foreach ($schemas as $schema) {
-            if ($schema->type === null) {
+            if ($schema->type === UNDEFINED) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {

@@ -13,11 +13,14 @@ class Property extends Schema
 {
     /**
      * The key into Schema->properties array.
+     *
      * @var string
      */
-    public $property;
+    public $property = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\AdditionalProperties',
         'OpenApi\Annotations\Schema',
@@ -27,7 +30,9 @@ class Property extends Schema
         'OpenApi\Annotations\Items',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],

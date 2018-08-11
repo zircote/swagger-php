@@ -7,12 +7,6 @@
 namespace OpenApi\Annotations;
 
 /**
- * Class Examples
- *
- * @package OpenApi\Annotations
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
  * @Annotation
  */
 class Examples extends AbstractAnnotation
@@ -22,7 +16,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $summary;
+    public $summary = UNDEFINED;
 
     /**
      * Embedded literal example. The value field and externalValue field are
@@ -32,7 +26,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Embedded literal example.
@@ -43,7 +37,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $value;
+    public $value = UNDEFINED;
 
     /**
      * A URL that points to the literal example. This provides the
@@ -53,7 +47,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $externalValue;
+    public $externalValue = UNDEFINED;
 
     public static $_types = [
         'summary' => 'string',

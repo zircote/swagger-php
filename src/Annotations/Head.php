@@ -11,10 +11,14 @@ namespace OpenApi\Annotations;
  */
 class Head extends Operation
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public $method = 'head';
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\PathItem'
     ];

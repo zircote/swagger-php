@@ -22,159 +22,183 @@ class Schema extends AbstractAnnotation
 {
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     *
      * @var string
      */
-    public $ref;
+    public $ref = UNDEFINED;
 
     /**
      * The key into Components->schemas array.
+     *
      * @var string
      */
-    public $schema;
+    public $schema = UNDEFINED;
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
+     *
      * @var string
      */
-    public $title;
+    public $title = UNDEFINED;
 
     /**
      * A description will provide explanation about the purpose of the instance described by this schema.
+     *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the value of this property.
+     *
      * @var integer
      */
-    public $maxProperties;
+    public $maxProperties = UNDEFINED;
 
     /**
      * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to, the value of this property.
+     *
      * @var integer
      */
-    public $minProperties;
+    public $minProperties = UNDEFINED;
 
     /**
      * An object instance is valid against this property if its property set contains all elements in this property's array value.
+     *
      * @var string[]
      */
-    public $required;
+    public $required = UNDEFINED;
 
     /**
      * @var Property[]
      */
-    public $properties;
+    public $properties = UNDEFINED;
 
     /**
      * The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
+     *
      * @var string
      */
-    public $type;
+    public $type = UNDEFINED;
 
     /**
      * The extending format for the previously mentioned type. See Data Type Formats for further details.
+     *
      * @var string
      */
-    public $format;
+    public $format = UNDEFINED;
 
     /**
      * Required if type is "array". Describes the type of items in the array.
+     *
      * @var Items
      */
-    public $items;
+    public $items = UNDEFINED;
 
     /**
      * @var string Determines the format of the array if type array is used. Possible values are: csv - comma separated values foo,bar. ssv - space separated values foo bar. tsv - tab separated values foo\tbar. pipes - pipe separated values foo|bar. multi - corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz. This is valid only for parameters in "query" or "formData". Default value is csv.
      */
-    public $collectionFormat;
+    public $collectionFormat = UNDEFINED;
 
     /**
      * Sets a default value to the parameter. The type of the value depends on the defined type. See http://json-schema.org/latest/json-schema-validation.html#anchor101.
+     *
      * @var mixed
      */
     public $default = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
+     *
      * @var number
      */
-    public $maximum;
+    public $maximum = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
+     *
      * @var boolean
      */
-    public $exclusiveMaximum;
+    public $exclusiveMaximum = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
+     *
      * @var number
      */
-    public $minimum;
+    public $minimum = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
+     *
      * @var boolean
      */
-    public $exclusiveMinimum;
+    public $exclusiveMinimum = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor26.
+     *
      * @var integer
      */
-    public $maxLength;
+    public $maxLength = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor29.
+     *
      * @var integer
      */
-    public $minLength;
+    public $minLength = UNDEFINED;
 
     /**
      * A string instance is considered valid if the regular expression matches the instance successfully.
+     *
      * @var string
      */
-    public $pattern;
+    public $pattern = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor42.
+     *
      * @var integer
      */
-    public $maxItems;
+    public $maxItems = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor45.
+     *
      * @var integer
      */
-    public $minItems;
+    public $minItems = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor49.
+     *
      * @var boolean
      */
-    public $uniqueItems;
+    public $uniqueItems = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor76.
+     *
      * @var array
      */
-    public $enum;
+    public $enum = UNDEFINED;
 
     /**
      * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this property's value is an integer.
+     *
      * @var number
      */
-    public $multipleOf;
+    public $multipleOf = UNDEFINED;
 
     /**
      * Adds support for polymorphism.
      * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
      * See Composition and Inheritance for more details.
+     *
      * @var Discriminator
      */
-    public $discriminator;
+    public $discriminator = UNDEFINED;
 
     /**
      * Relevant only for Schema "properties" definitions.
@@ -183,9 +207,10 @@ class Schema extends AbstractAnnotation
      * If the property is marked as readOnly being true and is in the required list, the required will take effect on the response only.
      * A property must not be marked as both readOnly and writeOnly being true.
      * Default value is false.
+     *
      * @var boolean
      */
-    public $readOnly;
+    public $readOnly = UNDEFINED;
 
     /**
      * Relevant only for Schema "properties" definitions.
@@ -194,104 +219,115 @@ class Schema extends AbstractAnnotation
      * If the property is marked as writeOnly being true and is in the required list, the required will take effect on the request only.
      * A property must not be marked as both readOnly and writeOnly being true.
      * Default value is false.
+     *
      * @var boolean
      */
-    public $writeOnly;
+    public $writeOnly = UNDEFINED;
 
     /**
      * This may be used only on properties schemas.
      * It has no effect on root schemas.
      * Adds additional metadata to describe the XML representation of this property.
+     *
      * @var Xml
      */
-    public $xml;
+    public $xml = UNDEFINED;
 
     /**
      * Additional external documentation for this schema.
+     *
      * @var ExternalDocumentation
      */
-    public $externalDocs;
+    public $externalDocs = UNDEFINED;
 
     /**
      * A free-form property to include an example of an instance for this schema.
      * To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to contain the example with escaping where necessary.
      */
-    public $example;
+    public $example = UNDEFINED;
 
     /**
      * Allows sending a null value for the defined schema.
      * Default value is false.
+     *
      * @var boolean
      */
-    public $nullable;
+    public $nullable = UNDEFINED;
 
     /**
-    * Specifies that a schema is deprecated and should be transitioned out of usage.
-    * Default value is false.
-    * @var boolean
-    */
-    public $deprecated;
+     * Specifies that a schema is deprecated and should be transitioned out of usage.
+     * Default value is false.
+     *
+     * @var boolean
+     */
+    public $deprecated = UNDEFINED;
 
     /**
      * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
+     *
      * @var Schema[]
      */
-    public $allOf;
+    public $allOf = UNDEFINED;
 
     /**
      * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
+     *
      * @var Schema[]
      */
-    public $anyOf;
+    public $anyOf = UNDEFINED;
 
     /**
      * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
+     *
      * @var Schema[]
      */
-    public $oneOf;
+    public $oneOf = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29
      */
-    public $not;
+    public $not = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64
+     *
      * @var bool|object
      */
-    public $additionalProperties;
+    public $additionalProperties = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10
      */
-    public $additionalItems;
+    public $additionalItems = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14
      */
-    public $contains;
+    public $contains = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19
      */
-    public $patternProperties;
+    public $patternProperties = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21
      */
-    public $dependencies;
+    public $dependencies = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22
      */
-    public $propertyNames;
+    public $propertyNames = UNDEFINED;
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24
      */
-    public $const;
+    public $const = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'description' => 'string',
         'required' => '[string]',
@@ -310,7 +346,9 @@ class Schema extends AbstractAnnotation
         'multipleOf' => 'integer',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Discriminator' => 'discriminator',
         'OpenApi\Annotations\Items' => 'items',
@@ -320,7 +358,9 @@ class Schema extends AbstractAnnotation
         'OpenApi\Annotations\AdditionalProperties' => 'additionalProperties'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Components',
         'OpenApi\Annotations\Parameter',
@@ -330,7 +370,7 @@ class Schema extends AbstractAnnotation
 
     public function validate($parents = [], $skip = [], $ref = '')
     {
-        if ($this->type === 'array' && $this->items === null) {
+        if ($this->type === 'array' && $this->items === UNDEFINED) {
             Logger::notice('@OA\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
             return false;
         }

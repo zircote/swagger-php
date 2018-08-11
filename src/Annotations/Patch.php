@@ -11,10 +11,14 @@ namespace OpenApi\Annotations;
  */
 class Patch extends Operation
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public $method = 'patch';
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\PathItem'
     ];

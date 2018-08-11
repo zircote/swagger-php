@@ -11,6 +11,7 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\StaticAnalyser;
+use const OpenApi\UNDEFINED;
 
 class AugmentPropertiesTest extends OpenApiTestCase
 {
@@ -29,23 +30,23 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $friends = $customer->properties[4];
 
         // Verify no values where defined in the annotation.
-        $this->assertNull($firstname->property);
-        $this->assertNull($firstname->description);
-        $this->assertNull($firstname->type);
+        $this->assertSame(UNDEFINED, $firstname->property);
+        $this->assertSame(UNDEFINED, $firstname->description);
+        $this->assertSame(UNDEFINED, $firstname->type);
 
-        $this->assertNull($lastname->property);
-        $this->assertNull($lastname->description);
-        $this->assertNull($lastname->type);
+        $this->assertSame(UNDEFINED, $lastname->property);
+        $this->assertSame(UNDEFINED, $lastname->description);
+        $this->assertSame(UNDEFINED, $lastname->type);
 
-        $this->assertNull($tags->property);
-        $this->assertNull($tags->type);
-        $this->assertNull($tags->items);
+        $this->assertSame(UNDEFINED, $tags->property);
+        $this->assertSame(UNDEFINED, $tags->type);
+        $this->assertSame(UNDEFINED, $tags->items);
 
-        $this->assertNull($submittedBy->property);
-        $this->assertNull($submittedBy->ref);
+        $this->assertSame(UNDEFINED, $submittedBy->property);
+        $this->assertSame(UNDEFINED, $submittedBy->ref);
 
-        $this->assertNull($friends->property);
-        $this->assertNull($friends->type);
+        $this->assertSame(UNDEFINED, $friends->property);
+        $this->assertSame(UNDEFINED, $friends->type);
 
         $analysis->process(new AugmentProperties());
 

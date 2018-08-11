@@ -26,18 +26,20 @@ class MergeJsonContent
             if (!($response instanceof Response) && !($response instanceof RequestBody)) {
                 continue;
             }
-            if ($response->content === null) {
+            if ($response->content === UNDEFINED) {
                 $response->content = [];
             }
-            $response->content['application/json'] = new MediaType([
+            $response->content['application/json'] = new MediaType(
+                [
                 'mediaType' => 'application/json',
                 'schema' => $jsonContent,
                 'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
                 '_context' => new Context(['generated' => true], $jsonContent->_context)
-            ]);
-            $jsonContent->example = null;
-            $jsonContent->examples = null;
+                ]
+            );
+            $jsonContent->example = UNDEFINED;
+            $jsonContent->examples = UNDEFINED;
 
             $index = array_search($jsonContent, $response->_unmerged, true);
             if ($index !== false) {

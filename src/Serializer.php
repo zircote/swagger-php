@@ -60,7 +60,7 @@ class Serializer
     /**
      * Serialize.
      *
-     * @param Annotations\AbstractAnnotation $annotation
+     * @param  Annotations\AbstractAnnotation $annotation
      * @return string
      */
     public function serialize(Annotations\AbstractAnnotation $annotation)
@@ -122,6 +122,9 @@ class Serializer
             }
 
             if (substr($property, 0, 2) === 'x-') {
+                if ($annotation->x === UNDEFINED) {
+                    $annotation->x = [];
+                }
                 $custom = substr($property, 2);
                 $annotation->x[$custom] = $value;
             } else {

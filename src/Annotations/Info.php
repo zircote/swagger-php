@@ -20,60 +20,68 @@ class Info extends AbstractAnnotation
      *
      * @var string
      */
-    public $title;
+    public $title = UNDEFINED;
 
     /**
      * A short description of the application. CommonMark syntax may be used for rich text representation.
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * A URL to the Terms of Service for the API. must be in the format of a url.
      *
      * @var string
      */
-    public $termsOfService;
+    public $termsOfService = UNDEFINED;
 
     /**
      * The contact information for the exposed API.
      *
      * @var Contact
      */
-    public $contact;
+    public $contact = UNDEFINED;
 
     /**
      * The license information for the exposed API.
      *
      * @var License
      */
-    public $license;
+    public $license = UNDEFINED;
 
     /**
      * The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
      *
      * @var string
      */
-    public $version;
+    public $version = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['title', 'version'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'title' => 'string',
         'description' => 'string',
         'termsOfService' => 'string'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Contact' => 'contact',
         'OpenApi\Annotations\License' => 'license'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi'
     ];

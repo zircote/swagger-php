@@ -14,7 +14,9 @@ use OpenApi\Logger;
  */
 class Items extends Schema
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Items' => 'items',
         'OpenApi\Annotations\Property' => ['properties', 'property'],
@@ -23,7 +25,9 @@ class Items extends Schema
         'OpenApi\Annotations\Discriminator' => 'discriminator'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Property',
         'OpenApi\Annotations\AdditionalProperties',
@@ -33,14 +37,16 @@ class Items extends Schema
         'OpenApi\Annotations\Items'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if (in_array($this, $skip, true)) {
             return true;
         }
         $valid = parent::validate($parents, $skip);
-        if (!$this->ref) {
+        if ($this->ref === UNDEFINED) {
             $parent = end($parents);
             if (is_object($parent) && ($parent instanceof Parameter && $parent->in !== 'body' || $parent instanceof Header)) {
                 // This is a "Items Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#items-object

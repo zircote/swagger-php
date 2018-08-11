@@ -33,7 +33,7 @@ class InheritProperties
 
                 $processedSchemas[] = $schema->_context;
 
-                if (!empty($schema->allOf)) {
+                if ($schema->allOf !== UNDEFINED) {
                     //if the allOf in the child is set, do noting
                     continue;
                 }
@@ -95,11 +95,15 @@ class InheritProperties
 
         $childSchema->schema = $currentSchema->schema;
         unset($currentSchema->schema);
-
-        $childSchema->allOf[] = new Schema([
+        if ($childSchema->allOf === UNDEFINED) {
+            $childSchema->allOf = [];
+        }
+        $childSchema->allOf[] = new Schema(
+            [
             '_context' => $parentSchema->_context,
             'ref' => Components::SCHEMA_REF . $parentSchema->schema
-        ]);
+            ]
+        );
         $childSchema->allOf[] = $currentSchema;
     }
 }

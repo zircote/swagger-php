@@ -32,7 +32,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Info
      */
-    public $info;
+    public $info = UNDEFINED;
 
     /**
      * An array of Server Objects, which provide connectivity information to a target server.
@@ -40,7 +40,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Server[]
      */
-    public $servers;
+    public $servers = UNDEFINED;
 
     /**
      * The available paths and operations for the API.
@@ -54,7 +54,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Components
      */
-    public $components;
+    public $components = UNDEFINED;
 
 
     /**
@@ -71,7 +71,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var array
      */
-    public $security;
+    public $security = UNDEFINED;
 
     /**
      * A list of tags used by the specification with additional metadata.
@@ -82,27 +82,33 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Tag[]
      */
-    public $tags;
+    public $tags = UNDEFINED;
 
     /**
      * Additional external documentation.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs;
+    public $externalDocs = UNDEFINED;
 
     /**
      * @var Analysis
      */
-    public $_analysis;
+    public $_analysis = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['openapi', 'info', 'paths'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Info' => 'info',
         'OpenApi\Annotations\Server' => ['servers'],
@@ -112,10 +118,14 @@ class OpenApi extends AbstractAnnotation
         'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function validate($parents = null, $skip = null, $ref = null)
     {
         if ($parents !== null || $skip !== null || $ref !== null) {
@@ -126,7 +136,8 @@ class OpenApi extends AbstractAnnotation
     }
     /**
      * Save the OpenAPI documentation to a file.
-     * @param string $filename
+     *
+     * @param  string $filename
      * @throws Exception
      */
     public function saveAs($filename)
@@ -139,7 +150,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * Look up an annotation with a $ref url.
      *
-     * @param string $ref The $ref value, for example: "#/components/schemas/Product"
+     * @param  string $ref The $ref value, for example: "#/components/schemas/Product"
      * @throws Exception
      */
     public function ref($ref)
@@ -154,10 +165,10 @@ class OpenApi extends AbstractAnnotation
     /**
      * Recursive helper for ref()
      *
-     * @param string $prefix The resolved path of the ref.
-     * @param string $path A partial ref
-     * @param * $container the container to resolve the ref in.
-     * @param Array $mapping
+     * @param string $prefix    The resolved path of the ref.
+     * @param string $path      A partial ref
+     * @param *      $container the container to resolve the ref in.
+     * @param Array  $mapping
      */
     private static function resolveRef($ref, $resolved, $container, $mapping)
     {

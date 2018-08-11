@@ -15,6 +15,7 @@ use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\StaticAnalyser;
+use const OpenApi\UNDEFINED;
 
 class InheritPropertiesTest extends OpenApiTestCase
 {
@@ -24,11 +25,13 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis = $analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Child.php');
         $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Ancestor.php'));
-        $analysis->process([
+        $analysis->process(
+            [
             new MergeIntoOpenApi(),
             new AugmentSchemas(),
             new AugmentProperties(),
-        ]);
+            ]
+        );
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
@@ -53,11 +56,13 @@ class InheritPropertiesTest extends OpenApiTestCase
         // this one doesn't
         $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/AncestorWithoutDocBlocks.php'));
 
-        $analysis->process([
+        $analysis->process(
+            [
             new MergeIntoOpenApi(),
             new AugmentSchemas(),
             new AugmentProperties(),
-        ]);
+            ]
+        );
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
@@ -97,14 +102,14 @@ class InheritPropertiesTest extends OpenApiTestCase
         /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
-        $this->assertEmpty($extendedSchema->properties);
+        $this->assertSame(UNDEFINED, $extendedSchema->properties);
 
         $this->assertArrayHasKey(1, $extendedSchema->allOf);
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
 
         /* @var $includeSchemaWithRef Schema */
         $includeSchemaWithRef = $schemas[1];
-        $this->assertEmpty($includeSchemaWithRef->properties);
+        $this->assertSame(UNDEFINED, $includeSchemaWithRef->properties);
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
         $analysis->validate();
@@ -136,7 +141,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithoutAllOf', $extendedSchema->schema);
-        $this->assertEmpty($extendedSchema->properties);
+        $this->assertSame(UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
 
@@ -173,7 +178,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithTwoSchemas', $extendedSchema->schema);
-        $this->assertEmpty($extendedSchema->properties);
+        $this->assertSame(UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
         $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
@@ -182,7 +187,7 @@ class InheritPropertiesTest extends OpenApiTestCase
 
         /* @var  $nestedSchema Schema */
         $nestedSchema = $schemas[1];
-        $this->assertEmpty($nestedSchema->allOf);
+        $this->assertSame(UNDEFINED, $nestedSchema->allOf);
         $this->assertCount(1, $nestedSchema->properties);
         $this->assertEquals($nestedSchema->properties[0]->property, 'nestedProperty');
 

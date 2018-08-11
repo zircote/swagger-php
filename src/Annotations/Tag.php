@@ -15,37 +15,48 @@ class Tag extends AbstractAnnotation
 {
     /**
      * The name of the tag.
+     *
      * @var string
      */
-    public $name;
+    public $name = UNDEFINED;
 
     /**
      * A short description for the tag. GFM syntax can be used for rich text representation.
+     *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Additional external documentation for this tag.
+     *
      * @var ExternalDocumentation
      */
-    public $externalDocs;
+    public $externalDocs = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['name'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'name' => 'string',
         'description' => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs'
     ];

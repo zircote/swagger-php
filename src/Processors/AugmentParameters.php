@@ -15,18 +15,18 @@ class AugmentParameters
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->openapi->components && $analysis->openapi->components->parameters) {
+        if ($analysis->openapi->components !== UNDEFINED && $analysis->openapi->components->parameters !== UNDEFINED) {
             $keys = [];
             $parametersWithoutKey = [];
             foreach ($analysis->openapi->components->parameters as $parameter) {
-                if ($parameter->parameter) {
+                if ($parameter->parameter !== UNDEFINED) {
                     $keys[$parameter->parameter] = $parameter;
                 } else {
                     $parametersWithoutKey[] = $parameter;
                 }
             }
             foreach ($parametersWithoutKey as $parameter) {
-                if ($parameter->name && empty($keys[$parameter->name])) {
+                if ($parameter->name !== UNDEFINED && empty($keys[$parameter->name])) {
                     $parameter->parameter = $parameter->name;
                     $keys[$parameter->parameter] = $parameter;
                 }

@@ -22,7 +22,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string
      */
-    public $path;
+    public $path = UNDEFINED;
 
     /**
      * A list of tags for API documentation control.
@@ -30,21 +30,22 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string[]
      */
-    public $tags;
+    public $tags = UNDEFINED;
 
     /**
      * Key in the OpenApi "Path Item Object" for this operation.
      * Allowed values: 'get', 'post', put', 'patch', 'delete', 'options', 'head' and 'trace'
+     *
      * @var string
      */
-    public $method;
+    public $method = UNDEFINED;
 
     /**
      * A short summary of what the operation does.
      *
      * @var string
      */
-    public $summary;
+    public $summary = UNDEFINED;
 
     /**
      * A verbose explanation of the operation behavior.
@@ -52,14 +53,14 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Additional external documentation for this operation.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs;
+    public $externalDocs = UNDEFINED;
 
     /**
      * Unique string used to identify the operation.
@@ -79,7 +80,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var Parameter[]
      */
-    public $parameters;
+    public $parameters = UNDEFINED;
 
     /**
      * The request body applicable for this operation.
@@ -88,14 +89,14 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var RequestBody
      */
-    public $requestBody;
+    public $requestBody = UNDEFINED;
 
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
      * @var \OpenApi\Annotations\Response[]
      */
-    public $responses;
+    public $responses = UNDEFINED;
 
     /**
      * A map of possible out-of band callbacks related to the parent operation.
@@ -105,7 +106,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var Callback[]
      */
-    public $callbacks;
+    public $callbacks = UNDEFINED;
 
     /**
      * Declares this operation to be deprecated.
@@ -114,7 +115,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $deprecated;
+    public $deprecated = UNDEFINED;
 
     /**
      * A declaration of which security mechanisms can be used for this operation.
@@ -125,7 +126,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var array
      */
-    public $security;
+    public $security = UNDEFINED;
 
     /**
      * An alternative server array to service this operation.
@@ -133,12 +134,16 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var Server[]
      */
-    public $servers;
+    public $servers = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['responses'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'path' => 'string',
         'method' => 'string',
@@ -148,7 +153,9 @@ abstract class Operation extends AbstractAnnotation
         'deprecated' => 'boolean'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Parameter' => ['parameters'],
         'OpenApi\Annotations\Response' => ['responses', 'response'],
@@ -157,15 +164,14 @@ abstract class Operation extends AbstractAnnotation
         'OpenApi\Annotations\RequestBody' => 'requestBody',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
         unset($data->method);
         unset($data->path);
-        if (isset($data->operationId) && $data->operationId === null) {
-            unset($data->operationId);
-        }
         return $data;
     }
 

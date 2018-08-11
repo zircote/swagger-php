@@ -18,12 +18,11 @@ class AugmentOperations
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
 
-        /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            if ($operation->summary === null) {
+            if ($operation->summary === UNDEFINED) {
                 $operation->summary = $operation->_context->phpdocSummary();
             }
-            if ($operation->description === null) {
+            if ($operation->description === UNDEFINED) {
                 $operation->description = $operation->_context->phpdocDescription();
             }
         }

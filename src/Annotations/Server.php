@@ -20,7 +20,7 @@ class Server extends AbstractAnnotation
      *
      * @var string
      */
-    public $url;
+    public $url = UNDEFINED;
 
     /**
      * An optional string describing the host designated by the URL.
@@ -28,7 +28,7 @@ class Server extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * A map between a variable name and its value.
@@ -36,9 +36,11 @@ class Server extends AbstractAnnotation
      *
      * @var array
      */
-    public $variables;
+    public $variables = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi',
         'OpenApi\Annotations\PathItem',
@@ -54,15 +56,21 @@ class Server extends AbstractAnnotation
         'OpenApi\Annotations\Link',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\ServerVariable' => ['variables', 'serverVariable'],
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['url'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'url' => 'string',
         'description' => 'string',

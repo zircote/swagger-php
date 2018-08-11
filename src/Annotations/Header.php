@@ -15,33 +15,33 @@ class Header extends AbstractAnnotation
     /**
      * @var string
      */
-    public $header;
+    public $header = UNDEFINED;
 
     /**
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
      *
      * @var bool
      */
-    public $required;
+    public $required = UNDEFINED;
 
     /**
      * Schema object
      *
      * @var \OpenApi\Annotations\Schema
      */
-    public $schema;
+    public $schema = UNDEFINED;
 
     /**
      * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
      *
      * @var bool
      */
-    public $deprecated;
+    public $deprecated = UNDEFINED;
 
     /**
      * Sets the ability to pass empty-valued parameters.
@@ -51,23 +51,31 @@ class Header extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowEmptyValue;
+    public $allowEmptyValue = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['header', 'schema'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'header' => 'string',
         'description' => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\Schema' => 'schema'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Components',
         'OpenApi\Annotations\Response'

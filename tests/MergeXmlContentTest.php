@@ -9,6 +9,7 @@ namespace OpenApiTests;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Response;
 use OpenApi\Processors\MergeXmlContent;
+use const OpenApi\UNDEFINED;
 
 class MergeXmlContentTest extends OpenApiTestCase
 {
@@ -24,7 +25,7 @@ END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(3, $analysis->annotations);
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
-        $this->assertNull($response->content);
+        $this->assertSame(UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
         $analysis->process(new MergeXmlContent());
         $this->assertCount(1, $response->content);

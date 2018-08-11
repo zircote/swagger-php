@@ -26,15 +26,17 @@ class MergeXmlContent
             if (!($response instanceof Response)) {
                 continue;
             }
-            if ($response->content === null) {
+            if ($response->content === UNDEFINED) {
                 $response->content = [];
             }
-            $response->content['application/xml'] = new MediaType([
-                'mediaType' => 'application/xml',
-                'schema' => $xmlContent,
-                'examples' => $xmlContent->examples,
-                '_context' => new Context(['generated' => true], $xmlContent->_context)
-            ]);
+            $response->content['application/xml'] = new MediaType(
+                [
+                    'mediaType' => 'application/xml',
+                    'schema' => $xmlContent,
+                    'examples' => $xmlContent->examples,
+                    '_context' => new Context(['generated' => true], $xmlContent->_context)
+                ]
+            );
             $xmlContent->examples = null;
 
             $index = array_search($xmlContent, $response->_unmerged, true);

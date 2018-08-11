@@ -82,7 +82,7 @@ class Context
     /**
      * Return the context containing the specified property.
      *
-     * @param string $property
+     * @param  string $property
      * @return boolean|Context
      */
     public function with($property)
@@ -173,13 +173,13 @@ class Context
     /**
      * A short piece of text, usually one line, providing the basic function of the associated element.
      *
-     * @return string|null
+     * @return string
      */
     public function phpdocSummary()
     {
         $content = $this->phpdocContent();
         if (!$content) {
-            return null;
+            return UNDEFINED;
         }
         $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
@@ -191,7 +191,7 @@ class Context
         }
         $summary = trim($summary);
         if ($summary === '') {
-            return null;
+            return UNDEFINED;
         }
 
         return $summary;
@@ -200,17 +200,17 @@ class Context
     /**
      * An optional longer piece of text providing more details on the associated element’s function. This is very useful when working with a complex element.
      *
-     * @return string|null
+     * @return string
      */
     public function phpdocDescription()
     {
         $summary = $this->phpdocSummary();
         if (!$summary) {
-            return null;
+            return UNDEFINED;
         }
         $description = trim(substr($this->phpdocContent(), strlen($summary)));
         if ($description === '') {
-            return null;
+            return UNDEFINED;
         }
 
         return $description;
@@ -219,7 +219,7 @@ class Context
     /**
      * The text contents of the phpdoc comment (excl. tags)
      *
-     * @return string|null
+     * @return string
      */
     public function phpdocContent()
     {
@@ -244,7 +244,7 @@ class Context
         }
         $description = trim(implode("\n", $lines));
         if ($description === '') {
-            return null;
+            return UNDEFINED;
         }
 
         return $description;
@@ -253,7 +253,7 @@ class Context
     /**
      * Create a Context based on the debug_backtrace
      *
-     * @param int $index
+     * @param  int $index
      * @return Context
      */
     public static function detect($index = 0)

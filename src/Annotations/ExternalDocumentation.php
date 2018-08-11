@@ -16,26 +16,34 @@ class ExternalDocumentation extends AbstractAnnotation
 {
     /**
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
+     *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * The URL for the target documentation.
+     *
      * @var string
      */
-    public $url;
+    public $url = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'description' => 'string',
         'url' => 'string',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['url'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\OpenApi',
         'OpenApi\Annotations\Tag',

@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Processors\MergeIntoOpenApi;
+use const OpenApi\UNDEFINED;
 
 class MergeIntoOpenApiTest extends OpenApiTestCase
 {
@@ -17,12 +18,14 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
     {
         $openapi = new OpenApi([]);
         $info = new Info([]);
-        $analysis = new Analysis([
+        $analysis = new Analysis(
+            [
             $openapi,
             $info,
-        ]);
+            ]
+        );
         $this->assertSame($openapi, $analysis->openapi);
-        $this->assertNull($openapi->info);
+        $this->assertSame(UNDEFINED, $openapi->info);
         $analysis->process(new MergeIntoOpenApi());
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame($info, $openapi->info);

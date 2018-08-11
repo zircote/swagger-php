@@ -25,7 +25,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *
      * @var array
      */
-    public $x;
+    public $x = UNDEFINED;
 
     /**
      * @var Context
@@ -34,12 +34,14 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
+     *
      * @var array
      */
     public $_unmerged = [];
 
     /**
      * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
+     *
      * @var array
      */
     public static $_required = [];
@@ -51,6 +53,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'required' => 'boolean', // true or false
      *   'tags' => '[string]', // array containing strings
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
+     *
      * @var array
      */
     public static $_types = [];
@@ -61,18 +64,21 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'OpenApi\Annotation\Info' => 'info', // Set @OA\Info annotation as the info property.
      *   'OpenApi\Annotation\Parameter' => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
      *   'OpenApi\Annotation\PathItem' => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
+     *
      * @var array
      */
     public static $_nested = [];
 
     /**
      * Reverse mapping of $_nested with the allowed parent annotations.
+     *
      * @var string[]
      */
     public static $_parents = [];
 
     /**
      * List of properties are blacklisted from the JSON output.
+     *
      * @var array
      */
     public static $_blacklist = ['_context', '_unmerged'];
@@ -145,8 +151,8 @@ abstract class AbstractAnnotation implements JsonSerializable
      * Merge given annotations to their mapped properties configured in static::$_nested.
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
-     * @param AbstractAnnotation[] $annotations
-     * @param bool $ignore Ignore unmerged annotations
+     * @param  AbstractAnnotation[] $annotations
+     * @param  bool                 $ignore      Ignore unmerged annotations
      * @return AbstractAnnotation[] The unmerged annotations
      */
     public function merge($annotations, $ignore = false)
@@ -159,12 +165,12 @@ abstract class AbstractAnnotation implements JsonSerializable
                 if ($annotation instanceof $class) {
                     if (is_array($property)) { // Append to an array?
                         $property = $property[0];
-                        if ($this->$property === null) {
+                        if ($this->$property === UNDEFINED) {
                             $this->$property = [];
                         }
                         array_push($this->$property, $this->nested($annotation, $nestedContext));
                         $found = true;
-                    } elseif ($this->$property === null) {
+                    } elseif ($this->$property === UNDEFINED) {
                         $this->$property = $this->nested($annotation, $nestedContext);
                         $found = true;
                     }
@@ -242,15 +248,10 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function jsonSerialize()
     {
         $data = new stdClass();
-        // Strip undefined and null values.
-        $classVars = get_class_vars(get_class($this));
+        // Strip undefined values.
         foreach (get_object_vars($this) as $property => $value) {
             if ($value !== UNDEFINED) {
-                if (array_key_exists($property, $classVars) && $classVars[$property] === UNDEFINED) { // When default is undefined, null is allowed.
-                    $data->$property = $value;
-                } elseif ($value !== null) {
-                    $data->$property = $value;
-                }
+                $data->$property = $value;
             }
         }
         // Strip properties that are for internal (swagger-php) use.
@@ -277,7 +278,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 continue;
             }
             $property = $nested[0];
-            if ($this->$property === null) {
+            if ($this->$property === UNDEFINED) {
                 continue;
             }
             $keyField = $nested[1];
@@ -310,8 +311,9 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Validate annotation tree, and log notices & warnings.
-     * @param array $parents The path of annotations above this annotation in the tree.
-     * @param array $skip (prevent stack overflow, when traversing an infinite dependency graph)
+     *
+     * @param  array $parents The path of annotations above this annotation in the tree.
+     * @param  array $skip    (prevent stack overflow, when traversing an infinite dependency graph)
      * @return boolean
      * @throws Exception
      */
@@ -351,7 +353,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 continue;
             }
             $property = $nested[0];
-            if ($this->$property === null) {
+            if ($this->$property === UNDEFINED) {
                 continue;
             }
             $keys = [];
@@ -360,7 +362,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 if (is_array($item) && is_numeric($key) === false) {
                     Logger::notice($this->identity() . '->' . $property . ' is an object literal, use nested @' . str_replace('OpenApi\\Annotations\\', 'OA\\', $annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
-                } elseif (empty($item->$keyField)) {
+                } elseif ($item->$keyField === UNDEFINED) {
                     Logger::warning($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->$keyField])) {
                     Logger::warning('Multiple ' . $item->_identity([]) . ' with the same ' . $keyField . '="' . $item->$keyField . "\":\n  " . $item->_context . "\n  " . $keys[$item->$keyField]->_context);
@@ -380,7 +382,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         } else {
             // Report missing required fields (when not a $ref)
             foreach (static::$_required as $property) {
-                if ($this->$property === null || $this->$property === UNDEFINED) {
+                if ($this->$property === UNDEFINED) {
                     $message = 'Missing required field "' . $property . '" for ' . $this->identity() . ' in ' . $this->_context;
                     foreach (static::$_nested as $class => $nested) {
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
@@ -402,7 +404,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         // Report invalid types
         foreach (static::$_types as $property => $type) {
             $value = $this->$property;
-            if ($value === null || $value === UNDEFINED) {
+            if ($value === UNDEFINED || $value === null) {
                 continue;
             }
             if (is_string($type)) {
@@ -425,9 +427,9 @@ abstract class AbstractAnnotation implements JsonSerializable
     /**
      * Recursively validate all annotation properties.
      *
-     * @param array|object $fields
-     * @param array $parents The path of annotations above this annotation in the tree.
-     * @param array [$skip] Array with objects which are already validated
+     * @param  array|object $fields
+     * @param  array        $parents The path of annotations above this annotation in the tree.
+     * @param  array [      $skip]   Array with objects which are already validated
      * @return boolean
      */
     private static function _validate($fields, $parents, $skip, $baseRef)
@@ -465,6 +467,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     /**
      * Return a identity for easy debugging.
      * Example: "@OA\Get(path="/pets")"
+     *
      * @return string
      */
     public function identity()
@@ -474,7 +477,8 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Helper for generating the identity()
-     * @param array $properties
+     *
+     * @param  array $properties
      * @return string
      */
     protected function _identity($properties)
@@ -504,43 +508,44 @@ abstract class AbstractAnnotation implements JsonSerializable
             return true;
         }
         switch ($type) {
-            case 'string':
-                return is_string($value);
+        case 'string':
+            return is_string($value);
 
-            case 'boolean':
-                return is_bool($value);
+        case 'boolean':
+            return is_bool($value);
 
-            case 'integer':
-                return is_int($value);
+        case 'integer':
+            return is_int($value);
 
-            case 'number':
-                return is_numeric($value);
+        case 'number':
+            return is_numeric($value);
 
-            case 'array':
-                if (is_array($value) === false) {
+        case 'array':
+            if (is_array($value) === false) {
+                return false;
+            }
+            $count = 0;
+            foreach ($value as $i => $item) {
+                if ($count !== $i) { // not a array, but a hash/map
                     return false;
                 }
-                $count = 0;
-                foreach ($value as $i => $item) {
-                    if ($count !== $i) { // not a array, but a hash/map
-                        return false;
-                    }
-                    $count++;
-                }
-                return true;
+                $count++;
+            }
+            return true;
 
-            case 'scheme':
-                return in_array($value, ['http', 'https', 'ws', 'wss']);
+        case 'scheme':
+            return in_array($value, ['http', 'https', 'ws', 'wss']);
 
-            default:
-                throw new Exception('Invalid type "' . $type . '"');
+        default:
+            throw new Exception('Invalid type "' . $type . '"');
         }
     }
 
     /**
      * Wrap the context with a reference to the annotation it is nested in.
-     * @param AbstractAnnotation $annotation
-     * @param Context $nestedContext
+     *
+     * @param  AbstractAnnotation $annotation
+     * @param  Context            $nestedContext
      * @return AbstractAnnotation
      */
     private function nested($annotation, $nestedContext)

@@ -19,30 +19,34 @@ class Contact extends AbstractAnnotation
      *
      * @var string
      */
-    public $name;
+    public $name = UNDEFINED;
 
     /**
      * The URL pointing to the contact information.
      *
      * @var string
      */
-    public $url;
+    public $url = UNDEFINED;
 
     /**
      * The email address of the contact person/organization.
      *
      * @var string
      */
-    public $email;
+    public $email = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'name' => 'string',
         'url' => 'string',
         'email' => 'string'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
         'OpenApi\Annotations\Info'
     ];

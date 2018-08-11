@@ -15,14 +15,14 @@ namespace OpenApi\Annotations;
  */
 class RequestBody extends AbstractAnnotation
 {
-    public $ref;
+    public $ref = UNDEFINED;
 
     /**
      * Request body model name.
      *
      * @var string
      */
-    public $request;
+    public $request = UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -31,7 +31,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Determines whether this parameter is mandatory.
@@ -40,7 +40,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var boolean
      */
-    public $required;
+    public $required = UNDEFINED;
 
     /**
      * The content of the request body.
@@ -49,9 +49,11 @@ class RequestBody extends AbstractAnnotation
      *
      * @var MediaType[]
      */
-    public $content;
+    public $content = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'description' => 'string',
         'required'    => 'boolean',
@@ -71,7 +73,9 @@ class RequestBody extends AbstractAnnotation
         'OpenApi\Annotations\Put',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
         'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
     ];

@@ -13,6 +13,7 @@ use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Post;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\MergeIntoOpenApi;
+use const OpenApi\UNDEFINED;
 
 class BuildPathsTest extends OpenApiTestCase
 {
@@ -33,11 +34,13 @@ class BuildPathsTest extends OpenApiTestCase
     public function testMergeOperationsWithSamePath()
     {
         $openapi = new OpenApi([]);
-        $analysis = new Analysis([
+        $analysis = new Analysis(
+            [
             $openapi,
             new Get(['path' => '/comments']),
             new Post(['path' => '/comments']),
-        ]);
+            ]
+        );
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new BuildPaths());
         $this->assertCount(1, $openapi->paths);
@@ -46,6 +49,6 @@ class BuildPathsTest extends OpenApiTestCase
         $this->assertInstanceOf(PathItem::class, $path);
         $this->assertInstanceOf(Get::class, $path->get);
         $this->assertInstanceOf(Post::class, $path->post);
-        $this->assertNull($path->put);
+        $this->assertSame(UNDEFINED, $path->put);
     }
 }
