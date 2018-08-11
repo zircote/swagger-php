@@ -3,14 +3,13 @@ home: true
 actionText: Get Started →
 actionLink: /Getting-started
 features:
-- title: OpenAPI specification
-  details: 
-    Compatible with the OpenAPI Specification version 3.
-    formerly known as Swagger.
-- title: Use @Annotations
-  details: Write the documentation inside the php source files which helps to keep the documentation in sync.
-- title: Useful error messages
-  details: Enhanced errors messages with hints and context.
+  - title: OpenAPI specification
+    details: Compatible with the OpenAPI Specification version 3.
+      formerly known as Swagger.
+  - title: Use @Annotations
+    details: Write the documentation inside the php source files which helps to keep the documentation in sync.
+  - title: Useful error messages
+    details: Enhanced errors messages with hints and context.
 ---
 
 Install with composer:
@@ -25,8 +24,8 @@ Create a php file:
 <?php
 require("vendor/autoload.php");
 $openapi = \OpenApi\scan('/path/to/project');
-header('Content-Type: application/json');
-echo $openapi;
+header('Content-Type: application/x-yaml');
+echo $openapi->toYaml();
 ```
 
 Add annotations to your php files.

@@ -401,9 +401,4 @@ class Analysis
 
         return false;
     }
-
-    public function __toString()
-    {
-        return json_encode($this->openapi, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    }
 }

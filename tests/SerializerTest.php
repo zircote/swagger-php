@@ -117,13 +117,12 @@ class SerializerTest extends OpenApiTestCase
 }
 JSON;
 
-//        $this->markTestSkipped('@todo');
         $annotation = $serializer->deserialize($json, 'OpenApi\Annotations\OpenApi');
 
         $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $annotation);
         $this->assertJsonStringEqualsJsonString(
-            $annotation->__toString(),
-            $this->getExpected()->__toString()
+            $annotation->toJson(),
+            $this->getExpected()->toJson()
         );
     }
 

@@ -140,10 +140,19 @@ class OpenApi extends AbstractAnnotation
      * @param  string $filename
      * @throws Exception
      */
-    public function saveAs($filename)
+    public function saveAs($filename, $format = 'auto')
     {
-        if (file_put_contents($filename, $this) === false) {
-            throw new Exception('Failed to saveAs("' . $filename . '")');
+
+        if ($format === 'auto') {
+            $format =   strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
+        }
+        if (strtolower($format) === 'json') {
+            $content = $this->toJson();
+        } else {
+            $content = $this->toYaml();
+        }
+        if (file_put_contents($filename, $content) === false) {
+            throw new Exception('Failed to saveAs("' . $filename . '", "'.$format.'")');
         }
     }
 
@@ -184,7 +193,7 @@ class OpenApi extends AbstractAnnotation
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new Exception('$ref "' . $unresolved . '" ');
+                throw new Exception('$ref "' . $ref . '" not found');
             }
             if ($slash === false) {
                 return $container->$property;

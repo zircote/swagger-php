@@ -16,8 +16,8 @@ Generate always-up-to-date documentation.
 <?php
 require("vendor/autoload.php");
 $openapi = \OpenApi\scan('/path/to/project');
-header('Content-Type: application/json');
-echo $openapi;
+header('Content-Type: application/x-yaml');
+echo $openapi->toYaml();
 ```
 
 This will scan the php-files in the given folder(s), look for OpenApi annotations and output a json file.
@@ -260,7 +260,7 @@ The `@OA\MediaType` is used to describe the content:
  *         mediaType="application/json",
  *         @OA\Schema(ref="#/components/schemas/User"),
  *     )
- * ),  
+ * ),
  */
 ```
 

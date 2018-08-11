@@ -53,8 +53,8 @@ Generate always-up-to-date documentation.
 <?php
 require("vendor/autoload.php");
 $openapi = \OpenApi\scan('/path/to/project');
-header('Content-Type: application/json');
-echo $openapi;
+header('Content-Type: application/x-yaml');
+echo $openapi->toYaml();
 ```
 
 ### Usage from the Command Line Interface
@@ -76,7 +76,7 @@ use OpenApi\Serializer;
 
 $serializer = new Serializer();
 $openapi = $serializer->deserialize($jsonString, 'OpenApi\Annotations\OpenApi');
-echo $openapi;
+echo $openapi->toJson();
 ```
 
 ### Usage from [docker](https://docker.com)

@@ -1,10 +1,15 @@
 #!/usr/bin/env php
 <?php
+use OpenApi\Logger;
+use OpenApi\Analysis;
+use const OpenApi\UNDEFINED;
+
 error_reporting(E_ALL);
 // Possible options and their default values.
 
 $options = [
-    'output' => 'openapi.json',
+    'output' => 'openapi.yaml',
+    'format' => 'auto',
     'stdout' => false,
     'exclude' => [],
     'bootstrap' => false,
@@ -20,10 +25,12 @@ $aliases = [
     'v' => 'version',
     'h' => 'help',
     'd' => 'debug',
-    'p' => 'processor'
+    'p' => 'processor',
+    'f' => 'format'
 ];
 $needsArgument = [
     'output',
+    'format',
     'exclude',
     'bootstrap',
     'processor',
@@ -94,6 +101,7 @@ Usage: openapi [--option value] [/path/to/project ...]
 Options:
   --output (-o)     Path to store the generated documentation.
   --stdout          Write to the standard output.
+  --format          Force yaml or json.
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
@@ -111,7 +119,7 @@ if (count($paths) === 0) {
     $paths[] = getcwd();
     echo "Scanning files in '".$paths[0]."' ...\n";
 }
-if (class_exists('OpenApi\Logger') === false) {
+if (class_exists(Logger::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
         require_once(__DIR__.'/../vendor/autoload.php');
     } else {
@@ -154,7 +162,7 @@ set_exception_handler(function ($exception) use ($options) {
     exit($exception->getCode() ?: 1);
 });
 $exit = 0;
-\OpenApi\Logger::getInstance()->log = function ($entry, $type) use ($options, &$exit) {
+Logger::getInstance()->log = function ($entry, $type) use ($options, &$exit) {
     $exit = 1;
     $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
     if ($entry instanceof Exception) {
@@ -200,7 +208,7 @@ foreach ($options["processor"] as $processor) {
     } elseif (class_exists($processor)) {
         $processor = new $processor();
     }
-    \OpenApi\Analysis::registerProcessor($processor);
+    Analysis::registerProcessor($processor);
 }
 
 $openapi = OpenApi\scan($paths, ['exclude' => $exclude]);
@@ -211,7 +219,7 @@ $counter = 0;
 // Output report
 foreach ($openapi->paths as $pathItem) {
     foreach ($pathItem as $method => $operation) {
-        if ($operation !== null && in_array($method, $methods)) {
+        if ($operation !== UNDEFINED && in_array($method, $methods)) {
             error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $pathItem->path);
             $counter++;
         }
@@ -221,12 +229,16 @@ error_log('----------------------'.  str_repeat('-', strlen($counter)));
 error_log($counter.' operations documented');
 error_log('----------------------'.  str_repeat('-', strlen($counter)));
 if ($options['stdout']) {
-    echo $openapi;
+    if (strtolower($options['format']) === 'json') {
+        echo $openapi->toJson();
+    } else {
+        echo $openapi->toYaml();
+    }
 } else {
     if (is_dir($options['output'])) {
-        $options['output'] .= '/openapi.json';
+        $options['output'] .= '/openapi.yaml';
     }
-    $openapi->saveAs($options['output']);
+    $openapi->saveAs($options['output'], $options['format']);
     error_log('Written to '.realpath($options['output']));
 }
 error_log('');

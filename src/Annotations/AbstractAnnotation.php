@@ -12,6 +12,7 @@ use stdClass;
 use OpenApi\Analyser;
 use OpenApi\Context;
 use OpenApi\Logger;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * The openapi annotation base class.
@@ -226,9 +227,27 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
     }
 
-    public function __toString()
+    /**
+     * Generate the documentation in YAML format.
+     *
+     * @return string
+     */
+    public function toYaml()
     {
-        return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, Yaml::DUMP_OBJECT_AS_MAP);
+    }
+    
+    /**
+     * Generate the documentation in YAML format.
+     *
+     * @return string
+     */
+    public function toJson($flags = null)
+    {
+        if ($flags === null) {
+            $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+        }
+        return json_encode($this, $flags);
     }
 
     public function __debugInfo()
@@ -371,7 +390,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 }
             }
         }
-        if (isset($this->ref)) {
+        if (property_exists($this, 'ref') && $this->ref !== UNDEFINED) {
             if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0  && $parents[0] instanceof OpenApi) { // Internal reference
                 try {
                     $parents[0]->ref($this->ref);
