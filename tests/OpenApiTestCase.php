@@ -14,6 +14,8 @@ use stdClass;
 use OpenApi\Analyser;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Logger;
 
@@ -136,13 +138,16 @@ class OpenApiTestCase extends TestCase
     {
         $openapi = new OpenApi(
             [
-            'info'     => new \OpenApi\Annotations\Info(
+            'info'     => new Info(
                 [
                 'title'    => 'swagger-php Test-API',
                 'version'  => 'test',
                 '_context' => new Context(['unittest' => true]),
                 ]
             ),
+            'paths' => [
+                new PathItem(['path' => '/test'])
+            ],
             '_context' => new Context(['unittest' => true]),
             ]
         );

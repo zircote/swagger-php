@@ -93,12 +93,9 @@ class Pet
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             )
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         )
      *     ),
      *     @OA\Response(
@@ -143,12 +140,9 @@ class Pet
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             )
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         )
      *     ),
      *     @OA\Response(
@@ -185,10 +179,7 @@ class Pet
      *         response=200,
      *         description="successful operation",
      *         @OA\JsonContent(ref="#/components/schemas/Pet"),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/Pet"),
-     *         )
+     *         @OA\XmlContent(ref="#/components/schemas/Pet"),
      *     ),
      *     @OA\Response(
      *         response=400,

@@ -50,11 +50,8 @@ class Store
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Order")
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/Order")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Order"),
+     *         @OA\XmlContent(ref="#/components/schemas/Order")
      *     ),
      *     @OA\RequestBody(
      *         description="order placed for purchasing th pet",

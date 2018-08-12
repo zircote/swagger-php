@@ -3,18 +3,19 @@
 use OpenApi\Logger;
 use OpenApi\Analysis;
 use const OpenApi\UNDEFINED;
+use const OpenApi\COLOR_RED;
+use const OpenApi\COLOR_YELLOW;
+use const OpenApi\COLOR_STOP;
 
 error_reporting(E_ALL);
 // Possible options and their default values.
 
 $options = [
-    'output' => 'openapi.yaml',
+    'output' => false,
     'format' => 'auto',
-    'stdout' => false,
     'exclude' => [],
     'bootstrap' => false,
     'help' => false,
-    'version' => false,
     'debug' => false,
     'processor' => [],
 ];
@@ -22,7 +23,6 @@ $aliases = [
     'o' => 'output',
     'e' => 'exclude',
     'b' => 'bootstrap',
-    'v' => 'version',
     'h' => 'help',
     'd' => 'debug',
     'p' => 'processor',
@@ -37,6 +37,10 @@ $needsArgument = [
 ];
 $paths = [];
 $error = false;
+define('OpenApi\COLOR_RED', "\033[31m");
+define('OpenApi\COLOR_YELLOW', "\033[33m");
+define('OpenApi\COLOR_STOP', "\033[0m");
+
 try {
     // Parse cli arguments
     for ($i = 1; $i < $argc; $i++) {
@@ -73,14 +77,7 @@ try {
 } catch (Exception $e) {
     $error = $e->getMessage();
 }
-$version = trim(file_get_contents(__DIR__ . '/../VERSION'));
-if ($options['version']) {
-    echo $version, PHP_EOL;
-    exit;
-}
-error_log('');
-error_log('Swagger-PHP ' . $version);
-error_log('------------'.  str_repeat('-', strlen($version)));
+
 if (!$error && $options['bootstrap']) {
     if (is_readable($options['bootstrap']) === false) {
         $error = 'Invalid `--bootstrap` value: "'.$options['bootstrap'].'"';
@@ -88,9 +85,12 @@ if (!$error && $options['bootstrap']) {
         require_once($options['bootstrap']);
     }
 }
-
-if ($error) {
-    error_log('[ERROR] '.$error);
+if (count($paths) === 0) {
+    $error = 'Specify at least one path.';
+}
+if ($options['help'] === false && $error) {
+    error_log('');
+    error_log(COLOR_RED.'Error: '.$error.COLOR_STOP);
     $options['help'] = true; // Show help
 }
 if ($options['help']) {
@@ -100,25 +100,22 @@ Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
   --output (-o)     Path to store the generated documentation.
-  --stdout          Write to the standard output.
-  --format          Force yaml or json.
+                    ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
                     ex: --bootstrap config/constants.php
   --processor       Register an additional processor.
-  --version (-v)    Display Swagger-PHP version.
+  --format          Force yaml or json.
+  --debug           Show additional error information.
   --help (-h)       Display this help message.
 
 
 EOF;
     error_log($help);
-    exit;
+    exit(1);
 }
-if (count($paths) === 0) {
-    $paths[] = getcwd();
-    echo "Scanning files in '".$paths[0]."' ...\n";
-}
+
 if (class_exists(Logger::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
         require_once(__DIR__.'/../vendor/autoload.php');
@@ -127,29 +124,33 @@ if (class_exists(Logger::class) === false) {
     }
 }
 $errorTypes = [
-    E_ERROR => 'ERROR',
-    E_WARNING => 'WARNING',
-    E_PARSE => 'PARSE',
-    E_NOTICE => 'NOTICE',
-    E_CORE_ERROR => 'CORE_ERROR',
-    E_CORE_WARNING => 'CORE_WARNING',
-    E_COMPILE_ERROR => 'COMPILE_ERROR',
-    E_COMPILE_WARNING => 'COMPILE_WARNING',
-    E_USER_ERROR => 'ERROR',
-    E_USER_WARNING => 'WARNING',
-    E_USER_NOTICE => 'NOTICE',
-    E_STRICT => 'STRICT',
-    E_RECOVERABLE_ERROR => 'RECOVERABLE_ERROR',
-    E_DEPRECATED => 'DEPRECATED',
-    E_USER_DEPRECATED => 'DEPRECATED'
+    E_ERROR => 'Error',
+    E_WARNING => 'Warning',
+    E_PARSE => 'Parser error',
+    E_NOTICE => 'Notice',
+    E_STRICT => 'Strict',
+    E_DEPRECATED => 'Deprecated',
+    E_CORE_ERROR => 'Error(Core)',
+    E_CORE_WARNING => 'Warning(Core)',
+    E_COMPILE_ERROR => 'Error(compile)',
+    E_COMPILE_WARNING => 'Warning(Compile)',
+    E_RECOVERABLE_ERROR => 'Error(Recoverable)',
+    E_USER_ERROR => 'Error',
+    E_USER_WARNING => 'Warning',
+    E_USER_NOTICE => 'Notice',
+    E_USER_DEPRECATED => 'Deprecated',
 ];
-set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes) {
+set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $options) {
     if (!(error_reporting() & $errno)) {
         return; // This error code is not included in error_reporting
     }
-    $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'ERROR';
-    error_log('[' . $type . '] '.$errstr .' in '.$file.' on line '.$line);
-    if ($type === 'ERROR') {
+    $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
+    $color = (substr($type, 0, 5) === 'Error') ? COLOR_RED: COLOR_YELLOW;
+    error_log(COLOR_RED.$type. ': '.$errstr.COLOR_STOP);
+    if ($options['debug']) {
+        error_log(' in '.$file.' on line '.$line);
+    }
+    if (substr($type, 0, 5) === 'Error') {
         exit($errno);
     }
 });
@@ -157,21 +158,30 @@ set_exception_handler(function ($exception) use ($options) {
     if ($options['debug']) {
         error_log($exception);
     } else {
-        error_log('[EXCEPTION] '.$exception->getMessage() .' in '.$exception->getFile().' on line '.$exception->getLine());
+        error_log(COLOR_RED.'Exception: '.$exception->getMessage().COLOR_STOP);
+        // if ($options['debug']) {
+        //     error_log(' in '.$exception->getFile().' on line '.$exception->getLine());
+        // }
     }
     exit($exception->getCode() ?: 1);
 });
 $exit = 0;
 Logger::getInstance()->log = function ($entry, $type) use ($options, &$exit) {
     $exit = 1;
-    $type = $type === E_USER_NOTICE ? 'INFO' : 'WARN';
+    if ($type === E_USER_NOTICE) {
+        $type = '';
+        $color = COLOR_YELLOW;
+    } else {
+        $type = 'Warning: ';
+        $color = COLOR_RED;
+    }
     if ($entry instanceof Exception) {
-        error_log('[' . $type . '] ' . $entry->getMessage());
+        error_log(COLOR_RED."Error: " . $entry->getMessage().COLOR_STOP);
         if ($options['debug']) {
             error_log('Stack trace:'.PHP_EOL.$entry->getTraceAsString());
         }
     } else {
-        error_log('[' . $type . '] ' . $entry);
+        error_log($color. $type . $entry.COLOR_STOP);
         if ($options['debug']) {
             // Show backtrace in debug mode
             $e = (string)(new Exception('trace'));
@@ -188,14 +198,13 @@ Logger::getInstance()->log = function ($entry, $type) use ($options, &$exit) {
             }
         }
     }
-    error_log('');
 };
 $exclude = null;
 if ($options['exclude']) {
     $exclude = $options['exclude'];
     if (strpos($exclude[0], ',') !== false) {
         $exploded = explode(',', $exclude[0]);
-        error_log('[NOTICE] Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]);
+        error_log(COLOR_RED.'Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]).COLOR_STOP;
         $exclude[0] = array_shift($exploded);
         $exclude = array_merge($exclude, $exploded);
     }
@@ -212,34 +221,21 @@ foreach ($options["processor"] as $processor) {
 }
 
 $openapi = OpenApi\scan($paths, ['exclude' => $exclude]);
-$methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 
-$counter = 0;
-
-// Output report
-foreach ($openapi->paths as $pathItem) {
-    foreach ($pathItem as $method => $operation) {
-        if ($operation !== UNDEFINED && in_array($method, $methods)) {
-            error_log(str_pad($method, 7, ' ', STR_PAD_LEFT) . ' ' . $pathItem->path);
-            $counter++;
-        }
-    }
+if ($exit !== 0) {
+    error_log('');
 }
-error_log('----------------------'.  str_repeat('-', strlen($counter)));
-error_log($counter.' operations documented');
-error_log('----------------------'.  str_repeat('-', strlen($counter)));
-if ($options['stdout']) {
+if ($options['output'] === false) {
     if (strtolower($options['format']) === 'json') {
         echo $openapi->toJson();
     } else {
         echo $openapi->toYaml();
     }
+    echo "\n";
 } else {
     if (is_dir($options['output'])) {
         $options['output'] .= '/openapi.yaml';
     }
     $openapi->saveAs($options['output'], $options['format']);
-    error_log('Written to '.realpath($options['output']));
 }
-error_log('');
 exit($exit);

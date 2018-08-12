@@ -4,6 +4,19 @@ Swagger-PHP 3.x generates a openapi.json file that follows the [OpenAPI Version 
 
 If you need to output the older 2.x specification use OpenApi-php 2.x
 
+## The default output changed from json to yaml
+
+This aligns better with the direction of the swagger documentation and examples.
+Annotations can't be used as string anymore, you'll need to call `toYaml()` or `toJson()` if you prefer the json format.
+
+## Updated CLI
+
+- Added colors
+- No output for succesful execution (Removed summary)
+- non-zero exit when an error occured.
+- Defaults to yaml
+- Defaults to stdout. To save to openapi.yaml use `-o` or `>`
+
 ## Changed annotations
 
 ### SWG is renamed to OA

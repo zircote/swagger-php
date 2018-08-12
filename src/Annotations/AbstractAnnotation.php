@@ -307,7 +307,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                     $object->$key = $item;
                 } else {
                     $key = $item->$keyField;
-                    if ($key && empty($object->$key)) {
+                    if ($key !== UNDEFINED && empty($object->$key)) {
                         if (method_exists($item, 'jsonSerialize')) {
                             $object->$key = $item->jsonSerialize();
                         } else {
@@ -351,7 +351,11 @@ abstract class AbstractAnnotation implements JsonSerializable
             $class = get_class($annotation);
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
-                Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
+                if (is_array($property)) {
+                    Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found, skipped: " . $annotation->_context);
+                } else {
+                    Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
+                }
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if (count($class::$_parents)) {

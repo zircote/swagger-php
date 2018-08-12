@@ -19,5 +19,15 @@
             }
         }
     ],
-    "paths": {}
+    "paths": {
+        "/api/endpoint": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    }
 }

@@ -58,25 +58,17 @@ The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
 
 #### swagger-php will generate:
 
-```json
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "My First API",
-    "version": "0.1"
-  },
-  "paths": {
-    "/api/resource.json": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "An example resource"
-          }
-        }
-      }
-    }
-  }
-}
+```yaml
+openapi: 3.0.0
+info:
+  title: "My First API"
+  version: "0.1"
+paths:
+  /api/resource.json:
+    get:
+      responses:
+        "200":
+          description: "An example resource"
 ```
 
 ### Using variables
@@ -171,25 +163,17 @@ For objects, the key is define by the field with the name as the annotation: `re
 
 #### Results in:
 
-```json
-{
-  "openapi": "3.0",
-  "paths": {
-    "/products": {
-      "get": {
-        "summary": "list products",
-        "responses": {
-          "200": {
-            "description": "A list with products"
-          },
-          "default": {
-            "description": "an \"unexpected\" error"
-          }
-        }
-      }
-    }
-  }
-}
+```yaml
+openapi: 3.0.0
+paths:
+  /products:
+    get:
+      summary: "list products"
+      responses:
+        "200":
+          description: "A list with products"
+        default:
+          description: 'an "unexpected" error'
 ```
 
 ### Detects values based on context
@@ -213,22 +197,16 @@ class Product {
 
 #### Results in:
 
-```json
-{
-  "openapi": "3.0",
-  "components": {
-    "schema": {
-      "Product": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "The product name"
-          }
-        }
-      }
-    }
-  }
-}
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    Product:
+      properties:
+        name:
+          description: "The product name"
+          type: string
+      type: object
 ```
 
 #### As if you'd written:
@@ -276,8 +254,10 @@ But because most API requests and responses are JSON, the `@OA\JsonContent` allo
  */
 ```
 
-`@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
-and generates the same output.
+During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
+and will generate the same output.
+
+On a similar note, you'll generaly don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
 
 ## Reusing annotations ($ref)
 
@@ -285,32 +265,26 @@ It's common that multiple requests have some overlap in either the request or th
 To keep thing DRY (Don't Repeat Yourself) the specification included referencing other parts of the json using `$ref`s
 
 ```php
-    /**
-     * @OA\Schema(
-     *   schema="product_id",
-     *   type="integer",
-     *   format="int64",
-     *   description="The unique identifier of a product in our catalog"
-     * )
-     */
+/**
+ * @OA\Schema(
+ *   schema="product_id",
+ *   type="integer",
+ *   format="int64",
+ *   description="The unique identifier of a product in our catalog"
+ * )
+ */
 ```
 
 #### Results in:
 
-```json
-{
-  "openapi": "3.0",
-  "paths": {},
-  "components": {
-    "schemas": {
-      "product_id": {
-        "description": "The unique identifier of a product in our catalog",
-        "type": "integer",
-        "format": "int64"
-      }
-    }
-  }
-}
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    product_id:
+      description: "The unique identifier of a product in our catalog"
+      type: integer
+      format: int64
 ```
 
 Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/components/schemas/product_id`
@@ -343,27 +317,23 @@ For extensions tips and examples, look at the [using-dynamic-refs example](https
 The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefor all swagger-php annotations have an `x` property which will unfold into "x-" properties.
 
 ```php
-/**
- * @OA\Info(
- *   title="Example",
- *   version=1,
- *   x={
- *     "some-name": "a-value",
- *     "another": 2,
- *     "complex-type": {
- *       "supported":{
- *         {"version": "1.0", "level": "baseapi"},
- *         {"version": "2.1", "level": "fullapi"},
- *       }
- *     }
- *   }
- * )
- */
+openapi: 3.0.0
+info:
+  title: Example
+  version: 1
+  x-some-name: a-value
+  x-another: 2
+  x-complex-type:
+    supported:
+      - version: '1.0'
+        level: baseapi
+      - version: '2.1'
+        level: fullapi
 ```
 
 #### Results in:
 
-```json
+```yaml
 "info": {
   "title": "Example",
   "version": 1,

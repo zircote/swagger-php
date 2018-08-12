@@ -38,12 +38,9 @@ class SimplePetsController
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             ),
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         ),
      *         @OA\MediaType(
      *             mediaType="text/xml",
@@ -64,10 +61,7 @@ class SimplePetsController
      *         response="default",
      *         description="unexpected error",
      *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
+     *         @OA\XmlContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\MediaType(
      *             mediaType="text/xml",
      *             @OA\Schema(ref="#/components/schemas/ErrorModel")

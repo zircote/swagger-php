@@ -51,10 +51,7 @@ class PetWithDocsController
      *         response=200,
      *         description="pet response",
      *         @OA\JsonContent(ref="#/components/schemas/Pet"),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
+     *         @OA\XmlContent(ref="#/components/schemas/Pet"),
      *         @OA\MediaType(
      *             mediaType="text/html",
      *             @OA\Schema(ref="#/components/schemas/Pet")
@@ -67,10 +64,7 @@ class PetWithDocsController
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
+     *         @OA\XmlContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
      *         @OA\MediaType(
      *             mediaType="text/xml",

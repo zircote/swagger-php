@@ -8,6 +8,7 @@ namespace OpenApiTests;
 
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Info;
+use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Schema;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
@@ -40,6 +41,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertCount(3, $childSchema->properties);
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
 
@@ -73,6 +75,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertCount(1, $childSchema->properties);
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
 
@@ -112,6 +115,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertSame(UNDEFINED, $includeSchemaWithRef->properties);
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
 
@@ -149,6 +153,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
 
@@ -192,6 +197,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertEquals($nestedSchema->properties[0]->property, 'nestedProperty');
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
 }

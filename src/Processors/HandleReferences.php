@@ -65,7 +65,7 @@ class HandleReferences
         }
 
         // All of the paths in the openapi, we need to iterate across
-        if (!is_null($analysis->openapi->paths)) {
+        if ($analysis->openapi->paths !== UNDEFINED) {
             foreach ($analysis->openapi->paths as $path) {
                 foreach ($path as $propertyName => $value) {
                     if ($value instanceof Operation && !is_null($value->responses)) {

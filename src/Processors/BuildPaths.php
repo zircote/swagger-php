@@ -21,14 +21,16 @@ class BuildPaths
     {
         $paths = [];
         // Merge @OA\PathItems with the same path.
-        foreach ($analysis->openapi->paths as $annotation) {
-            if (empty($annotation->path)) {
-                Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
-            } elseif (isset($paths[$annotation->path])) {
-                $paths[$annotation->path]->mergeProperties($annotation);
-                $analysis->annotations->detach($annotation);
-            } else {
-                $paths[$annotation->path] = $annotation;
+        if ($analysis->openapi->paths !== UNDEFINED) {
+            foreach ($analysis->openapi->paths as $annotation) {
+                if (empty($annotation->path)) {
+                    Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
+                } elseif (isset($paths[$annotation->path])) {
+                    $paths[$annotation->path]->mergeProperties($annotation);
+                    $analysis->annotations->detach($annotation);
+                } else {
+                    $paths[$annotation->path] = $annotation;
+                }
             }
         }
 
@@ -50,6 +52,8 @@ class BuildPaths
                 }
             }
         }
-        $analysis->openapi->paths = array_values($paths);
+        if (count($paths)) {
+            $analysis->openapi->paths = array_values($paths);
+        }
     }
 }

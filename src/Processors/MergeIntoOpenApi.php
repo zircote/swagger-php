@@ -36,8 +36,13 @@ class MergeIntoOpenApi
                 $paths = $annotation->paths;
                 unset($annotation->paths);
                 $openapi->mergeProperties($annotation);
-                foreach ($paths as $path) {
-                    $openapi->paths[] = $path;
+                if ($paths !== UNDEFINED) {
+                    foreach ($paths as $path) {
+                        if ($openapi->paths === UNDEFINED) {
+                            $openapi->paths = [];
+                        }
+                        $openapi->paths[] = $path;
+                    }
                 }
             } elseif (in_array(get_class($annotation), $classes) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) { // A top level annotation.
                 // Also merge @OA\Info, @OA\Server and other directly nested annotations.

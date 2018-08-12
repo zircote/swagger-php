@@ -47,7 +47,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var PathItem[]
      */
-    public $paths = [];
+    public $paths = UNDEFINED;
 
     /**
      * An element to hold various components for the specification.

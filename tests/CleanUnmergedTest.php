@@ -21,6 +21,7 @@ class CleanUnmergedTest extends OpenApiTestCase
     title="Info only has one contact field.",
     version="test",
 )
+@OA\PathItem(path="/test"),
 @OA\License(
     name="MIT",
     @OA\Contact(
@@ -30,11 +31,11 @@ class CleanUnmergedTest extends OpenApiTestCase
 
 END;
         $analysis = new Analysis($this->parseComment($comment));
-        $this->assertCount(3, $analysis->annotations);
-        $analysis->process(new MergeIntoOpenApi());
         $this->assertCount(4, $analysis->annotations);
+        $analysis->process(new MergeIntoOpenApi());
+        $this->assertCount(5, $analysis->annotations);
         $before = $analysis->split();
-        $this->assertCount(2, $before->merged->annotations, 'Generated @OA\OpenApi and @OA\Info');
+        $this->assertCount(3, $before->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
         $this->assertCount(2, $before->unmerged->annotations, '@OA\License + @OA\Contact');
         $this->assertCount(0, $analysis->openapi->_unmerged);
         $analysis->validate(); // Validation fails to detect the unmerged annotations.
@@ -42,7 +43,7 @@ END;
         // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array.
         $analysis->process(new CleanUnmerged());
         $between = $analysis->split();
-        $this->assertCount(2, $between->merged->annotations, 'Generated @OA\OpenApi and @OA\Info');
+        $this->assertCount(3, $between->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
         $this->assertCount(2, $between->unmerged->annotations, '@OA\License + @OA\Contact');
         $this->assertCount(2, $analysis->openapi->_unmerged); // 1 would also be oke, Could a'Only the @OA\License'
         $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\License(), expected to be inside @OA\Info in ');
@@ -57,7 +58,7 @@ END;
         $analysis->process(new CleanUnmerged());
         $this->assertCount(0, $license->_unmerged);
         $after = $analysis->split();
-        $this->assertCount(3, $after->merged->annotations, 'Generated @OA\OpenApi, @OA\Info and @OA\Contact');
+        $this->assertCount(4, $after->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem, @OA\Info and @OA\Contact');
         $this->assertCount(1, $after->unmerged->annotations, '@OA\License');
         $this->assertCount(1, $analysis->openapi->_unmerged);
         $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\License(), expected to be inside @OA\Info in ');

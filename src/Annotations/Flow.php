@@ -1,30 +1,38 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Annotations;
 
 /**
- * Security scheme flow object.
+ * Configuration details for a supported OAuth Flow
+ * [OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
  *
  * @Annotation
  */
 class Flow extends AbstractAnnotation
 {
     /**
-     * Authorization url
+     * The authorization url to be used for this flow.
+     * This must be in the form of a url.
      *
      * @var string
      */
     public $authorizationUrl = UNDEFINED;
 
     /**
-     * The authorization URL to be used this flow
+     * The token URL to be used for this flow.
+     * This must be in the form of a url.
      *
      * @var string
      */
     public $tokenUrl = UNDEFINED;
 
     /**
-     * The token URL to be used this flow
+     * The URL to be used for obtaining refresh tokens.
+     * This must be in the form of a url.
      *
      * @var string
      */
@@ -38,13 +46,11 @@ class Flow extends AbstractAnnotation
     public $flow = UNDEFINED;
 
     /**
-     * Authorization scopes
+     * The available scopes for the OAuth2 security scheme. A map between the scope name and a short description for it.
      *
      * @var array
-     *
-     * @license Apache 2.0
      */
-    public $scopes = [];
+    public $scopes = UNDEFINED;
 
     /**
      * @inheritdoc

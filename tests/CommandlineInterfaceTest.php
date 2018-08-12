@@ -15,7 +15,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testStdout()
     {
-        exec(__DIR__.'/../bin/openapi --stdout --format json '.escapeshellarg(__DIR__.'/../Examples/swagger-spec/petstore-simple').' 2> /dev/null', $output, $retval);
+        exec(__DIR__.'/../bin/openapi --format json '.escapeshellarg(__DIR__.'/../Examples/swagger-spec/petstore-simple').' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
         $json = json_decode(implode("\n", $output));
         $this->assertSame(JSON_ERROR_NONE, json_last_error());

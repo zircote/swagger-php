@@ -37,7 +37,7 @@ class MergeXmlContent
                     '_context' => new Context(['generated' => true], $xmlContent->_context)
                 ]
             );
-            $xmlContent->examples = null;
+            $xmlContent->examples = UNDEFINED;
 
             $index = array_search($xmlContent, $response->_unmerged, true);
             if ($index !== false) {

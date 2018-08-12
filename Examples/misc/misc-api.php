@@ -7,6 +7,13 @@
  */
 
 /**
+ * @OA\Get(
+ *   path="/api/endpoint",
+ *   @OA\Response(response=200, description="Success")
+ * )
+ */
+  
+/**
  * @OA\Server(
  *      url="{schema}://host.dev",
  *      description="OpenApi parameters",
