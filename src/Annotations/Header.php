@@ -13,6 +13,13 @@ namespace OpenApi\Annotations;
 class Header extends AbstractAnnotation
 {
     /**
+     * $ref See https://swagger.io/docs/specification/using-ref/
+     *
+     * @var string
+     */
+    public $ref = UNDEFINED;
+
+    /**
      * @var string
      */
     public $header = UNDEFINED;

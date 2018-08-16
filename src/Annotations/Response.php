@@ -15,7 +15,7 @@ namespace OpenApi\Annotations;
 class Response extends AbstractAnnotation
 {
     /**
-     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * $ref See https://swagger.io/docs/specification/using-ref/
      *
      * @var string
      */

@@ -14,6 +14,13 @@ namespace OpenApi\Annotations;
 class SecurityScheme extends AbstractAnnotation
 {
     /**
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     *
+     * @var string
+     */
+    public $ref = UNDEFINED;
+
+    /**
      * The key into OpenApi->security array.
      *
      * @var string
