@@ -31,7 +31,7 @@ The specification uses the term "Path Item Object", updated the annotation to re
 
 ### @SWG\Definition() is removed
 
-Use @OA\Schema() instead of @OA\Definition() and update the references from "#/definitons/something" to "#/components/schemas/something".
+Use @OA\Schema() instead of @OA\Definition() and update the references from "#/definitions/something" to "#/components/schemas/something".
 
 ### @SWG\Path is removed
 
