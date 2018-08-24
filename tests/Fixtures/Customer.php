@@ -1,45 +1,48 @@
-<?php
-namespace SwaggerFixures;
+<?php declare(strict_types=1);
+
+namespace OpenApiFixures;
 
 use Exception;
-use Swagger\Logger as SwgLogger;
-use \Swagger\Logger;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
+use OpenApi\Logger;
+use OpenApi\Logger as OpenApiLogger;
 
 /**
- * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @SWG\Definition()
+ * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
+ * @OA\Schema()
  */
 class Customer
 {
-    
+
     /**
      * The firstname of the customer.
+     *
      * @var string
-     * @SWG\Property()
+     * @example test_user
+     * @OA\Property()
      */
     public $firstname;
-    
+
     /**
      * @var string The lastname of the customer.
-     * @SWG\Property()
+     * @OA\Property()
      */
     public $lastname;
-    
+
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var string[]
      */
     public $tags;
-    
+
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var Customer
      */
     public $submittedBy;
-    
+
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var Customer[]
      */
     public $friends;
@@ -49,9 +52,9 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        $test = new SwgLogger();
+        $test = new OpenApiLogger();
         $test2 = new Logger();
-        $test3 = new SWG\Contact();
+        $test3 = new OA\Contact();
         throw new Exception();
     }
 }

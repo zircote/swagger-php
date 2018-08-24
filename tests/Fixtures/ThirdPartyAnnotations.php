@@ -1,12 +1,12 @@
-<?php
-namespace SwaggerFixtures;
+<?php declare(strict_types=1);
+
+namespace OpenApiFixtures;
 
 /**
- * @SWG\Info(title="Fixture for ParserTest", version="test")
+ * @OA\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
-use Zend\Validator\StringLength;
 
 /**
  * @Annotation\Name("user")
@@ -35,9 +35,9 @@ class ThirdPartyAnnotations
     public $email;
 
     /**
-     * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
+     * @OA\Get(path="api/3rd-party", @OA\Response(response="200", description="a response"))
      */
-    public function methodWithSwaggerAnnotation()
+    public function methodWithOpenApiAnnotation()
     {
     }
 }

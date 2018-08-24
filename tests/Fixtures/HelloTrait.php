@@ -1,14 +1,15 @@
-<?php
-namespace SwaggerFixures;
+<?php declare(strict_types=1);
+
+namespace OpenApiFixures;
 
 /**
- * @SWG\Definition
+ * @OA\Schema(schema="trait")
  */
 trait Hello
 {
 
     /**
-     * @SWG\Property()
+     * @OA\Property()
      */
     public $greet = 'Hello!';
 }

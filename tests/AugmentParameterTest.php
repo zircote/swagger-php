@@ -1,17 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-class AugmentParameterTest extends SwaggerTestCase
+class AugmentParameterTest extends OpenApiTestCase
 {
     public function testAugmentParameter()
     {
-        $swagger = \Swagger\scan(__DIR__ . '/Fixtures/UsingRefs.php');
-        $this->assertCount(1, $swagger->parameters, 'Swagger contains 1 reusable parameter specification');
-        $this->assertEquals('ItemName', $swagger->parameters[0]->parameter, 'When no @SWG\Parameter()->parameter is specified, use @SWG\Parameter()->name');
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/UsingRefs.php');
+        $this->assertCount(1, $openapi->components->parameters, 'OpenApi contains 1 reusable parameter specification');
+        $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @OA\Parameter()->parameter is specified, use @OA\Parameter()->name');
     }
 }

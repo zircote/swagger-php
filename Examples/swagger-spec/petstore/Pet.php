@@ -3,24 +3,24 @@
 namespace petstore;
 
 /**
- * @SWG\Definition(required={"id", "name"})
+ * @OA\Schema(required={"id", "name"})
  */
 class Pet
 {
 
     /**
-     * @SWG\Property(type="integer", format="int64")
+     * @OA\Property(type="integer", format="int64")
      */
     public $id;
 
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;
 
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var string
      */
     public $tag;

@@ -1,21 +1,25 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+namespace OpenApi\Annotations;
 
 /**
  * @Annotation
  */
 class Delete extends Operation
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public $method = 'delete';
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_parents = [
-        'Swagger\Annotations\Path'
+        'OpenApi\Annotations\PathItem'
     ];
 }

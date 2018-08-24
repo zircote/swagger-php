@@ -6,20 +6,20 @@ class UserController
 {
 
     /**
-     * @SWG\Post(path="/user",
+     * @OA\Post(path="/user",
      *   tags={"user"},
      *   summary="Create user",
      *   description="This can only be done by the logged in user.",
      *   operationId="createUser",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="Created user object",
-     *     required=true,
-     *     @SWG\Schema(ref="#/definitions/User")
+     *   @OA\RequestBody(
+     *       required=true,
+     *       description="Created user object",
+     *       @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(ref="#/components/schemas/User")
+     *       )
      *   ),
-     *   @SWG\Response(response="default", description="successful operation")
+     *   @OA\Response(response="default", description="successful operation")
      * )
      */
     public function createUser()
@@ -27,23 +27,23 @@ class UserController
     }
 
     /**
-     * @SWG\Post(path="/user/createWithArray",
+     * @OA\Post(path="/user/createWithArray",
      *   tags={"user"},
      *   summary="Creates list of users with given input array",
      *   description="",
      *   operationId="createUsersWithArrayInput",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="List of user object",
-     *     required=true,
-     *     @SWG\Schema(
-     *       type="array",
-     *       @SWG\Items(ref="#/definitions/User")
-     *     )
+     *   @OA\RequestBody(
+     *       description="List of user object",
+     *       required=true,
+     *       @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(
+     *               type="array",
+     *               @OA\Items(ref="#/components/schemas/User")
+     *           )
+     *       )
      *   ),
-     *   @SWG\Response(response="default", description="successful operation")
+     *   @OA\Response(response="default", description="successful operation")
      * )
      */
     public function createUsersWithArrayInput()
@@ -51,65 +51,74 @@ class UserController
     }
 
     /**
-     * @SWG\Post(path="/user/createWithList",
+     * @OA\Post(path="/user/createWithList",
      *   tags={"user"},
      *   summary="Creates list of users with given input array",
      *   description="",
      *   operationId="createUsersWithListInput",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="List of user object",
-     *     required=true,
-     *     @SWG\Schema(
-     *       type="array",
-     *       @SWG\Items(ref="#/definitions/User")
-     *     )
+     *   @OA\RequestBody(
+     *       required=true,
+     *       description="List of user object",
+     *       @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(
+     *               type="array",
+     *               @OA\Items(ref="#/components/schemas/User")
+     *           )
+     *       )
      *   ),
-     *   @SWG\Response(response="default", description="successful operation")
+     *   @OA\Response(response="default", description="successful operation")
      * )
      */
+    public function createUsersWithListInput()
+    {
+    }
 
     /**
-     * @SWG\Get(path="/user/login",
+     * @OA\Get(path="/user/login",
      *   tags={"user"},
      *   summary="Logs user into the system",
      *   description="",
      *   operationId="loginUser",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OA\Parameter(
      *     name="username",
+     *     required=true,
      *     in="query",
      *     description="The user name for login",
-     *     required=true,
-     *     type="string"
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Parameter(
+     *   @OA\Parameter(
      *     name="password",
      *     in="query",
+     *     @OA\Schema(
+     *         type="string",
+     *     ),
      *     description="The password for login in clear text",
-     *     required=true,
-     *     type="string"
      *   ),
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="successful operation",
-     *     @SWG\Schema(type="string"),
-     *     @SWG\Header(
+     *     @OA\Schema(type="string"),
+     *     @OA\Header(
      *       header="X-Rate-Limit",
-     *       type="integer",
-     *       format="int32",
+     *       @OA\Schema(
+     *           type="integer",
+     *           format="int32"
+     *       ),
      *       description="calls per hour allowed by the user"
      *     ),
-     *     @SWG\Header(
+     *     @OA\Header(
      *       header="X-Expires-After",
-     *       type="string",
-     *       format="date-time",
+     *       @OA\Schema(
+     *          type="string",
+     *          format="date-time",
+     *       ),
      *       description="date in UTC when token expires"
      *     )
      *   ),
-     *   @SWG\Response(response=400, description="Invalid username/password supplied")
+     *   @OA\Response(response=400, description="Invalid username/password supplied")
      * )
      */
     public function loginUser()
@@ -117,14 +126,13 @@ class UserController
     }
 
     /**
-     * @SWG\Get(path="/user/logout",
+     * @OA\Get(path="/user/logout",
      *   tags={"user"},
      *   summary="Logs out current logged in user session",
      *   description="",
      *   operationId="logoutUser",
-     *   produces={"application/xml", "application/json"},
      *   parameters={},
-     *   @SWG\Response(response="default", description="successful operation")
+     *   @OA\Response(response="default", description="successful operation")
      * )
      */
     public function logoutUser()
@@ -132,22 +140,23 @@ class UserController
     }
 
     /**
-     * @SWG\Get(path="/user/{username}",
+     * @OA\Get(path="/user/{username}",
      *   tags={"user"},
      *   summary="Get user by user name",
      *   description="",
      *   operationId="getUserByName",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OA\Parameter(
      *     name="username",
      *     in="path",
      *     description="The name that needs to be fetched. Use user1 for testing. ",
      *     required=true,
-     *     type="string"
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/User")),
-     *   @SWG\Response(response=400, description="Invalid username supplied"),
-     *   @SWG\Response(response=404, description="User not found")
+     *   @OA\Response(response=200, description="successful operation", @OA\Schema(ref="#/components/schemas/User")),
+     *   @OA\Response(response=400, description="Invalid username supplied"),
+     *   @OA\Response(response=404, description="User not found")
      * )
      */
     public function getUserByName($username)
@@ -155,28 +164,30 @@ class UserController
     }
 
     /**
-     * @SWG\Put(path="/user/{username}",
+     * @OA\Put(path="/user/{username}",
      *   tags={"user"},
      *   summary="Updated user",
      *   description="This can only be done by the logged in user.",
      *   operationId="updateUser",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OA\Parameter(
      *     name="username",
      *     in="path",
      *     description="name that need to be updated",
      *     required=true,
-     *     type="string"
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Parameter(
-     *     in="body",
-     *     name="body",
-     *     description="Updated user object",
-     *     required=true,
-     *     @SWG\Schema(ref="#/definitions/User")
+     *   @OA\Response(response=400, description="Invalid user supplied"),
+     *   @OA\Response(response=404, description="User not found"),
+     *   @OA\RequestBody(
+     *       required=true,
+     *       description="Updated user object",
+     *       @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(ref="#/components/schemas/User")
+     *       )
      *   ),
-     *   @SWG\Response(response=400, description="Invalid user supplied"),
-     *   @SWG\Response(response=404, description="User not found")
      * )
      */
     public function updateUser()
@@ -184,21 +195,22 @@ class UserController
     }
 
     /**
-     * @SWG\Delete(path="/user/{username}",
+     * @OA\Delete(path="/user/{username}",
      *   tags={"user"},
      *   summary="Delete user",
      *   description="This can only be done by the logged in user.",
      *   operationId="deleteUser",
-     *   produces={"application/xml", "application/json"},
-     *   @SWG\Parameter(
+     *   @OA\Parameter(
      *     name="username",
      *     in="path",
      *     description="The name that needs to be deleted",
      *     required=true,
-     *     type="string"
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Response(response=400, description="Invalid username supplied"),
-     *   @SWG\Response(response=404, description="User not found")
+     *   @OA\Response(response=400, description="Invalid username supplied"),
+     *   @OA\Response(response=404, description="User not found")
      * )
      */
     public function deleteUser()
