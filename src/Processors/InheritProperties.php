@@ -53,12 +53,13 @@ class InheritProperties
                         foreach ($class['context']->annotations as $annotation) {
                             if ($annotation instanceof Schema && $annotation->schema) {
                                 $this->addAllOfProperty($schema, $annotation);
+
                                 continue 2;
                             }
                         }
                     }
 
-                    foreach ($defintion['properties'] as $property) {
+                    foreach ($class['properties'] as $property) {
                         if (is_array($property->annotations) === false && !($property->annotations instanceof Traversable)) {
                             continue;
                         }
