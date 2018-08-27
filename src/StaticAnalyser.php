@@ -270,12 +270,7 @@ class StaticAnalyser
                     $parseContext->uses[$alias] = $target;
 
                     // i'm in the case use trait
-                    $targetName = $target;
-                    if (strpos($targetName, '\\')) {
-                        $targetPieces = explode('\\', $targetName);
-                        $targetName = end($targetPieces);
-                    }
-                    if ($alias == $targetName && $classDefinition) {
+                    if ($alias == $target && $classDefinition) {
                         $classDefinition['traits'][] = $alias;
                     }
 
