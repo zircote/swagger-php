@@ -52,7 +52,7 @@ class InheritProperties
                 //Get inherited/exteneded classes to combine properties
                 $inheritedClasses = $analysis->getSuperClasses($className);
                 //Get Traits to combine properties
-                $usedTraits = $analysis->getUsedTraits($className);
+                $usedTraits = $analysis->getTraitsOfClass($className);
                 
                 $defintions = array_merge($inheritedClasses, $usedTraits);
 
