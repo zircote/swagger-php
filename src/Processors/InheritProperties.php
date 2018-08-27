@@ -47,21 +47,12 @@ class InheritProperties
                         }
                     }
                 }
-
-                $className = $schema->_context->fullyQualifiedName($schema->_context->class);
-                //Get inherited/exteneded classes to combine properties
-                $inheritedClasses = $analysis->getSuperClasses($className);
-                //Get Traits to combine properties
-                $usedTraits = $analysis->getTraitsOfClass($className);
-                
-                $defintions = array_merge($inheritedClasses, $usedTraits);
-
-                foreach ($defintions as $defintion) {
-                    if ($defintion['context']->annotations) {
-                        foreach ($defintion['context']->annotations as $annotation) {
+                $classes = $analysis->getSuperClasses($schema->_context->fullyQualifiedName($schema->_context->class));
+                foreach ($classes as $class) {
+                    if ($class['context']->annotations) {
+                        foreach ($class['context']->annotations as $annotation) {
                             if ($annotation instanceof Schema && $annotation->schema) {
                                 $this->addAllOfProperty($schema, $annotation);
-
                                 continue 2;
                             }
                         }
