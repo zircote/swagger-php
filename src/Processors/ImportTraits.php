@@ -25,9 +25,16 @@ class ImportTraits
                             continue;
                         }
                         foreach ($property->annotations as $annotation) {
-                            if ($annotation instanceof Property && in_array($annotation->property, $existing) === false) {
-                                $existing[] = $annotation->property;
-                                $schema->merge([$annotation], true);
+                            $context = $annotation->_context;
+                            if ($annotation instanceof Property) {
+                                // Use the property names for @OA\Property()
+                                if ($annotation->property === UNDEFINED) {
+                                    $annotation->property = $context->property;
+                                }
+                                if (in_array($annotation->property, $existing) === false) {
+                                    $existing[] = $annotation->property;
+                                    $schema->merge([$annotation], true);
+                                }
                             }
                         }
                     }
