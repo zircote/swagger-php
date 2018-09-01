@@ -257,7 +257,7 @@ But because most API requests and responses are JSON, the `@OA\JsonContent` allo
 During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
 and will generate the same output.
 
-On a similar note, you'll generaly don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
+On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
 
 ## Reusing annotations ($ref)
 
@@ -314,7 +314,7 @@ For extensions tips and examples, look at the [using-dynamic-refs example](https
 
 ## Vendor extensions
 
-The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefor all swagger-php annotations have an `x` property which will unfold into "x-" properties.
+The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefore all swagger-php annotations have an `x` property which will unfold into "x-" properties.
 
 ```php
 openapi: 3.0.0
