@@ -314,7 +314,7 @@ For extensions tips and examples, look at the [using-dynamic-refs example](https
 
 ## Vendor extensions
 
-The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefor all swagger-php annotations have an `x` property which will unfold into "x-" properties.
+The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefore, all swagger-php annotations have an `x` property which will unfold into "x-" properties.
 
 ```php
 openapi: 3.0.0
