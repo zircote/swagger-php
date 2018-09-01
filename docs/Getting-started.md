@@ -257,7 +257,7 @@ But because most API requests and responses are JSON, the `@OA\JsonContent` allo
 During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
 and will generate the same output.
 
-On a similar note, you'll generaly don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
+On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
 
 ## Reusing annotations ($ref)
 
