@@ -3,22 +3,21 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(
- *   type="object",
- *   @SWG\Xml(name="Tag")
+ * @OA\Schema(
+ *   @OA\Xml(name="Tag")
  * )
  */
 class Tag
 {
 
     /**
-     * @SWG\Property(format="int64")
+     * @OA\Property(format="int64")
      * @var int
      */
     public $id;
 
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;

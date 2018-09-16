@@ -1,39 +1,39 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Response;
-use Swagger\Context;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\Response;
+use OpenApi\Context;
 
-class RefTest extends SwaggerTestCase
+class RefTest extends OpenApiTestCase
 {
     public function testRef()
     {
-        $swagger = $this->createSwaggerWithInfo();
-        $info = $swagger->ref('#/info');
+        $openapi = $this->createOpenApiWithInfo();
+        $info = $openapi->ref('#/info');
         $this->assertInstanceOf(Info::class, $info);
 
         $comment = <<<END
-@SWG\Get(
+@OA\Get(
     path="/api/~/endpoint",
-    @SWG\Response(response="default", description="A response")
+    @OA\Response(response="default", description="A response")
 )
 END;
-        $swagger->merge($this->parseComment($comment));
+        $openapi->merge($this->parseComment($comment));
         $analysis = new Analysis();
-        $analysis->addAnnotation($swagger, Context::detect());
+        $analysis->addAnnotation($openapi, Context::detect());
         $analysis->process();
-        
+
         $analysis->validate();
         // escape / as ~1
         // escape ~ as ~0
-        $response = $swagger->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
+        $response = $openapi->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('A response', $response->description);
     }

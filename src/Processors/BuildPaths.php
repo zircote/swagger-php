@@ -1,45 +1,50 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Annotations\Path;
-use Swagger\Logger;
-use Swagger\Context;
-use Swagger\Analysis;
+use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations\Operation;
+use OpenApi\Logger;
+use OpenApi\Context;
+use OpenApi\Analysis;
 
 /**
- * Build the swagger->paths using the detected @SWG\Path and @SWG\Operations (like @SWG\Get, @SWG\Post, etc)
+ * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc)
  */
 class BuildPaths
 {
     public function __invoke(Analysis $analysis)
     {
         $paths = [];
-        // Merge @SWG\Paths with the same path.
-        foreach ($analysis->swagger->paths as $annotation) {
-            if (empty($annotation->path)) {
-                Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
-            } elseif (isset($paths[$annotation->path])) {
-                $paths[$annotation->path]->mergeProperties($annotation);
-                $analysis->annotations->detach($annotation);
-            } else {
-                $paths[$annotation->path] = $annotation;
+        // Merge @OA\PathItems with the same path.
+        if ($analysis->openapi->paths !== UNDEFINED) {
+            foreach ($analysis->openapi->paths as $annotation) {
+                if (empty($annotation->path)) {
+                    Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
+                } elseif (isset($paths[$annotation->path])) {
+                    $paths[$annotation->path]->mergeProperties($annotation);
+                    $analysis->annotations->detach($annotation);
+                } else {
+                    $paths[$annotation->path] = $annotation;
+                }
             }
         }
 
-        // Merge @SWG\Operations into existing @SWG\Paths or create a new one.
-        $operations = $analysis->unmerged()->getAnnotationsOfType('\Swagger\Annotations\Operation');
+        // Merge @OA\Operations into existing @OA\PathItems or create a new one.
+        $operations = $analysis->unmerged()->getAnnotationsOfType(Operation::class);
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {
-                    $paths[$operation->path] = new Path([
-                        'path' => $operation->path,
-                        '_context' => new Context(['generated' => true], $operation->_context)
-                    ]);
+                    $paths[$operation->path] = new PathItem(
+                        [
+                            'path' => $operation->path,
+                            '_context' => new Context(['generated' => true], $operation->_context)
+                        ]
+                    );
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
@@ -47,6 +52,8 @@ class BuildPaths
                 }
             }
         }
-        $analysis->swagger->paths = array_values($paths);
+        if (count($paths)) {
+            $analysis->openapi->paths = array_values($paths);
+        }
     }
 }

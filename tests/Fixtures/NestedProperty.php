@@ -1,21 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AnotherNamespace;
 
 /**
- * @SWG\Definition()
+ * @OA\Schema()
  */
 class NestedProperty
 {
 
     /**
      * @var bool
-     * @SWG\Property(
-     *     @SWG\Property(
+     * @OA\Property(
+     *     @OA\Property(
      *         property="babyProperty",
-     *         @SWG\Property(
+     *         @OA\Property(
      *             property="theBabyOfBaby",
-     *             properties={@Swagger\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
+     *             properties={@OpenApi\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
      *         )
      *     ),
      * )

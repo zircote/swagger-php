@@ -1,17 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace SwaggerTests;
+namespace OpenApiTests;
 
-class ResponseTest extends SwaggerTestCase
+class ResponseTest extends OpenApiTestCase
 {
     public function testMisspelledDefault()
     {
-        $annotations = $this->parseComment('@SWG\Get(@SWG\Response(response="Default", description="description"))');
-        $this->assertSwaggerLogEntryStartsWith('Invalid value "Default" for @SWG\Response()->response, expecting "default" or a HTTP Status Code in ');
+        $annotations = $this->parseComment('@OA\Get(@OA\Response(response="Default", description="description"))');
+        $this->assertOpenApiLogEntryStartsWith('Invalid value "Default" for @OA\Response()->response, expecting "default" or a HTTP Status Code in ');
         $annotations[0]->validate();
     }
 }

@@ -2,47 +2,59 @@
 namespace UsingRefs;
 
 /**
- * @SWG\Path(
+ * @OA\PathItem(
  *   path="/products/{product_id}",
- *   @SWG\Parameter(ref="#/parameters/product_id_in_path_required")
+ *   @OA\Parameter(ref="#/components/parameters/product_id_in_path_required")
  * )
  */
 
-class ProductController {
+class ProductController
+{
 
     /**
-     * @SWG\Get(
+     * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OA\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OA\JsonContent(ref="#/components/responses/product")
+     *   )
      * )
      */
-    public function getProduct($id) {
-
+    public function getProduct($id)
+    {
     }
 
     /**
-     * @SWG\Patch(
+     * @OA\Patch(
      *   tags={"Products"},
      *   path="/products/{product_id}",
-     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OA\JsonContent(ref="#/components/responses/product")
+     *   )
      * )
      */
-    public function updateProduct($id) {
-
+    public function updateProduct($id)
+    {
     }
 
     /**
-     * @SWG\Post(
+     * @OA\Post(
      *   tags={"Products"},
      *   path="/products",
-     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
-     *   @SWG\Response(response="default", ref="#/responses/product")
+     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\Response(
+     *       response="default",
+     *       description="successful operation",
+     *       @OA\JsonContent(ref="#/components/responses/product")
+     *   )
      * )
      */
-    public function addProduct($id) {
-
+    public function addProduct($id)
+    {
     }
-
 }

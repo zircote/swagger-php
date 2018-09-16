@@ -1,20 +1,25 @@
 # Dynamic References
 
-*Dynamic References* import all attributes from the reference object to the specified object. 
+::: warning
+This page is not yet updated to v3 syntax
+:::
+
+_Dynamic References_ import all attributes from the reference object to the specified object.
 
 It works similar to the `#ref` however allows for customization of properties and attributes.
 
 The dynamic reference uses a `$` instead of `#` for the `ref` attribute.
+
 ```
     ref="$/responses/ExampleResponse"
 ```
 
 ### Examples
 
-
 Define a default object which be our base structure.
 
 In this case it is a response, which will contain a variable `data` property.
+
 ```php
 <?php
 /**
@@ -43,9 +48,7 @@ In this case it is a response, which will contain a variable `data` property.
 */
 ```
 
-
-Then you can extend the response in this example *POST* request by using the `$` ref.
-
+Then you can extend the response in this example _POST_ request by using the `$` ref.
 
 ```php
 <?php
@@ -76,7 +79,7 @@ Then you can extend the response in this example *POST* request by using the `$`
  *          @SWG\Schema(
  *              @SWG\Property(
  *                  property="data",
- *                  ref="#/definitions/Product"
+ *                  ref="#/components/schemas/Product"
  *              )
  *          )
  *     ),
@@ -120,7 +123,7 @@ We follow the reference with a `Schema` layout which specifies that the `data` p
             "schema": {
               "properties": {
                 "data": {
-                  "$ref": "#/definitions/Product"
+                  "$ref": "#/components/schemas/Product"
                 },
                 "errors": {
                   "type": "object"

@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
 use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
@@ -25,8 +25,8 @@ class Util
      * and conform specifically to what is expected by functions like `exclude()` and `notPath()`.
      * In particular, leading and trailing slashes are removed.
      *
-     * @param string $fullPath
-     * @param string|array $basePaths
+     * @param  string       $fullPath
+     * @param  string|array $basePaths
      * @return string
      */
     public static function getRelativePath($fullPath, $basePaths)
@@ -48,8 +48,8 @@ class Util
     /**
      * Removes a prefix from the start of a string if it exists, or null otherwise.
      *
-     * @param string $str
-     * @param string $prefix
+     * @param  string $str
+     * @param  string $prefix
      * @return null|string
      */
     private static function removePrefix($str, $prefix)
@@ -63,8 +63,8 @@ class Util
     /**
      * Build a Symfony Finder object that scans the given $directory.
      *
-     * @param string|array|Finder $directory The directory(s) or filename(s)
-     * @param null|string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
+     * @param  string|array|Finder $directory The directory(s) or filename(s)
+     * @param  null|string|array   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
      * @throws InvalidArgumentException
      */
     public static function finder($directory, $exclude = null)
