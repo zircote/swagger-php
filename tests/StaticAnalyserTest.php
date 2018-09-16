@@ -29,10 +29,10 @@ class StaticAnalyserTest extends SwaggerTestCase
     public function testTrait()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/HelloTrait.php');
-        $this->assertCount(2, $analysis->annotations);
-        $property = $analysis->getAnnotationsOfType('Swagger\Annotations\Property')[0];
-        $this->assertSame('Hello', $property->_context->trait);
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Traits/HelloTrait.php');
+        $this->assertCount(1, $analysis->annotations);
+        $property = $analysis->getAnnotationsOfType(Property::class);
+        $this->assertSame('Hello', $property[0]->_context->trait);
     }
     
     public function testThirdPartyAnnotations()
