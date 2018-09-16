@@ -30,8 +30,8 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testTrait()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Traits/HelloTrait.php');
-        $this->assertCount(2, $analysis->annotations);
+        $analysis = $analyser->fromFile(__DIR__ . '/Traits/HelloTrait.php');
+        $this->assertCount(1, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType('Swagger\Annotations\Property')[0];
         $this->assertSame('Hello', $property->_context->trait);
     }

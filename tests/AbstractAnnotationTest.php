@@ -6,6 +6,8 @@
 
 namespace OpenApiTests;
 
+use OpenApiTests\OpenApiTestCase;
+
 class AbstractAnnotationTest extends OpenApiTestCase
 {
     public function testVendorFields()

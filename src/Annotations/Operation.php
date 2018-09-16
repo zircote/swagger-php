@@ -69,7 +69,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationId;
+    public $operationId = UNDEFINED;
 
     /**
      * A list of parameters that are applicable for this operation.

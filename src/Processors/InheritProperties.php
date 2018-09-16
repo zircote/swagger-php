@@ -74,4 +74,36 @@ class InheritProperties
             }
         }
     }
+
+    /**
+     * Add to child schema allOf property
+     *
+     * @param \OpenApi\Annotations\Schema $childSchema
+     * @param \OpenApi\Annotations\Schema $parentSchema
+     */
+    private function addAllOfProperty(Schema $childSchema, Schema $parentSchema)
+    {
+        $currentSchema = new Schema(['_context' => $childSchema->_context]);
+
+        $currentSchema->mergeProperties($childSchema);
+
+        $defaultValues = get_class_vars(Schema::class);
+
+        foreach (get_object_vars($currentSchema) as $property => $val) {
+            $childSchema->{$property} = $defaultValues[$property];
+        }
+
+        $childSchema->schema = $currentSchema->schema;
+        unset($currentSchema->schema);
+        if ($childSchema->allOf === UNDEFINED) {
+            $childSchema->allOf = [];
+        }
+        $childSchema->allOf[] = new Schema(
+            [
+            '_context' => $parentSchema->_context,
+            'ref' => Components::SCHEMA_REF . $parentSchema->schema
+            ]
+        );
+        $childSchema->allOf[] = $currentSchema;
+    }
 }

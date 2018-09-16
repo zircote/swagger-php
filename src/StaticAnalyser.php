@@ -112,7 +112,7 @@ class StaticAnalyser
                     continue;
                 }
 
-                $definitionContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
+                $schemaContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
                 }
@@ -120,8 +120,8 @@ class StaticAnalyser
                     'class'      => $token[1],
                     'extends'    => null,
                     'properties' => [],
-                    'methods' => [],
-                    'context' => $definitionContext
+                    'methods'    => [],
+                    'context'    => $schemaContext,
                 ];
                 // @todo detect end-of-class and reset $schemaContext
                 $token = $this->nextToken($tokens, $parseContext);
@@ -139,7 +139,16 @@ class StaticAnalyser
             if ($token[0] === T_TRAIT) {
                 $classDefinition = false;
                 $token = $this->nextToken($tokens, $parseContext);
-                $definitionContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
+                $schemaContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($traitDefinition) {
+                    $analysis->addTraitDefinition($traitDefinition);
+                }
+                $traitDefinition = [
+                    'trait'      => $token[1],
+                    'properties' => [],
+                    'methods'    => [],
+                    'context'    => $schemaContext,
+                ];
                 if ($comment) {
                     $schemaContext->line = $line;
                     $this->analyseComment($analysis, $analyser, $comment, $schemaContext);
@@ -259,6 +268,12 @@ class StaticAnalyser
                     }
 
                     $parseContext->uses[$alias] = $target;
+
+                    // i'm in the case use trait
+                    if ($alias == $target && $classDefinition) {
+                        $classDefinition['traits'][] = $alias;
+                    }
+
                     if (Analyser::$whitelist === false) {
                         $imports[strtolower($alias)] = $target;
                     } else {
@@ -280,6 +295,10 @@ class StaticAnalyser
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
         }
+        if ($traitDefinition) {
+            $analysis->addTraitDefinition($traitDefinition);
+        }
+
         return $analysis;
     }
 
