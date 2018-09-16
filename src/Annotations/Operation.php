@@ -1,147 +1,172 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swagger\Annotations;
+ namespace OpenApi\Annotations;
 
-use Swagger\Logger;
+use OpenApi\Logger;
 
 /**
  * @Annotation
- * Base class for the @SWG\Get(),  @SWG\Post(),  @SWG\Put(),  @SWG\Delete(), @SWG\Patch()
+ * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc
  *
- * A Swagger "Operation Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#operationObject
+ * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object
+ * Describes a single API operation on a path.
  */
 abstract class Operation extends AbstractAnnotation
 {
     /**
-     * key in the Swagger "Paths Object" for this operation
+     * key in the OpenApi "Paths Object" for this operation
+     *
      * @var string
      */
-    public $path;
+    public $path = UNDEFINED;
 
     /**
-     * Key in the Swagger "Path Item Object" for this operation.
-     * Allowed values: 'get', 'post', put', 'delete', 'options', 'head' and 'patch'
+     * A list of tags for API documentation control.
+     * Tags can be used for logical grouping of operations by resources or any other qualifier.
+     *
+     * @var string[]
+     */
+    public $tags = UNDEFINED;
+
+    /**
+     * Key in the OpenApi "Path Item Object" for this operation.
+     * Allowed values: 'get', 'post', put', 'patch', 'delete', 'options', 'head' and 'trace'
+     *
      * @var string
      */
-    public $method;
+    public $method = UNDEFINED;
 
     /**
-     * A list of tags for API documentation control. Tags can be used for logical grouping of operations by resources or any other qualifier.
-     * @var array
-     */
-    public $tags;
-
-    /**
-     * A short summary of what the operation does. For maximum readability in the swagger-ui, this field SHOULD be less than 120 characters.
+     * A short summary of what the operation does.
+     *
      * @var string
      */
-    public $summary;
+    public $summary = UNDEFINED;
 
     /**
-     * A verbose explanation of the operation behavior. GFM syntax can be used for rich text representation.
+     * A verbose explanation of the operation behavior.
+     * CommonMark syntax MAY be used for rich text representation.
+     *
      * @var string
      */
-    public $description;
+    public $description = UNDEFINED;
 
     /**
      * Additional external documentation for this operation.
+     *
      * @var ExternalDocumentation
      */
-    public $externalDocs;
+    public $externalDocs = UNDEFINED;
 
     /**
-     * A friendly name for the operation.
-     * The id MUST be unique among all operations described in the API.
-     * Tools and libraries MAY use the operation id to uniquely identify an operation.
+     * Unique string used to identify the operation.
+     * The id must be unique among all operations described in the API.
+     * Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to follow common programming naming conventions.
+     *
      * @var string
      */
     public $operationId;
 
     /**
-     * A list of MIME types the operation can consume.
-     * This overrides the [consumes](#swaggerConsumes) definition at the Swagger Object.
-     * An empty value MAY be used to clear the global definition.
-     * Value MUST be as described under Mime Types.
-     * @var array
-     */
-    public $consumes;
-
-    /**
-     * A list of MIME types the operation can produce.
-     * This overrides the [produces](#swaggerProduces) definition at the Swagger Object.
-     * An empty value MAY be used to clear the global definition.
-     * Value MUST be as described under Mime Types.
-     * @var array
-     */
-    public $produces;
-
-    /**
      * A list of parameters that are applicable for this operation.
-     * If a parameter is already defined at the Path Item, the new definition will override it, but can never remove it. The list MUST NOT include duplicated parameters. A unique parameter is defined by a combination of a name and location.
-     * The list can use the Reference Object to link to parameters that are defined at the Swagger Object's parameters.
-     * There can be one "body" parameter at most.
+     * If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.
+     * The list must not include duplicated parameters.
+     * A unique parameter is defined by a combination of a name and location.
+     * The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
+     *
      * @var Parameter[]
      */
-    public $parameters;
+    public $parameters = UNDEFINED;
+
+    /**
+     * The request body applicable for this operation.
+     * The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly defined semantics for request bodies.
+     * In other cases where the HTTP spec is vague, requestBody shall be ignored by consumers.
+     *
+     * @var RequestBody
+     */
+    public $requestBody = UNDEFINED;
 
     /**
      * The list of possible responses as they are returned from executing this operation.
-     * @var array
+     *
+     * @var \OpenApi\Annotations\Response[]
      */
-    public $responses;
+    public $responses = UNDEFINED;
 
     /**
-     * The transfer protocol for the operation.
-     * Values MUST be from the list: "http", "https", "ws", "wss".
-     * The value overrides the Swagger Object schemes definition.
-     * @var array
+     * A map of possible out-of band callbacks related to the parent operation.
+     * The key is a unique identifier for the Callback Object.
+     * Each value in the map is a Callback Object that describes a request that may be initiated by the API provider and the expected responses.
+     * The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
+     *
+     * @var Callback[]
      */
-    public $schemes;
+    public $callbacks = UNDEFINED;
 
     /**
      * Declares this operation to be deprecated.
-     * Usage of the declared operation should be refrained. Default value is false.
+     * Consumers should refrain from usage of the declared operation.
+     * Default value is false.
+     *
      * @var boolean
      */
-    public $deprecated;
+    public $deprecated = UNDEFINED;
 
     /**
-     * A declaration of which security schemes are applied for this operation.
-     * The list of values describes alternative security schemes that can be used (that is, there is a logical OR between the security requirements).
+     * A declaration of which security mechanisms can be used for this operation.
+     * The list of values includes alternative security requirement objects that can be used.
+     * Only one of the security requirement objects need to be satisfied to authorize a request.
      * This definition overrides any declared top-level security.
      * To remove a top-level security declaration, an empty array can be used.
+     *
      * @var array
      */
-    public $security;
+    public $security = UNDEFINED;
 
-    /** @inheritdoc */
+    /**
+     * An alternative server array to service this operation.
+     * If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by this value.
+     *
+     * @var Server[]
+     */
+    public $servers = UNDEFINED;
+
+    /**
+     * @inheritdoc
+     */
     public static $_required = ['responses'];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_types = [
         'path' => 'string',
         'method' => 'string',
         'tags' => '[string]',
         'summary' => 'string',
         'description' => 'string',
-        'consumes' => '[string]',
-        'produces' => '[string]',
-        'schemes' => '[scheme]',
         'deprecated' => 'boolean'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public static $_nested = [
-        'Swagger\Annotations\Parameter' => ['parameters'],
-        'Swagger\Annotations\Response' => ['responses', 'response'],
-        'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
+        'OpenApi\Annotations\Parameter' => ['parameters'],
+        'OpenApi\Annotations\Response' => ['responses', 'response'],
+        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        'OpenApi\Annotations\Server' => ['servers'],
+        'OpenApi\Annotations\RequestBody' => 'requestBody',
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
@@ -158,7 +183,7 @@ abstract class Operation extends AbstractAnnotation
         $valid = parent::validate($parents, $skip);
         if ($this->responses !== null) {
             foreach ($this->responses as $response) {
-                if ($response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', $response->response) === 0) {
+                if ($response->response !== UNDEFINED &&$response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', (string)$response->response) === 0) {
                     Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default" or a HTTP Status Code in ' . $response->_context);
                 }
             }

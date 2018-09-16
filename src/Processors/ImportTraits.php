@@ -1,24 +1,23 @@
 <?php
 
-namespace Swagger\Processors;
+namespace OpenApi\Processors;
 
-use Swagger\Analyser;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Swagger;
-use Swagger\Annotations\Definition;
-use Swagger\Analysis;
+use OpenApi\Analyser;
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Definition;
+use OpenApi\Annotations\Schema;
+use OpenApi\Analysis;
 use Traversable;
-
 
 class ImportTraits
 {
-
     public function __invoke(Analysis $analysis)
     {
-        $schemas = $analysis->getAnnotationsOfType('\Swagger\Annotations\Schema');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
             $existing = [];
-            if($schema->_context->is('class')) {
+            if ($schema->_context->is('class')) {
                 $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class));
                 foreach ($traits as $trait) {
                     foreach ($trait['properties'] as $property) {
@@ -34,7 +33,6 @@ class ImportTraits
                     }
                 }
             }
-
         }
     }
 }

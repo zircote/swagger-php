@@ -1,6 +1,7 @@
 /vendor
 /composer.lock
 /bin/*
-!/bin/swagger
-/swagger.json
-
+!/bin/openapi
+/openapi.json
+/openapi.yaml
+/docs/.vuepress/dist

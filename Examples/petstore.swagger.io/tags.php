@@ -1,22 +1,22 @@
 <?php
 
 /**
- * @SWG\Tag(
+ * @OA\Tag(
  *   name="pet",
  *   description="Everything about your Pets",
- *   @SWG\ExternalDocumentation(
+ *   @OA\ExternalDocumentation(
  *     description="Find out more",
  *     url="http://swagger.io"
  *   )
  * )
- * @SWG\Tag(
+ * @OA\Tag(
  *   name="store",
  *   description="Access to Petstore orders"
  * )
- * @SWG\Tag(
+ * @OA\Tag(
  *   name="user",
  *   description="Operations about user",
- *   @SWG\ExternalDocumentation(
+ *   @OA\ExternalDocumentation(
  *     description="Find out more about our store",
  *     url="http://swagger.io"
  *   )

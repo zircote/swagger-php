@@ -1,34 +1,34 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
  */
 
-namespace Swagger;
+namespace OpenApi;
 
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
 
-if (defined('Swagger\UNDEFINED') === false) {
+if (defined('OpenApi\UNDEFINED') === false) {
     /**
      * Special value to differentiate between null and undefined.
      */
-    define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
-    define('Swagger\Annotations\UNDEFINED', UNDEFINED);
-    define('Swagger\Processors\UNDEFINED', UNDEFINED);
+    define('OpenApi\UNDEFINED', '@OA\UNDEFINED🙈');
+    define('OpenApi\Annotations\UNDEFINED', UNDEFINED);
+    define('OpenApi\Processors\UNDEFINED', UNDEFINED);
 
     /**
-     * Scan the filesystem for swagger annotations and build swagger-documentation.
+     * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *
-     * @param string|array|Finder $directory The directory(s) or filename(s)
-     * @param array $options
+     * @param  string|array|Finder $directory The directory(s) or filename(s)
+     * @param  array               $options
      *   exclude: string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
      *   analyser: defaults to StaticAnalyser
      *   analysis: defaults to a new Analysis
      *   processors: defaults to the registered processors in Analysis
-     * @return Swagger
+     * @return OpenApi
      */
-    function scan($directory, $options = array())
+    function scan($directory, $options = [])
     {
         $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser();
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
@@ -44,6 +44,6 @@ if (defined('Swagger\UNDEFINED') === false) {
         $analysis->process($processors);
         // Validation (Generate notices & warnings)
         $analysis->validate();
-        return $analysis->swagger;
+        return $analysis->openapi;
     }
 }

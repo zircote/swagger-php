@@ -3,35 +3,34 @@
 namespace Petstore;
 
 /**
- * @SWG\Definition(definition="NewPet", type="object", required={"name"})
+ * @OA\Schema(schema="NewPet", required={"name"})
  */
 class SimplePet
 {
-
     public $id;
 
     /**
-     * @SWG\Property()
+     * @OA\Property()
      * @var string
      */
     public $name;
 
     /**
      * @var string
-     * @SWG\Property()
+     * @OA\Property()
      */
     public $tag;
 }
 
 /**
- *  @SWG\Definition(
- *   definition="Pet",
+ *  @OA\Schema(
+ *   schema="Pet",
  *   type="object",
  *   allOf={
- *       @SWG\Schema(ref="#/definitions/NewPet"),
- *       @SWG\Schema(
+ *       @OA\Schema(ref="#/components/schemas/NewPet"),
+ *       @OA\Schema(
  *           required={"id"},
- *           @SWG\Property(property="id", format="int64", type="integer")
+ *           @OA\Property(property="id", format="int64", type="integer")
  *       )
  *   }
  * )

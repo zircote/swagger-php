@@ -1,11 +1,9 @@
 language: php
 
 php:
-  - 5.6
   - 7.0
   - 7.1
   - 7.2
-  - hhvm
 
 sudo: false
 
@@ -14,14 +12,10 @@ env:
     - PHPUNIT=1
 
 matrix:
-  fast_finish: true
 
   include:
     - php: 7.2
       env: PHPCS=1 PHPUNIT=0
-
-  allow_failures:
-    - php: hhvm
 
 before_script:
   - composer self-update
