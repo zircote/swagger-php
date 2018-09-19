@@ -15,13 +15,38 @@ class Customer
 {
 
     /**
-     * The firstname of the customer.
+     * The first name of the customer.
      *
      * @var string
-     * @example test_user
+     * @example John
      * @OA\Property()
      */
     public $firstname;
+
+    /**
+     * @var null|string The second name of the customer.
+     * @example Allan
+     * @OA\Property()
+     */
+    public $secondname;
+
+    /**
+     * The third name of the customer.
+     *
+     * @var string|null
+     * @example Peter
+     * @OA\Property()
+     */
+    public $thirdname;
+
+    /**
+     * The unknown name of the customer.
+     *
+     * @var unknown|null
+     * @example Unknown
+     * @OA\Property()
+     */
+    public $fourthname;
 
     /**
      * @var string The lastname of the customer.
