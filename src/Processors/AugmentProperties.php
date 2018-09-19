@@ -113,13 +113,13 @@ class AugmentProperties
         }
     }
 
-    protected function extractType(string $typeString): string
+    protected function extractType(string $typeMatches): string
     {
-        if (strpos($typeString, '|') === false) {
-            return $typeString;
+        if (strpos($typeMatches, '|') === false) {
+            return $typeMatches;
         }
 
-        $types = explode('|', $typeString);
+        $types = explode('|', $typeMatches);
         foreach ($types as $type) {
             $type = trim($type);
             if ($type !== 'null') {
