@@ -65,7 +65,7 @@ class AugmentProperties
             if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
                 if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
-                    $type = $this->exractType($typeMatches[1]);
+                    $type = $this->extractType($typeMatches[1]);
                     if (array_key_exists(strtolower($type), static::$types) === false) {
                         $key = strtolower($context->fullyQualifiedName($type));
                         if ($property->ref === UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
@@ -113,12 +113,7 @@ class AugmentProperties
         }
     }
 
-    /**
-     * @param string $type
-     *
-     * @return string
-     */
-    protected function exractType(string $typeString)
+    protected function extractType(string $typeString): string
     {
         if (strpos($typeString, '|') === false) {
             return $typeString;
@@ -132,6 +127,6 @@ class AugmentProperties
             }
         }
 
-        return 'UNKNOWN';
+        return UNDEFINED;
     }
 }
