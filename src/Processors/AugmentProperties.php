@@ -37,7 +37,7 @@ class AugmentProperties
         'datetimeinterface' => ['string', 'date-time'],
         '\datetimeinterface' => ['string', 'date-time'],
         'number' => 'number',
-        'object' => 'object'
+        'object' => 'object',
     ];
 
     public function __invoke(Analysis $analysis)
@@ -65,8 +65,7 @@ class AugmentProperties
             if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
                 if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
-                    $type = $typeMatches[1];
-
+                    $type = $this->exractType($typeMatches[1]);
                     if (array_key_exists(strtolower($type), static::$types) === false) {
                         $key = strtolower($context->fullyQualifiedName($type));
                         if ($property->ref === UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
@@ -87,8 +86,8 @@ class AugmentProperties
                         if ($property->items === UNDEFINED) {
                             $property->items = new Items(
                                 [
-                                'type' => $property->type,
-                                '_context' => new Context(['generated' => true], $context)
+                                    'type' => $property->type,
+                                    '_context' => new Context(['generated' => true], $context),
                                 ]
                             );
                             if ($property->items->type === UNDEFINED) {
@@ -112,5 +111,27 @@ class AugmentProperties
                 $property->description = $context->phpdocContent();
             }
         }
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    protected function exractType(string $typeString)
+    {
+        if (strpos($typeString, '|') === false) {
+            return $typeString;
+        }
+
+        $types = explode('|', $typeString);
+        foreach ($types as $type) {
+            $type = trim($type);
+            if ($type !== 'null') {
+                return $type;
+            }
+        }
+
+        return 'UNKNOWN';
     }
 }
