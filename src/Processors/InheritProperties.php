@@ -51,7 +51,7 @@ class InheritProperties
                 foreach ($classes as $class) {
                     if ($class['context']->annotations) {
                         foreach ($class['context']->annotations as $annotation) {
-                            if ($annotation instanceof Schema && $annotation->schema) {
+                            if ($annotation instanceof Schema && $annotation->schema !== UNDEFINED) {
                                 $this->addAllOfProperty($schema, $annotation);
 
                                 continue 2;
