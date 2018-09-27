@@ -35,7 +35,7 @@ Use @OA\Schema() instead of @OA\Definition() and update the references from "#/d
 
 ### @SWG\Path is removed
 
-Use @OA\PathItem instead of @OA\Path and update references.
+Use @OA\PathItem instead of @SWG\Path and update references.
 
 ### Consumes, produces field is removed from OpenAPI specification
 
