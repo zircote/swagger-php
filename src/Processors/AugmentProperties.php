@@ -62,7 +62,8 @@ class AugmentProperties
             if ($property->ref !== UNDEFINED) {
                 continue;
             }
-            if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
+            $comment = str_replace("\r\n", "\n", $context->comment);
+            if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
                 if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
                     $type = $this->stripNull($typeMatches[1]);
@@ -103,7 +104,7 @@ class AugmentProperties
                 }
             }
 
-            if ($property->example === UNDEFINED && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $context->comment, $varMatches)) {
+            if ($property->example === UNDEFINED && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
                 $property->example = $varMatches['example'];
             }
 
