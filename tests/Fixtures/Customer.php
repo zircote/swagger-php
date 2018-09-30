@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-
+// phpcs:ignoreFile (this file uses "\r\n" linebreaks on purpose)
 namespace OpenApiFixures;
 
 use Exception;
