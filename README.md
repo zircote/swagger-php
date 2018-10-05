@@ -94,6 +94,7 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 - [OpenApi Documentation](https://swagger.io/docs/)
 - [OpenApi Specification](http://swagger.io/specification/)
 - [Related projects](docs/Related-projects.md)
+- [Official Swagger Slack Channel](https://swagger-php.slack.com/app_redirect?channel=general)
 
 ## Contributing
 
