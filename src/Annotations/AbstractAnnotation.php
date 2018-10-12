@@ -234,7 +234,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      */
     public function toYaml()
     {
-        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, Yaml::DUMP_OBJECT_AS_MAP);
+        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
     }
     
     /**
