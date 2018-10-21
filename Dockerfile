@@ -1,18 +1,20 @@
+## Build local:
 # docker build . -t local/swagger-php
-# docker run --rm -it local/swagger-php sh
 # docker run --rm -it local/swagger-php openapi -h
+# docker run --rm -it local/swagger-php sh
 
 FROM composer as build
 
-COPY . /app
+COPY . /swagger-php
 RUN composer install --no-dev
 
 FROM php:7.1-cli-alpine
 
-COPY ./bin /app/bin
-COPY ./src /app/src
-COPY --from=build /app/vendor /app/vendor
+COPY ./bin /swagger-php/bin
+COPY ./src /swagger-php/src
+COPY --from=build /swagger-php/vendor /swagger-php/vendor
 
-RUN ln -s /app/bin/openapi /bin/openapi
+RUN ln -s /swagger-php/bin/openapi /bin/openapi
 
+RUN mkdir /app
 WORKDIR /app
