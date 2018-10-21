@@ -5,14 +5,14 @@
 
 FROM composer as build
 
-COPY . /swagger-php
+COPY . /app
 RUN composer install --no-dev
 
 FROM php:7.1-cli-alpine
 
 COPY ./bin /swagger-php/bin
 COPY ./src /swagger-php/src
-COPY --from=build /swagger-php/vendor /swagger-php/vendor
+COPY --from=build /app/vendor /swagger-php/vendor
 
 RUN ln -s /swagger-php/bin/openapi /bin/openapi
 
