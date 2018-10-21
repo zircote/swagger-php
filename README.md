@@ -84,7 +84,10 @@ echo $openapi->toJson();
 Generate the swagger documentation to a static json file.
 
 ```
-docker run -v "$PWD":/app -it tico/swagger-php --help
+# Show help
+docker run --rm zircote/swagger-php openapi -h
+# Generate json file
+docker run --rm -v "$PWD:/app" zircote/swagger-php openapi -e vendor -o ./swagger.json app
 ```
 
 ## More on OpenApi & Swagger
