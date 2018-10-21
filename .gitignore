@@ -5,3 +5,6 @@
 /openapi.json
 /openapi.yaml
 /docs/.vuepress/dist
+
+# ide
+.idea
