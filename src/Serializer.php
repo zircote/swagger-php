@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Annotations\AbstractAnnotation;
+
 /**
  * Class AnnotationDeserializer is used to deserialize a json string
  * to a specific Annotation class and vice versa.
@@ -147,7 +149,7 @@ class Serializer
     {
         // property is primitive type
         if (array_key_exists($property, $annotation::$_types)) {
-            return $value;
+            return $this->doDeserializeBaseProperty($annotation::$_types[$property], $value);
         }
         // property is embedded annotation
         foreach ($annotation::$_nested as $class => $declaration) {
@@ -177,6 +179,38 @@ class Serializer
                 return $annotationHash;
             }
         }
+
+        return $value;
+    }
+
+    /**
+     * Deserialize base annotation property
+     *
+     * @param string $type The property type
+     * @param mixed $value The value to deserialization
+     *
+     * @return array|\OpenApi\Annotations\AbstractAnnotation
+     */
+    private function doDeserializeBaseProperty($type, $value)
+    {
+        $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), AbstractAnnotation::class);
+
+        if ($isAnnotationClass) {
+            $isArray = strpos($type, '[') === 0 && substr($type, -1) === ']';
+
+            if ($isArray) {
+                $annotationArr = [];
+                $class = trim($type, '[]');
+
+                foreach ($value as $v) {
+                    $annotationArr[] = $this->doDeserialize($v, $class);
+                }
+                return $annotationArr;
+            }
+
+            return $this->doDeserialize($value, $type);
+        }
+
         return $value;
     }
 }

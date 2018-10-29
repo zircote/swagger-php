@@ -4,6 +4,7 @@ namespace OpenApitests;
 
 use OpenApi\Annotations;
 use OpenApi\Serializer;
+use const OpenApi\UNDEFINED;
 
 class SerializerTest extends OpenApiTestCase
 {
@@ -132,5 +133,52 @@ JSON;
         $openapi = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
         $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $openapi);
         $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json', $openapi);
+    }
+
+
+    /**
+     * Test for correct deserialize schemas 'allOf' property.
+     * @throws \Exception
+     */
+    public function testDeserializeAllOfProperty()
+    {
+        $serializer = new Serializer();
+        $json = <<<JSON
+            {
+            	"openapi": "3.0.0",
+            	"info": {
+            		"title": "Pet store",
+            		"version": "1.0"
+            	},
+            	"components": {
+            		"schemas": {
+            			"Dog": {
+            				"allOf": [{
+            					"\$ref": "#/components/schemas/SomeSchema"
+            				}]
+            			},
+            			"Cat": {
+            				"allOf": [{
+            					"\$ref": "#/components/schemas/SomeSchema"
+            				}]
+            			}
+            		}
+            	}
+            }
+JSON;
+        /* @var $annotation Annotations\OpenApi */
+        $annotation = $serializer->deserialize($json, Annotations\OpenApi::class);
+
+        foreach ($annotation->components->schemas as $schemaObject) {
+            $this->assertObjectHasAttribute('allOf', $schemaObject);
+            $this->assertNotSame($schemaObject->allOf, UNDEFINED);
+            $this->assertInternalType('array', $schemaObject->allOf);
+            $allOfItem = current($schemaObject->allOf);
+            $this->assertInternalType('object', $allOfItem);
+            $this->assertInstanceOf(Annotations\Schema::class, $allOfItem);
+            $this->assertObjectHasAttribute('ref', $allOfItem);
+            $this->assertNotSame($allOfItem->ref, UNDEFINED);
+            $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
+        }
     }
 }

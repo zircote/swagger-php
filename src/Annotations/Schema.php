@@ -344,28 +344,31 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
+        'allOf' => '[' . Schema::class . ']',
+        'oneOf' => '[' . Schema::class . ']',
+        'anyOf' => '[' . Schema::class . ']'
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Discriminator' => 'discriminator',
-        'OpenApi\Annotations\Items' => 'items',
-        'OpenApi\Annotations\Property' => ['properties', 'property'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml',
-        'OpenApi\Annotations\AdditionalProperties' => 'additionalProperties'
+        Discriminator::class         => 'discriminator',
+        Items::class                 => 'items',
+        Property::class              => ['properties', 'property'],
+        ExternalDocumentation::class => 'externalDocs',
+        Xml::class                   => 'xml',
+        AdditionalProperties::class  => 'additionalProperties'
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Parameter',
-        'OpenApi\Annotations\MediaType',
-        'OpenApi\Annotations\Header',
+        Components::class,
+        Parameter::class,
+        MediaType::class,
+        Header::class,
     ];
 
     public function validate($parents = [], $skip = [], $ref = '')

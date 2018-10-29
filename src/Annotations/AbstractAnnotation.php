@@ -54,6 +54,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'required' => 'boolean', // true or false
      *   'tags' => '[string]', // array containing strings
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
+     *   'oneOf' => ['OpenApi\Annotation\Schema'] //array of schema objects
      *
      * @var array
      */
@@ -516,7 +517,16 @@ abstract class AbstractAnnotation implements JsonSerializable
         return '@' . str_replace('OpenApi\\Annotations\\', 'OA\\', get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
-    private function validateType($type, $value)
+    /**
+     * Validates the matching of the property value to a annotation type
+     *
+     * @param string $type  The annotations property type
+     * @param mixed  $value The property value
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    private function validateType($type, $value): bool
     {
         if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type?
             if ($this->validateType('array', $value) === false) {
@@ -530,31 +540,66 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             return true;
         }
-        if ($type === 'string') {
-            return is_string($value);
-        } elseif ($type === 'boolean') {
-            return is_bool($value);
-        } elseif ($type === 'integer') {
-            return is_int($value);
-        } elseif ($type === 'number') {
-            return is_numeric($value);
-        } elseif ($type === 'array') {
-            if (is_array($value) === false) {
+
+        if (is_subclass_of($type, AbstractAnnotation::class)) {
+            $type = 'object';
+        }
+
+        return $this->validateDefaultTypes($type, $value);
+    }
+
+    /**
+     * Validates default Open Api types
+     *
+     * @param string $type The property type
+     * @param mixed $value The value to validate
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    private function validateDefaultTypes($type, $value): bool
+    {
+        switch ($type) {
+            case 'string':
+                return is_string($value);
+            case 'boolean':
+                return is_bool($value);
+            case 'integer':
+                return is_int($value);
+            case 'number':
+                return is_numeric($value);
+            case 'object':
+                return is_object($value);
+            case 'array':
+                return $this->validateArrayType($value);
+            case 'scheme':
+                return in_array($value, ['http', 'https', 'ws', 'wss'], true);
+            default:
+                throw new Exception('Invalid type "' . $type . '"');
+        }
+    }
+
+    /**
+     * Validate array type
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    private function validateArrayType($value): bool
+    {
+        if (is_array($value) === false) {
+            return false;
+        }
+        $count = 0;
+        foreach ($value as $i => $item) {
+            //not a array, but a hash/map
+            if ($count !== $i) {
                 return false;
             }
-            $count = 0;
-            foreach ($value as $i => $item) {
-                if ($count !== $i) { // not a array, but a hash/map
-                    return false;
-                }
-                $count++;
-            }
-            return true;
-        } elseif ($type === 'scheme') {
-            return in_array($value, ['http', 'https', 'ws', 'wss']);
-        } else {
-            throw new Exception('Invalid type "' . $type . '"');
+            $count++;
         }
+        return true;
     }
 
     /**
