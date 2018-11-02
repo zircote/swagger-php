@@ -183,8 +183,8 @@ abstract class Operation extends AbstractAnnotation
         $valid = parent::validate($parents, $skip);
         if ($this->responses !== null) {
             foreach ($this->responses as $response) {
-                if ($response->response !== UNDEFINED &&$response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', (string)$response->response) === 0) {
-                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default" or a HTTP Status Code in ' . $response->_context);
+                if ($response->response !== UNDEFINED &&$response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string)$response->response) === 0) {
+                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
                 }
             }
         }
