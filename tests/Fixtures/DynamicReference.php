@@ -44,6 +44,22 @@ class DynamicReference
      *              )
      *          ),
      *     ),
+     *     @OA\Response(
+     *          response=1XX,
+     *          description="Example Informational response",
+     *     ),
+     *     @OA\Response(
+     *          response=3XX,
+     *          description="Example Redirection response",
+     *     ),
+     *     @OA\Response(
+     *          response=4XX,
+     *          description="Example Client Error response",
+     *     ),
+     *     @OA\Response(
+     *          response=5XX,
+     *          description="Example Server Error response",
+     *     ),
      *     security={{"Bearer":{}}}
      * )
      */

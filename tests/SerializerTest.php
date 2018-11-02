@@ -35,7 +35,12 @@ class SerializerTest extends OpenApiTestCase
         $resp->content = [$content];
         $resp->x = [];
         $resp->x['repository'] = 'def';
-        $path->post->responses = [$resp];
+    
+        $respRange = new Annotations\Response([]);
+        $respRange->response = '4XX';
+        $respRange->description = 'Client error response';
+        
+        $path->post->responses = [$resp, $respRange];
 
         $expected = new Annotations\OpenApi([]);
         $expected->openapi = '3.0.0';
@@ -99,6 +104,9 @@ class SerializerTest extends OpenApiTestCase
 							}
 						},
 						"x-repository": "def"
+					},
+					"4XX": {
+						"description": "Client error response"
 					}
 				}
 			}

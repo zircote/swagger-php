@@ -24,7 +24,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__.'/Fixtures/routes.php');
-        $this->assertCount(18, $analysis->annotations);
+        $this->assertCount(20, $analysis->annotations);
     }
 
     public function testTrait()
