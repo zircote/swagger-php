@@ -194,18 +194,42 @@ class Analysis
             return [];
         }
         $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
-
         return $definitions;
     }
 
+    /**
+     * Returns an array of traits used by the given class or by classes which it extends
+     *
+     * @param string  $class
+     *
+     * @return array
+     */
     public function getTraitsOfClass($class)
     {
         $definitions = [];
+
+        // in case there is a hierarchy of classes
+        $classes = $this->getSuperClasses($class);
+        if (is_array($classes)) {
+            foreach ($classes as $subClass) {
+                if (isset($subClass['traits'])) {
+                    foreach ($subClass['traits'] as $classTrait) {
+                        foreach ($this->traits as $trait) {
+                            if ($classTrait === $trait['trait']) {
+                                $traitDefinition[$trait['trait']] = $trait;
+                                $definitions = array_merge($definitions, $traitDefinition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // trait used by the given class
         $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
         if (!$classDefinition || empty($classDefinition['traits'])) {
             return $definitions;
         }
-
         $classTraits = $classDefinition['traits'];
         foreach ($this->traits as $trait) {
             foreach ($classTraits as $classTrait => $name) {
