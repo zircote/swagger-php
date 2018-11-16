@@ -259,7 +259,7 @@ and will generate the same output.
 
 On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
 
-## Reusing annotations ($ref)
+## Reusing annotations (\$ref)
 
 It's common that multiple requests have some overlap in either the request or the response.
 To keep thing DRY (Don't Repeat Yourself) the specification included referencing other parts of the json using `$ref`s
@@ -298,19 +298,26 @@ Which doesn't do anything by itself but now you can reference this piece by its 
 
 For more tips on refs, browse through the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
 
-In swagger-php you can extend the components by altering specific fields using the `$` in-place of the `#`. But first try to use composition with [allOf](https://swagger.io/specification/#schemaComposition)
+## Composition
+
+You can combine schema's composition with [allOf](https://swagger.io/specification/#schemaComposition)
 
 ```php
-    /**
-     * @OA\Property(
-     *   ref="$/components/schemas/product_id",
-     *   format="int32"
-     * )
-     */
-    public $id;
+/**
+ * @OA\Schema(
+ *   schema="UpdateItem",
+ *   allOf={
+ *     @OA\Schema(ref="#/components/schemas/NewItem"),
+ *     @OA\Schema(
+ *       @OA\Property(property="id", type="integer"),
+ *       @OA\Property(property="created_at", ref="#/components/schemas/BaseModel/properties/createdAt")
+ *     )
+ *   }
+ * )
+ */
 ```
 
-For extensions tips and examples, look at the [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
+More info in the [Inheritance and Polymorphism](https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/) chapter.
 
 ## Vendor extensions
 
