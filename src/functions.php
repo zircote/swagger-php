@@ -23,6 +23,7 @@ if (defined('OpenApi\UNDEFINED') === false) {
      * @param  string|array|Finder $directory The directory(s) or filename(s)
      * @param  array               $options
      *   exclude: string|array $exclude The directory(s) or filename(s) to exclude (as absolute or relative paths)
+     *   pattern: string       $pattern File pattern(s) to scan (default: *.php)
      *   analyser: defaults to StaticAnalyser
      *   analysis: defaults to a new Analysis
      *   processors: defaults to the registered processors in Analysis
@@ -34,9 +35,10 @@ if (defined('OpenApi\UNDEFINED') === false) {
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
         $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
+        $pattern = array_key_exists('pattern', $options) ? $options['pattern'] : null;
 
         // Crawl directory and parse all files
-        $finder = Util::finder($directory, $exclude);
+        $finder = Util::finder($directory, $exclude, $pattern);
         foreach ($finder as $file) {
             $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
         }
