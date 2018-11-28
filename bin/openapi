@@ -14,6 +14,7 @@ $options = [
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
+    'pattern' => '*.php',
     'bootstrap' => false,
     'help' => false,
     'debug' => false,
@@ -22,6 +23,7 @@ $options = [
 $aliases = [
     'o' => 'output',
     'e' => 'exclude',
+    'n' => 'pattern',
     'b' => 'bootstrap',
     'h' => 'help',
     'd' => 'debug',
@@ -32,6 +34,7 @@ $needsArgument = [
     'output',
     'format',
     'exclude',
+    'pattern',
     'bootstrap',
     'processor',
 ];
@@ -103,6 +106,8 @@ Options:
                     ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).
                     ex: --exclude vendor,library/Zend
+  --pattern (-n)    Pattern of files to scan.
+                    ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
                     ex: --bootstrap config/constants.php
   --processor       Register an additional processor.
@@ -210,6 +215,11 @@ if ($options['exclude']) {
     }
 }
 
+$pattern = "*.php";
+if ($options['pattern']) {
+    $pattern = $options['pattern'];
+}
+
 foreach ($options["processor"] as $processor) {
     $class = '\OpenApi\Processors\\'.$processor;
     if (class_exists($class)) {
@@ -220,7 +230,7 @@ foreach ($options["processor"] as $processor) {
     Analysis::registerProcessor($processor);
 }
 
-$openapi = OpenApi\scan($paths, ['exclude' => $exclude]);
+$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'pattern' => $pattern]);
 
 if ($exit !== 0) {
     error_log('');

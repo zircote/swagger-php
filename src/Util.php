@@ -65,9 +65,10 @@ class Util
      *
      * @param  string|array|Finder $directory The directory(s) or filename(s)
      * @param  null|string|array   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
+     * @param  null|string         $pattern   The pattern of the files to scan
      * @throws InvalidArgumentException
      */
-    public static function finder($directory, $exclude = null)
+    public static function finder($directory, $exclude = null, $pattern = null)
     {
         if ($directory instanceof Finder) {
             return $directory;
@@ -75,7 +76,11 @@ class Util
             $finder = new Finder();
             $finder->sortByName();
         }
-        $finder->files()->followLinks()->name('*.php');
+        if ($pattern === null) {
+            $pattern = '*.php';
+        }
+
+        $finder->files()->followLinks()->name($pattern);
         if (is_string($directory)) {
             if (is_file($directory)) { // Scan a single file?
                 $finder->append([$directory]);
