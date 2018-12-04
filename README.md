@@ -4,7 +4,7 @@
 
 # swagger-php
 
-Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using [doctrine annotations](http://doctrine-common.readthedocs.org/en/latest/reference/annotations.html).
+Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using [doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html).
 
 ## Features
 
