@@ -6,33 +6,33 @@
 
 namespace OpenApi;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\DocParser;
 use Exception;
 
-// Load all whitelisted annotations
-AnnotationRegistry::registerLoader(
-    function ($class) {
-        if (Analyser::$whitelist === false) {
-            $whitelist = ['OpenApi\Annotations\\'];
-        } else {
-            $whitelist = Analyser::$whitelist;
-        }
-        foreach ($whitelist as $namespace) {
-            if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-                $loaded = class_exists($class);
-                if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
-                    if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
-                        throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                    }
-                }
-                return $loaded;
+if (class_exists('Doctrine\Common\Annotations\AnnotationRegistry', true)) {
+    // Using doctrine/annotation 1.x
+    // Load all whitelisted annotations
+    \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(
+        function ($class) {
+            if (Analyser::$whitelist === false) {
+                $whitelist = ['OpenApi\Annotations\\'];
+            } else {
+                $whitelist = Analyser::$whitelist;
             }
+            foreach ($whitelist as $namespace) {
+                if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
+                    $loaded = class_exists($class);
+                    if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
+                        if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) { // Detected an 2.x annotation?
+                            throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                        }
+                    }
+                    return $loaded;
+                }
+            }
+            return false;
         }
-        return false;
-    }
-);
-
+    );
+}
 /**
  * Extract swagger-php annotations from a [PHPDoc](http://en.wikipedia.org/wiki/PHPDoc) using Doctrine's DocParser.
  */
@@ -66,7 +66,13 @@ class Analyser
     public function __construct($docParser = null)
     {
         if ($docParser === null) {
-            $docParser = new DocParser();
+            if (class_exists('Doctrine\Annotations\DocParser', true)) {
+                // Using doctrine/annotation 2.x
+                $docParser = new \Doctrine\Annotations\DocParser();
+            } else {
+                // Using doctrine/annotation 1.x
+                $docParser = new \Doctrine\Common\Annotations\DocParser();
+            }
             $docParser->setIgnoreNotImportedAnnotations(true);
             $docParser->setImports(static::$defaultImports);
         }
