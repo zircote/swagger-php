@@ -18,6 +18,17 @@ if (defined('OpenApi\UNDEFINED') === false) {
     define('OpenApi\Processors\UNDEFINED', UNDEFINED);
 
     /**
+     * Determines whether the given string has openapi definitions or not
+     *
+     * @param string $filecontent File content to analyze
+     * @return boolean
+     */
+    function hasOpenApiDefinitions($filecontent)
+    {
+        return strpos($filecontent, '@OA\\') !== false;
+    }
+
+    /**
      * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *
      * @param  string|array|Finder $directory The directory(s) or filename(s)
@@ -40,8 +51,15 @@ if (defined('OpenApi\UNDEFINED') === false) {
         // Crawl directory and parse all files
         $finder = Util::finder($directory, $exclude, $pattern);
         foreach ($finder as $file) {
-            $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
+            $filename = $file->getPathname();
+            $filedata = file_get_contents($filename);
+            if (!hasOpenApiDefinitions($filedata)) {
+                continue;
+            }
+            $context = new Context(['filename' => $filename]);
+            $analysis->addAnalysis($analyser->fromCode($filedata, $context));
         }
+
         // Post processing
         $analysis->process($processors);
         // Validation (Generate notices & warnings)
