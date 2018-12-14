@@ -33,10 +33,12 @@ class MergeXmlContent
                 [
                     'mediaType' => 'application/xml',
                     'schema' => $xmlContent,
+                    'example' => $xmlContent->example,
                     'examples' => $xmlContent->examples,
                     '_context' => new Context(['generated' => true], $xmlContent->_context)
                 ]
             );
+            $xmlContent->example = UNDEFINED;
             $xmlContent->examples = UNDEFINED;
 
             $index = array_search($xmlContent, $response->_unmerged, true);
