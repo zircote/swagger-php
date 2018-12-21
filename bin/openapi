@@ -72,7 +72,6 @@ try {
             } else {
                 $options[$option] = $argv[$i + 1];
             }
-            $i++;
         } else {
             $options[$option] = true;
         }
