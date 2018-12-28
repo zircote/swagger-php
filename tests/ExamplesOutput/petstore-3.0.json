@@ -411,7 +411,6 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
                                     "additionalProperties": {
                                         "type": "integer",
                                         "format": "int32"
@@ -804,6 +803,7 @@
             "Order": {
                 "title": "Order model",
                 "description": "Order model",
+                "type": "object",
                 "properties": {
                     "id": {
                         "title": "ID",
