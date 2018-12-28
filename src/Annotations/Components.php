@@ -89,20 +89,20 @@ class Components extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi'
+        OpenApi::class
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Schema' => ['schemas', 'schema'],
-        'OpenApi\Annotations\Response' => ['responses', 'response'],
-        'OpenApi\Annotations\Parameter' => ['parameters', 'parameter'],
-        'OpenApi\Annotations\RequestBody' => ['requestBodies', 'request'],
-        'OpenApi\Annotations\Examples' => ['examples'],
-        'OpenApi\Annotations\Header' => ['headers', 'header'],
-        'OpenApi\Annotations\SecurityScheme' => ['securitySchemes', 'securityScheme'],
-        'OpenApi\Annotations\Link' => ['links', 'link'],
+        Schema::class => ['schemas', 'schema'],
+        Response::class => ['responses', 'response'],
+        Parameter::class => ['parameters', 'parameter'],
+        RequestBody::class => ['requestBodies', 'request'],
+        Examples::class => ['examples'],
+        Header::class => ['headers', 'header'],
+        SecurityScheme::class => ['securitySchemes', 'securityScheme'],
+        Link::class => ['links', 'link'],
     ];
 }

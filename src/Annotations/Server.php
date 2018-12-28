@@ -42,25 +42,25 @@ class Server extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi',
-        'OpenApi\Annotations\PathItem',
-        'OpenApi\Annotations\Operation',
-        'OpenApi\Annotations\Get',
-        'OpenApi\Annotations\Post',
-        'OpenApi\Annotations\Put',
-        'OpenApi\Annotations\Delete',
-        'OpenApi\Annotations\Patch',
-        'OpenApi\Annotations\Head',
-        'OpenApi\Annotations\Options',
-        'OpenApi\Annotations\Trace',
-        'OpenApi\Annotations\Link',
+        OpenApi::class,
+        PathItem::class,
+        Operation::class,
+        Get::class,
+        Post::class,
+        Put::class,
+        Delete::class,
+        Patch::class,
+        Head::class,
+        Options::class,
+        Trace::class,
+        Link::class,
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\ServerVariable' => ['variables', 'serverVariable'],
+        ServerVariable::class => ['variables', 'serverVariable'],
     ];
 
     /**

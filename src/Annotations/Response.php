@@ -78,24 +78,24 @@ class Response extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
-        'OpenApi\Annotations\Header' => ['headers', 'header'],
-        'OpenApi\Annotations\Link' => ['links', 'link'],
+        MediaType::class => ['content', 'mediaType'],
+        Header::class => ['headers', 'header'],
+        Link::class => ['links', 'link'],
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Operation',
-        'OpenApi\Annotations\Get',
-        'OpenApi\Annotations\Post',
-        'OpenApi\Annotations\Put',
-        'OpenApi\Annotations\Patch',
-        'OpenApi\Annotations\Delete',
-        'OpenApi\Annotations\Head',
-        'OpenApi\Annotations\Options',
-        'OpenApi\Annotations\Trace',
+        Components::class,
+        Operation::class,
+        Get::class,
+        Post::class,
+        Put::class,
+        Patch::class,
+        Delete::class,
+        Head::class,
+        Options::class,
+        Trace::class,
     ];
 }

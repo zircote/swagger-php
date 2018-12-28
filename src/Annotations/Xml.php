@@ -63,12 +63,12 @@ class Xml extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\AdditionalProperties',
-        'OpenApi\Annotations\Schema',
-        'OpenApi\Annotations\Property',
-        'OpenApi\Annotations\Schema',
-        'OpenApi\Annotations\Items',
-        'OpenApi\Annotations\JsonContent',
-        'OpenApi\Annotations\XmlContent',
+        AdditionalProperties::class,
+        Schema::class,
+        Property::class,
+        Schema::class,
+        Items::class,
+        JsonContent::class,
+        XmlContent::class,
     ];
 }

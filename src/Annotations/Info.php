@@ -75,14 +75,14 @@ class Info extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Contact' => 'contact',
-        'OpenApi\Annotations\License' => 'license'
+        Contact::class => 'contact',
+        License::class => 'license'
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi'
+        OpenApi::class
     ];
 }

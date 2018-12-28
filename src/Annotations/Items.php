@@ -18,23 +18,24 @@ class Items extends Schema
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Items' => 'items',
-        'OpenApi\Annotations\Property' => ['properties', 'property'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml',
-        'OpenApi\Annotations\Discriminator' => 'discriminator'
+        Discriminator::class => 'discriminator',
+        Items::class => 'items',
+        Property::class => ['properties', 'property'],
+        ExternalDocumentation::class => 'externalDocs',
+        Xml::class => 'xml',
+        AdditionalProperties::class => 'additionalProperties'
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Property',
-        'OpenApi\Annotations\AdditionalProperties',
-        'OpenApi\Annotations\Schema',
-        'OpenApi\Annotations\JsonContent',
-        'OpenApi\Annotations\XmlContent',
-        'OpenApi\Annotations\Items'
+        Property::class,
+        AdditionalProperties::class,
+        Schema::class,
+        JsonContent::class,
+        XmlContent::class,
+        Items::class
     ];
 
     /**

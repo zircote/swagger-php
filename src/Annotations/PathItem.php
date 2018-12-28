@@ -114,22 +114,22 @@ class PathItem extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Get' => 'get',
-        'OpenApi\Annotations\Post' => 'post',
-        'OpenApi\Annotations\Put' => 'put',
-        'OpenApi\Annotations\Delete' => 'delete',
-        'OpenApi\Annotations\Patch' => 'patch',
-        'OpenApi\Annotations\Trace' => 'trace',
-        'OpenApi\Annotations\Head' => 'head',
-        'OpenApi\Annotations\Options' => 'options',
-        'OpenApi\Annotations\Parameter' => ['parameters'],
-        'OpenApi\Annotations\Server' => ['servers'],
+        Get::class => 'get',
+        Post::class => 'post',
+        Put::class => 'put',
+        Delete::class => 'delete',
+        Patch::class => 'patch',
+        Trace::class => 'trace',
+        Head::class => 'head',
+        Options::class => 'options',
+        Parameter::class => ['parameters'],
+        Server::class => ['servers'],
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi'
+        OpenApi::class
     ];
 }

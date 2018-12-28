@@ -97,7 +97,7 @@ class OpenApiTestCase extends TestCase
                 $assertion($entry, $type);
             } else {
                 $map = [
-                    E_USER_NOTICE  => 'notice',
+                    E_USER_NOTICE => 'notice',
                     E_USER_WARNING => 'warning',
                 ];
                 if (isset($map[$type])) {
@@ -138,10 +138,10 @@ class OpenApiTestCase extends TestCase
     {
         $openapi = new OpenApi(
             [
-            'info'     => new Info(
+            'info' => new Info(
                 [
-                'title'    => 'swagger-php Test-API',
-                'version'  => 'test',
+                'title' => 'swagger-php Test-API',
+                'version' => 'test',
                 '_context' => new Context(['unittest' => true]),
                 ]
             ),
@@ -172,19 +172,19 @@ class OpenApiTestCase extends TestCase
                 'parameters' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-                //                'responses' => function ($a, $b) {
-                //                    return strcasecmp($a->name, $b->name);
-                //                },
-                'headers'    => function ($a, $b) {
+                // 'responses' => function ($a, $b) {
+                //     return strcasecmp($a->name, $b->name);
+                // },
+                'headers' => function ($a, $b) {
                     return strcasecmp($a->header, $b->header);
                 },
-                'tags'       => function ($a, $b) {
+                'tags' => function ($a, $b) {
                     return strcasecmp($a->name, $b->name);
                 },
-                'allOf'      => function ($a, $b) {
+                'allOf' => function ($a, $b) {
                     return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
                 },
-                'security'   => function ($a, $b) {
+                'security' => function ($a, $b) {
                     return strcasecmp(implode(',', array_keys(get_object_vars($a))), implode(',', array_keys(get_object_vars($b))));
                 },
             ];

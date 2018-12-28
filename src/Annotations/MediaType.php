@@ -58,14 +58,14 @@ class MediaType extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Schema' => 'schema',
-        'OpenApi\Annotations\Examples' => ['examples'],
+        Schema::class => 'schema',
+        Examples::class => ['examples'],
     ];
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Response',
-        'OpenApi\Annotations\RequestBody',
+        Response::class,
+        RequestBody::class,
     ];
 }

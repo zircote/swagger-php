@@ -80,14 +80,14 @@ class Link extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Server' => 'server',
+        Server::class => 'server',
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Response'
+        Components::class,
+        Response::class
     ];
 }

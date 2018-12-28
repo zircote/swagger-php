@@ -157,11 +157,11 @@ abstract class Operation extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Parameter' => ['parameters'],
-        'OpenApi\Annotations\Response' => ['responses', 'response'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Server' => ['servers'],
-        'OpenApi\Annotations\RequestBody' => 'requestBody',
+        Parameter::class => ['parameters'],
+        Response::class => ['responses', 'response'],
+        ExternalDocumentation::class => 'externalDocs',
+        Server::class => ['servers'],
+        RequestBody::class => 'requestBody',
     ];
 
     /**

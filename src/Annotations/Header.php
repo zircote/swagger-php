@@ -77,14 +77,14 @@ class Header extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Schema' => 'schema'
+        Schema::class => 'schema'
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Response'
+        Components::class,
+        Response::class
     ];
 }

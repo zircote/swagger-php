@@ -117,11 +117,11 @@ class StaticAnalyser
                     $analysis->addClassDefinition($classDefinition);
                 }
                 $classDefinition = [
-                    'class'      => $token[1],
-                    'extends'    => null,
+                    'class' => $token[1],
+                    'extends' => null,
                     'properties' => [],
-                    'methods'    => [],
-                    'context'    => $schemaContext,
+                    'methods' => [],
+                    'context' => $schemaContext,
                 ];
                 // @todo detect end-of-class and reset $schemaContext
                 $token = $this->nextToken($tokens, $parseContext);
@@ -144,10 +144,10 @@ class StaticAnalyser
                     $analysis->addTraitDefinition($traitDefinition);
                 }
                 $traitDefinition = [
-                    'trait'      => $token[1],
+                    'trait' => $token[1],
                     'properties' => [],
-                    'methods'    => [],
-                    'context'    => $schemaContext,
+                    'methods' => [],
+                    'context' => $schemaContext,
                 ];
                 if ($comment) {
                     $schemaContext->line = $line;
@@ -162,8 +162,8 @@ class StaticAnalyser
                     $propertyContext = new Context(
                         [
                             'property' => substr($token[1], 1),
-                            'static'   => true,
-                            'line'     => $line,
+                            'static' => true,
+                            'line' => $line,
                         ],
                         $schemaContext
                     );
@@ -190,7 +190,7 @@ class StaticAnalyser
                     $propertyContext = new Context(
                         [
                             'property' => substr($token[1], 1),
-                            'line'     => $line,
+                            'line' => $line,
                         ],
                         $schemaContext
                     );
@@ -210,7 +210,7 @@ class StaticAnalyser
                         $methodContext = new Context(
                             [
                                 'method' => $token[1],
-                                'line'   => $line,
+                                'line' => $line,
                             ],
                             $schemaContext
                         );
@@ -233,7 +233,7 @@ class StaticAnalyser
                     $methodContext = new Context(
                         [
                             'method' => $token[1],
-                            'line'   => $line,
+                            'line' => $line,
                         ],
                         $schemaContext
                     );
