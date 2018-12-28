@@ -324,6 +324,27 @@ More info in the [Inheritance and Polymorphism](https://swagger.io/docs/specific
 The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefore all swagger-php annotations have an `x` property which will unfold into "x-" properties.
 
 ```php
+/**
+ * @OA\Info(
+ *   title="Example",
+ *   version=1,
+ *   x={
+ *     "some-name": "a-value",
+ *     "another": 2,
+ *     "complex-type": {
+ *       "supported":{
+ *         {"version": "1.0", "level": "baseapi"},
+ *         {"version": "2.1", "level": "fullapi"},
+ *       }
+ *     }
+ *   }
+ * )
+ */
+```
+
+#### Results in:
+
+```yaml
 openapi: 3.0.0
 info:
   title: Example
@@ -332,30 +353,10 @@ info:
   x-another: 2
   x-complex-type:
     supported:
-      - version: '1.0'
+      - version: "1.0"
         level: baseapi
-      - version: '2.1'
+      - version: "2.1"
         level: fullapi
-```
-
-#### Results in:
-
-```yaml
-"info": {
-  "title": "Example",
-  "version": 1,
-  "x-some-name": "a-value",
-  "x-another": 2,
-  "x-complex-type": {
-    "supported": [{
-      "version": "1.0",
-      "level": "baseapi"
-    }, {
-      "version": "2.1",
-      "level": "fullapi"
-    }]
-  }
-},
 ```
 
 The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
