@@ -8,6 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
+use Swagger\Annotations\Property;
 use Swagger\Context;
 use Swagger\Analysis;
 
@@ -35,7 +36,7 @@ class AugmentProperties
         'datetimeinterface' => ['string', 'date-time'],
         '\datetimeinterface' => ['string', 'date-time'],
         'number' => 'number',
-        'object' => 'object'
+        'object' => 'object',
     ];
 
     public function __invoke(Analysis $analysis)
@@ -48,8 +49,8 @@ class AugmentProperties
             }
         }
         
-        $allProperties = $analysis->getAnnotationsOfType('\Swagger\Annotations\Property');
-        /** @var \Swagger\Annotations\Property $property */
+        $allProperties = $analysis->getAnnotationsOfType(Property::class);
+        /** @var Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
             // Use the property names for @SWG\Property()
@@ -62,7 +63,7 @@ class AugmentProperties
                     $property->description = trim($varMatches['description']);
                 }
                 if ($property->type === null) {
-                    preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
+                    preg_match('/^([^\[]+)(.*$)/', $this->stripNull(trim($varMatches['type'])), $typeMatches);
                     $type = $typeMatches[1];
 
                     if (array_key_exists(strtolower($type), static::$types)) {
@@ -97,5 +98,25 @@ class AugmentProperties
                 $property->description = $context->phpdocContent();
             }
         }
+    }
+
+    /**
+     * @param string $typeDescription
+     *
+     * @return string
+     */
+    protected function stripNull($typeDescription)
+    {
+        if (strpos($typeDescription, '|') === false) {
+            return $typeDescription;
+        }
+        $types = [];
+        foreach (explode('|', $typeDescription) as $type) {
+            if (strtolower($type) === 'null') {
+                continue;
+            }
+            $types[] = $type;
+        }
+        return implode('|', $types);
     }
 }

@@ -22,6 +22,6 @@ class AugmentDefinitionsTest extends SwaggerTestCase
         $this->assertNull($customer->properties, 'Sanity check. @SWG\Property\'s not yet merged ');
         $analysis->process(new AugmentDefinitions());
         $this->assertSame('Customer', $customer->definition, '@SWG\Definition()->definition based on classname');
-        $this->assertCount(5, $customer->properties, '@SWG\Property()s are merged into the @SWG\Definition of the class');
+        $this->assertCount(8, $customer->properties, '@SWG\Property()s are merged into the @SWG\Definition of the class');
     }
 }

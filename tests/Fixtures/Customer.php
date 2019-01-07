@@ -14,12 +14,36 @@ class Customer
 {
     
     /**
-     * The firstname of the customer.
+     * The first name of the customer.
+     *
      * @var string
      * @SWG\Property()
      */
     public $firstname;
-    
+
+    /**
+     * @var null|string The second name of the customer.
+     * @SWG\Property()
+     */
+    public $secondname;
+
+    /**
+     * The third name of the customer.
+     *
+     * @var string|null
+     * @example Peter
+     * @SWG\Property()
+     */
+    public $thirdname;
+
+    /**
+     * The unknown name of the customer.
+     *
+     * @var unknown|null
+     * @SWG\Property()
+     */
+    public $fourthname;
+
     /**
      * @var string The lastname of the customer.
      * @SWG\Property()
@@ -40,7 +64,7 @@ class Customer
     
     /**
      * @SWG\Property()
-     * @var Customer[]
+     * @var Customer[]|null
      */
     public $friends;
 
