@@ -6,6 +6,8 @@
 
 namespace OpenApiTests;
 
+use OpenApi\Logger;
+
 class AbstractAnnotationTest extends OpenApiTestCase
 {
     public function testVendorFields()
@@ -99,5 +101,45 @@ END;
 //        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->maximum is a "string", expecting a "number" in ');
 //        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @OA\Parameter()->in != "body" in ');
         $parameter->validate();
+    }
+
+    public function testSchemaUnknownParameterError()
+    {
+        // substr to look for within error message
+        static $expectedStr = '"\'#/components/schemas/theworld\'"';
+        // value to trigger expected "unknown parameter" error
+        static $badComment = <<<END
+@OA\Schema("#/components/schemas/theworld")
+END;
+        // used to store values seen within logger func
+        $entrySeen = null;
+        $typeSeen = null;
+
+        // store current logger func
+        $oldLog = Logger::getInstance()->log;
+
+        // temporarily override logger func
+        Logger::getInstance()->log = function ($entry, $type) use (&$entrySeen, &$typeSeen) {
+            $entrySeen = $entry;
+            $typeSeen = $type;
+        };
+
+        // attempt to parse
+        $this->parseComment($badComment);
+
+        // immediately restore existing logger func
+        Logger::getInstance()->log = $oldLog;
+
+        // test!
+        $this->assertNotNull($entrySeen, '$entrySeen is null, test is broken');
+        $this->assertNotNull($typeSeen, '$typeSeen is null, test is broken');
+        $this->assertEquals(E_USER_NOTICE, $typeSeen);
+
+        // test for newer phpunit
+        if (method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString($expectedStr, (string)$entrySeen);
+        } else {
+            $this->assertContains($expectedStr, (string)$entrySeen);
+        }
     }
 }

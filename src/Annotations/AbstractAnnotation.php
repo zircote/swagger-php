@@ -13,6 +13,7 @@ use OpenApi\Analyser;
 use OpenApi\Context;
 use OpenApi\Logger;
 use Symfony\Component\Yaml\Yaml;
+use function OpenApi\debugVarOutput;
 
 /**
  * The openapi annotation base class.
@@ -128,7 +129,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             } elseif (is_object($value)) {
                 $this->merge([$value]);
             } else {
-                Logger::notice('Unexpected parameter in ' . $this->identity());
+                Logger::notice('Unexpected parameter in ' . $this->identity() . ' "' . debugVarOutput($value) . '" in ' . $this->_context);
             }
         }
     }
@@ -237,7 +238,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     {
         return Yaml::dump(json_decode($this->toJson(0)), 10, 2, Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
     }
-    
+
     /**
      * Generate the documentation in YAML format.
      *

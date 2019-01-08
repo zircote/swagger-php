@@ -48,4 +48,31 @@ if (defined('OpenApi\UNDEFINED') === false) {
         $analysis->validate();
         return $analysis->openapi;
     }
+
+    /**
+     * Intent of function is to provide descriptive yet exception message safe values for any sort of variable
+     *
+     * @param mixed $in
+     * @return string
+     */
+    function debugVarOutput($in): string
+    {
+        switch ($t = gettype($in)) {
+            case 'NULL':
+            case 'integer':
+            case 'double':
+            case 'string':
+            case 'boolean':
+                return var_export($in, true);
+
+            case 'object':
+                return get_class($in);
+
+            case 'array': // TODO: probably better way to handle arrays..
+                return 'Array(keys:"'.implode('","', array_keys($in)).'")';
+
+            default:
+                return $t;
+        }
+    }
 }
