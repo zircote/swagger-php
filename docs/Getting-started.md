@@ -2,7 +2,7 @@
 
 ## Installation
 
-We recommend adding swagger-php to your project with [Composer](https://getcomposer.org))
+We recommend adding swagger-php to your project with [Composer](https://getcomposer.org)
 
 ```bash
 composer require zircote/swagger-php
@@ -24,7 +24,7 @@ This will scan the php-files in the given folder(s), look for OpenApi annotation
 
 ## CLI
 
-Instead of generating the documentation dynamicly we also provide a command line interface.
+Instead of generating the documentation dynamically we also provide a command line interface.
 This writes the documentation to a static json file.
 
 ```bash
@@ -96,13 +96,13 @@ openapi --bootstrap constants.php
 You shouldn't place all annotations inside one big @OA\OpenApi() annotation block, but scatter them throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @OA\OpenApi annotation.
 
-The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
+The big benefit swagger-php provides is that the documentation lives close to the code implementing the API.
 
 ### Arrays and Objects
 
 Doctrine annotation supports arrays, but uses `{` and `}` instead of `[` and `]`.
 
-And although doctrine also supports objects, which also uses `{` and `}` and requires the property names to be surrounded with `"`.
+Doctrine also supports objects, which also use `{` and `}` and require the property names to be surrounded with `"`.
 
 ::: warning DON'T WRITE
 
@@ -138,11 +138,11 @@ This "works" but most objects have an annotation with the same name as the prope
 
 :::
 
-This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
-For example if you'd write `emial="support@example.com"` swagger-php whould generate a notice with `Unexpected field "emial" for @OA\Contact(), expecting "name", "email", ...`
+This also adds validation, so when you misspell a property or forget a required property, it will trigger a PHP warning.
+For example, if you write `emial="support@example.com"`, swagger-php would generate a notice with `Unexpected field "emial" for @OA\Contact(), expecting "name", "email", ...`
 
 Placing multiple annotations of the same type will result in an array of objects.
-For objects, the key is define by the field with the name as the annotation: `response` in a `@OA\Response`, `property` in a `@OA\Property`, etc.
+For objects, the key is defined by the field with the same name as the annotation: `response` in a `@OA\Response`, `property` in a `@OA\Property`, etc.
 
 ```php
 /**
@@ -257,12 +257,12 @@ But because most API requests and responses are JSON, the `@OA\JsonContent` allo
 During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(`
 and will generate the same output.
 
-On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on th path in operation `@OA\Get`, `@OA\Post`, etc.
+On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on the path in operation `@OA\Get`, `@OA\Post`, etc.
 
 ## Reusing annotations (\$ref)
 
 It's common that multiple requests have some overlap in either the request or the response.
-To keep thing DRY (Don't Repeat Yourself) the specification included referencing other parts of the json using `$ref`s
+To keep things DRY (Don't Repeat Yourself) the specification includes referencing other parts of the JSON using `$ref`s
 
 ```php
 /**
@@ -287,7 +287,7 @@ components:
       format: int64
 ```
 
-Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/components/schemas/product_id`
+This doesn't do anything by itself, but now you can reference this piece by its path in the JSON `#/components/schemas/product_id`
 
 ```php
     /**
@@ -300,7 +300,7 @@ For more tips on refs, browse through the [using-refs example](https://github.co
 
 ## Composition
 
-You can combine schema's composition with [allOf](https://swagger.io/specification/#schemaComposition)
+You can combine model definitions into new schema compositions with [allOf](https://swagger.io/specification/#schemaComposition)
 
 ```php
 /**
@@ -321,7 +321,7 @@ More info in the [Inheritance and Polymorphism](https://swagger.io/docs/specific
 
 ## Vendor extensions
 
-The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefore all swagger-php annotations have an `x` property which will unfold into "x-" properties.
+The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-". Therefore all swagger-php annotations have an `x` property which will unfold into "x-" properties.
 
 ```php
 /**
@@ -363,8 +363,7 @@ The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerg
 
 ## OpenApi
 
-To learn about what you can to generate and which options to use and how?  
-Look at the [docs on swagger.io](https://swagger.io/docs/)
+To learn about what you can generate, which options to use and how, look at the [docs on swagger.io](https://swagger.io/docs/)
 
 It has sections about:
 
