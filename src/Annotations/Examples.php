@@ -51,7 +51,6 @@ class Examples extends AbstractAnnotation
 
     public static $_types = [
         'summary' => 'string',
-        'value' => 'string',
         'description' => 'string',
         'externalValue' => 'string',
     ];
