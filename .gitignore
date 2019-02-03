@@ -5,3 +5,4 @@
 /openapi.json
 /openapi.yaml
 /docs/.vuepress/dist
+.phpunit.result.cache

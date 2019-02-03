@@ -39,7 +39,7 @@ class ItemsTest extends OpenApiTestCase
         $analysis->process();
         $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);
-        $this->assertInternalType('array', $analysis->openapi->components->schemas[0]->properties);
+        $this->assertIsArray($analysis->openapi->components->schemas[0]->properties);
         $this->assertCount(2, $analysis->openapi->components->schemas[0]->properties);
         $this->assertEquals('name', $analysis->openapi->components->schemas[0]->properties[0]->property);
         $this->assertEquals('createdAt', $analysis->openapi->components->schemas[0]->properties[1]->property);

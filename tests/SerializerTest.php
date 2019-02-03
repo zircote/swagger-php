@@ -180,9 +180,9 @@ JSON;
         foreach ($annotation->components->schemas as $schemaObject) {
             $this->assertObjectHasAttribute('allOf', $schemaObject);
             $this->assertNotSame($schemaObject->allOf, UNDEFINED);
-            $this->assertInternalType('array', $schemaObject->allOf);
+            $this->assertIsArray($schemaObject->allOf);
             $allOfItem = current($schemaObject->allOf);
-            $this->assertInternalType('object', $allOfItem);
+            $this->assertIsObject($allOfItem);
             $this->assertInstanceOf(Annotations\Schema::class, $allOfItem);
             $this->assertObjectHasAttribute('ref', $allOfItem);
             $this->assertNotSame($allOfItem->ref, UNDEFINED);

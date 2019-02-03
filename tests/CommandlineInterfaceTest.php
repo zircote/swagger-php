@@ -8,7 +8,7 @@ namespace OpenApiTests;
 
 class CommandlineInterfaceTest extends OpenApiTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }

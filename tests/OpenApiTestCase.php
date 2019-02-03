@@ -87,7 +87,7 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->expectedLogMessages = [];
         $this->originalLogger = Logger::getInstance()->log;
@@ -110,7 +110,7 @@ class OpenApiTestCase extends TestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
