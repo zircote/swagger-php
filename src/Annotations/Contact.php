@@ -48,6 +48,6 @@ class Contact extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Info'
+        Info::class
     ];
 }

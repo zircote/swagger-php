@@ -71,7 +71,7 @@ class ConstantsTest extends OpenApiTestCase
         $backup = Analyser::$defaultImports;
         Analyser::$defaultImports = [
             'contact' => 'OpenApi\Annotations\Contact', // use OpenApi\Annotations\Contact;
-            'ctest'   => 'OpenApiTests\ConstantsTesT' // use OpenApiTests\ConstantsTesT as CTest;
+            'ctest' => 'OpenApiTests\ConstantsTesT' // use OpenApiTests\ConstantsTesT as CTest;
         ];
         $annotations = $this->parseComment('@Contact(url=CTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);

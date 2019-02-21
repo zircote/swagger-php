@@ -51,7 +51,6 @@ class Examples extends AbstractAnnotation
 
     public static $_types = [
         'summary' => 'string',
-        'value' => 'string',
         'description' => 'string',
         'externalValue' => 'string',
     ];
@@ -59,8 +58,8 @@ class Examples extends AbstractAnnotation
     public static $_required = ['summary'];
 
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Parameter',
-        'OpenApi\Annotations\MediaType',
+        Components::class,
+        Parameter::class,
+        MediaType::class,
     ];
 }

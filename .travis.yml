@@ -1,9 +1,8 @@
 language: php
 
 php:
-  - 7.0
-  - 7.1
   - 7.2
+  - 7.3
 
 sudo: false
 
@@ -12,9 +11,8 @@ env:
     - PHPUNIT=1
 
 matrix:
-
   include:
-    - php: 7.2
+    - php: 7.3
       env: PHPCS=1 PHPUNIT=0
 
 before_script:

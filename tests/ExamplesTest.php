@@ -34,6 +34,7 @@ class ExamplesTest extends OpenApiTestCase
             ['misc', 'misc.json'],
             ['openapi-spec', 'openapi-spec.json'],
             ['petstore.swagger.io', 'petstore.swagger.io.json'],
+            ['petstore-3.0', 'petstore-3.0.json'],
             ['swagger-spec/petstore', 'petstore.json'],
             ['swagger-spec/petstore-simple', 'petstore-simple.json'],
             ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],

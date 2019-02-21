@@ -66,16 +66,16 @@ class Flow extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_types = [
-        'flow'             => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
-        'refreshUrl'       => 'string',
+        'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
+        'refreshUrl' => 'string',
         'authorizationUrl' => 'string',
-        'tokenUrl'         => 'string',
+        'tokenUrl' => 'string',
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\SecurityScheme',
+        SecurityScheme::class,
     ];
 }

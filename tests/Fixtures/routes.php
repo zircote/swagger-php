@@ -40,7 +40,9 @@
     * 	)
     * @OA\Options(
     * path="/users/{id}",
-    * @OA\Response(response=200,description="Some CORS stuff")
+    * @OA\Response(response=200,description="Some CORS stuff"),
+    * @OA\Response(response="4XX",description="Some Client Error response"),
+    * @OA\Response(response="5XX",description="Some Server Error response")
     * )
     */
    Route::put('/users/{user_id}', 'UserController@update');

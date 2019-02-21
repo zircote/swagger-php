@@ -94,7 +94,7 @@ class SecurityScheme extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_types = [
-        'type'        => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
+        'type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
         'description' => 'string',
         'name' => 'string',
         'bearerFormat' => 'string',
@@ -105,14 +105,14 @@ class SecurityScheme extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Flow' => ['flows', 'flow'],
+        Flow::class => ['flows', 'flow'],
     ];
 
     /**
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Components',
+        Components::class,
     ];
 
     /**

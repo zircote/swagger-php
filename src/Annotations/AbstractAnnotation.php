@@ -54,7 +54,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'required' => 'boolean', // true or false
      *   'tags' => '[string]', // array containing strings
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
-     *   'oneOf' => ['OpenApi\Annotation\Schema'] //array of schema objects
+     *   'oneOf' => [Schema::class] // array of schema objects
      *
      * @var array
      */
@@ -63,9 +63,9 @@ abstract class AbstractAnnotation implements JsonSerializable
     /**
      * Declarative mapping of Annotation types to properties.
      * Examples:
-     *   'OpenApi\Annotation\Info' => 'info', // Set @OA\Info annotation as the info property.
-     *   'OpenApi\Annotation\Parameter' => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
-     *   'OpenApi\Annotation\PathItem' => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
+     *   Info::clas => 'info', // Set @OA\Info annotation as the info property.
+     *   Parameter::clas => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
+     *   PathItem::clas => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
      *
      * @var array
      */

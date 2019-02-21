@@ -28,9 +28,11 @@ class XmlContent extends Schema
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Items' => 'items',
-        'OpenApi\Annotations\Property' => ['properties', 'property'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Xml' => 'xml',
+        Discriminator::class => 'discriminator',
+        Items::class => 'items',
+        Property::class => ['properties', 'property'],
+        ExternalDocumentation::class => 'externalDocs',
+        Xml::class => 'xml',
+        AdditionalProperties::class => 'additionalProperties'
     ];
 }

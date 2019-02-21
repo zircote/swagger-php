@@ -6,4 +6,4 @@
 /openapi.yaml
 /docs/.vuepress/dist
 .idea
-
+.phpunit.result.cache

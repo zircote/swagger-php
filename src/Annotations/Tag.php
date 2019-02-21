@@ -51,13 +51,13 @@ class Tag extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\OpenApi'
+        OpenApi::class
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs'
+        ExternalDocumentation::class => 'externalDocs'
     ];
 }

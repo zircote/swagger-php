@@ -20,6 +20,6 @@ class Delete extends Operation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\PathItem'
+        PathItem::class
     ];
 }

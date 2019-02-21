@@ -55,7 +55,7 @@ class ServerVariable extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
-        'OpenApi\Annotations\Server'
+        Server::class
     ];
 
     /**

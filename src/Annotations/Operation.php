@@ -157,11 +157,11 @@ abstract class Operation extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Parameter' => ['parameters'],
-        'OpenApi\Annotations\Response' => ['responses', 'response'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
-        'OpenApi\Annotations\Server' => ['servers'],
-        'OpenApi\Annotations\RequestBody' => 'requestBody',
+        Parameter::class => ['parameters'],
+        Response::class => ['responses', 'response'],
+        ExternalDocumentation::class => 'externalDocs',
+        Server::class => ['servers'],
+        RequestBody::class => 'requestBody',
     ];
 
     /**
@@ -183,8 +183,8 @@ abstract class Operation extends AbstractAnnotation
         $valid = parent::validate($parents, $skip);
         if ($this->responses !== null) {
             foreach ($this->responses as $response) {
-                if ($response->response !== UNDEFINED &&$response->response !== 'default' && preg_match('/^[12345]{1}[0-9]{2}$/', (string)$response->response) === 0) {
-                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default" or a HTTP Status Code in ' . $response->_context);
+                if ($response->response !== UNDEFINED &&$response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string)$response->response) === 0) {
+                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
                 }
             }
         }

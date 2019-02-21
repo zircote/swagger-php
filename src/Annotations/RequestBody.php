@@ -56,27 +56,27 @@ class RequestBody extends AbstractAnnotation
      */
     public static $_types = [
         'description' => 'string',
-        'required'    => 'boolean',
-        'request'     => 'string',
+        'required' => 'boolean',
+        'request' => 'string',
     ];
 
     public static $_parents = [
-        'OpenApi\Annotations\Components',
-        'OpenApi\Annotations\Delete',
-        'OpenApi\Annotations\Get',
-        'OpenApi\Annotations\Head',
-        'OpenApi\Annotations\Operation',
-        'OpenApi\Annotations\Options',
-        'OpenApi\Annotations\Patch',
-        'OpenApi\Annotations\Post',
-        'OpenApi\Annotations\Trace',
-        'OpenApi\Annotations\Put',
+        Components::class,
+        Delete::class,
+        Get::class,
+        Head::class,
+        Operation::class,
+        Options::class,
+        Patch::class,
+        Post::class,
+        Trace::class,
+        Put::class,
     ];
 
     /**
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\MediaType' => ['content', 'mediaType'],
+        MediaType::class => ['content', 'mediaType'],
     ];
 }

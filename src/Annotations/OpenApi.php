@@ -110,12 +110,12 @@ class OpenApi extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        'OpenApi\Annotations\Info' => 'info',
-        'OpenApi\Annotations\Server' => ['servers'],
-        'OpenApi\Annotations\PathItem' => ['paths', 'path'],
-        'OpenApi\Annotations\Components' => 'components',
-        'OpenApi\Annotations\Tag' => ['tags'],
-        'OpenApi\Annotations\ExternalDocumentation' => 'externalDocs',
+        Info::class => 'info',
+        Server::class => ['servers'],
+        PathItem::class => ['paths', 'path'],
+        Components::class => 'components',
+        Tag::class => ['tags'],
+        ExternalDocumentation::class => 'externalDocs',
     ];
 
     /**
