@@ -88,7 +88,7 @@ class SecurityScheme extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public static $_required = ['securityScheme', 'type'];
+    public static $_required = ['scheme', 'type'];
 
     /**
      * @inheritdoc
