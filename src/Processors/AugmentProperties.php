@@ -66,11 +66,22 @@ class AugmentProperties
             if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
                 if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
+                    $isNullable = $this->isNullable($typeMatches[1]);
                     $type = $this->stripNull($typeMatches[1]);
                     if (array_key_exists(strtolower($type), static::$types) === false) {
                         $key = strtolower($context->fullyQualifiedName($type));
                         if ($property->ref === UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
-                            $property->ref = $refs[$key];
+                            if ($isNullable) {
+                                $property->allOf = [
+                                    new Schema([
+                                        '_context' => $property->_context,
+                                        'ref' => $refs[$key]
+                                    ])
+                                ];
+                                $property->nullable = true;
+                            } else {
+                                $property->ref = $refs[$key];
+                            }
                             continue;
                         }
                     } else {
@@ -112,6 +123,11 @@ class AugmentProperties
                 $property->description = $context->phpdocContent();
             }
         }
+    }
+
+    protected function isNullable(string $typeDescription) : bool
+    {
+        return in_array('null', explode('|', strtolower($typeDescription)));
     }
 
     protected function stripNull(string $typeDescription): string
