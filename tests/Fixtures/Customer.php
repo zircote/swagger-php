@@ -73,6 +73,12 @@ class Customer
     public $friends;
 
     /**
+     * @OA\Property()
+     * @var Customer|null
+     */
+    public $bestFriend;
+
+    /**
      * for ContextTest
      */
     public function testResolvingFullyQualifiedNames()
