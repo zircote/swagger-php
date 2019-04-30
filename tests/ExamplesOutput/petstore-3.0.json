@@ -489,12 +489,12 @@
                     "200": {
                         "description": "successful operation",
                         "content": {
-                            "application/json": {
+                            "application/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Order"
                                 }
                             },
-                            "application/xml": {
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Order"
                                 }
@@ -628,12 +628,12 @@
                             }
                         },
                         "content": {
-                            "application/json": {
+                            "application/xml": {
                                 "schema": {
                                     "type": "string"
                                 }
                             },
-                            "application/xml": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -678,12 +678,12 @@
                     "200": {
                         "description": "successful operation",
                         "content": {
-                            "application/json": {
+                            "application/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/User"
                                 }
                             },
-                            "application/xml": {
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/User"
                                 }
@@ -803,7 +803,6 @@
             "Order": {
                 "title": "Order model",
                 "description": "Order model",
-                "type": "object",
                 "properties": {
                     "id": {
                         "title": "ID",
@@ -827,14 +826,14 @@
                         "default": 12
                     },
                     "shipDate": {
-                        "title": "Pet ID",
+                        "title": "Shipping date",
                         "description": "Shipping date",
                         "type": "string",
                         "format": "datetime",
                         "default": "2017-02-02 18:31:45"
                     },
                     "status": {
-                        "title": "Pet ID",
+                        "title": "Order status",
                         "description": "Order status",
                         "type": "string",
                         "default": "placed",
@@ -851,7 +850,8 @@
                         "format": "int64",
                         "default": "false"
                     }
-                }
+                },
+                "type": "object"
             },
             "Pet": {
                 "title": "Pet model",
@@ -989,12 +989,12 @@
                 "description": "Pet object that needs to be added to the store",
                 "required": true,
                 "content": {
-                    "application/json": {
+                    "application/xml": {
                         "schema": {
                             "$ref": "#/components/schemas/Pet"
                         }
                     },
-                    "application/xml": {
+                    "application/json": {
                         "schema": {
                             "$ref": "#/components/schemas/Pet"
                         }
