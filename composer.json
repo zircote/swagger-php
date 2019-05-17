@@ -1,7 +1,7 @@
 {
     "name": "zircote/swagger-php",
     "type": "library",
-    "license": "Apache2",
+    "license": "Apache-2.0",
     "bin": ["bin/swagger"],
     "description": "Swagger-PHP - Generate interactive documentation for your RESTful API using phpdoc annotations",
     "keywords": ["json", "rest", "api", "service discovery"],
