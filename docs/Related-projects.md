@@ -14,6 +14,7 @@ sidebar: false
 | [NelmioApiDocBundle][6] | Symfony bundle on top of swagger-php                      |
 | [auto-swagger-ui][7]    | Automatically add swagger ui and json to your application |
 | [openapi-router][8]     | Configure framework routes from OpenApi annotations       |
+| [openapi-verifier][9]   | Verify response against OpenAPI specification in PHPUnit  |
 
 Is a related project missing? Create a pull request!
 
@@ -25,3 +26,4 @@ Is a related project missing? Create a pull request!
 [6]: https://github.com/nelmio/NelmioApiDocBundle
 [7]: https://github.com/kevupton/auto-swagger-ui
 [8]: https://github.com/DerManoMann/openapi-router
+[9]: https://github.com/DerManoMann/openapi-verifier
