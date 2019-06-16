@@ -227,6 +227,21 @@ components:
 
 ### Shortcuts
 
+#### Anotation namespace
+
+Instead of writing the <abbr title="Full Qualified Class Name">FQCN</abbr>: `@OpenApi\Annotations\Response()` you can write the shorter `@OA\Response()` instead.
+
+This works because doctrine picks up on the use statements like:
+
+```php
+use OpenApi\Annotations as OA;
+```
+
+And swagger-php injects this namespace alias, even when it's not in the php file.  
+But if your editor supports doctrine annotation completion, you still need to add the namespace alias otherwise it can't find the annotation classes for autocompletion.
+
+#### Json or Xml
+
 The `@OA\MediaType` is used to describe the content:
 
 ```php
@@ -259,7 +274,7 @@ and will generate the same output.
 
 On a similar note, you generally don't have to write a `@OA\PathItem` because this annotation will be generated based on the path in operation `@OA\Get`, `@OA\Post`, etc.
 
-## Reusing annotations (\$ref)
+## Reusing annotations (ref)
 
 It's common that multiple requests have some overlap in either the request or the response.
 To keep things DRY (Don't Repeat Yourself) the specification includes referencing other parts of the JSON using `$ref`s
