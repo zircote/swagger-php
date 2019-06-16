@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare (strict_types = 1);
 
 /**
  * @license Apache 2.0
@@ -233,11 +233,14 @@ abstract class AbstractAnnotation implements JsonSerializable
      *
      * @return string
      */
-    public function toYaml()
+    public function toYaml($flags = null)
     {
-        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
+        if ($flags === null) {
+            $flags = Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
+        }
+        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, $flags);
     }
-    
+
     /**
      * Generate the documentation in YAML format.
      *
@@ -400,7 +403,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 try {
                     $parents[0]->ref($this->ref);
                 } catch (Exception $exception) {
-                    Logger::notice($exception->getMessage().' for '.$this->identity().' in '.$this->_context);
+                    Logger::notice($exception->getMessage() . ' for ' . $this->identity() . ' in ' . $this->_context);
                 }
             }
         } else {
@@ -472,7 +475,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
             }
-            $ref = $baseRef !== '' ? $baseRef.'/'.urlencode((string)$field) : urlencode((string)$field);
+            $ref = $baseRef !== '' ? $baseRef . '/' . urlencode((string)$field) : urlencode((string)$field);
             if (is_object($value)) {
                 if (method_exists($value, 'validate')) {
                     if (!$value->validate($parents, $skip, $ref)) {
