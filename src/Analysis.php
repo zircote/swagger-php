@@ -333,7 +333,7 @@ class Analysis
         $result->merged = $this->merged();
         $result->unmerged = new Analysis();
         foreach ($this->annotations as $annotation) {
-            if ($result->merged->annotations->contains($annotation) === false) {
+            if ($annotation instanceof OpenApi === false && $result->merged->annotations->contains($annotation) === false) {
                 $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
             }
         }
