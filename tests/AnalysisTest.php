@@ -7,6 +7,8 @@
 namespace OpenApiTests;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\RequestBody;
 use OpenApi\StaticAnalyser;
 
 class AnalysisTest extends OpenApiTestCase
@@ -26,6 +28,20 @@ class AnalysisTest extends OpenApiTestCase
         Analysis::unregisterProcessor($countProcessor);
         $analysis->process();
         $this->assertSame(1, $counter);
+    }
+
+    public function testMergedReturnsMergedOnlyAnalysis()
+    {
+        $originalAnalysis = new Analysis();
+        $originalUnmerged = [new RequestBody([])];
+        $originalOpenApi = new OpenApi([]);
+        $originalAnalysis->openapi = $originalOpenApi;
+        $originalAnalysis->openapi->_unmerged = $originalUnmerged;
+
+        $mergedAnalysis = $originalAnalysis->merged();
+
+        $this->assertNotSame($mergedAnalysis->openapi, $originalAnalysis->openapi);
+        $this->assertEmpty($mergedAnalysis->openapi->_unmerged);
     }
 
     public function testGetSubclasses()
