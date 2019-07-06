@@ -304,12 +304,11 @@ class Analysis
         if (!$this->openapi) {
             throw new Exception('No openapi target set. Run the MergeIntoOpenApi processor');
         }
-        $unmerged = $this->openapi->_unmerged;
-        $this->openapi->_unmerged = [];
-        $analysis = new Analysis([$this->openapi]);
-        $this->openapi->_unmerged = $unmerged;
 
-        return $analysis;
+        $openApi = clone $this->openapi;
+        $openApi->_unmerged = [];
+
+        return new Analysis([$openApi]);
     }
 
     /**
