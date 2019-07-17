@@ -137,9 +137,20 @@ class Serializer
      */
     private function doDeserializeProperty(Annotations\AbstractAnnotation $annotation, $property, $value)
     {
+        // merge with parent types
+        $types = [];
+        $class = get_class($annotation);
+        while ($class && $class !== Annotations\AbstractAnnotation::class) {
+            if (!empty($class::$_types)) {
+                $types = array_merge($class::$_types, $types);
+            }
+
+            $class = get_parent_class($class);
+        }
+
         // property is primitive type
-        if (array_key_exists($property, $annotation::$_types)) {
-            return $value;
+        if (array_key_exists($property, $types)) {
+            return $this->doDeserializeBaseProperty($types[$property], $value);
         }
         // property is embedded annotation
         foreach ($annotation::$_nested as $class => $declaration) {
@@ -169,6 +180,38 @@ class Serializer
                 return $annotationHash;
             }
         }
+        return $value;
+    }
+
+    /**
+     * Deserialize base annotation property
+     *
+     * @param string $type The property type
+     * @param mixed $value The value to deserialization
+     *
+     * @return mixed
+     */
+    private function doDeserializeBaseProperty($type, $value)
+    {
+        $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), 'Swagger\Annotations\AbstractAnnotation');
+
+        if ($isAnnotationClass) {
+            $isArray = strpos($type, '[') === 0 && substr($type, -1) === ']';
+
+            if ($isArray) {
+                $annotationArr = [];
+                $class = trim($type, '[]');
+
+                foreach ($value as $v) {
+                    $annotationArr[] = $this->doDeserialize($v, $class);
+                }
+
+                return $annotationArr;
+            }
+
+            return $this->doDeserialize($value, $type);
+        }
+
         return $value;
     }
 }

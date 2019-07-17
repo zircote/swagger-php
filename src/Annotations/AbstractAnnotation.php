@@ -49,7 +49,8 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'name' => 'string' // a string
      *   'required' => 'boolean', // true or false
      *   'tags' => '[string]', // array containing strings
-     *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
+     *   'in' => ["query", "header", "path", "formData", "body"], // must be one on these
+     *   'allOf' => ['Annotation\Schema'] //array of schema objects
      * @var array
      */
     public static $_types = [];
@@ -479,6 +480,15 @@ abstract class AbstractAnnotation implements JsonSerializable
         return '@' . str_replace('Swagger\\Annotations\\', 'SWG\\', get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
+    /**
+     * Validates the matching of the property value to a annotation type
+     *
+     * @param string $type  The annotations property type
+     * @param mixed  $value The property value
+     *
+     * @return bool
+     * @throws \Exception
+     */
     private function validateType($type, $value)
     {
         if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type?
@@ -493,6 +503,11 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             return true;
         }
+
+        if (is_subclass_of($type, AbstractAnnotation::class)) {
+            $type = 'object';
+        }
+
         switch ($type) {
             case 'string':
                 return is_string($value);
@@ -505,6 +520,9 @@ abstract class AbstractAnnotation implements JsonSerializable
 
             case 'number':
                 return is_numeric($value);
+
+            case 'object':
+                return is_object($value);
 
             case 'array':
                 if (is_array($value) === false) {

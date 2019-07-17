@@ -221,6 +221,7 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
+        'allOf' => '[' . Schema::class . ']',
     ];
 
     /** @inheritdoc */

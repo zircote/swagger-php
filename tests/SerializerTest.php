@@ -119,4 +119,49 @@ JSON;
         $this->assertInstanceOf('Swagger\Annotations\Swagger', $swagger);
         $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $swagger);
     }
+
+    /**
+     * Test for correct deserialize schemas 'allOf' property.
+     * @throws \Exception
+     */
+    public function testDeserializeAllOfProperty()
+    {
+        $serializer = new Serializer();
+        $json = <<<JSON
+{
+  "swagger": "2.0",
+  "definitions": {
+   "Pet": {
+     "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ]
+    },
+    "Dog": {
+      "type": "object",
+      "allOf": [{
+        "\$ref": "#/definitions/Pet"
+                
+      }, {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }]
+    }
+  }
+}
+JSON;
+
+        /** @var Annotations\Swagger $swagger */
+        $swagger = $serializer->deserialize($json, 'Swagger\Annotations\Swagger');
+
+        $this->assertNotEmpty($swagger->definitions['Dog']->allOf);
+
+        foreach ($swagger->definitions['Dog']->allOf as $schemaObject) {
+            $this->assertInstanceOf(Annotations\Schema::class, $schemaObject);
+        }
+    }
 }
