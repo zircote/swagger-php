@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\HasCustomDeserialization;
 
 /**
  * Class AnnotationDeserializer is used to deserialize a json string
@@ -43,6 +44,8 @@ class Serializer
     const XML = 'OpenApi\Annotations\Xml';
 
     private static $cachedNames;
+
+    private static $cacheHasCustomDeserialization;
 
     private static function getDefinedNames()
     {
@@ -82,6 +85,7 @@ class Serializer
      */
     public function deserialize($jsonString, $className)
     {
+        static::$cacheHasCustomDeserialization = [];
         if (!$this->isValidClassName($className)) {
             throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
         }
@@ -155,6 +159,10 @@ class Serializer
         foreach ($annotation::$_nested as $class => $declaration) {
             // property is an annotation
             if (is_string($declaration) && $declaration === $property) {
+                if ($this->hasCustomDeserialization($class) && $class::shouldApplyCustomDeserialization($value)) {
+                    return $class::applyCustomDeserialization($value);
+                }
+
                 return $this->doDeserialize($value, $class);
             }
 
@@ -213,4 +221,20 @@ class Serializer
 
         return $value;
     }
+
+    /**
+     * @param $class
+     *
+     * @return bool
+     */
+    private function hasCustomDeserialization($class): bool
+    {
+        if (false === array_key_exists($class, static::$cacheHasCustomDeserialization)) {
+            $implementsInterfaces = class_implements($class);
+
+            static::$cacheHasCustomDeserialization[$class] = in_array(HasCustomDeserialization::class, $implementsInterfaces);
+        }
+
+        return static::$cacheHasCustomDeserialization[$class];
+}
 }

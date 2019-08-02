@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApitests;
+namespace OpenApiTests;
 
 use OpenApi\Annotations;
 use OpenApi\Serializer;
@@ -21,6 +21,7 @@ class SerializerTest extends OpenApiTestCase
         $mediaType->mediaType = 'application/json';
         $mediaType->schema = new Annotations\Schema([]);
         $mediaType->schema->type = 'object';
+        $mediaType->schema->additionalProperties = true;
         $path->post->requestBody->content = [$mediaType];
         $path->post->requestBody->description = 'data in body';
         $path->post->requestBody->x = [];
@@ -88,7 +89,8 @@ class SerializerTest extends OpenApiTestCase
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object"
+								"type": "object",
+								"additionalProperties": true
 							}
 						}
 					},
@@ -126,6 +128,7 @@ class SerializerTest extends OpenApiTestCase
 }
 JSON;
 
+        /** @var Annotations\OpenApi $annotation */
         $annotation = $serializer->deserialize($json, 'OpenApi\Annotations\OpenApi');
 
         $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $annotation);
@@ -133,6 +136,9 @@ JSON;
             $annotation->toJson(),
             $this->getExpected()->toJson()
         );
+
+        $schema = $annotation->paths['/products']->post->requestBody->content['application/json']->schema;
+        $this->assertTrue($schema->additionalProperties);
     }
 
     public function testPetstoreExample()

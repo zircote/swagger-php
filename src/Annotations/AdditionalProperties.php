@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 /**
  * @Annotation
  */
-class AdditionalProperties extends Schema
+class AdditionalProperties extends Schema implements HasCustomDeserialization
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class AdditionalProperties extends Schema
         Property::class,
         Items::class,
         JsonContent::class,
-        XmlContent::class
+        XmlContent::class,
     ];
 
     /**
@@ -32,4 +32,14 @@ class AdditionalProperties extends Schema
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
     ];
+
+    public static function shouldApplyCustomDeserialization($value): bool
+    {
+        return is_bool($value);
+    }
+
+    public static function applyCustomDeserialization($value)
+    {
+        return $value;
+    }
 }
