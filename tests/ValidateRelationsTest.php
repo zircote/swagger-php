@@ -69,6 +69,9 @@ class ValidateRelationsTest extends OpenApiTestCase
             if ($entry->getFilename() === 'AbstractAnnotation.php') {
                 continue;
             }
+            if ($entry->getFilename() === 'HasCustomDeserialization.php') {
+                continue;
+            }
             if ($entry->getExtension() === 'php') {
                 $classes[] = ['OpenApi\Annotations\\'.substr($entry->getFilename(), 0, -4)];
             }
