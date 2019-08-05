@@ -236,5 +236,5 @@ class Serializer
         }
 
         return static::$cacheHasCustomDeserialization[$class];
-}
+    }
 }
