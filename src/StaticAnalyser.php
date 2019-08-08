@@ -111,6 +111,11 @@ class StaticAnalyser
                     // php7 anonymous classes (i.e. new class() { public function foo() {} };)
                     continue;
                 }
+                
+                if (is_array($token) && ($token[1] === 'extends' || $token[1] === 'implements')) {
+                    // php7 anonymous classes with extends (i.e. new class() extends { public function foo() {} };)
+                    continue;
+                }
 
                 $schemaContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
