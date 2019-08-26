@@ -109,6 +109,9 @@ class AugmentProperties
                         }
                         $property->type = 'array';
                     }
+                    if ($isNullable) {
+                        $property->nullable = true;
+                    }
                 }
                 if ($property->description === UNDEFINED && isset($varMatches['description'])) {
                     $property->description = trim($varMatches['description']);

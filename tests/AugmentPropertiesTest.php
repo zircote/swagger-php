@@ -23,6 +23,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
     const KEY_EXAMPLE = 'example';
     const KEY_DESCRIPTION = 'description';
     const KEY_TYPE = 'type';
+    const KEY_NULLABLE = 'nullable';
 
     public function testAugmentProperties()
     {
@@ -80,6 +81,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_EXAMPLE => 'Allan',
             self::KEY_DESCRIPTION => 'The second name of the customer.',
             self::KEY_TYPE => 'string',
+            self::KEY_NULLABLE => true,
         ];
         $this->assertName($secondName, $expectedValues);
 
@@ -87,7 +89,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_PROPERTY => 'thirdname',
             self::KEY_EXAMPLE => 'Peter',
             self::KEY_DESCRIPTION => 'The third name of the customer.',
-            'type' => 'string',
+            self::KEY_TYPE => 'string',
+            self::KEY_NULLABLE => true,
         ];
         $this->assertName($thirdName, $expectedValues);
 
@@ -96,6 +99,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_EXAMPLE => 'Unknown',
             self::KEY_DESCRIPTION => 'The unknown name of the customer.',
             self::KEY_TYPE => '@OA\UNDEFINED🙈',
+            self::KEY_NULLABLE => true,
         ];
         $this->assertName($fourthName, $expectedValues);
 
