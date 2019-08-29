@@ -79,6 +79,7 @@ class StaticAnalyser
         $parseContext->uses = [];
         $schemaContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
         $classDefinition = false;
+        $interfaceDefinition = false;
         $traitDefinition = false;
         $comment = false;
         $line = 0;
@@ -128,6 +129,33 @@ class StaticAnalyser
                 if ($token[0] === T_EXTENDS) {
                     $schemaContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
                     $classDefinition['extends'] = $schemaContext->fullyQualifiedName($schemaContext->extends);
+                }
+                if ($comment) {
+                    $schemaContext->line = $line;
+                    $this->analyseComment($analysis, $analyser, $comment, $schemaContext);
+                    $comment = false;
+                    continue;
+                }
+            }
+            if ($token[0] === T_INTERFACE) { // Doc-comment before an interface?
+                $classDefinition = false;
+                $token = $this->nextToken($tokens, $parseContext);
+                $schemaContext = new Context(['interface' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($interfaceDefinition) {
+                    $analysis->addInterfaceDefinition($interfaceDefinition);
+                }
+                $interfaceDefinition = [
+                    'class' => $token[1],
+                    'extends' => null,
+                    'properties' => [],
+                    'methods' => [],
+                    'context' => $schemaContext,
+                ];
+                // @todo detect end-of-class and reset $schemaContext
+                $token = $this->nextToken($tokens, $parseContext);
+                if ($token[0] === T_EXTENDS) {
+                    $schemaContext->extends = $this->parseNamespace($tokens, $token, $parseContext);
+                    $interfaceDefinition['extends'] = $schemaContext->fullyQualifiedName($schemaContext->extends);
                 }
                 if ($comment) {
                     $schemaContext->line = $line;

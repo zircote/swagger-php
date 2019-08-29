@@ -33,6 +33,7 @@ namespace OpenApi;
  * @property string                           $property
  * @property string                           $type
  * @property string                           $trait
+ * @property string                           $interface
  * @property Annotations\AbstractAnnotation[] $annotations
  */
 class Context

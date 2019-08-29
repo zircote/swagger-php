@@ -24,6 +24,8 @@ class AugmentSchemas
             if ($schema->schema === UNDEFINED) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
+                } elseif ($schema->_context->is('interface')) {
+                    $schema->schema = $schema->_context->interface;
                 } elseif ($schema->_context->is('trait')) {
                     $schema->schema = $schema->_context->trait;
                 }
@@ -35,7 +37,7 @@ class AugmentSchemas
             if ($property->_context->nested) {
                 continue;
             }
-            $schemaContext = $property->_context->with('class') ?: $property->_context->with('trait');
+            $schemaContext = $property->_context->with('class') ?: $property->_context->with('trait') ?: $property->_context->with('interface');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {

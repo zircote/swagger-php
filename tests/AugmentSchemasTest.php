@@ -28,4 +28,17 @@ class AugmentSchemasTest extends OpenApiTestCase
         $this->assertSame('Customer', $customer->schema, '@OA\Schema()->schema based on classname');
         $this->assertCount(9, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
+
+    public function testAugmentSchemasForInterface()
+    {
+        $analyser = new StaticAnalyser();
+        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/CustomerInterface.php');
+        $analysis->process(new MergeIntoOpenApi()); // create openapi->components
+        $analysis->process(new MergeIntoComponents()); // Merge standalone Scheme's into openapi->components
+        $this->assertCount(1, $analysis->openapi->components->schemas);
+        $customer = $analysis->openapi->components->schemas[0];
+        $this->assertSame(UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
+        $analysis->process(new AugmentSchemas());
+        $this->assertCount(9, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
+    }
 }

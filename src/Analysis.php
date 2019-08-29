@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use Closure;
 use Exception;
+use OpenApi\Processors\ImportInterfaces;
 use SplObjectStorage;
 use stdClass;
 use OpenApi\Annotations\AbstractAnnotation;
@@ -50,6 +51,13 @@ class Analysis
      * @var array
      */
     public $traits = [];
+
+    /**
+     * Interface definitions
+     *
+     * @var array
+     */
+    public $interfaces = [];
 
     /**
      * The target OpenApi annotation.
@@ -147,6 +155,15 @@ class Analysis
     /**
      * @param array $definition
      */
+    public function addInterfaceDefinition($definition)
+    {
+        $interface = $definition['context']->fullyQualifiedName($definition['interface']);
+        $this->interfaces[$interface] = $definition;
+    }
+
+    /**
+     * @param array $definition
+     */
     public function addTraitDefinition($definition)
     {
         $trait = $definition['context']->fullyQualifiedName($definition['trait']);
@@ -162,6 +179,7 @@ class Analysis
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
+        $this->interfaces = array_merge($this->interfaces, $analysis->interfaces);
         $this->traits = array_merge($this->traits, $analysis->traits);
         if ($this->openapi === null && $analysis->openapi) {
             $this->openapi = $analysis->openapi;
@@ -194,6 +212,52 @@ class Analysis
             return [];
         }
         $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
+        return $definitions;
+    }
+
+    /**
+     * Returns an array of interfaces used by the given class or by classes which it extends
+     *
+     * @param string  $class
+     *
+     * @return array
+     */
+    public function getInterfacesOfClass($class)
+    {
+        $definitions = [];
+
+        // in case there is a hierarchy of classes
+        $classes = $this->getSuperClasses($class);
+        if (is_array($classes)) {
+            foreach ($classes as $subClass) {
+                if (isset($subClass['interfaces'])) {
+                    foreach ($subClass['interfaces'] as $classInterface) {
+                        foreach ($this->interfaces as $interface) {
+                            if ($classInterface === $interface['interface']) {
+                                $interfaceDefinition[$interface['interface']] = $interface;
+                                $definitions = array_merge($definitions, $interfaceDefinition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // interface used by the given class
+        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
+        if (!$classDefinition || empty($classDefinition['interfaces'])) {
+            return $definitions;
+        }
+        $classInterfaces = $classDefinition['interfaces'];
+        foreach ($this->interfaces as $interface) {
+            foreach ($classInterfaces as $classInterface => $name) {
+                if ($interface['interface'] === $name) {
+                    $interfaceDefinition[$name] = $interface;
+                    $definitions = array_merge($definitions, $interfaceDefinition);
+                }
+            }
+        }
+
         return $definitions;
     }
 
@@ -372,6 +436,7 @@ class Analysis
             self::$processors = [
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
+                new ImportInterfaces(),
                 new ImportTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
