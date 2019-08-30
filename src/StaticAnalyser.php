@@ -145,7 +145,7 @@ class StaticAnalyser
                     $analysis->addInterfaceDefinition($interfaceDefinition);
                 }
                 $interfaceDefinition = [
-                    'class' => $token[1],
+                    'interface' => $token[1],
                     'extends' => null,
                     'properties' => [],
                     'methods' => [],
