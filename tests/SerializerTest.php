@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApitests;
+namespace OpenApiTests;
 
 use OpenApi\Annotations;
 use OpenApi\Serializer;
