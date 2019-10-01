@@ -326,17 +326,19 @@ class StaticAnalyser
     {
         while (true) {
             $token = next($tokens);
-            if ($token[0] === T_WHITESPACE) {
-                continue;
-            }
-            if ($token[0] === T_COMMENT) {
-                $pos = strpos($token[1], '@OA\\');
-                if ($pos) {
-                    $line = $context->line ? $context->line + $token[2] : $token[2];
-                    $commentContext = new Context(['line' => $line], $context);
-                    Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+            if (is_array($token)) {
+                if ($token[0] === T_WHITESPACE) {
+                    continue;
                 }
-                continue;
+                if ($token[0] === T_COMMENT) {
+                    $pos = strpos($token[1], '@OA\\');
+                    if ($pos) {
+                        $line           = $context->line ? $context->line + $token[2] : $token[2];
+                        $commentContext = new Context(['line' => $line], $context);
+                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                    }
+                    continue;
+                }
             }
 
             return $token;
