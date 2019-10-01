@@ -35,7 +35,7 @@ class StaticAnalyser
                 $GLOBALS['openapi_opcache_warning'] = true;
                 $status = opcache_get_status();
                 $config = opcache_get_configuration();
-                if ($status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
+                if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
                     Logger::warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] http://php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
                 }
             }
