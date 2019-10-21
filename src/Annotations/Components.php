@@ -100,7 +100,7 @@ class Components extends AbstractAnnotation
         Response::class => ['responses', 'response'],
         Parameter::class => ['parameters', 'parameter'],
         RequestBody::class => ['requestBodies', 'request'],
-        Examples::class => ['examples'],
+        Examples::class => ['examples', 'example'],
         Header::class => ['headers', 'header'],
         SecurityScheme::class => ['securitySchemes', 'securityScheme'],
         Link::class => ['links', 'link'],

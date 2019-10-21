@@ -12,6 +12,20 @@ namespace OpenApi\Annotations;
 class Examples extends AbstractAnnotation
 {
     /**
+     * $ref See https://swagger.io/docs/specification/using-ref/
+     *
+     * @var string
+     */
+    public $ref = UNDEFINED;
+
+    /**
+     * The key into Components->examples array.
+     *
+     * @var string
+     */
+    public $example = UNDEFINED;
+
+    /**
      * Short description for the example.
      *
      * @var string
