@@ -12,6 +12,18 @@ namespace OpenApi\Annotations;
 class Examples extends AbstractAnnotation
 {
     /**
+     * $ref See https://swagger.io/docs/specification/using-ref/
+     *
+     * @var string
+     */
+    public $ref = UNDEFINED;
+
+    /**
+     * @var string
+     */
+    public $name = UNDEFINED;
+
+    /**
      * Short description for the example.
      *
      * @var string
@@ -54,8 +66,6 @@ class Examples extends AbstractAnnotation
         'description' => 'string',
         'externalValue' => 'string',
     ];
-
-    public static $_required = ['summary'];
 
     public static $_parents = [
         Components::class,
