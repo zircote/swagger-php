@@ -326,6 +326,10 @@ class StaticAnalyser
     {
         while (true) {
             $token = next($tokens);
+            if ($token === false) {
+                return false;
+            }
+            
             if ($token[0] === T_WHITESPACE) {
                 continue;
             }
