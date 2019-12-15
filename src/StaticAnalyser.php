@@ -182,18 +182,7 @@ class StaticAnalyser
             }
 
             if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
-                $type = UNDEFINED;
-                $token = $this->nextToken($tokens, $parseContext);
-                if ($token[0] == T_STATIC) {
-                    $token = $this->nextToken($tokens, $parseContext);
-                }
-                if ($token === '?') { // nullable type
-                    $token = $this->nextToken($tokens, $parseContext);
-                }
-                if ($token[0] === T_STRING) { // property type declaration
-                    $type = $token[1];
-                    $token = $this->nextToken($tokens, $parseContext);
-                }
+                [$type, $token] = $this->extractTypeAndNextToken($tokens, $parseContext);
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context(
                         [
@@ -399,5 +388,26 @@ class StaticAnalyser
         }
 
         return $statements;
+    }
+
+    private function extractTypeAndNextToken(array &$tokens, Context $parseContext): array
+    {
+        $type = UNDEFINED;
+        $token = $this->nextToken($tokens, $parseContext);
+
+        if ($token[0] === T_STATIC) {
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        if ($token === '?') { // nullable type
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        if ($token[0] === T_STRING) { // property type declaration
+            $type = $token[1];
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        return [$type, $token];
     }
 }
