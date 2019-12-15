@@ -12,4 +12,9 @@ class TypedProperties
      * @OA\Property()
      */
     public string $stringType;
+
+    /**
+     * @OA\Property()
+     */
+    public ?string $nullableString;
 }
