@@ -123,6 +123,28 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame('#/components/schemas/Customer', $bestFriend->oneOf[0]->ref);
     }
 
+    public function testTypedProperties()
+    {
+        $analyser = new StaticAnalyser();
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/TypedProperties.php');
+        $analysis->process(new MergeIntoOpenApi());
+        $analysis->process(new MergeIntoComponents());
+        $analysis->process(new AugmentSchemas());
+        [$stringType] = $analysis->openapi->components->schemas[0]->properties;
+
+        $this->assertName($stringType, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+
+        $analysis->process(new AugmentProperties());
+
+        $this->assertName($stringType, [
+            self::KEY_PROPERTY => 'stringType',
+            self::KEY_TYPE => 'string',
+        ]);
+    }
+
     /**
      * @param Property $property
      * @param array $expectedValues
