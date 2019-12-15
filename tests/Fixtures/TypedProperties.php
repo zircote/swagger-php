@@ -35,4 +35,12 @@ class TypedProperties
      * @var int
      */
     public string $nativeTrumpsVar;
+
+    /**
+     * @OA\Property(
+     *     type="int",
+     * )
+     * @var int
+     */
+    public string $annotationTrumpsNative;
 }
