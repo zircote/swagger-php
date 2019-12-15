@@ -186,6 +186,9 @@ class StaticAnalyser
                 if ($token[0] == T_STATIC) {
                     $token = $this->nextToken($tokens, $parseContext);
                 }
+                if ($token[0] === T_STRING) { // property type declaration
+                    $token = $this->nextToken($tokens, $parseContext);
+                }
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context(
                         [
