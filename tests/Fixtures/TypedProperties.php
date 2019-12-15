@@ -31,16 +31,24 @@ class TypedProperties
     public DateTime $dateTime;
 
     /**
-     * @OA\Property()
      * @var int
+     * @OA\Property()
      */
     public string $nativeTrumpsVar;
 
     /**
+     * @var int
      * @OA\Property(
      *     type="int",
      * )
-     * @var int
      */
     public string $annotationTrumpsNative;
+
+    /**
+     * @var string
+     * @OA\Property(
+     *     type="int",
+     * )
+     */
+    public string $annotationTrumpsAll;
 }
