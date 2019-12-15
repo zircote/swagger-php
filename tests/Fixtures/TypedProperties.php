@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace OpenApiFixures;
 
+use DateTime;
+
 /**
  * @OA\Schema()
  */
@@ -22,4 +24,9 @@ class TypedProperties
      * @OA\Property()
      */
     public ?string $nullableString;
+
+    /**
+     * @OA\Property()
+     */
+    public DateTime $dateTime;
 }
