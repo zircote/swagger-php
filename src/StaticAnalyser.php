@@ -182,14 +182,13 @@ class StaticAnalyser
             }
 
             if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
-                $token = $this->nextToken($tokens, $parseContext);
-                if ($token[0] == T_STATIC) {
-                    $token = $this->nextToken($tokens, $parseContext);
-                }
+                [$type, $nullable, $token] = $this->extractTypeAndNextToken($tokens, $parseContext);
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context(
                         [
                             'property' => substr($token[1], 1),
+                            'type' => $type,
+                            'nullable' => $nullable,
                             'line' => $line,
                         ],
                         $schemaContext
@@ -390,5 +389,31 @@ class StaticAnalyser
         }
 
         return $statements;
+    }
+
+    private function extractTypeAndNextToken(array &$tokens, Context $parseContext): array
+    {
+        $type = UNDEFINED;
+        $nullable = false;
+        $token = $this->nextToken($tokens, $parseContext);
+
+        if ($token[0] === T_STATIC) {
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        if ($token === '?') { // nullable type
+            $nullable = true;
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        // drill down namespace segments to basename property type declaration
+        while (in_array($token[0], [T_NS_SEPARATOR, T_STRING, T_ARRAY])) {
+            if ($token[0] === T_STRING) {
+                $type = $token[1];
+            }
+            $token = $this->nextToken($tokens, $parseContext);
+        }
+
+        return [$type, $nullable, $token];
     }
 }
