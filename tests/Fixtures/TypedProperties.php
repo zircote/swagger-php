@@ -51,4 +51,9 @@ class TypedProperties
      * )
      */
     public string $annotationTrumpsAll;
+
+    /**
+     * @OA\Property()
+     */
+    public $undefined;
 }
