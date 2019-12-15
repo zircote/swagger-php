@@ -130,9 +130,13 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());
-        [$stringType, $nullableString] = $analysis->openapi->components->schemas[0]->properties;
+        [$stringType, $intType, $nullableString] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($intType, [
             self::KEY_PROPERTY => UNDEFINED,
             self::KEY_TYPE => UNDEFINED,
         ]);
@@ -146,6 +150,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($stringType, [
             self::KEY_PROPERTY => 'stringType',
             self::KEY_TYPE => 'string',
+        ]);
+        $this->assertName($intType, [
+            self::KEY_PROPERTY => 'intType',
+            self::KEY_TYPE => 'int',
         ]);
         $this->assertName($nullableString, [
             self::KEY_PROPERTY => 'nullableString',

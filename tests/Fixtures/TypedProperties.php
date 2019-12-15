@@ -16,5 +16,10 @@ class TypedProperties
     /**
      * @OA\Property()
      */
+    public int $intType;
+
+    /**
+     * @OA\Property()
+     */
     public ?string $nullableString;
 }
