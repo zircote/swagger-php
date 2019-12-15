@@ -29,4 +29,10 @@ class TypedProperties
      * @OA\Property()
      */
     public DateTime $dateTime;
+
+    /**
+     * @OA\Property()
+     * @var int
+     */
+    public string $nativeTrumpsVar;
 }

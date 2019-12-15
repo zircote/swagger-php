@@ -130,7 +130,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());
-        [$stringType, $intType, $nullableString, $dateTime] = $analysis->openapi->components->schemas[0]->properties;
+        [$stringType, $intType, $nullableString, $dateTime, $nativeTrumpsVar] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
             self::KEY_PROPERTY => UNDEFINED,
@@ -145,6 +145,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_TYPE => UNDEFINED,
         ]);
         $this->assertName($dateTime, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($nativeTrumpsVar, [
             self::KEY_PROPERTY => UNDEFINED,
             self::KEY_TYPE => UNDEFINED,
         ]);
@@ -166,6 +170,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($dateTime, [
             self::KEY_PROPERTY => 'dateTime',
             self::KEY_TYPE => 'DateTime',
+        ]);
+        $this->assertName($nativeTrumpsVar, [
+            self::KEY_PROPERTY => 'nativeTrumpsVar',
+            self::KEY_TYPE => 'string',
         ]);
     }
 
