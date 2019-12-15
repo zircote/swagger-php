@@ -139,6 +139,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $annotationTrumpsNative,
             $annotationTrumpsAll,
             $undefined,
+            $onlyAnnotated,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -172,6 +173,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($undefined, [
             self::KEY_PROPERTY => UNDEFINED,
             self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($onlyAnnotated, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => 'int',
         ]);
 
         $analysis->process(new AugmentProperties());
@@ -207,6 +212,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($undefined, [
             self::KEY_PROPERTY => 'undefined',
             self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($onlyAnnotated, [
+            self::KEY_PROPERTY => 'onlyAnnotated',
+            self::KEY_TYPE => 'int',
         ]);
     }
 

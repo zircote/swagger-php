@@ -56,4 +56,11 @@ class TypedProperties
      * @OA\Property()
      */
     public $undefined;
+
+    /**
+     * @OA\Property(
+     *     type="int",
+     * )
+     */
+    public $onlyAnnotated;
 }
