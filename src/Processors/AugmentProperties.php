@@ -59,6 +59,9 @@ class AugmentProperties
             if ($property->property === UNDEFINED) {
                 $property->property = $context->property;
             }
+            if ($property->type === UNDEFINED) {
+                $property->type = $context->type;
+            }
             if ($property->ref !== UNDEFINED) {
                 continue;
             }

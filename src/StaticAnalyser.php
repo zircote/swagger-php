@@ -182,17 +182,20 @@ class StaticAnalyser
             }
 
             if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
+                $type = UNDEFINED;
                 $token = $this->nextToken($tokens, $parseContext);
                 if ($token[0] == T_STATIC) {
                     $token = $this->nextToken($tokens, $parseContext);
                 }
                 if ($token[0] === T_STRING) { // property type declaration
+                    $type = $token[1];
                     $token = $this->nextToken($tokens, $parseContext);
                 }
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context(
                         [
                             'property' => substr($token[1], 1),
+                            'type' => $type,
                             'line' => $line,
                         ],
                         $schemaContext
