@@ -141,6 +141,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $undefined,
             $onlyAnnotated,
             $staticUndefined,
+            $staticString,
+            $staticNullableString,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -180,6 +182,14 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_TYPE => 'int',
         ]);
         $this->assertName($staticUndefined, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($staticString, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($staticNullableString, [
             self::KEY_PROPERTY => UNDEFINED,
             self::KEY_TYPE => UNDEFINED,
         ]);
@@ -225,6 +235,14 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($staticUndefined, [
             self::KEY_PROPERTY => 'staticUndefined',
             self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($staticString, [
+            self::KEY_PROPERTY => 'staticString',
+            self::KEY_TYPE => 'string',
+        ]);
+        $this->assertName($staticNullableString, [
+            self::KEY_PROPERTY => 'staticNullableString',
+            self::KEY_TYPE => 'string',
         ]);
     }
 

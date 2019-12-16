@@ -68,4 +68,14 @@ class TypedProperties
      * @OA\Property()
      */
     public static $staticUndefined;
+
+    /**
+     * @OA\Property()
+     */
+    public static string $staticString;
+
+    /**
+     * @OA\Property()
+     */
+    public static ?string $staticNullableString;
 }
