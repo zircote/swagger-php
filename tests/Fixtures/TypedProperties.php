@@ -63,4 +63,9 @@ class TypedProperties
      * )
      */
     public $onlyAnnotated;
+
+    /**
+     * @OA\Property()
+     */
+    public static $staticUndefined;
 }
