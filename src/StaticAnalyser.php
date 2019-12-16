@@ -403,8 +403,11 @@ class StaticAnalyser
             $token = $this->nextToken($tokens, $parseContext);
         }
 
-        if ($token[0] === T_STRING) { // property type declaration
-            $type = $token[1];
+        // drill down namespace segments to basename property type declaration
+        while ($token[0] === T_NS_SEPARATOR || $token[0] === T_STRING) {
+            if ($token[0] === T_STRING) {
+                $type = $token[1];
+            }
             $token = $this->nextToken($tokens, $parseContext);
         }
 

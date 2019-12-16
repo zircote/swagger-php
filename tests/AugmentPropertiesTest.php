@@ -135,6 +135,9 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $intType,
             $nullableString,
             $dateTime,
+            $qualified,
+            $namespace,
+            $importedNamespace,
             $nativeTrumpsVar,
             $annotationTrumpsNative,
             $annotationTrumpsAll,
@@ -158,6 +161,18 @@ class AugmentPropertiesTest extends OpenApiTestCase
             self::KEY_TYPE => UNDEFINED,
         ]);
         $this->assertName($dateTime, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($qualified, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($namespace, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
+        ]);
+        $this->assertName($importedNamespace, [
             self::KEY_PROPERTY => UNDEFINED,
             self::KEY_TYPE => UNDEFINED,
         ]);
@@ -211,6 +226,18 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($dateTime, [
             self::KEY_PROPERTY => 'dateTime',
             self::KEY_TYPE => 'DateTime',
+        ]);
+        $this->assertName($qualified, [
+            self::KEY_PROPERTY => 'qualified',
+            self::KEY_TYPE => 'DateTimeInterface',
+        ]);
+        $this->assertName($namespace, [
+            self::KEY_PROPERTY => 'namespace',
+            self::KEY_TYPE => 'Foo',
+        ]);
+        $this->assertName($importedNamespace, [
+            self::KEY_PROPERTY => 'importedNamespace',
+            self::KEY_TYPE => 'Foo',
         ]);
         $this->assertName($nativeTrumpsVar, [
             self::KEY_PROPERTY => 'nativeTrumpsVar',

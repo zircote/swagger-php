@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace OpenApiFixures;
 
 use DateTime;
+use App;
 
 /**
  * @OA\Schema()
@@ -29,6 +30,21 @@ class TypedProperties
      * @OA\Property()
      */
     public DateTime $dateTime;
+
+    /**
+     * @OA\Property()
+     */
+    public \DateTimeInterface $qualified;
+
+    /**
+     * @OA\Property()
+     */
+    public \App\Models\Foo $namespace;
+
+    /**
+     * @OA\Property()
+     */
+    public App\Models\Foo $importedNamespace;
 
     /**
      * @var int
