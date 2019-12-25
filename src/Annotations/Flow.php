@@ -78,4 +78,13 @@ class Flow extends AbstractAnnotation
     public static $_parents = [
         SecurityScheme::class,
     ];
+
+    /** {@inheritdoc} */
+    public function jsonSerialize()
+    {
+        if (is_array($this->scopes) && empty($this->scopes)) {
+            $this->scopes = new \StdClass();
+        }
+        return parent::jsonSerialize();
+    }
 }
