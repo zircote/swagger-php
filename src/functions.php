@@ -16,7 +16,9 @@ if (defined('OpenApi\UNDEFINED') === false) {
     define('OpenApi\UNDEFINED', '@OA\UNDEFINED🙈');
     define('OpenApi\Annotations\UNDEFINED', UNDEFINED);
     define('OpenApi\Processors\UNDEFINED', UNDEFINED);
+}
 
+if (function_exists('OpenApi\scan') === false) {
     /**
      * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *
