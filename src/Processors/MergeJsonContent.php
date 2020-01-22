@@ -10,8 +10,10 @@ use OpenApi\Annotations\MediaType;
 use OpenApi\Annotations\JsonContent;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\RequestBody;
+use OpenApi\Annotations\Parameter;
 use OpenApi\Analysis;
 use OpenApi\Context;
+use OpenApi\Logger;
 
 /**
  * Split JsonContent into Schema and MediaType
@@ -22,14 +24,19 @@ class MergeJsonContent
     {
         $annotations = $analysis->getAnnotationsOfType(JsonContent::class);
         foreach ($annotations as $jsonContent) {
-            $response = $jsonContent->_context->nested;
-            if (!($response instanceof Response) && !($response instanceof RequestBody)) {
+            $parent = $jsonContent->_context->nested;
+            if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
+                if ($parent) {
+                    Logger::notice('Unexpected '.$jsonContent->identity() .' in ' . $parent->identity() . ' in ' . $this->_context);
+                } else {
+                    Logger::notice('Unexpected '.$jsonContent->identity() .' must be nested');
+                }
                 continue;
             }
-            if ($response->content === UNDEFINED) {
-                $response->content = [];
+            if ($parent->content === UNDEFINED) {
+                $parent->content = [];
             }
-            $response->content['application/json'] = new MediaType(
+            $parent->content['application/json'] = new MediaType(
                 [
                 'mediaType' => 'application/json',
                 'schema' => $jsonContent,
@@ -41,9 +48,9 @@ class MergeJsonContent
             $jsonContent->example = UNDEFINED;
             $jsonContent->examples = UNDEFINED;
 
-            $index = array_search($jsonContent, $response->_unmerged, true);
+            $index = array_search($jsonContent, $parent->_unmerged, true);
             if ($index !== false) {
-                array_splice($response->_unmerged, $index, 1);
+                array_splice($parent->_unmerged, $index, 1);
             }
         }
     }

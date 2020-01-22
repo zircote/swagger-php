@@ -164,7 +164,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         foreach ($annotations as $annotation) {
             $found = false;
             foreach (static::$_nested as $class => $property) {
-                if ($annotation instanceof $class) {
+                if (get_class($annotation) === $class) {
                     if (is_array($property)) { // Append to an array?
                         $property = $property[0];
                         if ($this->$property === UNDEFINED) {
