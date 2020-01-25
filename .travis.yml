@@ -5,7 +5,8 @@ php:
   - 7.0
   - 7.1
   - 7.2
-  - hhvm
+  - 7.3
+  - 7.4
 
 sudo: false
 
@@ -17,11 +18,8 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 7.2
+    - php: 7.4
       env: PHPCS=1 PHPUNIT=0
-
-  allow_failures:
-    - php: hhvm
 
 before_script:
   - composer self-update
@@ -29,5 +27,4 @@ before_script:
 
 script:
   - sh -c "if [ '$PHPUNIT' = '1' ]; then ./bin/phpunit; fi"
-
   - sh -c "if [ '$PHPCS' = '1' ]; then ./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests; fi"
