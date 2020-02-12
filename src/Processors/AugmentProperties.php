@@ -64,7 +64,9 @@ class AugmentProperties
             }
             $comment = str_replace("\r\n", "\n", $context->comment);
             if ($property->type === UNDEFINED && $context->type !== UNDEFINED) {
-                $property->nullable = $context->nullable;
+                if ($context->nullable === true) {
+                    $property->nullable = true;
+                }
                 $type = strtolower($context->type);
                 if (self::$types[$type] ?? false) {
                     $type = static::$types[strtolower($type)];
