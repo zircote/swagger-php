@@ -182,12 +182,13 @@ class StaticAnalyser
             }
 
             if (in_array($token[0], [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) { // Scope
-                [$type, $token] = $this->extractTypeAndNextToken($tokens, $parseContext);
+                [$type, $nullable, $token] = $this->extractTypeAndNextToken($tokens, $parseContext);
                 if ($token[0] === T_VARIABLE) { // instance property
                     $propertyContext = new Context(
                         [
                             'property' => substr($token[1], 1),
                             'type' => $type,
+                            'nullable' => $nullable,
                             'line' => $line,
                         ],
                         $schemaContext
@@ -393,6 +394,7 @@ class StaticAnalyser
     private function extractTypeAndNextToken(array &$tokens, Context $parseContext): array
     {
         $type = UNDEFINED;
+        $nullable = false;
         $token = $this->nextToken($tokens, $parseContext);
 
         if ($token[0] === T_STATIC) {
@@ -400,6 +402,7 @@ class StaticAnalyser
         }
 
         if ($token === '?') { // nullable type
+            $nullable = true;
             $token = $this->nextToken($tokens, $parseContext);
         }
 
@@ -411,6 +414,6 @@ class StaticAnalyser
             $token = $this->nextToken($tokens, $parseContext);
         }
 
-        return [$type, $token];
+        return [$type, $nullable, $token];
     }
 }
