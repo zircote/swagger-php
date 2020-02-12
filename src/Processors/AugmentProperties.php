@@ -81,7 +81,7 @@ class AugmentProperties
                     $key = strtolower($context->fullyQualifiedName($type));
                     
                     if ($property->ref === UNDEFINED && array_key_exists($key, $refs)) {
-                        if ($property->nullable) {
+                        if ($property->nullable === true) {
                             $property->oneOf = [
                                 new Schema([
                                     '_context' => $property->_context,
