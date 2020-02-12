@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace OpenApiFixures;
+namespace OpenApiFixtures;
 
 use DateTime;
 use App;
@@ -39,12 +39,12 @@ class TypedProperties
     /**
      * @OA\Property()
      */
-    public \App\Models\Foo $namespace;
+    public \OpenApiFixtures\TypedProperties $namespace;
 
     /**
      * @OA\Property()
      */
-    public App\Models\Foo $importedNamespace;
+    public TypedProperties $importedNamespace;
 
     /**
      * @var int

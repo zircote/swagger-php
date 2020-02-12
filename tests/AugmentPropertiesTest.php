@@ -20,8 +20,10 @@ use const OpenApi\UNDEFINED;
 class AugmentPropertiesTest extends OpenApiTestCase
 {
     const KEY_PROPERTY = 'property';
+    const KEY_REFERENCE = 'ref';
     const KEY_EXAMPLE = 'example';
     const KEY_DESCRIPTION = 'description';
+    const KEY_FORMAT = 'format';
     const KEY_TYPE = 'type';
 
     public function testAugmentProperties()
@@ -222,7 +224,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($intType, [
             self::KEY_PROPERTY => 'intType',
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($nullableString, [
             self::KEY_PROPERTY => 'nullableString',
@@ -230,19 +232,21 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($dateTime, [
             self::KEY_PROPERTY => 'dateTime',
-            self::KEY_TYPE => 'DateTime',
+            self::KEY_TYPE => 'string',
+            self::KEY_FORMAT => 'date-time',
         ]);
         $this->assertName($qualified, [
             self::KEY_PROPERTY => 'qualified',
-            self::KEY_TYPE => 'DateTimeInterface',
+            self::KEY_TYPE => 'string',
+            self::KEY_FORMAT => 'date-time',
         ]);
         $this->assertName($namespace, [
             self::KEY_PROPERTY => 'namespace',
-            self::KEY_TYPE => 'Foo',
+            self::KEY_REFERENCE => '#/components/schemas/TypedProperties',
         ]);
         $this->assertName($importedNamespace, [
             self::KEY_PROPERTY => 'importedNamespace',
-            self::KEY_TYPE => 'Foo',
+            self::KEY_REFERENCE => '#/components/schemas/TypedProperties',
         ]);
         $this->assertName($nativeTrumpsVar, [
             self::KEY_PROPERTY => 'nativeTrumpsVar',
