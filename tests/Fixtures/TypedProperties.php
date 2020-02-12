@@ -55,7 +55,7 @@ class TypedProperties
     /**
      * @var int
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public string $annotationTrumpsNative;
@@ -63,7 +63,7 @@ class TypedProperties
     /**
      * @var string
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public string $annotationTrumpsAll;
@@ -75,10 +75,16 @@ class TypedProperties
 
     /**
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public $onlyAnnotated;
+
+    /**
+     * @var int
+     * @OA\Property()
+     */
+    public $onlyVar;
 
     /**
      * @OA\Property()

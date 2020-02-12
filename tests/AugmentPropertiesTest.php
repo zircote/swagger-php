@@ -143,6 +143,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $annotationTrumpsAll,
             $undefined,
             $onlyAnnotated,
+            $onlyVar,
             $staticUndefined,
             $staticString,
             $staticNullableString,
@@ -182,11 +183,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($annotationTrumpsNative, [
             self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($annotationTrumpsAll, [
             self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($undefined, [
             self::KEY_PROPERTY => UNDEFINED,
@@ -194,7 +195,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($onlyAnnotated, [
             self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
+        ]);
+        $this->assertName($onlyVar, [
+            self::KEY_PROPERTY => UNDEFINED,
+            self::KEY_TYPE => UNDEFINED,
         ]);
         $this->assertName($staticUndefined, [
             self::KEY_PROPERTY => UNDEFINED,
@@ -245,11 +250,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($annotationTrumpsNative, [
             self::KEY_PROPERTY => 'annotationTrumpsNative',
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($annotationTrumpsAll, [
             self::KEY_PROPERTY => 'annotationTrumpsAll',
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($undefined, [
             self::KEY_PROPERTY => 'undefined',
@@ -257,7 +262,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($onlyAnnotated, [
             self::KEY_PROPERTY => 'onlyAnnotated',
-            self::KEY_TYPE => 'int',
+            self::KEY_TYPE => 'integer',
+        ]);
+        $this->assertName($onlyVar, [
+            self::KEY_PROPERTY => 'onlyVar',
+            self::KEY_TYPE => 'integer',
         ]);
         $this->assertName($staticUndefined, [
             self::KEY_PROPERTY => 'staticUndefined',
