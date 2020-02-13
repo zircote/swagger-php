@@ -72,18 +72,8 @@ class AugmentProperties
                     $this->applyType($type, $property);
                 } else {
                     $key = strtolower($context->fullyQualifiedName($type));
-
                     if ($property->ref === UNDEFINED && array_key_exists($key, $refs)) {
-                        if ($property->nullable === true) {
-                            $property->oneOf = [
-                                new Schema([
-                                    '_context' => $property->_context,
-                                    'ref' => $refs[$key],
-                                ]),
-                            ];
-                        } else {
-                            $property->ref = $refs[$key];
-                        }
+                        $this->applyRef($property, $refs[$key]);
                         continue;
                     }
                 }
@@ -182,5 +172,19 @@ class AugmentProperties
         }
 
         $property->type = $type;
+    }
+
+    protected function applyRef(Property $property, string $ref): void
+    {
+        if ($property->nullable === true) {
+            $property->oneOf = [
+                new Schema([
+                    '_context' => $property->_context,
+                    'ref' => $ref,
+                ]),
+            ];
+        } else {
+            $property->ref = $ref;
+        }
     }
 }
