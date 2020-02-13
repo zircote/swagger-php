@@ -69,7 +69,7 @@ class AugmentProperties
                 }
                 $type = strtolower($context->type);
                 if (self::$types[$type] ?? false) {
-                    $type = static::$types[strtolower($type)];
+                    $type = static::$types[$type];
                     if (is_array($type)) {
                         if ($property->format === UNDEFINED) {
                             $property->format = $type[1];
