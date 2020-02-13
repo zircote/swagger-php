@@ -22,14 +22,19 @@ class MergeXmlContent
     {
         $annotations = $analysis->getAnnotationsOfType(XmlContent::class);
         foreach ($annotations as $xmlContent) {
-            $response = $xmlContent->_context->nested;
-            if (!($response instanceof Response) && !($response instanceof RequestBody)) {
+            $parent = $xmlContent->_context->nested;
+            if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
+                if ($parent) {
+                    Logger::notice('Unexpected '.$xmlContent->identity() .' in ' . $parent->identity() . ' in ' . $this->_context);
+                } else {
+                    Logger::notice('Unexpected '.$xmlContent->identity() .' must be nested');
+                }
                 continue;
             }
-            if ($response->content === UNDEFINED) {
-                $response->content = [];
+            if ($parent->content === UNDEFINED) {
+                $parent->content = [];
             }
-            $response->content['application/xml'] = new MediaType(
+            $parent->content['application/xml'] = new MediaType(
                 [
                     'mediaType' => 'application/xml',
                     'schema' => $xmlContent,
@@ -41,9 +46,9 @@ class MergeXmlContent
             $xmlContent->example = UNDEFINED;
             $xmlContent->examples = UNDEFINED;
 
-            $index = array_search($xmlContent, $response->_unmerged, true);
+            $index = array_search($xmlContent, $parent->_unmerged, true);
             if ($index !== false) {
-                array_splice($response->_unmerged, $index, 1);
+                array_splice($parent->_unmerged, $index, 1);
             }
         }
     }

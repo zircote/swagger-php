@@ -9,6 +9,10 @@
 /**
  * @OA\Get(
  *   path="/api/endpoint",
+ *   @OA\Parameter(name="filter",in="query", @OA\JsonContent(
+ *      @OA\Property(property="type", type="string"),
+ *      @OA\Property(property="color", type="string"),
+ *   )),
  *   @OA\Response(response=200, description="Success")
  * )
  */
