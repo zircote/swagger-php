@@ -69,7 +69,7 @@ class AugmentProperties
                 }
                 $type = strtolower($context->type);
                 if (isset(self::$types[$type])) {
-                    $this->applyType($type, $property);
+                    $this->applyType($property, static::$types[$type]);
                 } else {
                     $key = strtolower($context->fullyQualifiedName($type));
                     if ($property->ref === UNDEFINED && array_key_exists($key, $refs)) {
@@ -160,10 +160,8 @@ class AugmentProperties
         return implode('|', $types);
     }
 
-    protected function applyType(string $type, Property $property): void
+    protected function applyType(Property $property, $type): void
     {
-        $type = static::$types[$type];
-
         if (is_array($type)) {
             if ($property->format === UNDEFINED) {
                 $property->format = $type[1];
