@@ -85,8 +85,8 @@ class AugmentProperties
                             $property->oneOf = [
                                 new Schema([
                                     '_context' => $property->_context,
-                                    'ref' => $refs[$key]
-                                ])
+                                    'ref' => $refs[$key],
+                                ]),
                             ];
                             $property->nullable = true;
                         } else {
