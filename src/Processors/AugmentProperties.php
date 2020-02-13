@@ -79,7 +79,7 @@ class AugmentProperties
                     $property->type = $type;
                 } else {
                     $key = strtolower($context->fullyQualifiedName($type));
-                    
+
                     if ($property->ref === UNDEFINED && array_key_exists($key, $refs)) {
                         if ($property->nullable === true) {
                             $property->oneOf = [
