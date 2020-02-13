@@ -81,7 +81,6 @@ class AugmentProperties
                                     'ref' => $refs[$key],
                                 ]),
                             ];
-                            $property->nullable = true;
                         } else {
                             $property->ref = $refs[$key];
                         }
