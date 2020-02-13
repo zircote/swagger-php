@@ -68,15 +68,8 @@ class AugmentProperties
                     $property->nullable = true;
                 }
                 $type = strtolower($context->type);
-                if (self::$types[$type] ?? false) {
-                    $type = static::$types[$type];
-                    if (is_array($type)) {
-                        if ($property->format === UNDEFINED) {
-                            $property->format = $type[1];
-                        }
-                        $type = $type[0];
-                    }
-                    $property->type = $type;
+                if (isset(self::$types[$type])) {
+                    $this->applyType($type, $property);
                 } else {
                     $key = strtolower($context->fullyQualifiedName($type));
 
@@ -176,5 +169,19 @@ class AugmentProperties
         }
 
         return implode('|', $types);
+    }
+
+    protected function applyType(string $type, Property $property): void
+    {
+        $type = static::$types[$type];
+
+        if (is_array($type)) {
+            if ($property->format === UNDEFINED) {
+                $property->format = $type[1];
+            }
+            $type = $type[0];
+        }
+
+        $property->type = $type;
     }
 }
