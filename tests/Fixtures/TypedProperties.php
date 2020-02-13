@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace OpenApiFixures;
+namespace OpenApiFixtures;
 
 use DateTime;
 use App;
@@ -39,12 +39,12 @@ class TypedProperties
     /**
      * @OA\Property()
      */
-    public \App\Models\Foo $namespace;
+    public \OpenApiFixtures\TypedProperties $namespace;
 
     /**
      * @OA\Property()
      */
-    public App\Models\Foo $importedNamespace;
+    public TypedProperties $importedNamespace;
 
     /**
      * @var int
@@ -55,7 +55,7 @@ class TypedProperties
     /**
      * @var int
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public string $annotationTrumpsNative;
@@ -63,7 +63,7 @@ class TypedProperties
     /**
      * @var string
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public string $annotationTrumpsAll;
@@ -75,10 +75,16 @@ class TypedProperties
 
     /**
      * @OA\Property(
-     *     type="int",
+     *     type="integer",
      * )
      */
     public $onlyAnnotated;
+
+    /**
+     * @var int
+     * @OA\Property()
+     */
+    public $onlyVar;
 
     /**
      * @OA\Property()

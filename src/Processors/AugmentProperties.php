@@ -59,14 +59,43 @@ class AugmentProperties
             if ($property->property === UNDEFINED) {
                 $property->property = $context->property;
             }
-            if ($property->type === UNDEFINED) {
-                $property->type = $context->type;
-            }
             if ($property->ref !== UNDEFINED) {
                 continue;
             }
             $comment = str_replace("\r\n", "\n", $context->comment);
-            if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
+            if ($property->type === UNDEFINED && $context->type !== UNDEFINED) {
+                if ($context->nullable === true) {
+                    $property->nullable = true;
+                }
+                $type = strtolower($context->type);
+                if (self::$types[$type] ?? false) {
+                    $type = static::$types[strtolower($type)];
+                    if (is_array($type)) {
+                        if ($property->format === UNDEFINED) {
+                            $property->format = $type[1];
+                        }
+                        $type = $type[0];
+                    }
+                    $property->type = $type;
+                } else {
+                    $key = strtolower($context->fullyQualifiedName($type));
+                    
+                    if ($property->ref === UNDEFINED && array_key_exists($key, $refs)) {
+                        if ($property->nullable === true) {
+                            $property->oneOf = [
+                                new Schema([
+                                    '_context' => $property->_context,
+                                    'ref' => $refs[$key]
+                                ])
+                            ];
+                            $property->nullable = true;
+                        } else {
+                            $property->ref = $refs[$key];
+                        }
+                        continue;
+                    }
+                }
+            } else if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
                 if ($property->type === UNDEFINED) {
                     preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
                     $isNullable = $this->isNullable($typeMatches[1]);
