@@ -63,7 +63,7 @@ class AugmentProperties
                 continue;
             }
             $comment = str_replace("\r\n", "\n", $context->comment);
-            if ($property->type === UNDEFINED && $context->type !== UNDEFINED) {
+            if ($property->type === UNDEFINED && $context->type && $context->type !== UNDEFINED) {
                 if ($context->nullable === true) {
                     $property->nullable = true;
                 }
