@@ -16,7 +16,9 @@ if (defined('Swagger\UNDEFINED') === false) {
     define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
     define('Swagger\Annotations\UNDEFINED', UNDEFINED);
     define('Swagger\Processors\UNDEFINED', UNDEFINED);
+}
 
+if (function_exists('Swagger\scan') === false) {
     /**
      * Scan the filesystem for swagger annotations and build swagger-documentation.
      *
