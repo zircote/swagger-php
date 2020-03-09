@@ -56,7 +56,7 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
 ```
 
 This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
-For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
+For example if you'd write `title="My first ...` swagger-php whould generate a notice with "Unexpected field "title" for @SWG\Info(), expecting "title", ..."
 
 
 ## Using variables in annotations
