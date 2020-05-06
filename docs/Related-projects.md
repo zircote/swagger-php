@@ -15,6 +15,7 @@ sidebar: false
 | [auto-swagger-ui][7]    | Automatically add swagger ui and json to your application |
 | [openapi-router][8]     | Configure framework routes from OpenApi annotations       |
 | [openapi-verifier][9]   | Verify response against OpenAPI specification in PHPUnit  |
+| [openapi-filter][10]    | Filter internal paths, operations, parameters, etc        |
 
 Is a related project missing? Create a pull request!
 
@@ -27,3 +28,4 @@ Is a related project missing? Create a pull request!
 [7]: https://github.com/kevupton/auto-swagger-ui
 [8]: https://github.com/DerManoMann/openapi-router
 [9]: https://github.com/DerManoMann/openapi-verifier
+[10]: https://github.com/Mermade/openapi-filter
