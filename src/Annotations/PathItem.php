@@ -16,6 +16,13 @@ namespace OpenApi\Annotations;
 class PathItem extends AbstractAnnotation
 {
     /**
+     * $ref See https://swagger.io/docs/specification/using-ref/
+     *
+     * @var string
+     */
+    public $ref = UNDEFINED;
+
+    /**
      * key for the Path Object (OpenApi->paths array).
      *
      * @var string
