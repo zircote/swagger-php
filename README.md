@@ -11,7 +11,7 @@ Generate interactive [OpenAPI](https://www.openapis.org) documentation for your 
 - Compatible with the OpenAPI 3.0 specification.
 - Extracts information from code & existing phpdoc annotations.
 - Command-line interface available.
-- [Documentation site](http://zircote.com/swagger-php/) with a getting started guide.
+- [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Exceptional error reporting (with hints, context)
 
 ## Installation (with [Composer](https://getcomposer.org))
@@ -43,7 +43,7 @@ Add annotations to your php files.
  */
 ```
 
-Visit the [Documentation website](http://zircote.com/swagger-php/) for the [Getting started guide](http://zircote.com/swagger-php/Getting-started.html) or look at the [Examples directory](Examples/) for more examples.
+Visit the [Documentation website](https://zircote.github.io/swagger-php/) for the [Getting started guide](https://zircote.github.io/swagger-php/Getting-started.html) or look at the [Examples directory](Examples/) for more examples.
 
 ### Usage from php
 
