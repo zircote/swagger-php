@@ -67,6 +67,7 @@ class Info extends AbstractAnnotation
      */
     public static $_types = [
         'title' => 'string',
+        'version' => 'string',
         'description' => 'string',
         'termsOfService' => 'string'
     ];

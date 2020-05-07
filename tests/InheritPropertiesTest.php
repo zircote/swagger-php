@@ -40,7 +40,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process(new InheritProperties());
         $this->assertCount(3, $childSchema->properties);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
@@ -74,7 +74,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process(new InheritProperties());
         $this->assertCount(1, $childSchema->properties);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
@@ -114,7 +114,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(UNDEFINED, $includeSchemaWithRef->properties);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => "1.0.0"]);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
@@ -152,7 +152,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }
@@ -196,7 +196,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertCount(1, $nestedSchema->properties);
         $this->assertEquals($nestedSchema->properties[0]->property, 'nestedProperty');
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => 1]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
     }

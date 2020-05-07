@@ -342,7 +342,7 @@ The specification allows for [custom properties](http://swagger.io/specification
 /**
  * @OA\Info(
  *   title="Example",
- *   version=1,
+ *   version="1.0.0",
  *   x={
  *     "some-name": "a-value",
  *     "another": 2,
