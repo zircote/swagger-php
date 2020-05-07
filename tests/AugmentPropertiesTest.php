@@ -19,15 +19,6 @@ use const OpenApi\UNDEFINED;
  */
 class AugmentPropertiesTest extends OpenApiTestCase
 {
-    const KEY_PROPERTY = 'property';
-    const KEY_REFERENCE = 'ref';
-    const KEY_ITEMS = 'items';
-    const KEY_EXAMPLE = 'example';
-    const KEY_DESCRIPTION = 'description';
-    const KEY_FORMAT = 'format';
-    const KEY_TYPE = 'type';
-    const KEY_NULLABLE = 'nullable';
-
     public function testAugmentProperties()
     {
         $analyser = new StaticAnalyser();
@@ -72,45 +63,45 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $analysis->process(new AugmentProperties());
 
         $expectedValues = [
-            self::KEY_PROPERTY => 'firstname',
-            self::KEY_EXAMPLE => 'John',
-            self::KEY_DESCRIPTION => 'The first name of the customer.',
-            self::KEY_TYPE => 'string',
+            'property' => 'firstname',
+            'example' => 'John',
+            'description' => 'The first name of the customer.',
+            'type' => 'string',
         ];
         $this->assertName($firstName, $expectedValues);
 
         $expectedValues = [
-            self::KEY_PROPERTY => 'secondname',
-            self::KEY_EXAMPLE => 'Allan',
-            self::KEY_DESCRIPTION => 'The second name of the customer.',
-            self::KEY_TYPE => 'string',
-            self::KEY_NULLABLE => true,
+            'property' => 'secondname',
+            'example' => 'Allan',
+            'description' => 'The second name of the customer.',
+            'type' => 'string',
+            'nullable' => true,
         ];
         $this->assertName($secondName, $expectedValues);
 
         $expectedValues = [
-            self::KEY_PROPERTY => 'thirdname',
-            self::KEY_EXAMPLE => 'Peter',
-            self::KEY_DESCRIPTION => 'The third name of the customer.',
-            self::KEY_TYPE => 'string',
-            self::KEY_NULLABLE => true,
+            'property' => 'thirdname',
+            'example' => 'Peter',
+            'description' => 'The third name of the customer.',
+            'type' => 'string',
+            'nullable' => true,
         ];
         $this->assertName($thirdName, $expectedValues);
 
         $expectedValues = [
-            self::KEY_PROPERTY => 'fourthname',
-            self::KEY_EXAMPLE => 'Unknown',
-            self::KEY_DESCRIPTION => 'The unknown name of the customer.',
-            self::KEY_TYPE => '@OA\UNDEFINED🙈',
-            self::KEY_NULLABLE => true,
+            'property' => 'fourthname',
+            'example' => 'Unknown',
+            'description' => 'The unknown name of the customer.',
+            'type' => UNDEFINED,
+            'nullable' => true,
         ];
         $this->assertName($fourthName, $expectedValues);
 
         $expectedValues = [
-            self::KEY_PROPERTY => 'lastname',
-            self::KEY_EXAMPLE => '@OA\UNDEFINED🙈',
-            self::KEY_DESCRIPTION => 'The lastname of the customer.',
-            self::KEY_TYPE => 'string',
+            'property' => 'lastname',
+            'example' => UNDEFINED,
+            'description' => 'The lastname of the customer.',
+            'type' => 'string',
         ];
         $this->assertName($lastName, $expectedValues);
 
@@ -158,153 +149,153 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($intType, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($nullableString, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($arrayType, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($dateTime, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($qualified, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($namespace, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($importedNamespace, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($nativeTrumpsVar, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($annotationTrumpsNative, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'integer',
+            'property' => UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($annotationTrumpsAll, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'integer',
+            'property' => UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($undefined, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($onlyAnnotated, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => 'integer',
+            'property' => UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($onlyVar, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($staticUndefined, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($staticString, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
         $this->assertName($staticNullableString, [
-            self::KEY_PROPERTY => UNDEFINED,
-            self::KEY_TYPE => UNDEFINED,
+            'property' => UNDEFINED,
+            'type' => UNDEFINED,
         ]);
 
         $analysis->process(new AugmentProperties());
 
         $this->assertName($stringType, [
-            self::KEY_PROPERTY => 'stringType',
-            self::KEY_TYPE => 'string',
+            'property' => 'stringType',
+            'type' => 'string',
         ]);
         $this->assertName($intType, [
-            self::KEY_PROPERTY => 'intType',
-            self::KEY_TYPE => 'integer',
+            'property' => 'intType',
+            'type' => 'integer',
         ]);
         $this->assertName($nullableString, [
-            self::KEY_PROPERTY => 'nullableString',
-            self::KEY_TYPE => 'string',
+            'property' => 'nullableString',
+            'type' => 'string',
         ]);
         $this->assertName($arrayType, [
-            self::KEY_PROPERTY => 'arrayType',
-            self::KEY_TYPE => 'array',
+            'property' => 'arrayType',
+            'type' => 'array',
         ]);
         $this->assertObjectHasAttribute(
-            self::KEY_REFERENCE,
-            $arrayType->{self::KEY_ITEMS}
+            'ref',
+            $arrayType->items
         );
         $this->assertEquals(
             '#/components/schemas/TypedProperties',
-            $arrayType->{self::KEY_ITEMS}->{self::KEY_REFERENCE}
+            $arrayType->items->ref
         );
         $this->assertName($dateTime, [
-            self::KEY_PROPERTY => 'dateTime',
-            self::KEY_TYPE => 'string',
-            self::KEY_FORMAT => 'date-time',
+            'property' => 'dateTime',
+            'type' => 'string',
+            'format' => 'date-time',
         ]);
         $this->assertName($qualified, [
-            self::KEY_PROPERTY => 'qualified',
-            self::KEY_TYPE => 'string',
-            self::KEY_FORMAT => 'date-time',
+            'property' => 'qualified',
+            'type' => 'string',
+            'format' => 'date-time',
         ]);
         $this->assertName($namespace, [
-            self::KEY_PROPERTY => 'namespace',
-            self::KEY_REFERENCE => '#/components/schemas/TypedProperties',
+            'property' => 'namespace',
+            'ref' => '#/components/schemas/TypedProperties',
         ]);
         $this->assertName($importedNamespace, [
-            self::KEY_PROPERTY => 'importedNamespace',
-            self::KEY_REFERENCE => '#/components/schemas/TypedProperties',
+            'property' => 'importedNamespace',
+            'ref' => '#/components/schemas/TypedProperties',
         ]);
         $this->assertName($nativeTrumpsVar, [
-            self::KEY_PROPERTY => 'nativeTrumpsVar',
-            self::KEY_TYPE => 'string',
+            'property' => 'nativeTrumpsVar',
+            'type' => 'string',
         ]);
         $this->assertName($annotationTrumpsNative, [
-            self::KEY_PROPERTY => 'annotationTrumpsNative',
-            self::KEY_TYPE => 'integer',
+            'property' => 'annotationTrumpsNative',
+            'type' => 'integer',
         ]);
         $this->assertName($annotationTrumpsAll, [
-            self::KEY_PROPERTY => 'annotationTrumpsAll',
-            self::KEY_TYPE => 'integer',
+            'property' => 'annotationTrumpsAll',
+            'type' => 'integer',
         ]);
         $this->assertName($undefined, [
-            self::KEY_PROPERTY => 'undefined',
-            self::KEY_TYPE => UNDEFINED,
+            'property' => 'undefined',
+            'type' => UNDEFINED,
         ]);
         $this->assertName($onlyAnnotated, [
-            self::KEY_PROPERTY => 'onlyAnnotated',
-            self::KEY_TYPE => 'integer',
+            'property' => 'onlyAnnotated',
+            'type' => 'integer',
         ]);
         $this->assertName($onlyVar, [
-            self::KEY_PROPERTY => 'onlyVar',
-            self::KEY_TYPE => 'integer',
+            'property' => 'onlyVar',
+            'type' => 'integer',
         ]);
         $this->assertName($staticUndefined, [
-            self::KEY_PROPERTY => 'staticUndefined',
-            self::KEY_TYPE => UNDEFINED,
+            'property' => 'staticUndefined',
+            'type' => UNDEFINED,
         ]);
         $this->assertName($staticString, [
-            self::KEY_PROPERTY => 'staticString',
-            self::KEY_TYPE => 'string',
+            'property' => 'staticString',
+            'type' => 'string',
         ]);
         $this->assertName($staticNullableString, [
-            self::KEY_PROPERTY => 'staticNullableString',
-            self::KEY_TYPE => 'string',
+            'property' => 'staticNullableString',
+            'type' => 'string',
         ]);
     }
 
