@@ -4,9 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
 
 use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 
 class ItemsTest extends OpenApiTestCase
 {
@@ -35,8 +36,9 @@ class ItemsTest extends OpenApiTestCase
     public function testRefDefinitionInProperty()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/UsingVar.php');
+        $analysis = $analyser->fromFile($this->fixtures('UsingVar.php')[0]);
         $analysis->process();
+
         $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);
         $this->assertIsArray($analysis->openapi->components->schemas[0]->properties);

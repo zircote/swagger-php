@@ -4,21 +4,20 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
 
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class NestedPropertyTest extends OpenApiTestCase
 {
     public function testNestedProperties()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/NestedProperty.php');
+        $analysis = $this->analysisFromFixtures('NestedProperty.php');
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());

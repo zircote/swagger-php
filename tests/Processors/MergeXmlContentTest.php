@@ -4,20 +4,21 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Response;
-use OpenApi\Processors\MergeJsonContent;
+use OpenApi\Processors\MergeXmlContent;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
-class MergeJsonContentTest extends OpenApiTestCase
+class MergeXmlContentTest extends OpenApiTestCase
 {
-    public function testJsonContent()
+    public function testXmlContent()
     {
         $comment = <<<END
         @OA\Response(response=200,
-            @OA\JsonContent(type="array",
+            @OA\XmlContent(type="array",
                 @OA\Items(ref="#/components/schemas/repository")
             )
         )
@@ -27,11 +28,11 @@ END;
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertSame(UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process(new MergeXmlContent());
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
-        $this->assertSame('#/components/schemas/repository', $json['content']['application/json']['schema']['items']['$ref']);
+        $this->assertSame('#/components/schemas/repository', $json['content']['application/xml']['schema']['items']['$ref']);
     }
 
     public function testMultipleMediaTypes()
@@ -39,7 +40,7 @@ END;
         $comment = <<<END
         @OA\Response(response=200,
             @OA\MediaType(mediaType="image/png"),
-            @OA\JsonContent(type="array",
+            @OA\XmlContent(type="array",
                 @OA\Items(ref="#/components/schemas/repository")
             )
         )
@@ -47,7 +48,7 @@ END;
         $analysis = new Analysis($this->parseComment($comment));
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertCount(1, $response->content);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process(new MergeXmlContent());
         $this->assertCount(2, $response->content);
     }
 }

@@ -4,18 +4,18 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
 
 use OpenApi\Annotations\AbstractAnnotation;
-use const OpenApi\UNDEFINED;
+use OpenApiTests\OpenApiTestCase;
 use function get_class_vars;
 
-class UndefinedTest extends OpenApiTestCase
+class AnnotationPropertiesDefinedTest extends OpenApiTestCase
 {
     /**
-     * @dataProvider allAnnotations
+     * @dataProvider allAnnotationClasses
      */
-    public function testDefaultPropertiesAreUndefined($annotation)
+    public function testPropertiesAreNotUndefined($annotation)
     {
         $properties = get_class_vars($annotation);
         $skip = AbstractAnnotation::$_blacklist;
@@ -24,7 +24,7 @@ class UndefinedTest extends OpenApiTestCase
                 continue;
             }
             if ($value === null) {
-                $this->fail("Property ".basename($annotation).'->'.$property.' should be UNDEFINED');
+                $this->fail("Property ".basename($annotation).'->'.$property.' should be DEFINED');
             }
         }
     }

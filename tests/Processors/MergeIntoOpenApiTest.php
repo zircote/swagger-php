@@ -4,12 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class MergeIntoOpenApiTest extends OpenApiTestCase

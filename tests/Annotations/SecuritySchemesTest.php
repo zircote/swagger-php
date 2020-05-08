@@ -4,12 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
 
 use OpenApi\Analyser;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Annotations\Server;
+use OpenApiTests\OpenApiTestCase;
 
 /**
  * Class SecuritySchemesTest
