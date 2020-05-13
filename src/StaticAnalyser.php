@@ -305,6 +305,9 @@ class StaticAnalyser
                     if ($alias == $target && $classDefinition) {
                         $classDefinition['traits'][] = $alias;
                     }
+                    if ($alias == $target && $traitDefinition) {
+                        $traitDefinition['traits'][] = $alias;
+                    }
 
                     if (Analyser::$whitelist === false) {
                         $imports[strtolower($alias)] = $target;
