@@ -1,0 +1,49 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Example of using traits in swagger-php",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "\/products": {},
+    "\/products\/{product_id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "UsingTraits\\ProductController::getProduct",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "": {
+        "title": "Colour trait",
+        "description": "Colour trait",
+        "type": "object"
+      },
+      "Product": {
+        "title": "Product model",
+        "description": "Product model",
+        "properties": {
+          "colour": {
+            "description": "The colour.",
+            "example": "red"
+          },
+          "id": {
+            "description": "The unique identifier of a product in our catalog.",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}
