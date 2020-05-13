@@ -3,11 +3,7 @@
 namespace UsingTraits;
 
 /**
- * @OA\Schema(
- *     description="Colour trait",
- *     type="object",
- *     title="Colour trait"
- * )
+ * @OA\Schema(title="Colour trait")
  */
 trait Colour {
 

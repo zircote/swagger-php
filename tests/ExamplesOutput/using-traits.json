@@ -5,7 +5,19 @@
     "version": "1.0.0"
   },
   "paths": {
-    "\/products": {},
+    "\/entities\/{id}": {
+      "delete": {
+        "tags": [
+          "Entities"
+        ],
+        "operationId": "UsingTraits\\DeleteEntity::deleteEntity",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
     "\/products\/{product_id}": {
       "get": {
         "tags": [
@@ -23,39 +35,35 @@
   "components": {
     "schemas": {
       "Bells": {
-        "title": "Bells trait",
-        "description": "Bells trait",
+        "title": "Bells trait"
+      },
+      "BellsAndWhistles": {
+        "title": "Bells and Whistles trait"
+      },
+      "Colour": {
+        "title": "Colour trait"
+      },
+      "DeleteEntity": {
+        "title": "Delete entity trait"
+      },
+      "Product": {
+        "title": "Product model",
         "properties": {
           "bell": {
             "description": "The bell.",
             "example": "chime"
-          }
-        },
-        "type": "object"
-      },
-      "BellsAndWhistles": {
-        "title": "Bells and Whistles trait",
-        "description": "Bells and Whistles trait",
-        "properties": {
+          },
           "plating": {
             "description": "The plating.",
             "example": "gold"
-          }
-        },
-        "type": "object"
-      },
-      "Colour": {
-        "title": "Colour trait",
-        "description": "Colour trait",
-        "type": "object"
-      },
-      "Product": {
-        "title": "Product model",
-        "description": "Product model",
-        "properties": {
+          },
           "colour": {
             "description": "The colour.",
             "example": "red"
+          },
+          "whistle": {
+            "description": "The bell.",
+            "example": "bone whistle"
           },
           "id": {
             "description": "The unique identifier of a product in our catalog.",
@@ -66,16 +74,24 @@
         },
         "type": "object"
       },
-      "Whistles": {
-        "title": "Whistles trait",
-        "description": "Whistles trait",
+      "SimpleProduct": {
+        "title": "SimpleProduct model",
         "properties": {
-          "whistle": {
+          "bell": {
             "description": "The bell.",
-            "example": "bone whistle"
+            "example": "chime"
+          },
+          "id": {
+            "description": "The unique identifier of a simple product in our catalog.",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
           }
         },
         "type": "object"
+      },
+      "Whistles": {
+        "title": "Whistles trait"
       }
     }
   }

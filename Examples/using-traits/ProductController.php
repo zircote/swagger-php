@@ -3,10 +3,11 @@
 namespace UsingTraits;
 
 /**
- * @OA\PathItem(path="/products")
+ * A controller.
  */
 class ProductController
 {
+    use DeleteEntity;
 
     /**
      * @OA\Get(

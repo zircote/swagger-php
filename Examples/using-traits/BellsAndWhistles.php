@@ -3,11 +3,7 @@
 namespace UsingTraits;
 
 /**
- * @OA\Schema(
- *     description="Bells and Whistles trait",
- *     type="object",
- *     title="Bells and Whistles trait"
- * )
+ * @OA\Schema(title="Bells and Whistles trait")
  */
 trait BellsAndWhistles {
     use Bells, Whistles;

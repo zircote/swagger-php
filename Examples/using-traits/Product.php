@@ -3,14 +3,10 @@
 namespace UsingTraits;
 
 /**
- * @OA\Schema(
- *     description="Product model",
- *     type="object",
- *     title="Product model"
- * )
+ * @OA\Schema(title="Product model")
  */
 class Product {
-    use Colour;
+    use Colour, BellsAndWhistles;
 
     /**
      * The unique identifier of a product in our catalog.
