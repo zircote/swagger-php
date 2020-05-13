@@ -297,21 +297,17 @@ class Context
      */
     public function fullyQualifiedName($class)
     {
+        if ($class === null) {
+            return '';
+        }
+
         if ($this->namespace) {
             $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
         } else {
             $namespace = '\\'; // global namespace
         }
 
-        if ($this->class === null) {
-            $this->class = '';
-        }
-
-        if ($class === null) {
-            return '';
-        }
-
-        if (strcasecmp($class, $this->class) === 0) {
+        if ($this->class !== null && strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;
         }
         $pos = strpos($class, '\\');
