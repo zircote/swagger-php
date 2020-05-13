@@ -22,7 +22,29 @@
   },
   "components": {
     "schemas": {
-      "": {
+      "Bells": {
+        "title": "Bells trait",
+        "description": "Bells trait",
+        "properties": {
+          "bell": {
+            "description": "The bell.",
+            "example": "chime"
+          }
+        },
+        "type": "object"
+      },
+      "BellsAndWhistles": {
+        "title": "Bells and Whistles trait",
+        "description": "Bells and Whistles trait",
+        "properties": {
+          "plating": {
+            "description": "The plating.",
+            "example": "gold"
+          }
+        },
+        "type": "object"
+      },
+      "Colour": {
         "title": "Colour trait",
         "description": "Colour trait",
         "type": "object"
@@ -40,6 +62,17 @@
             "type": "integer",
             "format": "int64",
             "example": 1
+          }
+        },
+        "type": "object"
+      },
+      "Whistles": {
+        "title": "Whistles trait",
+        "description": "Whistles trait",
+        "properties": {
+          "whistle": {
+            "description": "The bell.",
+            "example": "bone whistle"
           }
         },
         "type": "object"
