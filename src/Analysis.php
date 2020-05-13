@@ -294,9 +294,27 @@ class Analysis
         if (!$classDefinition || empty($classDefinition['traits'])) {
             return $definitions;
         }
+        // direct class traits
         $classTraits = $classDefinition['traits'];
+
+        // expand recursively (traits using other traits...)
+        $traitsForTrait = function ($classTraits, $cb) {
+            $traits = $classTraits;
+            foreach ($this->traits as $trait) {
+                foreach ($classTraits as $name) {
+                    if ($trait['trait'] === $name && array_key_exists('traits', $trait)) {
+                        $traits = array_merge($traits, $cb($trait['traits'], $cb));
+                    }
+                }
+            }
+
+            return $traits;
+        };
+        $classTraits = $traitsForTrait($classTraits, $traitsForTrait);
+        $classTraits = array_unique($classTraits);
+
         foreach ($this->traits as $trait) {
-            foreach ($classTraits as $classTrait => $name) {
+            foreach ($classTraits as $name) {
                 if ($trait['trait'] === $name) {
                     $traitDefinition[$name] = $trait;
                     $definitions = array_merge($definitions, $traitDefinition);
