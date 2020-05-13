@@ -2,9 +2,7 @@
 
 namespace OpenApi\Processors;
 
-use OpenApi\Analyser;
 use OpenApi\Annotations\Property;
-use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Definition;
 use OpenApi\Annotations\Schema;
 use OpenApi\Analysis;
@@ -25,8 +23,8 @@ class ImportTraits
                             continue;
                         }
                         foreach ($property->annotations as $annotation) {
-                            if ($annotation instanceof Property && in_array($annotation->property, $existing) === false) {
-                                $existing[] = $annotation->property;
+                            if ($annotation instanceof Property && in_array($annotation->_context->property, $existing) === false) {
+                                $existing[] = $annotation->_context->property;
                                 $schema->merge([$annotation], true);
                             }
                         }
