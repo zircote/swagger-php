@@ -6,6 +6,8 @@
 
 namespace OpenApiTests;
 
+use OpenApi\Logger;
+
 class ExamplesTest extends OpenApiTestCase
 {
 
@@ -19,8 +21,11 @@ class ExamplesTest extends OpenApiTestCase
      */
     public function testExample($example, $output)
     {
+        if ('using-traits' == $example) {
+            // TODO: handle gracefully
+            $this->assertOpenApiLogEntryStartsWith('Multiple @OA\Property() with the same property="bell"');
+        }
         $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
-        //echo json_encode($openapi);
         $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }
 
