@@ -7,6 +7,7 @@
 namespace OpenApiTests;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Response;
 use OpenApi\Processors\MergeXmlContent;
 use const OpenApi\UNDEFINED;
@@ -49,5 +50,28 @@ END;
         $this->assertCount(1, $response->content);
         $analysis->process(new MergeXmlContent());
         $this->assertCount(2, $response->content);
+    }
+
+
+    public function testParameter()
+    {
+        $comment = <<<END
+        @OA\Parameter(name="filter",in="query", @OA\XmlContent(
+            @OA\Property(property="type", type="string"),
+            @OA\Property(property="color", type="string"),
+        ))
+END;
+        $analysis = new Analysis($this->parseComment($comment));
+        $this->assertCount(4, $analysis->annotations);
+        $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
+        $this->assertSame(UNDEFINED, $parameter->content);
+        $this->assertCount(1, $parameter->_unmerged);
+        $analysis->process(new MergeXmlContent());
+        $this->assertCount(1, $parameter->content);
+        $this->assertCount(0, $parameter->_unmerged);
+        $json = json_decode(json_encode($parameter), true);
+        $this->assertSame('query', $json['in']);
+        $this->assertSame('application/xml', array_keys($json['content'])[0]);
+        $this->assertSame('application/xml', $json['content']['application/xml']['mediaType']);
     }
 }

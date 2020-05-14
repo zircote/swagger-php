@@ -7,11 +7,13 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Annotations\MediaType;
+use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Analysis;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
+use OpenApi\Logger;
 
 /**
  * Split XmlContent into Schema and MediaType
