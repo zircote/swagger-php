@@ -54,7 +54,7 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleMappings
      */
-    public function testExamples($example, $output, array $processors)
+    public function testExamples($example, $spec, array $processors)
     {
         Logger::getInstance()->log = function ($entry, $type) {
             // ignore
@@ -63,7 +63,8 @@ class ExamplesTest extends OpenApiTestCase
         if ($processors) {
             $options['processors'] = $processors;
         }
-        $openapi = \OpenApi\scan(__DIR__ . '/../Examples/' . $example, $options);
-        $this->assertOpenApiEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $openapi);
+        $path = __DIR__ . '/../Examples/' . $example;
+        $openapi = \OpenApi\scan($path, $options);
+        $this->assertOpenApiEqualsFile($path . '/' . $spec, $openapi);
     }
 }
