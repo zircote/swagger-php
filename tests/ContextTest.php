@@ -41,6 +41,28 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('\OpenApi\Annotations\QualifiedAlias', $context->fullyQualifiedName('OA\QualifiedAlias'));
     }
 
+    public function testFullyQualifiedNameInterface()
+    {
+        $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/UserInterface.php');
+        $context = $openapi->components->schemas[0]->_context;
+        $this->assertSame('\OpenApiTests\Fixtures\UserInterface', $context->fullyQualifiedName('UserInterface'));
+
+        $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
+        $openapi = \OpenApi\scan([__DIR__.'/Fixtures/User.php', __DIR__.'/Fixtures/UserInterface.php']);
+        $context = $openapi->components->schemas[0]->_context;
+        $this->assertSame('\OpenApiTests\Fixtures\UserInterface', $context->fullyQualifiedName('UserInterface'));
+    }
+
+    public function testFullyQualifiedNameTrait()
+    {
+        $this->assertOpenApiLogEntryStartsWith('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
+        $openapi = \OpenApi\scan([__DIR__.'/Fixtures/User.php', __DIR__.'/Fixtures/HelloTrait.php']);
+        $context = $openapi->components->schemas[0]->_context;
+        $this->assertSame('\OpenApiTests\Fixtures\Hello', $context->fullyQualifiedName('Hello'));
+    }
+
     public function testPhpdocContent()
     {
         $singleLine = new Context(['comment' => <<<END

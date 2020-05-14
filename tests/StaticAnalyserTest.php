@@ -33,7 +33,7 @@ class StaticAnalyserTest extends OpenApiTestCase
         $analysis = $analyser->fromFile(__DIR__.'/Fixtures/HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType(Property::class);
-        $this->assertSame('Hello', $property[0]->_context->trait);
+        $this->assertSame('HelloTrait', $property[0]->_context->trait);
     }
 
     public function testThirdPartyAnnotations()

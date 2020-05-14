@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiFixures;
+namespace OpenApiTests\Fixtures;
 
 /**
  * @OA\Schema(schema="trait")
  */
-trait Hello
+trait HelloTrait
 {
 
     /**
