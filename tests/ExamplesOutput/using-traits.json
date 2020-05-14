@@ -40,6 +40,9 @@
       "BellsAndWhistles": {
         "title": "Bells and Whistles trait"
       },
+      "Blink": {
+        "title": "Blink trait"
+      },
       "Colour": {
         "title": "Colour trait"
       },
@@ -89,6 +92,31 @@
           }
         },
         "type": "object"
+      },
+      "TrickyProduct": {
+        "allOf": [
+          {
+            "$ref": "#\/components\/schemas\/SimpleProduct"
+          },
+          {
+            "title": "TrickyProduct model",
+            "properties": {
+              "bell": {
+                "description": "The bell.",
+                "example": "chime"
+              },
+              "frequency": {
+                "description": "The frequency.",
+                "example": 1
+              },
+              "trick": {
+                "description": "The trick.",
+                "example": "recite poem"
+              }
+            },
+            "type": "object"
+          }
+        ]
       },
       "Whistles": {
         "title": "Whistles trait"

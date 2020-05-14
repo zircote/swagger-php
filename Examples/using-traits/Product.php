@@ -15,4 +15,11 @@ class Product {
      * @OA\Property(format="int64", example=1)
      */
     public $id;
+
+    /**
+     * The product bell.
+     *
+     * @OA\Property(example="gong")
+     */
+    public $bell;
 }
