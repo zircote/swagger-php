@@ -1,6 +1,6 @@
 <?php
 
-namespace UsingTraits;
+namespace UsingTraits\Decoration;
 
 /**
  * @OA\Schema(title="Whistles trait")

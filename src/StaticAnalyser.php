@@ -301,11 +301,11 @@ class StaticAnalyser
 
                     $parseContext->uses[$alias] = $target;
 
-                    // i'm in the case use trait
-                    if ($alias == $target && $classDefinition) {
+                    if ($classDefinition) {
+                        // inside a class definition
                         $classDefinition['traits'][] = $alias;
-                    }
-                    if ($alias == $target && $traitDefinition) {
+                    } elseif ($traitDefinition) {
+                        // inside a trait definition
                         $traitDefinition['traits'][] = $alias;
                     }
 

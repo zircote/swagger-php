@@ -6,7 +6,7 @@ namespace UsingTraits;
  * @OA\Schema(title="Product model")
  */
 class Product {
-    use Colour; // \UsingTraits\Colour;
+    use \UsingTraits\Colour;
     use BellsAndWhistles;
 
     /**
