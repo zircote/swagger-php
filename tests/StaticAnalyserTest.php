@@ -17,20 +17,18 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $analyser = new StaticAnalyser();
         $this->assertOpenApiLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context([]));
+        $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context());
     }
 
     public function testIndentationCorrection()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/routes.php');
+        $analysis = $this->analysisFromFixtures('routes.php');
         $this->assertCount(20, $analysis->annotations);
     }
 
     public function testTrait()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/HelloTrait.php');
+        $analysis = $this->analysisFromFixtures('HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType(Property::class);
         $this->assertSame('HelloTrait', $property[0]->_context->trait);
@@ -43,6 +41,7 @@ class StaticAnalyserTest extends OpenApiTestCase
         $analyser = new StaticAnalyser();
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
+
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'Zend\Form\Annotation';
@@ -63,7 +62,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new StaticAnalyser(__DIR__.'/Fixtures/php7.php');
+            $analyser = new StaticAnalyser($this->fixtures('php7.php')[0]);
             $this->assertNotNull($analyser);
         } catch (\Throwable $t) {
             $this->fail("Analyser produced an error: {$t->getMessage()}");
@@ -73,8 +72,8 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testClassNamespaces()
     {
         try {
-            $analyser = new StaticAnalyser(__DIR__.'/Fixtures/User.php');
-            $this->assertNotNull($analyser);
+            $analysis = $this->analysisFromFixtures('User.php');
+            $this->assertNotNull($analysis);
         } catch (\Throwable $t) {
             $this->fail("Analyser produced an error: {$t->getMessage()}");
         }

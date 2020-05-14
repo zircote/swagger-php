@@ -25,6 +25,7 @@ class ExamplesTest extends OpenApiTestCase
             $this->assertOpenApiLogEntryStartsWith($logEntry);
         }
         $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
+        echo json_encode($openapi);
         $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }
 
@@ -46,6 +47,7 @@ class ExamplesTest extends OpenApiTestCase
             ['using-refs', 'using-refs.json', []],
             ['example-object', 'example-object.json', []],
             ['using-traits', 'using-traits.json', ['Multiple @OA\Property() with the same property="bell"']],
+            ['using-interfaces', 'using-interfaces.json', []],
         ];
     }
 }
