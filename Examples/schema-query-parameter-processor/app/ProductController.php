@@ -24,6 +24,8 @@ class ProductController
     }
 
     /**
+     * Controller that takes all `Product` properties as query parameter.
+     *
      * @OA\Get(
      *   tags={"Products"},
      *   path="/products/search",

@@ -37,8 +37,8 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     private function compareOutput($actual)
     {
-        $expected = json_decode(file_get_contents(__DIR__.'/ExamplesOutput/petstore-simple.json'));
-        $expectedJson = json_encode($this->sorted($expected, 'petstore-simple.json'), JSON_PRETTY_PRINT);
+        $expected = json_decode(file_get_contents(__DIR__ . '/../Examples/swagger-spec/petstore-simple/petstore-simple.json'));
+        $expectedJson = json_encode($this->sorted($expected, 'petstore-simple/petstore-simple.json'), JSON_PRETTY_PRINT);
         $actualJson = json_encode($this->sorted($actual, 'Swagger CLI'), JSON_PRETTY_PRINT);
         $this->assertEquals($expectedJson, $actualJson);
     }

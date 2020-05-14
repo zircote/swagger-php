@@ -10,7 +10,7 @@ use OpenApi\Annotations\Schema;
 use const OpenApi\UNDEFINED;
 
 /**
- * Custom processor to translate the vendor tag `` into query parameter annotations.
+ * Custom processor to translate the vendor tag `query-args-$ref` into query parameter annotations.
  *
  * Details for the parameters are taken from the referenced schema.
  */
