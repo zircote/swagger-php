@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Annotations\Property;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 /**
@@ -21,8 +21,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis = $this->analysisFromFixtures('Customer.php');
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());
@@ -123,8 +122,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/TypedProperties.php');
+        $analysis = $this->analysisFromFixtures('TypedProperties.php');
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new MergeIntoComponents());
         $analysis->process(new AugmentSchemas());

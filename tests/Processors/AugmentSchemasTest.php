@@ -4,22 +4,22 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
+        $analysis = $this->analysisFromFixtures('Customer.php');
         $analysis->process(new MergeIntoOpenApi()); // create openapi->components
         $analysis->process(new MergeIntoComponents()); // Merge standalone Scheme's into openapi->components
+
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertSame(UNDEFINED, $customer->schema, 'Sanity check. No scheme was defined');
@@ -31,10 +31,10 @@ class AugmentSchemasTest extends OpenApiTestCase
 
     public function testAugmentSchemasForInterface()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/CustomerInterface.php');
+        $analysis = $this->analysisFromFixtures('CustomerInterface.php');
         $analysis->process(new MergeIntoOpenApi()); // create openapi->components
         $analysis->process(new MergeIntoComponents()); // Merge standalone Scheme's into openapi->components
+
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertSame(UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');

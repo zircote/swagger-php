@@ -4,19 +4,18 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Annotations\Operation;
 use OpenApi\Processors\AugmentOperations;
-use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class AugmentOperationTest extends OpenApiTestCase
 {
     public function testAugmentOperation()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/UsingPhpDoc.php');
+        $analysis = $this->analysisFromFixtures('UsingPhpDoc.php');
         $analysis->process(
             [
             new AugmentOperations(),

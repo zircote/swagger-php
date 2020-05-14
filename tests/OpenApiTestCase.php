@@ -9,6 +9,8 @@ namespace OpenApiTests;
 use Closure;
 use DirectoryIterator;
 use Exception;
+use OpenApi\Analysis;
+use OpenApi\StaticAnalyser;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use OpenApi\Analyser;
@@ -32,6 +34,36 @@ class OpenApiTestCase extends TestCase
      * @var Closure
      */
     private $originalLogger;
+
+    protected function setUp(): void
+    {
+        $this->expectedLogMessages = [];
+        $this->originalLogger = Logger::getInstance()->log;
+        Logger::getInstance()->log = function ($entry, $type) {
+            if (count($this->expectedLogMessages)) {
+                $assertion = array_shift($this->expectedLogMessages);
+                $assertion($entry, $type);
+            } else {
+                $map = [
+                    E_USER_NOTICE => 'notice',
+                    E_USER_WARNING => 'warning',
+                ];
+                if (isset($map[$type])) {
+                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
+                } else {
+                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
+                }
+            }
+        };
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
+        Logger::getInstance()->log = $this->originalLogger;
+        parent::tearDown();
+    }
 
     /**
      * @param string  $expectedFile  File containing the excepted json.
@@ -85,36 +117,6 @@ class OpenApiTestCase extends TestCase
             }
             $this->assertStringStartsWith($entryPrefix, $entry, $message);
         };
-    }
-
-    protected function setUp(): void
-    {
-        $this->expectedLogMessages = [];
-        $this->originalLogger = Logger::getInstance()->log;
-        Logger::getInstance()->log = function ($entry, $type) {
-            if (count($this->expectedLogMessages)) {
-                $assertion = array_shift($this->expectedLogMessages);
-                $assertion($entry, $type);
-            } else {
-                $map = [
-                    E_USER_NOTICE => 'notice',
-                    E_USER_WARNING => 'warning',
-                ];
-                if (isset($map[$type])) {
-                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
-                } else {
-                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
-                }
-            }
-        };
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
-        Logger::getInstance()->log = $this->originalLogger;
-        parent::tearDown();
     }
 
     /**
@@ -219,9 +221,34 @@ class OpenApiTestCase extends TestCase
         return (object)$data;
     }
 
-    public function allAnnotations()
+    /**
+     * Resolve fixture filenames.
+     *
+     * @param string|array $files One ore more files.
+     * @return array Resolved filenames for loading scanning etc.
+     */
+    public function fixtures($files): array
     {
-        $data = [];
+        return array_map(function ($file) {
+            return __DIR__ . '/Fixtures/' . $file;
+        }, (array)$files);
+    }
+
+    public function analysisFromFixtures($files): Analysis
+    {
+        $analyser = new StaticAnalyser();
+        $analysis = new Analysis();
+
+        foreach ((array) $files as $file) {
+            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0]));
+        }
+
+        return $analysis;
+    }
+
+    public function allAnnotationClasses()
+    {
+        $classes = [];
         $dir = new DirectoryIterator(__DIR__.'/../src/Annotations');
         foreach ($dir as $entry) {
             if ($entry->isFile() === false) {
@@ -231,8 +258,9 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['AbstractAnnotation','Operation'])) {
                 continue; // skip abstract classes
             }
-            $data[] = ['OpenApi\\Annotations\\'.$class];
+            $classes[] = ['OpenApi\\Annotations\\'.$class];
         }
-        return $data;
+
+        return $classes;
     }
 }

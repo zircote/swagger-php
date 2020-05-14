@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Processors;
 
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Info;
@@ -15,17 +15,20 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\StaticAnalyser;
+use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class InheritPropertiesTest extends OpenApiTestCase
 {
     public function testInheritProperties()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/GrandAncestor.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Ancestor.php'));
+        $analysis = $this->analysisFromFixtures(
+            [
+                'InheritProperties/Child.php',
+                'InheritProperties/GrandAncestor.php',
+                'InheritProperties/Ancestor.php'
+            ]
+        );
         $analysis->process(
             [
             new MergeIntoOpenApi(),
@@ -51,13 +54,14 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithoutDocBlocks()
     {
-        $analyser = new StaticAnalyser();
-
-        // this class has docblocks
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/ChildWithDocBlocks.php');
-        // this one doesn't
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/AncestorWithoutDocBlocks.php'));
-
+        $analysis = $this->analysisFromFixtures(
+            [
+                // this class has docblocks
+                'InheritProperties/ChildWithDocBlocks.php',
+                // this one doesn't
+                'InheritProperties/AncestorWithoutDocBlocks.php'
+            ]
+        );
         $analysis->process(
             [
             new MergeIntoOpenApi(),
@@ -84,11 +88,13 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithAllOf()
     {
-        $analyser = new StaticAnalyser();
-        // this class has all of
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/Extended.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/Base.php'));
-
+        $analysis = $this->analysisFromFixtures(
+            [
+                // this class has all of
+                'InheritProperties/Extended.php',
+                'InheritProperties/Base.php',
+            ]
+        );
         $analysis->process(
             [
                 new MergeIntoOpenApi(),
@@ -124,11 +130,13 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithOtAllOf()
     {
-        $analyser = new StaticAnalyser();
-        // this class has all of
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/ExtendedWithoutAllOf.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/Base.php'));
-
+        $analysis = $this->analysisFromFixtures(
+            [
+                // this class has all of
+                'InheritProperties/ExtendedWithoutAllOf.php',
+                'InheritProperties/Base.php',
+            ]
+        );
         $analysis->process(
             [
                 new MergeIntoOpenApi(),
@@ -162,11 +170,13 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWitTwoChildSchemas()
     {
-        $analyser = new StaticAnalyser();
-        // this class has all of
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/ExtendedWithTwoSchemas.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/InheritProperties/Base.php'));
-
+        $analysis = $this->analysisFromFixtures(
+            [
+                // this class has all of
+                'InheritProperties/ExtendedWithTwoSchemas.php',
+                'InheritProperties/Base.php',
+            ]
+        );
         $analysis->process(
             [
                 new MergeIntoOpenApi(),

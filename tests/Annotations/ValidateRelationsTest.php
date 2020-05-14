@@ -4,17 +4,19 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
+
+use OpenApiTests\OpenApiTestCase;
 
 /**
- * Test if the nesting/parent relations are coherent.
+ * Test if the annotation class nesting parent/child relations are coherent.
  */
 class ValidateRelationsTest extends OpenApiTestCase
 {
 
     /**
      *
-     * @dataProvider getAnnotationClasses
+     * @dataProvider allAnnotationClasses
      *
      * @param string $class
      */
@@ -36,7 +38,7 @@ class ValidateRelationsTest extends OpenApiTestCase
 
     /**
      *
-     * @dataProvider getAnnotationClasses
+     * @dataProvider allAnnotationClasses
      *
      * @param string $class
      */
@@ -54,25 +56,5 @@ class ValidateRelationsTest extends OpenApiTestCase
                 $this->fail($class.' not found in '.$nested."::\$parent. Found:\n  ".implode("\n  ", $nested::$_parents));
             }
         }
-    }
-
-    /**
-     * dataProvider for testExample
-     *
-     * @return array
-     */
-    public function getAnnotationClasses()
-    {
-        $classes = [];
-        $dir = new \DirectoryIterator(__DIR__.'/../src/Annotations');
-        foreach ($dir as $entry) {
-            if ($entry->getFilename() === 'AbstractAnnotation.php') {
-                continue;
-            }
-            if ($entry->getExtension() === 'php') {
-                $classes[] = ['OpenApi\Annotations\\'.substr($entry->getFilename(), 0, -4)];
-            }
-        }
-        return $classes;
     }
 }

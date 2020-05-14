@@ -4,7 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApiTests\Annotations;
+
+use OpenApiTests\OpenApiTestCase;
 
 class ResponseTest extends OpenApiTestCase
 {
