@@ -2,9 +2,12 @@
 
 namespace OpenApiTests\Fixtures;
 
-class User implements UserInterface
+use OpenApiTests\Fixtures\HelloTrait as Hello;
+use OpenApiTests\Fixtures\Sub\SubClass as ParentClass;
+
+class User extends ParentClass implements \OpenApiTests\Fixtures\UserInterface
 {
-    use \OpenApiTests\Fixtures\HelloTrait;
+    use Hello;
 
     /**
      * {@inheritDoc}

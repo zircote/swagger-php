@@ -64,9 +64,19 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         try {
             $analyser = new StaticAnalyser(__DIR__.'/Fixtures/php7.php');
-            $this->assertTrue(true);
-        } catch (\Exception $e) {
-            $this->fail("Analyser produced an error: {$e->getMessage()}");
+            $this->assertNotNull($analyser);
+        } catch (\Throwable $t) {
+            $this->fail("Analyser produced an error: {$t->getMessage()}");
+        }
+    }
+
+    public function testClassNamespaces()
+    {
+        try {
+            $analyser = new StaticAnalyser(__DIR__.'/Fixtures/User.php');
+            $this->assertNotNull($analyser);
+        } catch (\Throwable $t) {
+            $this->fail("Analyser produced an error: {$t->getMessage()}");
         }
     }
 }
