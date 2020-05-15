@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures;
+namespace OpenApiTests\Fixtures\Context;
 
 use OpenApi\Annotations as OA;
 
@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
  * @OA\Info(title="Fixture for Context interface test", version="test")
  * @OA\Schema()
  */
-interface UserInterface
+interface UserInterface extends OtherInterface
 {
 
     /**

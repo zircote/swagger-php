@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 // phpcs:ignoreFile (this file uses "\r\n" linebreaks on purpose)
-namespace OpenApiFixures;
+
+namespace OpenApiTests\Fixures;
 
 use Exception;
 use OpenApi\Annotations as OA;
@@ -8,7 +9,7 @@ use OpenApi\Logger;
 use OpenApi\Logger as OpenApiLogger;
 
 /**
- * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
+ * @OA\Info(title="Customer fixture", version="test")
  * @OA\Schema()
  */
 class Customer
@@ -78,14 +79,11 @@ class Customer
      */
     public $bestFriend;
 
-    /**
-     * for ContextTest
-     */
-    public function testResolvingFullyQualifiedNames()
+    public function fakeUseOfImportedClasses()
     {
-        $test = new OpenApiLogger();
-        $test2 = new Logger();
-        $test3 = new OA\Contact();
-        throw new Exception();
+        OpenApiLogger::getInstance();
+        Logger::getInstance();
+        new OA\Contact();
+        throw new Exception([]);
     }
 }

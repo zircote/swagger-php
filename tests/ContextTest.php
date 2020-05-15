@@ -26,15 +26,15 @@ class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName()
     {
         $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/Customer.php');
+        $openapi = \OpenApi\scan($this->fixtures('Customer.php'));
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
-        $this->assertSame('\OpenApiFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
-        $this->assertSame('\OpenApiFixures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
+        $this->assertSame('\OpenApiTests\Fixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
+        $this->assertSame('\OpenApiTests\Fixures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
         // respect use statements
         $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
-        $this->assertSame('\OpenApiFixures\Customer', $context->fullyQualifiedName('Customer'));
+        $this->assertSame('\OpenApiTests\Fixures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('Logger'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('OpenApiLogger'));
@@ -44,23 +44,23 @@ class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedNameInterface()
     {
         $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/UserInterface.php');
+        $openapi = \OpenApi\scan($this->fixtures('Context/UserInterface.php'));
         $context = $openapi->components->schemas[0]->_context;
-        $this->assertSame('\OpenApiTests\Fixtures\UserInterface', $context->fullyQualifiedName('UserInterface'));
+        $this->assertSame('\OpenApiTests\Fixtures\Context\UserInterface', $context->fullyQualifiedName('UserInterface'));
 
         $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan([__DIR__.'/Fixtures/User.php', __DIR__.'/Fixtures/UserInterface.php']);
+        $openapi = \OpenApi\scan([__DIR__ . '/Fixtures/Context/User.php', __DIR__ . '/Fixtures/Context/UserInterface.php']);
         $context = $openapi->components->schemas[0]->_context;
-        $this->assertSame('\OpenApiTests\Fixtures\UserInterface', $context->fullyQualifiedName('UserInterface'));
+        $this->assertSame('\OpenApiTests\Fixtures\Context\UserInterface', $context->fullyQualifiedName('UserInterface'));
     }
 
     public function testFullyQualifiedNameTrait()
     {
         $this->assertOpenApiLogEntryStartsWith('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryStartsWith('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan([__DIR__.'/Fixtures/User.php', __DIR__.'/Fixtures/HelloTrait.php']);
+        $openapi = \OpenApi\scan([__DIR__ . '/Fixtures/Context/User.php', __DIR__.'/Fixtures/Context/HelloTrait.php']);
         $context = $openapi->components->schemas[0]->_context;
-        $this->assertSame('\OpenApiTests\Fixtures\Hello', $context->fullyQualifiedName('Hello'));
+        $this->assertSame('\OpenApiTests\Fixtures\Context\HelloTrait', $context->fullyQualifiedName('HelloTrait'));
     }
 
     public function testPhpdocContent()

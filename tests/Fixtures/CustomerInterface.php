@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenApiFixures;
+namespace OpenApiTests\Fixures;
 
 use OpenApi\Annotations as OA;
 

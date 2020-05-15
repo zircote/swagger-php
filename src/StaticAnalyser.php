@@ -118,6 +118,9 @@ class StaticAnalyser
                     continue;
                 }
 
+                $interfaceDefinition = false;
+                $traitDefinition = false;
+
                 $schemaContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
@@ -144,6 +147,7 @@ class StaticAnalyser
             }
             if ($token[0] === T_INTERFACE) { // Doc-comment before an interface?
                 $classDefinition = false;
+                $traitDefinition = false;
                 $token = $this->nextToken($tokens, $parseContext);
                 $schemaContext = new Context(['interface' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($interfaceDefinition) {
@@ -171,6 +175,7 @@ class StaticAnalyser
             }
             if ($token[0] === T_TRAIT) {
                 $classDefinition = false;
+                $interfaceDefinition = false;
                 $token = $this->nextToken($tokens, $parseContext);
                 $schemaContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($traitDefinition) {
@@ -329,6 +334,9 @@ class StaticAnalyser
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
+        }
+        if ($interfaceDefinition) {
+            $analysis->addInterfaceDefinition($interfaceDefinition);
         }
         if ($traitDefinition) {
             $analysis->addTraitDefinition($traitDefinition);

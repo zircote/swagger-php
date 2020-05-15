@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiFixtures;
+namespace OpenApiTests\Fixures;
 
 /**
  * @OA\Info(title="Fixture for AugmentOperationTest", version="test")

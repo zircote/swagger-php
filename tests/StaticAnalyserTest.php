@@ -22,13 +22,13 @@ class StaticAnalyserTest extends OpenApiTestCase
 
     public function testIndentationCorrection()
     {
-        $analysis = $this->analysisFromFixtures('routes.php');
+        $analysis = $this->analysisFromFixtures('StaticAnalyser/routes.php');
         $this->assertCount(20, $analysis->annotations);
     }
 
     public function testTrait()
     {
-        $analysis = $this->analysisFromFixtures('HelloTrait.php');
+        $analysis = $this->analysisFromFixtures('StaticAnalyser/HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType(Property::class);
         $this->assertSame('HelloTrait', $property[0]->_context->trait);
@@ -55,27 +55,81 @@ class StaticAnalyserTest extends OpenApiTestCase
         $context = $analysis->getContext($annotations[0]);
         $this->assertInstanceOf('OpenApi\Context', $context);
         $this->assertSame('ThirdPartyAnnotations', $context->class);
-        $this->assertSame('\OpenApiFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
+        $this->assertSame('\OpenApiTests\Fixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
         $this->assertCount(2, $context->annotations);
     }
 
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new StaticAnalyser($this->fixtures('php7.php')[0]);
+            $analyser = new StaticAnalyser($this->fixtures('StaticAnalyser/php7.php')[0]);
             $this->assertNotNull($analyser);
         } catch (\Throwable $t) {
             $this->fail("Analyser produced an error: {$t->getMessage()}");
         }
     }
 
-    public function testClassNamespaces()
+    /**
+     * dataprovider
+     */
+    public function descriptions()
     {
-        try {
-            $analysis = $this->analysisFromFixtures('User.php');
-            $this->assertNotNull($analysis);
-        } catch (\Throwable $t) {
-            $this->fail("Analyser produced an error: {$t->getMessage()}");
+        return [
+            'class' => [
+                ['classes', 'class'],
+                'User',
+                'StaticAnalyser/User.php',
+                '\OpenApiTests\Fixtures\StaticAnalyser\User',
+                '\OpenApiTests\Fixtures\StaticAnalyser\Sub\SubClass',
+                ['getFirstName'],
+                null,
+                ['Hello'],
+            ],
+            'interface' => [
+                ['interfaces', 'interface'],
+                'UserInterface',
+                'StaticAnalyser/UserInterface.php',
+                '\OpenApiTests\Fixtures\StaticAnalyser\UserInterface',
+                '\OpenApiTests\Fixtures\StaticAnalyser\OtherInterface',
+                null,
+                null,
+                null,
+            ],
+            'trait' => [
+                ['traits', 'trait'],
+                'HelloTrait',
+                'StaticAnalyser/HelloTrait.php',
+                '\OpenApiTests\Fixtures\StaticAnalyser\HelloTrait',
+                null,
+                null,
+                null,
+                ['OtherTrait'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider descriptions
+     */
+    public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits)
+    {
+        $analysis = $this->analysisFromFixtures($fixture);
+
+        list ($pType, $sType) = $type;
+        $description = $analysis->$pType[$fqdn];
+
+        $this->assertSame($name, $description[$sType]);
+        if (null !== $extends) {
+            $this->assertSame($extends, $description['extends']);
+        }
+        if (null !== $methods) {
+            $this->assertSame($methods, array_keys($description['methods']));
+        }
+        if (null !== $interfaces) {
+            $this->assertSame($interfaces, $description['interfaces']);
+        }
+        if (null !== $traits) {
+            $this->assertSame($traits, $description['traits']);
         }
     }
 }

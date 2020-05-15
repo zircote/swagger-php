@@ -57,7 +57,7 @@ class ConstantsTest extends OpenApiTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = false;
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
         // @todo Only tests that $whitelist=false doesn't trigger errors,
         // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in OpenApi\Annotation namespace has a constant.
 

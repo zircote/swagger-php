@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures;
+namespace OpenApiTests\Fixtures\StaticAnalyser;
 
 /**
  * @OA\Schema(schema="trait")
  */
 trait HelloTrait
 {
+    use OtherTrait;
 
     /**
      * @OA\Property()
