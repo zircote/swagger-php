@@ -7,20 +7,35 @@
 namespace OpenApiTests;
 
 use OpenApi\Context;
+use OpenApiTests\Fixtures\Context\DetectClass;
 
 class ContextTest extends OpenApiTestCase
 {
-    public function testDetect()
+    /**
+     * dataprovider
+     */
+    public function detectcases()
     {
-        $context = Context::detect();
-        $line = __LINE__ - 1;
-        $this->assertSame('ContextTest', $context->class);
-        $this->assertSame('\OpenApiTests\ContextTest', $context->fullyQualifiedName($context->class));
-        $this->assertSame('testDetect', $context->method);
-        $this->assertSame(__FILE__, $context->filename);
+        return [
+            'class' => ['contextFromClass', 'fileFromClass', 13],
+            'trait' => ['contextFromTrait', 'fileFromTrait', 11],
+        ];
+    }
+
+    /**
+     * @dataProvider detectcases
+     */
+    public function testDetectFromClass($contextMethod, $fileMethod, $line)
+    {
+        $instance = new DetectClass();
+        $context = $instance->$contextMethod();
+        $this->assertSame('DetectClass', $context->class);
+        $this->assertSame('\OpenApiTests\Fixtures\Context\DetectClass', $context->fullyQualifiedName($context->class));
+        $this->assertSame($contextMethod, $context->method);
+        $this->assertSame($instance->$fileMethod(), $context->filename);
         $this->assertSame($line, $context->line);
-        $this->assertSame('OpenApiTests', $context->namespace);
-        //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
+        $this->assertSame('OpenApiTests\Fixtures\Context', $context->namespace);
+        $this->assertSame(['OpenApiTests\Fixtures\Context\DetectTrait'], $context->uses);
     }
 
     public function testFullyQualifiedName()

@@ -253,7 +253,7 @@ class Context
     }
 
     /**
-     * Create a Context based on the debug_backtrace
+     * Create a Context based on the debug_backtrace and reflection.
      *
      * @param  int $index
      * @return Context
@@ -263,12 +263,15 @@ class Context
         $context = new Context();
         $backtrace = debug_backtrace();
         $position = $backtrace[$index];
+
         if (isset($position['file'])) {
             $context->filename = $position['file'];
         }
+
         if (isset($position['line'])) {
             $context->line = $position['line'];
         }
+
         $caller = isset($backtrace[$index + 1]) ? $backtrace[$index + 1] : null;
         if (isset($caller['function'])) {
             $context->method = $caller['function'];
@@ -276,15 +279,16 @@ class Context
                 $context->static = true;
             }
         }
+
         if (isset($caller['class'])) {
             $fqn = explode('\\', $caller['class']);
             $context->class = array_pop($fqn);
             if (count($fqn)) {
                 $context->namespace = implode('\\', $fqn);
             }
+            $context->uses = array_keys((new \ReflectionClass($caller['class']))->getTraits());
         }
 
-        // @todo extract namespaces and use statements
         return $context;
     }
 
@@ -297,21 +301,17 @@ class Context
      */
     public function fullyQualifiedName($class)
     {
+        if ($class === null) {
+            return '';
+        }
+
         if ($this->namespace) {
             $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
         } else {
             $namespace = '\\'; // global namespace
         }
 
-        if ($this->class === null) {
-            $this->class = '';
-        }
-
-        if ($class === null) {
-            return '';
-        }
-
-        if (strcasecmp($class, $this->class) === 0) {
+        if ($this->class !== null && strcasecmp($class, $this->class) === 0) {
             return $namespace . $this->class;
         }
         $pos = strpos($class, '\\');
