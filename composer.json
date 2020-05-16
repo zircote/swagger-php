@@ -45,9 +45,9 @@
     ]
   },
   "require-dev": {
+    "laminas/laminas-form": "^2.14",
     "phpunit/phpunit": ">=8",
-    "squizlabs/php_codesniffer": ">=3.3",
-    "zendframework/zend-form": "<2.8"
+    "squizlabs/php_codesniffer": ">=3.3"
   },
   "autoload-dev": {
     "psr-4": {

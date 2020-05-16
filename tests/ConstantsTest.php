@@ -45,10 +45,10 @@ class ConstantsTest extends OpenApiTestCase
 
     public function testAutoloadConstant()
     {
-        if (class_exists('Zend\Validator\Timezone', false)) {
+        if (class_exists('Laminas\Validator\Timezone', false)) {
             $this->markTestSkipped();
         }
-        $annotations = $this->parseComment('@OA\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
+        $annotations = $this->parseComment('@OA\Contact(name=Laminas\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
         $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 

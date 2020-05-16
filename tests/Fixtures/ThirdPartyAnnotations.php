@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiFixtures;
+namespace OpenApiTests\Fixtures;
 
 /**
  * @OA\Info(title="Fixture for ParserTest", version="test")
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * @Annotation\Name("user")
- * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
+ * @Annotation\Hydrator("Laminas\Stdlib\Hydrator\ObjectProperty")
  */
 class ThirdPartyAnnotations
 {
@@ -29,7 +29,7 @@ class ThirdPartyAnnotations
     public $username;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\Email")
+     * @Annotation\Type("Laminas\Form\Element\Email")
      * @Annotation\Options({"label":"Your email address:"})
      */
     public $email;
