@@ -2,12 +2,14 @@
 
 namespace UsingTraits;
 
+use UsingTraits\Blink as TheBlink;
+
 /**
  * @OA\Schema(title="TrickyProduct model")
  * )
  */
 class TrickyProduct extends SimpleProduct {
-    use Blink;
+    use Blink; //TheBlink;
 
     /**
      * The trick.
