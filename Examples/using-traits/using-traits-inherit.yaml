@@ -7,7 +7,7 @@ paths:
     delete:
       tags:
         - Entities
-      operationId: deleteEntity
+      operationId: 'UsingTraits\DeleteEntity::deleteEntity'
       responses:
         default:
           description: 'successful operation'

@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 
 /**
- * Generate the OperationId based on the context of the OpenApi comment.
+ * Generate the OperationId based on the context of the OpenApi annotation.
  */
 class OperationId
 {
@@ -24,11 +24,12 @@ class OperationId
             }
             $context = $operation->_context;
             if ($context && $context->method) {
-                if ($context->class) {
+                $source = $context->class ?? $context->interface ?? $context->trait;
+                if ($source) {
                     if ($context->namespace) {
-                        $operation->operationId = $context->namespace . "\\" . $context->class . "::" . $context->method;
+                        $operation->operationId = $context->namespace . "\\" . $source . "::" . $context->method;
                     } else {
-                        $operation->operationId = $context->class . "::" . $context->method;
+                        $operation->operationId = $source . "::" . $context->method;
                     }
                 } else {
                     $operation->operationId = $context->method;
