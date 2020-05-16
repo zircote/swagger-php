@@ -45,18 +45,18 @@ class StaticAnalyserTest extends OpenApiTestCase
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
-        Analyser::$whitelist[] = 'Zend\Form\Annotation';
+        Analyser::$whitelist[] = 'Laminas\Form\Annotation';
         $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(10, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
         $analysis = $openapi->_analysis;
-        $annotations = $analysis->getAnnotationsOfType('Zend\Form\Annotation\Name');
+        $annotations = $analysis->getAnnotationsOfType('Laminas\Form\Annotation\Name');
         $this->assertCount(1, $annotations);
         $context = $analysis->getContext($annotations[0]);
         $this->assertInstanceOf('OpenApi\Context', $context);
         $this->assertSame('ThirdPartyAnnotations', $context->class);
-        $this->assertSame('\OpenApiFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
+        $this->assertSame('\OpenApiTests\Fixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
         $this->assertCount(2, $context->annotations);
     }
 
