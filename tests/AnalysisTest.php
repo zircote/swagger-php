@@ -30,10 +30,11 @@ class AnalysisTest extends OpenApiTestCase
 
     public function testGetSubclasses()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/GrandAncestor.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Ancestor.php'));
+        $analysis = $this->analysisFromFixtures([
+            'InheritProperties/Child.php',
+            'InheritProperties/GrandAncestor.php',
+            'InheritProperties/Ancestor.php',
+        ]);
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 
@@ -45,10 +46,11 @@ class AnalysisTest extends OpenApiTestCase
 
     public function testGetAncestorClasses()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/GrandAncestor.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__.'/Fixtures/InheritProperties/Ancestor.php'));
+        $analysis = $this->analysisFromFixtures([
+            'InheritProperties/Child.php',
+            'InheritProperties/GrandAncestor.php',
+            'InheritProperties/Ancestor.php',
+        ]);
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 
@@ -56,5 +58,26 @@ class AnalysisTest extends OpenApiTestCase
         $this->assertCount(2, $superclasses, 'Child has a chain of 2 super classes');
         $this->assertSame(['\OpenApiFixtures\Ancestor', '\OpenApiFixtures\GrandAncestor'], array_keys($superclasses));
         $this->assertSame(['\OpenApiFixtures\GrandAncestor'], array_keys($analysis->getSuperClasses('\OpenApiFixtures\Ancestor')));
+    }
+
+    public function testGetInterfaces()
+    {
+        $analysis = $this->analysisFromFixtures([
+            'Parser/UserInterface.php',
+        ]);
+
+        $this->assertCount(1, $analysis->interfaces, '1 interface should\'ve been detected');
+    }
+
+    public function testGetTraits()
+    {
+        $analysis = $this->analysisFromFixtures([
+            'Parser/User.php',
+            'Parser/HelloTrait.php',
+            'Parser/OtherTrait.php',
+            'Parser/StaleTrait.php',
+        ]);
+
+        $this->assertCount(3, $analysis->traits, '3 traits should\'ve been detected');
     }
 }
