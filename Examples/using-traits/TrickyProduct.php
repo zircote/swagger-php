@@ -9,7 +9,7 @@ use UsingTraits\Blink as TheBlink;
  * )
  */
 class TrickyProduct extends SimpleProduct {
-    use Blink; //TheBlink;
+    use TheBlink;
 
     /**
      * The trick.

@@ -37,15 +37,15 @@ class ExamplesTest extends OpenApiTestCase
     public function getExamples()
     {
         return [
-//            ['misc', 'misc.json', []],
-//            ['openapi-spec', 'openapi-spec.json', []],
-//            ['petstore.swagger.io', 'petstore.swagger.io.json', []],
-//            ['petstore-3.0', 'petstore-3.0.json', []],
-//            ['swagger-spec/petstore', 'petstore.json', []],
-//            ['swagger-spec/petstore-simple', 'petstore-simple.json', []],
-//            ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json', []],
-//            ['using-refs', 'using-refs.json', []],
-//            ['example-object', 'example-object.json', []],
+            ['misc', 'misc.json', []],
+            ['openapi-spec', 'openapi-spec.json', []],
+            ['petstore.swagger.io', 'petstore.swagger.io.json', []],
+            ['petstore-3.0', 'petstore-3.0.json', []],
+            ['swagger-spec/petstore', 'petstore.json', []],
+            ['swagger-spec/petstore-simple', 'petstore-simple.json', []],
+            ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json', []],
+            ['using-refs', 'using-refs.json', []],
+            ['example-object', 'example-object.json', []],
             ['using-traits', 'using-traits.json', ['Multiple @OA\Property() with the same property="bell"']],
         ];
     }

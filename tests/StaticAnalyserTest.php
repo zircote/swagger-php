@@ -28,7 +28,7 @@ class StaticAnalyserTest extends OpenApiTestCase
 
     public function testTrait()
     {
-        $analysis = $this->analysisFromFixtures('StaticAnalyser/HelloTrait.php');
+        $analysis = $this->analysisFromFixtures('Traits/HelloTrait.php');
         $this->assertCount(2, $analysis->annotations);
         $property = $analysis->getAnnotationsOfType(Property::class);
         $this->assertSame('HelloTrait', $property[0]->_context->trait);
@@ -78,19 +78,19 @@ class StaticAnalyserTest extends OpenApiTestCase
             'class' => [
                 ['classes', 'class'],
                 'User',
-                'StaticAnalyser/User.php',
-                '\OpenApiTests\Fixtures\StaticAnalyser\User',
-                '\OpenApiTests\Fixtures\StaticAnalyser\Sub\SubClass',
+                'Traits/User.php',
+                '\OpenApiTests\Fixtures\Traits\User',
+                '\OpenApiTests\Fixtures\Traits\Sub\SubClass',
                 ['getFirstName'],
                 null,
-                ['Hello'],
+                ['Hello'], // use ... as ...
             ],
             'interface' => [
                 ['interfaces', 'interface'],
                 'UserInterface',
-                'StaticAnalyser/UserInterface.php',
-                '\OpenApiTests\Fixtures\StaticAnalyser\UserInterface',
-                '\OpenApiTests\Fixtures\StaticAnalyser\OtherInterface',
+                'Traits/UserInterface.php',
+                '\OpenApiTests\Fixtures\Traits\UserInterface',
+                '\OpenApiTests\Fixtures\Traits\OtherInterface',
                 null,
                 null,
                 null,
@@ -98,8 +98,8 @@ class StaticAnalyserTest extends OpenApiTestCase
             'trait' => [
                 ['traits', 'trait'],
                 'HelloTrait',
-                'StaticAnalyser/HelloTrait.php',
-                '\OpenApiTests\Fixtures\StaticAnalyser\HelloTrait',
+                'Traits/HelloTrait.php',
+                '\OpenApiTests\Fixtures\Traits\HelloTrait',
                 null,
                 null,
                 null,

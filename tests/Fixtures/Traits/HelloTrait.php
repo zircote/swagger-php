@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures\StaticAnalyser;
+namespace OpenApiTests\Fixtures\Traits;
 
 /**
  * @OA\Schema(schema="trait")
