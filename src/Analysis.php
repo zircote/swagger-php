@@ -8,7 +8,7 @@ namespace OpenApi;
 
 use Closure;
 use Exception;
-use OpenApi\Processors\ImportInterfaces;
+use OpenApi\Processors\MergeInterfaces;
 use SplObjectStorage;
 use stdClass;
 use OpenApi\Annotations\AbstractAnnotation;
@@ -25,7 +25,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
-use OpenApi\Processors\ImportTraits;
+use OpenApi\Processors\MergeTraits;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -187,122 +187,128 @@ class Analysis
         }
     }
 
-    public function getSubClasses($class)
+    /**
+     * Get all sub classes of the given parent class.
+     *
+     * @param string $parent The parent class.
+     * @return array Map of class => definition pairs of sub-classes.
+     */
+    public function getSubClasses($parent)
     {
         $definitions = [];
-        foreach ($this->classes as $subclass => $definition) {
-            if ($definition['extends'] === $class) {
-                $definitions[$subclass] = $definition;
-                $definitions = array_merge($definitions, $this->getSubClasses($subclass));
+        foreach ($this->classes as $class => $classDefinition) {
+            if ($classDefinition['extends'] === $parent) {
+                $definitions[$class] = $classDefinition;
+                $definitions = array_merge($definitions, $this->getSubClasses($class));
             }
         }
 
         return $definitions;
     }
 
+    /**
+     * Get a list of all super classes for the given class.
+     *
+     * @param string $class The class name.
+     * @return array Map of class => definition pairs of parent classes.
+     */
     public function getSuperClasses($class)
     {
         $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
-        if (!$classDefinition || empty($classDefinition['extends'])) { // unknown class, or no inheritance?
+        if (!$classDefinition || empty($classDefinition['extends'])) {
+            // unknown class, or no inheritance
             return [];
         }
+
         $extends = $classDefinition['extends'];
         $extendsDefinition = isset($this->classes[$extends]) ? $this->classes[$extends] : null;
         if (!$extendsDefinition) {
             return [];
         }
-        $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
-        return $definitions;
+
+        return array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
     }
 
     /**
-     * Returns an array of interfaces used by the given class or by classes which it extends
+     * Get the list of interfaces used by the given class or by classes which it extends.
      *
-     * @param string  $class
-     *
-     * @return array
+     * @param string $class The class name.
+     * @return array Map of class => definition pairs of interfaces.
      */
     public function getInterfacesOfClass($class)
     {
-        $definitions = [];
+        $classes = array_keys($this->getSuperClasses($class));
+        // add self
+        $classes[] = $class;
 
-        // in case there is a hierarchy of classes
-        $classes = $this->getSuperClasses($class);
-        if (is_array($classes)) {
-            foreach ($classes as $subClass) {
-                if (isset($subClass['interfaces'])) {
-                    foreach ($subClass['interfaces'] as $classInterface) {
-                        foreach ($this->interfaces as $interface) {
-                            if ($classInterface === $interface['interface']) {
-                                $interfaceDefinition[$interface['interface']] = $interface;
-                                $definitions = array_merge($definitions, $interfaceDefinition);
-                            }
+        $definitions = [];
+        foreach ($classes as $clazz) {
+            if (isset($this->classes[$clazz])) {
+                $definition = $this->classes[$clazz];
+                if (isset($definition['implements'])) {
+                    foreach ($definition['implements'] as $interface) {
+                        if (array_key_exists($interface, $this->interfaces)) {
+                            $definitions[$interface] = $this->interfaces[$interface];
                         }
                     }
                 }
             }
         }
 
-        // interface used by the given class
-        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
-        if (!$classDefinition || empty($classDefinition['interfaces'])) {
-            return $definitions;
-        }
-        $classInterfaces = $classDefinition['interfaces'];
-        foreach ($this->interfaces as $interface) {
-            foreach ($classInterfaces as $classInterface => $name) {
-                if ($interface['interface'] === $name) {
-                    $interfaceDefinition[$name] = $interface;
-                    $definitions = array_merge($definitions, $interfaceDefinition);
+        // expand recursively for interfaces extending other interfaces
+        $collect = function ($interfaces, $cb) use (&$definitions) {
+            foreach ($interfaces as $interface) {
+                if (isset($this->interfaces[$interface]['extends'])) {
+                    $cb($this->interfaces[$interface]['extends'], $cb);
+                    foreach ($this->interfaces[$interface]['extends'] as $fqdn) {
+                        $definitions[$fqdn] = $this->interfaces[$fqdn];
+                    }
                 }
             }
-        }
+        };
+        $collect(array_keys($definitions), $collect);
 
         return $definitions;
     }
 
     /**
-     * Returns an array of traits used by the given class or by classes which it extends
+     * Get the list of traits used by the given class or by classes which it extends.
      *
-     * @param string  $class
-     *
-     * @return array
+     * @param string $class The class name.
+     * @return array Map of class => definition pairs of traits.
      */
     public function getTraitsOfClass($class)
     {
-        $definitions = [];
+        $classes = array_keys($this->getSuperClasses($class));
+        // add self
+        $classes[] = $class;
 
-        // in case there is a hierarchy of classes
-        $classes = $this->getSuperClasses($class);
-        if (is_array($classes)) {
-            foreach ($classes as $subClass) {
-                if (isset($subClass['traits'])) {
-                    foreach ($subClass['traits'] as $classTrait) {
-                        foreach ($this->traits as $trait) {
-                            if ($classTrait === $trait['trait']) {
-                                $traitDefinition[$trait['trait']] = $trait;
-                                $definitions = array_merge($definitions, $traitDefinition);
-                            }
+        $definitions = [];
+        foreach ($classes as $clazz) {
+            if (isset($this->classes[$clazz])) {
+                $definition = $this->classes[$clazz];
+                if (isset($definition['traits'])) {
+                    foreach ($definition['traits'] as $trait) {
+                        if (array_key_exists($trait, $this->traits)) {
+                            $definitions[$trait] = $this->traits[$trait];
                         }
                     }
                 }
             }
         }
 
-        // trait used by the given class
-        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
-        if (!$classDefinition || empty($classDefinition['traits'])) {
-            return $definitions;
-        }
-        $classTraits = $classDefinition['traits'];
-        foreach ($this->traits as $trait) {
-            foreach ($classTraits as $classTrait => $name) {
-                if ($trait['trait'] === $name) {
-                    $traitDefinition[$name] = $trait;
-                    $definitions = array_merge($definitions, $traitDefinition);
+        // expand recursively for traits using other tratis
+        $collect = function ($traits, $cb) use (&$definitions) {
+            foreach ($traits as $trait) {
+                if (isset($this->traits[$trait]['traits'])) {
+                    $cb($this->traits[$trait]['traits'], $cb);
+                    foreach ($this->traits[$trait]['traits'] as $fqdn) {
+                        $definitions[$fqdn] = $this->traits[$fqdn];
+                    }
                 }
             }
-        }
+        };
+        $collect(array_keys($definitions), $collect);
 
         return $definitions;
     }
@@ -436,13 +442,11 @@ class Analysis
             self::$processors = [
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
-                new ImportInterfaces(),
-                new ImportTraits(),
+                new MergeInterfaces(),
+                new MergeTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),
-                // new HandleReferences(),
-
                 new InheritProperties(),
                 new AugmentOperations(),
                 new AugmentParameters(),

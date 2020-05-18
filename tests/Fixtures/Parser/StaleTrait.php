@@ -3,7 +3,7 @@
 namespace OpenApiTests\Fixtures\Parser;
 
 /**
- * @OA\Schema(schema="stale_trait")
+ * @OA\Schema(schema="stale")
  */
 trait StaleTrait
 {
