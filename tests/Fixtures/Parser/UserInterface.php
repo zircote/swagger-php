@@ -4,10 +4,6 @@ namespace OpenApiTests\Fixtures\Parser;
 
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(title="Fixture for interface test", version="test")
- * @OA\Schema()
- */
 interface UserInterface extends OtherInterface
 {
 

@@ -3,7 +3,7 @@
 namespace OpenApiTests\Fixtures\Parser;
 
 /**
- * @OA\Schema(schema="other_trait")
+ * @OA\Schema(schema="other")
  */
 trait OtherTrait
 {

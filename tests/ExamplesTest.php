@@ -6,6 +6,8 @@
 
 namespace OpenApiTests;
 
+use OpenApi\Logger;
+
 class ExamplesTest extends OpenApiTestCase
 {
 
@@ -19,7 +21,12 @@ class ExamplesTest extends OpenApiTestCase
      */
     public function testExample($example, $output)
     {
+        // disable for now
+        Logger::getInstance()->log = function ($entry, $type) {
+            // ignore
+        };
         $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
+        //echo json_encode($openapi);
         $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
     }
 
@@ -40,6 +47,8 @@ class ExamplesTest extends OpenApiTestCase
             ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
             ['using-refs', 'using-refs.json'],
             ['example-object', 'example-object.json'],
+            ['using-interfaces', 'using-interfaces.json'],
+            ['using-traits', 'using-traits.json'],
         ];
     }
 }

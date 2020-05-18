@@ -5,6 +5,9 @@ namespace OpenApiTests\Fixtures\Parser;
 use OpenApiTests\Fixtures\Parser\HelloTrait as Hello;
 use OpenApiTests\Fixtures\Parser\Sub\SubClass as ParentClass;
 
+/**
+ * @OA\Schema()
+ */
 class User extends ParentClass implements \OpenApiTests\Fixtures\Parser\UserInterface
 {
     use Hello;

@@ -2,12 +2,14 @@
 
 namespace OpenApiTests\Fixtures\Parser;
 
+use OpenApiTests\Fixtures\Parser\AsTrait as Aliased;
+
 /**
- * @OA\Schema(schema="hello_trait")
+ * @OA\Schema(schema="hello")
  */
 trait HelloTrait
 {
-    use OtherTrait;
+    use OtherTrait, Aliased;
 
     /**
      * @OA\Property()

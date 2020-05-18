@@ -28,7 +28,8 @@ namespace OpenApi;
  * @property string                           $namespace
  * @property array                            $uses
  * @property string                           $class
- * @property string                           $extends
+ * @property string|array                     $extends  Interfaces may extend a list of interfaces
+ * @property array                            $implements
  * @property string                           $method
  * @property string                           $property
  * @property string                           $type
@@ -291,54 +292,52 @@ class Context
     /**
      * Resolve the fully qualified name.
      *
-     * @param string $class The class name
+     * @param string $source The source name (class/interface/trait)
      *
      * @return string
      */
-    public function fullyQualifiedName($class)
+    public function fullyQualifiedName($source)
     {
-        if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
-        } else {
-            $namespace = '\\'; // global namespace
-        }
-
-        if ($this->class === null) {
-            $this->class = '';
-        }
-
-        if ($class === null) {
+        if ($source === null) {
             return '';
         }
 
-        if (strcasecmp($class, $this->class) === 0) {
-            return $namespace . $this->class;
+        if ($this->namespace) {
+            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
+        } else {
+            // global namespace
+            $namespace = '\\';
         }
-        $pos = strpos($class, '\\');
+
+        $thisSource = $this->class ?? $this->interface ?? $this->trait;
+        if ($thisSource && strcasecmp($source, $thisSource) === 0) {
+            return $namespace . $thisSource;
+        }
+        $pos = strpos($source, '\\');
         if ($pos !== false) {
             if ($pos === 0) {
                 // Fully qualified name (\Foo\Bar)
-                return $class;
+                return $source;
             }
             // Qualified name (Foo\Bar)
             if ($this->uses) {
                 foreach ($this->uses as $alias => $aliasedNamespace) {
                     $alias .= '\\';
-                    if (strcasecmp(substr($class, 0, strlen($alias)), $alias) === 0) {
+                    if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return '\\' . $aliasedNamespace . substr($class, strlen($alias) - 1);
+                        return '\\' . $aliasedNamespace . substr($source, strlen($alias) - 1);
                     }
                 }
             }
         } elseif ($this->uses) {
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
-                if (strcasecmp($alias, $class) === 0) {
+                if (strcasecmp($alias, $source) === 0) {
                     return '\\' . $aliasedNamespace;
                 }
             }
         }
 
-        return $namespace . $class;
+        return $namespace . $source;
     }
 }

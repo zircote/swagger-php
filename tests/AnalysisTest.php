@@ -60,24 +60,43 @@ class AnalysisTest extends OpenApiTestCase
         $this->assertSame(['\OpenApiFixtures\GrandAncestor'], array_keys($analysis->getSuperClasses('\OpenApiFixtures\Ancestor')));
     }
 
-    public function testGetInterfaces()
+    public function testGetInterfacesOfClass()
     {
         $analysis = $this->analysisFromFixtures([
+            'Parser/User.php',
             'Parser/UserInterface.php',
+            'Parser/OtherInterface.php',
         ]);
 
-        $this->assertCount(1, $analysis->interfaces, '1 interface should\'ve been detected');
+        $this->assertCount(1, $analysis->classes);
+        $this->assertCount(2, $analysis->interfaces);
+
+        $interfaces = $analysis->getInterfacesOfClass('\OpenApiTests\Fixtures\Parser\User');
+        $this->assertCount(2, $interfaces);
+        $this->assertSame([
+            '\OpenApiTests\Fixtures\Parser\UserInterface',
+            '\OpenApiTests\Fixtures\Parser\OtherInterface',
+        ], array_keys($interfaces));
     }
 
-    public function testGetTraits()
+    public function testGetTraitsOfClass()
     {
         $analysis = $this->analysisFromFixtures([
             'Parser/User.php',
             'Parser/HelloTrait.php',
             'Parser/OtherTrait.php',
+            'Parser/AsTrait.php',
             'Parser/StaleTrait.php',
         ]);
 
-        $this->assertCount(3, $analysis->traits, '3 traits should\'ve been detected');
+        $this->assertCount(1, $analysis->classes);
+        $this->assertCount(4, $analysis->traits);
+
+        $traits = $analysis->getTraitsOfClass('\OpenApiTests\Fixtures\Parser\User');
+        $this->assertSame([
+            '\OpenApiTests\Fixtures\Parser\HelloTrait',
+            '\OpenApiTests\Fixtures\Parser\OtherTrait',
+            '\OpenApiTests\Fixtures\Parser\AsTrait',
+        ], array_keys($traits));
     }
 }

@@ -246,6 +246,11 @@ class OpenApiTestCase extends TestCase
         return $analysis;
     }
 
+    public function analysisFromCode(string $code, ?Context $context = null)
+    {
+        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: new Context());
+    }
+
     public function allAnnotationClasses()
     {
         $classes = [];
