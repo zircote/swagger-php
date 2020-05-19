@@ -6,49 +6,64 @@
 
 namespace OpenApiTests;
 
+use OpenApi\Analysis;
 use OpenApi\Logger;
+use OpenApi\Processors\InheritInterfaces;
+use OpenApi\Processors\InheritTraits;
+use OpenApi\Processors\MergeInterfaces;
+use OpenApi\Processors\MergeTraits;
 
 class ExamplesTest extends OpenApiTestCase
 {
 
-    /**
-     * Test the processed Examples against json files in ExamplesOutput.
-     *
-     * @dataProvider getExamples
-     *
-     * @param string $example Example path
-     * @param string $output  Expected output (path to a json file)
-     */
-    public function testExample($example, $output)
+    public function exampleMappings()
     {
-        // disable for now
-        Logger::getInstance()->log = function ($entry, $type) {
-            // ignore
-        };
-        $openapi = \OpenApi\scan(__DIR__.'/../Examples/'.$example);
-        //echo json_encode($openapi);
-        $this->assertOpenApiEqualsFile(__DIR__.'/ExamplesOutput/'.$output, $openapi);
+        return [
+            'misc' => ['misc', 'misc.json', []],
+            'openapi-spec' => ['openapi-spec', 'openapi-spec.json', []],
+            'petstore.swagger.io' => ['petstore.swagger.io', 'petstore.swagger.io.json', []],
+            'petstore-3.0' => ['petstore-3.0', 'petstore-3.0.json', []],
+            'swagger-spec/petstore' => ['swagger-spec/petstore', 'petstore.json', []],
+            'swagger-spec/petstore-simple' => ['swagger-spec/petstore-simple', 'petstore-simple.json', []],
+            'swagger-spec/petstore-with-external-docs' => ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json', []],
+            'using-refs' => ['using-refs', 'using-refs.json', []],
+            'example-object' => ['example-object', 'example-object.json', []],
+            'using-interfaces-inherit' => ['using-interfaces', 'using-interfaces-inherit.json', []],
+            'using-interfaces-merge' => ['using-interfaces', 'using-interfaces-merge.json', $this->processors(InheritInterfaces::class, new MergeInterfaces())],
+            'using-traits-inherit' => ['using-traits', 'using-traits-inherit.json', []],
+            'using-traits-merge' => ['using-traits', 'using-traits-merge.json', $this->processors(InheritTraits::class, new MergeTraits())],
+        ];
+    }
+
+    private function processors($fromClass, $to)
+    {
+        $processors = [];
+        foreach (Analysis::processors() as $processor) {
+            if ($processor instanceof $fromClass) {
+                $processors[] = $to;
+            } else {
+                $processors[] = $processor;
+            }
+        }
+
+        return $processors;
     }
 
     /**
-     * dataProvider for testExample
+     * Validate openapi definitions of the included examples.
      *
-     * @return array
+     * @dataProvider exampleMappings
      */
-    public function getExamples()
+    public function testExamples($example, $output, array $processors)
     {
-        return [
-            ['misc', 'misc.json'],
-            ['openapi-spec', 'openapi-spec.json'],
-            ['petstore.swagger.io', 'petstore.swagger.io.json'],
-            ['petstore-3.0', 'petstore-3.0.json'],
-            ['swagger-spec/petstore', 'petstore.json'],
-            ['swagger-spec/petstore-simple', 'petstore-simple.json'],
-            ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.json'],
-            ['using-refs', 'using-refs.json'],
-            ['example-object', 'example-object.json'],
-            ['using-interfaces', 'using-interfaces.json'],
-            ['using-traits', 'using-traits.json'],
-        ];
+        Logger::getInstance()->log = function ($entry, $type) {
+            // ignore
+        };
+        $options = [];
+        if ($processors) {
+            $options['processors'] = $processors;
+        }
+        $openapi = \OpenApi\scan(__DIR__ . '/../Examples/' . $example, $options);
+        $this->assertOpenApiEqualsFile(__DIR__ . '/ExamplesOutput/' . $output, $openapi);
     }
 }
