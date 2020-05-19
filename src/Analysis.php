@@ -8,7 +8,7 @@ namespace OpenApi;
 
 use Closure;
 use Exception;
-use OpenApi\Processors\MergeInterfaces;
+use OpenApi\Processors\InheritInterfaces;
 use SplObjectStorage;
 use stdClass;
 use OpenApi\Annotations\AbstractAnnotation;
@@ -25,7 +25,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
-use OpenApi\Processors\MergeTraits;
+use OpenApi\Processors\InheritTraits;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -358,10 +358,8 @@ class Analysis
         if ($context instanceof Context) {
             return $context;
         }
-        var_dump($context);
-        ob_flush();
-        die;
-        throw new Exception('Annotation has no context'); // Weird, did you use the addAnnotation/addAnnotations methods?
+        // Weird, did you use the addAnnotation/addAnnotations methods?
+        throw new Exception('Annotation has no context');
     }
 
     /**
@@ -419,7 +417,8 @@ class Analysis
      */
     public function process($processors = null)
     {
-        if ($processors === null) { // Use the default and registered processors.
+        if ($processors === null) {
+            // Use the default and registered processors.
             $processors = self::processors();
         }
         if (is_array($processors) === false && is_callable($processors)) {
@@ -442,8 +441,8 @@ class Analysis
             self::$processors = [
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
-                new MergeInterfaces(),
-                new MergeTraits(),
+                new InheritInterfaces(),
+                new InheritTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),

@@ -116,7 +116,7 @@ class StaticAnalyserTest extends OpenApiTestCase
 
     public function testIndentationCorrection()
     {
-        $analysis = $this->analysisFromFixtures('routes.php');
+        $analysis = $this->analysisFromFixtures('StaticAnalyser/routes.php');
         $this->assertCount(20, $analysis->annotations);
     }
 
@@ -169,14 +169,14 @@ class StaticAnalyserTest extends OpenApiTestCase
                 '\OpenApiTests\Fixtures\Parser\Sub\SubClass',
                 ['getFirstName'],
                 null,
-                ['Hello'], // use ... as ...
+                ['\OpenApiTests\Fixtures\Parser\HelloTrait'], // use ... as ...
             ],
             'interface' => [
                 ['interfaces', 'interface'],
                 'UserInterface',
                 'Parser/UserInterface.php',
                 '\OpenApiTests\Fixtures\Parser\UserInterface',
-                '\OpenApiTests\Fixtures\Parser\OtherInterface',
+                ['\OpenApiTests\Fixtures\Parser\OtherInterface'],
                 null,
                 null,
                 null,
@@ -189,7 +189,7 @@ class StaticAnalyserTest extends OpenApiTestCase
                 null,
                 null,
                 null,
-                ['OtherTrait'],
+                ['\OpenApiTests\Fixtures\Parser\OtherTrait', '\OpenApiTests\Fixtures\Parser\AsTrait'],
             ],
         ];
     }
