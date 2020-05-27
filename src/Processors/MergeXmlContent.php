@@ -27,7 +27,7 @@ class MergeXmlContent
             $parent = $xmlContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected '.$xmlContent->identity() .' in ' . $parent->identity() . ' in ' . $this->_context);
+                    Logger::notice('Unexpected '.$xmlContent->identity() .' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {
                     Logger::notice('Unexpected '.$xmlContent->identity() .' must be nested');
                 }
