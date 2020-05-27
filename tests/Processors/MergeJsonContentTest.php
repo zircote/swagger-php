@@ -9,6 +9,7 @@ namespace OpenApiTests\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Response;
+use OpenApi\Logger;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApiTests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
@@ -18,11 +19,11 @@ class MergeJsonContentTest extends OpenApiTestCase
     public function testJsonContent()
     {
         $comment = <<<END
-        @OA\Response(response=200,
-            @OA\JsonContent(type="array",
-                @OA\Items(ref="#/components/schemas/repository")
+            @OA\Response(response=200,
+                @OA\JsonContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
             )
-        )
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(3, $analysis->annotations);
@@ -39,12 +40,12 @@ END;
     public function testMultipleMediaTypes()
     {
         $comment = <<<END
-        @OA\Response(response=200,
-            @OA\MediaType(mediaType="image/png"),
-            @OA\JsonContent(type="array",
-                @OA\Items(ref="#/components/schemas/repository")
+            @OA\Response(response=200,
+                @OA\MediaType(mediaType="image/png"),
+                @OA\JsonContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
             )
-        )
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
@@ -56,10 +57,10 @@ END;
     public function testParameter()
     {
         $comment = <<<END
-        @OA\Parameter(name="filter",in="query", @OA\JsonContent(
-            @OA\Property(property="type", type="string"),
-            @OA\Property(property="color", type="string"),
-        ))
+            @OA\Parameter(name="filter",in="query", @OA\JsonContent(
+                @OA\Property(property="type", type="string"),
+                @OA\Property(property="color", type="string"),
+            ))
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(4, $analysis->annotations);
@@ -73,5 +74,31 @@ END;
         $this->assertSame('query', $json['in']);
         $this->assertSame('application/json', array_keys($json['content'])[0]);
         $this->assertSame('application/json', $json['content']['application/json']['mediaType']);
+    }
+
+    public function testNoParent()
+    {
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() must be nested');
+        $comment = <<<END
+            @OA\JsonContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
+            )
+END;
+        $analysis = new Analysis($this->parseComment($comment));
+        $analysis->process(new MergeJsonContent());
+    }
+
+    public function testInvalidParent()
+    {
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() in @OA\Property() in');
+        $comment = <<<END
+            @OA\Property(
+                @OA\JsonContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
+            )
+END;
+        $analysis = new Analysis($this->parseComment($comment));
+        $analysis->process(new MergeJsonContent());
     }
 }

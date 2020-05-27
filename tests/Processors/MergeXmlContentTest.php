@@ -18,11 +18,11 @@ class MergeXmlContentTest extends OpenApiTestCase
     public function testXmlContent()
     {
         $comment = <<<END
-        @OA\Response(response=200,
-            @OA\XmlContent(type="array",
-                @OA\Items(ref="#/components/schemas/repository")
+            @OA\Response(response=200,
+                @OA\XmlContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
             )
-        )
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(3, $analysis->annotations);
@@ -39,12 +39,12 @@ END;
     public function testMultipleMediaTypes()
     {
         $comment = <<<END
-        @OA\Response(response=200,
-            @OA\MediaType(mediaType="image/png"),
-            @OA\XmlContent(type="array",
-                @OA\Items(ref="#/components/schemas/repository")
+            @OA\Response(response=200,
+                @OA\MediaType(mediaType="image/png"),
+                @OA\XmlContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
             )
-        )
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
@@ -57,10 +57,10 @@ END;
     public function testParameter()
     {
         $comment = <<<END
-        @OA\Parameter(name="filter",in="query", @OA\XmlContent(
-            @OA\Property(property="type", type="string"),
-            @OA\Property(property="color", type="string"),
-        ))
+            @OA\Parameter(name="filter",in="query", @OA\XmlContent(
+                @OA\Property(property="type", type="string"),
+                @OA\Property(property="color", type="string"),
+            ))
 END;
         $analysis = new Analysis($this->parseComment($comment));
         $this->assertCount(4, $analysis->annotations);
@@ -74,5 +74,31 @@ END;
         $this->assertSame('query', $json['in']);
         $this->assertSame('application/xml', array_keys($json['content'])[0]);
         $this->assertSame('application/xml', $json['content']['application/xml']['mediaType']);
+    }
+
+    public function testNoParent()
+    {
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() must be nested');
+        $comment = <<<END
+            @OA\XmlContent(type="array",
+                @OA\Items(ref="#/components/schemas/repository")
+            )
+END;
+        $analysis = new Analysis($this->parseComment($comment));
+        $analysis->process(new MergeXmlContent());
+    }
+
+    public function testInvalidParent()
+    {
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() in @OA\Property() in');
+        $comment = <<<END
+            @OA\Property(
+                @OA\XmlContent(type="array",
+                    @OA\Items(ref="#/components/schemas/repository")
+                )
+            )
+END;
+        $analysis = new Analysis($this->parseComment($comment));
+        $analysis->process(new MergeXmlContent());
     }
 }
