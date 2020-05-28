@@ -225,7 +225,7 @@ class Context
      */
     public function phpdocContent()
     {
-        $comment = preg_split('/(\n|\r\n)/', $this->comment);
+        $comment = preg_split('/(\n|\r\n)/', (string) $this->comment);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
