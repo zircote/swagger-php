@@ -8,6 +8,6 @@ Project | Description | URL
 [yii2-swagger](https://github.com/lichunqiang/yii2-swagger) | swagger-php intergation with yii2. | https://packagist.org/packages/light/yii2-swagger
 [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle) | Symfony bundle that generates documentation for your REST API from annotations | https://github.com/nelmio/NelmioApiDocBundle
 [auto-swagger-ui](https://github.com/kevupton/auto-swagger-ui) | Automatically add swagger ui and json to your application. No need for setup or src code. | https://github.com/kevupton/auto-swagger-ui
-
+[OpenAPI-Symfony-Routing](https://github.com/Tobion/OpenAPI-Symfony-Routing) | Load routes in Symfony based on OpenAPI annotations | https://github.com/Tobion/OpenAPI-Symfony-Routing
 
 Don't see a swagger-php related project listed? Create a pull request!
