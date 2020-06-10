@@ -8,7 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Annotations\Components;
 use OpenApi\Analysis;
-use OpenApi\Context;
 use OpenApi\UNDEFINED;
 
 /**

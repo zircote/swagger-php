@@ -7,7 +7,6 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use SplObjectStorage;
 
 /**
  *

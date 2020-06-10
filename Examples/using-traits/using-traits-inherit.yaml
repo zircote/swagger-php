@@ -66,10 +66,6 @@ components:
         -
           $ref: '#/components/schemas/BellsAndWhistles'
         -
-          $ref: '#/components/schemas/Bells'
-        -
-          $ref: '#/components/schemas/Whistles'
-        -
           properties:
             id:
               description: 'The unique identifier of a product in our catalog.'
@@ -92,13 +88,13 @@ components:
               format: int64
               example: 1
     TrickyProduct:
-      title: 'TrickyProduct model'
       allOf:
-        -
-          $ref: '#/components/schemas/Bells'
         -
           $ref: '#/components/schemas/Blink'
         -
+          $ref: '#/components/schemas/SimpleProduct'
+        -
+          title: 'TrickyProduct model'
           properties:
             trick:
               description: 'The trick.'

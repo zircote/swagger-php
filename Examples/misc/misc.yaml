@@ -4,7 +4,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: "{schema}://host.dev"
+    url: '{schema}://host.dev'
     description: 'OpenApi parameters'
     variables:
       schema:

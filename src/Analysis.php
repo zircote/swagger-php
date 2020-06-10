@@ -232,12 +232,13 @@ class Analysis
     /**
      * Get the list of interfaces used by the given class or by classes which it extends.
      *
-     * @param string $class The class name.
+     * @param string $class   The class name.
+     * @param bool   $direct  Flag to find only the actual class interfaces.
      * @return array Map of class => definition pairs of interfaces.
      */
-    public function getInterfacesOfClass($class)
+    public function getInterfacesOfClass($class, $direct = false)
     {
-        $classes = array_keys($this->getSuperClasses($class));
+        $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
         // add self
         $classes[] = $class;
 
@@ -255,18 +256,20 @@ class Analysis
             }
         }
 
-        // expand recursively for interfaces extending other interfaces
-        $collect = function ($interfaces, $cb) use (&$definitions) {
-            foreach ($interfaces as $interface) {
-                if (isset($this->interfaces[$interface]['extends'])) {
-                    $cb($this->interfaces[$interface]['extends'], $cb);
-                    foreach ($this->interfaces[$interface]['extends'] as $fqdn) {
-                        $definitions[$fqdn] = $this->interfaces[$fqdn];
+        if (!$direct) {
+            // expand recursively for interfaces extending other interfaces
+            $collect = function ($interfaces, $cb) use (&$definitions) {
+                foreach ($interfaces as $interface) {
+                    if (isset($this->interfaces[$interface]['extends'])) {
+                        $cb($this->interfaces[$interface]['extends'], $cb);
+                        foreach ($this->interfaces[$interface]['extends'] as $fqdn) {
+                            $definitions[$fqdn] = $this->interfaces[$fqdn];
+                        }
                     }
                 }
-            }
-        };
-        $collect(array_keys($definitions), $collect);
+            };
+            $collect(array_keys($definitions), $collect);
+        }
 
         return $definitions;
     }
@@ -275,11 +278,12 @@ class Analysis
      * Get the list of traits used by the given class or by classes which it extends.
      *
      * @param string $class The class name.
+     * @param bool   $direct  Flag to find only the actual class traits.
      * @return array Map of class => definition pairs of traits.
      */
-    public function getTraitsOfClass($class)
+    public function getTraitsOfClass($class, $direct = false)
     {
-        $classes = array_keys($this->getSuperClasses($class));
+        $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
         // add self
         $classes[] = $class;
 
@@ -297,18 +301,20 @@ class Analysis
             }
         }
 
-        // expand recursively for traits using other tratis
-        $collect = function ($traits, $cb) use (&$definitions) {
-            foreach ($traits as $trait) {
-                if (isset($this->traits[$trait]['traits'])) {
-                    $cb($this->traits[$trait]['traits'], $cb);
-                    foreach ($this->traits[$trait]['traits'] as $fqdn) {
-                        $definitions[$fqdn] = $this->traits[$fqdn];
+        if (!$direct) {
+            // expand recursively for traits using other tratis
+            $collect = function ($traits, $cb) use (&$definitions) {
+                foreach ($traits as $trait) {
+                    if (isset($this->traits[$trait]['traits'])) {
+                        $cb($this->traits[$trait]['traits'], $cb);
+                        foreach ($this->traits[$trait]['traits'] as $fqdn) {
+                            $definitions[$fqdn] = $this->traits[$fqdn];
+                        }
                     }
                 }
-            }
-        };
-        $collect(array_keys($definitions), $collect);
+            };
+            $collect(array_keys($definitions), $collect);
+        }
 
         return $definitions;
     }

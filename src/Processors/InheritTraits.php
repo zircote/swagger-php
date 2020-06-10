@@ -13,7 +13,7 @@ class InheritTraits
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                if ($traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class))) {
+                if ($traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true)) {
                     if ($schema->allOf === UNDEFINED) {
                         $schema->allOf = [];
                     }
