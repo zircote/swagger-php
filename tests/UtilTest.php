@@ -15,6 +15,7 @@ class UtilTest extends OpenApiTestCase
                 'Customer.php',
                 'CustomerInterface.php',
                 'GrandAncestor.php',
+                'InheritProperties',
                 'Parser',
                 'Processors',
                 'UsingRefs.php',

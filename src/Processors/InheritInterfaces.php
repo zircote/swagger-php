@@ -13,7 +13,7 @@ class InheritInterfaces
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                if ($interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class))) {
+                if ($interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true)) {
                     if ($schema->allOf === UNDEFINED) {
                         $schema->allOf = [];
                     }

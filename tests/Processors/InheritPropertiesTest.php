@@ -6,13 +6,18 @@
 
 namespace OpenApiTests\Processors;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Schema;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\BuildPaths;
+use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\InheritInterfaces;
 use OpenApi\Processors\InheritProperties;
+use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApiTests\OpenApiTestCase;
@@ -20,6 +25,13 @@ use const OpenApi\UNDEFINED;
 
 class InheritPropertiesTest extends OpenApiTestCase
 {
+    protected function validate(Analysis $analysis)
+    {
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
+        $analysis->validate();
+    }
+
     public function testInheritProperties()
     {
         $analysis = $this->analysisFromFixtures(
@@ -29,23 +41,29 @@ class InheritPropertiesTest extends OpenApiTestCase
                 'InheritProperties/Ancestor.php'
             ]
         );
-        $analysis->process(
-            [
+        $analysis->process([
             new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
-            ]
-        );
+            new BuildPaths(),
+        ]);
+        $this->validate($analysis);
+
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
-        $analysis->process(new InheritProperties());
-        $this->assertCount(3, $childSchema->properties);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
-        $analysis->validate();
+        $analysis->process([
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+        $this->validate($analysis);
+
+        $this->assertCount(3, $childSchema->properties);
     }
 
     /**
@@ -54,21 +72,25 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithoutDocBlocks()
     {
-        $analysis = $this->analysisFromFixtures(
-            [
-                // this class has docblocks
-                'InheritProperties/ChildWithDocBlocks.php',
-                // this one doesn't
-                'InheritProperties/AncestorWithoutDocBlocks.php'
-            ]
-        );
-        $analysis->process(
-            [
+        $analysis = $this->analysisFromFixtures([
+            // this class has docblocks
+            'InheritProperties/ChildWithDocBlocks.php',
+            // this one doesn't
+            'InheritProperties/AncestorWithoutDocBlocks.php'
+        ]);
+        $analysis->process([
             new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
-            ]
-        );
+            new BuildPaths(),
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+        $this->validate($analysis);
+
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
@@ -77,10 +99,6 @@ class InheritPropertiesTest extends OpenApiTestCase
         // no error occurs
         $analysis->process(new InheritProperties());
         $this->assertCount(1, $childSchema->properties);
-
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
-        $analysis->validate();
     }
 
     /**
@@ -88,22 +106,23 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithAllOf()
     {
-        $analysis = $this->analysisFromFixtures(
-            [
-                // this class has all of
-                'InheritProperties/Extended.php',
-                'InheritProperties/Base.php',
-            ]
-        );
-        $analysis->process(
-            [
-                new MergeIntoOpenApi(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new MergeIntoComponents(),
-                new InheritProperties()
-            ]
-        );
+        $analysis = $this->analysisFromFixtures([
+            // this class has all of
+            'InheritProperties/Extended.php',
+            'InheritProperties/Base.php',
+        ]);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
+            new AugmentSchemas(),
+            new AugmentProperties(),
+            new BuildPaths(),
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+//        $this->validate($analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(3, $schemas);
@@ -119,33 +138,30 @@ class InheritPropertiesTest extends OpenApiTestCase
         /* @var $includeSchemaWithRef Schema */
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(UNDEFINED, $includeSchemaWithRef->properties);
-
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => "1.0.0"]);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
-        $analysis->validate();
     }
 
     /**
      * Tests for inherit properties without all of block
      */
-    public function testInheritPropertiesWithOtAllOf()
+    public function testInheritPropertiesWithOutAllOf()
     {
-        $analysis = $this->analysisFromFixtures(
-            [
-                // this class has all of
-                'InheritProperties/ExtendedWithoutAllOf.php',
-                'InheritProperties/Base.php',
-            ]
-        );
-        $analysis->process(
-            [
-                new MergeIntoOpenApi(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new MergeIntoComponents(),
-                new InheritProperties()
-            ]
-        );
+        $analysis = $this->analysisFromFixtures([
+            // this class has all of
+            'InheritProperties/ExtendedWithoutAllOf.php',
+            'InheritProperties/Base.php',
+        ]);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
+            new AugmentSchemas(),
+            new AugmentProperties(),
+            new BuildPaths(),
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+        $this->validate($analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(2, $schemas);
@@ -159,10 +175,6 @@ class InheritPropertiesTest extends OpenApiTestCase
 
         $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
-
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
-        $analysis->validate();
     }
 
     /**
@@ -170,22 +182,23 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWitTwoChildSchemas()
     {
-        $analysis = $this->analysisFromFixtures(
-            [
-                // this class has all of
-                'InheritProperties/ExtendedWithTwoSchemas.php',
-                'InheritProperties/Base.php',
-            ]
-        );
-        $analysis->process(
-            [
-                new MergeIntoOpenApi(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new MergeIntoComponents(),
-                new InheritProperties()
-            ]
-        );
+        $analysis = $this->analysisFromFixtures([
+            // this class has all of
+            'InheritProperties/ExtendedWithTwoSchemas.php',
+            'InheritProperties/Base.php',
+        ]);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
+            new AugmentSchemas(),
+            new AugmentProperties(),
+            new BuildPaths(),
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+        $this->validate($analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(3, $schemas);
@@ -205,9 +218,61 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertSame(UNDEFINED, $nestedSchema->allOf);
         $this->assertCount(1, $nestedSchema->properties);
         $this->assertEquals($nestedSchema->properties[0]->property, 'nestedProperty');
+    }
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
+    /**
+     * Tests inherit properties with interface.
+     */
+    public function testPreserveExistingAllOf()
+    {
+        $analysis = $this->analysisFromFixtures([
+            'InheritProperties/BaseInterface.php',
+            'InheritProperties/ExtendsBaseThatImplements.php',
+            'InheritProperties/BaseThatImplements.php',
+            'InheritProperties/TraitUsedByExtendsBaseThatImplements.php',
+        ]);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new InheritInterfaces(),
+            new InheritTraits(),
+            new AugmentSchemas(),
+            new AugmentProperties(),
+            new BuildPaths(),
+            new InheritProperties(),
+            new CleanUnmerged(),
+        ]);
+        $this->validate($analysis);
+
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => "1.0.0"]);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
+
+        /* @var Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $this->assertCount(4, $schemas);
+
+        $baseInterface = $schemas[0];
+        $this->assertSame('BaseInterface', $baseInterface->schema);
+        $this->assertEquals($baseInterface->properties[0]->property, 'interfaceProperty');
+        $this->assertEquals(UNDEFINED, $baseInterface->allOf);
+
+        $extendsBaseThatImplements = $schemas[1];
+        $this->assertSame('ExtendsBaseThatImplements', $extendsBaseThatImplements->schema);
+        $this->assertEquals(UNDEFINED, $extendsBaseThatImplements->properties);
+        $this->assertNotEquals(UNDEFINED, $extendsBaseThatImplements->allOf);
+        // base, trait and own properties
+        $this->assertCount(3, $extendsBaseThatImplements->allOf);
+
+        $baseThatImplements = $schemas[2];
+        $this->assertSame('BaseThatImplements', $baseThatImplements->schema);
+        $this->assertEquals(UNDEFINED, $baseThatImplements->properties);
+        $this->assertNotEquals(UNDEFINED, $baseThatImplements->allOf);
+        $this->assertCount(2, $baseThatImplements->allOf);
+
+        $traitUsedByExtendsBaseThatImplements = $schemas[3];
+        $this->assertSame('TraitUsedByExtendsBaseThatImplements', $traitUsedByExtendsBaseThatImplements->schema);
+        $this->assertEquals($traitUsedByExtendsBaseThatImplements->properties[0]->property, 'traitProperty');
+        $this->assertEquals(UNDEFINED, $traitUsedByExtendsBaseThatImplements->allOf);
     }
 }

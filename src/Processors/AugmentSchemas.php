@@ -12,7 +12,8 @@ use OpenApi\Annotations\Property;
 
 /**
  * Use the Schema context to extract useful information and inject that into the annotation.
- * Merges properties
+ *
+ * Merges properties.
  */
 class AugmentSchemas
 {
