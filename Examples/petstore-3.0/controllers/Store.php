@@ -68,9 +68,7 @@ class Store
      * @OA\Get(
      *     path="/store/order/{orderId}",
      *     tags={"store"},
-     *     description=">-
-    For valid response try integer IDs with value >= 1 and <= 10.\ \ Other
-    values will generated exceptions",
+     *     description="For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions",
      *     operationId="getOrderById",
      *     @OA\Parameter(
      *         name="orderId",
@@ -112,9 +110,7 @@ class Store
      *     path="/store/order/{orderId}",
      *     tags={"store"},
      *     summary="Delete purchase order by ID",
-     *     description=">-
-    For valid response try integer IDs with positive integer value.\ \
-    Negative or non-integer values will generate API errors",
+     *     description="For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors",
      *     operationId="deleteOrder",
      *     @OA\Parameter(
      *         name="orderId",

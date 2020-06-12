@@ -15,31 +15,22 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testStdout()
     {
-        exec(__DIR__.'/../bin/openapi --format json '.escapeshellarg(__DIR__.'/../Examples/swagger-spec/petstore-simple').' 2> /dev/null', $output, $retval);
+        $path = __DIR__.'/../Examples/swagger-spec/petstore-simple';
+        exec(__DIR__.'/../bin/openapi --format yaml '.escapeshellarg($path).' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
-        $json = json_decode(implode("\n", $output));
-        $this->assertSame(JSON_ERROR_NONE, json_last_error());
-        $this->compareOutput($json);
+        $yaml = implode("\n", $output);
+        $this->assertSpecEquals(file_get_contents($path.'/petstore-simple.yaml'), $yaml);
     }
 
     public function testOutputTofile()
     {
-        $filename = sys_get_temp_dir().'/swagger-php-clitest.json';
-        exec(__DIR__.'/../bin/openapi --format json -o '.escapeshellarg($filename).' '.escapeshellarg(__DIR__.'/../Examples/swagger-spec/petstore-simple').' 2> /dev/null', $output, $retval);
+        $path = __DIR__.'/../Examples/swagger-spec/petstore-simple';
+        $filename = sys_get_temp_dir().'/swagger-php-clitest.yaml';
+        exec(__DIR__.'/../bin/openapi --format yaml -o '.escapeshellarg($filename).' '.escapeshellarg($path).' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
         $this->assertCount(0, $output, 'No output to stdout');
-        $contents = file_get_contents($filename);
+        $yaml = file_get_contents($filename);
         unlink($filename);
-        $json = json_decode($contents);
-        $this->assertSame(JSON_ERROR_NONE, json_last_error());
-        $this->compareOutput($json);
-    }
-
-    private function compareOutput($actual)
-    {
-        $expected = json_decode(file_get_contents(__DIR__ . '/../Examples/swagger-spec/petstore-simple/petstore-simple.json'));
-        $expectedJson = json_encode($this->sorted($expected, 'petstore-simple/petstore-simple.json'), JSON_PRETTY_PRINT);
-        $actualJson = json_encode($this->sorted($actual, 'Swagger CLI'), JSON_PRETTY_PRINT);
-        $this->assertEquals($expectedJson, $actualJson);
+        $this->assertSpecEquals(file_get_contents($path.'/petstore-simple.yaml'), $yaml);
     }
 }

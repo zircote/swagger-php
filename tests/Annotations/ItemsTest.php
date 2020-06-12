@@ -14,14 +14,14 @@ class ItemsTest extends OpenApiTestCase
     public function testItemTypeArray()
     {
         $annotations = $this->parseComment('@OA\Items(type="array")');
-        $this->assertOpenApiLogEntryStartsWith('@OA\Items() is required when @OA\Items() has type "array" in ');
+        $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testSchemaTypeArray()
     {
         $annotations = $this->parseComment('@OA\Schema(type="array")');
-        $this->assertOpenApiLogEntryStartsWith('@OA\Items() is required when @OA\Schema() has type "array" in ');
+        $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
@@ -29,7 +29,7 @@ class ItemsTest extends OpenApiTestCase
     {
         $this->countExceptions = 1;
         $notAllowedInQuery = $this->parseComment('@OA\Parameter(name="param",in="query",@OA\Schema(type="array",@OA\Items(type="object")))');
-        $this->assertOpenApiLogEntryStartsWith('@OA\Items()->type="object" not allowed inside a @OA\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
+        $this->assertOpenApiLogEntryContains('@OA\Items()->type="object" not allowed inside a @OA\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
         $notAllowedInQuery[0]->validate();
     }
 

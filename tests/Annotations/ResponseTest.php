@@ -33,7 +33,7 @@ class ResponseTest extends OpenApiTestCase
         /**
          * @see Annotations/Operation.php:187
          */
-        $this->assertOpenApiLogEntryStartsWith(
+        $this->assertOpenApiLogEntryContains(
             'Invalid value "'.$response.'" for @OA\Response()->response, expecting "default"'
             . ', a HTTP Status Code or HTTP '
         );

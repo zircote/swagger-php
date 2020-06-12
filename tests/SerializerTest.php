@@ -3,6 +3,7 @@
 namespace OpenApiTests;
 
 use OpenApi\Annotations;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Serializer;
 use const OpenApi\UNDEFINED;
 
@@ -144,9 +145,10 @@ JSON;
     public function testPetstoreExample()
     {
         $serializer = new Serializer();
-        $openapi = $serializer->deserializeFile(__DIR__ . '/../Examples/petstore.swagger.io/petstore.swagger.io.json');
-        $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $openapi);
-        $this->assertOpenApiEqualsFile(__DIR__ . '/../Examples/petstore.swagger.io/petstore.swagger.io.json', $openapi);
+        $spec = __DIR__ . '/../Examples/petstore.swagger.io/petstore.swagger.io.json';
+        $openapi = $serializer->deserializeFile($spec);
+        $this->assertInstanceOf(OpenApi::class, $openapi);
+        $this->assertJsonStringEqualsJsonString(file_get_contents($spec), $openapi->toJson());
     }
 
 

@@ -6,66 +6,66 @@
 
 namespace OpenApi;
 
-use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations as OA;
 
 /**
- * Class AnnotationDeserializer is used to deserialize a json string
- * to a specific Annotation class and vice versa.
+ * Allows to serialize/de-serialize annotations from/to JSON.
  *
  * @link https://github.com/zircote/swagger-php
  */
 class Serializer
 {
-    const CONTACT = 'OpenApi\Annotations\Contact';
-    const DELETE = 'OpenApi\Annotations\Delete';
-    const EXTERNALDOCUMENTATION = 'OpenApi\Annotations\ExternalDocumentation';
-    const FLOW = 'OpenApi\Annotations\Flow';
-    const GET = 'OpenApi\Annotations\Get';
-    const HEAD = 'OpenApi\Annotations\Head';
-    const HEADER = 'OpenApi\Annotations\Header';
-    const INFO = 'OpenApi\Annotations\Info';
-    const ITEMS = 'OpenApi\Annotations\Items';
-    const LICENSE = 'OpenApi\Annotations\License';
-    const OPENAPI = 'OpenApi\Annotations\OpenApi';
-    const OPERATION = 'OpenApi\Annotations\Operation';
-    const OPTIONS = 'OpenApi\Annotations\Options';
-    const PARAMETER = 'OpenApi\Annotations\Parameter';
-    const PATCH = 'OpenApi\Annotations\Patch';
-    const PATHITEM = 'OpenApi\Annotations\PathItem';
-    const POST = 'OpenApi\Annotations\Post';
-    const PROPERTY = 'OpenApi\Annotations\Property';
-    const PUT = 'OpenApi\Annotations\Put';
-    const REQUESTBODY = 'OpenApi\Annotations\RequestBody';
-    const RESPONSE = 'OpenApi\Annotations\Response';
-    const SCHEMA = 'OpenApi\Annotations\Schema';
-    const SECURITYSCHEME = 'OpenApi\Annotations\SecurityScheme';
-    const TAG = 'OpenApi\Annotations\Tag';
-    const XML = 'OpenApi\Annotations\Xml';
+    private static $VALID_ANNOTATIONS = [
+        OA\AdditionalProperties::class,
+        OA\Components::class,
+        OA\Contact::class,
+        OA\Delete::class,
+        OA\Discriminator::class,
+        OA\Examples::class,
+        OA\ExternalDocumentation::class,
+        OA\Flow::class,
+        OA\Get::class,
+        OA\Head::class,
+        OA\Header::class,
+        OA\Info::class,
+        OA\Items::class,
+        OA\JsonContent::class,
+        OA\License::class,
+        OA\Link::class,
+        OA\MediaType::class,
+        OA\OpenApi::class,
+        OA\Operation::class,
+        OA\Options::class,
+        OA\Parameter::class,
+        OA\Patch::class,
+        OA\PathItem::class,
+        OA\Post::class,
+        OA\Property::class,
+        OA\Put::class,
+        OA\RequestBody::class,
+        OA\Response::class,
+        OA\Schema::class,
+        OA\SecurityScheme::class,
+        OA\Server::class,
+        OA\ServerVariable::class,
+        OA\Tag::class,
+        OA\Trace::class,
+        OA\Xml::class,
+        OA\XmlContent::class,
+    ];
 
-    private static $cachedNames;
-
-    private static function getDefinedNames()
+    public static function isValidAnnotationClass($className)
     {
-        if (static::$cachedNames === null) {
-            static::$cachedNames = [];
-            $reflection = new \ReflectionClass(__CLASS__);
-            static::$cachedNames = $reflection->getConstants();
-        }
-        return static::$cachedNames;
-    }
-
-    public static function isValidClassName($className)
-    {
-        return in_array($className, static::getDefinedNames());
+        return in_array($className, static::$VALID_ANNOTATIONS);
     }
 
     /**
      * Serialize.
      *
-     * @param  Annotations\AbstractAnnotation $annotation
+     * @param OA\AbstractAnnotation $annotation
      * @return string
      */
-    public function serialize(Annotations\AbstractAnnotation $annotation)
+    public function serialize(OA\AbstractAnnotation $annotation)
     {
         return json_encode($annotation);
     }
@@ -76,15 +76,16 @@ class Serializer
      * @param $jsonString
      * @param $className
      *
-     * @return Annotations\AbstractAnnotation
+     * @return OA\AbstractAnnotation
      *
      * @throws \Exception
      */
     public function deserialize($jsonString, $className)
     {
-        if (!$this->isValidClassName($className)) {
-            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
+        if (!$this->isValidAnnotationClass($className)) {
+            throw new \Exception($className . ' is not defined in OpenApi PHP Annotations');
         }
+
         return $this->doDeserialize(json_decode($jsonString), $className);
     }
 
@@ -94,28 +95,28 @@ class Serializer
      * @param $filename
      * @param $className
      *
-     * @return Annotations\AbstractAnnotation
+     * @return OA\AbstractAnnotation
      *
      * @throws \Exception
      */
     public function deserializeFile($filename, $className = 'OpenApi\Annotations\OpenApi')
     {
-        if (!$this->isValidClassName($className)) {
-            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
+        if (!$this->isValidAnnotationClass($className)) {
+            throw new \Exception($className . ' is not defined in OpenApi PHP Annotations');
         }
-        $jsonString = file_get_contents($filename);
-        return $this->doDeserialize(json_decode($jsonString), $className);
+
+        return $this->doDeserialize(json_decode(file_get_contents($filename)), $className);
     }
 
     /**
      * Do deserialization.
      *
      * @param \stdClass $c
-     * @param string    $class The class name of annotation.
+     * @param string $class The class name of annotation.
      *
-     * @return Annotations\AbstractAnnotation
+     * @return OA\AbstractAnnotation
      */
-    private function doDeserialize(\stdClass $c, $class)
+    protected function doDeserialize(\stdClass $c, $class)
     {
         $annotation = new $class([]);
         foreach ($c as $property => $value) {
@@ -133,24 +134,26 @@ class Serializer
                 $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value);
             }
         }
+
         return $annotation;
     }
 
     /**
      * Deserialize the annotation's property.
      *
-     * @param Annotations\AbstractAnnotation $annotation
-     * @param string                         $property
-     * @param mixed                          $value
+     * @param OA\AbstractAnnotation $annotation
+     * @param string $property
+     * @param mixed $value
      *
      * @return mixed
      */
-    private function doDeserializeProperty(Annotations\AbstractAnnotation $annotation, $property, $value)
+    protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, $property, $value)
     {
         // property is primitive type
         if (array_key_exists($property, $annotation::$_types)) {
             return $this->doDeserializeBaseProperty($annotation::$_types[$property], $value);
         }
+
         // property is embedded annotation
         foreach ($annotation::$_nested as $class => $declaration) {
             // property is an annotation
@@ -193,11 +196,11 @@ class Serializer
      * @param string $type The property type
      * @param mixed $value The value to deserialization
      *
-     * @return array|\OpenApi\Annotations\AbstractAnnotation
+     * @return array|OA\AbstractAnnotation
      */
-    private function doDeserializeBaseProperty($type, $value)
+    protected function doDeserializeBaseProperty($type, $value)
     {
-        $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), AbstractAnnotation::class);
+        $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), OA\AbstractAnnotation::class);
 
         if ($isAnnotationClass) {
             $isArray = strpos($type, '[') === 0 && substr($type, -1) === ']';
