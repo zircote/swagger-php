@@ -110,7 +110,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testWrongCommentType()
     {
         $analyser = new StaticAnalyser();
-        $this->assertOpenApiLogEntryStartsWith('Annotations are only parsed inside `/**` DocBlocks');
+        $this->assertOpenApiLogEntryContains('Annotations are only parsed inside `/**` DocBlocks');
         $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context());
     }
 

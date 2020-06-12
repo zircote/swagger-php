@@ -20,7 +20,7 @@ class AnalyserTest extends OpenApiTestCase
     public function testDeprecatedAnnotationWarning()
     {
         $this->countExceptions = 1;
-        $this->assertOpenApiLogEntryStartsWith('The annotation @SWG\Definition() is deprecated.');
+        $this->assertOpenApiLogEntryContains('The annotation @SWG\Definition() is deprecated.');
         $this->parseComment('@SWG\Definition()');
     }
 }

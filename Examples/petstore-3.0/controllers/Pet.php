@@ -116,9 +116,7 @@ class Pet
      *     path="/pet/findByTags",
      *     tags={"pet"},
      *     summary="Finds Pets by tags",
-     *     description=">-
-    Muliple tags can be provided with comma separated strings. Use\ \ tag1,
-    tag2, tag3 for testing.",
+     *     description="Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
      *     operationId="findByTags",
      *     @OA\Parameter(
      *         name="tags",

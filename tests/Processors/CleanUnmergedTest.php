@@ -47,8 +47,8 @@ END;
         $this->assertCount(3, $between->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
         $this->assertCount(2, $between->unmerged->annotations, '@OA\License + @OA\Contact');
         $this->assertCount(2, $analysis->openapi->_unmerged); // 1 would also be oke, Could a'Only the @OA\License'
-        $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\License(), expected to be inside @OA\Info in ');
-        $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\Contact(), expected to be inside @OA\Info in ');
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\License(), expected to be inside @OA\Info in ');
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\Contact(), expected to be inside @OA\Info in ');
         $analysis->validate();
 
         // When a processor places a previously unmerged annotation into the swagger obect.
@@ -62,7 +62,7 @@ END;
         $this->assertCount(4, $after->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem, @OA\Info and @OA\Contact');
         $this->assertCount(1, $after->unmerged->annotations, '@OA\License');
         $this->assertCount(1, $analysis->openapi->_unmerged);
-        $this->assertOpenApiLogEntryStartsWith('Unexpected @OA\License(), expected to be inside @OA\Info in ');
+        $this->assertOpenApiLogEntryContains('Unexpected @OA\License(), expected to be inside @OA\Info in ');
         $analysis->validate();
     }
 }
