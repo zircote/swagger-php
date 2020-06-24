@@ -36,15 +36,15 @@ class MergeJsonContent
             if ($parent->content === UNDEFINED) {
                 $parent->content = [];
             }
-            $parent->content['application/json'] = new MediaType(
-                [
-                'mediaType' => 'application/json',
+            $parent->content['application/json'] = new MediaType([
                 'schema' => $jsonContent,
                 'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
                 '_context' => new Context(['generated' => true], $jsonContent->_context)
-                ]
-            );
+            ]);
+            if (!$parent instanceof Parameter) {
+                $parent->content['application/json']->mediaType = 'application/json';
+            }
             $jsonContent->example = UNDEFINED;
             $jsonContent->examples = UNDEFINED;
 

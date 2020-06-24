@@ -73,7 +73,7 @@ END;
         $json = json_decode(json_encode($parameter), true);
         $this->assertSame('query', $json['in']);
         $this->assertSame('application/xml', array_keys($json['content'])[0]);
-        $this->assertSame('application/xml', $json['content']['application/xml']['mediaType']);
+        $this->assertArrayNotHasKey('mediaType', $json['content']['application/xml']);
     }
 
     public function testNoParent()

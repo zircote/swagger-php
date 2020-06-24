@@ -36,15 +36,15 @@ class MergeXmlContent
             if ($parent->content === UNDEFINED) {
                 $parent->content = [];
             }
-            $parent->content['application/xml'] = new MediaType(
-                [
-                    'mediaType' => 'application/xml',
-                    'schema' => $xmlContent,
-                    'example' => $xmlContent->example,
-                    'examples' => $xmlContent->examples,
-                    '_context' => new Context(['generated' => true], $xmlContent->_context)
-                ]
-            );
+            $parent->content['application/xml'] = new MediaType([
+                'schema' => $xmlContent,
+                'example' => $xmlContent->example,
+                'examples' => $xmlContent->examples,
+                '_context' => new Context(['generated' => true], $xmlContent->_context)
+            ]);
+            if (!$parent instanceof Parameter) {
+                $parent->content['application/xml']->mediaType = 'application/xml';
+            }
             $xmlContent->example = UNDEFINED;
             $xmlContent->examples = UNDEFINED;
 
