@@ -25,7 +25,7 @@ use OpenApi\Annotations as OA;
  *                     property="name",
  *                     type="string"
  *                 ),
- *                 example={"id": 10, "name": "Jessica Smith"}
+ *                 example={"id": "10", "name": "Jessica Smith"}
  *             )
  *         )
  *     ),

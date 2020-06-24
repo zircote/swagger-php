@@ -8,6 +8,14 @@ paths:
       tags:
         - Products
       operationId: 'UsingInterfaces\ProductController::getProduct'
+      parameters:
+        -
+          name: id
+          in: query
+          description: 'Product id'
+          required: false
+          schema:
+            type: string
       responses:
         default:
           description: 'successful operation'

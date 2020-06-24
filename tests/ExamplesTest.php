@@ -70,6 +70,7 @@ class ExamplesTest extends OpenApiTestCase
 
         $path = __DIR__ . '/../Examples/' . $example;
         $openapi = \OpenApi\scan($path, $options);
+        // file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(file_get_contents($path . '/' . $spec), $openapi);
     }
 }

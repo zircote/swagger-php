@@ -59,7 +59,7 @@ END;
         $comment = <<<END
             @OA\Parameter(name="filter",in="query", @OA\XmlContent(
                 @OA\Property(property="type", type="string"),
-                @OA\Property(property="color", type="string"),
+                @OA\Property(property="color", type="string")
             ))
 END;
         $analysis = new Analysis($this->parseComment($comment));

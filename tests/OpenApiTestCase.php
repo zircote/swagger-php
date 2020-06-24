@@ -110,9 +110,11 @@ class OpenApiTestCase extends TestCase
 
         if (is_iterable($expected) && is_iterable($spec)) {
             foreach ($expected as $key => $value) {
+                $this->assertArrayHasKey($key, (array) $spec);
                 $this->assertSpecEquals($value, ((array) $spec)[$key], $message, true);
             }
             foreach ($spec as $key => $value) {
+                $this->assertArrayHasKey($key, (array) $expected);
                 $this->assertSpecEquals(((array) $expected)[$key], $value, $message, true);
             }
         } else {

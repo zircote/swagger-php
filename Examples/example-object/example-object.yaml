@@ -17,7 +17,7 @@ paths:
                   type: string
               type: object
               example:
-                id: 10
+                id: '10'
                 name: 'Jessica Smith'
       responses:
         '200':
