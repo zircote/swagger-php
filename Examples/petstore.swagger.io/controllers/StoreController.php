@@ -35,7 +35,7 @@ abstract class StoreController
      * @OA\Post(path="/store/order",
      *   tags={"store"},
      *   summary="Place an order for a pet",
-     *   description="",
+     *   description="Place an order for a pet",
      *   operationId="placeOrder",
      *   @OA\RequestBody(
      *       required=true,
@@ -101,6 +101,10 @@ abstract class StoreController
      *         format="int64",
      *         minimum=1.0
      *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="successful operation"
      *   ),
      *   @OA\Response(response=400, description="Invalid ID supplied"),
      *   @OA\Response(response=404, description="Order not found")

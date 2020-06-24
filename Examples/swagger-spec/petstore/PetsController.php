@@ -9,6 +9,7 @@ class PetsController
      * @OA\Get(
      *     path="/pets",
      *     summary="List all pets",
+     *     description="List all pets",
      *     operationId="listPets",
      *     tags={"pets"},
      *     @OA\Parameter(
@@ -24,13 +25,13 @@ class PetsController
      *     @OA\Response(
      *         response=200,
      *         description="An paged array of pets",
-     *         @OA\Schema(ref="#/components/schemas/Pets"),
+     *         @OA\JsonContent(ref="#/components/schemas/Pets"),
      *         @OA\Header(header="x-next", @OA\Schema(type="string"), description="A link to the next page of responses")
      *     ),
      *     @OA\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\Schema(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
      *     )
      * )
      */
@@ -42,13 +43,14 @@ class PetsController
      * @OA\Post(
      *    path="/pets",
      *    summary="Create a pet",
+     *    description="Create a pet",
      *    operationId="createPets",
      *    tags={"pets"},
      *    @OA\Response(response=201, description="Null response"),
      *    @OA\Response(
      *        response="default",
      *        description="unexpected error",
-     *        @OA\Schema(ref="#/components/schemas/Error")
+     *        @OA\JsonContent(ref="#/components/schemas/Error")
      *    )
      * )
      */
@@ -60,6 +62,7 @@ class PetsController
      * @OA\Get(
      *     path="/pets/{petId}",
      *     summary="Info for a specific pet",
+     *     description="Info for a specific pet",
      *     operationId="showPetById",
      *     tags={"pets"},
      *     @OA\Parameter(

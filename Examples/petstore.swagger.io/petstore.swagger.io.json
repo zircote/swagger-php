@@ -168,7 +168,7 @@
                     "pet"
                 ],
                 "summary": "Updates a pet in the store with form data",
-                "description": "",
+                "description": "Updates a pet in the store with form data",
                 "operationId": "updatePetWithForm",
                 "parameters": [
                     {
@@ -203,6 +203,9 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "405": {
                         "description": "Invalid input"
                     }
@@ -221,7 +224,7 @@
                     "pet"
                 ],
                 "summary": "Deletes a pet",
-                "description": "",
+                "description": "Deletes a pet",
                 "operationId": "deletePet",
                 "parameters": [
                     {
@@ -236,6 +239,9 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "400": {
                         "description": "Invalid ID supplied"
                     },
@@ -259,7 +265,7 @@
                     "pet"
                 ],
                 "summary": "Update an existing pet",
-                "description": "",
+                "description": "Update an existing pet",
                 "operationId": "updatePet",
                 "requestBody": {
                     "description": "Pet object that needs to be added to the store",
@@ -278,6 +284,9 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "400": {
                         "description": "Invalid ID supplied"
                     },
@@ -302,7 +311,7 @@
                     "pet"
                 ],
                 "summary": "Add a new pet to the store",
-                "description": "",
+                "description": "Add a new pet to the store",
                 "operationId": "addPet",
                 "requestBody": {
                     "description": "Pet object that needs to be added to the store",
@@ -321,6 +330,9 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "405": {
                         "description": "Invalid input"
                     }
@@ -340,8 +352,8 @@
                 "tags": [
                     "pet"
                 ],
-                "summary": "uploads an image",
-                "description": "",
+                "summary": "Uploads an image",
+                "description": "Uploads an image",
                 "operationId": "uploadFile",
                 "parameters": [
                     {
@@ -381,7 +393,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -421,7 +440,7 @@
                     "store"
                 ],
                 "summary": "Place an order for a pet",
-                "description": "",
+                "description": "Place an order for a pet",
                 "operationId": "placeOrder",
                 "requestBody": {
                     "description": "order placed for purchasing the pet",
@@ -499,6 +518,9 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "400": {
                         "description": "Invalid ID supplied"
                     },
@@ -528,7 +550,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "successful operation"
                     }
                 }
@@ -540,7 +562,7 @@
                     "user"
                 ],
                 "summary": "Creates list of users with given input array",
-                "description": "",
+                "description": "Creates list of users with given input array",
                 "operationId": "createUsersWithArrayInput",
                 "requestBody": {
                     "description": "List of user object",
@@ -557,7 +579,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "successful operation"
                     }
                 }
@@ -569,7 +591,7 @@
                     "user"
                 ],
                 "summary": "Creates list of users with given input array",
-                "description": "",
+                "description": "Creates list of users with given input array",
                 "operationId": "createUsersWithListInput",
                 "requestBody": {
                     "description": "List of user object",
@@ -586,7 +608,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "successful operation"
                     }
                 }
@@ -598,7 +620,7 @@
                     "user"
                 ],
                 "summary": "Logs user into the system",
-                "description": "",
+                "description": "Logs user into the system",
                 "operationId": "loginUser",
                 "parameters": [
                     {
@@ -651,11 +673,11 @@
                     "user"
                 ],
                 "summary": "Logs out current logged in user session",
-                "description": "",
+                "description": "Logs out current logged in user session",
                 "operationId": "logoutUser",
                 "parameters": [],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "successful operation"
                     }
                 }
@@ -667,7 +689,7 @@
                     "user"
                 ],
                 "summary": "Get user by user name",
-                "description": "",
+                "description": "Get user by user name",
                 "operationId": "getUserByName",
                 "parameters": [
                     {
@@ -722,6 +744,9 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "400": {
                         "description": "Invalid user supplied"
                     },
@@ -749,6 +774,9 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
                     "400": {
                         "description": "Invalid username supplied"
                     },

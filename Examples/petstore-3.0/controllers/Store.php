@@ -46,6 +46,7 @@ class Store
      *     path="/store/order",
      *     tags={"store"},
      *     summary="Place an order for a pet",
+     *     description="Place an order for a pet",
      *     operationId="placeOrder",
      *     @OA\Response(
      *         response=200,
@@ -92,6 +93,10 @@ class Store
      *         )
      *     ),
      *     @OA\Response(
+     *         response=200,
+     *          description="successful operation"
+     *     ),
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
@@ -122,6 +127,10 @@ class Store
      *             format="int64",
      *             minimum=1
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *          description="successful operation"
      *     ),
      *     @OA\Response(
      *         response=400,

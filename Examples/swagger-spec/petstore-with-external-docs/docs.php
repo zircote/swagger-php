@@ -26,4 +26,8 @@
  *     url="https://swagger.io/about"
  *   )
  * )
+ * @OA\Tag(
+ *   name="pets",
+ *   description="Everything about pets"
+ * )
  */

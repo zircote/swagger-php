@@ -2,8 +2,20 @@
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using references in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using references in swagger-php",
+ *     description="Using references in swagger-php",
+ *     @OA\Contact(
+ *         email="using-refs@swagger.php"
+ *     )
+ * )
+ * @OA\Server(
+ *     description="Dummy Server",
+ *     url="https://localhost"
+ * )
+ * @OA\Tag(
+ *     name="Products",
+ *     description="Product stuff"
  * )
  */
 ?>
@@ -25,7 +37,7 @@ You can define top-level parameters which can be references with $ref="#/compone
  * @OA\RequestBody(
  *   request="product_in_body",
  *   required=true,
- *   description="product_request",
+ *   description="new or updated product",
  *   @OA\JsonContent(ref="#/components/schemas/Product")
  * )
  */

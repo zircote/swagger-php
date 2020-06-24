@@ -32,3 +32,10 @@
  *     )
  * )
  */
+
+/**
+ * @OA\Tag(
+ *   name="pets",
+ *   description="Everything about pets"
+ * )
+ */

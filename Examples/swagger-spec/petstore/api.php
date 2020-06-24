@@ -5,7 +5,9 @@
  *     @OA\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
- *         @OA\License(name="MIT")
+ *         description="A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
+ *         @OA\License(name="MIT"),
+ *         @OA\Contact(name="Swagger API Team")
  *     ),
  *     @OA\Server(
  *         description="Api server",
@@ -33,4 +35,11 @@
  *      type="array",
  *      @OA\Items(ref="#/components/schemas/Pet")
  *  )
+ */
+
+/**
+ * @OA\Tag(
+ *   name="pets",
+ *   description="Everything about pets"
+ * )
  */

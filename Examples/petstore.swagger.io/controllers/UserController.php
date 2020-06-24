@@ -19,7 +19,7 @@ class UserController
      *           @OA\Schema(ref="#/components/schemas/User")
      *       )
      *   ),
-     *   @OA\Response(response="default", description="successful operation")
+     *   @OA\Response(response=200, description="successful operation")
      * )
      */
     public function createUser()
@@ -30,7 +30,7 @@ class UserController
      * @OA\Post(path="/user/createWithArray",
      *   tags={"user"},
      *   summary="Creates list of users with given input array",
-     *   description="",
+     *   description="Creates list of users with given input array",
      *   operationId="createUsersWithArrayInput",
      *   @OA\RequestBody(
      *       description="List of user object",
@@ -43,7 +43,7 @@ class UserController
      *           )
      *       )
      *   ),
-     *   @OA\Response(response="default", description="successful operation")
+     *   @OA\Response(response=200, description="successful operation")
      * )
      */
     public function createUsersWithArrayInput()
@@ -54,7 +54,7 @@ class UserController
      * @OA\Post(path="/user/createWithList",
      *   tags={"user"},
      *   summary="Creates list of users with given input array",
-     *   description="",
+     *   description="Creates list of users with given input array",
      *   operationId="createUsersWithListInput",
      *   @OA\RequestBody(
      *       required=true,
@@ -67,7 +67,7 @@ class UserController
      *           )
      *       )
      *   ),
-     *   @OA\Response(response="default", description="successful operation")
+     *   @OA\Response(response=200, description="successful operation")
      * )
      */
     public function createUsersWithListInput()
@@ -78,7 +78,7 @@ class UserController
      * @OA\Get(path="/user/login",
      *   tags={"user"},
      *   summary="Logs user into the system",
-     *   description="",
+     *   description="Logs user into the system",
      *   operationId="loginUser",
      *   @OA\Parameter(
      *     name="username",
@@ -129,10 +129,10 @@ class UserController
      * @OA\Get(path="/user/logout",
      *   tags={"user"},
      *   summary="Logs out current logged in user session",
-     *   description="",
+     *   description="Logs out current logged in user session",
      *   operationId="logoutUser",
      *   parameters={},
-     *   @OA\Response(response="default", description="successful operation")
+     *   @OA\Response(response=200, description="successful operation")
      * )
      */
     public function logoutUser()
@@ -143,7 +143,7 @@ class UserController
      * @OA\Get(path="/user/{username}",
      *   tags={"user"},
      *   summary="Get user by user name",
-     *   description="",
+     *   description="Get user by user name",
      *   operationId="getUserByName",
      *   @OA\Parameter(
      *     name="username",
@@ -178,6 +178,7 @@ class UserController
      *         type="string"
      *     )
      *   ),
+     *   @OA\Response(response=200, description="successful operation", @OA\Schema(ref="#/components/schemas/User")),
      *   @OA\Response(response=400, description="Invalid user supplied"),
      *   @OA\Response(response=404, description="User not found"),
      *   @OA\RequestBody(
@@ -209,6 +210,7 @@ class UserController
      *         type="string"
      *     )
      *   ),
+     *   @OA\Response(response=200, description="successful operation"),
      *   @OA\Response(response=400, description="Invalid username supplied"),
      *   @OA\Response(response=404, description="User not found")
      * )

@@ -1,11 +1,14 @@
 openapi: 3.0.0
 info:
   title: 'Testing annotations from bugreports'
+  description: 'Misc examples'
+  contact:
+    email: bugs@swagger.php
   version: 1.0.0
 servers:
   -
     url: '{schema}://host.dev'
-    description: 'OpenApi parameters'
+    description: 'OpenApi server details'
     variables:
       schema:
         enum:
@@ -15,6 +18,11 @@ servers:
 paths:
   /api/endpoint:
     get:
+      tags:
+        - api
+        - other
+      description: 'Api endpoint'
+      operationId: endpoint
       parameters:
         -
           name: filter
@@ -29,3 +37,10 @@ paths:
       responses:
         '200':
           description: Success
+tags:
+  -
+    name: api
+    description: 'All API endpoints'
+  -
+    name: other
+    description: 'Other tag'

@@ -1,10 +1,23 @@
 openapi: 3.0.0
 info:
-  title: 'Link Example'
+  title: 'OpnAPI spec example'
+  description: 'An example'
+  contact:
+    email: team@openapis.org
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 1.0.0
+servers:
+  -
+    url: 'https://github.com/OAI/OpenAPI-Specification/tree/master/examples/v3.0'
+    description: 'OpenAPI Spec'
 paths:
   '/2.0/repositories/{username}':
     get:
+      tags:
+        - repositories
+      description: 'Gets repositories for the given user'
       operationId: getRepositoriesByOwner
       parameters:
         -
@@ -27,6 +40,9 @@ paths:
               $ref: '#/components/links/UserRepository'
   '/2.0/repositories/{username}/{slug}':
     get:
+      tags:
+        - repositories
+      description: 'Gets a specific repository'
       operationId: getRepository
       parameters:
         -
@@ -53,6 +69,9 @@ paths:
               $ref: '#/components/links/RepositoryPullRequests'
   '/2.0/repositories/{username}/{slug}/pullrequests':
     get:
+      tags:
+        - repositories
+      description: 'Gets pull request for a repository'
       operationId: getPullRequestsByRepository
       parameters:
         -
@@ -87,6 +106,9 @@ paths:
                   $ref: '#/components/schemas/pullrequest'
   '/2.0/repositories/{username}/{slug}/pullrequests/{pid}':
     get:
+      tags:
+        - repositories
+      description: 'Gets a specific pull request'
       operationId: getPullRequestsById
       parameters:
         -
@@ -119,6 +141,9 @@ paths:
               $ref: '#/components/links/PullRequestMerge'
   '/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge':
     post:
+      tags:
+        - repositories
+      description: 'Merges a pull request'
       operationId: mergePullRequest
       parameters:
         -
@@ -144,6 +169,9 @@ paths:
           description: 'the PR was successfully merged'
   '/2.0/users/{username}':
     get:
+      tags:
+        - users
+      description: 'Gets a specific user'
       operationId: getUserByName
       parameters:
         -
@@ -210,3 +238,10 @@ components:
         username: '$response.body#/author/username'
         slug: '$response.body#/repository/slug'
         pid: '$response.body#/id'
+tags:
+  -
+    name: repositories
+    description: 'Everything about repositories'
+  -
+    name: users
+    description: 'User related stuff'

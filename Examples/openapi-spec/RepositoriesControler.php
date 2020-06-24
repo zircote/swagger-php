@@ -6,6 +6,8 @@ class RepositoriesController
 {
     /**
      * @OA\Get(path="/2.0/repositories/{username}",
+     *   description="Gets repositories for the given user",
+     *   tags={"repositories"},
      *   operationId="getRepositoriesByOwner",
      *   @OA\Parameter(
      *     name="username",
@@ -32,6 +34,8 @@ class RepositoriesController
 
     /**
      ** @OA\Get(path="/2.0/repositories/{username}/{slug}",
+     *   description="Gets a specific repository",
+     *   tags={"repositories"},
      *   operationId="getRepository",
      *   @OA\Parameter(name="username",
      *     in="path",
@@ -64,6 +68,8 @@ class RepositoriesController
 
     /**
      * @OA\Get(path="/2.0/repositories/{username}/{slug}/pullrequests",
+     *   description="Gets pull request for a repository",
+     *   tags={"repositories"},
      *   operationId="getPullRequestsByRepository",
      *   @OA\Parameter(name="username",
      *     in="path",
@@ -102,6 +108,8 @@ class RepositoriesController
 
     /**
      * @OA\Get(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}",
+     *   description="Gets a specific pull request",
+     *   tags={"repositories"},
      *   operationId="getPullRequestsById",
      *   @OA\Parameter(name="username",
      *     in="path",
@@ -131,6 +139,8 @@ class RepositoriesController
 
     /**
      * @OA\Post(path="/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge",
+     *   description="Merges a pull request",
+     *   tags={"repositories"},
      *   operationId="mergePullRequest",
      *   @OA\Parameter(name="username",
      *     in="path",

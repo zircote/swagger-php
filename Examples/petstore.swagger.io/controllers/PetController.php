@@ -32,7 +32,7 @@ final class PetController
      *         ),
      *     ),
      *     @OA\Response(
-     *         response="400",
+     *         response=400,
      *         description="Invalid tag value",
      *     ),
      *     security={
@@ -76,7 +76,7 @@ final class PetController
      *         )
      *     ),
      *     @OA\Response(
-     *         response="400",
+     *         response=400,
      *         description="Invalid status value",
      *     ),
      *     security={
@@ -111,11 +111,11 @@ final class PetController
      *         @OA\JsonContent(ref="#/components/schemas/Pet")
      *     ),
      *     @OA\Response(
-     *         response="400",
+     *         response=400,
      *         description="Invalid ID supplied"
      *     ),
      *     @OA\Response(
-     *         response="404",
+     *         response=404,
      *         description="Pet not found"
      *     ),
      *     security={
@@ -133,7 +133,7 @@ final class PetController
      *     tags={"pet"},
      *     operationId="addPet",
      *     summary="Add a new pet to the store",
-     *     description="",
+     *     description="Add a new pet to the store",
      *     @OA\RequestBody(
      *         description="Pet object that needs to be added to the store",
      *         required=true,
@@ -152,6 +152,10 @@ final class PetController
      *         )
      *     ),
      *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
      *         response=405,
      *         description="Invalid input",
      *     ),
@@ -168,7 +172,7 @@ final class PetController
      *     tags={"pet"},
      *     operationId="updatePet",
      *     summary="Update an existing pet",
-     *     description="",
+     *     description="Update an existing pet",
      *     @OA\RequestBody(
      *         required=true,
      *         description="Pet object that needs to be added to the store",
@@ -177,6 +181,10 @@ final class PetController
      *            mediaType="application/xml",
      *            @OA\Schema(ref="#/components/schemas/Pet"),
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -201,7 +209,7 @@ final class PetController
      * @OA\Delete(
      *     path="/pet/{petId}",
      *     summary="Deletes a pet",
-     *     description="",
+     *     description="Deletes a pet",
      *     operationId="deletePet",
      *     tags={"pet"},
      *     @OA\Parameter(
@@ -223,6 +231,10 @@ final class PetController
      *         )
      *     ),
      *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
      *     ),
@@ -239,44 +251,48 @@ final class PetController
 
     /**
      * @OA\Post(
-     *   path="/pet/{petId}",
-     *   tags={"pet"},
-     *   summary="Updates a pet in the store with form data",
-     *   description="",
-     *   operationId="updatePetWithForm",
-     *   @OA\RequestBody(
-     *       required=false,
-     *       @OA\MediaType(
-     *           mediaType="application/x-www-form-urlencoded",
-     *           @OA\Schema(
-     *               type="object",
-     *               @OA\Property(
-     *                   property="name",
-     *                   description="Updated name of the pet",
-     *                   type="string"
-     *               ),
-     *               @OA\Property(
-     *                   property="status",
-     *                   description="Updated status of the pet",
-     *                   type="string"
-     *               ),
-     *           )
-     *       )
-     *   ),
-     *   @OA\Parameter(
-     *     name="petId",
-     *     in="path",
-     *     description="ID of pet that needs to be updated",
-     *     required=true,
-     *     @OA\Schema(
-     *         type="integer",
-     *         format="int64"
-     *     )
-     *   ),
-     *   @OA\Response(response="405",description="Invalid input"),
-     *   security={{
-     *     "petstore_auth": {"write:pets", "read:pets"}
-     *   }}
+     *     path="/pet/{petId}",
+     *     tags={"pet"},
+     *     summary="Updates a pet in the store with form data",
+     *     description="Updates a pet in the store with form data",
+     *     operationId="updatePetWithForm",
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     description="Updated name of the pet",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     description="Updated status of the pet",
+     *                     type="string"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="petId",
+     *         in="path",
+     *         description="ID of pet that needs to be updated",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(response=405,description="Invalid input"),
+     *     security={{
+     *         "petstore_auth": {"write:pets", "read:pets"}
+     *     }}
      * )
      */
     public function updatePetWithForm()
@@ -286,8 +302,8 @@ final class PetController
     /**
      * @OA\Post(
      *     path="/pet/{petId}/uploadImage",
-     *     description="",
-     *     summary="uploads an image",
+     *     description="Uploads an image",
+     *     summary="Uploads an image",
      *     operationId="uploadFile",
      *     @OA\RequestBody(
      *         required=true,
@@ -320,9 +336,9 @@ final class PetController
      *         ),
      *     ),
      *     @OA\Response(
-     *         response="200",
+     *         response=200,
      *         description="successful operation",
-     *         @OA\Schema(ref="#/components/schemas/ApiResponse")
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
      *     ),
      *     security={
      *         {

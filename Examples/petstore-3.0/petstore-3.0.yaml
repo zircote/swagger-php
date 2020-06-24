@@ -19,10 +19,24 @@ paths:
       tags:
         - pet
       summary: 'Update an existing pet'
+      description: 'Update an existing pet'
       operationId: updatePet
       requestBody:
         $ref: '#/components/requestBodies/Pet'
       responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
         '400':
           description: 'Invalid ID supplied'
         '404':
@@ -38,10 +52,24 @@ paths:
       tags:
         - pet
       summary: 'Add a new pet to the store'
+      description: 'Add a new pet to the store'
       operationId: addPet
       requestBody:
         $ref: '#/components/requestBodies/Pet'
       responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
         '405':
           description: 'Invalid input'
       security:
@@ -170,6 +198,7 @@ paths:
       tags:
         - pet
       summary: 'Updates a pet in the store with form data'
+      description: 'Updates a pet in the store with form data'
       operationId: updatePetWithForm
       parameters:
         -
@@ -194,6 +223,19 @@ paths:
                   type: string
               type: object
       responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
         '405':
           description: 'Invalid input'
       security:
@@ -205,6 +247,7 @@ paths:
       tags:
         - pet
       summary: 'Deletes a pet'
+      description: 'Deletes a pet'
       operationId: deletePet
       parameters:
         -
@@ -222,6 +265,8 @@ paths:
             type: integer
             format: int64
       responses:
+        '200':
+          description: 'successful operation'
         '400':
           description: 'Invalid ID supplied'
         '404':
@@ -236,6 +281,7 @@ paths:
       tags:
         - pet
       summary: 'uploads an image'
+      description: 'uploads an image'
       operationId: uploadFile
       parameters:
         -
@@ -290,6 +336,7 @@ paths:
       tags:
         - store
       summary: 'Place an order for a pet'
+      description: 'Place an order for a pet'
       operationId: placeOrder
       requestBody:
         description: 'order placed for purchasing th pet'
@@ -356,43 +403,18 @@ paths:
             format: int64
             minimum: 1
       responses:
+        '200':
+          description: 'successful operation'
         '400':
           description: 'Invalid ID supplied'
         '404':
           description: 'Order not found'
-  /user:
-    post:
-      tags:
-        - user
-      summary: 'Create user'
-      description: 'This can only be done by the logged in user.'
-      operationId: createUser
-      requestBody:
-        description: 'Create user object'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        default:
-          description: 'successful operation'
-  /user/createWithArray:
-    post:
-      tags:
-        - user
-      summary: 'Create list of users with given input array'
-      operationId: createUsersWithListInput
-      requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-      responses:
-        default:
-          description: 'successful operation'
   /user/login:
     get:
       tags:
         - user
       summary: 'Logs user into system'
+      description: 'Validates the given credentials and starts a user session on success'
       operationId: loginUser
       parameters:
         -
@@ -436,13 +458,17 @@ paths:
       tags:
         - user
       summary: 'Logs out current logged in user session'
+      description: 'Invalidates the user session'
       operationId: logoutUser
       responses:
-        default:
+        '200':
           description: 'successful operation'
   '/user/{username}':
     get:
+      tags:
+        - user
       summary: 'Get user by user name'
+      description: 'Returns user for the given name'
       operationId: getUserByName
       parameters:
         -
@@ -461,47 +487,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '400':
-          description: 'Invalid username supplied'
-        '404':
-          description: 'User not found'
-    put:
-      summary: 'Updated user'
-      description: 'This can pnly be done by the logged in user.'
-      operationId: updateUser
-      parameters:
-        -
-          name: username
-          in: path
-          description: 'name that to be updated'
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: 'Updated user object'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '400':
-          description: 'Invalid user supplied'
-        '404':
-          description: 'User not found'
-    delete:
-      summary: 'Delete user'
-      description: 'This can only be done by the logged in user.'
-      operationId: deleteUser
-      parameters:
-        -
-          name: username
-          in: path
-          description: 'The name that needs to be deleted'
-          required: true
-          schema:
-            type: string
-      responses:
         '400':
           description: 'Invalid username supplied'
         '404':

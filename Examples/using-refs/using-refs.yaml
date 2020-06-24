@@ -1,34 +1,35 @@
 openapi: 3.0.0
 info:
   title: 'Example of using references in swagger-php'
+  description: 'Using references in swagger-php'
+  contact:
+    email: using-refs@swagger.php
   version: 1.0.0
+servers:
+  -
+    url: 'https://localhost'
+    description: 'Dummy Server'
 paths:
   '/products/{product_id}':
     get:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::getProduct'
+      description: 'Get a product'
+      operationId: get_product
       responses:
-        default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+        '200':
+          $ref: '#/components/responses/product'
     patch:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::updateProduct'
+      description: 'Patch a product'
+      operationId: patch_product
       parameters:
         -
           $ref: '#/components/requestBodies/product_in_body'
       responses:
-        default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+        '200':
+          $ref: '#/components/responses/product'
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
@@ -36,17 +37,14 @@ paths:
     post:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::addProduct'
+      description: 'Post a product'
+      operationId: post_product
       parameters:
         -
           $ref: '#/components/requestBodies/product_in_body'
       responses:
-        default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+        '200':
+          $ref: '#/components/responses/product'
 components:
   schemas:
     Product:
@@ -88,9 +86,13 @@ components:
         format: int64
   requestBodies:
     product_in_body:
-      description: product_request
+      description: 'new or updated product'
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Product'
+tags:
+  -
+    name: Products
+    description: 'Product stuff'

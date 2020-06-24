@@ -20,7 +20,20 @@ class Pet
      *     path="/pet",
      *     tags={"pet"},
      *     summary="Add a new pet to the store",
+     *     description="Add a new pet to the store",
      *     operationId="addPet",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
@@ -40,7 +53,20 @@ class Pet
      *     path="/pet",
      *     tags={"pet"},
      *     summary="Update an existing pet",
+     *     description="Update an existing pet",
      *     operationId="updatePet",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=400,
      *         description="Invalid ID supplied"
@@ -203,6 +229,7 @@ class Pet
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Updates a pet in the store with form data",
+     *     description="Updates a pet in the store with form data",
      *     operationId="updatePetWithForm",
      *     @OA\Parameter(
      *         name="petId",
@@ -212,6 +239,18 @@ class Pet
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
+     *         ),
+     *         @OA\XmlContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Pet")
      *         )
      *     ),
      *     @OA\Response(
@@ -251,6 +290,7 @@ class Pet
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Deletes a pet",
+     *     description="Deletes a pet",
      *     operationId="deletePet",
      *     @OA\Parameter(
      *         name="api_key",
@@ -269,6 +309,10 @@ class Pet
      *             type="integer",
      *             format="int64"
      *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -292,6 +336,7 @@ class Pet
      *     path="/pet/{petId}/uploadImage",
      *     tags={"pet"},
      *     summary="uploads an image",
+     *     description="uploads an image",
      *     operationId="uploadFile",
      *     @OA\Parameter(
      *         name="petId",

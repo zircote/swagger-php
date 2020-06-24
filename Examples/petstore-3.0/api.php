@@ -33,7 +33,7 @@ out more about Swagger at
  * )
  * @OA\Tag(
  *     name="store",
- *     description="Access to Petstore orders",
+ *     description="Access to Petstore orders"
  * )
  * @OA\Tag(
  *     name="user",

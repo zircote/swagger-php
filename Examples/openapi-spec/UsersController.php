@@ -10,6 +10,8 @@ class UsersController
 
     /**
      * @OA\Get(path="/2.0/users/{username}",
+     *   description="Gets a specific user",
+     *   tags={"users"},
      *   operationId="getUserByName",
      *   @OA\Parameter(name="username",
      *     in="path",

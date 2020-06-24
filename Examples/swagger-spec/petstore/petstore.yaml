@@ -1,6 +1,9 @@
 openapi: 3.0.0
 info:
   title: 'Swagger Petstore'
+  description: 'A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification'
+  contact:
+    name: 'Swagger API Team'
   license:
     name: MIT
   version: 1.0.0
@@ -14,6 +17,7 @@ paths:
       tags:
         - pets
       summary: 'List all pets'
+      description: 'List all pets'
       operationId: listPets
       parameters:
         -
@@ -32,23 +36,37 @@ paths:
               description: 'A link to the next page of responses'
               schema:
                 type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pets'
         default:
           description: 'unexpected error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - pets
       summary: 'Create a pet'
+      description: 'Create a pet'
       operationId: createPets
       responses:
         '201':
           description: 'Null response'
         default:
           description: 'unexpected error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/pets/{petId}':
     get:
       tags:
         - pets
       summary: 'Info for a specific pet'
+      description: 'Info for a specific pet'
       operationId: showPetById
       parameters:
         -
@@ -93,3 +111,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Pet'
+tags:
+  -
+    name: pets
+    description: 'Everything about pets'

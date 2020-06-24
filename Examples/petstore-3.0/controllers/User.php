@@ -23,7 +23,7 @@ class User
      *     description="This can only be done by the logged in user.",
      *     operationId="createUser",
      *     @OA\Response(
-     *         response="default",
+     *         response=200
      *         description="successful operation"
      *     ),
      *     @OA\RequestBody(
@@ -42,9 +42,10 @@ class User
      *     path="/user/createWithArray",
      *     tags={"user"},
      *     summary="Create list of users with given input array",
+     *     description="Create list of users with given input array",
      *     operationId="createUsersWithListInput",
      *     @OA\Response(
-     *         response="default",
+     *         response=200
      *         description="successful operation"
      *     ),
      *     @OA\RequestBody(ref="#/components/requestBodies/UserArray")
@@ -59,6 +60,7 @@ class User
      *     path="/user/login",
      *     tags={"user"},
      *     summary="Logs user into system",
+     *     description="Validates the given credentials and starts a user session on success",
      *     operationId="loginUser",
      *     @OA\Parameter(
      *         name="username",
@@ -121,9 +123,10 @@ class User
      *     path="/user/logout",
      *     tags={"user"},
      *     summary="Logs out current logged in user session",
+     *     description="Invalidates the user session",
      *     operationId="logoutUser",
      *     @OA\Response(
-     *         response="default",
+     *         response=200,
      *         description="successful operation"
      *     )
      * )
@@ -135,7 +138,9 @@ class User
     /**
      * @OA\Get(
      *     path="/user/{username}",
+     *     tags={"user"},
      *     summary="Get user by user name",
+     *     description="Returns user for the given name",
      *     operationId="getUserByName",
      *     @OA\Parameter(
      *         name="username",
@@ -171,6 +176,7 @@ class User
     /**
      * @OA\Put(
      *     path="/user/{username}",
+     *     tags={"user"},
      *     summary="Updated user",
      *     description="This can pnly be done by the logged in user.",
      *     operationId="updateUser",
@@ -183,6 +189,10 @@ class User
      *             type="string"
      *         )
      *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     )
      *     @OA\Response(
      *         response=400,
      *         description="Invalid user supplied"
@@ -205,6 +215,7 @@ class User
     /**
      * @OA\Delete(
      *     path="/user/{username}",
+     *     tags={"user"},
      *     summary="Delete user",
      *     description="This can only be done by the logged in user.",
      *     operationId="deleteUser",
@@ -217,6 +228,10 @@ class User
      *             type="string"
      *         )
      *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     )
      *     @OA\Response(
      *         response=400,
      *         description="Invalid username supplied",
