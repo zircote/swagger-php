@@ -271,22 +271,26 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function jsonSerialize()
     {
         $data = new stdClass();
+
         // Strip undefined values.
         foreach (get_object_vars($this) as $property => $value) {
             if ($value !== UNDEFINED) {
                 $data->$property = $value;
             }
         }
+
         // Strip properties that are for internal (swagger-php) use.
         foreach (static::$_blacklist as $property) {
             unset($data->$property);
         }
+
         // Correct empty array to empty objects.
         foreach (static::$_types as $property => $type) {
             if ($type === 'object' && is_array($data->$property) && empty($data->$property)) {
                 $data->$property = new stdClass;
             }
         }
+
         // Inject vendor properties.
         unset($data->x);
         if (is_array($this->x)) {
@@ -295,6 +299,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $data->$prefixed = $value;
             }
         }
+
         // Map nested keys
         foreach (static::$_nested as $nested) {
             if (is_string($nested) || count($nested) === 1) {
@@ -312,7 +317,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 } else {
                     $key = $item->$keyField;
                     if ($key !== UNDEFINED && empty($object->$key)) {
-                        if (method_exists($item, 'jsonSerialize')) {
+                        if ($item instanceof JsonSerializable) {
                             $object->$key = $item->jsonSerialize();
                         } else {
                             $object->$key = $item;
@@ -323,12 +328,16 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $data->$property = $object;
         }
+
         // $ref
         if (isset($data->ref)) {
+            // OAS 3.0 does not allow $ref to have siblings: http://spec.openapis.org/oas/v3.0.3#fixed-fields-18
+            $noSiblingData = new stdClass();
             $dollarRef = '$ref';
-            $data->$dollarRef = $data->ref;
-            unset($data->ref);
+            $noSiblingData->{$dollarRef} = $data->ref;
+            $data = $noSiblingData;
         }
+
         return $data;
     }
 

@@ -595,8 +595,6 @@ components:
           type: integer
           format: int64
         category:
-          title: Category
-          description: 'Category relation'
           $ref: '#/components/schemas/Category'
         name:
           title: 'Pet name'
