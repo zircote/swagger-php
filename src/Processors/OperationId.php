@@ -14,6 +14,23 @@ use OpenApi\Annotations\Operation;
  */
 class OperationId
 {
+    protected $urlSafe = false;
+
+    public function __construct(bool $urlSafe = false)
+    {
+        $this->setUrlSafe($urlSafe);
+    }
+
+    public function isUrlSafe(): bool
+    {
+        return $this->urlSafe;
+    }
+
+    public function setUrlSafe(bool $urlSafe): void
+    {
+        $this->urlSafe = $urlSafe;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
@@ -34,6 +51,10 @@ class OperationId
                 } else {
                     $operation->operationId = $context->method;
                 }
+            }
+
+            if ($this->isUrlSafe()) {
+                $operation->operationId = str_replace(['\\'], ['_'], $operation->operationId);
             }
         }
     }
