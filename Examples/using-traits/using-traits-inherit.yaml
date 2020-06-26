@@ -23,11 +23,16 @@ components:
   schemas:
     BellsAndWhistles:
       title: 'Bells and Whistles trait'
-      properties:
-        plating:
-          description: 'The plating.'
-          example: gold
-      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Bells'
+        -
+          $ref: '#/components/schemas/Whistles'
+        -
+          properties:
+            plating:
+              description: 'The plating.'
+              example: gold
     Blink:
       title: 'Blink trait'
       properties:
