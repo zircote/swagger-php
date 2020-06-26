@@ -9,15 +9,16 @@ class ProductController
      * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{id}",
+     *   description="Get product",
      *   @OA\Parameter(
      *     name="id",
-     *     in="query",
+     *     in="path",
      *     description="Product id",
-     *     required=false,
+     *     required=true,
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(
-     *       response="default",
+     *       response=200,
      *       description="successful operation",
      *       @OA\JsonContent(ref="#/components/schemas/Product")
      *   )

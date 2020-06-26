@@ -1,23 +1,31 @@
 openapi: 3.0.0
 info:
   title: 'Example of using interfaces in swagger-php'
+  description: 'Shows how to define operations in interfaces'
+  contact:
+    email: examples@swagger.io
   version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+    description: 'Dummy Server'
 paths:
   '/products/{id}':
     get:
       tags:
         - Products
+      description: 'Get product'
       operationId: 'UsingInterfaces\ProductController::getProduct'
       parameters:
         -
           name: id
-          in: query
+          in: path
           description: 'Product id'
-          required: false
+          required: true
           schema:
             type: string
       responses:
-        default:
+        '200':
           description: 'successful operation'
           content:
             application/json:
@@ -43,3 +51,7 @@ components:
           description: 'The product name.'
           example: toaster
       type: object
+tags:
+  -
+    name: Products
+    description: 'Product stuff'

@@ -15,7 +15,7 @@ paths:
       tags:
         - Products
       description: 'Get a product'
-      operationId: get_product
+      operationId: 'UsingRefs\ProductController::getProduct'
       responses:
         '200':
           $ref: '#/components/responses/product'
@@ -38,7 +38,7 @@ paths:
       tags:
         - Products
       description: 'Post a product'
-      operationId: post_product
+      operationId: 'UsingRefs\ProductController::addProduct'
       parameters:
         -
           $ref: '#/components/requestBodies/product_in_body'

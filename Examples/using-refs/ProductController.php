@@ -16,7 +16,6 @@ class ProductController
      *   tags={"Products"},
      *   path="/products/{product_id}",
      *   description="Get a product",
-     *   operationId="get_product",
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",
@@ -51,7 +50,6 @@ class ProductController
      *   tags={"Products"},
      *   path="/products",
      *   description="Post a product",
-     *   operationId="post_product",
      *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
      *   @OA\Response(
      *       response=200,

@@ -8,7 +8,21 @@ If this is not working for you this processor can be swapped for the `MergeInter
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using interfaces in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using interfaces in swagger-php",
+ *     description="Shows how to define operations in interfaces",
+ *     @OA\Contact(
+ *         email="examples@swagger.io"
+ *     )
+ * )
+ *
+ * @OA\Server(
+ *     description="Dummy Server",
+ *     url="http://localhost"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Products",
+ *     description="Product stuff"
  * )
  */

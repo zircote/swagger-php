@@ -1,39 +1,48 @@
 openapi: 3.0.0
 info:
   title: 'Example of using traits in swagger-php'
+  description: 'Shows how traits can be used'
+  contact:
+    email: examples@swagger.io
   version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+    description: 'Dummy Server'
 paths:
   '/entities/{id}':
     delete:
       tags:
         - Entities
+      description: 'Delete entity'
       operationId: 'UsingTraits\DeleteEntity::deleteEntity'
       parameters:
         -
           name: id
-          in: query
+          in: path
           description: 'Entity id'
-          required: false
+          required: true
           schema:
             type: string
       responses:
-        default:
+        '200':
           description: 'successful operation'
   '/products/{product_id}':
     get:
       tags:
         - Products
+      description: 'Get a product'
       operationId: 'UsingTraits\ProductController::getProduct'
       parameters:
         -
           name: product_id
-          in: query
+          in: path
           description: 'Product id'
-          required: false
+          required: true
           schema:
             type: string
       responses:
-        default:
+        '200':
           description: 'successful operation'
 components:
   schemas:
@@ -99,3 +108,10 @@ components:
               description: 'The trick.'
               example: 'recite poem'
           type: object
+tags:
+  -
+    name: Products
+    description: 'Product stuff'
+  -
+    name: Entities
+    description: 'Entity stuff'

@@ -13,15 +13,16 @@ class ProductController
      * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{product_id}",
+     *   description="Get a product",
      *   @OA\Parameter(
      *     name="product_id",
-     *     in="query",
+     *     in="path",
      *     description="Product id",
-     *     required=false,
+     *     required=true,
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(
-     *     response="default",
+     *     response=200,
      *     description="successful operation"
      *   )
      * )

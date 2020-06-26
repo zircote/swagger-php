@@ -13,15 +13,16 @@ trait DeleteEntity {
      * @OA\Delete(
      *   tags={"Entities"},
      *   path="/entities/{id}",
+     *   description="Delete entity",
      *   @OA\Parameter(
      *     name="id",
-     *     in="query",
+     *     in="path",
      *     description="Entity id",
-     *     required=false,
+     *     required=true,
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(
-     *       response="default",
+     *       response=200,
      *       description="successful operation"
      *   )
      * )

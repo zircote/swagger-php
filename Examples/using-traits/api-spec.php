@@ -8,7 +8,26 @@ If this is not working for you this processor can be swapped for the `MergeTrait
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using traits in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using traits in swagger-php",
+ *     description="Shows how traits can be used",
+ *     @OA\Contact(
+ *         email="examples@swagger.io"
+ *     )
+ * )
+ *
+ * @OA\Server(
+ *     description="Dummy Server",
+ *     url="http://localhost"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Products",
+ *     description="Product stuff"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Entities",
+ *     description="Entity stuff"
  * )
  */

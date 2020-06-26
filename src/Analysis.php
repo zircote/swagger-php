@@ -275,22 +275,22 @@ class Analysis
     }
 
     /**
-     * Get the list of traits used by the given class or by classes which it extends.
+     * Get the list of traits used by the given class/trait or by classes which it extends.
      *
-     * @param string $class The class name.
+     * @param string $source The source name.
      * @param bool   $direct  Flag to find only the actual class traits.
      * @return array Map of class => definition pairs of traits.
      */
-    public function getTraitsOfClass($class, $direct = false)
+    public function getTraitsOfClass($source, $direct = false)
     {
-        $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
+        $sources = $direct ? [] : array_keys($this->getSuperClasses($source));
         // add self
-        $classes[] = $class;
+        $sources[] = $source;
 
         $definitions = [];
-        foreach ($classes as $clazz) {
-            if (isset($this->classes[$clazz])) {
-                $definition = $this->classes[$clazz];
+        foreach ($sources as $sourze) {
+            if (isset($this->classes[$sourze]) || isset($this->traits[$sourze])) {
+                $definition = isset($this->classes[$sourze]) ? $this->classes[$sourze] : $this->traits[$sourze];
                 if (isset($definition['traits'])) {
                     foreach ($definition['traits'] as $trait) {
                         if (array_key_exists($trait, $this->traits)) {
