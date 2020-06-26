@@ -70,7 +70,13 @@ class ExamplesTest extends OpenApiTestCase
 
         $path = __DIR__ . '/../Examples/' . $example;
         $openapi = \OpenApi\scan($path, $options);
-        // file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        if (false) {
+            // rebuild reference specs
+            file_put_contents($path . '/' . $spec, $openapi->toYaml());
+            if ('petstore.swagger.io' == $example) {
+                file_put_contents($path . '/' . str_replace('yaml', 'json', $spec), $openapi->toJson());
+            }
+        }
         $this->assertSpecEquals(file_get_contents($path . '/' . $spec), $openapi);
     }
 }
