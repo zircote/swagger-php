@@ -33,7 +33,7 @@ class ProductController
      *   path="/products/{product_id}",
      *   description="Patch a product",
      *   operationId="patch_product",
-     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",
@@ -50,7 +50,7 @@ class ProductController
      *   tags={"Products"},
      *   path="/products",
      *   description="Post a product",
-     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",

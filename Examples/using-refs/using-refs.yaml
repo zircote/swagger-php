@@ -24,9 +24,8 @@ paths:
         - Products
       description: 'Patch a product'
       operationId: patch_product
-      parameters:
-        -
-          $ref: '#/components/requestBodies/product_in_body'
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
       responses:
         '200':
           $ref: '#/components/responses/product'
@@ -39,9 +38,8 @@ paths:
         - Products
       description: 'Post a product'
       operationId: 'UsingRefs\ProductController::addProduct'
-      parameters:
-        -
-          $ref: '#/components/requestBodies/product_in_body'
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
       responses:
         '200':
           $ref: '#/components/responses/product'
