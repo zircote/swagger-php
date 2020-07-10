@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
- /**
-  * @license Apache 2.0
-  */
+/**
+ * @license Apache 2.0
+ */
 
- namespace OpenApi\Annotations;
+namespace OpenApi\Annotations;
 
 use OpenApi\Logger;
 
@@ -170,8 +170,16 @@ abstract class Operation extends AbstractAnnotation
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
+
         unset($data->method);
         unset($data->path);
+
+        // ensure security elements are object
+        if (isset($data->security) && is_array($data->security)) {
+            foreach ($data->security as $key => $scheme) {
+                $data->security[$key] = (object) $scheme;
+            }
+        }
 
         return $data;
     }
