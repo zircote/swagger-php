@@ -12,6 +12,7 @@ class UtilTest extends OpenApiTestCase
     {
         $openapi = \OpenApi\scan(__DIR__.'/Fixtures', [
             'exclude' => [
+                'Apis',
                 'Customer.php',
                 'CustomerInterface.php',
                 'GrandAncestor.php',

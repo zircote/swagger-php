@@ -218,4 +218,17 @@ class StaticAnalyserTest extends OpenApiTestCase
             $this->assertSame($traits, $description['traits']);
         }
     }
+
+    public function testCustomGetAnnotation()
+    {
+        // ah, static!
+        $backup = Analyser::$whitelist;
+        Analyser::$whitelist[] = 'OpenApiTests\Annotations';
+
+        $analysis = $this->analysisFromFixtures('Apis/basic_custom_get.php');
+        $analysis->process();
+        $analysis->validate();
+
+        Analyser::$whitelist = $backup;
+    }
 }

@@ -163,20 +163,18 @@ abstract class AbstractAnnotation implements JsonSerializable
         $nestedContext = new Context(['nested' => $this], $this->_context);
         foreach ($annotations as $annotation) {
             $found = false;
-            foreach (static::$_nested as $class => $property) {
-                if (get_class($annotation) === $class) {
-                    if (is_array($property)) { // Append to an array?
-                        $property = $property[0];
-                        if ($this->$property === UNDEFINED) {
-                            $this->$property = [];
-                        }
-                        array_push($this->$property, $this->nested($annotation, $nestedContext));
-                        $found = true;
-                    } elseif ($this->$property === UNDEFINED) {
-                        $this->$property = $this->nested($annotation, $nestedContext);
-                        $found = true;
+            if (null !== ($property = static::nestedProperty(get_class($annotation)))) {
+                if (is_array($property)) {
+                    // Append to an array?
+                    $property = $property[0];
+                    if ($this->$property === UNDEFINED) {
+                        $this->$property = [];
                     }
-                    break;
+                    $this->$property[] = $this->nested($annotation, $nestedContext);
+                    $found = true;
+                } elseif ($this->$property === UNDEFINED) {
+                    $this->$property = $this->nested($annotation, $nestedContext);
+                    $found = true;
                 }
             }
             if ($found === false) {
@@ -353,7 +351,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 break;
             }
             $class = get_class($annotation);
-            if (isset(static::$_nested[$class])) {
+            if (null !== ($property = static::nestedProperty(get_class($annotation)))) {
                 $property = static::$_nested[$class];
                 if (is_array($property)) {
                     Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found, skipped: " . $annotation->_context);
@@ -500,6 +498,30 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function identity()
     {
         return $this->_identity([]);
+    }
+
+    /**
+     * Get `_nested` property for the given class.
+     *
+     * Non strict lookups will only consider annotation classes outside of `OpenApi\Annotations`.
+     * This will ensure we only match against actual extensions, not subclassing within the annotations namespace.
+     */
+    public static function nestedProperty(string $class, bool $strict = false)
+    {
+        foreach (static::$_nested as $type => $property) {
+            if ($type === $class) {
+                return $property;
+            }
+        }
+        if (!$strict) {
+            foreach (static::$_nested as $type => $property) {
+                if (is_subclass_of($class, $type) && false === strpos($class, 'OpenApi\\Annotations')) {
+                    return $property;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

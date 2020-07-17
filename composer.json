@@ -55,7 +55,7 @@
     }
   },
   "scripts": {
-    "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests",
+    "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests --ignore=./tests/Fixtures/Apis",
     "docs": "vuepress dev docs/",
     "deploy_docs": "vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
   }
