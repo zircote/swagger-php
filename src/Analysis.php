@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use Closure;
 use Exception;
+use OpenApi\Annotations\Schema;
 use OpenApi\Processors\InheritInterfaces;
 use SplObjectStorage;
 use stdClass;
@@ -344,6 +345,36 @@ class Analysis
         }
 
         return $annotations;
+    }
+
+    /**
+     *
+     * @param string $fqdn The source class/interface/trait.
+     *
+     * @return null|Schema
+     */
+    public function getSchemaForSource($fqdn)
+    {
+        $sourceDefinitions = [
+            $this->classes,
+            $this->interfaces,
+            $this->traits,
+        ];
+
+        foreach ($sourceDefinitions as $definitions) {
+            if (array_key_exists($fqdn, $definitions)) {
+                $definition = $definitions[$fqdn];
+                if (is_iterable($definition['context']->annotations)) {
+                    foreach ($definition['context']->annotations as $annotation) {
+                        if (get_class($annotation) === Schema::class) {
+                            return $annotation;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
