@@ -15,7 +15,7 @@ use Exception;
 class Logger
 {
     /**
-     * Singleton
+     * Singleton.
      *
      * @var Logger
      */
@@ -28,7 +28,7 @@ class Logger
 
     protected function __construct()
     {
-        /**
+        /*
          * @param \Exception|string $entry
          * @param int $type Error type
          */
@@ -48,6 +48,7 @@ class Logger
         if (self::$instance === null) {
             self::$instance = new Logger();
         }
+
         return self::$instance;
     }
 

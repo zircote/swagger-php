@@ -8,25 +8,25 @@ namespace OpenApi;
 
 use Closure;
 use Exception;
-use OpenApi\Annotations\Schema;
-use OpenApi\Processors\InheritInterfaces;
-use SplObjectStorage;
-use stdClass;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Schema;
 use OpenApi\Processors\AugmentOperations;
 use OpenApi\Processors\AugmentParameters;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\InheritInterfaces;
 use OpenApi\Processors\InheritProperties;
+use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
-use OpenApi\Processors\InheritTraits;
+use SplObjectStorage;
+use stdClass;
 
 /**
  * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
@@ -40,21 +40,21 @@ class Analysis
     public $annotations;
 
     /**
-     * Class definitions
+     * Class definitions.
      *
      * @var array
      */
     public $classes = [];
 
     /**
-     * Trait definitions
+     * Trait definitions.
      *
      * @var array
      */
     public $traits = [];
 
     /**
-     * Interface definitions
+     * Interface definitions.
      *
      * @var array
      */
@@ -191,8 +191,9 @@ class Analysis
     /**
      * Get all sub classes of the given parent class.
      *
-     * @param string $parent The parent class.
-     * @return array Map of class => definition pairs of sub-classes.
+     * @param string $parent the parent class
+     *
+     * @return array map of class => definition pairs of sub-classes
      */
     public function getSubClasses($parent)
     {
@@ -210,8 +211,9 @@ class Analysis
     /**
      * Get a list of all super classes for the given class.
      *
-     * @param string $class The class name.
-     * @return array Map of class => definition pairs of parent classes.
+     * @param string $class the class name
+     *
+     * @return array map of class => definition pairs of parent classes
      */
     public function getSuperClasses($class)
     {
@@ -233,9 +235,10 @@ class Analysis
     /**
      * Get the list of interfaces used by the given class or by classes which it extends.
      *
-     * @param string $class   The class name.
-     * @param bool   $direct  Flag to find only the actual class interfaces.
-     * @return array Map of class => definition pairs of interfaces.
+     * @param string $class  the class name
+     * @param bool   $direct flag to find only the actual class interfaces
+     *
+     * @return array map of class => definition pairs of interfaces
      */
     public function getInterfacesOfClass($class, $direct = false)
     {
@@ -278,9 +281,10 @@ class Analysis
     /**
      * Get the list of traits used by the given class/trait or by classes which it extends.
      *
-     * @param string $source The source name.
-     * @param bool   $direct  Flag to find only the actual class traits.
-     * @return array Map of class => definition pairs of traits.
+     * @param string $source the source name
+     * @param bool   $direct flag to find only the actual class traits
+     *
+     * @return array map of class => definition pairs of traits
      */
     public function getTraitsOfClass($source, $direct = false)
     {
@@ -321,9 +325,8 @@ class Analysis
     }
 
     /**
-     *
-     * @param string  $class
-     * @param boolean $strict Innon-strict mode childclasses are also detected.
+     * @param string $class
+     * @param bool   $strict innon-strict mode childclasses are also detected
      *
      * @return array
      */
@@ -348,8 +351,7 @@ class Analysis
     }
 
     /**
-     *
-     * @param string $fqdn The source class/interface/trait.
+     * @param string $fqdn the source class/interface/trait
      *
      * @return null|Schema
      */
@@ -378,7 +380,6 @@ class Analysis
     }
 
     /**
-     *
      * @param object $annotation
      *
      * @return \OpenApi\Context
@@ -448,7 +449,7 @@ class Analysis
     }
 
     /**
-     * Apply the processor(s)
+     * Apply the processor(s).
      *
      * @param Closure|Closure[] $processors One or more processors
      */
@@ -497,7 +498,7 @@ class Analysis
     }
 
     /**
-     * Register a processor
+     * Register a processor.
      *
      * @param Closure $processor
      */
@@ -507,7 +508,7 @@ class Analysis
     }
 
     /**
-     * Unregister a processor
+     * Unregister a processor.
      *
      * @param Closure $processor
      */

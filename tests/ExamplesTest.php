@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
 use OpenApi\Logger;
@@ -12,11 +12,9 @@ use OpenApi\Processors\InheritInterfaces;
 use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeInterfaces;
 use OpenApi\Processors\MergeTraits;
-use Symfony\Component\Yaml\Yaml;
 
 class ExamplesTest extends OpenApiTestCase
 {
-
     public function exampleMappings()
     {
         return [

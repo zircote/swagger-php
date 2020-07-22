@@ -17,7 +17,7 @@ use OpenApi\Logger;
 class Parameter extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -61,16 +61,16 @@ class Parameter extends AbstractAnnotation
     /**
      * Determines whether this parameter is mandatory.
      * If the parameter location is "path", this property is required and its value must be true.
-     * Otherwise, the property may be included and its default value is false
+     * Otherwise, the property may be included and its default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $required = UNDEFINED;
 
     /**
      * Specifies that a parameter is deprecated and should be transitioned out of usage.
      *
-     * @var boolean
+     * @var bool
      */
     public $deprecated = UNDEFINED;
 
@@ -79,11 +79,10 @@ class Parameter extends AbstractAnnotation
      * This is valid only for query parameters and allows sending a parameter with an empty value.
      * Default value is false. If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.
      *
-     * @var boolean
+     * @var bool
      */
     public $allowEmptyValue = UNDEFINED;
 
-    
     /**
      * Describes how the parameter value will be serialized depending on the type of the parameter value.
      * Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.
@@ -98,7 +97,7 @@ class Parameter extends AbstractAnnotation
      * When style is form, the default value is true.
      * For all other styles, the default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $explode = UNDEFINED;
 
@@ -107,7 +106,7 @@ class Parameter extends AbstractAnnotation
      * This property only applies to parameters with an in value of query.
      * The default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $allowReserved = UNDEFINED;
 
@@ -147,12 +146,12 @@ class Parameter extends AbstractAnnotation
     public $content = UNDEFINED;
 
     /**
-     * Path-style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.7
+     * Path-style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.7.
      */
     public $matrix = UNDEFINED;
 
     /**
-     * Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5
+     * Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5.
      */
     public $label = UNDEFINED;
 
@@ -192,12 +191,12 @@ class Parameter extends AbstractAnnotation
     public $deepObject = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['name', 'in'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'name' => 'string',
@@ -208,7 +207,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Schema::class => 'schema',
@@ -216,7 +215,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,
@@ -233,7 +232,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validate($parents = [], $skip = [], $ref = '')
     {
@@ -264,11 +263,12 @@ class Parameter extends AbstractAnnotation
                 //                }
             }
         }
+
         return $valid;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function identity()
     {

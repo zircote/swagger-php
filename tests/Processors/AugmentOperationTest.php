@@ -4,11 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations\Operation;
 use OpenApi\Processors\AugmentOperations;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class AugmentOperationTest extends OpenApiTestCase

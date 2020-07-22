@@ -56,7 +56,6 @@ class OpenApi extends AbstractAnnotation
      */
     public $components = UNDEFINED;
 
-
     /**
      * Lists the required security schemes to execute this operation.
      * The name used for each property must correspond to a security scheme declared
@@ -97,17 +96,17 @@ class OpenApi extends AbstractAnnotation
     public $_analysis = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['openapi', 'info', 'paths'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Info::class => 'info',
@@ -119,30 +118,33 @@ class OpenApi extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validate($parents = null, $skip = null, $ref = null)
     {
         if ($parents !== null || $skip !== null || $ref !== null) {
-            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+            Logger::notice('Nested validation for ' . $this->identity() . ' not allowed');
+
             return false;
         }
+
         return parent::validate([], [], '#');
     }
+
     /**
      * Save the OpenAPI documentation to a file.
      *
-     * @param  string $filename
+     * @param string $filename
+     *
      * @throws Exception
      */
     public function saveAs($filename, $format = 'auto')
     {
-
         if ($format === 'auto') {
             $format =   strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
         }
@@ -152,14 +154,15 @@ class OpenApi extends AbstractAnnotation
             $content = $this->toYaml();
         }
         if (file_put_contents($filename, $content) === false) {
-            throw new Exception('Failed to saveAs("' . $filename . '", "'.$format.'")');
+            throw new Exception('Failed to saveAs("' . $filename . '", "' . $format . '")');
         }
     }
 
     /**
      * Look up an annotation with a $ref url.
      *
-     * @param  string $ref The $ref value, for example: "#/components/schemas/Product"
+     * @param string $ref The $ref value, for example: "#/components/schemas/Product"
+     *
      * @throws Exception
      */
     public function ref($ref)
@@ -168,16 +171,15 @@ class OpenApi extends AbstractAnnotation
             // @todo Add support for external (http) refs?
             throw new Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
+
         return $this->resolveRef($ref, '#/', $this, []);
     }
 
     /**
-     * Recursive helper for ref()
+     * Recursive helper for ref().
      *
-     * @param string $prefix    The resolved path of the ref.
-     * @param string $path      A partial ref
-     * @param *      $container the container to resolve the ref in.
-     * @param Array  $mapping
+     * @param *     $container the container to resolve the ref in
+     * @param array $mapping
      */
     private static function resolveRef($ref, $resolved, $container, $mapping)
     {
@@ -206,6 +208,7 @@ class OpenApi extends AbstractAnnotation
                     }
                 }
             }
+
             return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
         } elseif (is_array($container)) {
             if (array_key_exists($property, $container)) {
@@ -250,6 +253,7 @@ class OpenApi extends AbstractAnnotation
                 $decoded .= $char;
             }
         }
+
         return $decoded;
     }
 }

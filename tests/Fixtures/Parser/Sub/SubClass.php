@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures\Parser\Sub;
+namespace OpenApi\Tests\Fixtures\Parser\Sub;
 
 class SubClass
 {

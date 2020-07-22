@@ -6,17 +6,17 @@
 
 namespace OpenApi\Processors;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations\MediaType;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
-use OpenApi\Analysis;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
 use OpenApi\Logger;
 
 /**
- * Split XmlContent into Schema and MediaType
+ * Split XmlContent into Schema and MediaType.
  */
 class MergeXmlContent
 {
@@ -27,9 +27,9 @@ class MergeXmlContent
             $parent = $xmlContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected '.$xmlContent->identity() .' in ' . $parent->identity() . ' in ' . $parent->_context);
+                    Logger::notice('Unexpected ' . $xmlContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {
-                    Logger::notice('Unexpected '.$xmlContent->identity() .' must be nested');
+                    Logger::notice('Unexpected ' . $xmlContent->identity() . ' must be nested');
                 }
                 continue;
             }
@@ -42,7 +42,7 @@ class MergeXmlContent
                     'schema' => $xmlContent,
                     'example' => $xmlContent->example,
                     'examples' => $xmlContent->examples,
-                    '_context' => new Context(['generated' => true], $xmlContent->_context)
+                    '_context' => new Context(['generated' => true], $xmlContent->_context),
                 ]
             );
             $xmlContent->example = UNDEFINED;

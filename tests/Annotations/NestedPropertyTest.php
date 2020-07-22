@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class NestedPropertyTest extends OpenApiTestCase

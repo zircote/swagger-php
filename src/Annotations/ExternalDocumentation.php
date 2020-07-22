@@ -29,7 +29,7 @@ class ExternalDocumentation extends AbstractAnnotation
     public $url = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'description' => 'string',
@@ -37,12 +37,12 @@ class ExternalDocumentation extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['url'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         OpenApi::class,

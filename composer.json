@@ -29,6 +29,7 @@
     "bin-dir": "bin",
     "sort-packages": true
   },
+  "minimum-stability": "stable",
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
@@ -45,17 +46,19 @@
     ]
   },
   "require-dev": {
-    "laminas/laminas-form": "^2.14",
-    "phpunit/phpunit": ">=8",
-    "squizlabs/php_codesniffer": ">=3.3"
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "phpunit/phpunit": ">=8"
   },
   "autoload-dev": {
     "psr-4": {
-      "OpenApiTests\\": "tests/"
+      "OpenApi\\Tests\\": "tests/",
+      "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
     }
   },
   "scripts": {
-    "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests",
+    "cs": "php-cs-fixer fix --allow-risky=yes",
+    "lint": "@cs --dry-run",
+    "test": ["phpunit", "@lint"],
     "docs": "vuepress dev docs/",
     "deploy_docs": "vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
   }

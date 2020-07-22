@@ -4,22 +4,21 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use Closure;
 use DirectoryIterator;
 use Exception;
-use OpenApi\Analysis;
-use OpenApi\StaticAnalyser;
-use PHPUnit\Framework\TestCase;
-use stdClass;
 use OpenApi\Analyser;
+use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Info;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Logger;
+use OpenApi\StaticAnalyser;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,9 +50,9 @@ class OpenApiTestCase extends TestCase
                     E_USER_WARNING => 'warning',
                 ];
                 if (isset($map[$type])) {
-                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
+                    $this->fail('Unexpected \OpenApi\Logger::' . $map[$type] . '("' . $entry . '")');
                 } else {
-                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
+                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("' . $entry . '",' . $type . ')');
                 }
             }
         };
@@ -62,7 +61,7 @@ class OpenApiTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages) . ' OpenApi\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }
@@ -80,10 +79,10 @@ class OpenApiTestCase extends TestCase
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
-     * @param string|array|\stdClass|OpenApi $expected
-     * @param string|array|\stdClass|OpenApi $spec
-     * @param string $message
-     * @param bool $normalized Flag indicating whether the inputs are already normalized or not.
+     * @param array|OpenApi|\stdClass|string $expected
+     * @param array|OpenApi|\stdClass|string $spec
+     * @param string                         $message
+     * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
      */
     protected function assertSpecEquals($expected, $spec, $message = '', $normalized = false)
     {
@@ -132,7 +131,7 @@ class OpenApiTestCase extends TestCase
         $analyser = new Analyser();
         $context = Context::detect(1);
 
-        return $analyser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
+        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
 
     /**
@@ -156,8 +155,9 @@ class OpenApiTestCase extends TestCase
     /**
      * Resolve fixture filenames.
      *
-     * @param string|array $files One ore more files.
-     * @return array Resolved filenames for loading scanning etc.
+     * @param array|string $files one ore more files
+     *
+     * @return array resolved filenames for loading scanning etc
      */
     public function fixtures($files): array
     {
@@ -191,7 +191,7 @@ class OpenApiTestCase extends TestCase
     public function allAnnotationClasses()
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__.'/../src/Annotations');
+        $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -200,7 +200,7 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['AbstractAnnotation','Operation'])) {
                 continue;
             }
-            $classes[] = ['OpenApi\\Annotations\\'.$class];
+            $classes[] = ['OpenApi\\Annotations\\' . $class];
         }
 
         return $classes;

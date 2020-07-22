@@ -24,7 +24,7 @@ class StaticAnalyser
     /**
      * Extract and process all doc-comments from a file.
      *
-     * @param string $filename Path to a php file.
+     * @param string $filename path to a php file
      *
      * @return Analysis
      */
@@ -49,7 +49,7 @@ class StaticAnalyser
      * Extract and process all doc-comments from the contents.
      *
      * @param string  $code    PHP code. (including <?php tags)
-     * @param Context $context The original location of the contents.
+     * @param Context $context the original location of the contents
      *
      * @return Analysis
      */
@@ -127,7 +127,7 @@ class StaticAnalyser
                     // php7 anonymous classes (i.e. new class() { public function foo() {} };)
                     continue;
                 }
-                
+
                 if (is_array($token) && ($token[1] === 'extends' || $token[1] === 'implements')) {
                     // php7 anonymous classes with extends (i.e. new class() extends { public function foo() {} };)
                     continue;
@@ -417,7 +417,7 @@ class StaticAnalyser
      * @param array   $tokens
      * @param Context $context
      *
-     * @return string|array The next token (or false)
+     * @return array|string The next token (or false)
      */
     private function nextToken(&$tokens, $context)
     {

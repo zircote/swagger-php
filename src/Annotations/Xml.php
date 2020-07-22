@@ -37,30 +37,30 @@ class Xml extends AbstractAnnotation
     /**
      * Declares whether the property definition translates to an attribute instead of an element. Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $attribute = UNDEFINED;
 
     /**
      * MAY be used only for an array definition. Signifies whether the array is wrapped (for example, <books><book/><book/></books>) or unwrapped (<book/><book/>). Default value is false. The definition takes effect only when defined alongside type being array (outside the items).
      *
-     * @var boolean
+     * @var bool
      */
     public $wrapped = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'name' => 'string',
         'namespace' => 'string',
         'prefix' => 'string',
         'attribute' => 'boolean',
-        'wrapped' => 'boolean'
+        'wrapped' => 'boolean',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         AdditionalProperties::class,

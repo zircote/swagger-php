@@ -26,9 +26,11 @@ if (class_exists('Doctrine\Common\Annotations\AnnotationRegistry', true)) {
                             throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                         }
                     }
+
                     return $loaded;
                 }
             }
+
             return false;
         }
     );
@@ -82,8 +84,9 @@ class Analyser
     /**
      * Use doctrine to parse the comment block and return the detected annotations.
      *
-     * @param  string  $comment a T_DOC_COMMENT.
-     * @param  Context $context
+     * @param string  $comment a T_DOC_COMMENT
+     * @param Context $context
+     *
      * @return array Annotations
      */
     public function fromComment($comment, $context = null)
@@ -109,12 +112,13 @@ class Analyser
             );
             $annotations = $this->docParser->parse($comment, $context);
             self::$context = null;
+
             return $annotations;
         } catch (Exception $e) {
             self::$context = null;
-            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string)$context, '/') . '\.$/', $e->getMessage(), $matches)) {
+            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string) $context, '/') . '\.$/', $e->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
-                $errorPos = (int)$matches[2];
+                $errorPos = (int) $matches[2];
                 $atPos = strpos($comment, '@');
                 $context->line += substr_count($comment, "\n", 0, $atPos + $errorPos);
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));
@@ -123,6 +127,7 @@ class Analyser
             } else {
                 Logger::warning($e);
             }
+
             return [];
         }
     }

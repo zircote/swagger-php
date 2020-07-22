@@ -12,14 +12,14 @@ namespace OpenApi\Annotations;
 class Options extends Operation
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $method = 'options';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        PathItem::class
+        PathItem::class,
     ];
 }

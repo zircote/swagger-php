@@ -4,11 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\AbstractAnnotation;
-use OpenApiTests\OpenApiTestCase;
 use function get_class_vars;
+use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Tests\OpenApiTestCase;
 
 class AnnotationPropertiesDefinedTest extends OpenApiTestCase
 {
@@ -24,7 +24,7 @@ class AnnotationPropertiesDefinedTest extends OpenApiTestCase
                 continue;
             }
             if ($value === null) {
-                $this->fail("Property ".basename($annotation).'->'.$property.' should be DEFINED');
+                $this->fail('Property ' . basename($annotation) . '->' . $property . ' should be DEFINED');
             }
         }
     }

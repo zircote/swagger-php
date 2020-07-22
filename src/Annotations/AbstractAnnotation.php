@@ -1,4 +1,4 @@
-<?php declare (strict_types = 1);
+<?php declare(strict_types = 1);
 
 /**
  * @license Apache 2.0
@@ -8,10 +8,10 @@ namespace OpenApi\Annotations;
 
 use Exception;
 use JsonSerializable;
-use stdClass;
 use OpenApi\Analyser;
 use OpenApi\Context;
 use OpenApi\Logger;
+use stdClass;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -41,7 +41,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     public $_unmerged = [];
 
     /**
-     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
+     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md).
      *
      * @var array
      */
@@ -54,7 +54,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *   'required' => 'boolean', // true or false
      *   'tags' => '[string]', // array containing strings
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
-     *   'oneOf' => [Schema::class] // array of schema objects
+     *   'oneOf' => [Schema::class] // array of schema objects.
      *
      * @var array
      */
@@ -153,8 +153,9 @@ abstract class AbstractAnnotation implements JsonSerializable
      * Merge given annotations to their mapped properties configured in static::$_nested.
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
-     * @param  AbstractAnnotation[] $annotations
-     * @param  bool                 $ignore      Ignore unmerged annotations
+     * @param AbstractAnnotation[] $annotations
+     * @param bool                 $ignore      Ignore unmerged annotations
+     *
      * @return AbstractAnnotation[] The unmerged annotations
      */
     public function merge($annotations, $ignore = false)
@@ -188,6 +189,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $this->_unmerged[] = $this->nested($annotation, $nestedContext);
             }
         }
+
         return $unmerged;
     }
 
@@ -238,6 +240,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         if ($flags === null) {
             $flags = Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
         }
+
         return Yaml::dump(json_decode($this->toJson(0)), 10, 2, $flags);
     }
 
@@ -251,6 +254,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         if ($flags === null) {
             $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         }
+
         return json_encode($this, $flags);
     }
 
@@ -262,6 +266,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $properties[$property] = $value;
             }
         }
+
         return $properties;
     }
 
@@ -329,16 +334,19 @@ abstract class AbstractAnnotation implements JsonSerializable
             $data->$dollarRef = $data->ref;
             unset($data->ref);
         }
+
         return $data;
     }
 
     /**
      * Validate annotation tree, and log notices & warnings.
      *
-     * @param  array $parents The path of annotations above this annotation in the tree.
-     * @param  array $skip    (prevent stack overflow, when traversing an infinite dependency graph)
-     * @return boolean
+     * @param array $parents the path of annotations above this annotation in the tree
+     * @param array $skip    (prevent stack overflow, when traversing an infinite dependency graph)
+     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function validate($parents = [], $skip = [], $ref = '')
     {
@@ -356,7 +364,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
                 if (is_array($property)) {
-                    Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found, skipped: " . $annotation->_context);
+                    Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
                 } else {
                     Logger::notice('Only one @' . str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->$property->_context . "\n  Skipped: " . $annotation->_context);
                 }
@@ -448,16 +456,18 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
         }
         $parents[] = $this;
+
         return self::_validate($this, $parents, $skip, $ref) ? $valid : false;
     }
 
     /**
      * Recursively validate all annotation properties.
      *
-     * @param  array|object $fields
-     * @param  array        $parents The path of annotations above this annotation in the tree.
-     * @param  array [      $skip]   Array with objects which are already validated
-     * @return boolean
+     * @param array|object $fields
+     * @param array        $parents the path of annotations above this annotation in the tree
+     * @param array [      $skip]   Array with objects which are already validated
+     *
+     * @return bool
      */
     private static function _validate($fields, $parents, $skip, $baseRef)
     {
@@ -475,7 +485,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
             }
-            $ref = $baseRef !== '' ? $baseRef . '/' . urlencode((string)$field) : urlencode((string)$field);
+            $ref = $baseRef !== '' ? $baseRef . '/' . urlencode((string) $field) : urlencode((string) $field);
             if (is_object($value)) {
                 if (method_exists($value, 'validate')) {
                     if (!$value->validate($parents, $skip, $ref)) {
@@ -488,12 +498,13 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $valid = false;
             }
         }
+
         return $valid;
     }
 
     /**
      * Return a identity for easy debugging.
-     * Example: "@OA\Get(path="/pets")"
+     * Example: "@OA\Get(path="/pets")".
      *
      * @return string
      */
@@ -503,9 +514,10 @@ abstract class AbstractAnnotation implements JsonSerializable
     }
 
     /**
-     * Helper for generating the identity()
+     * Helper for generating the identity().
      *
-     * @param  array $properties
+     * @param array $properties
+     *
      * @return string
      */
     protected function _identity($properties)
@@ -517,16 +529,16 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $fields[] = $property . '=' . (is_string($value) ? '"' . $value . '"' : $value);
             }
         }
+
         return '@' . str_replace('OpenApi\\Annotations\\', 'OA\\', get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
     /**
-     * Validates the matching of the property value to a annotation type
+     * Validates the matching of the property value to a annotation type.
      *
      * @param string $type  The annotations property type
      * @param mixed  $value The property value
      *
-     * @return bool
      * @throws \Exception
      */
     private function validateType($type, $value): bool
@@ -541,6 +553,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -552,12 +565,11 @@ abstract class AbstractAnnotation implements JsonSerializable
     }
 
     /**
-     * Validates default Open Api types
+     * Validates default Open Api types.
      *
-     * @param string $type The property type
-     * @param mixed $value The value to validate
+     * @param string $type  The property type
+     * @param mixed  $value The value to validate
      *
-     * @return bool
      * @throws \Exception
      */
     private function validateDefaultTypes($type, $value): bool
@@ -583,11 +595,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     }
 
     /**
-     * Validate array type
-     *
-     * @param mixed $value
-     *
-     * @return bool
+     * Validate array type.
      */
     private function validateArrayType($value): bool
     {
@@ -602,14 +610,16 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $count++;
         }
+
         return true;
     }
 
     /**
      * Wrap the context with a reference to the annotation it is nested in.
      *
-     * @param  AbstractAnnotation $annotation
-     * @param  Context            $nestedContext
+     * @param AbstractAnnotation $annotation
+     * @param Context            $nestedContext
+     *
      * @return AbstractAnnotation
      */
     private function nested($annotation, $nestedContext)
@@ -617,6 +627,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         if (property_exists($annotation, '_context') && $annotation->_context === $this->_context) {
             $annotation->_context = $nestedContext;
         }
+
         return $annotation;
     }
 }

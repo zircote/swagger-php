@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 class UtilTest extends OpenApiTestCase
 {
     public function testExclude()
     {
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures', [
+        $openapi = \OpenApi\scan(__DIR__ . '/Fixtures', [
             'exclude' => [
                 'Customer.php',
                 'CustomerInterface.php',
@@ -20,7 +20,7 @@ class UtilTest extends OpenApiTestCase
                 'Processors',
                 'UsingRefs.php',
                 'UsingPhpDoc.php',
-            ]
+            ],
         ]);
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }

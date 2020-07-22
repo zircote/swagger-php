@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
@@ -20,7 +20,7 @@ use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class InheritPropertiesTest extends OpenApiTestCase
@@ -36,9 +36,9 @@ class InheritPropertiesTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures(
             [
-                'InheritProperties/Child.php',
+                'AnotherNamespace/Child.php',
                 'InheritProperties/GrandAncestor.php',
-                'InheritProperties/Ancestor.php'
+                'InheritProperties/Ancestor.php',
             ]
         );
         $analysis->process([
@@ -74,9 +74,9 @@ class InheritPropertiesTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures([
             // this class has docblocks
-            'InheritProperties/ChildWithDocBlocks.php',
+            'AnotherNamespace/ChildWithDocBlocks.php',
             // this one doesn't
-            'InheritProperties/AncestorWithoutDocBlocks.php'
+            'InheritProperties/AncestorWithoutDocBlocks.php',
         ]);
         $analysis->process([
             new MergeIntoOpenApi(),
@@ -102,7 +102,7 @@ class InheritPropertiesTest extends OpenApiTestCase
     }
 
     /**
-     * Tests inherit properties with all of block
+     * Tests inherit properties with all of block.
      */
     public function testInheritPropertiesWithAllOf()
     {
@@ -141,7 +141,7 @@ class InheritPropertiesTest extends OpenApiTestCase
     }
 
     /**
-     * Tests for inherit properties without all of block
+     * Tests for inherit properties without all of block.
      */
     public function testInheritPropertiesWithOutAllOf()
     {
@@ -178,7 +178,7 @@ class InheritPropertiesTest extends OpenApiTestCase
     }
 
     /**
-     * Tests for inherit properties in object with two schemas in the same context
+     * Tests for inherit properties in object with two schemas in the same context.
      */
     public function testInheritPropertiesWitTwoChildSchemas()
     {
@@ -244,7 +244,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         ]);
         $this->validate($analysis);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => "1.0.0"]);
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
         $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
         $analysis->validate();
 

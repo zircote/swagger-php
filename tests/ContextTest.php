@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Context;
 
@@ -15,26 +15,26 @@ class ContextTest extends OpenApiTestCase
         $context = Context::detect();
         $line = __LINE__ - 1;
         $this->assertSame('ContextTest', $context->class);
-        $this->assertSame('\OpenApiTests\ContextTest', $context->fullyQualifiedName($context->class));
+        $this->assertSame('\OpenApi\Tests\ContextTest', $context->fullyQualifiedName($context->class));
         $this->assertSame('testDetect', $context->method);
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
-        $this->assertSame('OpenApiTests', $context->namespace);
+        $this->assertSame('OpenApi\Tests', $context->namespace);
         //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
     public function testFullyQualifiedName()
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/Customer.php');
+        $openapi = \OpenApi\scan(__DIR__ . '/Fixtures/Customer.php');
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
-        $this->assertSame('\OpenApiFixures\Unqualified', $context->fullyQualifiedName('Unqualified'));
-        $this->assertSame('\OpenApiFixures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
+        $this->assertSame('\OpenApi\Tests\Fixtures\Unqualified', $context->fullyQualifiedName('Unqualified'));
+        $this->assertSame('\OpenApi\Tests\Fixtures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
         // respect use statements
         $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
-        $this->assertSame('\OpenApiFixures\Customer', $context->fullyQualifiedName('Customer'));
+        $this->assertSame('\OpenApi\Tests\Fixtures\Customer', $context->fullyQualifiedName('Customer'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('Logger'));
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
         $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('OpenApiLogger'));
@@ -75,11 +75,11 @@ END
  */
 END
         ]);
-        $this->assertEquals("A single line spread across multiple lines.", $escapedLinebreak->phpdocContent());
+        $this->assertEquals('A single line spread across multiple lines.', $escapedLinebreak->phpdocContent());
     }
 
     /**
-     * https://phpdoc.org/docs/latest/guides/docblocks.html
+     * https://phpdoc.org/docs/latest/guides/docblocks.html.
      */
     public function testPhpdocSummaryAndDescription()
     {

@@ -36,18 +36,18 @@ class Contact extends AbstractAnnotation
     public $email = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'name' => 'string',
         'url' => 'string',
-        'email' => 'string'
+        'email' => 'string',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        Info::class
+        Info::class,
     ];
 }

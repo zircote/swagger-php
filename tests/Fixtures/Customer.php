@@ -1,11 +1,13 @@
 <?php declare(strict_types=1);
-// phpcs:ignoreFile (this file uses "\r\n" linebreaks on purpose)
-namespace OpenApiFixures;
+
+// NOTE: this file uses "\r\n" linebreaks on purpose
+
+namespace OpenApi\Tests\Fixtures;
 
 use Exception;
-use OpenApi\Annotations as OA;
 use OpenApi\Logger;
 use OpenApi\Logger as OpenApiLogger;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
@@ -83,9 +85,9 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        $test = new OpenApiLogger();
-        $test2 = new Logger();
-        $test3 = new OA\Contact();
+        OpenApiLogger::getInstance();
+        Logger::getInstance();
+        new OA\Contact([]);
         throw new Exception();
     }
 }

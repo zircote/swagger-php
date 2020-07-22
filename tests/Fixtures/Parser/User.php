@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures\Parser;
+namespace OpenApi\Tests\Fixtures\Parser;
 
-use OpenApiTests\Fixtures\Parser\HelloTrait as Hello;
-use OpenApiTests\Fixtures\Parser\Sub\SubClass as ParentClass;
+use OpenApi\Tests\Fixtures\Parser\HelloTrait as Hello;
+use OpenApi\Tests\Fixtures\Parser\Sub\SubClass as ParentClass;
 
 /**
  * @OA\Schema()
  */
-class User extends ParentClass implements \OpenApiTests\Fixtures\Parser\UserInterface
+class User extends ParentClass implements \OpenApi\Tests\Fixtures\Parser\UserInterface
 {
     use Hello;
 

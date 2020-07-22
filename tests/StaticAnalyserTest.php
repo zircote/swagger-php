@@ -4,10 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Analyser;
-use OpenApi\Annotations\Property;
 use OpenApi\Context;
 use OpenApi\StaticAnalyser;
 
@@ -125,24 +124,24 @@ class StaticAnalyserTest extends OpenApiTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = ['OpenApi\Annotations\\'];
         $analyser = new StaticAnalyser();
-        $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
+        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
-        Analyser::$whitelist[] = 'Laminas\Form\Annotation';
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
+        Analyser::$whitelist[] = 'AnotherNamespace\Annotations';
+        $openapi = \OpenApi\scan(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
-        $this->assertCount(10, $openapi->_unmerged);
+        $this->assertCount(4, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
         $analysis = $openapi->_analysis;
-        $annotations = $analysis->getAnnotationsOfType('Laminas\Form\Annotation\Name');
-        $this->assertCount(1, $annotations);
+        $annotations = $analysis->getAnnotationsOfType('AnotherNamespace\Annotations\Unrelated');
+        $this->assertCount(4, $annotations);
         $context = $analysis->getContext($annotations[0]);
         $this->assertInstanceOf('OpenApi\Context', $context);
         $this->assertSame('ThirdPartyAnnotations', $context->class);
-        $this->assertSame('\OpenApiTests\Fixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
-        $this->assertCount(2, $context->annotations);
+        $this->assertSame('\OpenApi\Tests\Fixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
+        $this->assertCount(1, $context->annotations);
     }
 
     public function testAnonymousClassProducesNoError()
@@ -156,7 +155,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     }
 
     /**
-     * dataprovider
+     * dataprovider.
      */
     public function descriptions()
     {
@@ -165,18 +164,18 @@ class StaticAnalyserTest extends OpenApiTestCase
                 ['classes', 'class'],
                 'User',
                 'Parser/User.php',
-                '\OpenApiTests\Fixtures\Parser\User',
-                '\OpenApiTests\Fixtures\Parser\Sub\SubClass',
+                '\OpenApi\Tests\Fixtures\Parser\User',
+                '\OpenApi\Tests\Fixtures\Parser\Sub\SubClass',
                 ['getFirstName'],
                 null,
-                ['\OpenApiTests\Fixtures\Parser\HelloTrait'], // use ... as ...
+                ['\OpenApi\Tests\Fixtures\Parser\HelloTrait'], // use ... as ...
             ],
             'interface' => [
                 ['interfaces', 'interface'],
                 'UserInterface',
                 'Parser/UserInterface.php',
-                '\OpenApiTests\Fixtures\Parser\UserInterface',
-                ['\OpenApiTests\Fixtures\Parser\OtherInterface'],
+                '\OpenApi\Tests\Fixtures\Parser\UserInterface',
+                ['\OpenApi\Tests\Fixtures\Parser\OtherInterface'],
                 null,
                 null,
                 null,
@@ -185,11 +184,11 @@ class StaticAnalyserTest extends OpenApiTestCase
                 ['traits', 'trait'],
                 'HelloTrait',
                 'Parser/HelloTrait.php',
-                '\OpenApiTests\Fixtures\Parser\HelloTrait',
+                '\OpenApi\Tests\Fixtures\Parser\HelloTrait',
                 null,
                 null,
                 null,
-                ['\OpenApiTests\Fixtures\Parser\OtherTrait', '\OpenApiTests\Fixtures\Parser\AsTrait'],
+                ['\OpenApi\Tests\Fixtures\Parser\OtherTrait', '\OpenApi\Tests\Fixtures\Parser\AsTrait'],
             ],
         ];
     }
@@ -201,7 +200,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures($fixture);
 
-        list ($pType, $sType) = $type;
+        list($pType, $sType) = $type;
         $description = $analysis->$pType[$fqdn];
 
         $this->assertSame($name, $description[$sType]);

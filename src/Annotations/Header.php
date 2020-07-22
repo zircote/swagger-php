@@ -13,7 +13,7 @@ namespace OpenApi\Annotations;
 class Header extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class Header extends AbstractAnnotation
     public $required = UNDEFINED;
 
     /**
-     * Schema object
+     * Schema object.
      *
      * @var \OpenApi\Annotations\Schema
      */
@@ -61,12 +61,12 @@ class Header extends AbstractAnnotation
     public $allowEmptyValue = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['header', 'schema'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'header' => 'string',
@@ -74,17 +74,17 @@ class Header extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
-        Schema::class => 'schema'
+        Schema::class => 'schema',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,
-        Response::class
+        Response::class,
     ];
 }

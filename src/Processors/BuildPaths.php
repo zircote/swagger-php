@@ -6,14 +6,14 @@
 
 namespace OpenApi\Processors;
 
-use OpenApi\Annotations\PathItem;
-use OpenApi\Annotations\Operation;
-use OpenApi\Logger;
-use OpenApi\Context;
 use OpenApi\Analysis;
+use OpenApi\Annotations\Operation;
+use OpenApi\Annotations\PathItem;
+use OpenApi\Context;
+use OpenApi\Logger;
 
 /**
- * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc)
+ * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc).
  */
 class BuildPaths
 {
@@ -42,13 +42,13 @@ class BuildPaths
                     $paths[$operation->path] = new PathItem(
                         [
                             'path' => $operation->path,
-                            '_context' => new Context(['generated' => true], $operation->_context)
+                            '_context' => new Context(['generated' => true], $operation->_context),
                         ]
                     );
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
-                    Logger::notice('Unable to merge '.$operation->identity() .' in '.$operation->_context);
+                    Logger::notice('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);
                 }
             }
         }

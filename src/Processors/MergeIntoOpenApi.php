@@ -6,8 +6,8 @@
 
 namespace OpenApi\Processors;
 
-use OpenApi\Annotations\OpenApi;
 use OpenApi\Analysis;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 
 /**

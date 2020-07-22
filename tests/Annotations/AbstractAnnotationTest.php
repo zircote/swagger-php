@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 class AbstractAnnotationTest extends OpenApiTestCase
 {

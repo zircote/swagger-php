@@ -19,33 +19,33 @@ namespace OpenApi\Annotations;
 class Discriminator extends AbstractAnnotation
 {
     /**
-     * The name of the property in the payload that will hold the discriminator value
+     * The name of the property in the payload that will hold the discriminator value.
      *
      * @var string
      */
     public $propertyName = UNDEFINED;
 
     /**
-     * An object to hold mappings between payload values and schema names or references
+     * An object to hold mappings between payload values and schema names or references.
      *
      * @var string[]
      */
     public $mapping = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['propertyName'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'propertyName' => 'string',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Schema::class,

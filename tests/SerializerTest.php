@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests;
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests;
 
 use OpenApi\Annotations;
 use OpenApi\Annotations\OpenApi;
@@ -38,11 +42,11 @@ class SerializerTest extends OpenApiTestCase
         $resp->content = [$content];
         $resp->x = [];
         $resp->x['repository'] = 'def';
-    
+
         $respRange = new Annotations\Response([]);
         $respRange->response = '4XX';
         $respRange->description = 'Client error response';
-        
+
         $path->post->responses = [$resp, $respRange];
 
         $expected = new Annotations\OpenApi([]);
@@ -151,9 +155,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString(file_get_contents($spec), $openapi->toJson());
     }
 
-
     /**
      * Test for correct deserialize schemas 'allOf' property.
+     *
      * @throws \Exception
      */
     public function testDeserializeAllOfProperty()

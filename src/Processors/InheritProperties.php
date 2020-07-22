@@ -6,15 +6,15 @@
 
 namespace OpenApi\Processors;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
-use OpenApi\Analysis;
 use OpenApi\UNDEFINED;
 use Traversable;
 
 /**
- * Copy the annotated properties from parent classes;
+ * Copy the annotated properties from parent classes;.
  */
 class InheritProperties
 {
@@ -71,10 +71,7 @@ class InheritProperties
     }
 
     /**
-     * Add schema to child schema allOf property
-     *
-     * @param \OpenApi\Annotations\Schema $childSchema
-     * @param \OpenApi\Annotations\Schema $parentSchema
+     * Add schema to child schema allOf property.
      */
     private function addAllOfProperty(Schema $childSchema, Schema $parentSchema)
     {
@@ -109,7 +106,7 @@ class InheritProperties
 
         $childSchema->allOf[] = new Schema([
             '_context' => $parentSchema->_context,
-            'ref' => Components::SCHEMA_REF . $parentSchema->schema
+            'ref' => Components::SCHEMA_REF . $parentSchema->schema,
         ]);
         if ($currentSchema->properties !== UNDEFINED) {
             $childSchema->allOf[] = $currentSchema;

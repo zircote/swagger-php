@@ -8,7 +8,7 @@ namespace OpenApi\Annotations;
 
 /**
  * Configuration details for a supported OAuth Flow
- * [OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
+ * [OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject).
  *
  * @Annotation
  */
@@ -39,7 +39,7 @@ class Flow extends AbstractAnnotation
     public $refreshUrl = UNDEFINED;
 
     /**
-     * Flow name. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials']
+     * Flow name. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].
      *
      * @var string
      */
@@ -53,7 +53,7 @@ class Flow extends AbstractAnnotation
     public $scopes = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['scopes', 'flow'];
 
@@ -63,7 +63,7 @@ class Flow extends AbstractAnnotation
     public static $_blacklist = ['_context', '_unmerged'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
@@ -73,7 +73,7 @@ class Flow extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         SecurityScheme::class,
@@ -85,6 +85,7 @@ class Flow extends AbstractAnnotation
         if (is_array($this->scopes) && empty($this->scopes)) {
             $this->scopes = new \StdClass();
         }
+
         return parent::jsonSerialize();
     }
 }

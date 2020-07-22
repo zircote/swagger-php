@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Contact;
 use OpenApi\Annotations\License;
 use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 class CleanUnmergedTest extends OpenApiTestCase
 {

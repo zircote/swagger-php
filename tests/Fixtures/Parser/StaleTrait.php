@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures\Parser;
+namespace OpenApi\Tests\Fixtures\Parser;
 
 /**
  * @OA\Schema(schema="stale")

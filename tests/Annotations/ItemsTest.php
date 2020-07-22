@@ -4,10 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
 use OpenApi\StaticAnalyser;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 class ItemsTest extends OpenApiTestCase
 {

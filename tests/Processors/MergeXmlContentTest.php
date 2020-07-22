@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Response;
 use OpenApi\Processors\MergeXmlContent;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 class MergeXmlContentTest extends OpenApiTestCase
@@ -52,7 +52,6 @@ END;
         $analysis->process(new MergeXmlContent());
         $this->assertCount(2, $response->content);
     }
-
 
     public function testParameter()
     {

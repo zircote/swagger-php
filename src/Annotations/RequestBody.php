@@ -36,23 +36,23 @@ class RequestBody extends AbstractAnnotation
     /**
      * Determines whether this parameter is mandatory.
      * If the parameter location is "path", this property is required and its value must be true.
-     * Otherwise, the property may be included and its default value is false
+     * Otherwise, the property may be included and its default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $required = UNDEFINED;
 
     /**
      * The content of the request body.
      * The key is a media type or media type range and the value describes it. For requests that match multiple keys,
-     * only the most specific key is applicable. e.g. text/plain overrides text/*
+     * only the most specific key is applicable. e.g. text/plain overrides text/*.
      *
      * @var MediaType[]
      */
     public $content = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'description' => 'string',
@@ -74,7 +74,7 @@ class RequestBody extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         MediaType::class => ['content', 'mediaType'],

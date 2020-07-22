@@ -12,14 +12,14 @@ namespace OpenApi\Annotations;
 class Delete extends Operation
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $method = 'delete';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        PathItem::class
+        PathItem::class,
     ];
 }

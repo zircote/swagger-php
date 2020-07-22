@@ -4,14 +4,14 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations\Property;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
 /**
@@ -133,7 +133,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $arrayType,
             $dateTime,
             $qualified,
-            $namespace,
+            $namespaced,
             $importedNamespace,
             $nativeTrumpsVar,
             $annotationTrumpsNative,
@@ -170,7 +170,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => UNDEFINED,
             'type' => UNDEFINED,
         ]);
-        $this->assertName($namespace, [
+        $this->assertName($namespaced, [
             'property' => UNDEFINED,
             'type' => UNDEFINED,
         ]);
@@ -251,8 +251,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => 'string',
             'format' => 'date-time',
         ]);
-        $this->assertName($namespace, [
-            'property' => 'namespace',
+        $this->assertName($namespaced, [
+            'property' => 'namespaced',
             'ref' => '#/components/schemas/TypedProperties',
         ]);
         $this->assertName($importedNamespace, [
@@ -297,12 +297,6 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
     }
 
-    /**
-     * @param Property $property
-     * @param array $expectedValues
-     *
-     * @return void
-     */
     protected function assertName(Property $property, array $expectedValues)
     {
         foreach ($expectedValues as $key => $val) {

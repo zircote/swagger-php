@@ -39,7 +39,7 @@ class Server extends AbstractAnnotation
     public $variables = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         OpenApi::class,
@@ -57,19 +57,19 @@ class Server extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         ServerVariable::class => ['variables', 'serverVariable'],
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['url'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'url' => 'string',

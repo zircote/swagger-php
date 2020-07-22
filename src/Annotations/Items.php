@@ -15,7 +15,7 @@ use OpenApi\Logger;
 class Items extends Schema
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',
@@ -23,11 +23,11 @@ class Items extends Schema
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
-        AdditionalProperties::class => 'additionalProperties'
+        AdditionalProperties::class => 'additionalProperties',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Property::class,
@@ -35,11 +35,11 @@ class Items extends Schema
         Schema::class,
         JsonContent::class,
         XmlContent::class,
-        Items::class
+        Items::class,
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validate($parents = [], $skip = [], $ref = '')
     {
@@ -54,11 +54,12 @@ class Items extends Schema
                 // A limited subset of JSON-Schema's items object.
                 $allowedTypes = ['string', 'number', 'integer', 'boolean', 'array'];
                 if (in_array($this->type, $allowedTypes) === false) {
-                    Logger::notice('@OA\Items()->type="'.$this->type.'" not allowed inside a '.$parent->_identity([]).' must be "'.implode('", "', $allowedTypes).'" in ' . $this->_context);
+                    Logger::notice('@OA\Items()->type="' . $this->type . '" not allowed inside a ' . $parent->_identity([]) . ' must be "' . implode('", "', $allowedTypes) . '" in ' . $this->_context);
                     $valid = false;
                 }
             }
         }
+
         return $valid;
         // @todo Additional validation when used inside a Header or Parameter context.
     }

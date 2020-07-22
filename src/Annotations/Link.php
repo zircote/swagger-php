@@ -19,7 +19,7 @@ class Link extends AbstractAnnotation
 {
 
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -77,17 +77,17 @@ class Link extends AbstractAnnotation
     public $server = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Server::class => 'server',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,
-        Response::class
+        Response::class,
     ];
 }
