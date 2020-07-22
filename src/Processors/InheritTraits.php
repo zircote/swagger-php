@@ -14,16 +14,17 @@ class InheritTraits
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class') || $schema->_context->is('trait')) {
                 $source = $schema->_context->class ?: $schema->_context->trait;
-                if ($traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($source), true)) {
-                    if ($schema->allOf === UNDEFINED) {
-                        $schema->allOf = [];
-                    }
-                }
+                $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($source), true);
                 foreach ($traits as $trait) {
-                    $schema->allOf[] = new Schema([
-                        '_context' => $trait['context']->_context,
-                        'ref' => Components::SCHEMA_REF . $trait['trait']
-                    ]);
+                    if ($analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']))) {
+                        if ($schema->allOf === UNDEFINED) {
+                            $schema->allOf = [];
+                        }
+                        $schema->allOf[] = new Schema([
+                            '_context' => $trait['context']->_context,
+                            'ref' => Components::SCHEMA_REF . $trait['trait']
+                        ]);
+                    }
                 }
             }
         }

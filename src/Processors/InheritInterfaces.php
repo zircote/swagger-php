@@ -13,16 +13,17 @@ class InheritInterfaces
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                if ($interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true)) {
-                    if ($schema->allOf === UNDEFINED) {
-                        $schema->allOf = [];
-                    }
-                }
+                $interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
                 foreach ($interfaces as $interface) {
-                    $schema->allOf[] = new Schema([
-                        '_context' => $interface['context']->_context,
-                        'ref' => Components::SCHEMA_REF . $interface['interface']
-                    ]);
+                    if ($analysis->getSchemaForSource($interface['context']->fullyQualifiedName($interface['interface']))) {
+                        if ($schema->allOf === UNDEFINED) {
+                            $schema->allOf = [];
+                        }
+                        $schema->allOf[] = new Schema([
+                            '_context' => $interface['context']->_context,
+                            'ref' => Components::SCHEMA_REF . $interface['interface']
+                        ]);
+                    }
                 }
             }
         }
