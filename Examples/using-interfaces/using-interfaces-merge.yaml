@@ -8,6 +8,14 @@ paths:
       tags:
         - Products
       operationId: 'UsingInterfaces\ProductController::getProduct'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: string
       responses:
         default:
           description: 'successful operation'

@@ -8,6 +8,14 @@ paths:
       tags:
         - Entities
       operationId: 'UsingTraits\DeleteEntity::deleteEntity'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of entity to delete'
+          required: true
+          schema:
+            type: string
       responses:
         default:
           description: 'successful operation'
@@ -16,6 +24,14 @@ paths:
       tags:
         - Products
       operationId: 'UsingTraits\ProductController::getProduct'
+      parameters:
+        -
+          name: product_id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: string
       responses:
         default:
           description: 'successful operation'

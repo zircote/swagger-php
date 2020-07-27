@@ -317,7 +317,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 } else {
                     $key = $item->$keyField;
                     if ($key !== UNDEFINED && empty($object->$key)) {
-                        if (method_exists($item, 'jsonSerialize')) {
+                        if ($item instanceof JsonSerializable) {
                             $object->$key = $item->jsonSerialize();
                         } else {
                             $object->$key = $item;
@@ -330,9 +330,8 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
         // $ref
         if (isset($data->ref)) {
-            $dollarRef = '$ref';
-            $data->$dollarRef = $data->ref;
-            unset($data->ref);
+            // OAS 3.0 does not allow $ref to have siblings: http://spec.openapis.org/oas/v3.0.3#fixed-fields-18
+            $data = (object) ['$ref' => $data->ref];
         }
 
         return $data;

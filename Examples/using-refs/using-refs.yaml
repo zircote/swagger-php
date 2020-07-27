@@ -19,9 +19,8 @@ paths:
       tags:
         - Products
       operationId: 'UsingRefs\ProductController::updateProduct'
-      parameters:
-        -
-          $ref: '#/components/requestBodies/product_in_body'
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
       responses:
         default:
           description: 'successful operation'
