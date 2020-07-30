@@ -243,7 +243,7 @@ class Parameter extends AbstractAnnotation
         if ($this->ref === UNDEFINED) {
             if ($this->in === 'body') {
                 if ($this->schema === UNDEFINED) {
-                    Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                    Logger::notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
                     $valid = false;
                 }
             } else {

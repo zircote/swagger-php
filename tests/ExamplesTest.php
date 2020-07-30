@@ -66,8 +66,8 @@ class ExamplesTest extends OpenApiTestCase
             $options['processors'] = $processors;
         }
 
-        $path = __DIR__ . '/../Examples/' . $example;
+        $path = __DIR__.'/../Examples/'.$example;
         $openapi = \OpenApi\scan($path, $options);
-        $this->assertSpecEquals(file_get_contents($path . '/' . $spec), $openapi);
+        $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi);
     }
 }

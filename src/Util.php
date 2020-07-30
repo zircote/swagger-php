@@ -101,7 +101,7 @@ class Util
                 }
             }
         } else {
-            throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
+            throw new InvalidArgumentException('Unexpected $directory value:'.gettype($directory));
         }
         if ($exclude !== null) {
             if (is_string($exclude)) {
@@ -111,7 +111,7 @@ class Util
                     $finder->notPath(Util::getRelativePath($path, $directory));
                 }
             } else {
-                throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+                throw new InvalidArgumentException('Unexpected $exclude value:'.gettype($exclude));
             }
         }
 

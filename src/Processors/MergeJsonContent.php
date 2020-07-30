@@ -27,9 +27,9 @@ class MergeJsonContent
             $parent = $jsonContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected ' . $jsonContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
+                    Logger::notice('Unexpected '.$jsonContent->identity().' in '.$parent->identity().' in '.$parent->_context);
                 } else {
-                    Logger::notice('Unexpected ' . $jsonContent->identity() . ' must be nested');
+                    Logger::notice('Unexpected '.$jsonContent->identity().' must be nested');
                 }
                 continue;
             }

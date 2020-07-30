@@ -14,7 +14,7 @@ return PhpCsFixer\Config::create()
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],
         'cast_spaces' => ['space' => 'single'],
-        'concat_space' => ['spacing' => 'one'],
+        'concat_space' => true,
         'declare_strict_types' => true,
         'function_typehint_space' => true,
         'lowercase_cast' => true,

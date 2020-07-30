@@ -24,7 +24,7 @@ class AnnotationPropertiesDefinedTest extends OpenApiTestCase
                 continue;
             }
             if ($value === null) {
-                $this->fail('Property ' . basename($annotation) . '->' . $property . ' should be DEFINED');
+                $this->fail('Property '.basename($annotation).'->'.$property.' should be DEFINED');
             }
         }
     }

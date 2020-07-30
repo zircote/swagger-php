@@ -128,7 +128,7 @@ class OpenApi extends AbstractAnnotation
     public function validate($parents = null, $skip = null, $ref = null)
     {
         if ($parents !== null || $skip !== null || $ref !== null) {
-            Logger::notice('Nested validation for ' . $this->identity() . ' not allowed');
+            Logger::notice('Nested validation for '.$this->identity().' not allowed');
 
             return false;
         }
@@ -154,7 +154,7 @@ class OpenApi extends AbstractAnnotation
             $content = $this->toYaml();
         }
         if (file_put_contents($filename, $content) === false) {
-            throw new Exception('Failed to saveAs("' . $filename . '", "' . $format . '")');
+            throw new Exception('Failed to saveAs("'.$filename.'", "'.$format.'")');
         }
     }
 
@@ -169,7 +169,7 @@ class OpenApi extends AbstractAnnotation
     {
         if (substr($ref, 0, 2) !== '#/') {
             // @todo Add support for external (http) refs?
-            throw new Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
+            throw new Exception('Unsupported $ref "'.$ref.'", it should start with "#/"');
         }
 
         return $this->resolveRef($ref, '#/', $this, []);
@@ -191,11 +191,11 @@ class OpenApi extends AbstractAnnotation
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
         $property = self::unescapeRef($subpath);
-        $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
+        $unresolved = $slash === false ? $resolved.$subpath : $resolved.$subpath.'/';
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new Exception('$ref "' . $ref . '" not found');
+                throw new Exception('$ref "'.$ref.'" not found');
             }
             if ($slash === false) {
                 return $container->$property;
@@ -222,7 +222,7 @@ class OpenApi extends AbstractAnnotation
                 }
             }
         }
-        throw new Exception('$ref "' . $unresolved . '" not found');
+        throw new Exception('$ref "'.$unresolved.'" not found');
     }
 
     /**

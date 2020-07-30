@@ -96,7 +96,7 @@ class InheritProperties
                 if ($schema->schema === UNDEFINED && $schema->properties !== UNDEFINED) {
                     // move properties from allOf back up into schema
                     $currentSchema->properties = $schema->properties;
-                } elseif ($schema->ref !== UNDEFINED && $schema->ref != Components::SCHEMA_REF . $parentSchema->schema) {
+                } elseif ($schema->ref !== UNDEFINED && $schema->ref != Components::SCHEMA_REF.$parentSchema->schema) {
                     // keep other schemas
                     $childSchema->allOf[] = $schema;
                 }
@@ -106,7 +106,7 @@ class InheritProperties
 
         $childSchema->allOf[] = new Schema([
             '_context' => $parentSchema->_context,
-            'ref' => Components::SCHEMA_REF . $parentSchema->schema,
+            'ref' => Components::SCHEMA_REF.$parentSchema->schema,
         ]);
         if ($currentSchema->properties !== UNDEFINED) {
             $childSchema->allOf[] = $currentSchema;

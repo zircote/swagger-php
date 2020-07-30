@@ -28,14 +28,14 @@ class ResponseTest extends OpenApiTestCase
     protected function validateMisspelledAnnotation(string $response = '')
     {
         $annotations = $this->parseComment(
-            '@OA\Get(@OA\Response(response="' . $response . '", description="description"))'
+            '@OA\Get(@OA\Response(response="'.$response.'", description="description"))'
         );
         /*
          * @see Annotations/Operation.php:187
          */
         $this->assertOpenApiLogEntryContains(
-            'Invalid value "' . $response . '" for @OA\Response()->response, expecting "default"'
-            . ', a HTTP Status Code or HTTP '
+            'Invalid value "'.$response.'" for @OA\Response()->response, expecting "default"'
+            .', a HTTP Status Code or HTTP '
         );
         $annotations[0]->validate();
     }

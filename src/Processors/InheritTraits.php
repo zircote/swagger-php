@@ -26,7 +26,7 @@ class InheritTraits
                         }
                         $schema->allOf[] = new Schema([
                             '_context' => $trait['context']->_context,
-                            'ref' => Components::SCHEMA_REF . $trait['trait'],
+                            'ref' => Components::SCHEMA_REF.$trait['trait'],
                         ]);
                     }
                 }

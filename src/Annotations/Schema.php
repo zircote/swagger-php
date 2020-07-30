@@ -342,9 +342,9 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
-        'allOf' => '[' . Schema::class . ']',
-        'oneOf' => '[' . Schema::class . ']',
-        'anyOf' => '[' . Schema::class . ']',
+        'allOf' => '['.Schema::class.']',
+        'oneOf' => '['.Schema::class.']',
+        'anyOf' => '['.Schema::class.']',
     ];
 
     /**
@@ -372,7 +372,7 @@ class Schema extends AbstractAnnotation
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if ($this->type === 'array' && $this->items === UNDEFINED) {
-            Logger::notice('@OA\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            Logger::notice('@OA\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);
 
             return false;
         }

@@ -24,7 +24,7 @@ class BuildPaths
         if ($analysis->openapi->paths !== UNDEFINED) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
-                    Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
+                    Logger::notice($annotation->identity().' is missing required property "path" in '.$annotation->_context);
                 } elseif (isset($paths[$annotation->path])) {
                     $paths[$annotation->path]->mergeProperties($annotation);
                     $analysis->annotations->detach($annotation);
@@ -48,7 +48,7 @@ class BuildPaths
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
-                    Logger::notice('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);
+                    Logger::notice('Unable to merge '.$operation->identity().' in '.$operation->_context);
                 }
             }
         }

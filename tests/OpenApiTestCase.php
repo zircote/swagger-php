@@ -50,9 +50,9 @@ class OpenApiTestCase extends TestCase
                     E_USER_WARNING => 'warning',
                 ];
                 if (isset($map[$type])) {
-                    $this->fail('Unexpected \OpenApi\Logger::' . $map[$type] . '("' . $entry . '")');
+                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
                 } else {
-                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("' . $entry . '",' . $type . ')');
+                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
                 }
             }
         };
@@ -61,7 +61,7 @@ class OpenApiTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages) . ' OpenApi\Logger messages were not triggered');
+        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }
@@ -95,7 +95,7 @@ class OpenApiTestCase extends TestCase
                 try {
                     $in = Yaml::parse($in);
                 } catch (ParseException $e) {
-                    $this->fail('Invalid YAML: ' . $e->getMessage() . PHP_EOL . $in);
+                    $this->fail('Invalid YAML: '.$e->getMessage().PHP_EOL.$in);
                 }
             }
 
@@ -131,7 +131,7 @@ class OpenApiTestCase extends TestCase
         $analyser = new Analyser();
         $context = Context::detect(1);
 
-        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
+        return $analyser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
     }
 
     /**
@@ -162,7 +162,7 @@ class OpenApiTestCase extends TestCase
     public function fixtures($files): array
     {
         return array_map(function ($file) {
-            return __DIR__ . '/Fixtures/' . $file;
+            return __DIR__.'/Fixtures/'.$file;
         }, (array) $files);
     }
 
@@ -180,7 +180,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: new Context());
+        return (new StaticAnalyser())->fromCode("<?php\n".$code, $context ?: new Context());
     }
 
     /**
@@ -191,7 +191,7 @@ class OpenApiTestCase extends TestCase
     public function allAnnotationClasses()
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');
+        $dir = new DirectoryIterator(__DIR__.'/../src/Annotations');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -200,7 +200,7 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['AbstractAnnotation','Operation'])) {
                 continue;
             }
-            $classes[] = ['OpenApi\\Annotations\\' . $class];
+            $classes[] = ['OpenApi\\Annotations\\'.$class];
         }
 
         return $classes;

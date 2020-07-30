@@ -432,7 +432,7 @@ class StaticAnalyser
                     if ($pos) {
                         $line = $context->line ? $context->line + $token[2] : $token[2];
                         $commentContext = new Context(['line' => $line], $context);
-                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping '.$commentContext);
                     }
                     continue;
                 }

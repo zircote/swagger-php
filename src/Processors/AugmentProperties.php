@@ -47,7 +47,7 @@ class AugmentProperties
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== UNDEFINED) {
                     $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
-                        = Components::SCHEMA_REF . $schema->schema;
+                        = Components::SCHEMA_REF.$schema->schema;
                 }
             }
         }

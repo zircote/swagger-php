@@ -54,7 +54,7 @@ class Items extends Schema
                 // A limited subset of JSON-Schema's items object.
                 $allowedTypes = ['string', 'number', 'integer', 'boolean', 'array'];
                 if (in_array($this->type, $allowedTypes) === false) {
-                    Logger::notice('@OA\Items()->type="' . $this->type . '" not allowed inside a ' . $parent->_identity([]) . ' must be "' . implode('", "', $allowedTypes) . '" in ' . $this->_context);
+                    Logger::notice('@OA\Items()->type="'.$this->type.'" not allowed inside a '.$parent->_identity([]).' must be "'.implode('", "', $allowedTypes).'" in '.$this->_context);
                     $valid = false;
                 }
             }

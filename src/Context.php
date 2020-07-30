@@ -123,9 +123,9 @@ class Context
         if ($this->class && ($this->method || $this->property)) {
             $location .= $this->fullyQualifiedName($this->class);
             if ($this->method) {
-                $location .= ($this->static ? '::' : '->') . $this->method . '()';
+                $location .= ($this->static ? '::' : '->').$this->method.'()';
             } elseif ($this->property) {
-                $location .= ($this->static ? '::$' : '->') . $this->property;
+                $location .= ($this->static ? '::$' : '->').$this->property;
             }
         }
         if ($this->filename) {
@@ -138,9 +138,9 @@ class Context
             if ($location !== '') {
                 $location .= ' on';
             }
-            $location .= ' line ' . $this->line;
+            $location .= ' line '.$this->line;
             if ($this->character) {
-                $location .= ':' . $this->character;
+                $location .= ':'.$this->character;
             }
         }
 
@@ -185,7 +185,7 @@ class Context
         $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
         foreach ($lines as $line) {
-            $summary .= $line . "\n";
+            $summary .= $line."\n";
             if ($line === '' || substr($line, -1) === '.') {
                 return trim($summary);
             }
@@ -237,7 +237,7 @@ class Context
             }
             if ($append) {
                 $i = count($lines) - 1;
-                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+                $lines[$i] = substr($lines[$i], 0, -1).$line;
             } else {
                 $lines[] = $line;
             }
@@ -302,7 +302,7 @@ class Context
         }
 
         if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
+            $namespace = str_replace('\\\\', '\\', '\\'.$this->namespace.'\\');
         } else {
             // global namespace
             $namespace = '\\';
@@ -310,7 +310,7 @@ class Context
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
-            return $namespace . $thisSource;
+            return $namespace.$thisSource;
         }
         $pos = strpos($source, '\\');
         if ($pos !== false) {
@@ -324,7 +324,7 @@ class Context
                     $alias .= '\\';
                     if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return '\\' . $aliasedNamespace . substr($source, strlen($alias) - 1);
+                        return '\\'.$aliasedNamespace.substr($source, strlen($alias) - 1);
                     }
                 }
             }
@@ -332,11 +332,11 @@ class Context
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
                 if (strcasecmp($alias, $source) === 0) {
-                    return '\\' . $aliasedNamespace;
+                    return '\\'.$aliasedNamespace;
                 }
             }
         }
 
-        return $namespace . $source;
+        return $namespace.$source;
     }
 }
