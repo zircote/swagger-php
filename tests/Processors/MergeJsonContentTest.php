@@ -58,7 +58,7 @@ END;
         $comment = <<<END
             @OA\Parameter(name="filter",in="query", @OA\JsonContent(
                 @OA\Property(property="type", type="string"),
-                @OA\Property(property="color", type="string"),
+                @OA\Property(property="color", type="string")
             ))
 END;
         $analysis = new Analysis($this->parseComment($comment));
@@ -72,7 +72,7 @@ END;
         $json = json_decode(json_encode($parameter), true);
         $this->assertSame('query', $json['in']);
         $this->assertSame('application/json', array_keys($json['content'])[0]);
-        $this->assertSame('application/json', $json['content']['application/json']['mediaType']);
+        $this->assertArrayNotHasKey('mediaType', $json['content']['application/json']);
     }
 
     public function testNoParent()

@@ -21,7 +21,6 @@ paths:
           in: query
           content:
             application/json:
-              mediaType: application/json
               schema:
                 properties:
                   type: { type: string }
