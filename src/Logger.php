@@ -71,4 +71,21 @@ class Logger
     {
         call_user_func(self::getInstance()->log, $entry, E_USER_NOTICE);
     }
+
+    /**
+     * Shorten class name(s).
+     *
+     * @param string|object|[] $classes Class(es) to shorten
+     *
+     * @return string|[] One or more shortened class names
+     */
+    public static function shorten($classes)
+    {
+        $short = [];
+        foreach ((array) $classes as $class) {
+            $short[] = '@'.str_replace('OpenApi\Annotations\\', 'OA\\', $class);
+        }
+
+        return is_array($classes) ? $short : array_pop($short);
+    }
 }
