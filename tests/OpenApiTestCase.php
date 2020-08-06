@@ -183,6 +183,11 @@ class OpenApiTestCase extends TestCase
         return (new StaticAnalyser())->fromCode("<?php\n".$code, $context ?: new Context());
     }
 
+    public function analysisFromDockBlock($comment)
+    {
+        return (new Analyser())->fromComment($comment, null);
+    }
+
     /**
      * Collect list of all non abstract annotation classes.
      *

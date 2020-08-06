@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Analyser;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Annotations\Server;
@@ -41,7 +40,7 @@ class SecuritySchemesTest extends OpenApiTestCase
  */
 
 INFO;
-        $analysis = $this->getAnalysis($comment);
+        $analysis = $this->analysisFromDockBlock($comment);
 
         $this->assertCount(3, $analysis);
         $this->assertInstanceOf(Info::class, $analysis[0]);
@@ -80,7 +79,7 @@ INFO;
  */
 SCHEME;
 
-        $analysis = $this->getAnalysis($comment);
+        $analysis = $this->analysisFromDockBlock($comment);
         $this->assertCount(1, $analysis);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $analysis[0];
@@ -120,7 +119,7 @@ SCHEME;
  */
 SCHEME;
 
-        $analysis = $this->getAnalysis($comment);
+        $analysis = $this->analysisFromDockBlock($comment);
         $this->assertCount(1, $analysis);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $analysis[0];
@@ -133,20 +132,5 @@ SCHEME;
         $this->assertEquals('http://authClient.test.com', $security->flows[1]->authorizationUrl);
         $this->assertEquals('http://authClient.test.com/token', $security->flows[1]->tokenUrl);
         $this->assertEquals('http://authClient.test.com/refresh-token', $security->flows[1]->refreshUrl);
-    }
-
-    /**
-     * Get scheme analysis.
-     *
-     * @param string $comment
-     *
-     * @return array
-     */
-    private function getAnalysis($comment)
-    {
-        $analyser = new Analyser();
-        $analysis = $analyser->fromComment($comment, null);
-
-        return $analysis;
     }
 }
