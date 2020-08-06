@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
 use OpenApi\Logger;
@@ -12,11 +12,9 @@ use OpenApi\Processors\InheritInterfaces;
 use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeInterfaces;
 use OpenApi\Processors\MergeTraits;
-use Symfony\Component\Yaml\Yaml;
 
 class ExamplesTest extends OpenApiTestCase
 {
-
     public function exampleMappings()
     {
         return [
@@ -68,8 +66,8 @@ class ExamplesTest extends OpenApiTestCase
             $options['processors'] = $processors;
         }
 
-        $path = __DIR__ . '/../Examples/' . $example;
+        $path = __DIR__.'/../Examples/'.$example;
         $openapi = \OpenApi\scan($path, $options);
-        $this->assertSpecEquals(file_get_contents($path . '/' . $spec), $openapi);
+        $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi);
     }
 }

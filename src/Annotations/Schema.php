@@ -21,7 +21,7 @@ use OpenApi\Logger;
 class Schema extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -51,14 +51,14 @@ class Schema extends AbstractAnnotation
     /**
      * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the value of this property.
      *
-     * @var integer
+     * @var int
      */
     public $maxProperties = UNDEFINED;
 
     /**
      * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to, the value of this property.
      *
-     * @var integer
+     * @var int
      */
     public $minProperties = UNDEFINED;
 
@@ -102,8 +102,6 @@ class Schema extends AbstractAnnotation
 
     /**
      * Sets a default value to the parameter. The type of the value depends on the defined type. See http://json-schema.org/latest/json-schema-validation.html#anchor101.
-     *
-     * @var mixed
      */
     public $default = UNDEFINED;
 
@@ -117,7 +115,7 @@ class Schema extends AbstractAnnotation
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
      *
-     * @var boolean
+     * @var bool
      */
     public $exclusiveMaximum = UNDEFINED;
 
@@ -131,21 +129,21 @@ class Schema extends AbstractAnnotation
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
      *
-     * @var boolean
+     * @var bool
      */
     public $exclusiveMinimum = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor26.
      *
-     * @var integer
+     * @var int
      */
     public $maxLength = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor29.
      *
-     * @var integer
+     * @var int
      */
     public $minLength = UNDEFINED;
 
@@ -159,21 +157,21 @@ class Schema extends AbstractAnnotation
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor42.
      *
-     * @var integer
+     * @var int
      */
     public $maxItems = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor45.
      *
-     * @var integer
+     * @var int
      */
     public $minItems = UNDEFINED;
 
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor49.
      *
-     * @var boolean
+     * @var bool
      */
     public $uniqueItems = UNDEFINED;
 
@@ -208,7 +206,7 @@ class Schema extends AbstractAnnotation
      * A property must not be marked as both readOnly and writeOnly being true.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $readOnly = UNDEFINED;
 
@@ -220,7 +218,7 @@ class Schema extends AbstractAnnotation
      * A property must not be marked as both readOnly and writeOnly being true.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $writeOnly = UNDEFINED;
 
@@ -250,7 +248,7 @@ class Schema extends AbstractAnnotation
      * Allows sending a null value for the defined schema.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $nullable = UNDEFINED;
 
@@ -258,7 +256,7 @@ class Schema extends AbstractAnnotation
      * Specifies that a schema is deprecated and should be transitioned out of usage.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $deprecated = UNDEFINED;
 
@@ -284,49 +282,49 @@ class Schema extends AbstractAnnotation
     public $oneOf = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29.
      */
     public $not = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor64
+     * http://json-schema.org/latest/json-schema-validation.html#anchor64.
      *
      * @var bool|object
      */
     public $additionalProperties = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10.
      */
     public $additionalItems = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14.
      */
     public $contains = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19.
      */
     public $patternProperties = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21.
      */
     public $dependencies = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22.
      */
     public $propertyNames = UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24
+     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24.
      */
     public $const = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'description' => 'string',
@@ -344,13 +342,13 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
-        'allOf' => '[' . Schema::class . ']',
-        'oneOf' => '[' . Schema::class . ']',
-        'anyOf' => '[' . Schema::class . ']'
+        'allOf' => '['.Schema::class.']',
+        'oneOf' => '['.Schema::class.']',
+        'anyOf' => '['.Schema::class.']',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',
@@ -358,11 +356,11 @@ class Schema extends AbstractAnnotation
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
-        AdditionalProperties::class => 'additionalProperties'
+        AdditionalProperties::class => 'additionalProperties',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,
@@ -374,9 +372,11 @@ class Schema extends AbstractAnnotation
     public function validate($parents = [], $skip = [], $ref = '')
     {
         if ($this->type === 'array' && $this->items === UNDEFINED) {
-            Logger::notice('@OA\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            Logger::notice('@OA\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);
+
             return false;
         }
+
         return parent::validate($parents, $skip, $ref);
     }
 }

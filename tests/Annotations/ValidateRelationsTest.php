@@ -4,18 +4,16 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 /**
  * Test if the annotation class nesting parent/child relations are coherent.
  */
 class ValidateRelationsTest extends OpenApiTestCase
 {
-
     /**
-     *
      * @dataProvider allAnnotationClasses
      *
      * @param string $class
@@ -37,7 +35,6 @@ class ValidateRelationsTest extends OpenApiTestCase
     }
 
     /**
-     *
      * @dataProvider allAnnotationClasses
      *
      * @param string $class

@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
 class Examples extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */

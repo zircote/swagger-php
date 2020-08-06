@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 class UtilTest extends OpenApiTestCase
 {
@@ -20,7 +20,7 @@ class UtilTest extends OpenApiTestCase
                 'Processors',
                 'UsingRefs.php',
                 'UsingPhpDoc.php',
-            ]
+            ],
         ]);
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }

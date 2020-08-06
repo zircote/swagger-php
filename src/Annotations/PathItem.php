@@ -16,7 +16,7 @@ namespace OpenApi\Annotations;
 class PathItem extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -111,14 +111,14 @@ class PathItem extends AbstractAnnotation
     public $parameters = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
-        'path' => 'string'
+        'path' => 'string',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Get::class => 'get',
@@ -134,9 +134,9 @@ class PathItem extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        OpenApi::class
+        OpenApi::class,
     ];
 }

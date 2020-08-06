@@ -8,9 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 
-/**
- *
- */
 class CleanUnmerged
 {
     public function __invoke(Analysis $analysis)

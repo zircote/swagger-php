@@ -15,7 +15,7 @@ namespace OpenApi\Annotations;
 class Response extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/
+     * $ref See https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */
@@ -48,7 +48,7 @@ class Response extends AbstractAnnotation
     /**
      * A map containing descriptions of potential response payloads.
      * The key is a media type or media type range and the value describes it.
-     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/*
+     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/*.
      *
      * @var MediaType[]
      */
@@ -63,19 +63,19 @@ class Response extends AbstractAnnotation
     public $links = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['description'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'description' => 'string',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         MediaType::class => ['content', 'mediaType'],
@@ -84,7 +84,7 @@ class Response extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,

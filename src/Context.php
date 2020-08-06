@@ -7,7 +7,7 @@
 namespace OpenApi;
 
 /**
- * Context
+ * Context.
  *
  * The context in which the annotation is parsed.
  * It includes useful metadata which the Processors can use to augment the annotations.
@@ -24,11 +24,10 @@ namespace OpenApi;
  * @property string                           $filename
  * @property int                              $line
  * @property int                              $character
- *
  * @property string                           $namespace
  * @property array                            $uses
  * @property string                           $class
- * @property string|array                     $extends  Interfaces may extend a list of interfaces
+ * @property array|string                     $extends  Interfaces may extend a list of interfaces
  * @property array                            $implements
  * @property string                           $method
  * @property string                           $property
@@ -47,7 +46,7 @@ class Context
     private $_parent;
 
     /**
-     * @param array   $properties new properties for this context.
+     * @param array   $properties new properties for this context
      * @param Context $parent     The parent context
      */
     public function __construct($properties = [], $parent = null)
@@ -85,8 +84,9 @@ class Context
     /**
      * Return the context containing the specified property.
      *
-     * @param  string $property
-     * @return boolean|Context
+     * @param string $property
+     *
+     * @return bool|Context
      */
     public function with($property)
     {
@@ -123,9 +123,9 @@ class Context
         if ($this->class && ($this->method || $this->property)) {
             $location .= $this->fullyQualifiedName($this->class);
             if ($this->method) {
-                $location .= ($this->static ? '::' : '->') . $this->method . '()';
+                $location .= ($this->static ? '::' : '->').$this->method.'()';
             } elseif ($this->property) {
-                $location .= ($this->static ? '::$' : '->') . $this->property;
+                $location .= ($this->static ? '::$' : '->').$this->property;
             }
         }
         if ($this->filename) {
@@ -138,9 +138,9 @@ class Context
             if ($location !== '') {
                 $location .= ' on';
             }
-            $location .= ' line ' . $this->line;
+            $location .= ' line '.$this->line;
             if ($this->character) {
-                $location .= ':' . $this->character;
+                $location .= ':'.$this->character;
             }
         }
 
@@ -151,8 +151,6 @@ class Context
      * Traverse the context tree to get the property value.
      *
      * @param string $property
-     *
-     * @return mixed
      */
     public function __get($property)
     {
@@ -187,7 +185,7 @@ class Context
         $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
         foreach ($lines as $line) {
-            $summary .= $line . "\n";
+            $summary .= $line."\n";
             if ($line === '' || substr($line, -1) === '.') {
                 return trim($summary);
             }
@@ -220,7 +218,7 @@ class Context
     }
 
     /**
-     * The text contents of the phpdoc comment (excl. tags)
+     * The text contents of the phpdoc comment (excl. tags).
      *
      * @return string
      */
@@ -239,7 +237,7 @@ class Context
             }
             if ($append) {
                 $i = count($lines) - 1;
-                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+                $lines[$i] = substr($lines[$i], 0, -1).$line;
             } else {
                 $lines[] = $line;
             }
@@ -254,9 +252,10 @@ class Context
     }
 
     /**
-     * Create a Context based on the debug_backtrace
+     * Create a Context based on the debug_backtrace.
      *
-     * @param  int $index
+     * @param int $index
+     *
      * @return Context
      */
     public static function detect($index = 0)
@@ -303,7 +302,7 @@ class Context
         }
 
         if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
+            $namespace = str_replace('\\\\', '\\', '\\'.$this->namespace.'\\');
         } else {
             // global namespace
             $namespace = '\\';
@@ -311,7 +310,7 @@ class Context
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
-            return $namespace . $thisSource;
+            return $namespace.$thisSource;
         }
         $pos = strpos($source, '\\');
         if ($pos !== false) {
@@ -325,7 +324,7 @@ class Context
                     $alias .= '\\';
                     if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return '\\' . $aliasedNamespace . substr($source, strlen($alias) - 1);
+                        return '\\'.$aliasedNamespace.substr($source, strlen($alias) - 1);
                     }
                 }
             }
@@ -333,11 +332,11 @@ class Context
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
                 if (strcasecmp($alias, $source) === 0) {
-                    return '\\' . $aliasedNamespace;
+                    return '\\'.$aliasedNamespace;
                 }
             }
         }
 
-        return $namespace . $source;
+        return $namespace.$source;
     }
 }

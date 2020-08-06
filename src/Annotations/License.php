@@ -29,7 +29,7 @@ class License extends AbstractAnnotation
     public $url = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'name' => 'string',
@@ -37,14 +37,14 @@ class License extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['name'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        Info::class
+        Info::class,
     ];
 }

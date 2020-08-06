@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Analyser;
 use OpenApi\StaticAnalyser;
@@ -30,10 +30,10 @@ class ConstantsTest extends OpenApiTestCase
 
     public function testFQCNConstant()
     {
-        $annotations = $this->parseComment('@OA\Contact(url=OpenApiTests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@OA\Contact(url=OpenApi\Tests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
 
-        $annotations = $this->parseComment('@OA\Contact(url=\OpenApiTests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@OA\Contact(url=\OpenApi\Tests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 
@@ -45,10 +45,10 @@ class ConstantsTest extends OpenApiTestCase
 
     public function testAutoloadConstant()
     {
-        if (class_exists('Laminas\Validator\Timezone', false)) {
+        if (class_exists('AnotherNamespace\Annotations\Constants', false)) {
             $this->markTestSkipped();
         }
-        $annotations = $this->parseComment('@OA\Contact(name=Laminas\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
+        $annotations = $this->parseComment('@OA\Contact(name=AnotherNamespace\Annotations\Constants::INVALID_TIMEZONE_LOCATION)');
         $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 
@@ -71,7 +71,7 @@ class ConstantsTest extends OpenApiTestCase
         $backup = Analyser::$defaultImports;
         Analyser::$defaultImports = [
             'contact' => 'OpenApi\Annotations\Contact', // use OpenApi\Annotations\Contact;
-            'ctest' => 'OpenApiTests\ConstantsTesT' // use OpenApiTests\ConstantsTesT as CTest;
+            'ctest' => 'OpenApi\Tests\ConstantsTesT', // use OpenApi\Tests\ConstantsTesT as CTest;
         ];
         $annotations = $this->parseComment('@Contact(url=CTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);

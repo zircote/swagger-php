@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Processors;
+namespace OpenApi\Tests\Processors;
 
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentParameterTest extends OpenApiTestCase
 {

@@ -14,7 +14,7 @@ namespace OpenApi\Annotations;
 class SecurityScheme extends AbstractAnnotation
 {
     /**
-     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7.
      *
      * @var string
      */
@@ -74,6 +74,7 @@ class SecurityScheme extends AbstractAnnotation
      * The name of the HTTP Authorization scheme.
      *
      * @see https://tools.ietf.org/html/rfc7235#section-5.1
+     *
      * @var string
      */
     public $scheme = UNDEFINED;
@@ -86,12 +87,12 @@ class SecurityScheme extends AbstractAnnotation
     public $openIdConnectUrl = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['securityScheme', 'type'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
@@ -102,21 +103,21 @@ class SecurityScheme extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Flow::class => ['flows', 'flow'],
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         Components::class,
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function merge($annotations, $ignore = false)
     {

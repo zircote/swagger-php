@@ -5,7 +5,7 @@ namespace AnotherNamespace;
 /**
  * @OA\Schema()
  */
-class ChildWithDocBlocks extends \OpenApiFixtures\AncestorWithoutDocBlocks
+class Child extends \OpenApi\Tests\Fixtures\Ancestor
 {
 
     /**

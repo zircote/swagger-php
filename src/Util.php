@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Convenient utility functions that don't neatly fit anywhere else
+ * Convenient utility functions that don't neatly fit anywhere else.
  */
 class Util
 {
@@ -25,8 +25,9 @@ class Util
      * and conform specifically to what is expected by functions like `exclude()` and `notPath()`.
      * In particular, leading and trailing slashes are removed.
      *
-     * @param  string       $fullPath
-     * @param  string|array $basePaths
+     * @param string       $fullPath
+     * @param array|string $basePaths
+     *
      * @return string
      */
     public static function getRelativePath($fullPath, $basePaths)
@@ -42,14 +43,16 @@ class Util
                 }
             }
         }
+
         return !empty($relativePath) ? trim($relativePath, '/') : $fullPath;
     }
 
     /**
      * Removes a prefix from the start of a string if it exists, or null otherwise.
      *
-     * @param  string $str
-     * @param  string $prefix
+     * @param string $str
+     * @param string $prefix
+     *
      * @return null|string
      */
     private static function removePrefix($str, $prefix)
@@ -57,15 +60,17 @@ class Util
         if (substr($str, 0, strlen($prefix)) == $prefix) {
             return substr($str, strlen($prefix));
         }
+
         return null;
     }
 
     /**
      * Build a Symfony Finder object that scans the given $directory.
      *
-     * @param  string|array|Finder $directory The directory(s) or filename(s)
-     * @param  null|string|array   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
-     * @param  null|string         $pattern   The pattern of the files to scan
+     * @param array|Finder|string $directory The directory(s) or filename(s)
+     * @param null|array|string   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
+     * @param null|string         $pattern   The pattern of the files to scan
+     *
      * @throws InvalidArgumentException
      */
     public static function finder($directory, $exclude = null, $pattern = null)
@@ -96,7 +101,7 @@ class Util
                 }
             }
         } else {
-            throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
+            throw new InvalidArgumentException('Unexpected $directory value:'.gettype($directory));
         }
         if ($exclude !== null) {
             if (is_string($exclude)) {
@@ -106,9 +111,10 @@ class Util
                     $finder->notPath(Util::getRelativePath($path, $directory));
                 }
             } else {
-                throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+                throw new InvalidArgumentException('Unexpected $exclude value:'.gettype($exclude));
             }
         }
+
         return $finder;
     }
 }

@@ -27,9 +27,9 @@ class OperationId
                 $source = $context->class ?? $context->interface ?? $context->trait;
                 if ($source) {
                     if ($context->namespace) {
-                        $operation->operationId = $context->namespace . "\\" . $source . "::" . $context->method;
+                        $operation->operationId = $context->namespace.'\\'.$source.'::'.$context->method;
                     } else {
-                        $operation->operationId = $source . "::" . $context->method;
+                        $operation->operationId = $source.'::'.$context->method;
                     }
                 } else {
                     $operation->operationId = $context->method;

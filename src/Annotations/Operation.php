@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-/**
- * @license Apache 2.0
- */
+ /**
+  * @license Apache 2.0
+  */
 
  namespace OpenApi\Annotations;
 
@@ -18,7 +18,7 @@ use OpenApi\Logger;
 abstract class Operation extends AbstractAnnotation
 {
     /**
-     * key in the OpenApi "Paths Object" for this operation
+     * key in the OpenApi "Paths Object" for this operation.
      *
      * @var string
      */
@@ -34,7 +34,7 @@ abstract class Operation extends AbstractAnnotation
 
     /**
      * Key in the OpenApi "Path Item Object" for this operation.
-     * Allowed values: 'get', 'post', put', 'patch', 'delete', 'options', 'head' and 'trace'
+     * Allowed values: 'get', 'post', put', 'patch', 'delete', 'options', 'head' and 'trace'.
      *
      * @var string
      */
@@ -104,7 +104,7 @@ abstract class Operation extends AbstractAnnotation
      * Each value in the map is a Callback Object that describes a request that may be initiated by the API provider and the expected responses.
      * The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
      *
-     * @var Callback[]
+     * @var callback[]
      */
     public $callbacks = UNDEFINED;
 
@@ -113,7 +113,7 @@ abstract class Operation extends AbstractAnnotation
      * Consumers should refrain from usage of the declared operation.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $deprecated = UNDEFINED;
 
@@ -137,12 +137,12 @@ abstract class Operation extends AbstractAnnotation
     public $servers = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['responses'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'path' => 'string',
@@ -150,11 +150,11 @@ abstract class Operation extends AbstractAnnotation
         'tags' => '[string]',
         'summary' => 'string',
         'description' => 'string',
-        'deprecated' => 'boolean'
+        'deprecated' => 'boolean',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Parameter::class => ['parameters'],
@@ -165,13 +165,14 @@ abstract class Operation extends AbstractAnnotation
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
         unset($data->method);
         unset($data->path);
+
         return $data;
     }
 
@@ -184,10 +185,11 @@ abstract class Operation extends AbstractAnnotation
         if ($this->responses !== UNDEFINED) {
             foreach ($this->responses as $response) {
                 if ($response->response !== UNDEFINED && $response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
-                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
+                    Logger::notice('Invalid value "'.$response->response.'" for '.$response->_identity([]).'->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in '.$response->_context);
                 }
             }
         }
+
         return $valid;
     }
 }

@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures;
+namespace OpenApi\Tests\Fixtures;
 
 /**
  * @OA\Schema(

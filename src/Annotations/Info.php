@@ -58,32 +58,32 @@ class Info extends AbstractAnnotation
     public $version = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_required = ['title', 'version'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_types = [
         'title' => 'string',
         'version' => 'string',
         'description' => 'string',
-        'termsOfService' => 'string'
+        'termsOfService' => 'string',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Contact::class => 'contact',
-        License::class => 'license'
+        License::class => 'license',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        OpenApi::class
+        OpenApi::class,
     ];
 }

@@ -4,22 +4,21 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use Closure;
 use DirectoryIterator;
 use Exception;
-use OpenApi\Analysis;
-use OpenApi\StaticAnalyser;
-use PHPUnit\Framework\TestCase;
-use stdClass;
 use OpenApi\Analyser;
+use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Info;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Logger;
+use OpenApi\StaticAnalyser;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -80,10 +79,10 @@ class OpenApiTestCase extends TestCase
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
-     * @param string|array|\stdClass|OpenApi $expected
-     * @param string|array|\stdClass|OpenApi $spec
-     * @param string $message
-     * @param bool $normalized Flag indicating whether the inputs are already normalized or not.
+     * @param array|OpenApi|\stdClass|string $expected
+     * @param array|OpenApi|\stdClass|string $spec
+     * @param string                         $message
+     * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
      */
     protected function assertSpecEquals($expected, $spec, $message = '', $normalized = false)
     {
@@ -96,7 +95,7 @@ class OpenApiTestCase extends TestCase
                 try {
                     $in = Yaml::parse($in);
                 } catch (ParseException $e) {
-                    $this->fail('Invalid YAML: ' . $e->getMessage() . PHP_EOL . $in);
+                    $this->fail('Invalid YAML: '.$e->getMessage().PHP_EOL.$in);
                 }
             }
 
@@ -156,13 +155,14 @@ class OpenApiTestCase extends TestCase
     /**
      * Resolve fixture filenames.
      *
-     * @param string|array $files One ore more files.
-     * @return array Resolved filenames for loading scanning etc.
+     * @param array|string $files one ore more files
+     *
+     * @return array resolved filenames for loading scanning etc
      */
     public function fixtures($files): array
     {
         return array_map(function ($file) {
-            return __DIR__ . '/Fixtures/' . $file;
+            return __DIR__.'/Fixtures/'.$file;
         }, (array) $files);
     }
 
@@ -180,7 +180,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: new Context());
+        return (new StaticAnalyser())->fromCode("<?php\n".$code, $context ?: new Context());
     }
 
     /**

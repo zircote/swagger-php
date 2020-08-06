@@ -4,23 +4,23 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests\Annotations;
+namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Analyser;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Annotations\Server;
-use OpenApiTests\OpenApiTestCase;
+use OpenApi\Tests\OpenApiTestCase;
 
 /**
- * Class SecuritySchemesTest
+ * Class SecuritySchemesTest.
  *
  * Security openapi test
  */
 class SecuritySchemesTest extends OpenApiTestCase
 {
     /**
-     * Test parse servers
+     * Test parse servers.
      */
     public function testParseServers()
     {
@@ -56,7 +56,7 @@ INFO;
     }
 
     /**
-     * Test parse security scheme
+     * Test parse security scheme.
      */
     public function testImplicitFlowAnnotation()
     {
@@ -136,7 +136,7 @@ SCHEME;
     }
 
     /**
-     * Get scheme analysis
+     * Get scheme analysis.
      *
      * @param string $comment
      *

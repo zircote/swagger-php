@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace OpenApiTests\Fixtures\Processors;
+namespace OpenApi\Tests\Fixtures\Processors;
 
 /**
  * Entity controller trait.

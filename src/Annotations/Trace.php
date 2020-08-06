@@ -12,14 +12,14 @@ namespace OpenApi\Annotations;
 class Trace extends Operation
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $method = 'trace';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        PathItem::class
+        PathItem::class,
     ];
 }

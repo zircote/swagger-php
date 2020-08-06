@@ -6,12 +6,12 @@
 
 namespace OpenApi\Processors;
 
-use OpenApi\Annotations\Components;
 use OpenApi\Analysis;
+use OpenApi\Annotations\Components;
 use OpenApi\UNDEFINED;
 
 /**
- * Merge reusable annotation into @OA\Schemas
+ * Merge reusable annotation into @OA\Schemas.
  */
 class MergeIntoComponents
 {

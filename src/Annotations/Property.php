@@ -19,7 +19,7 @@ class Property extends Schema
     public $property = UNDEFINED;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
         AdditionalProperties::class,
@@ -31,7 +31,7 @@ class Property extends Schema
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',
@@ -39,6 +39,6 @@ class Property extends Schema
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
-        AdditionalProperties::class => 'additionalProperties'
+        AdditionalProperties::class => 'additionalProperties',
     ];
 }

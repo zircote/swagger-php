@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 
 /**
- * Use the parameter->name as keyfield (parameter->parameter) when used as reusable component (openapi->components->parameters)
+ * Use the parameter->name as keyfield (parameter->parameter) when used as reusable component (openapi->components->parameters).
  */
 class AugmentParameters
 {

@@ -12,14 +12,14 @@ namespace OpenApi\Annotations;
 class Get extends Operation
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $method = 'get';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static $_parents = [
-        PathItem::class
+        PathItem::class,
     ];
 }

@@ -1,10 +1,14 @@
-<?php
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
 
 namespace OpenApi\Processors;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Schema;
-use OpenApi\Analysis;
 
 class InheritInterfaces
 {
@@ -21,7 +25,7 @@ class InheritInterfaces
                         }
                         $schema->allOf[] = new Schema([
                             '_context' => $interface['context']->_context,
-                            'ref' => Components::SCHEMA_REF . $interface['interface']
+                            'ref' => Components::SCHEMA_REF.$interface['interface'],
                         ]);
                     }
                 }

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApiTests;
+namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
