@@ -201,4 +201,13 @@ JSON;
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
         }
     }
+
+    /**
+     * @dataProvider allAnnotationClasses
+     */
+    public function testValidAnnotationsListComplete($annotation)
+    {
+        $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
+        $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));
+    }
 }

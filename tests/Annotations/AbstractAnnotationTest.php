@@ -6,6 +6,9 @@
 
 namespace OpenApi\Tests\Annotations;
 
+use OpenApi\Annotations\Get;
+use OpenApi\Annotations\Parameter;
+use OpenApi\Annotations\Schema;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AbstractAnnotationTest extends OpenApiTestCase
@@ -102,4 +105,39 @@ END;
 //        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @OA\Parameter()->in != "body" in ');
         $parameter->validate();
     }
+
+    public function nestedMatches()
+    {
+        $parameterMatch = (object) ['key' => Parameter::class, 'value' => ['parameters']];
+
+        return [
+            'unknown' => ['Foo', null],
+            'simple-match' => [Parameter::class, $parameterMatch],
+            'invalid-annotation' => [Schema::class, null],
+            'sub-annotation' => [SubParameter::class, $parameterMatch],
+            'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch],
+            'sub-invalid' => [SubSchema::class, null],
+        ];
+    }
+
+    /**
+     * @dataProvider nestedMatches
+     */
+    public function testMatchNested($class, $expected)
+    {
+        $this->assertEquals($expected, Get::matchNested($class));
+//        $this->assertEquals((object)['key' => Parameter::class, 'value' => ['parameters']], Get::matchNested(SubParameter::class));
+    }
+}
+
+class SubSchema extends Schema
+{
+}
+
+class SubParameter extends Parameter
+{
+}
+
+class SubSubParameter extends Parameter
+{
 }
