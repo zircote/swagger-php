@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -353,6 +353,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             return true;
         }
         $valid = true;
+
         // Report orphaned annotations
         foreach ($this->_unmerged as $annotation) {
             if (!is_object($annotation)) {
@@ -376,8 +377,8 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $valid = false;
         }
-        // Report conflicting key
 
+        // Report conflicting key
         foreach (static::$_nested as $annotationClass => $nested) {
             if (is_string($nested) || count($nested) === 1) {
                 continue;
@@ -402,7 +403,8 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
         }
         if (property_exists($this, 'ref') && $this->ref !== UNDEFINED) {
-            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0  && $parents[0] instanceof OpenApi) { // Internal reference
+            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0 && $parents[0] instanceof OpenApi) {
+                // Internal reference
                 try {
                     $parents[0]->ref($this->ref);
                 } catch (Exception $exception) {
@@ -431,6 +433,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 }
             }
         }
+
         // Report invalid types
         foreach (static::$_types as $property => $type) {
             $value = $this->$property;
@@ -506,6 +509,34 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function identity()
     {
         return $this->_identity([]);
+    }
+
+    /**
+     * Find matching nested details.
+     *
+     * @param string $class the class to match
+     *
+     * @return null|object key/value object or `null`
+     */
+    public static function matchNested($class)
+    {
+        if (array_key_exists($class, static::$_nested)) {
+            return (object) ['key' => $class, 'value' => static::$_nested[$class]];
+        }
+
+        $parent = $class;
+        while ($parent = get_parent_class($parent)) {
+            if ($kvp = static::matchNested($parent)) {
+                return $kvp;
+            }
+
+            // only consider the immediate OpenApi parent
+            if (0 === strpos($parent, 'OpenApi\\Annotations\\')) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     /**
