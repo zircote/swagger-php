@@ -126,7 +126,6 @@ END;
     public function testMatchNested($class, $expected)
     {
         $this->assertEquals($expected, Get::matchNested($class));
-//        $this->assertEquals((object)['key' => Parameter::class, 'value' => ['parameters']], Get::matchNested(SubParameter::class));
     }
 }
 
@@ -138,6 +137,6 @@ class SubParameter extends Parameter
 {
 }
 
-class SubSubParameter extends Parameter
+class SubSubParameter extends SubParameter
 {
 }

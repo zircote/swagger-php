@@ -202,9 +202,9 @@ class OpenApi extends AbstractAnnotation
             }
             $mapping = [];
             if ($container instanceof AbstractAnnotation) {
-                foreach ($container::$_nested as $className => $nested) {
+                foreach ($container::$_nested as $nestedClass => $nested) {
                     if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
-                        $mapping[$className] = $nested[1];
+                        $mapping[$nestedClass] = $nested[1];
                     }
                 }
             }
@@ -214,9 +214,9 @@ class OpenApi extends AbstractAnnotation
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);
             }
-            foreach ($mapping as $className => $keyField) {
+            foreach ($mapping as $nestedClass => $keyField) {
                 foreach ($container as $key => $item) {
-                    if (is_numeric($key) && is_object($item) && $item instanceof $className && (string) $item->$keyField === $property) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->$keyField === $property) {
                         return self::resolveRef($ref, $unresolved, $item, []);
                     }
                 }

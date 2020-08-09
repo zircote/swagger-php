@@ -27,7 +27,6 @@ class MergeIntoOpenApi
 
         // Merge annotations into the target openapi
         $merge = [];
-        $classes = array_keys(OpenApi::$_nested);
         foreach ($analysis->annotations as $annotation) {
             if ($annotation === $openapi) {
                 continue;
@@ -44,8 +43,8 @@ class MergeIntoOpenApi
                         $openapi->paths[] = $path;
                     }
                 }
-            } elseif (in_array(get_class($annotation), $classes) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) { // A top level annotation.
-                // Also merge @OA\Info, @OA\Server and other directly nested annotations.
+            } elseif (OpenApi::matchNested(get_class($annotation)) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) {
+                // A top level annotation.
                 $merge[] = $annotation;
             }
         }

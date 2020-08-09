@@ -22,10 +22,10 @@ class MergeIntoComponents
             $components = new Components([]);
             $components->_context->generated = true;
         }
-        $classes = array_keys(Components::$_nested);
+
         foreach ($analysis->annotations as $annotation) {
-            $class = get_class($annotation);
-            if (in_array($class, $classes) && $annotation->_context->is('nested') === false) { // A top level annotation.
+            if (Components::matchNested(get_class($annotation)) && $annotation->_context->is('nested') === false) {
+                // A top level annotation.
                 $components->merge([$annotation], true);
                 $analysis->openapi->components = $components;
             }

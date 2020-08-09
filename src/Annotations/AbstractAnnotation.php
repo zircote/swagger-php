@@ -109,7 +109,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 if (is_array($value)) {
                     foreach ($value as $key => $annotation) {
                         if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
-                            $this->{$property}[$key] = $this->nested($annotation, $nestedContext);
+                            $this->$property[$key] = $this->nested($annotation, $nestedContext);
                         }
                     }
                 }
@@ -151,6 +151,7 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Merge given annotations to their mapped properties configured in static::$_nested.
+     *
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
      * @param AbstractAnnotation[] $annotations
@@ -162,25 +163,25 @@ abstract class AbstractAnnotation implements JsonSerializable
     {
         $unmerged = [];
         $nestedContext = new Context(['nested' => $this], $this->_context);
+
         foreach ($annotations as $annotation) {
-            $found = false;
-            foreach (static::$_nested as $class => $property) {
-                if (get_class($annotation) === $class) {
-                    if (is_array($property)) { // Append to an array?
-                        $property = $property[0];
-                        if ($this->$property === UNDEFINED) {
-                            $this->$property = [];
-                        }
-                        array_push($this->$property, $this->nested($annotation, $nestedContext));
-                        $found = true;
-                    } elseif ($this->$property === UNDEFINED) {
-                        $this->$property = $this->nested($annotation, $nestedContext);
-                        $found = true;
+            $mapped = false;
+            if ($details = static::matchNested(get_class($annotation))) {
+                $property = $details->value;
+                if (is_array($property)) {
+                    $property = $property[0];
+                    if ($this->$property === UNDEFINED) {
+                        $this->$property = [];
                     }
-                    break;
+                    $this->$property[] = $this->nested($annotation, $nestedContext);
+                    $mapped = true;
+                } elseif ($this->$property === UNDEFINED) {
+                    // ignore duplicate nested if only one expected
+                    $this->$property = $this->nested($annotation, $nestedContext);
+                    $mapped = true;
                 }
             }
-            if ($found === false) {
+            if (!$mapped) {
                 $unmerged[] = $annotation;
             }
         }
@@ -222,7 +223,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
                 $context1 = $this->_context;
                 $context2 = property_exists($object, '_context') ? $object->_context : 'unknown';
-                if (is_object($this->$property) && $this->$property instanceof AbstractAnnotation) {
+                if (is_object($this->$property) && $this->{$property} instanceof AbstractAnnotation) {
                     $context1 = $this->$property->_context;
                 }
                 Logger::warning('Multiple definitions for '.$identity.'->'.$property."\n     Using: ".$context1."\n  Skipping: ".$context2);
@@ -276,22 +277,26 @@ abstract class AbstractAnnotation implements JsonSerializable
     public function jsonSerialize()
     {
         $data = new stdClass();
+
         // Strip undefined values.
         foreach (get_object_vars($this) as $property => $value) {
             if ($value !== UNDEFINED) {
                 $data->$property = $value;
             }
         }
+
         // Strip properties that are for internal (swagger-php) use.
         foreach (static::$_blacklist as $property) {
             unset($data->$property);
         }
+
         // Correct empty array to empty objects.
         foreach (static::$_types as $property => $type) {
             if ($type === 'object' && is_array($data->$property) && empty($data->$property)) {
                 $data->$property = new stdClass;
             }
         }
+
         // Inject vendor properties.
         unset($data->x);
         if (is_array($this->x)) {
@@ -300,6 +305,7 @@ abstract class AbstractAnnotation implements JsonSerializable
                 $data->$prefixed = $value;
             }
         }
+
         // Map nested keys
         foreach (static::$_nested as $nested) {
             if (is_string($nested) || count($nested) === 1) {
@@ -328,6 +334,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $data->$property = $object;
         }
+
         // $ref
         if (isset($data->ref)) {
             // OAS 3.0 does not allow $ref to have siblings: http://spec.openapis.org/oas/v3.0.3#fixed-fields-18
@@ -360,9 +367,10 @@ abstract class AbstractAnnotation implements JsonSerializable
                 Logger::notice('Unexpected type: "'.gettype($annotation).'" in '.$this->identity().'->_unmerged, expecting a Annotation object');
                 break;
             }
+
             $class = get_class($annotation);
-            if (isset(static::$_nested[$class])) {
-                $property = static::$_nested[$class];
+            if ($details = static::matchNested($class)) {
+                $property = $details->value;
                 if (is_array($property)) {
                     Logger::notice('Only one '.Logger::shorten(get_class($annotation)).'() allowed for '.$this->identity().' multiple found, skipped: '.$annotation->_context);
                 } else {
@@ -525,14 +533,10 @@ abstract class AbstractAnnotation implements JsonSerializable
         }
 
         $parent = $class;
-        while ($parent = get_parent_class($parent)) {
+        // only consider the immediate OpenApi parent
+        while (0 !== strpos($parent, 'OpenApi\\Annotations\\') && $parent = get_parent_class($parent)) {
             if ($kvp = static::matchNested($parent)) {
                 return $kvp;
-            }
-
-            // only consider the immediate OpenApi parent
-            if (0 === strpos($parent, 'OpenApi\\Annotations\\')) {
-                return null;
             }
         }
 

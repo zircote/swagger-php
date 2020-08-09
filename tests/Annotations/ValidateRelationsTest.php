@@ -22,8 +22,8 @@ class ValidateRelationsTest extends OpenApiTestCase
     {
         foreach ($class::$_parents as $parent) {
             $found = false;
-            foreach (array_keys($parent::$_nested) as $nested) {
-                if ($nested === $class) {
+            foreach (array_keys($parent::$_nested) as $nestedClass) {
+                if ($nestedClass === $class) {
                     $found = true;
                     break;
                 }
@@ -41,16 +41,16 @@ class ValidateRelationsTest extends OpenApiTestCase
      */
     public function testNested($class)
     {
-        foreach (array_keys($class::$_nested) as $nested) {
+        foreach (array_keys($class::$_nested) as $nestedClass) {
             $found = false;
-            foreach ($nested::$_parents as $parent) {
+            foreach ($nestedClass::$_parents as $parent) {
                 if ($parent === $class) {
                     $found = true;
                     break;
                 }
             }
             if ($found === false) {
-                $this->fail($class.' not found in '.$nested."::\$parent. Found:\n  ".implode("\n  ", $nested::$_parents));
+                $this->fail($class.' not found in '.$nestedClass."::\$parent. Found:\n  ".implode("\n  ", $nestedClass::$_parents));
             }
         }
     }

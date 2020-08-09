@@ -81,7 +81,7 @@ class InheritProperties
 
         $defaultValues = get_class_vars(Schema::class);
         foreach (array_keys(get_object_vars($currentSchema)) as $property) {
-            $childSchema->{$property} = $defaultValues[$property];
+            $childSchema->$property = $defaultValues[$property];
         }
 
         $childSchema->schema = $currentSchema->schema;

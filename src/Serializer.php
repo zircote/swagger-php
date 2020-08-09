@@ -150,11 +150,12 @@ class Serializer
         }
 
         // property is embedded annotation
-        foreach ($annotation::$_nested as $class => $declaration) {
+        // note: this does not support custom nested annotation classes
+        foreach ($annotation::$_nested as $nestedClass => $declaration) {
             // property is an annotation
             if (is_string($declaration) && $declaration === $property) {
                 if (is_object($value)) {
-                    return $this->doDeserialize($value, $class);
+                    return $this->doDeserialize($value, $nestedClass);
                 } else {
                     return $value;
                 }
@@ -164,7 +165,7 @@ class Serializer
             if (is_array($declaration) && count($declaration) === 1 && $declaration[0] === $property) {
                 $annotationArr = [];
                 foreach ($value as $v) {
-                    $annotationArr[] = $this->doDeserialize($v, $class);
+                    $annotationArr[] = $this->doDeserialize($v, $nestedClass);
                 }
 
                 return $annotationArr;
@@ -175,7 +176,7 @@ class Serializer
                 $key = $declaration[1];
                 $annotationHash = [];
                 foreach ($value as $k => $v) {
-                    $annotation = $this->doDeserialize($v, $class);
+                    $annotation = $this->doDeserialize($v, $nestedClass);
                     $annotation->$key = $k;
                     $annotationHash[$k] = $annotation;
                 }
