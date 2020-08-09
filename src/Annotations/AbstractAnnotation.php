@@ -363,18 +363,14 @@ abstract class AbstractAnnotation implements JsonSerializable
             if (isset(static::$_nested[$class])) {
                 $property = static::$_nested[$class];
                 if (is_array($property)) {
-                    Logger::notice('Only one @'.str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)).'() allowed for '.$this->identity().' multiple found, skipped: '.$annotation->_context);
+                    Logger::notice('Only one '.Logger::shorten(get_class($annotation)).'() allowed for '.$this->identity().' multiple found, skipped: '.$annotation->_context);
                 } else {
-                    Logger::notice('Only one @'.str_replace('OpenApi\Annotations\\', 'OA\\', get_class($annotation)).'() allowed for '.$this->identity()." multiple found in:\n    Using: ".$this->$property->_context."\n  Skipped: ".$annotation->_context);
+                    Logger::notice('Only one '.Logger::shorten(get_class($annotation)).'() allowed for '.$this->identity()." multiple found in:\n    Using: ".$this->$property->_context."\n  Skipped: ".$annotation->_context);
                 }
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected '.$annotation->identity();
-                if (count($class::$_parents)) {
-                    $shortNotations = [];
-                    foreach ($class::$_parents as $_class) {
-                        $shortNotations[] = '@'.str_replace('OpenApi\Annotations\\', 'OA\\', $_class);
-                    }
-                    $message .= ', expected to be inside '.implode(', ', $shortNotations);
+                if ($class::$_parents) {
+                    $message .= ', expected to be inside '.implode(', ', Logger::shorten($class::$_parents));
                 }
                 Logger::notice($message.' in '.$annotation->_context);
             }
@@ -394,7 +390,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             $keyField = $nested[1];
             foreach ($this->$property as $key => $item) {
                 if (is_array($item) && is_numeric($key) === false) {
-                    Logger::notice($this->identity().'->'.$property.' is an object literal, use nested @'.str_replace('OpenApi\\Annotations\\', 'OA\\', $annotationClass).'() annotation(s) in '.$this->_context);
+                    Logger::notice($this->identity().'->'.$property.' is an object literal, use nested '.Logger::shorten($annotationClass).'() annotation(s) in '.$this->_context);
                     $keys[$key] = $item;
                 } elseif ($item->$keyField === UNDEFINED) {
                     Logger::warning($item->identity().' is missing key-field: "'.$keyField.'" in '.$item->_context);
@@ -422,11 +418,11 @@ abstract class AbstractAnnotation implements JsonSerializable
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
                         if ($property === $nestedProperty) {
                             if ($this instanceof OpenApi) {
-                                $message = 'Required @'.str_replace('OpenApi\\Annotations\\', 'OA\\', $class).'() not found';
+                                $message = 'Required '.Logger::shorten($class).'() not found';
                             } elseif (is_array($nested)) {
-                                $message = $this->identity().' requires at least one @'.str_replace('OpenApi\\Annotations\\', 'OA\\', $class).'() in '.$this->_context;
+                                $message = $this->identity().' requires at least one '.Logger::shorten($class).'() in '.$this->_context;
                             } else {
-                                $message = $this->identity().' requires a @'.str_replace('OpenApi\\Annotations\\', 'OA\\', $class).'() in '.$this->_context;
+                                $message = $this->identity().' requires a '.Logger::shorten($class).'() in '.$this->_context;
                             }
                             break;
                         }
@@ -529,7 +525,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
         }
 
-        return '@'.str_replace('OpenApi\\Annotations\\', 'OA\\', get_class($this)).'('.implode(',', $fields).')';
+        return Logger::shorten(get_class($this)).'('.implode(',', $fields).')';
     }
 
     /**
