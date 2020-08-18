@@ -18,6 +18,14 @@ if (defined('OpenApi\UNDEFINED') === false) {
     define('OpenApi\Processors\UNDEFINED', UNDEFINED);
 }
 
+if (false === defined('T_NAME_QUALIFIED')) {
+    /*
+     * PHP8 only token.
+     */
+    define('T_NAME_QUALIFIED', -1);
+    define('T_NAME_FULLY_QUALIFIED', -1);
+}
+
 if (function_exists('OpenApi\scan') === false) {
     /**
      * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
