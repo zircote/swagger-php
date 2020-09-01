@@ -471,7 +471,7 @@ abstract class AbstractAnnotation implements JsonSerializable
      *
      * @param array|object $fields
      * @param array        $parents the path of annotations above this annotation in the tree
-     * @param array [      $skip]   Array with objects which are already validated
+     * @param array        $skip    List of objects already validated
      *
      * @return bool
      */

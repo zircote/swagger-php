@@ -6,7 +6,6 @@
 
 namespace OpenApi;
 
-use Closure;
 use Exception;
 
 /**
@@ -22,7 +21,7 @@ class Logger
     public static $instance;
 
     /**
-     * @var Closure
+     * @var callable
      */
     public $log;
 
@@ -75,9 +74,9 @@ class Logger
     /**
      * Shorten class name(s).
      *
-     * @param string|object|[] $classes Class(es) to shorten
+     * @param array|object|string $classes Class(es) to shorten
      *
-     * @return string|[] One or more shortened class names
+     * @return string|string[] One or more shortened class names
      */
     public static function shorten($classes)
     {

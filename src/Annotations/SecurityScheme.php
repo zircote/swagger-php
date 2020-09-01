@@ -121,10 +121,12 @@ class SecurityScheme extends AbstractAnnotation
      */
     public function merge($annotations, $ignore = false)
     {
-        parent::merge($annotations, $ignore);
+        $unmerged = parent::merge($annotations, $ignore);
 
         if ($this->type === 'oauth2') {
             $this->name = UNDEFINED;
         }
+
+        return $unmerged;
     }
 }

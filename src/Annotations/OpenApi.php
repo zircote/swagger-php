@@ -178,9 +178,6 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Recursive helper for ref().
-     *
-     * @param *     $container the container to resolve the ref in
-     * @param array $mapping
      */
     private static function resolveRef($ref, $resolved, $container, $mapping)
     {
