@@ -204,7 +204,7 @@ class OpenApiTestCase extends TestCase
                 continue;
             }
             $class = $entry->getBasename('.php');
-            if (in_array($class, ['AbstractAnnotation','Operation'])) {
+            if (in_array($class, ['AbstractAnnotation', 'Operation'])) {
                 continue;
             }
             $classes[] = ['OpenApi\\Annotations\\'.$class];
