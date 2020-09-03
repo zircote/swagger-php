@@ -334,6 +334,13 @@ You can combine model definitions into new schema compositions with [allOf](http
 
 More info in the [Inheritance and Polymorphism](https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/) chapter.
 
+## Array parameters in query
+
+Depending on [style-values](https://swagger.io/specification/#style-values) `@OA\Parameter(in="query", name="param", ...)` might create urls like this: `path?param=123&param=abc` which doesn't work when reading the param values in php.
+
+The solution is to change the name `param` into `param[]` which will create
+`path?param[]=123&param[]=abc` and results in an php array.
+
 ## Vendor extensions
 
 The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-". Therefore all swagger-php annotations have an `x` property which will unfold into "x-" properties.
