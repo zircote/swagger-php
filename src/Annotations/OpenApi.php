@@ -9,6 +9,7 @@ namespace OpenApi\Annotations;
 use Exception;
 use OpenApi\Analysis;
 use OpenApi\Logger;
+use OpenApi\Util;
 
 /**
  * @Annotation
@@ -190,7 +191,7 @@ class OpenApi extends AbstractAnnotation
         $slash = strpos($path, '/');
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
-        $property = self::unescapeRef($subpath);
+        $property = Util::refDecode($subpath);
         $unresolved = $slash === false ? $resolved.$subpath : $resolved.$subpath.'/';
 
         if (is_object($container)) {
@@ -223,37 +224,5 @@ class OpenApi extends AbstractAnnotation
             }
         }
         throw new Exception('$ref "'.$unresolved.'" not found');
-    }
-
-    /**
-     * Decode the $ref escape characters.
-     *
-     * https://swagger.io/docs/specification/using-ref/
-     * https://tools.ietf.org/html/rfc6901#page-3
-     */
-    private static function unescapeRef($encoded)
-    {
-        $decoded = '';
-        $length = strlen($encoded);
-        for ($i = 0; $i < $length; $i++) {
-            $char = $encoded[$i];
-            if ($char === '~' && $i !== $length - 1) {
-                $next = $encoded[$i + 1];
-                if ($next === '0') { // escaped `~`
-                    $decoded .= '~';
-                    $i++;
-                } elseif ($next === '1') { // escaped `/`
-                    $decoded .= '/';
-                    $i++;
-                } else {
-                    // this ~ had special meaning :-(
-                    $decoded .= $char;
-                }
-            } else {
-                $decoded .= $char;
-            }
-        }
-
-        return $decoded;
     }
 }

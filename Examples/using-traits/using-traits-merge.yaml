@@ -39,7 +39,7 @@ components:
   schemas:
     BellsAndWhistles:
       title: 'Bells and Whistles trait'
-    Blink:
+    CustomName/Blink:
       title: 'Blink trait'
     Colour:
       title: 'Colour trait'

@@ -9,6 +9,8 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Schema;
+use const OpenApi\UNDEFINED;
+use OpenApi\Util;
 
 class InheritTraits
 {
@@ -20,13 +22,15 @@ class InheritTraits
                 $source = $schema->_context->class ?: $schema->_context->trait;
                 $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($source), true);
                 foreach ($traits as $trait) {
-                    if ($analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']))) {
+                    $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
+                    if ($traitSchema) {
+                        $refPath = $traitSchema->schema !== UNDEFINED ? $traitSchema->schema : $trait['trait'];
                         if ($schema->allOf === UNDEFINED) {
                             $schema->allOf = [];
                         }
                         $schema->allOf[] = new Schema([
                             '_context' => $trait['context']->_context,
-                            'ref' => Components::SCHEMA_REF.$trait['trait'],
+                            'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
                         ]);
                     }
                 }

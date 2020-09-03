@@ -12,6 +12,7 @@ use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
+use OpenApi\Util;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
@@ -47,7 +48,7 @@ class AugmentProperties
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== UNDEFINED) {
                     $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
-                        = Components::SCHEMA_REF.$schema->schema;
+                        = Components::SCHEMA_REF.Util::refEncode($schema->schema);
                 }
             }
         }

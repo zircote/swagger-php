@@ -117,4 +117,26 @@ class Util
 
         return $finder;
     }
+
+    /**
+     * Escapes the special characters "/" and "~".
+     *
+     * https://swagger.io/docs/specification/using-ref/
+     * https://tools.ietf.org/html/rfc6901#page-3
+     */
+    public static function refEncode($raw)
+    {
+        return str_replace('/', '~1', str_replace('~', '~0', $raw));
+    }
+
+    /**
+     * Converted the escaped characters "~1" and "~" back to "/" and "~".
+     *
+     * https://swagger.io/docs/specification/using-ref/
+     * https://tools.ietf.org/html/rfc6901#page-3
+     */
+    public static function refDecode($encoded)
+    {
+        return str_replace('~1', '/', str_replace('~0', '~', $encoded));
+    }
 }

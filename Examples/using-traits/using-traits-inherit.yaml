@@ -49,7 +49,7 @@ components:
             plating:
               description: 'The plating.'
               example: gold
-    Blink:
+    CustomName/Blink:
       title: 'Blink trait'
       properties:
         frequency:
@@ -111,7 +111,7 @@ components:
     TrickyProduct:
       allOf:
         -
-          $ref: '#/components/schemas/Blink'
+          $ref: '#/components/schemas/CustomName~1Blink'
         -
           $ref: '#/components/schemas/SimpleProduct'
         -
