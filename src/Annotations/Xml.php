@@ -68,7 +68,6 @@ class Xml extends AbstractAnnotation
         Property::class,
         Schema::class,
         Items::class,
-        JsonContent::class,
         XmlContent::class,
     ];
 }

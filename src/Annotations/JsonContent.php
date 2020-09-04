@@ -38,7 +38,6 @@ class JsonContent extends Schema
         Items::class => 'items',
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
-        Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
     ];
 }
