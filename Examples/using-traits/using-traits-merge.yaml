@@ -83,11 +83,11 @@ components:
           example: 1
       type: object
     TrickyProduct:
+      title: 'TrickyProduct model'
       allOf:
         -
           $ref: '#/components/schemas/SimpleProduct'
         -
-          title: 'TrickyProduct model'
           properties:
             bell:
               description: 'The bell.'

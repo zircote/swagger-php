@@ -109,14 +109,15 @@ components:
               format: int64
               example: 1
     TrickyProduct:
+      title: 'TrickyProduct model'
       allOf:
-        -
-          $ref: '#/components/schemas/CustomName~1Blink'
         -
           $ref: '#/components/schemas/SimpleProduct'
         -
-          title: 'TrickyProduct model'
+          $ref: '#/components/schemas/CustomName~1Blink'
+        -
           properties:
             trick:
               description: 'The trick.'
               example: 'recite poem'
+              
