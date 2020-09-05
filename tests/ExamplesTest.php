@@ -68,6 +68,6 @@ class ExamplesTest extends OpenApiTestCase
 
         $path = __DIR__.'/../Examples/'.$example;
         $openapi = \OpenApi\scan($path, $options);
-        $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi);
+        $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi, 'Examples/'.$example.'/'.$spec);
     }
 }

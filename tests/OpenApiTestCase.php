@@ -79,12 +79,12 @@ class OpenApiTestCase extends TestCase
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
-     * @param array|OpenApi|\stdClass|string $expected
-     * @param array|OpenApi|\stdClass|string $spec
+     * @param array|OpenApi|\stdClass|string $actual     The generated output
+     * @param array|OpenApi|\stdClass|string $expected   The specification
      * @param string                         $message
      * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
      */
-    protected function assertSpecEquals($expected, $spec, $message = '', $normalized = false)
+    protected function assertSpecEquals($actual, $expected, $message = '', $normalized = false)
     {
         $normalize = function ($in) {
             if ($in instanceof OpenApi) {
@@ -103,22 +103,40 @@ class OpenApiTestCase extends TestCase
         };
 
         if (!$normalized) {
+            $actual = $normalize($actual);
             $expected = $normalize($expected);
-            $spec = $normalize($spec);
         }
 
-        if (is_iterable($expected) && is_iterable($spec)) {
-            foreach ($expected as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $spec);
-                $this->assertSpecEquals($value, ((array) $spec)[$key], $message, true);
+        if (is_iterable($actual) && is_iterable($expected)) {
+            foreach ($actual as $key => $value) {
+                $this->assertArrayHasKey($key, (array) $expected, $message.': property: "'.$key.'" should be absent, but has value: '.$this->formattedValue($value));
+                $this->assertSpecEquals($value, ((array) $expected)[$key], $message.' > '.$key, true);
             }
-            foreach ($spec as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $expected);
-                $this->assertSpecEquals(((array) $expected)[$key], $value, $message, true);
+            foreach ($expected as $key => $value) {
+                $this->assertArrayHasKey($key, (array) $actual, $message.': property: "'.$key.'" is missing');
+                $this->assertSpecEquals(((array) $actual)[$key], $value, $message.' > '.$key, true);
             }
         } else {
-            $this->assertEquals($expected, $spec, $message);
+            $this->assertEquals($actual, $expected, $message);
         }
+    }
+
+    private function formattedValue($value)
+    {
+        if (is_bool($value)) {
+            return  $value ? 'true' : 'false';
+        }
+        if (is_numeric($value)) {
+            return (string) $value;
+        }
+        if (is_string($value)) {
+            return '"'.$value.'"';
+        }
+        if (is_object($value)) {
+            return get_class($value);
+        }
+
+        return gettype($value);
     }
 
     /**
