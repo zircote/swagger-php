@@ -516,7 +516,18 @@ abstract class AbstractAnnotation implements JsonSerializable
      */
     public function identity()
     {
-        return $this->_identity([]);
+        $class = get_class($this);
+        $properties = [];
+        foreach (static::$_parents as $parent) {
+            foreach ($parent::$_nested as $annotationClass => $entry) {
+                if ($annotationClass === $class && is_array($entry) && $this->{$entry[1]} !== UNDEFINED) {
+                    $properties[] = $entry[1];
+                    break 2;
+                }
+            }
+        }
+
+        return $this->_identity($properties);
     }
 
     /**
