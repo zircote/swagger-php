@@ -11,12 +11,12 @@ use Exception;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Schema;
-use OpenApi\Processors\AugmentOperations;
 use OpenApi\Processors\AugmentParameters;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Processors\InheritInterfaces;
 use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\InheritTraits;
@@ -477,6 +477,7 @@ class Analysis
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
+                new DocBlockDescriptions(),
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
                 new InheritInterfaces(),
@@ -485,7 +486,6 @@ class Analysis
                 new AugmentProperties(),
                 new BuildPaths(),
                 new InheritProperties(),
-                new AugmentOperations(),
                 new AugmentParameters(),
                 new MergeJsonContent(),
                 new MergeXmlContent(),
