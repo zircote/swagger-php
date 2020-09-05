@@ -66,7 +66,7 @@
       "phpunit",
       "@lint"
     ],
-    "docs": "vuepress dev docs/",
-    "deploy_docs": "vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
+    "docs": "./docs/node_modules/.bin/vuepress dev docs/",
+    "deploy_docs": "./docs/node_modules/.bin/vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
   }
 }
