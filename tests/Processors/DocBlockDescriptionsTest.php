@@ -7,18 +7,18 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations\Operation;
-use OpenApi\Processors\AugmentOperations;
+use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Tests\OpenApiTestCase;
 use const OpenApi\UNDEFINED;
 
-class AugmentOperationTest extends OpenApiTestCase
+class DocBlockDescriptionsTest extends OpenApiTestCase
 {
-    public function testAugmentOperation()
+    public function testDocBlockDescription()
     {
         $analysis = $this->analysisFromFixtures('UsingPhpDoc.php');
         $analysis->process(
             [
-            new AugmentOperations(),
+            new DocBlockDescriptions(),
             ]
         );
         $operations = $analysis->getAnnotationsOfType(Operation::class);
