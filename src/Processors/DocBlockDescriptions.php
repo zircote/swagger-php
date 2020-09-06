@@ -30,7 +30,7 @@ class DocBlockDescriptions
                 continue;
             }
             $count = count($annotation->_context->annotations);
-            if ($annotation->_context->annotations[$count - 1]!== $annotation) {
+            if ($annotation->_context->annotations[$count - 1] !== $annotation) {
                 // only top-level annotations
                 continue;
             }

@@ -21,4 +21,4 @@ before_script:
 
 script:
   - ./bin/phpunit
-  - if [ '$CS' = 'yes' ]; then composer run-script fix-cs; fi
+  - if [ $CS = 'yes' ]; then composer run-script lint; fi
