@@ -56,7 +56,7 @@ class Analyser
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
      *
-     * @var Context
+     * @var null|Context
      */
     public static $context;
 

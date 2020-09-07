@@ -70,7 +70,7 @@ class Analysis
     /**
      * Registry for the post-processing operations.
      *
-     * @var Closure[]
+     * @var callable[]
      */
     private static $processors;
 
@@ -89,11 +89,7 @@ class Analysis
         }
     }
 
-    /**
-     * @param AbstractAnnotation $annotation
-     * @param Context            $context
-     */
-    public function addAnnotation($annotation, $context)
+    public function addAnnotation($annotation, ?Context $context)
     {
         if ($this->annotations->contains($annotation)) {
             return;
@@ -182,9 +178,8 @@ class Analysis
         $this->classes = array_merge($this->classes, $analysis->classes);
         $this->interfaces = array_merge($this->interfaces, $analysis->interfaces);
         $this->traits = array_merge($this->traits, $analysis->traits);
-        if ($this->openapi === null && $analysis->openapi) {
+        if ($this->openapi === null && $analysis->openapi !== null) {
             $this->openapi = $analysis->openapi;
-            $analysis->target->_context->analysis = $this;
         }
     }
 
@@ -407,7 +402,7 @@ class Analysis
      */
     public function merged()
     {
-        if (!$this->openapi) {
+        if ($this->openapi === null) {
             throw new Exception('No openapi target set. Run the MergeIntoOpenApi processor');
         }
         $unmerged = $this->openapi->_unmerged;
@@ -524,7 +519,7 @@ class Analysis
 
     public function validate()
     {
-        if ($this->openapi) {
+        if ($this->openapi !== null) {
             return $this->openapi->validate();
         }
         Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');

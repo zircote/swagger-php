@@ -81,7 +81,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Callbacks.
      *
-     * @var callback[]
+     * @var callable[]
      */
     public $callbacks = UNDEFINED;
 
