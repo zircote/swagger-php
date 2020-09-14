@@ -15,7 +15,7 @@ use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
-use OpenApi\Processors\InheritInterfaces;
+use OpenApi\Processors\ExpandInterfaces;
 use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeIntoComponents;
@@ -44,7 +44,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
@@ -81,7 +81,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
@@ -114,7 +114,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
@@ -153,7 +153,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
@@ -190,7 +190,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),
@@ -234,7 +234,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
-            new InheritInterfaces(),
+            new ExpandInterfaces(),
             new InheritTraits(),
             new AugmentSchemas(),
             new AugmentProperties(),

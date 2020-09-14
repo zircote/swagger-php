@@ -25,8 +25,16 @@ paths:
                 $ref: '#/components/schemas/Product'
 components:
   schemas:
+    Pet:
+      title: Pet
+      properties:
+        color:
+          description: 'The product color.'
+          example: blue
+      type: object
     Product:
       title: 'Product model'
+      type: object
       allOf:
         -
           $ref: '#/components/schemas/ProductInterface'
@@ -37,6 +45,9 @@ components:
               type: integer
               format: int64
               example: 1
+            color:
+              description: 'The product color.'
+              example: blue
     ProductInterface:
       properties:
         name:
