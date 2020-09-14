@@ -32,6 +32,7 @@ class AugmentSchemas
                 }
             }
         }
+
         // Merge unmerged @OA\Property annotations into the @OA\Schema of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType(Property::class);
         foreach ($unmergedProperties as $property) {
@@ -43,7 +44,7 @@ class AugmentSchemas
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {
                         if ($annotation->_context->nested) {
-                            //we should'not merge property into nested schemas
+                            // we shouldn't merge property into nested schemas
                             continue;
                         }
 
@@ -72,6 +73,8 @@ class AugmentSchemas
                 }
             }
         }
+
+        // set schema type based on various properties
         foreach ($schemas as $schema) {
             if ($schema->type === UNDEFINED) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
@@ -83,6 +86,25 @@ class AugmentSchemas
                 } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
                     $schema->type = 'object';
                 }
+            }
+        }
+
+        // move schema properties into allOf if both exist
+        foreach ($schemas as $schema) {
+            if ($schema->properties !== UNDEFINED and $schema->allOf !== UNDEFINED) {
+                $allOfPropertiesSchema = null;
+                foreach ($schema->allOf as $allOfSchema) {
+                    if ($allOfSchema->ref === UNDEFINED) {
+                        $allOfPropertiesSchema = $allOfSchema;
+                        break;
+                    }
+                }
+                if (!$allOfPropertiesSchema) {
+                    $allOfPropertiesSchema = new Schema(['_context' => $schema->_context, 'properties' => []]);
+                    $schema->allOf[] = $allOfPropertiesSchema;
+                }
+                $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
+                $schema->properties = UNDEFINED;
             }
         }
     }

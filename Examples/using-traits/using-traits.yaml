@@ -120,4 +120,3 @@ components:
             trick:
               description: 'The trick.'
               example: 'recite poem'
-              

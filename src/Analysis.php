@@ -17,9 +17,9 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\DocBlockDescriptions;
-use OpenApi\Processors\InheritInterfaces;
+use OpenApi\Processors\ExpandInterfaces;
+use OpenApi\Processors\ExpandTraits;
 use OpenApi\Processors\InheritProperties;
-use OpenApi\Processors\InheritTraits;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
@@ -480,8 +480,8 @@ class Analysis
                 new DocBlockDescriptions(),
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
-                new InheritInterfaces(),
-                new InheritTraits(),
+                new ExpandInterfaces(),
+                new ExpandTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),
