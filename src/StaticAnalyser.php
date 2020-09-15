@@ -349,6 +349,8 @@ class StaticAnalyser
 
             if ($token[0] === T_NAMESPACE) {
                 $parseContext->namespace = $this->parseNamespace($tokens, $token, $parseContext);
+                $imports['__NAMESPACE__'] = $parseContext->namespace;
+                $analyser->docParser->setImports($imports);
                 continue;
             }
 
