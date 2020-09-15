@@ -17,17 +17,17 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
 {
     public function testProcessor()
     {
-        $openapi = new OpenApi([]);
-        $info = new Info([]);
-        $analysis = new Analysis(
-            [
+        $logger = $this->trackingLogger();
+
+        $openapi = new OpenApi([], $logger);
+        $info = new Info([], $logger);
+        $analysis = new Analysis([
             $openapi,
             $info,
-            ]
-        );
+        ], null, $logger);
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame(UNDEFINED, $openapi->info);
-        $analysis->process(new MergeIntoOpenApi());
+        $analysis->process(new MergeIntoOpenApi($logger));
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame($info, $openapi->info);
         $this->assertCount(0, $analysis->unmerged()->annotations);

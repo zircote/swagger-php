@@ -9,28 +9,26 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Schema;
-use const OpenApi\UNDEFINED;
 use OpenApi\Util;
 
-class InheritTraits extends AbstractProcessor
+class InheritInterfaces extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         foreach ($schemas as $schema) {
-            if ($schema->_context->is('class') || $schema->_context->is('trait')) {
-                $source = $schema->_context->class ?: $schema->_context->trait;
-                $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($source), true);
-                foreach ($traits as $trait) {
-                    $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
-                    if ($traitSchema) {
-                        $refPath = $traitSchema->schema !== UNDEFINED ? $traitSchema->schema : $trait['trait'];
+            if ($schema->_context->is('class')) {
+                $interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
+                foreach ($interfaces as $interface) {
+                    $inferfaceSchema = $analysis->getSchemaForSource($interface['context']->fullyQualifiedName($interface['interface']));
+                    if ($inferfaceSchema) {
                         if ($schema->allOf === UNDEFINED) {
                             $schema->allOf = [];
                         }
+                        $refPath = $inferfaceSchema->schema !== UNDEFINED ? $inferfaceSchema->schema : $interface['interface'];
                         $schema->allOf[] = new Schema(
                             [
-                                '_context' => $trait['context']->_context,
+                                '_context' => $interface['context']->_context,
                                 'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
                             ],
                             $this->logger

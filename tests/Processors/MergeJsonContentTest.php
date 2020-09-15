@@ -24,12 +24,12 @@ class MergeJsonContentTest extends OpenApiTestCase
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment));
+        $analysis = new Analysis($this->parseComment($comment), null, $this->trackingLogger());
         $this->assertCount(3, $analysis->annotations);
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertSame(UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process(new MergeJsonContent($this->trackingLogger()));
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
@@ -46,10 +46,10 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment));
+        $analysis = new Analysis($this->parseComment($comment), null, $this->trackingLogger());
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertCount(1, $response->content);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process(new MergeJsonContent($this->trackingLogger()));
         $this->assertCount(2, $response->content);
     }
 
@@ -61,12 +61,12 @@ END;
                 @OA\Property(property="color", type="string")
             ))
 END;
-        $analysis = new Analysis($this->parseComment($comment));
+        $analysis = new Analysis($this->parseComment($comment), null, $this->trackingLogger());
         $this->assertCount(4, $analysis->annotations);
         $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
         $this->assertSame(UNDEFINED, $parameter->content);
         $this->assertCount(1, $parameter->_unmerged);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process(new MergeJsonContent($this->trackingLogger()));
         $this->assertCount(1, $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
         $json = json_decode(json_encode($parameter), true);
@@ -77,18 +77,22 @@ END;
 
     public function testNoParent()
     {
+        $logger = $this->trackingLogger();
+
         $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() must be nested');
         $comment = <<<END
             @OA\JsonContent(type="array",
                 @OA\Items(ref="#/components/schemas/repository")
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment));
-        $analysis->process(new MergeJsonContent());
+        $analysis = new Analysis($this->parseComment($comment), null, $logger);
+        $analysis->process(new MergeJsonContent($logger));
     }
 
     public function testInvalidParent()
     {
+        $logger = $this->trackingLogger();
+
         $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() in @OA\Property() in');
         $comment = <<<END
             @OA\Property(
@@ -97,7 +101,7 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment));
-        $analysis->process(new MergeJsonContent());
+        $analysis = new Analysis($this->parseComment($comment), null, $logger);
+        $analysis->process(new MergeJsonContent($logger));
     }
 }

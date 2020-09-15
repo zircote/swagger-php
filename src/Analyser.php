@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
+use Psr\Log\LoggerInterface;
 
 if (class_exists(AnnotationRegistry::class, true)) {
     AnnotationRegistry::registerLoader(
@@ -61,12 +62,13 @@ class Analyser
      */
     public static $context;
 
-    /**
-     * @var DocParser
-     */
+    /** @var DocParser */
     public $docParser;
 
-    public function __construct(?DocParser $docParser = null)
+    /** @var LoggerInterface A logger. */
+    protected $logger;
+
+    public function __construct(?DocParser $docParser = null, ?LoggerInterface $logger = null)
     {
         if ($docParser === null) {
             $docParser = new DocParser();
@@ -74,6 +76,7 @@ class Analyser
             $docParser->setImports(static::$defaultImports);
         }
         $this->docParser = $docParser;
+        $this->logger = $logger ?: Logger::psrInstance();
     }
 
     /**
@@ -86,8 +89,10 @@ class Analyser
      */
     public function fromComment(string $comment, ?Context $context = null): array
     {
-        $context = $context ?: new Context();
+        $context = $context ?: new Context(['logger' => $this->logger]);
         $context->comment = $comment;
+
+        $context->logger = $context->logger ?: $this->logger;
 
         try {
             self::$context = $context;
@@ -107,9 +112,9 @@ class Analyser
                 $context->line += substr_count($comment, "\n", 0, $atPos + $errorPos);
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
-                Logger::warning(new \Exception($errorMessage.' in '.$context, $e->getCode(), $e));
+                $this->logger->warning(new \Exception($errorMessage.' in '.$context, $e->getCode(), $e));
             } else {
-                Logger::warning($e);
+                $this->logger->warning($e);
             }
 
             return [];

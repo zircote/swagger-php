@@ -28,7 +28,8 @@ class ResponseTest extends OpenApiTestCase
     protected function validateMisspelledAnnotation(string $response = '')
     {
         $annotations = $this->parseComment(
-            '@OA\Get(@OA\Response(response="'.$response.'", description="description"))'
+            '@OA\Get(@OA\Response(response="'.$response.'", description="description"))',
+            $this->trackingLogger()
         );
         /*
          * @see Annotations/Operation.php:187

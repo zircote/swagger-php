@@ -12,7 +12,7 @@ use OpenApi\Annotations\Operation;
 /**
  * Generate the OperationId based on the context of the OpenApi annotation.
  */
-class OperationId
+class OperationId extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {

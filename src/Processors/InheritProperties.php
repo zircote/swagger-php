@@ -18,7 +18,7 @@ use Traversable;
 /**
  * Copy the annotated properties from parent classes;.
  */
-class InheritProperties
+class InheritProperties extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -78,7 +78,7 @@ class InheritProperties
     {
         if ($to->allOf === UNDEFINED) {
             // Move all properties into an `allOf` entry except the `schema` property.
-            $clone = new Schema(['_context' => new Context(['generated' => true], $to->_context)]);
+            $clone = new Schema(['_context' => new Context(['generated' => true, 'logger' => $this->logger], $to->_context)]);
             $clone->mergeProperties($to);
             $hasProperties = false;
             $defaultValues = get_class_vars(Schema::class);
@@ -104,10 +104,13 @@ class InheritProperties
             }
         }
         if ($append) {
-            array_unshift($to->allOf, new Schema([
-                'ref' => Components::SCHEMA_REF.Util::refEncode($from->schema),
-                '_context' => new Context(['generated' => true], $from->_context),
-            ]));
+            array_unshift($to->allOf, new Schema(
+                [
+                    'ref' => Components::SCHEMA_REF.Util::refEncode($from->schema),
+                    '_context' => new Context(['generated' => true, 'logger' => $this->logger], $from->_context),
+                ],
+                $this->logger
+            ));
         }
     }
 }

@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Analysis;
-use OpenApi\Logger;
 use OpenApi\Util;
 
 /**
@@ -98,7 +97,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public static $_blacklist = ['_context', '_unmerged', '_analysis'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis', 'logger'];
 
     /**
      * {@inheritdoc}
@@ -128,7 +127,7 @@ class OpenApi extends AbstractAnnotation
     public function validate(array $parents = null, array $skip = null, string $ref = ''): bool
     {
         if ($parents !== null || $skip !== null || $ref !== '') {
-            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+            $this->logger->notice('Nested validation for '.$this->identity().' not allowed');
 
             return false;
         }

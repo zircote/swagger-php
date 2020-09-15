@@ -23,6 +23,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
+use Psr\Log\LoggerInterface;
 
 /**
  * Result of the analyser.
@@ -72,18 +73,19 @@ class Analysis
      */
     private static $processors;
 
-    /**
-     * @param null $context
-     */
-    public function __construct(array $annotations = [], ?Context $context = null)
+    /** @var LoggerInterface A logger. */
+    protected $logger;
+
+    public function __construct(array $annotations = [], ?Context $context = null, ?LoggerInterface $logger = null)
     {
         $this->annotations = new \SplObjectStorage();
         if (count($annotations) !== 0) {
             if ($context === null) {
-                $context = Context::detect(1);
+                $context = Context::detect(1, $logger);
             }
             $this->addAnnotations($annotations, $context);
         }
+        $this->logger = $logger ?: Logger::psrInstance();
     }
 
     public function addAnnotation($annotation, ?Context $context): void
@@ -381,7 +383,7 @@ class Analysis
         }
         $unmerged = $this->openapi->_unmerged;
         $this->openapi->_unmerged = [];
-        $analysis = new Analysis([$this->openapi]);
+        $analysis = new Analysis([$this->openapi], null, $this->logger);
         $this->openapi->_unmerged = $unmerged;
 
         return $analysis;
@@ -405,7 +407,7 @@ class Analysis
     {
         $result = new \stdClass();
         $result->merged = $this->merged();
-        $result->unmerged = new Analysis();
+        $result->unmerged = new Analysis([], null, $this->logger);
         foreach ($this->annotations as $annotation) {
             if ($result->merged->annotations->contains($annotation) === false) {
                 $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
@@ -424,7 +426,7 @@ class Analysis
     {
         if ($processors === null) {
             // Use the default and registered processors.
-            $processors = self::processors();
+            $processors = self::processors($this->logger);
         }
         if (is_array($processors) === false && is_callable($processors)) {
             $processors = [$processors];
@@ -439,25 +441,25 @@ class Analysis
      *
      * @return array reference
      */
-    public static function &processors()
+    public static function &processors(?LoggerInterface $logger = null)
     {
         if (!self::$processors) {
             // Add default processors.
             self::$processors = [
-                new DocBlockDescriptions(),
-                new MergeIntoOpenApi(),
-                new MergeIntoComponents(),
-                new ExpandInterfaces(),
-                new ExpandTraits(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new BuildPaths(),
-                new InheritProperties(),
-                new AugmentParameters(),
-                new MergeJsonContent(),
-                new MergeXmlContent(),
-                new OperationId(),
-                new CleanUnmerged(),
+                new DocBlockDescriptions($logger),
+                new MergeIntoOpenApi($logger),
+                new MergeIntoComponents($logger),
+                new ExpandInterfaces($logger),
+                new ExpandTraits($logger),
+                new AugmentSchemas($logger),
+                new AugmentProperties($logger),
+                new BuildPaths($logger),
+                new InheritProperties($logger),
+                new AugmentParameters($logger),
+                new MergeJsonContent($logger),
+                new MergeXmlContent($logger),
+                new OperationId($logger),
+                new CleanUnmerged($logger),
             ];
         }
 
@@ -494,7 +496,7 @@ class Analysis
         if ($this->openapi !== null) {
             return $this->openapi->validate();
         }
-        Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+        $this->logger->notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
 
         return false;
     }

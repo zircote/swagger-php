@@ -13,14 +13,14 @@ class ItemsTest extends OpenApiTestCase
 {
     public function testItemTypeArray()
     {
-        $annotations = $this->parseComment('@OA\Items(type="array")');
+        $annotations = $this->parseComment('@OA\Items(type="array")', $this->trackingLogger());
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testSchemaTypeArray()
     {
-        $annotations = $this->parseComment('@OA\Schema(type="array")');
+        $annotations = $this->parseComment('@OA\Schema(type="array")', $this->trackingLogger());
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
@@ -33,7 +33,7 @@ class ItemsTest extends OpenApiTestCase
 
     public function testRefDefinitionInProperty()
     {
-        $analyser = new StaticAnalyser();
+        $analyser = new StaticAnalyser($this->trackingLogger());
         $analysis = $analyser->fromFile($this->fixtures('UsingVar.php')[0]);
         $analysis->process();
 

@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use Closure;
 use DirectoryIterator;
 use Exception;
 use OpenApi\Analyser;
@@ -16,45 +15,27 @@ use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\Logger;
 use OpenApi\StaticAnalyser;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 class OpenApiTestCase extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $expectedLogMessages;
-
-    /**
-     * @var Closure
-     */
-    private $originalLogger;
+    public $expectedLogMessages = [];
 
     protected function setUp(): void
     {
-        $this->expectedLogMessages = [];
-        $this->originalLogger = Logger::getInstance()->log;
-        Logger::getInstance()->log = function ($entry, $type) {
-            if (count($this->expectedLogMessages)) {
-                list($assertion, $needle) = array_shift($this->expectedLogMessages);
-                $assertion($entry, $type);
-            } else {
-                $map = [
-                    E_USER_NOTICE => 'notice',
-                    E_USER_WARNING => 'warning',
-                ];
-                if (isset($map[$type])) {
-                    $this->fail('Unexpected \OpenApi\Logger::'.$map[$type].'("'.$entry.'")');
-                } else {
-                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("'.$entry.'",'.$type.')');
-                }
-            }
-        };
         parent::setUp();
+
+        // reset so processors get new loggers each run
+        foreach (Analysis::processors() as $processor) {
+            Analysis::unregisterProcessor($processor);
+        }
+
+        $this->expectedLogMessages = [];
     }
 
     protected function tearDown(): void
@@ -68,8 +49,30 @@ class OpenApiTestCase extends TestCase
                 }, $this->expectedLogMessages)
             ))
         );
-        Logger::getInstance()->log = $this->originalLogger;
+
         parent::tearDown();
+    }
+
+    final public function trackingLogger(): LoggerInterface
+    {
+        return new class($this) extends AbstractLogger {
+            protected $testCase;
+
+            public function __construct($testCase)
+            {
+                $this->testCase = $testCase;
+            }
+
+            public function log($level, $message, array $context = [])
+            {
+                if (count($this->testCase->expectedLogMessages)) {
+                    list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
+                    $assertion($message, $level);
+                } else {
+                    $this->testCase->fail('Unexpected \OpenApi\Logger::'.$level.'("'.$message.'")');
+                }
+            }
+        };
     }
 
     public function assertOpenApiLogEntryContains($needle, $message = '')
@@ -130,7 +133,7 @@ class OpenApiTestCase extends TestCase
     private function formattedValue($value)
     {
         if (is_bool($value)) {
-            return  $value ? 'true' : 'false';
+            return $value ? 'true' : 'false';
         }
         if (is_numeric($value)) {
             return (string) $value;
@@ -152,10 +155,11 @@ class OpenApiTestCase extends TestCase
      *
      * @return AbstractAnnotation[]
      */
-    protected function parseComment($comment)
+    protected function parseComment($comment, ?LoggerInterface $logger = null)
     {
-        $analyser = new Analyser();
-        $context = Context::detect(1);
+        $logger = $logger ?: $this->trackingLogger();
+        $analyser = new Analyser(null, $logger);
+        $context = Context::detect(1, $logger);
 
         return $analyser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
     }
@@ -163,19 +167,24 @@ class OpenApiTestCase extends TestCase
     /**
      * Create a valid OpenApi object with Info.
      */
-    protected function createOpenApiWithInfo()
+    protected function createOpenApiWithInfo(?LoggerInterface $logger = null)
     {
+        $logger = $logger ?: $this->trackingLogger();
+
         return new OpenApi([
             'info' => new Info([
                 'title' => 'swagger-php Test-API',
                 'version' => 'test',
-                '_context' => new Context(['unittest' => true]),
-            ]),
+                '_context' => new Context(['unittest' => true, 'logger' => $logger]),
+            ], $logger),
             'paths' => [
-                new PathItem(['path' => '/test']),
+                new PathItem(['path' => '/test'], $logger),
             ],
-            '_context' => new Context(['unittest' => true]),
-        ]);
+            '_context' => new Context([
+                'unittest' => true,
+                'logger' => $logger,
+            ]),
+        ], $logger);
     }
 
     /**
@@ -194,8 +203,8 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromFixtures($files): Analysis
     {
-        $analyser = new StaticAnalyser();
-        $analysis = new Analysis();
+        $analyser = new StaticAnalyser($this->trackingLogger());
+        $analysis = new Analysis([], null, $this->trackingLogger());
 
         foreach ((array) $files as $file) {
             $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0]));
@@ -206,12 +215,18 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser())->fromCode("<?php\n".$code, $context ?: new Context());
+        return (new StaticAnalyser($this->trackingLogger()))
+            ->fromCode("<?php\n".$code, $context ?: new Context([
+                'logger' => $this->trackingLogger(),
+            ]));
     }
 
-    public function analysisFromDockBlock($comment)
+    public function analysisFromDockBlock($comment, ?Context $context = null)
     {
-        return (new Analyser())->fromComment($comment, null);
+        return (new Analyser(null, $this->trackingLogger()))
+            ->fromComment($comment, $context ?: new Context([
+                'logger' => $this->trackingLogger(),
+            ]));
     }
 
     /**

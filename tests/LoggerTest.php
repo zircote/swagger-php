@@ -8,7 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
-use OpenApi\Logger;
+use OpenApi\Util;
 
 class LoggerTest extends OpenApiTestCase
 {
@@ -25,6 +25,6 @@ class LoggerTest extends OpenApiTestCase
      */
     public function testShorten($classes, $expected)
     {
-        $this->assertEquals($expected, Logger::shorten($classes));
+        $this->assertEquals($expected, Util::shorten($classes));
     }
 }

@@ -58,7 +58,7 @@ class Flow extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public static $_blacklist = ['_context', '_unmerged'];
+    public static $_blacklist = ['_context', '_unmerged', 'logger'];
 
     /**
      * {@inheritdoc}

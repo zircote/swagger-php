@@ -6,11 +6,29 @@
 
 namespace OpenApi;
 
+// PHP 8.0
+use Psr\Log\LoggerInterface;
+
+if (!defined('T_NAME_QUALIFIED')) {
+    define('T_NAME_QUALIFIED', -4);
+}
+if (!defined('T_NAME_FULLY_QUALIFIED')) {
+    define('T_NAME_FULLY_QUALIFIED', -5);
+}
+
 /**
  * OpenApi\StaticAnalyser extracts swagger-php annotations from php code using static analysis.
  */
 class StaticAnalyser
 {
+    /** @var LoggerInterface A logger. */
+    protected $logger;
+
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = $logger ?: Logger::psrInstance();
+    }
+
     /**
      * Extract and process all doc-comments from a file.
      *
@@ -24,13 +42,13 @@ class StaticAnalyser
                 $status = opcache_get_status();
                 $config = opcache_get_configuration();
                 if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
-                    Logger::warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
+                    $this->logger->warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] http://php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
                 }
             }
         }
         $tokens = token_get_all(file_get_contents($filename));
 
-        return $this->fromTokens($tokens, new Context(['filename' => $filename]));
+        return $this->fromTokens($tokens, new Context(['filename' => $filename, 'logger' => $this->logger]));
     }
 
     /**
@@ -53,8 +71,8 @@ class StaticAnalyser
      */
     protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
-        $analyser = new Analyser();
-        $analysis = new Analysis();
+        $analyser = new Analyser(null, $this->logger);
+        $analysis = new Analysis([], null, $this->logger);
 
         reset($tokens);
         $token = '';
@@ -91,7 +109,7 @@ class StaticAnalyser
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) {
                     // 2 Doc-comments in succession?
-                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $schemaContext));
+                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
                 }
                 $comment = $token[1];
                 $line = $token[2] + $lineOffset;
@@ -125,7 +143,7 @@ class StaticAnalyser
                 $interfaceDefinition = false;
                 $traitDefinition = false;
 
-                $schemaContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
+                $schemaContext = new Context(['class' => $token[1], 'line' => $token[2], 'logger' => $this->logger], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
                 }
@@ -164,7 +182,7 @@ class StaticAnalyser
                 $traitDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
-                $schemaContext = new Context(['interface' => $token[1], 'line' => $token[2]], $parseContext);
+                $schemaContext = new Context(['interface' => $token[1], 'line' => $token[2], 'logger' => $this->logger], $parseContext);
                 if ($interfaceDefinition) {
                     $analysis->addInterfaceDefinition($interfaceDefinition);
                 }
@@ -198,7 +216,7 @@ class StaticAnalyser
                 $interfaceDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
-                $schemaContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
+                $schemaContext = new Context(['trait' => $token[1], 'line' => $token[2], 'logger' => $this->logger], $parseContext);
                 if ($traitDefinition) {
                     $analysis->addTraitDefinition($traitDefinition);
                 }
@@ -228,6 +246,7 @@ class StaticAnalyser
                             'property' => substr($token[1], 1),
                             'static' => true,
                             'line' => $line,
+                            'logger' => $this->logger,
                         ],
                         $schemaContext
                     );
@@ -256,6 +275,7 @@ class StaticAnalyser
                             'type' => $type,
                             'nullable' => $nullable,
                             'line' => $line,
+                            'logger' => $this->logger,
                         ],
                         $schemaContext
                     );
@@ -280,6 +300,7 @@ class StaticAnalyser
                             [
                                 'method' => $token[1],
                                 'line' => $line,
+                                'logger' => $this->logger,
                             ],
                             $schemaContext
                         );
@@ -307,6 +328,7 @@ class StaticAnalyser
                         [
                             'method' => $token[1],
                             'line' => $line,
+                            'logger' => $this->logger,
                         ],
                         $schemaContext
                     );
@@ -331,7 +353,7 @@ class StaticAnalyser
                 // Skip "use" & "namespace" to prevent "never imported" warnings)
                 if ($comment) {
                     // Not a doc-comment for a class, property or method?
-                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $schemaContext));
+                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
                     $comment = false;
                 }
             }
@@ -374,7 +396,7 @@ class StaticAnalyser
 
         // cleanup final comment and definition
         if ($comment) {
-            $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line], $schemaContext));
+            $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
@@ -415,8 +437,8 @@ class StaticAnalyser
                     $pos = strpos($token[1], '@OA\\');
                     if ($pos) {
                         $line = $context->line ? $context->line + $token[2] : $token[2];
-                        $commentContext = new Context(['line' => $line], $context);
-                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping '.$commentContext);
+                        $commentContext = new Context(['line' => $line, 'logger' => $this->logger], $context);
+                        $this->logger->notice('Annotations are only parsed inside `/**` DocBlocks, skipping '.$commentContext);
                     }
                     continue;
                 }

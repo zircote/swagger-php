@@ -15,16 +15,18 @@ class SerializerTest extends OpenApiTestCase
 {
     private function getExpected()
     {
-        $path = new Annotations\PathItem([]);
+        $logger = $this->trackingLogger();
+
+        $path = new Annotations\PathItem([], $logger);
         $path->path = '/products';
-        $path->post = new Annotations\Post([]);
+        $path->post = new Annotations\Post([], $logger);
         $path->post->tags = ['products'];
         $path->post->summary = 's1';
         $path->post->description = 'd1';
-        $path->post->requestBody = new Annotations\RequestBody([]);
-        $mediaType = new Annotations\MediaType([]);
+        $path->post->requestBody = new Annotations\RequestBody([], $logger);
+        $mediaType = new Annotations\MediaType([], $logger);
         $mediaType->mediaType = 'application/json';
-        $mediaType->schema = new Annotations\Schema([]);
+        $mediaType->schema = new Annotations\Schema([], $logger);
         $mediaType->schema->type = 'object';
         $mediaType->schema->additionalProperties = true;
         $path->post->requestBody->content = [$mediaType];
@@ -32,39 +34,39 @@ class SerializerTest extends OpenApiTestCase
         $path->post->requestBody->x = [];
         $path->post->requestBody->x['repository'] = 'def';
 
-        $resp = new Annotations\Response([]);
+        $resp = new Annotations\Response([], $logger);
         $resp->response = '200';
         $resp->description = 'Success';
-        $content = new Annotations\MediaType([]);
+        $content = new Annotations\MediaType([], $logger);
         $content->mediaType = 'application/json';
-        $content->schema = new Annotations\Schema([]);
+        $content->schema = new Annotations\Schema([], $logger);
         $content->schema->ref = '#/components/schemas/Pet';
         $resp->content = [$content];
         $resp->x = [];
         $resp->x['repository'] = 'def';
 
-        $respRange = new Annotations\Response([]);
+        $respRange = new Annotations\Response([], $logger);
         $respRange->response = '4XX';
         $respRange->description = 'Client error response';
 
         $path->post->responses = [$resp, $respRange];
 
-        $expected = new Annotations\OpenApi([]);
+        $expected = new Annotations\OpenApi([], $logger);
         $expected->openapi = '3.0.0';
         $expected->paths = [
             $path,
         ];
 
-        $info = new Annotations\Info([]);
+        $info = new Annotations\Info([], $logger);
         $info->title = 'Pet store';
         $info->version = '1.0';
         $expected->info = $info;
 
-        $schema = new Annotations\Schema([]);
+        $schema = new Annotations\Schema([], $logger);
         $schema->schema = 'Pet';
         $schema->required = ['name', 'photoUrls'];
 
-        $expected->components = new Annotations\Components([]);
+        $expected->components = new Annotations\Components([], $logger);
         $expected->components->schemas = [$schema];
 
         return $expected;
@@ -72,7 +74,7 @@ class SerializerTest extends OpenApiTestCase
 
     public function testDeserializeAnnotation()
     {
-        $serializer = new Serializer();
+        $serializer = new Serializer($this->trackingLogger());
 
         $json = <<<JSON
 {
@@ -148,7 +150,7 @@ JSON;
 
     public function testPetstoreExample()
     {
-        $serializer = new Serializer();
+        $serializer = new Serializer($this->trackingLogger());
         $spec = __DIR__.'/../Examples/petstore.swagger.io/petstore.swagger.io.json';
         $openapi = $serializer->deserializeFile($spec);
         $this->assertInstanceOf(OpenApi::class, $openapi);
@@ -162,7 +164,7 @@ JSON;
      */
     public function testDeserializeAllOfProperty()
     {
-        $serializer = new Serializer();
+        $serializer = new Serializer($this->trackingLogger());
         $json = <<<JSON
             {
             	"openapi": "3.0.0",

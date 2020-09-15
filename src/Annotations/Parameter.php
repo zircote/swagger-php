@@ -6,8 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Logger;
-
 /**
  * @Annotation
  * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object
@@ -243,7 +241,7 @@ class Parameter extends AbstractAnnotation
         if ($this->ref === UNDEFINED) {
             if ($this->in === 'body') {
                 if ($this->schema === UNDEFINED) {
-                    Logger::notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
+                    $this->logger->notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
                     $valid = false;
                 }
             }

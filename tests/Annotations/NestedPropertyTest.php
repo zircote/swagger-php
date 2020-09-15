@@ -17,11 +17,13 @@ class NestedPropertyTest extends OpenApiTestCase
 {
     public function testNestedProperties()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures('NestedProperty.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
-        $analysis->process(new AugmentProperties());
+        $analysis->process(new MergeIntoOpenApi($logger));
+        $analysis->process(new MergeIntoComponents($logger));
+        $analysis->process(new AugmentSchemas($logger));
+        $analysis->process(new AugmentProperties($logger));
 
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $schema = $analysis->openapi->components->schemas[0];

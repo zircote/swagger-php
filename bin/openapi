@@ -150,7 +150,6 @@ set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $op
         return; // This error code is not included in error_reporting
     }
     $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
-    $color = (substr($type, 0, 5) === 'Error') ? COLOR_RED: COLOR_YELLOW;
     error_log(COLOR_RED.$type. ': '.$errstr.COLOR_STOP);
     if ($options['debug']) {
         error_log(' in '.$file.' on line '.$line);
@@ -164,9 +163,6 @@ set_exception_handler(function ($exception) use ($options) {
         error_log($exception);
     } else {
         error_log(COLOR_RED.'Exception: '.$exception->getMessage().COLOR_STOP);
-        // if ($options['debug']) {
-        //     error_log(' in '.$exception->getFile().' on line '.$exception->getLine());
-        // }
     }
     exit($exception->getCode() ?: 1);
 });
@@ -230,7 +226,7 @@ foreach ($options["processor"] as $processor) {
     Analysis::registerProcessor($processor);
 }
 
-$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'pattern' => $pattern]);
+$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'pattern' => $pattern, 'logger' => Logger::psrInstance()]);
 
 if ($exit !== 0) {
     error_log('');

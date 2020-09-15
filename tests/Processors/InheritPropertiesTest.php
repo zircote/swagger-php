@@ -27,28 +27,28 @@ class InheritPropertiesTest extends OpenApiTestCase
 {
     protected function validate(Analysis $analysis)
     {
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->trackingLogger());
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->trackingLogger())];
         $analysis->validate();
     }
 
     public function testInheritProperties()
     {
-        $analysis = $this->analysisFromFixtures(
-            [
-                'AnotherNamespace/Child.php',
-                'InheritProperties/GrandAncestor.php',
-                'InheritProperties/Ancestor.php',
-            ]
-        );
+        $logger = $this->trackingLogger();
+
+        $analysis = $this->analysisFromFixtures([
+            'AnotherNamespace/Child.php',
+            'InheritProperties/GrandAncestor.php',
+            'InheritProperties/Ancestor.php',
+        ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
         ]);
         $this->validate($analysis);
 
@@ -58,8 +58,8 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertCount(1, $childSchema->properties);
 
         $analysis->process([
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
         $this->validate($analysis);
 
@@ -72,6 +72,8 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithoutDocBlocks()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures([
             // this class has docblocks
             'AnotherNamespace/ChildWithDocBlocks.php',
@@ -79,15 +81,15 @@ class InheritPropertiesTest extends OpenApiTestCase
             'InheritProperties/AncestorWithoutDocBlocks.php',
         ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
         $this->validate($analysis);
 
@@ -97,7 +99,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertCount(1, $childSchema->properties);
 
         // no error occurs
-        $analysis->process(new InheritProperties());
+        $analysis->process(new InheritProperties($logger));
         $this->assertCount(1, $childSchema->properties);
     }
 
@@ -106,21 +108,23 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithAllOf()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures([
             // this class has all of
             'InheritProperties/Extended.php',
             'InheritProperties/Base.php',
         ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
 //        $this->validate($analysis);
 
@@ -145,21 +149,23 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithOutAllOf()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures([
             // this class has all of
             'InheritProperties/ExtendedWithoutAllOf.php',
             'InheritProperties/Base.php',
         ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
         $this->validate($analysis);
 
@@ -182,21 +188,23 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWitTwoChildSchemas()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures([
             // this class has all of
             'InheritProperties/ExtendedWithTwoSchemas.php',
             'InheritProperties/Base.php',
         ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
         $this->validate($analysis);
 
@@ -225,6 +233,8 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testPreserveExistingAllOf()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures([
             'InheritProperties/BaseInterface.php',
             'InheritProperties/ExtendsBaseThatImplements.php',
@@ -232,20 +242,20 @@ class InheritPropertiesTest extends OpenApiTestCase
             'InheritProperties/TraitUsedByExtendsBaseThatImplements.php',
         ]);
         $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new InheritTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
+            new MergeIntoOpenApi($logger),
+            new MergeIntoComponents($logger),
+            new ExpandInterfaces($logger),
+            new InheritTraits($logger),
+            new AugmentSchemas($logger),
+            new AugmentProperties($logger),
+            new BuildPaths($logger),
+            new InheritProperties($logger),
+            new CleanUnmerged($logger),
         ]);
         $this->validate($analysis);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0']);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'])];
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->trackingLogger());
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->trackingLogger())];
         $analysis->validate();
 
         /* @var Schema[] $schemas */

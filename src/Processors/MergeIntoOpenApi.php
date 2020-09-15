@@ -13,14 +13,14 @@ use OpenApi\Context;
 /**
  * Merge all @OA\OpenApi annotations into one.
  */
-class MergeIntoOpenApi
+class MergeIntoOpenApi extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
         // Auto-create the OpenApi annotation.
         if (!$analysis->openapi) {
-            $context = new Context(['analysis' => $analysis]);
-            $analysis->addAnnotation(new OpenApi(['_context' => $context]), $context);
+            $context = new Context(['analysis' => $analysis, 'logger' => $this->logger]);
+            $analysis->addAnnotation(new OpenApi(['_context' => $context, 'logger' => $this->logger]), $context);
         }
         $openapi = $analysis->openapi;
         $openapi->_analysis = $analysis;

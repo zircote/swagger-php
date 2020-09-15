@@ -14,7 +14,7 @@ use const OpenApi\UNDEFINED;
 use OpenApi\Util;
 use Traversable;
 
-class ExpandTraits
+class ExpandTraits extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -44,10 +44,13 @@ class ExpandTraits
         if ($schema->allOf === UNDEFINED) {
             $schema->allOf = [];
         }
-        $schema->allOf[] = new Schema([
-            '_context' => $trait['context']->_context,
-            'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
-        ]);
+        $schema->allOf[] = new Schema(
+            [
+                '_context' => $trait['context']->_context,
+                'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
+            ],
+            $this->logger
+        );
     }
 
     protected function mergeTrait(Schema $schema, array $trait, array &$existing): void

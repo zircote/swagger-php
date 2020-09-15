@@ -6,8 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Logger;
-
 /**
  * @Annotation
  * The definition of input and output data types.
@@ -372,7 +370,7 @@ class Schema extends AbstractAnnotation
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         if ($this->type === 'array' && $this->items === UNDEFINED) {
-            Logger::notice('@OA\\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);
+            $this->logger->notice('@OA\\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);
 
             return false;
         }

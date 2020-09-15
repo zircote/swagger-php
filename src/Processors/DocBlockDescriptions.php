@@ -14,7 +14,7 @@ use OpenApi\Analysis;
  * And this would be detected
  * as the description.
  */
-class DocBlockDescriptions
+class DocBlockDescriptions extends AbstractProcessor
 {
     /**
      * Checks if the annotation has a summary and/or description property

@@ -15,7 +15,7 @@ use OpenApi\Annotations\Schema;
  *
  * Merges properties.
  */
-class AugmentSchemas
+class AugmentSchemas extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -59,7 +59,7 @@ class AugmentSchemas
                             }
 
                             if ($schema === null) {
-                                $schema = new Schema(['_context' => $annotation->_context]);
+                                $schema = new Schema(['_context' => $annotation->_context], $this->logger);
                                 $annotation->allOf[] = $schema;
                             }
 
@@ -100,7 +100,7 @@ class AugmentSchemas
                     }
                 }
                 if (!$allOfPropertiesSchema) {
-                    $allOfPropertiesSchema = new Schema(['_context' => $schema->_context, 'properties' => []]);
+                    $allOfPropertiesSchema = new Schema(['_context' => $schema->_context, 'properties' => []], $this->logger);
                     $schema->allOf[] = $allOfPropertiesSchema;
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);

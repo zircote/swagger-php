@@ -17,7 +17,7 @@ use OpenApi\Util;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties extends AbstractProcessor
 {
     public static $types = [
         'array' => 'array',
@@ -88,10 +88,13 @@ class AugmentProperties
                         if ($property->ref === UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
                             if ($isNullable) {
                                 $property->oneOf = [
-                                    new Schema([
-                                        '_context' => $property->_context,
-                                        'ref' => $refs[$key],
-                                    ]),
+                                    new Schema(
+                                        [
+                                            '_context' => $property->_context,
+                                            'ref' => $refs[$key],
+                                        ],
+                                        $this->logger
+                                    ),
                                 ];
                                 $property->nullable = true;
                             } else {
@@ -114,8 +117,9 @@ class AugmentProperties
                             $property->items = new Items(
                                 [
                                     'type' => $property->type,
-                                    '_context' => new Context(['generated' => true], $context),
-                                ]
+                                    '_context' => new Context(['generated' => true, 'logger' => $this->logger], $context),
+                                ],
+                                $this->logger
                             );
                             if ($property->items->type === UNDEFINED) {
                                 $key = strtolower($context->fullyQualifiedName($type));
@@ -180,10 +184,13 @@ class AugmentProperties
     {
         if ($property->nullable === true) {
             $property->oneOf = [
-                new Schema([
-                    '_context' => $property->_context,
-                    'ref' => $ref,
-                ]),
+                new Schema(
+                    [
+                        '_context' => $property->_context,
+                        'ref' => $ref,
+                    ],
+                    $this->logger
+                ),
             ];
         } else {
             $property->ref = $ref;

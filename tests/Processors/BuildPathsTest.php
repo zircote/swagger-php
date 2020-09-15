@@ -20,30 +20,32 @@ class BuildPathsTest extends OpenApiTestCase
 {
     public function testMergePathsWithSamePath()
     {
-        $openapi = new OpenApi([]);
+        $logger = $this->trackingLogger();
+
+        $openapi = new OpenApi([], $logger);
         $openapi->paths = [
-            new PathItem(['path' => '/comments']),
-            new PathItem(['path' => '/comments']),
+            new PathItem(['path' => '/comments'], $logger),
+            new PathItem(['path' => '/comments'], $logger),
         ];
-        $analysis = new Analysis([$openapi]);
+        $analysis = new Analysis([$openapi], null, $logger);
         $analysis->openapi = $openapi;
-        $analysis->process(new BuildPaths());
+        $analysis->process(new BuildPaths($logger));
         $this->assertCount(1, $openapi->paths);
         $this->assertSame('/comments', $openapi->paths[0]->path);
     }
 
     public function testMergeOperationsWithSamePath()
     {
-        $openapi = new OpenApi([]);
-        $analysis = new Analysis(
-            [
+        $logger = $this->trackingLogger();
+
+        $openapi = new OpenApi([], $logger);
+        $analysis = new Analysis([
             $openapi,
-            new Get(['path' => '/comments']),
-            new Post(['path' => '/comments']),
-            ]
-        );
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new BuildPaths());
+            new Get(['path' => '/comments'], $logger),
+            new Post(['path' => '/comments'], $logger),
+        ], null, $logger);
+        $analysis->process(new MergeIntoOpenApi($logger));
+        $analysis->process(new BuildPaths($logger));
         $this->assertCount(1, $openapi->paths);
         $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);

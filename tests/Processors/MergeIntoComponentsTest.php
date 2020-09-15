@@ -17,16 +17,16 @@ class MergeIntoComponentsTest extends OpenApiTestCase
 {
     public function testProcessor()
     {
-        $openapi = new OpenApi([]);
-        $response = new Response(['response' => '2xx']);
-        $analysis = new Analysis(
-            [
-                $openapi,
-                $response,
-            ]
-        );
+        $logger = $this->trackingLogger();
+
+        $openapi = new OpenApi([], $logger);
+        $response = new Response(['response' => '2xx'], $logger);
+        $analysis = new Analysis([
+            $openapi,
+            $response,
+        ], null, $logger);
         $this->assertSame(UNDEFINED, $openapi->components);
-        $analysis->process(new MergeIntoComponents());
+        $analysis->process(new MergeIntoComponents($logger));
         $this->assertCount(1, $openapi->components->responses);
         $this->assertSame($response, $openapi->components->responses[0]);
         $this->assertCount(0, $analysis->unmerged()->annotations);

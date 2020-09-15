@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Context.
  *
@@ -20,6 +22,7 @@ namespace OpenApi;
  *      |- propertyContext
  *      |- methodContext
  *
+ * @property LoggerInterface                  $logger
  * @property string                           $comment  The PHP DocComment
  * @property string                           $filename
  * @property int                              $line
@@ -58,6 +61,9 @@ class Context
             $this->$property = $value;
         }
         $this->_parent = $parent;
+        if (!$this->logger || $this->logger === UNDEFINED) {
+            $this->logger = Logger::psrInstance();
+        }
     }
 
     /**
@@ -246,9 +252,9 @@ class Context
     /**
      * Create a Context based on the debug_backtrace.
      */
-    public static function detect(int $index = 0): Context
+    public static function detect(int $index = 0, ?LoggerInterface $logger = null): Context
     {
-        $context = new Context();
+        $context = new Context(['logger' => $logger]);
         $backtrace = debug_backtrace();
         $position = $backtrace[$index];
         if (isset($position['file'])) {

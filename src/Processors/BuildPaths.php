@@ -10,12 +10,11 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\Logger;
 
 /**
  * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc).
  */
-class BuildPaths
+class BuildPaths extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -24,7 +23,7 @@ class BuildPaths
         if ($analysis->openapi->paths !== UNDEFINED) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
-                    Logger::notice($annotation->identity().' is missing required property "path" in '.$annotation->_context);
+                    $this->logger->notice($annotation->identity().' is missing required property "path" in '.$annotation->_context);
                 } elseif (isset($paths[$annotation->path])) {
                     $paths[$annotation->path]->mergeProperties($annotation);
                     $analysis->annotations->detach($annotation);
@@ -42,13 +41,14 @@ class BuildPaths
                     $paths[$operation->path] = new PathItem(
                         [
                             'path' => $operation->path,
-                            '_context' => new Context(['generated' => true], $operation->_context),
-                        ]
+                            '_context' => new Context(['generated' => true, 'logger' => $this->logger], $operation->_context),
+                        ],
+                        $this->logger
                     );
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
-                    Logger::notice('Unable to merge '.$operation->identity().' in '.$operation->_context);
+                    $this->logger->notice('Unable to merge '.$operation->identity().' in '.$operation->_context);
                 }
             }
         }

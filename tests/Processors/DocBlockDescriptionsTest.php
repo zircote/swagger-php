@@ -16,11 +16,9 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
     public function testDocBlockDescription()
     {
         $analysis = $this->analysisFromFixtures('UsingPhpDoc.php');
-        $analysis->process(
-            [
-            new DocBlockDescriptions(),
-            ]
-        );
+        $analysis->process([
+            new DocBlockDescriptions($this->trackingLogger()),
+        ]);
         $operations = $analysis->getAnnotationsOfType(Operation::class);
 
         $this->assertSame('api/test1', $operations[0]->path);

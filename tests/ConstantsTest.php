@@ -21,7 +21,7 @@ class ConstantsTest extends OpenApiTestCase
         $const = 'OPENAPI_TEST_'.self::$counter;
         $this->assertFalse(defined($const));
         $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant ".$const);
-        $this->parseComment('@OA\Contact(email='.$const.')');
+        $this->parseComment('@OA\Contact(email='.$const.')', $this->trackingLogger());
 
         define($const, 'me@domain.org');
         $annotations = $this->parseComment('@OA\Contact(email='.$const.')');
@@ -40,7 +40,7 @@ class ConstantsTest extends OpenApiTestCase
     public function testInvalidClass()
     {
         $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant ConstantsTest::URL");
-        $this->parseComment('@OA\Contact(url=ConstantsTest::URL)');
+        $this->parseComment('@OA\Contact(url=ConstantsTest::URL)', $this->trackingLogger());
     }
 
     public function testAutoloadConstant()
@@ -56,7 +56,7 @@ class ConstantsTest extends OpenApiTestCase
     {
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = false;
-        $analyser = new StaticAnalyser();
+        $analyser = new StaticAnalyser($this->trackingLogger());
         $analysis = $analyser->fromFile(__DIR__.'/Fixtures/Customer.php');
         // @todo Only tests that $whitelist=false doesn't trigger errors,
         // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in OpenApi\Annotation namespace has a constant.

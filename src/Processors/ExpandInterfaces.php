@@ -12,7 +12,7 @@ use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Util;
 
-class ExpandInterfaces
+class ExpandInterfaces extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -39,10 +39,13 @@ class ExpandInterfaces
             $schema->allOf = [];
         }
         $refPath = $interfaceSchema->schema !== UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
-        $schema->allOf[] = new Schema([
-            '_context' => $interface['context']->_context,
-            'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
-        ]);
+        $schema->allOf[] = new Schema(
+            [
+                '_context' => $interface['context']->_context,
+                'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
+            ],
+            $this->logger
+        );
     }
 
     protected function mergeInterface(Schema $schema, array $interface, array &$existing): void

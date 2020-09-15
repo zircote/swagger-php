@@ -49,10 +49,35 @@ Visit the [Documentation website](https://zircote.github.io/swagger-php/) for th
 
 Generate always-up-to-date documentation.
 
+#### Using the traditional `scan()` method 
 ```php
 <?php
 require("vendor/autoload.php");
+
 $openapi = \OpenApi\scan('/path/to/project');
+header('Content-Type: application/x-yaml');
+echo $openapi->toYaml();
+```
+#### Using the `Generator` class 
+```php
+<?php
+require("vendor/autoload.php");
+
+$openapi = (new \OpenApi\Generator())
+    // StaticAnalyser is the default
+    ->setAnalyser(new \OpenApi\StaticAnalyser())
+    // same as setting Analyser::$defaultImports
+    ->setNamespaceAliases([
+        'oa' => 'OpenApi\Annotations',
+        'my' => 'My\Annotations',
+    ])
+    // same as setting Analyser::$whitelist
+    ->getNamespaceWhitelist([
+        'OpenApi\Annotations\\',
+        'My\Annotations\\',
+    ])
+    // recursively scan path for `.php` files excluding *tests*
+    ->scan(\OpenApi\Util::finder('/path/to/project', 'tests', '*.php'));
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```

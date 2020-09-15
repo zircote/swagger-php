@@ -21,10 +21,12 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures('Customer.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        $analysis->process(new MergeIntoOpenApi($logger));
+        $analysis->process(new MergeIntoComponents($logger));
+        $analysis->process(new AugmentSchemas($logger));
         $customer = $analysis->openapi->components->schemas[0];
         $firstName = $customer->properties[0];
         $secondName = $customer->properties[1];
@@ -59,7 +61,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(UNDEFINED, $bestFriend->nullable);
         $this->assertSame(UNDEFINED, $bestFriend->allOf);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process(new AugmentProperties($logger));
 
         $expectedValues = [
             'property' => 'firstname',
@@ -122,10 +124,12 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
+        $logger = $this->trackingLogger();
+
         $analysis = $this->analysisFromFixtures('TypedProperties.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        $analysis->process(new MergeIntoOpenApi($logger));
+        $analysis->process(new MergeIntoComponents($logger));
+        $analysis->process(new AugmentSchemas($logger));
         [
             $stringType,
             $intType,
@@ -215,7 +219,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => UNDEFINED,
         ]);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process(new AugmentProperties($logger));
 
         $this->assertName($stringType, [
             'property' => 'stringType',

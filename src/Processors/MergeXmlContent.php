@@ -13,12 +13,11 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
-use OpenApi\Logger;
 
 /**
  * Split XmlContent into Schema and MediaType.
  */
-class MergeXmlContent
+class MergeXmlContent extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
@@ -27,21 +26,24 @@ class MergeXmlContent
             $parent = $xmlContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected '.$xmlContent->identity().' in '.$parent->identity().' in '.$parent->_context);
+                    $this->logger->notice('Unexpected '.$xmlContent->identity().' in '.$parent->identity().' in '.$parent->_context);
                 } else {
-                    Logger::notice('Unexpected '.$xmlContent->identity().' must be nested');
+                    $this->logger->notice('Unexpected '.$xmlContent->identity().' must be nested');
                 }
                 continue;
             }
             if ($parent->content === UNDEFINED) {
                 $parent->content = [];
             }
-            $parent->content['application/xml'] = new MediaType([
-                'schema' => $xmlContent,
-                'example' => $xmlContent->example,
-                'examples' => $xmlContent->examples,
-                '_context' => new Context(['generated' => true], $xmlContent->_context),
-            ]);
+            $parent->content['application/xml'] = new MediaType(
+                [
+                    'schema' => $xmlContent,
+                    'example' => $xmlContent->example,
+                    'examples' => $xmlContent->examples,
+                    '_context' => new Context(['generated' => true, 'logger' => $this->logger], $xmlContent->_context),
+                ],
+                $this->logger
+            );
             if (!$parent instanceof Parameter) {
                 $parent->content['application/xml']->mediaType = 'application/xml';
             }

@@ -13,6 +13,7 @@ if (defined('OpenApi\\UNDEFINED') === false) {
     /*
      * Special value to differentiate between null and undefined.
      */
+<<<<<<< HEAD
     define('OpenApi\\UNDEFINED', '@OA\\UNDEFINED🙈');
     define('OpenApi\\Annotations\\UNDEFINED', UNDEFINED);
     define('OpenApi\\Processors\\UNDEFINED', UNDEFINED);
@@ -24,6 +25,11 @@ if (!defined('T_NAME_QUALIFIED')) {
 }
 if (!defined('T_NAME_FULLY_QUALIFIED')) {
     define('T_NAME_FULLY_QUALIFIED', -5);
+=======
+    define('OpenApi\UNDEFINED', Generator::UNDEFINED);
+    define('OpenApi\Annotations\UNDEFINED', Generator::UNDEFINED);
+    define('OpenApi\Processors\UNDEFINED', Generator::UNDEFINED);
+>>>>>>> Add OO version of `\OpenApi\scan()`
 }
 
 if (!function_exists('OpenApi\\scan')) {
@@ -37,27 +43,22 @@ if (!function_exists('OpenApi\\scan')) {
      *                                       analyser: defaults to StaticAnalyser
      *                                       analysis: defaults to a new Analysis
      *                                       processors: defaults to the registered processors in Analysis
+     *                                       logger: PSR Logger
      *
      * @return OpenApi
      */
     function scan($directory, $options = [])
     {
-        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser();
-        $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
-        $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
+        $logger = array_key_exists('logger', $options) ? $options['logger'] : Logger::psrInstance();
+        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser($logger);
+        $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis([], null, $logger);
+        $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors($logger);
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
         $pattern = array_key_exists('pattern', $options) ? $options['pattern'] : null;
 
-        // Crawl directory and parse all files
-        $finder = Util::finder($directory, $exclude, $pattern);
-        foreach ($finder as $file) {
-            $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
-        }
-        // Post processing
-        $analysis->process($processors);
-        // Validation (Generate notices & warnings)
-        $analysis->validate();
-
-        return $analysis->openapi;
+        return (new Generator($logger))
+            ->setAnalyser($analyser)
+            ->setProcessors($processors)
+            ->scan(Util::finder($directory, $exclude, $pattern), true, $analysis);
     }
 }

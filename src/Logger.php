@@ -7,6 +7,9 @@
 namespace OpenApi;
 
 use Exception;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Logger reports the parser and validation messages.
@@ -21,7 +24,7 @@ class Logger
     public static $instance;
 
     /**
-     * @var callable
+     * @var callable|LoggerInterface
      */
     public $log;
 
@@ -48,8 +51,23 @@ class Logger
         return self::$instance;
     }
 
+    public static function psrInstance(): LoggerInterface
+    {
+        return new class() extends AbstractLogger {
+            public function log($level, $message, array $context = [])
+            {
+                // BC: delegate to the static instance
+                if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO, LogLevel::DEBUG])) {
+                    Logger::notice($message);
+                } else {
+                    Logger::warning($message);
+                }
+            }
+        };
+    }
+
     /**
-     * Log a OpenApi warning.
+     * Log an OpenApi warning.
      *
      * @param Exception|string $entry
      */
@@ -59,7 +77,7 @@ class Logger
     }
 
     /**
-     * Log a OpenApi notice.
+     * Log an OpenApi notice.
      *
      * @param Exception|string $entry
      */

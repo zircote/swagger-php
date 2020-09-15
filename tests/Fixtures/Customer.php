@@ -85,6 +85,7 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
+        // use all imports
         OpenApiLogger::getInstance();
         Logger::getInstance();
         new OA\Contact([]);

@@ -13,13 +13,13 @@ use OpenApi\UNDEFINED;
 /**
  * Merge reusable annotation into @OA\Schemas.
  */
-class MergeIntoComponents
+class MergeIntoComponents extends AbstractProcessor
 {
     public function __invoke(Analysis $analysis)
     {
         $components = $analysis->openapi->components;
         if ($components === UNDEFINED) {
-            $components = new Components([]);
+            $components = new Components([], $this->logger);
             $components->_context->generated = true;
         }
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Annotations\Get;
+use OpenApi\Annotations\Post;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
 
@@ -24,6 +26,7 @@ class UtilTest extends OpenApiTestCase
                 'UsingRefs.php',
                 'UsingPhpDoc.php',
             ],
+            'logger' => $this->trackingLogger(),
         ]);
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }
@@ -51,5 +54,21 @@ class UtilTest extends OpenApiTestCase
         $this->assertGreaterThan(0, iterator_count($finder_result), 'There should be at least a few file paths.');
         $finder_result_array = \iterator_to_array($finder_result);
         $this->assertArrayNotHasKey($directory_path, $finder_result_array, 'The directory should not be a path in the finder.');
+    }
+
+    public function shortenFixtures()
+    {
+        return [
+            [Get::class, '@OA\Get'],
+            [[Get::class, Post::class], ['@OA\Get', '@OA\Post']],
+        ];
+    }
+
+    /**
+     * @dataProvider shortenFixtures
+     */
+    public function testShorten($classes, $expected)
+    {
+        $this->assertEquals($expected, Util::shorten($classes));
     }
 }

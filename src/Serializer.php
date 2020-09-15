@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
+use Psr\Log\LoggerInterface;
 
 /**
  * Allows to serialize/de-serialize annotations from/to JSON.
@@ -15,6 +16,8 @@ use OpenApi\Annotations as OA;
  */
 class Serializer
 {
+    protected $logger;
+
     private static $VALID_ANNOTATIONS = [
         OA\AdditionalProperties::class,
         OA\Components::class,
@@ -54,6 +57,11 @@ class Serializer
         OA\XmlContent::class,
     ];
 
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
+
     public static function isValidAnnotationClass($className)
     {
         return in_array($className, static::$VALID_ANNOTATIONS);
@@ -75,13 +83,15 @@ class Serializer
      *
      * @return OA\AbstractAnnotation
      */
-    public function deserialize(string $jsonString, string $className)
+    public function deserialize(string $jsonString, string $className, ?LoggerInterface $logger = null)
     {
+        $logger = $logger ?: ($this->logger ?: Logger::psrInstance());
+
         if (!$this->isValidAnnotationClass($className)) {
             throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
         }
 
-        return $this->doDeserialize(json_decode($jsonString), $className);
+        return $this->doDeserialize(json_decode($jsonString), $className, $logger);
     }
 
     /**
@@ -89,13 +99,15 @@ class Serializer
      *
      * @return OA\AbstractAnnotation
      */
-    public function deserializeFile(string $filename, string $className = OA\OpenApi::class)
+    public function deserializeFile(string $filename, string $className = OA\OpenApi::class, ?LoggerInterface $logger = null)
     {
+        $logger = $logger ?: ($this->logger ?: Logger::psrInstance());
+
         if (!$this->isValidAnnotationClass($className)) {
             throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
         }
 
-        return $this->doDeserialize(json_decode(file_get_contents($filename)), $className);
+        return $this->doDeserialize(json_decode(file_get_contents($filename)), $className, $logger);
     }
 
     /**
@@ -103,9 +115,9 @@ class Serializer
      *
      * @return OA\AbstractAnnotation
      */
-    protected function doDeserialize(\stdClass $c, string $class)
+    protected function doDeserialize(\stdClass $c, string $class, LoggerInterface $logger)
     {
-        $annotation = new $class([]);
+        $annotation = new $class([], $logger);
         foreach ((array) $c as $property => $value) {
             if ($property === '$ref') {
                 $property = 'ref';
@@ -118,7 +130,7 @@ class Serializer
                 $custom = substr($property, 2);
                 $annotation->x[$custom] = $value;
             } else {
-                $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value);
+                $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value, $logger);
             }
         }
 
@@ -128,11 +140,11 @@ class Serializer
     /**
      * Deserialize the annotation's property.
      */
-    protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value)
+    protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value, LoggerInterface $logger)
     {
         // property is primitive type
         if (array_key_exists($property, $annotation::$_types)) {
-            return $this->doDeserializeBaseProperty($annotation::$_types[$property], $value);
+            return $this->doDeserializeBaseProperty($annotation::$_types[$property], $value, $logger);
         }
 
         // property is embedded annotation
@@ -141,7 +153,7 @@ class Serializer
             // property is an annotation
             if (is_string($declaration) && $declaration === $property) {
                 if (is_object($value)) {
-                    return $this->doDeserialize($value, $nestedClass);
+                    return $this->doDeserialize($value, $nestedClass, $logger);
                 } else {
                     return $value;
                 }
@@ -151,7 +163,7 @@ class Serializer
             if (is_array($declaration) && count($declaration) === 1 && $declaration[0] === $property) {
                 $annotationArr = [];
                 foreach ($value as $v) {
-                    $annotationArr[] = $this->doDeserialize($v, $nestedClass);
+                    $annotationArr[] = $this->doDeserialize($v, $nestedClass, $logger);
                 }
 
                 return $annotationArr;
@@ -162,7 +174,7 @@ class Serializer
                 $key = $declaration[1];
                 $annotationHash = [];
                 foreach ($value as $k => $v) {
-                    $annotation = $this->doDeserialize($v, $nestedClass);
+                    $annotation = $this->doDeserialize($v, $nestedClass, $logger);
                     $annotation->$key = $k;
                     $annotationHash[$k] = $annotation;
                 }
@@ -182,7 +194,7 @@ class Serializer
      *
      * @return array|OA\AbstractAnnotation
      */
-    protected function doDeserializeBaseProperty($type, $value)
+    protected function doDeserializeBaseProperty($type, $value, LoggerInterface $logger)
     {
         $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), OA\AbstractAnnotation::class);
 
@@ -194,13 +206,13 @@ class Serializer
                 $class = trim($type, '[]');
 
                 foreach ($value as $v) {
-                    $annotationArr[] = $this->doDeserialize($v, $class);
+                    $annotationArr[] = $this->doDeserialize($v, $class, $logger);
                 }
 
                 return $annotationArr;
             }
 
-            return $this->doDeserialize($value, $type);
+            return $this->doDeserialize($value, $type, $logger);
         }
 
         return $value;

@@ -24,13 +24,15 @@ class AbstractAnnotationTest extends OpenApiTestCase
     public function testInvalidField()
     {
         $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');
-        $this->parseComment('@OA\Get(doesnot="exist")');
+        $this->parseComment('@OA\Get(doesnot="exist")', $this->trackingLogger());
     }
 
     public function testUmergedAnnotation()
     {
-        $openapi = $this->createOpenApiWithInfo();
-        $openapi->merge($this->parseComment('@OA\Items()'));
+        $logger = $this->trackingLogger();
+
+        $openapi = $this->createOpenApiWithInfo($logger);
+        $openapi->merge($this->parseComment('@OA\Items()', $logger));
         $this->assertOpenApiLogEntryContains('Unexpected @OA\Items(), expected to be inside @OA\\');
         $openapi->validate();
     }
@@ -45,7 +47,7 @@ class AbstractAnnotationTest extends OpenApiTestCase
     @OA\Contact(name="second")
 )
 END;
-        $annotations = $this->parseComment($comment);
+        $annotations = $this->parseComment($comment, $this->trackingLogger());
         $this->assertOpenApiLogEntryContains('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
         $annotations[0]->validate();
     }
@@ -70,14 +72,14 @@ END;
     @OA\Header(header="X-CSRF-Token", @OA\Schema(type="string"), description="second")
 )
 END;
-        $annotations = $this->parseComment($comment);
+        $annotations = $this->parseComment($comment, $this->trackingLogger());
         $this->assertOpenApiLogEntryContains('Multiple @OA\Header() with the same header="X-CSRF-Token":');
         $annotations[0]->validate();
     }
 
     public function testRequiredFields()
     {
-        $annotations = $this->parseComment('@OA\Info()');
+        $annotations = $this->parseComment('@OA\Info()', $this->trackingLogger());
         $info = $annotations[0];
         $this->assertOpenApiLogEntryContains('Missing required field "title" for @OA\Info() in ');
         $this->assertOpenApiLogEntryContains('Missing required field "version" for @OA\Info() in ');
@@ -96,13 +98,11 @@ END;
     )
 )
 END;
-        $annotations = $this->parseComment($comment);
+        $annotations = $this->parseComment($comment, $this->trackingLogger());
         $parameter = $annotations[0];
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "cookie" in ');
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
-//        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->maximum is a "string", expecting a "number" in ');
-//        $this->assertOpenApiLogEntryStartsWith('@OA\Parameter(name=123,in="dunno")->type must be "string", "number", "integer", "boolean", "array", "file" when @OA\Parameter()->in != "body" in ');
         $parameter->validate();
     }
 
