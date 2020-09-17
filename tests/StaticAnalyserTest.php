@@ -7,8 +7,10 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analyser;
+use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\StaticAnalyser;
+use OpenApi\Tests\Fixtures\Parser\User;
 
 class StaticAnalyserTest extends OpenApiTestCase
 {
@@ -216,5 +218,14 @@ class StaticAnalyserTest extends OpenApiTestCase
         if (null !== $traits) {
             $this->assertSame($traits, $description['traits']);
         }
+    }
+
+    public function testNamespacedConstAccess()
+    {
+        $analysis = $this->analysisFromFixtures('Parser/User.php');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
+        $this->assertCount(1, $schemas);
+        $this->assertEquals(User::CONSTANT, $schemas[0]->example);
     }
 }

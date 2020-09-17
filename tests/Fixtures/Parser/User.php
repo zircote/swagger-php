@@ -6,11 +6,15 @@ use OpenApi\Tests\Fixtures\Parser\HelloTrait as Hello;
 use OpenApi\Tests\Fixtures\Parser\Sub\SubClass as ParentClass;
 
 /**
- * @OA\Schema()
+ * @OA\Schema(
+ *     example=User::CONSTANT,
+ * )
  */
 class User extends ParentClass implements \OpenApi\Tests\Fixtures\Parser\UserInterface
 {
     use Hello;
+
+    const CONSTANT = 'value';
 
     /**
      * {@inheritDoc}
