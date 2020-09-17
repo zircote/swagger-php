@@ -111,7 +111,7 @@ END;
         $parameterMatch = (object) ['key' => Parameter::class, 'value' => ['parameters']];
 
         return [
-            'unknown' => ['Foo', null],
+            'unknown' => [self::class, null],
             'simple-match' => [Parameter::class, $parameterMatch],
             'invalid-annotation' => [Schema::class, null],
             'sub-annotation' => [SubParameter::class, $parameterMatch],
