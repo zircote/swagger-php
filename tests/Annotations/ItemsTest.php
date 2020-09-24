@@ -25,12 +25,10 @@ class ItemsTest extends OpenApiTestCase
         $annotations[0]->validate();
     }
 
-    public function testTypeObject()
+    public function testParentTypeArray()
     {
-        $this->countExceptions = 1;
-        $notAllowedInQuery = $this->parseComment('@OA\Parameter(name="param",in="query",@OA\Schema(type="array",@OA\Items(type="object")))');
-        $this->assertOpenApiLogEntryContains('@OA\Items()->type="object" not allowed inside a @OA\Parameter() must be "string", "number", "integer", "boolean", "array" in ');
-        $notAllowedInQuery[0]->validate();
+        $annotations = $this->parseComment('@OA\Items() parent type must be "array"');
+        $annotations[0]->validate();
     }
 
     public function testRefDefinitionInProperty()
