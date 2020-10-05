@@ -24,8 +24,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class OpenApiTestCase extends TestCase
 {
-    protected $countExceptions = 0;
-
     /**
      * @var array
      */
@@ -42,7 +40,7 @@ class OpenApiTestCase extends TestCase
         $this->originalLogger = Logger::getInstance()->log;
         Logger::getInstance()->log = function ($entry, $type) {
             if (count($this->expectedLogMessages)) {
-                $assertion = array_shift($this->expectedLogMessages);
+                list($assertion, $needle) = array_shift($this->expectedLogMessages);
                 $assertion($entry, $type);
             } else {
                 $map = [
@@ -61,19 +59,27 @@ class OpenApiTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->assertCount($this->countExceptions, $this->expectedLogMessages, count($this->expectedLogMessages).' OpenApi\Logger messages were not triggered');
+        $this->assertEmpty(
+            $this->expectedLogMessages,
+            implode(PHP_EOL.'  => ', array_merge(
+                ['OpenApi\Logger messages were not triggered:'],
+                array_map(function (array $value) {
+                    return $value[1];
+                }, $this->expectedLogMessages)
+            ))
+        );
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
     }
 
-    public function assertOpenApiLogEntryContains($entryPrefix, $message = '')
+    public function assertOpenApiLogEntryContains($needle, $message = '')
     {
-        $this->expectedLogMessages[] = function ($entry, $type) use ($entryPrefix, $message) {
+        $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
             if ($entry instanceof Exception) {
                 $entry = $entry->getMessage();
             }
-            $this->assertStringContainsString($entryPrefix, $entry, $message);
-        };
+            $this->assertStringContainsString($needle, $entry, $message);
+        }, $needle];
     }
 
     /**
