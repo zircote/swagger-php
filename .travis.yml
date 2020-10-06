@@ -9,6 +9,7 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - nightly
 
 matrix:
   include:
@@ -16,6 +17,7 @@ matrix:
       env: CS=yes
 
 before_script:
+  - if [[ $TRAVIS_PHP_VERSION > 7.4 ]] ; then sed -i '/friendsofphp\/php-cs-fixer/d' composer.json; fi;
   - composer self-update
   - composer install --prefer-dist --no-interaction
 
