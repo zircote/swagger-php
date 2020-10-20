@@ -29,3 +29,26 @@ paths:
       responses:
         '200':
           description: Success
+components:
+  responses:
+    '200':
+      description: ''
+      content:
+        application/json:
+          schema:
+            properties:
+              name:
+                description: demo
+                type: integer
+            type: object
+          examples:
+            '200':
+              value:
+                name: 1
+            '300':
+              value:
+                name: 1
+            '400':
+              value:
+                name: 1
+          type: object
