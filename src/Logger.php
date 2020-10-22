@@ -39,10 +39,7 @@ class Logger
         };
     }
 
-    /**
-     * @return Logger
-     */
-    public static function getInstance()
+    public static function getInstance(): Logger
     {
         if (self::$instance === null) {
             self::$instance = new Logger();
@@ -56,7 +53,7 @@ class Logger
      *
      * @param Exception|string $entry
      */
-    public static function warning($entry)
+    public static function warning($entry): void
     {
         call_user_func(self::getInstance()->log, $entry, E_USER_WARNING);
     }
@@ -66,7 +63,7 @@ class Logger
      *
      * @param Exception|string $entry
      */
-    public static function notice($entry)
+    public static function notice($entry): void
     {
         call_user_func(self::getInstance()->log, $entry, E_USER_NOTICE);
     }

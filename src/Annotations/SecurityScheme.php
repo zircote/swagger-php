@@ -119,7 +119,7 @@ class SecurityScheme extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public function merge($annotations, $ignore = false)
+    public function merge(array $annotations, bool $ignore = false): array
     {
         $unmerged = parent::merge($annotations, $ignore);
 

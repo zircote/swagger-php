@@ -6,7 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use Exception;
 use OpenApi\Analysis;
 use OpenApi\Logger;
 use OpenApi\Util;
@@ -126,9 +125,9 @@ class OpenApi extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public function validate($parents = null, $skip = null, $ref = null)
+    public function validate(array $parents = null, array $skip = null, string $ref = ''): bool
     {
-        if ($parents !== null || $skip !== null || $ref !== null) {
+        if ($parents !== null || $skip !== null || $ref !== '') {
             Logger::notice('Nested validation for '.$this->identity().' not allowed');
 
             return false;
@@ -139,12 +138,8 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Save the OpenAPI documentation to a file.
-     *
-     * @param string $filename
-     *
-     * @throws Exception
      */
-    public function saveAs($filename, $format = 'auto')
+    public function saveAs(string $filename, string $format = 'auto'): void
     {
         if ($format === 'auto') {
             $format =   strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
@@ -155,7 +150,7 @@ class OpenApi extends AbstractAnnotation
             $content = $this->toYaml();
         }
         if (file_put_contents($filename, $content) === false) {
-            throw new Exception('Failed to saveAs("'.$filename.'", "'.$format.'")');
+            throw new \Exception('Failed to saveAs("'.$filename.'", "'.$format.'")');
         }
     }
 
@@ -163,14 +158,12 @@ class OpenApi extends AbstractAnnotation
      * Look up an annotation with a $ref url.
      *
      * @param string $ref The $ref value, for example: "#/components/schemas/Product"
-     *
-     * @throws Exception
      */
-    public function ref($ref)
+    public function ref(string $ref)
     {
         if (substr($ref, 0, 2) !== '#/') {
             // @todo Add support for external (http) refs?
-            throw new Exception('Unsupported $ref "'.$ref.'", it should start with "#/"');
+            throw new \Exception('Unsupported $ref "'.$ref.'", it should start with "#/"');
         }
 
         return $this->resolveRef($ref, '#/', $this, []);
@@ -179,7 +172,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * Recursive helper for ref().
      */
-    private static function resolveRef($ref, $resolved, $container, $mapping)
+    private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
     {
         if ($ref === $resolved) {
             return $container;
@@ -193,7 +186,7 @@ class OpenApi extends AbstractAnnotation
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new Exception('$ref "'.$ref.'" not found');
+                throw new \Exception('$ref "'.$ref.'" not found');
             }
             if ($slash === false) {
                 return $container->$property;
@@ -220,6 +213,6 @@ class OpenApi extends AbstractAnnotation
                 }
             }
         }
-        throw new Exception('$ref "'.$unresolved.'" not found');
+        throw new \Exception('$ref "'.$unresolved.'" not found');
     }
 }

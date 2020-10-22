@@ -67,7 +67,7 @@
       "@lint"
     ],
     "analyse": [
-      "phpstan analyze --level=2 src | grep -v 'does not accept default value of type string'",
+      "phpstan analyze --level=3 src | grep -v 'does not accept default value of type string'",
       "psalm"
     ],
     "docs": "./docs/node_modules/.bin/vuepress dev docs/",

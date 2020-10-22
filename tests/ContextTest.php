@@ -20,7 +20,6 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
         $this->assertSame('OpenApi\Tests', $context->namespace);
-        //        $this->assertCount(1, $context->uses); // Context::detect() doesn't pick up USE statements (yet)
     }
 
     public function testFullyQualifiedName()

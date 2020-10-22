@@ -25,12 +25,9 @@ class Util
      * and conform specifically to what is expected by functions like `exclude()` and `notPath()`.
      * In particular, leading and trailing slashes are removed.
      *
-     * @param string       $fullPath
      * @param array|string $basePaths
-     *
-     * @return string
      */
-    public static function getRelativePath($fullPath, $basePaths)
+    public static function getRelativePath(string $fullPath, $basePaths): string
     {
         $relativePath = null;
         if (is_string($basePaths)) { // just a single path, not an array of possible paths
@@ -49,13 +46,8 @@ class Util
 
     /**
      * Removes a prefix from the start of a string if it exists, or null otherwise.
-     *
-     * @param string $str
-     * @param string $prefix
-     *
-     * @return null|string
      */
-    private static function removePrefix($str, $prefix)
+    private static function removePrefix(string $str, string $prefix): ?string
     {
         if (substr($str, 0, strlen($prefix)) == $prefix) {
             return substr($str, strlen($prefix));
@@ -73,7 +65,7 @@ class Util
      *
      * @throws InvalidArgumentException
      */
-    public static function finder($directory, $exclude = null, $pattern = null)
+    public static function finder($directory, $exclude = null, $pattern = null): Finder
     {
         if ($directory instanceof Finder) {
             return $directory;
@@ -124,7 +116,7 @@ class Util
      * https://swagger.io/docs/specification/using-ref/
      * https://tools.ietf.org/html/rfc6901#page-3
      */
-    public static function refEncode($raw)
+    public static function refEncode(string $raw): string
     {
         return str_replace('/', '~1', str_replace('~', '~0', $raw));
     }
@@ -135,7 +127,7 @@ class Util
      * https://swagger.io/docs/specification/using-ref/
      * https://tools.ietf.org/html/rfc6901#page-3
      */
-    public static function refDecode($encoded)
+    public static function refDecode(string $encoded): string
     {
         return str_replace('~1', '/', str_replace('~0', '~', $encoded));
     }

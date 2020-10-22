@@ -52,7 +52,7 @@ class Context
      * @param array   $properties new properties for this context
      * @param Context $parent     The parent context
      */
-    public function __construct($properties = [], $parent = null)
+    public function __construct(array $properties = [], ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
             $this->$property = $value;
@@ -64,10 +64,8 @@ class Context
      * Check if a property is set directly on this context and not its parent context.
      *
      * @param string $type Example: $c->is('method') or $c->is('class')
-     *
-     * @return bool
      */
-    public function is($type)
+    public function is(string $type): bool
     {
         return property_exists($this, $type);
     }
@@ -76,22 +74,16 @@ class Context
      * Check if a property is NOT set directly on this context and but its parent context.
      *
      * @param string $type Example: $c->not('method') or $c->not('class')
-     *
-     * @return bool
      */
-    public function not($type)
+    public function not(string $type): bool
     {
         return property_exists($this, $type) === false;
     }
 
     /**
      * Return the context containing the specified property.
-     *
-     * @param string $property
-     *
-     * @return bool|Context
      */
-    public function with($property)
+    public function with(string $property): ?Context
     {
         if (property_exists($this, $property)) {
             return $this;
@@ -100,13 +92,10 @@ class Context
             return $this->_parent->with($property);
         }
 
-        return false;
+        return null;
     }
 
-    /**
-     * @return Context
-     */
-    public function getRootContext()
+    public function getRootContext(): Context
     {
         if ($this->_parent !== null) {
             return $this->_parent->getRootContext();
@@ -120,7 +109,7 @@ class Context
      *
      * @return string Example: "file1.php on line 12"
      */
-    public function getDebugLocation()
+    public function getDebugLocation(): string
     {
         $location = '';
         if ($this->class && ($this->method || $this->property)) {
@@ -256,12 +245,8 @@ class Context
 
     /**
      * Create a Context based on the debug_backtrace.
-     *
-     * @param int $index
-     *
-     * @return Context
      */
-    public static function detect($index = 0)
+    public static function detect(int $index = 0): Context
     {
         $context = new Context();
         $backtrace = debug_backtrace();

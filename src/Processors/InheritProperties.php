@@ -74,7 +74,7 @@ class InheritProperties
     /**
      * Add schema to child schema allOf property.
      */
-    private function inherit(Schema $to, Schema $from)
+    private function inherit(Schema $to, Schema $from): void
     {
         if ($to->allOf === UNDEFINED) {
             // Move all properties into an `allOf` entry except the `schema` property.

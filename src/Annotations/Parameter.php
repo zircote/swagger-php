@@ -234,7 +234,7 @@ class Parameter extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public function validate($parents = [], $skip = [], $ref = '')
+    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         if (in_array($this, $skip, true)) {
             return true;
@@ -246,21 +246,6 @@ class Parameter extends AbstractAnnotation
                     Logger::notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
                     $valid = false;
                 }
-            } else {
-                //                $validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'];
-                //                if ($this->type === null) {
-                //                    Logger::notice($this->identity() . '->type is required when ' . $this->_identity([]) . '->in == "' . $this->in . '" in ' . $this->_context);
-                //                    $valid = false;
-                //                } elseif ($this->type === 'array' && $this->items === null) {
-                //                    Logger::notice($this->identity() . '->items required when ' . $this->_identity([]) . '->type == "array" in ' . $this->_context);
-                //                    $valid = false;
-                //                } elseif (in_array($this->type, $validTypes) === false) {
-                //                    $valid = false;
-                //                    Logger::notice($this->identity() . '->type must be "' . implode('", "', $validTypes) . '" when ' . $this->_identity([]) . '->in != "body" in ' . $this->_context);
-                //                } elseif ($this->type === 'file' && $this->in !== 'formData') {
-                //                    Logger::notice($this->identity() . '->in must be "formData" when ' . $this->_identity([]) . '->type == "file" in ' . $this->_context);
-                //                    $valid = false;
-                //                }
             }
         }
 
@@ -270,7 +255,7 @@ class Parameter extends AbstractAnnotation
     /**
      * {@inheritdoc}
      */
-    public function identity()
+    public function identity(): string
     {
         return parent::_identity(['name', 'in']);
     }

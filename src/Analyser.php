@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\DocParser;
 
 if (class_exists(AnnotationRegistry::class, true)) {
     AnnotationRegistry::registerLoader(
-        function ($class) {
+        function (string $class): bool {
             if (Analyser::$whitelist === false) {
                 $whitelist = ['OpenApi\Annotations\\'];
             } else {
@@ -66,7 +66,7 @@ class Analyser
      */
     public $docParser;
 
-    public function __construct($docParser = null)
+    public function __construct(?DocParser $docParser = null)
     {
         if ($docParser === null) {
             $docParser = new DocParser();
@@ -84,7 +84,7 @@ class Analyser
      *
      * @return array Annotations
      */
-    public function fromComment($comment, $context = null)
+    public function fromComment(string $comment, ?Context $context = null): array
     {
         $context = $context ?: new Context();
         $context->comment = $comment;
