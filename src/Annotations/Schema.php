@@ -369,7 +369,7 @@ class Schema extends AbstractAnnotation
         Header::class,
     ];
 
-    public function validate($parents = [], $skip = [], $ref = '')
+    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         if ($this->type === 'array' && $this->items === UNDEFINED) {
             Logger::notice('@OA\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);

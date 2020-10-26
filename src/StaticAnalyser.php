@@ -12,23 +12,11 @@ namespace OpenApi;
 class StaticAnalyser
 {
     /**
-     * @param string $filename
-     */
-    public function __construct($filename = null)
-    {
-        if ($filename !== null) {
-            $this->fromFile($filename);
-        }
-    }
-
-    /**
      * Extract and process all doc-comments from a file.
      *
      * @param string $filename path to a php file
-     *
-     * @return Analysis
      */
-    public function fromFile($filename)
+    public function fromFile(string $filename): Analysis
     {
         if (function_exists('opcache_get_status') && function_exists('opcache_get_configuration')) {
             if (empty($GLOBALS['openapi_opcache_warning'])) {
@@ -50,10 +38,8 @@ class StaticAnalyser
      *
      * @param string  $code    PHP code. (including <?php tags)
      * @param Context $context the original location of the contents
-     *
-     * @return Analysis
      */
-    public function fromCode($code, $context)
+    public function fromCode(string $code, Context $context): Analysis
     {
         $tokens = token_get_all($code);
 
@@ -63,12 +49,9 @@ class StaticAnalyser
     /**
      * Shared implementation for parseFile() & parseContents().
      *
-     * @param array   $tokens       The result of a token_get_all()
-     * @param Context $parseContext
-     *
-     * @return Analysis
+     * @param array $tokens The result of a token_get_all()
      */
-    protected function fromTokens($tokens, $parseContext)
+    protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
         $analyser = new Analyser();
         $analysis = new Analysis();
@@ -402,13 +385,8 @@ class StaticAnalyser
 
     /**
      * Parse comment and add annotations to analysis.
-     *
-     * @param Analysis $analysis
-     * @param Analyser $analyser
-     * @param string   $comment
-     * @param Context  $context
      */
-    private function analyseComment($analysis, $analyser, $comment, $context)
+    private function analyseComment(Analysis $analysis, Analyser $analyser, string $comment, Context $context): void
     {
         $analysis->addAnnotations($analyser->fromComment($comment, $context), $context);
     }
@@ -416,12 +394,10 @@ class StaticAnalyser
     /**
      * The next non-whitespace, non-comment token.
      *
-     * @param array   $tokens
-     * @param Context $context
      *
      * @return array|string The next token (or false)
      */
-    private function nextToken(&$tokens, $context)
+    private function nextToken(array &$tokens, Context $context)
     {
         while (true) {
             $token = next($tokens);
@@ -447,7 +423,7 @@ class StaticAnalyser
     /**
      * Parse namespaced string.
      */
-    private function parseNamespace(&$tokens, &$token, $parseContext)
+    private function parseNamespace(array &$tokens, &$token, Context $parseContext): string
     {
         $namespace = '';
         while ($token !== false) {
@@ -464,7 +440,7 @@ class StaticAnalyser
     /**
      * Parse comma separated list of namespaced strings.
      */
-    private function parseNamespaceList(&$tokens, &$token, $parseContext)
+    private function parseNamespaceList(array &$tokens, &$token, Context $parseContext): array
     {
         $namespaces = [];
         while ($namespace = $this->parseNamespace($tokens, $token, $parseContext)) {
@@ -480,7 +456,7 @@ class StaticAnalyser
     /**
      * Parse a use statement.
      */
-    private function parseUseStatement(&$tokens, &$token, $parseContext)
+    private function parseUseStatement(array &$tokens, &$token, Context $parseContext): array
     {
         $normalizeAlias = function ($alias) {
             $alias = ltrim($alias, '\\');

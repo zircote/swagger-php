@@ -73,8 +73,6 @@ class Serializer
     /**
      * Deserialize a string.
      *
-     * @throws \Exception
-     *
      * @return OA\AbstractAnnotation
      */
     public function deserialize(string $jsonString, string $className)
@@ -88,8 +86,6 @@ class Serializer
 
     /**
      * Deserialize a file.
-     *
-     * @throws \Exception
      *
      * @return OA\AbstractAnnotation
      */
@@ -105,14 +101,12 @@ class Serializer
     /**
      * Do deserialization.
      *
-     * @param string $class the class name of annotation
-     *
      * @return OA\AbstractAnnotation
      */
-    protected function doDeserialize(\stdClass $c, $class)
+    protected function doDeserialize(\stdClass $c, string $class)
     {
         $annotation = new $class([]);
-        foreach ($c as $property => $value) {
+        foreach ((array) $c as $property => $value) {
             if ($property === '$ref') {
                 $property = 'ref';
             }
@@ -133,10 +127,8 @@ class Serializer
 
     /**
      * Deserialize the annotation's property.
-     *
-     * @param string $property
      */
-    protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, $property, $value)
+    protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value)
     {
         // property is primitive type
         if (array_key_exists($property, $annotation::$_types)) {
@@ -185,8 +177,8 @@ class Serializer
     /**
      * Deserialize base annotation property.
      *
-     * @param string $type  The property type
-     * @param mixed  $value The value to deserialization
+     * @param array|string $type  The property type
+     * @param mixed        $value The value to deserialization
      *
      * @return array|OA\AbstractAnnotation
      */

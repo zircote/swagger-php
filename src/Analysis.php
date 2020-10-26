@@ -6,8 +6,6 @@
 
 namespace OpenApi;
 
-use Closure;
-use Exception;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Schema;
@@ -25,17 +23,17 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Processors\OperationId;
-use SplObjectStorage;
-use stdClass;
 
 /**
- * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper
- * functions for the processors.
+ * Result of the analyser.
+ *
+ * Pretends to be an array of annotations, but also contains detected classes
+ * and helper functions for the processors.
  */
 class Analysis
 {
     /**
-     * @var SplObjectStorage
+     * @var \SplObjectStorage
      */
     public $annotations;
 
@@ -75,12 +73,11 @@ class Analysis
     private static $processors;
 
     /**
-     * @param array $annotations
-     * @param null  $context
+     * @param null $context
      */
-    public function __construct($annotations = [], $context = null)
+    public function __construct(array $annotations = [], ?Context $context = null)
     {
-        $this->annotations = new SplObjectStorage();
+        $this->annotations = new \SplObjectStorage();
         if (count($annotations) !== 0) {
             if ($context === null) {
                 $context = Context::detect(1);
@@ -89,7 +86,7 @@ class Analysis
         }
     }
 
-    public function addAnnotation($annotation, ?Context $context)
+    public function addAnnotation($annotation, ?Context $context): void
     {
         if ($this->annotations->contains($annotation)) {
             return;
@@ -129,48 +126,32 @@ class Analysis
         }
     }
 
-    /**
-     * @param array   $annotations
-     * @param Context $context
-     */
-    public function addAnnotations($annotations, $context)
+    public function addAnnotations(array $annotations, Context $context): void
     {
         foreach ($annotations as $annotation) {
             $this->addAnnotation($annotation, $context);
         }
     }
 
-    /**
-     * @param array $definition
-     */
-    public function addClassDefinition($definition)
+    public function addClassDefinition(array $definition): void
     {
         $class = $definition['context']->fullyQualifiedName($definition['class']);
         $this->classes[$class] = $definition;
     }
 
-    /**
-     * @param array $definition
-     */
-    public function addInterfaceDefinition($definition)
+    public function addInterfaceDefinition(array $definition): void
     {
         $interface = $definition['context']->fullyQualifiedName($definition['interface']);
         $this->interfaces[$interface] = $definition;
     }
 
-    /**
-     * @param array $definition
-     */
-    public function addTraitDefinition($definition)
+    public function addTraitDefinition(array $definition): void
     {
         $trait = $definition['context']->fullyQualifiedName($definition['trait']);
         $this->traits[$trait] = $definition;
     }
 
-    /**
-     * @param Analysis $analysis
-     */
-    public function addAnalysis($analysis)
+    public function addAnalysis(Analysis $analysis): void
     {
         foreach ($analysis->annotations as $annotation) {
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
@@ -190,7 +171,7 @@ class Analysis
      *
      * @return array map of class => definition pairs of sub-classes
      */
-    public function getSubClasses($parent)
+    public function getSubClasses(string $parent): array
     {
         $definitions = [];
         foreach ($this->classes as $class => $classDefinition) {
@@ -210,7 +191,7 @@ class Analysis
      *
      * @return array map of class => definition pairs of parent classes
      */
-    public function getSuperClasses($class)
+    public function getSuperClasses(string $class): array
     {
         $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
         if (!$classDefinition || empty($classDefinition['extends'])) {
@@ -235,7 +216,7 @@ class Analysis
      *
      * @return array map of class => definition pairs of interfaces
      */
-    public function getInterfacesOfClass($class, $direct = false)
+    public function getInterfacesOfClass(string $class, bool $direct = false): array
     {
         $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
         // add self
@@ -281,7 +262,7 @@ class Analysis
      *
      * @return array map of class => definition pairs of traits
      */
-    public function getTraitsOfClass($source, $direct = false)
+    public function getTraitsOfClass(string $source, bool $direct = false): array
     {
         $sources = $direct ? [] : array_keys($this->getSuperClasses($source));
         // add self
@@ -320,12 +301,9 @@ class Analysis
     }
 
     /**
-     * @param string $class
-     * @param bool   $strict innon-strict mode childclasses are also detected
-     *
-     * @return array
+     * @param bool $strict innon-strict mode childclasses are also detected
      */
-    public function getAnnotationsOfType($class, $strict = false)
+    public function getAnnotationsOfType(string $class, bool $strict = false): array
     {
         $annotations = [];
         if ($strict) {
@@ -347,10 +325,8 @@ class Analysis
 
     /**
      * @param string $fqdn the source class/interface/trait
-     *
-     * @return null|Schema
      */
-    public function getSchemaForSource($fqdn)
+    public function getSchemaForSource(string $fqdn): ?Schema
     {
         $sourceDefinitions = [
             $this->classes,
@@ -379,31 +355,29 @@ class Analysis
      *
      * @return \OpenApi\Context
      */
-    public function getContext($annotation)
+    public function getContext($annotation): Context
     {
         if ($annotation instanceof AbstractAnnotation) {
             return $annotation->_context;
         }
         if ($this->annotations->contains($annotation) === false) {
-            throw new Exception('Annotation not found');
+            throw new \Exception('Annotation not found');
         }
         $context = $this->annotations[$annotation];
         if ($context instanceof Context) {
             return $context;
         }
         // Weird, did you use the addAnnotation/addAnnotations methods?
-        throw new Exception('Annotation has no context');
+        throw new \Exception('Annotation has no context');
     }
 
     /**
      * Build an analysis with only the annotations that are merged into the OpenAPI annotation.
-     *
-     * @return Analysis
      */
-    public function merged()
+    public function merged(): Analysis
     {
         if ($this->openapi === null) {
-            throw new Exception('No openapi target set. Run the MergeIntoOpenApi processor');
+            throw new \Exception('No openapi target set. Run the MergeIntoOpenApi processor');
         }
         $unmerged = $this->openapi->_unmerged;
         $this->openapi->_unmerged = [];
@@ -415,10 +389,8 @@ class Analysis
 
     /**
      * Analysis with only the annotations that not merged.
-     *
-     * @return Analysis
      */
-    public function unmerged()
+    public function unmerged(): Analysis
     {
         return $this->split()->unmerged;
     }
@@ -431,7 +403,7 @@ class Analysis
      */
     public function split()
     {
-        $result = new stdClass();
+        $result = new \stdClass();
         $result->merged = $this->merged();
         $result->unmerged = new Analysis();
         foreach ($this->annotations as $annotation) {
@@ -446,9 +418,9 @@ class Analysis
     /**
      * Apply the processor(s).
      *
-     * @param Closure|Closure[] $processors One or more processors
+     * @param \Closure|\Closure[] $processors One or more processors
      */
-    public function process($processors = null)
+    public function process($processors = null): void
     {
         if ($processors === null) {
             // Use the default and registered processors.
@@ -495,9 +467,9 @@ class Analysis
     /**
      * Register a processor.
      *
-     * @param Closure $processor
+     * @param \Closure $processor
      */
-    public static function registerProcessor($processor)
+    public static function registerProcessor($processor): void
     {
         array_push(self::processors(), $processor);
     }
@@ -505,19 +477,19 @@ class Analysis
     /**
      * Unregister a processor.
      *
-     * @param Closure $processor
+     * @param \Closure $processor
      */
-    public static function unregisterProcessor($processor)
+    public static function unregisterProcessor($processor): void
     {
         $processors = &self::processors();
         $key = array_search($processor, $processors, true);
         if ($key === false) {
-            throw new Exception('Given processor was not registered');
+            throw new \Exception('Given processor was not registered');
         }
         unset($processors[$key]);
     }
 
-    public function validate()
+    public function validate(): bool
     {
         if ($this->openapi !== null) {
             return $this->openapi->validate();
