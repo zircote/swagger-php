@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 $options = [
     'output' => false,
     'format' => 'auto',
+    'include' => [],
     'exclude' => [],
     'pattern' => '*.php',
     'bootstrap' => false,
@@ -22,6 +23,7 @@ $options = [
 ];
 $aliases = [
     'o' => 'output',
+    'i' => 'include',
     'e' => 'exclude',
     'n' => 'pattern',
     'b' => 'bootstrap',
@@ -33,6 +35,7 @@ $aliases = [
 $needsArgument = [
     'output',
     'format',
+    'include',
     'exclude',
     'pattern',
     'bootstrap',
@@ -104,8 +107,10 @@ Usage: openapi [--option value] [/path/to/project ...]
 Options:
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
-  --exclude (-e)    Exclude path(s).
-                    ex: --exclude vendor,library/Zend
+  --exclude (-e)    Exclude path(s) or files.
+                    ex: --exclude library/Zend
+  --include (-i)    Include additional path(s).
+                    ex: --include vendor/specific-package
   --pattern (-n)    Pattern of files to scan.
                     ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
@@ -215,6 +220,17 @@ if ($options['exclude']) {
     }
 }
 
+$include = null;
+if ($options['include']) {
+    $include = $options['include'];
+    if (strpos($include[0], ',') !== false) {
+        $exploded = explode(',', $include[0]);
+        error_log(COLOR_RED . 'Comma-separated include paths are deprecated, use multiple --include statements: --include ' . $exploded[0] . ' --include ' . $exploded[1]) . COLOR_STOP;
+        $include[0] = array_shift($exploded);
+        $include = array_merge($include, $exploded);
+    }
+}
+
 $pattern = "*.php";
 if ($options['pattern']) {
     $pattern = $options['pattern'];
@@ -230,7 +246,7 @@ foreach ($options["processor"] as $processor) {
     Analysis::registerProcessor($processor);
 }
 
-$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'pattern' => $pattern]);
+$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'include' => $include, 'pattern' => $pattern]);
 
 if ($exit !== 0) {
     error_log('');

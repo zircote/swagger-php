@@ -46,10 +46,11 @@ if (function_exists('OpenApi\scan') === false) {
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
         $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
+        $include = array_key_exists('include', $options) ? $options['include'] : null;
         $pattern = array_key_exists('pattern', $options) ? $options['pattern'] : null;
 
         // Crawl directory and parse all files
-        $finder = Util::finder($directory, $exclude, $pattern);
+        $finder = Util::finder($directory, $exclude, $include, $pattern);
         foreach ($finder as $file) {
             $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
         }

@@ -61,11 +61,12 @@ class Util
      *
      * @param array|Finder|string $directory The directory(s) or filename(s)
      * @param null|array|string   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
+     * @param null|array|string   $include   The directory(s) to include (as absolute paths) in addition to the root directory
      * @param null|string         $pattern   The pattern of the files to scan
      *
      * @throws InvalidArgumentException
      */
-    public static function finder($directory, $exclude = null, $pattern = null): Finder
+    public static function finder($directory, $exclude = null, $include = null, $pattern = null): Finder
     {
         if ($directory instanceof Finder) {
             return $directory;
@@ -95,10 +96,31 @@ class Util
         } else {
             throw new InvalidArgumentException('Unexpected $directory value:'.gettype($directory));
         }
+
+        if (is_string($include)) {
+            $include = [$include];
+        }
+
+        if (is_string($exclude)) {
+            $exclude = [$exclude];
+        }
+
+        if ($include !== null && $exclude !== null && !empty(array_intersect($include, $exclude))) {
+            throw new InvalidArgumentException('Cannot include and exclude the same paths.');
+        }
+
+        if ($include !== null) {
+            if (is_array($include)) {
+                foreach ($include as $path) {
+                    $finder->in(Util::getRelativePath($path, $directory));
+                }
+            } else {
+                throw new InvalidArgumentException('Unexpected $include value:'.gettype($include));
+            }
+        }
+
         if ($exclude !== null) {
-            if (is_string($exclude)) {
-                $finder->notPath(Util::getRelativePath($exclude, $directory));
-            } elseif (is_array($exclude)) {
+            if (is_array($exclude)) {
                 foreach ($exclude as $path) {
                     $finder->notPath(Util::getRelativePath($path, $directory));
                 }
