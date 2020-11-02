@@ -35,13 +35,12 @@
  *     description="",
  *     @OA\MediaType(
  *          mediaType="application/json",
- *          type="object",
  *          @OA\Schema(
  *              @OA\Property(property="name", type="integer", description="demo")
  *          ),
- *          @OA\Examples(example=200,value={"name":1}),
- *          @OA\Examples(example=300,value={"name":1}),
- *          @OA\Examples(example=400,value={"name":1})
+ *          @OA\Examples(example=200, summary="", value={"name":1}),
+ *          @OA\Examples(example=300, summary="", value={"name":1}),
+ *          @OA\Examples(example=400, summary="", value={"name":1})
  *     )
  *   )
  */

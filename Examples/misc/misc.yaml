@@ -43,12 +43,14 @@ components:
             type: object
           examples:
             '200':
+              summary: ''
               value:
                 name: 1
             '300':
+              summary: ''
               value:
                 name: 1
             '400':
+              summary: ''
               value:
                 name: 1
-          type: object

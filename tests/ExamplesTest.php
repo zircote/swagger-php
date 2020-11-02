@@ -6,8 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Logger;
-
 class ExamplesTest extends OpenApiTestCase
 {
     public function exampleMappings()
@@ -34,9 +32,6 @@ class ExamplesTest extends OpenApiTestCase
      */
     public function testExamples($example, $spec)
     {
-        Logger::getInstance()->log = function ($entry, $type) {
-            // ignore
-        };
         $path = __DIR__.'/../Examples/'.$example;
         $openapi = \OpenApi\scan($path, []);
         $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi, 'Examples/'.$example.'/'.$spec);
