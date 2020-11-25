@@ -78,8 +78,8 @@ class Store
      *         @OA\Schema(
      *             type="integer",
      *             format="int64",
-     *             maximum=1,
-     *             minimum=10
+     *             maximum=10,
+     *             minimum=1
      *         )
      *     ),
      *     @OA\Response(
