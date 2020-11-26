@@ -1,6 +1,6 @@
 <?php
 
-namespace AnotherNamespace;
+namespace SwaggerFixures;
 
 /**
  * @SWG\Definition()

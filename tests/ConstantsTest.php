@@ -45,9 +45,9 @@ class ConstantsTest extends SwaggerTestCase
 
     public function testAutoloadConstant()
     {
-        if (class_exists('Zend\Validator\Timezone', false)) {
+        if (class_exists('AnotherNamespace\Annotations\Constants', false)) {
             $this->markTestSkipped();
-            $annotations = $this->parseComment('@SWG\Contact(name=Zend\Validator\Timezone::INVALID_TIMEZONE_LOCATION)');
+            $annotations = $this->parseComment('@SWG\Contact(name=AnotherNamespace\Annotations\Constants::INVALID_TIMEZONE_LOCATION)');
             $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
         }
     }

@@ -299,7 +299,7 @@ class StaticAnalyser
         $namespace = '';
         while ($token !== false) {
             $token = $this->nextToken($tokens, $parseContext);
-            if ($token[0] !== T_STRING && $token[0] !== T_NS_SEPARATOR) {
+            if (!in_array($token[0], [T_STRING, T_NS_SEPARATOR, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
                 break;
             }
             $namespace .= $token[1];
@@ -309,13 +309,20 @@ class StaticAnalyser
 
     private function parseUseStatement(&$tokens, &$token, $parseContext)
     {
+        $normalizeAlias = function ($alias) {
+            $alias = ltrim($alias, '\\');
+            $elements = explode('\\', $alias);
+
+            return array_pop($elements);
+        };
+
         $class = '';
         $alias = '';
         $statements = [];
         $explicitAlias = false;
         while ($token !== false) {
             $token = $this->nextToken($tokens, $parseContext);
-            $isNameToken = $token[0] === T_STRING || $token[0] === T_NS_SEPARATOR;
+            $isNameToken = in_array($token[0], [T_STRING, T_NS_SEPARATOR, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED]);
             if (!$explicitAlias && $isNameToken) {
                 $class .= $token[1];
                 $alias = $token[1];
@@ -325,12 +332,12 @@ class StaticAnalyser
                 $explicitAlias = true;
                 $alias = '';
             } elseif ($token === ',') {
-                $statements[$alias] = $class;
+                $statements[$normalizeAlias($alias)] = $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
             } elseif ($token === ';') {
-                $statements[$alias] = $class;
+                $statements[$normalizeAlias($alias)] = $class;
                 break;
             } else {
                 break;

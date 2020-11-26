@@ -18,6 +18,14 @@ if (defined('Swagger\UNDEFINED') === false) {
     define('Swagger\Processors\UNDEFINED', UNDEFINED);
 }
 
+// PHP 8.0
+if (!defined('T_NAME_QUALIFIED')) {
+    define('T_NAME_QUALIFIED', -4);
+}
+if (!defined('T_NAME_FULLY_QUALIFIED')) {
+    define('T_NAME_FULLY_QUALIFIED', -5);
+}
+
 if (function_exists('Swagger\scan') === false) {
     /**
      * Scan the filesystem for swagger annotations and build swagger-documentation.
