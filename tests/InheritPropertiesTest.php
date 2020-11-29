@@ -18,7 +18,7 @@ class InheritPropertiesTest extends SwaggerTestCase
     public function testInheritProperties()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/AnotherNamespace/Child.php');
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         $analysis->process([
@@ -46,7 +46,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         $analyser = new StaticAnalyser();
 
         // this class has docblocks
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/ChildWithDocBlocks.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/AnotherNamespace/ChildWithDocBlocks.php');
         // this one doesn't
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/AncestorWithoutDocBlocks.php'));
 

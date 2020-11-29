@@ -8,11 +8,8 @@ namespace SwaggerTests;
 
 class CommandlineInterfaceTest extends SwaggerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped();
-        }
         parent::setUp();
     }
 

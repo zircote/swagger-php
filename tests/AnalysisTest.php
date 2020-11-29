@@ -31,7 +31,7 @@ class AnalysisTest extends SwaggerTestCase
     public function testGetSubclasses()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/AnotherNamespace/Child.php');
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         
@@ -46,7 +46,7 @@ class AnalysisTest extends SwaggerTestCase
     public function testGetAncestorClasses()
     {
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/AnotherNamespace/Child.php');
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
         $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         

@@ -14,7 +14,7 @@ class AnalyserTest extends SwaggerTestCase
     public function testParseContents()
     {
         $annotations = $this->parseComment('@SWG\Parameter(description="This is my parameter")');
-        $this->assertInternalType('array', $annotations);
+        $this->assertIsArray($annotations);
         $parameter = $annotations[0];
         $this->assertInstanceOf('Swagger\Annotations\Parameter', $parameter);
         $this->assertSame('This is my parameter', $parameter->description);

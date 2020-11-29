@@ -56,9 +56,8 @@ class ValidateRelationsTest extends SwaggerTestCase
 
     /**
      * dataProvider for testExample
-     * @return array
      */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');

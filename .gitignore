@@ -3,4 +3,4 @@
 /bin/*
 !/bin/swagger
 /swagger.json
-
+.phpunit.result.cache
