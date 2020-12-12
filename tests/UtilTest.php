@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Util;
+use Symfony\Component\Finder\Finder;
 
 class UtilTest extends OpenApiTestCase
 {
@@ -35,5 +36,20 @@ class UtilTest extends OpenApiTestCase
     public function testRefDecode()
     {
         $this->assertSame('/blogs/{blog_id}/new~posts', Util::refDecode('~1blogs~1{blog_id}~1new~0posts'));
+    }
+
+    public function testFinder()
+    {
+        // Create a finder for one of the example directories that has a subdirectory.
+        $finder = (new Finder())->in(__DIR__.'/../Examples/using-traits');
+        $this->assertGreaterThan(0, iterator_count($finder), 'There should be at least a few files and a directory.');
+        $finder_array = \iterator_to_array($finder);
+        $directory_path = __DIR__.'/../Examples/using-traits/Decoration';
+        $this->assertArrayHasKey($directory_path, $finder_array, 'The directory should be a path in the finder.');
+        // Use the Util method that should set the finder to only find files, since swagger-php only needs files.
+        $finder_result = Util::finder($finder);
+        $this->assertGreaterThan(0, iterator_count($finder_result), 'There should be at least a few file paths.');
+        $finder_result_array = \iterator_to_array($finder_result);
+        $this->assertArrayNotHasKey($directory_path, $finder_result_array, 'The directory should not be a path in the finder.');
     }
 }
