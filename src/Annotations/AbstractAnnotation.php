@@ -396,7 +396,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 }
             }
         }
-        if (property_exists($this, 'ref') && $this->ref !== UNDEFINED) {
+        if (property_exists($this, 'ref') && $this->ref !== UNDEFINED && $this->ref !== null) {
             if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0 && $parents[0] instanceof OpenApi) {
                 // Internal reference
                 try {
