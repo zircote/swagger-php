@@ -68,7 +68,8 @@ class Util
     public static function finder($directory, $exclude = null, $pattern = null): Finder
     {
         if ($directory instanceof Finder) {
-            return $directory;
+            // Make sure that the provided Finder only finds files and follows symbolic links.
+            return $directory->files()->followLinks();
         } else {
             $finder = new Finder();
             $finder->sortByName();
