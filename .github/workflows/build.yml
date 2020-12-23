@@ -15,7 +15,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: '7.4'
 
       - uses: ramsey/composer-install@v1
         with:
@@ -41,10 +41,17 @@ jobs:
       - uses: actions/checkout@v2
         name: Checkout repository
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          coverage: pcov
 
       - name: Composer install
         uses: ramsey/composer-install@v1
