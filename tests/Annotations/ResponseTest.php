@@ -29,7 +29,7 @@ class ResponseTest extends OpenApiTestCase
     {
         $annotations = $this->parseComment(
             '@OA\Get(@OA\Response(response="'.$response.'", description="description"))',
-            $this->trackingLogger()
+            $this->getLogger(true)
         );
         /*
          * @see Annotations/Operation.php:187

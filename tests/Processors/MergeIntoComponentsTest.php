@@ -17,7 +17,7 @@ class MergeIntoComponentsTest extends OpenApiTestCase
 {
     public function testProcessor()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $openapi = new OpenApi([], $logger);
         $response = new Response(['response' => '2xx'], $logger);

@@ -15,7 +15,7 @@ class SerializerTest extends OpenApiTestCase
 {
     private function getExpected()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $path = new Annotations\PathItem([], $logger);
         $path->path = '/products';
@@ -74,7 +74,7 @@ class SerializerTest extends OpenApiTestCase
 
     public function testDeserializeAnnotation()
     {
-        $serializer = new Serializer($this->trackingLogger());
+        $serializer = new Serializer($this->getLogger());
 
         $json = <<<JSON
 {
@@ -150,7 +150,7 @@ JSON;
 
     public function testPetstoreExample()
     {
-        $serializer = new Serializer($this->trackingLogger());
+        $serializer = new Serializer($this->getLogger());
         $spec = __DIR__.'/../Examples/petstore.swagger.io/petstore.swagger.io.json';
         $openapi = $serializer->deserializeFile($spec);
         $this->assertInstanceOf(OpenApi::class, $openapi);
@@ -164,7 +164,7 @@ JSON;
      */
     public function testDeserializeAllOfProperty()
     {
-        $serializer = new Serializer($this->trackingLogger());
+        $serializer = new Serializer($this->getLogger());
         $json = <<<JSON
             {
             	"openapi": "3.0.0",

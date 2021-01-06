@@ -24,12 +24,12 @@ class AbstractAnnotationTest extends OpenApiTestCase
     public function testInvalidField()
     {
         $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');
-        $this->parseComment('@OA\Get(doesnot="exist")', $this->trackingLogger());
+        $this->parseComment('@OA\Get(doesnot="exist")', $this->getLogger(true));
     }
 
     public function testUmergedAnnotation()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger(true);
 
         $openapi = $this->createOpenApiWithInfo($logger);
         $openapi->merge($this->parseComment('@OA\Items()', $logger));
@@ -47,7 +47,7 @@ class AbstractAnnotationTest extends OpenApiTestCase
     @OA\Contact(name="second")
 )
 END;
-        $annotations = $this->parseComment($comment, $this->trackingLogger());
+        $annotations = $this->parseComment($comment, $this->getLogger(true));
         $this->assertOpenApiLogEntryContains('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
         $annotations[0]->validate();
     }
@@ -72,14 +72,14 @@ END;
     @OA\Header(header="X-CSRF-Token", @OA\Schema(type="string"), description="second")
 )
 END;
-        $annotations = $this->parseComment($comment, $this->trackingLogger());
+        $annotations = $this->parseComment($comment, $this->getLogger(true));
         $this->assertOpenApiLogEntryContains('Multiple @OA\Header() with the same header="X-CSRF-Token":');
         $annotations[0]->validate();
     }
 
     public function testRequiredFields()
     {
-        $annotations = $this->parseComment('@OA\Info()', $this->trackingLogger());
+        $annotations = $this->parseComment('@OA\Info()', $this->getLogger(true));
         $info = $annotations[0];
         $this->assertOpenApiLogEntryContains('Missing required field "title" for @OA\Info() in ');
         $this->assertOpenApiLogEntryContains('Missing required field "version" for @OA\Info() in ');
@@ -98,7 +98,7 @@ END;
     )
 )
 END;
-        $annotations = $this->parseComment($comment, $this->trackingLogger());
+        $annotations = $this->parseComment($comment, $this->getLogger(true));
         $parameter = $annotations[0];
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "cookie" in ');

@@ -111,7 +111,7 @@ class StaticAnalyserTest extends OpenApiTestCase
 
     public function testWrongCommentType()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger(true);
         $analyser = new StaticAnalyser($logger);
         $this->assertOpenApiLogEntryContains('Annotations are only parsed inside `/**` DocBlocks');
         $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context(['logger' => $logger]));
@@ -127,14 +127,14 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = ['OpenApi\\Annotations\\'];
-        $analyser = new StaticAnalyser($this->trackingLogger());
+        $analyser = new StaticAnalyser($this->getLogger());
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'AnotherNamespace\\Annotations\\';
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php', ['logger' => $this->trackingLogger()]);
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php', ['logger' => $this->getLogger()]);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
         Analyser::$whitelist = $backup;
@@ -151,7 +151,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new StaticAnalyser($this->trackingLogger());
+            $analyser = new StaticAnalyser($this->getLogger());
             $analyser->fromFile($this->fixtures('StaticAnalyser/php7.php')[0]);
             $this->assertNotNull($analyser);
         } catch (\Throwable $t) {

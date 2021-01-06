@@ -20,7 +20,7 @@ class BuildPathsTest extends OpenApiTestCase
 {
     public function testMergePathsWithSamePath()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $openapi = new OpenApi([], $logger);
         $openapi->paths = [
@@ -36,7 +36,7 @@ class BuildPathsTest extends OpenApiTestCase
 
     public function testMergeOperationsWithSamePath()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $openapi = new OpenApi([], $logger);
         $analysis = new Analysis([

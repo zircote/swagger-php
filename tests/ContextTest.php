@@ -12,7 +12,7 @@ class ContextTest extends OpenApiTestCase
 {
     public function testDetect()
     {
-        $context = Context::detect(0, $this->trackingLogger());
+        $context = Context::detect(0, $this->getLogger());
         $line = __LINE__ - 1;
         $this->assertSame('ContextTest', $context->class);
         $this->assertSame('\OpenApi\Tests\ContextTest', $context->fullyQualifiedName($context->class));
@@ -25,7 +25,7 @@ class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName()
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/Customer.php', ['logger' => $this->trackingLogger()]);
+        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/Customer.php', ['logger' => $this->getLogger(true)]);
         $context = $openapi->components->schemas[0]->_context;
 
         // resolve with namespace
@@ -51,7 +51,7 @@ class ContextTest extends OpenApiTestCase
      * @OA\Get(path="api/test1", @OA\Response(response="200", description="a response"))
      */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('A single line.', $singleLine->phpdocContent());
 
@@ -65,7 +65,7 @@ END,
  * @OA\Get(path="api/test1", @OA\Response(response="200", description="a response"))
  */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $multiline->phpdocContent());
 
@@ -77,7 +77,7 @@ END,
  * @OA\Get(path="api/test1", @OA\Response(response="200", description="a response"))
  */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('A single line spread across multiple lines.', $escapedLinebreak->phpdocContent());
     }
@@ -89,12 +89,12 @@ END,
     {
         $single = new Context([
             'comment' => '/** This is a single line DocComment. */',
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('This is a single line DocComment.', $single->phpdocContent());
         $multi = new Context([
             'comment' => "/**\n * This is a multi-line DocComment.\n */",
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('This is a multi-line DocComment.', $multi->phpdocContent());
 
@@ -105,7 +105,7 @@ END,
      * This is a description
      */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('This is a summary', $emptyWhiteline->phpdocSummary());
         $periodNewline = new Context(['comment' => <<<END
@@ -114,7 +114,7 @@ END,
      * This is a description
      */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertEquals('This is a summary.', $periodNewline->phpdocSummary());
         $multilineSummary = new Context(['comment' => <<<END
@@ -123,7 +123,7 @@ END,
      * but this is part of the summary
      */
 END,
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
     }
 }

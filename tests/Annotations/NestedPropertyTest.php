@@ -17,7 +17,7 @@ class NestedPropertyTest extends OpenApiTestCase
 {
     public function testNestedProperties()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures('NestedProperty.php');
         $analysis->process(new MergeIntoOpenApi($logger));

@@ -16,7 +16,7 @@ class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures('Customer.php');
         $analysis->process(new MergeIntoOpenApi($logger));
@@ -33,7 +33,7 @@ class AugmentSchemasTest extends OpenApiTestCase
 
     public function testAugmentSchemasForInterface()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures('CustomerInterface.php');
         $analysis->process(new MergeIntoOpenApi($logger));

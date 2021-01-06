@@ -26,7 +26,7 @@ class UtilTest extends OpenApiTestCase
                 'UsingRefs.php',
                 'UsingPhpDoc.php',
             ],
-            'logger' => $this->trackingLogger(),
+            'logger' => $this->getLogger(),
         ]);
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }

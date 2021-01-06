@@ -45,7 +45,7 @@ class OperationTest extends OpenApiTestCase
         // test with Get implementation...
         $operation = new OA\Get([
             'security' => $security,
-        ], $this->trackingLogger());
+        ], $this->getLogger());
         $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         $json = $operation->toJson($flags);
         $this->assertEquals($expected, $json);

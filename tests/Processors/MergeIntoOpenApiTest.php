@@ -17,7 +17,7 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
 {
     public function testProcessor()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $openapi = new OpenApi([], $logger);
         $info = new Info([], $logger);

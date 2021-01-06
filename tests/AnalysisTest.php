@@ -13,7 +13,7 @@ class AnalysisTest extends OpenApiTestCase
     public function testRegisterProcessor()
     {
         $counter = 0;
-        $analysis = new Analysis([], null, $this->trackingLogger());
+        $analysis = new Analysis([], null, $this->getLogger());
         $analysis->process();
         $this->assertSame(0, $counter);
         $countProcessor = function (Analysis $a) use (&$counter) {

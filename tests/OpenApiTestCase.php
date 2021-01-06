@@ -19,6 +19,7 @@ use OpenApi\StaticAnalyser;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -31,6 +32,7 @@ class OpenApiTestCase extends TestCase
         parent::setUp();
 
         // reset so processors get new loggers each run
+        // Hurray! for static
         foreach (Analysis::processors() as $processor) {
             Analysis::unregisterProcessor($processor);
         }
@@ -53,8 +55,20 @@ class OpenApiTestCase extends TestCase
         parent::tearDown();
     }
 
-    final public function trackingLogger(): LoggerInterface
+    final public function getLogger(bool $tracking = false): ?LoggerInterface
     {
+        if (!$tracking) {
+            // allow to test the default behaviour without injected PSR logger
+            switch (strtoupper($_ENV['NON_TRACKING_LOGGER'] ?? 'FALLBACK')) {
+                case 'NULL':
+                    return new NullLogger();
+                case 'FALLBACK':
+                default:
+                    // whatever is set up in Logger::$instance->log
+                    return null;
+            }
+        }
+
         return new class($this) extends AbstractLogger {
             protected $testCase;
 
@@ -157,7 +171,7 @@ class OpenApiTestCase extends TestCase
      */
     protected function parseComment($comment, ?LoggerInterface $logger = null)
     {
-        $logger = $logger ?: $this->trackingLogger();
+        $logger = $logger ?: $this->getLogger();
         $analyser = new Analyser(null, $logger);
         $context = Context::detect(1, $logger);
 
@@ -169,7 +183,7 @@ class OpenApiTestCase extends TestCase
      */
     protected function createOpenApiWithInfo(?LoggerInterface $logger = null)
     {
-        $logger = $logger ?: $this->trackingLogger();
+        $logger = $logger ?: $this->getLogger();
 
         return new OpenApi([
             'info' => new Info([
@@ -203,8 +217,8 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromFixtures($files): Analysis
     {
-        $analyser = new StaticAnalyser($this->trackingLogger());
-        $analysis = new Analysis([], null, $this->trackingLogger());
+        $analyser = new StaticAnalyser($this->getLogger());
+        $analysis = new Analysis([], null, $this->getLogger());
 
         foreach ((array) $files as $file) {
             $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0]));
@@ -215,17 +229,17 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser($this->trackingLogger()))
+        return (new StaticAnalyser($this->getLogger()))
             ->fromCode("<?php\n".$code, $context ?: new Context([
-                'logger' => $this->trackingLogger(),
+                'logger' => $this->getLogger(),
             ]));
     }
 
     public function analysisFromDockBlock($comment, ?Context $context = null)
     {
-        return (new Analyser(null, $this->trackingLogger()))
+        return (new Analyser(null, $this->getLogger()))
             ->fromComment($comment, $context ?: new Context([
-                'logger' => $this->trackingLogger(),
+                'logger' => $this->getLogger(),
             ]));
     }
 

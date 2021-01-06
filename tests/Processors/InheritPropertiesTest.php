@@ -27,14 +27,14 @@ class InheritPropertiesTest extends OpenApiTestCase
 {
     protected function validate(Analysis $analysis)
     {
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->trackingLogger());
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->trackingLogger())];
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->getLogger());
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->getLogger())];
         $analysis->validate();
     }
 
     public function testInheritProperties()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             'AnotherNamespace/Child.php',
@@ -72,7 +72,7 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithoutDocBlocks()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             // this class has docblocks
@@ -108,7 +108,7 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithAllOf()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -149,7 +149,7 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWithOutAllOf()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -188,7 +188,7 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testInheritPropertiesWitTwoChildSchemas()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -233,7 +233,7 @@ class InheritPropertiesTest extends OpenApiTestCase
      */
     public function testPreserveExistingAllOf()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures([
             'InheritProperties/BaseInterface.php',
@@ -254,8 +254,8 @@ class InheritPropertiesTest extends OpenApiTestCase
         ]);
         $this->validate($analysis);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->trackingLogger());
-        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->trackingLogger())];
+        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0'], $this->getLogger());
+        $analysis->openapi->paths = [new PathItem(['path' => '/test'], $this->getLogger())];
         $analysis->validate();
 
         /* @var Schema[] $schemas */

@@ -35,7 +35,7 @@ class GeneratorTest extends OpenApiTestCase
      */
     public function testScan(string $sourceDir, $sources)
     {
-        $openapi = (new Generator($this->trackingLogger()))
+        $openapi = (new Generator($this->getLogger()))
             ->scan($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);

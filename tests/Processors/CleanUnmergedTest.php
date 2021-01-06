@@ -31,7 +31,7 @@ class CleanUnmergedTest extends OpenApiTestCase
 )
 
 END;
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger(true);
 
         $analysis = new Analysis($this->parseComment($comment), null, $logger);
         $this->assertCount(4, $analysis->annotations);

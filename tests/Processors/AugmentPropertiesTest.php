@@ -21,7 +21,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures('Customer.php');
         $analysis->process(new MergeIntoOpenApi($logger));
@@ -124,7 +124,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
-        $logger = $this->trackingLogger();
+        $logger = $this->getLogger();
 
         $analysis = $this->analysisFromFixtures('TypedProperties.php');
         $analysis->process(new MergeIntoOpenApi($logger));
