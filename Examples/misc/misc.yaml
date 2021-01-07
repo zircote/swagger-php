@@ -25,7 +25,6 @@ paths:
                 properties:
                   type: { type: string }
                   color: { type: string }
-                type: object
       responses:
         '200':
           description: Success
