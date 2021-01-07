@@ -354,7 +354,7 @@ class StaticAnalyser
                             $imports[strtolower($alias)] = $target;
                         } else {
                             foreach (Analyser::$whitelist as $namespace) {
-                                if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
+                                if (strcasecmp(substr($target.'\\', 0, strlen($namespace)), $namespace) === 0) {
                                     $imports[strtolower($alias)] = $target;
                                     break;
                                 }
