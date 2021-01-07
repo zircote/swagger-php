@@ -89,7 +89,7 @@ class Serializer
      *
      * @return OA\AbstractAnnotation
      */
-    public function deserializeFile(string $filename, string $className = 'OpenApi\Annotations\OpenApi')
+    public function deserializeFile(string $filename, string $className = OA\OpenApi::class)
     {
         if (!$this->isValidAnnotationClass($className)) {
             throw new \Exception($className.' is not defined in OpenApi PHP Annotations');

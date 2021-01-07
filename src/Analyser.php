@@ -13,14 +13,14 @@ if (class_exists(AnnotationRegistry::class, true)) {
     AnnotationRegistry::registerLoader(
         function (string $class): bool {
             if (Analyser::$whitelist === false) {
-                $whitelist = ['OpenApi\Annotations\\'];
+                $whitelist = ['OpenApi\\Annotations\\'];
             } else {
                 $whitelist = Analyser::$whitelist;
             }
             foreach ($whitelist as $namespace) {
                 if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
                     $loaded = class_exists($class);
-                    if (!$loaded && $namespace === 'OpenApi\Annotations\\') {
+                    if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
                         if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
                             // Detected an 2.x annotation?
                             throw new \Exception('The annotation @SWG\\'.substr($class, 20).'() is deprecated. Found in '.Analyser::$context."\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
@@ -47,12 +47,12 @@ class Analyser
      *
      * @var array|false
      */
-    public static $whitelist = ['OpenApi\Annotations\\'];
+    public static $whitelist = ['OpenApi\\Annotations\\'];
 
     /**
      * Use @OA\* for OpenAPI annotations (unless overwritten by a use statement).
      */
-    public static $defaultImports = ['oa' => 'OpenApi\Annotations'];
+    public static $defaultImports = ['oa' => 'OpenApi\\Annotations'];
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.

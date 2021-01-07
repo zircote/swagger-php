@@ -51,7 +51,7 @@ class Items extends Schema
 
         $parent = end($parents);
         if ($parent instanceof Schema && $parent->type !== 'array') {
-            Logger::notice('@OA\Items() parent type must be "array" in '.$this->_context);
+            Logger::notice('@OA\\Items() parent type must be "array" in '.$this->_context);
             $valid = false;
         }
 

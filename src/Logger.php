@@ -79,7 +79,7 @@ class Logger
     {
         $short = [];
         foreach ((array) $classes as $class) {
-            $short[] = '@'.str_replace('OpenApi\Annotations\\', 'OA\\', $class);
+            $short[] = '@'.str_replace('OpenApi\\Annotations\\', 'OA\\', $class);
         }
 
         return is_array($classes) ? $short : array_pop($short);
