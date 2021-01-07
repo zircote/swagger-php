@@ -70,6 +70,7 @@
       "phpstan analyze --level=3 src | grep -v 'does not accept default value of type string'",
       "psalm"
     ],
+    "validate-examples": "for ff in `find Examples -name *.yaml`; do spectral lint $ff; done",
     "docs": "./docs/node_modules/.bin/vuepress dev docs/",
     "deploy_docs": "./docs/node_modules/.bin/vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
   }
