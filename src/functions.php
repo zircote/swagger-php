@@ -9,13 +9,13 @@ namespace OpenApi;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
 
-if (defined('OpenApi\UNDEFINED') === false) {
+if (defined('OpenApi\\UNDEFINED') === false) {
     /*
      * Special value to differentiate between null and undefined.
      */
-    define('OpenApi\UNDEFINED', '@OA\UNDEFINED🙈');
-    define('OpenApi\Annotations\UNDEFINED', UNDEFINED);
-    define('OpenApi\Processors\UNDEFINED', UNDEFINED);
+    define('OpenApi\\UNDEFINED', '@OA\\UNDEFINED🙈');
+    define('OpenApi\\Annotations\\UNDEFINED', UNDEFINED);
+    define('OpenApi\\Processors\\UNDEFINED', UNDEFINED);
 }
 
 // PHP 8.0
@@ -26,7 +26,7 @@ if (!defined('T_NAME_FULLY_QUALIFIED')) {
     define('T_NAME_FULLY_QUALIFIED', -5);
 }
 
-if (function_exists('OpenApi\scan') === false) {
+if (!function_exists('OpenApi\\scan')) {
     /**
      * Scan the filesystem for OpenAPI annotations and build openapi-documentation.
      *

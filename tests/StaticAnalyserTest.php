@@ -124,14 +124,14 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testThirdPartyAnnotations()
     {
         $backup = Analyser::$whitelist;
-        Analyser::$whitelist = ['OpenApi\Annotations\\'];
+        Analyser::$whitelist = ['OpenApi\\Annotations\\'];
         $analyser = new StaticAnalyser();
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
-        Analyser::$whitelist[] = 'AnotherNamespace\Annotations';
+        Analyser::$whitelist[] = 'AnotherNamespace\\Annotations\\';
         $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
