@@ -28,12 +28,6 @@ class Generator
     /** @var null|callable[] List of configured processors. */
     protected $processors = null;
 
-    /** @var null|array Annotation namespace whitelist. */
-    protected $namespaceWhitelist = null;
-
-    /** @var null|array Annotation namespace aliases. */
-    protected $namespaceAliases = null;
-
     /** @var LoggerInterface The configured logger. */
     protected $logger;
 
@@ -68,30 +62,6 @@ class Generator
     public function setProcessors(?array $processors): Generator
     {
         $this->processors = $processors;
-
-        return $this;
-    }
-
-    public function getNamespaceWhitelist(): ?array
-    {
-        return null !== $this->namespaceWhitelist ? $this->namespaceWhitelist : Analyser::$whitelist;
-    }
-
-    public function setNamespaceWhitelist(?array $namespaceWhitelist): Generator
-    {
-        $this->namespaceWhitelist = $namespaceWhitelist;
-
-        return $this;
-    }
-
-    public function getNamespaceAliases(): ?array
-    {
-        return null !== $this->namespaceAliases ? $this->namespaceAliases : Analyser::$defaultImports;
-    }
-
-    public function setNamespaceAliases(?array $namespaceAliases): Generator
-    {
-        $this->namespaceAliases = $namespaceAliases;
 
         return $this;
     }
