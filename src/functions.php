@@ -13,23 +13,9 @@ if (defined('OpenApi\\UNDEFINED') === false) {
     /*
      * Special value to differentiate between null and undefined.
      */
-<<<<<<< HEAD
-    define('OpenApi\\UNDEFINED', '@OA\\UNDEFINED🙈');
-    define('OpenApi\\Annotations\\UNDEFINED', UNDEFINED);
-    define('OpenApi\\Processors\\UNDEFINED', UNDEFINED);
-}
-
-// PHP 8.0
-if (!defined('T_NAME_QUALIFIED')) {
-    define('T_NAME_QUALIFIED', -4);
-}
-if (!defined('T_NAME_FULLY_QUALIFIED')) {
-    define('T_NAME_FULLY_QUALIFIED', -5);
-=======
-    define('OpenApi\UNDEFINED', Generator::UNDEFINED);
-    define('OpenApi\Annotations\UNDEFINED', Generator::UNDEFINED);
-    define('OpenApi\Processors\UNDEFINED', Generator::UNDEFINED);
->>>>>>> Add OO version of `\OpenApi\scan()`
+    define('OpenApi\\UNDEFINED', Generator::UNDEFINED);
+    define('OpenApi\\Annotations\\UNDEFINED', Generator::UNDEFINED);
+    define('OpenApi\\Processors\\UNDEFINED', Generator::UNDEFINED);
 }
 
 if (!function_exists('OpenApi\\scan')) {
