@@ -71,7 +71,7 @@ class Generator
      *
      * @param iterable $sources filenames (`string`) or \SplFileInfo
      */
-    public function scan(iterable $sources, bool $validate = true, ?Analysis $analysis = null): OpenApi
+    public function scan(iterable $sources, ?Analysis $analysis = null, bool $validate = true): OpenApi
     {
         // preserve originals
         $whitelist = Analyser::$whitelist;

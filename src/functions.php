@@ -45,6 +45,6 @@ if (!function_exists('OpenApi\\scan')) {
         return (new Generator($logger))
             ->setAnalyser($analyser)
             ->setProcessors($processors)
-            ->scan(Util::finder($directory, $exclude, $pattern), true, $analysis);
+            ->scan(Util::finder($directory, $exclude, $pattern), $analysis);
     }
 }
