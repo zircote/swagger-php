@@ -58,18 +58,3 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml.dist
           args: --coverage-text
-
-      - name: Cache security checker dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.symfony/cache
-          key: security-checker-db
-
-      - name: Composer install no-dev
-        uses: ramsey/composer-install@v1
-        with:
-          dependency-versions: ${{ matrix.dependencies }}
-          composer-options: ${{ matrix.composer-options }} --no-dev
-
-      - uses: symfonycorp/security-checker-action@v2
-        id: security-checker
