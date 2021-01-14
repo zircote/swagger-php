@@ -40,11 +40,17 @@ jobs:
       - uses: actions/checkout@v2
         name: Checkout repository
 
-      - name: Cache dependencies
+      - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
           path: ~/.composer/cache/files
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: composer-dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Cache security checker dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.symfony/cache
+          key: security-checker-db
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -64,3 +70,10 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml.dist
           args: --coverage-text
+
+      - uses: symfonycorp/security-checker-action@v2
+        with:
+          disable-exit-code: 1
+        id: security-checker
+      - name: Display security-checker vulnerabilities as JSON
+        run: echo ${{ steps.security-checker.outputs.vulns }}
