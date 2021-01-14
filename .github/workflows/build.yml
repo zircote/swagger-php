@@ -72,6 +72,4 @@ jobs:
           composer-options: ${{ matrix.composer-options }} --no-dev
 
       - uses: symfonycorp/security-checker-action@v2
-        with:
-          disable-exit-code: 1
         id: security-checker
