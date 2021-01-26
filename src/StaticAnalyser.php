@@ -21,11 +21,16 @@ if (!defined('T_NAME_FULLY_QUALIFIED')) {
  */
 class StaticAnalyser
 {
+
+    /** @var Analyser The doc block parser. */
+    protected $analyser;
+
     /** @var LoggerInterface A logger. */
     protected $logger;
 
-    public function __construct(?LoggerInterface $logger = null)
+    public function __construct(?Analyser $analyser = null, ?LoggerInterface $logger = null)
     {
+        $this->analyser = $analyser;
         $this->logger = $logger ?: Logger::psrInstance();
     }
 
@@ -71,7 +76,7 @@ class StaticAnalyser
      */
     protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
-        $analyser = new Analyser(null, $this->logger);
+        $analyser = $this->analyser ?: new Analyser(null, $this->logger);
         $analysis = new Analysis([], null, $this->logger);
 
         reset($tokens);

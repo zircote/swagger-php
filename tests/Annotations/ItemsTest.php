@@ -33,7 +33,7 @@ class ItemsTest extends OpenApiTestCase
 
     public function testRefDefinitionInProperty()
     {
-        $analyser = new StaticAnalyser($this->getLogger());
+        $analyser = new StaticAnalyser(null, $this->getLogger());
         $analysis = $analyser->fromFile($this->fixtures('UsingVar.php')[0]);
         $analysis->process();
 

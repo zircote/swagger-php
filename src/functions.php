@@ -36,7 +36,7 @@ if (!function_exists('OpenApi\\scan')) {
     function scan($directory, $options = [])
     {
         $logger = array_key_exists('logger', $options) ? $options['logger'] : Logger::psrInstance();
-        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser($logger);
+        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser(null, $logger);
         $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis([], null, $logger);
         $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors($logger);
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;

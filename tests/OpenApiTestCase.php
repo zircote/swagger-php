@@ -217,7 +217,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromFixtures($files): Analysis
     {
-        $analyser = new StaticAnalyser($this->getLogger());
+        $analyser = new StaticAnalyser(null, $this->getLogger());
         $analysis = new Analysis([], null, $this->getLogger());
 
         foreach ((array) $files as $file) {
@@ -229,7 +229,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser($this->getLogger()))
+        return (new StaticAnalyser(null, $this->getLogger()))
             ->fromCode("<?php\n".$code, $context ?: new Context([
                 'logger' => $this->getLogger(),
             ]));

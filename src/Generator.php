@@ -38,7 +38,7 @@ class Generator
 
     public function getAnalyser(): StaticAnalyser
     {
-        return $this->analyser ?: new StaticAnalyser($this->logger);
+        return $this->analyser ?: new StaticAnalyser(null, $this->logger);
     }
 
     public function setAnalyser(StaticAnalyser $analyser): Generator

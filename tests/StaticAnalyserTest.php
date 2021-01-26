@@ -112,7 +112,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testWrongCommentType()
     {
         $logger = $this->getLogger(true);
-        $analyser = new StaticAnalyser($logger);
+        $analyser = new StaticAnalyser(null, $logger);
         $this->assertOpenApiLogEntryContains('Annotations are only parsed inside `/**` DocBlocks');
         $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context(['logger' => $logger]));
     }
@@ -127,7 +127,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = ['OpenApi\\Annotations\\'];
-        $analyser = new StaticAnalyser($this->getLogger());
+        $analyser = new StaticAnalyser(null, $this->getLogger());
         $defaultAnalysis = $analyser->fromFile(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
@@ -151,7 +151,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new StaticAnalyser($this->getLogger());
+            $analyser = new StaticAnalyser(null, $this->getLogger());
             $analyser->fromFile($this->fixtures('StaticAnalyser/php7.php')[0]);
             $this->assertNotNull($analyser);
         } catch (\Throwable $t) {
