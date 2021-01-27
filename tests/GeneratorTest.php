@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analyser\DocBlockParser;
 use OpenApi\Generator;
 use OpenApi\Util;
 
@@ -39,5 +40,15 @@ class GeneratorTest extends OpenApiTestCase
             ->scan($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
+    }
+
+    public function testDeprecatedAnnotationWarning()
+    {
+        $logger = $this->getLogger(true);
+        $generator = (new Generator($logger))
+            ->setAliases(['swg' => 'OpenApi\Annotations']);
+        $this->assertOpenApiLogEntryContains('The annotation @SWG\Definition() is deprecated.');
+
+        $this->parseComment('@SWG\Definition()', $logger, new DocBlockParser($generator->getAliases(), $logger));
     }
 }

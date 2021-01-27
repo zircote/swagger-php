@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 // PHP 8.0
+use OpenApi\Analyser\DocBlockParser;
 use Psr\Log\LoggerInterface;
 
 if (!defined('T_NAME_QUALIFIED')) {
@@ -22,15 +23,15 @@ if (!defined('T_NAME_FULLY_QUALIFIED')) {
 class StaticAnalyser
 {
 
-    /** @var Analyser The doc block parser. */
-    protected $analyser;
+    /** @var DocBlockParser The doc block parser. */
+    protected $docBlockParser;
 
     /** @var LoggerInterface A logger. */
     protected $logger;
 
-    public function __construct(?Analyser $analyser = null, ?LoggerInterface $logger = null)
+    public function __construct(?DocBlockParser $docBlockParser = null, ?LoggerInterface $logger = null)
     {
-        $this->analyser = $analyser;
+        $this->docBlockParser = $docBlockParser;
         $this->logger = $logger ?: Logger::psrInstance();
     }
 
@@ -76,7 +77,7 @@ class StaticAnalyser
      */
     protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
-        $analyser = $this->analyser ?: new Analyser(null, $this->logger);
+        $docBlockParser = $this->docBlockParser ?: new DocBlockParser(Analyser::$defaultImports, $this->logger);
         $analysis = new Analysis([], null, $this->logger);
 
         reset($tokens);
@@ -114,7 +115,7 @@ class StaticAnalyser
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) {
                     // 2 Doc-comments in succession?
-                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
+                    $this->analyseComment($analysis, $docBlockParser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
                 }
                 $comment = $token[1];
                 $line = $token[2] + $lineOffset;
@@ -174,7 +175,7 @@ class StaticAnalyser
 
                 if ($comment) {
                     $schemaContext->line = $line;
-                    $this->analyseComment($analysis, $analyser, $comment, $schemaContext);
+                    $this->analyseComment($analysis, $docBlockParser, $comment, $schemaContext);
                     $comment = false;
                     continue;
                 }
@@ -208,7 +209,7 @@ class StaticAnalyser
 
                 if ($comment) {
                     $schemaContext->line = $line;
-                    $this->analyseComment($analysis, $analyser, $comment, $schemaContext);
+                    $this->analyseComment($analysis, $docBlockParser, $comment, $schemaContext);
                     $comment = false;
                     continue;
                 }
@@ -234,7 +235,7 @@ class StaticAnalyser
 
                 if ($comment) {
                     $schemaContext->line = $line;
-                    $this->analyseComment($analysis, $analyser, $comment, $schemaContext);
+                    $this->analyseComment($analysis, $docBlockParser, $comment, $schemaContext);
                     $comment = false;
                     continue;
                 }
@@ -263,7 +264,7 @@ class StaticAnalyser
                         $traitDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
                     if ($comment) {
-                        $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
+                        $this->analyseComment($analysis, $docBlockParser, $comment, $propertyContext);
                         $comment = false;
                     }
                     continue;
@@ -295,7 +296,7 @@ class StaticAnalyser
                         $traitDefinition['properties'][$propertyContext->property] = $propertyContext;
                     }
                     if ($comment) {
-                        $this->analyseComment($analysis, $analyser, $comment, $propertyContext);
+                        $this->analyseComment($analysis, $docBlockParser, $comment, $propertyContext);
                         $comment = false;
                     }
                 } elseif ($token[0] === T_FUNCTION) {
@@ -320,7 +321,7 @@ class StaticAnalyser
                             $traitDefinition['methods'][$token[1]] = $methodContext;
                         }
                         if ($comment) {
-                            $this->analyseComment($analysis, $analyser, $comment, $methodContext);
+                            $this->analyseComment($analysis, $docBlockParser, $comment, $methodContext);
                             $comment = false;
                         }
                     }
@@ -348,7 +349,7 @@ class StaticAnalyser
                         $traitDefinition['methods'][$token[1]] = $methodContext;
                     }
                     if ($comment) {
-                        $this->analyseComment($analysis, $analyser, $comment, $methodContext);
+                        $this->analyseComment($analysis, $docBlockParser, $comment, $methodContext);
                         $comment = false;
                     }
                 }
@@ -358,7 +359,7 @@ class StaticAnalyser
                 // Skip "use" & "namespace" to prevent "never imported" warnings)
                 if ($comment) {
                     // Not a doc-comment for a class, property or method?
-                    $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
+                    $this->analyseComment($analysis, $docBlockParser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
                     $comment = false;
                 }
             }
@@ -366,7 +367,7 @@ class StaticAnalyser
             if ($token[0] === T_NAMESPACE) {
                 $parseContext->namespace = $this->parseNamespace($tokens, $token, $parseContext);
                 $imports['__NAMESPACE__'] = $parseContext->namespace;
-                $analyser->docParser->setImports($imports);
+                $docBlockParser->docParser->setImports($imports);
                 continue;
             }
 
@@ -393,7 +394,7 @@ class StaticAnalyser
                                 }
                             }
                         }
-                        $analyser->docParser->setImports($imports);
+                        $docBlockParser->docParser->setImports($imports);
                     }
                 }
             }
@@ -401,7 +402,7 @@ class StaticAnalyser
 
         // cleanup final comment and definition
         if ($comment) {
-            $this->analyseComment($analysis, $analyser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
+            $this->analyseComment($analysis, $docBlockParser, $comment, new Context(['line' => $line, 'logger' => $this->logger], $schemaContext));
         }
         if ($classDefinition) {
             $analysis->addClassDefinition($classDefinition);
@@ -419,7 +420,7 @@ class StaticAnalyser
     /**
      * Parse comment and add annotations to analysis.
      */
-    private function analyseComment(Analysis $analysis, Analyser $analyser, string $comment, Context $context): void
+    private function analyseComment(Analysis $analysis, DocBlockParser $analyser, string $comment, Context $context): void
     {
         $analysis->addAnnotations($analyser->fromComment($comment, $context), $context);
     }

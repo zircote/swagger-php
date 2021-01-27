@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use OpenApi\Analyser\DocBlockParser;
 use OpenApi\Annotations\OpenApi;
 use Psr\Log\LoggerInterface;
 
@@ -16,11 +18,19 @@ use Psr\Log\LoggerInterface;
  *
  * This is an object oriented alternative to using the `\OpenApi\scan()` function and static class properties
  * of the `Analyzer` and `Analysis` classes.
+ *
+ * The `aliases` property supersedes the `Analyser::$defaultImports`; `namespaces` maps to `Analysis::$whitelist`.
  */
 class Generator
 {
     /** @var string Special value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\UNDEFINED🙈';
+
+    /** @var array Map of namespace aliases to be supported by doctrine. */
+    protected $aliases = null;
+
+    /** @var array List of annotation namespaces to be autoloaded by doctrine. */
+    protected $namespaces = null;
 
     /** @var StaticAnalyser The configured analyzer. */
     protected $analyser;
@@ -34,11 +44,65 @@ class Generator
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger ?: Logger::psrInstance();
+
+        if (class_exists(AnnotationRegistry::class, true)) {
+            $self = $this;
+            AnnotationRegistry::registerLoader(
+                function (string $class) use ($self): bool {
+                    foreach ($self->getNamespaces() as $namespace) {
+                        if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
+                            $loaded = class_exists($class);
+                            if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
+                                if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
+                                    // Detected an 2.x annotation?
+                                    throw new OpenApiException('The annotation @SWG\\'.substr($class, 20).'() is deprecated. Found in '.Analyser::$context."\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                                }
+                            }
+
+                            return $loaded;
+                        }
+                    }
+
+                    return false;
+                }
+            );
+        }
+    }
+
+    public function getAliases(): array
+    {
+        $aliases = null !== $this->aliases ? $this->aliases : Analyser::$defaultImports;
+        $aliases['oa'] = 'OpenApi\\Annotations';
+
+        return $aliases;
+    }
+
+    public function setAliases(array $aliases): Generator
+    {
+        $this->aliases = $aliases;
+
+        return $this;
+    }
+
+    public function getNamespaces(): array
+    {
+        $namespaces = null !== $this->namespaces ? $this->namespaces : Analyser::$whitelist;
+        $namespaces = false !== $namespaces ? $namespaces : [];
+        $namespaces[] = 'OpenApi\\Annotations\\';
+
+        return $namespaces;
+    }
+
+    public function setNamespaces(array $namespaces): Generator
+    {
+        $this->namespaces = $namespaces;
+
+        return $this;
     }
 
     public function getAnalyser(): StaticAnalyser
     {
-        return $this->analyser ?: new StaticAnalyser(null, $this->logger);
+        return $this->analyser ?: new StaticAnalyser(new DocBlockParser($this->getAliases(), $this->logger), $this->logger);
     }
 
     public function setAnalyser(StaticAnalyser $analyser): Generator
@@ -73,22 +137,12 @@ class Generator
      */
     public function scan(iterable $sources, ?Analysis $analysis = null, bool $validate = true): OpenApi
     {
-        // preserve originals
-        $whitelist = Analyser::$whitelist;
-        $defaultImports = Analyser::$defaultImports;
+        $analysis = $analysis ?: new Analysis([], null, $this->logger);
 
-        try {
-            $analysis = $analysis ?: new Analysis([], null, $this->logger);
+        $this->scanSources($sources, $analysis);
 
-            $this->scanSources($sources, $analysis);
-
-            // post processing
-            $analysis->process($this->getProcessors());
-        } finally {
-            // restore originals
-            Analyser::$whitelist = $whitelist;
-            Analyser::$defaultImports = $defaultImports;
-        }
+        // post processing
+        $analysis->process($this->getProcessors());
 
         // validation
         if ($validate) {
@@ -98,7 +152,7 @@ class Generator
         return $analysis->openapi;
     }
 
-    public function scanSources(iterable $sources, Analysis $analysis): void
+    protected function scanSources(iterable $sources, Analysis $analysis): void
     {
         $analyser = $this->getAnalyser();
         foreach ($sources as $source) {

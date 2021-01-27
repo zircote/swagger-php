@@ -9,6 +9,7 @@ namespace OpenApi\Tests;
 use DirectoryIterator;
 use Exception;
 use OpenApi\Analyser;
+use OpenApi\Analyser\DocBlockParser;
 use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Info;
@@ -169,13 +170,13 @@ class OpenApiTestCase extends TestCase
      *
      * @return AbstractAnnotation[]
      */
-    protected function parseComment($comment, ?LoggerInterface $logger = null)
+    protected function parseComment($comment, ?LoggerInterface $logger = null, ?DocBlockParser $docBlockParser = null)
     {
         $logger = $logger ?: $this->getLogger();
-        $analyser = new Analyser(null, $logger);
+        $docBlockParser = $docBlockParser ?: new DocBlockParser(Analyser::$defaultImports, $logger);
         $context = Context::detect(1, $logger);
 
-        return $analyser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
+        return $docBlockParser->fromComment("<?php\n/**\n * ".implode("\n * ", explode("\n", $comment))."\n*/", $context);
     }
 
     /**
@@ -237,7 +238,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromDockBlock($comment, ?Context $context = null)
     {
-        return (new Analyser(null, $this->getLogger()))
+        return (new DocBlockParser(Analyser::$defaultImports, $this->getLogger()))
             ->fromComment($comment, $context ?: new Context([
                 'logger' => $this->getLogger(),
             ]));
