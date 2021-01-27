@@ -88,7 +88,7 @@ class Serializer
         $logger = $logger ?: ($this->logger ?: Logger::psrInstance());
 
         if (!$this->isValidAnnotationClass($className)) {
-            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
+            throw new OpenApiException($className.' is not defined in OpenApi PHP Annotations');
         }
 
         return $this->doDeserialize(json_decode($jsonString), $className, $logger);
@@ -104,7 +104,7 @@ class Serializer
         $logger = $logger ?: ($this->logger ?: Logger::psrInstance());
 
         if (!$this->isValidAnnotationClass($className)) {
-            throw new \Exception($className.' is not defined in OpenApi PHP Annotations');
+            throw new OpenApiException($className.' is not defined in OpenApi PHP Annotations');
         }
 
         return $this->doDeserialize(json_decode(file_get_contents($filename)), $className, $logger);

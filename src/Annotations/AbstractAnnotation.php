@@ -9,6 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Analyser;
 use OpenApi\Context;
 use OpenApi\Logger;
+use OpenApi\OpenApiException;
 use OpenApi\Util;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -452,7 +453,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     $this->logger->notice($this->identity().'->'.$property.' "'.$value.'" is invalid, expecting "'.implode('", "', $type).'" in '.$this->_context);
                 }
             } else {
-                throw new \Exception('Invalid '.get_class($this).'::$_types['.$property.']');
+                throw new OpenApiException('Invalid '.get_class($this).'::$_types['.$property.']');
             }
         }
         $parents[] = $this;
@@ -613,7 +614,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             case 'scheme':
                 return in_array($value, ['http', 'https', 'ws', 'wss'], true);
             default:
-                throw new \Exception('Invalid type "'.$type.'"');
+                throw new OpenApiException('Invalid type "'.$type.'"');
         }
     }
 

@@ -363,14 +363,14 @@ class Analysis
             return $annotation->_context;
         }
         if ($this->annotations->contains($annotation) === false) {
-            throw new \Exception('Annotation not found');
+            throw new OpenApiException('Annotation not found');
         }
         $context = $this->annotations[$annotation];
         if ($context instanceof Context) {
             return $context;
         }
         // Weird, did you use the addAnnotation/addAnnotations methods?
-        throw new \Exception('Annotation has no context');
+        throw new OpenApiExceptionn('Annotation has no context');
     }
 
     /**
@@ -379,7 +379,7 @@ class Analysis
     public function merged(): Analysis
     {
         if ($this->openapi === null) {
-            throw new \Exception('No openapi target set. Run the MergeIntoOpenApi processor');
+            throw new OpenApiException('No openapi target set. Run the MergeIntoOpenApi processor');
         }
         $unmerged = $this->openapi->_unmerged;
         $this->openapi->_unmerged = [];
@@ -486,7 +486,7 @@ class Analysis
         $processors = &self::processors();
         $key = array_search($processor, $processors, true);
         if ($key === false) {
-            throw new \Exception('Given processor was not registered');
+            throw new OpenApiException('Given processor was not registered');
         }
         unset($processors[$key]);
     }
