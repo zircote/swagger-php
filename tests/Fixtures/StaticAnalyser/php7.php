@@ -1,33 +1,31 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi\Tests\Fixtures;
+namespace OpenApi\Tests\Fixtures\StaticAnalyser;
 
-$o = new class
+interface foo
 {
+}
+
+$o = new class {
     public function foo()
     {
     }
 };
 
-$o = new class extends stdClass
-{
+$o = new class extends \stdClass {
 };
 
-$o = new class implements foo
-{
+$o = new class implements foo {
 };
 
-$o = new class()
-{
+$o = new class() {
     public function foo()
     {
     }
 };
 
-$o = new class() extends stdClass
-{
+$o = new class() extends \stdClass {
 };
 
-$o = new class() implements foo
-{
+$o = new class() implements foo {
 };

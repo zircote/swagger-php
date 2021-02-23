@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace OpenApi\Tests\Fixtures\StaticAnalyser;
+
 //
 // Allow indentation with tab(s).
 //

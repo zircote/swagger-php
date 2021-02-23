@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analyser;
+use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\StaticAnalyser;
@@ -227,5 +228,21 @@ class StaticAnalyserTest extends OpenApiTestCase
 
         $this->assertCount(1, $schemas);
         $this->assertEquals(User::CONSTANT, $schemas[0]->example);
+    }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testPhp8AttributeMix()
+    {
+        $analysis = $this->analysisFromFixtures('StaticAnalyser/Php8AttrMix.php');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
+        $this->assertCount(1, $schemas);
+        $analysis->process();
+        $properties = $analysis->getAnnotationsOfType(Property::class, true);
+        $this->assertCount(2, $properties);
+        $this->assertEquals('id', $properties[0]->property);
+        $this->assertEquals('otherId', $properties[1]->property);
     }
 }
