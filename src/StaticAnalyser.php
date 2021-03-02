@@ -82,6 +82,12 @@ class StaticAnalyser
                 continue;
             }
 
+            if ($token[0] === T_ATTRIBUTE) {
+                // consume
+                $this->parseAttribute($tokens, $token, $parseContext);
+                continue;
+            }
+
             if ($token[0] === T_DOC_COMMENT) {
                 if ($comment) {
                     // 2 Doc-comments in succession?
@@ -417,6 +423,25 @@ class StaticAnalyser
             }
 
             return $token;
+        }
+    }
+
+    private function parseAttribute(array &$tokens, &$token, Context $parseContext): void
+    {
+        $nesting = 1;
+        while ($token !== false) {
+            $token = $this->nextToken($tokens, $parseContext);
+            if (!is_array($token) && '[' === $token) {
+                ++$nesting;
+                continue;
+            }
+
+            if (!is_array($token) && ']' === $token) {
+                --$nesting;
+                if (!$nesting) {
+                    break;
+                }
+            }
         }
     }
 
