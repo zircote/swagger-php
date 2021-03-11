@@ -16,7 +16,8 @@ sidebar: false
 | [openapi-router][8]           | Configure framework routes from OpenApi annotations       |
 | [openapi-verifier][9]         | Verify response against OpenAPI specification in PHPUnit  |
 | [openapi-filter][10]          | Filter internal paths, operations, parameters, etc        |
-| [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations      |
+| [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations       |
+| [Swag It PHP][12]             | Convert JSON to PHP Swagger annotations                   |
 
 Is a related project missing? Create a pull request!
 
@@ -31,3 +32,4 @@ Is a related project missing? Create a pull request!
 [9]: https://github.com/DerManoMann/openapi-verifier
 [10]: https://github.com/Mermade/openapi-filter
 [11]: https://github.com/Tobion/OpenAPI-Symfony-Routing
+[12]: https://kizu514.com/swagit.php
