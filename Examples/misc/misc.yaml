@@ -29,6 +29,9 @@ paths:
       responses:
         '200':
           description: Success
+      security:
+        -
+          bearerAuth: []
 components:
   responses:
     '200':
@@ -54,3 +57,10 @@ components:
               summary: ''
               value:
                 name: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  -
+    bearerAuth: []

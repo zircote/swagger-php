@@ -1,22 +1,25 @@
 <?php
 /**
+ * @OA\OpenApi(
+ *    security={{"bearerAuth": {}}}
+ * )
+ *
+ * @OA\Components(
+ *     @OA\SecurityScheme(
+ *         securityScheme="bearerAuth",
+ *         type="http",
+ *         scheme="bearer",
+ *     )
+ * )
+ */
+
+/**
  * @OA\Info(
  *   title="Testing annotations from bugreports",
  *    version="1.0.0"
  * )
  */
 
-/**
- * @OA\Get(
- *   path="/api/endpoint",
- *   @OA\Parameter(name="filter",in="query", @OA\JsonContent(
- *      @OA\Property(property="type", type="string"),
- *      @OA\Property(property="color", type="string"),
- *   )),
- *   @OA\Response(response=200, description="Success")
- * )
- */
-  
 /**
  * @OA\Server(
  *      url="{schema}://host.dev",
@@ -29,6 +32,18 @@
  * )
  */
 
+/**
+ * @OA\Get(
+ *   path="/api/endpoint",
+ *   @OA\Parameter(name="filter",in="query", @OA\JsonContent(
+ *      @OA\Property(property="type", type="string"),
+ *      @OA\Property(property="color", type="string"),
+ *   )),
+ *   security={{ "bearerAuth":{} }},
+ *   @OA\Response(response=200, description="Success")
+ * )
+ */
+  
 /**
  * @OA\Response(
  *     response=200,
