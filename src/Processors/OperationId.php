@@ -27,13 +27,14 @@ class OperationId
                 $source = $context->class ?? $context->interface ?? $context->trait;
                 if ($source) {
                     if ($context->namespace) {
-                        $operation->operationId = $context->namespace.'\\'.$source.'::'.$context->method;
+                        $operationId = $context->namespace.'\\'.$source.'::'.$context->method;
                     } else {
-                        $operation->operationId = $source.'::'.$context->method;
+                        $operationId = $source.'::'.$context->method;
                     }
                 } else {
-                    $operation->operationId = $context->method;
+                    $operationId = $context->method;
                 }
+                $operation->operationId = \md5($operationId);
             }
         }
     }
