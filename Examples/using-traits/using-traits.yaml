@@ -7,7 +7,7 @@ paths:
     delete:
       tags:
         - Entities
-      operationId: 'UsingTraits\DeleteEntity::deleteEntity'
+      operationId: '489b960a9e004c04db5a54b622025b6b'
       parameters:
         -
           name: id
@@ -23,7 +23,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 'UsingTraits\ProductController::getProduct'
+      operationId: '122d5b0a38c3c9d221495de58a88e9b6'
       parameters:
         -
           name: product_id

@@ -7,7 +7,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::getProduct'
+      operationId: '648d8a6fe9d3c958781da70c3ee142d1'
       responses:
         default:
           description: 'successful operation'
@@ -18,7 +18,7 @@ paths:
     patch:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::updateProduct'
+      operationId: '2b0d92c60e55f1525ed390ce9fba2f90'
       requestBody:
         $ref: '#/components/requestBodies/product_in_body'
       responses:
@@ -35,7 +35,7 @@ paths:
     post:
       tags:
         - Products
-      operationId: 'UsingRefs\ProductController::addProduct'
+      operationId: '51e51052137774055a8ddfe0428c52e8'
       parameters:
         -
           $ref: '#/components/requestBodies/product_in_body'
