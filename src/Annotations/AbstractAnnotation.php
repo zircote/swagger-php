@@ -328,7 +328,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
         // $ref
         if (isset($data->ref)) {
             // OAS 3.0 does not allow $ref to have siblings: http://spec.openapis.org/oas/v3.0.3#fixed-fields-18
-            $data = (object) ['$ref' => $data->ref];
+            if (isset($data->nullable)) {
+                $data = (object)['$ref' => $data->ref, 'nullable' => $data->nullable];
+            } else {
+                $data = (object)['$ref' => $data->ref];
+            }
         }
 
         return $data;
