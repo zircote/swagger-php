@@ -16,7 +16,8 @@ jobs:
         with:
           php-version: '7.4'
 
-      - uses: ramsey/composer-install@v1
+      - name: Composer install
+        uses: ramsey/composer-install@v1
         with:
           dependency-versions: 'highest'
 
@@ -50,11 +51,6 @@ jobs:
         uses: ramsey/composer-install@v1
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: ${{ matrix.composer-options }}
 
       - name: PHPUnit Tests
-        uses: php-actions/phpunit@v1
-        with:
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml.dist
-          args: --coverage-text
+        run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
