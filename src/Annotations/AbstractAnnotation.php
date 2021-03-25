@@ -234,7 +234,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $flags = Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
         }
 
-        return Yaml::dump(json_decode($this->toJson(0)), 10, 2, $flags);
+        return Yaml::dump(json_decode($this->toJson(JSON_INVALID_UTF8_IGNORE)), 10, 2, $flags);
     }
 
     /**
@@ -243,7 +243,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public function toJson($flags = null): string
     {
         if ($flags === null) {
-            $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+            $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE;
         }
 
         return json_encode($this, $flags);
