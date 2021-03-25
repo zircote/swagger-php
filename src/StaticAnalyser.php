@@ -82,7 +82,7 @@ class StaticAnalyser
                 continue;
             }
 
-            if (defined('T_ATTRIBUTE') && $token[0] === T_ATTRIBUTE) {
+            if ($token[0] === T_ATTRIBUTE) {
                 // consume
                 $this->parseAttribute($tokens, $token, $parseContext);
                 continue;
