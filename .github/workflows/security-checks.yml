@@ -38,6 +38,3 @@ jobs:
           key: security-checker-db
 
       - uses: symfonycorp/security-checker-action@v2
-        id: security-checker
-        with:
-          dependency-versions: 'highest'
