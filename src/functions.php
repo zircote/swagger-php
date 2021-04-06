@@ -12,21 +12,24 @@ use Symfony\Component\Finder\Finder;
 if (defined('OpenApi\\UNDEFINED') === false) {
     /*
      * Special value to differentiate between null and undefined.
+     *
+     * @deprecated use Generator::UNDEFINED
      */
-    define('OpenApi\\UNDEFINED', '@OA\\UNDEFINED🙈');
-    define('OpenApi\\Annotations\\UNDEFINED', UNDEFINED);
-    define('OpenApi\\Processors\\UNDEFINED', UNDEFINED);
-}
+    define('OpenApi\\UNDEFINED', Generator::UNDEFINED);
 
-// PHP 8.0
-if (!defined('T_NAME_QUALIFIED')) {
-    define('T_NAME_QUALIFIED', -4);
-}
-if (!defined('T_NAME_FULLY_QUALIFIED')) {
-    define('T_NAME_FULLY_QUALIFIED', -5);
-}
-if (!defined('T_ATTRIBUTE')) {
-    define('T_ATTRIBUTE', -6);
+    /*
+     * Special value to differentiate between null and undefined.
+     *
+     * @deprecated use Generator::UNDEFINED
+     */
+    define('OpenApi\\Annotations\\UNDEFINED', Generator::UNDEFINED);
+
+    /*
+     * Special value to differentiate between null and undefined.
+     *
+     * @deprecated use Generator::UNDEFINED
+     */
+    define('OpenApi\\Processors\\UNDEFINED', Generator::UNDEFINED);
 }
 
 if (!function_exists('OpenApi\\scan')) {
@@ -42,25 +45,14 @@ if (!function_exists('OpenApi\\scan')) {
      *                                       processors: defaults to the registered processors in Analysis
      *
      * @return OpenApi
+     *
+     * @deprecated use \OpenApi\Generator instead
      */
     function scan($directory, $options = [])
     {
-        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser();
-        $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
-        $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
         $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
         $pattern = array_key_exists('pattern', $options) ? $options['pattern'] : null;
 
-        // Crawl directory and parse all files
-        $finder = Util::finder($directory, $exclude, $pattern);
-        foreach ($finder as $file) {
-            $analysis->addAnalysis($analyser->fromFile($file->getPathname()));
-        }
-        // Post processing
-        $analysis->process($processors);
-        // Validation (Generate notices & warnings)
-        $analysis->validate();
-
-        return $analysis->openapi;
+        return Generator::scan(Util::finder($directory, $exclude, $pattern), $options);
     }
 }

@@ -11,10 +11,10 @@ use OpenApi\Annotations\Get;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Post;
+use OpenApi\Generator;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
-use const OpenApi\UNDEFINED;
 
 class BuildPathsTest extends OpenApiTestCase
 {
@@ -50,6 +50,6 @@ class BuildPathsTest extends OpenApiTestCase
         $this->assertInstanceOf(PathItem::class, $path);
         $this->assertInstanceOf(Get::class, $path->get);
         $this->assertInstanceOf(Post::class, $path->post);
-        $this->assertSame(UNDEFINED, $path->put);
+        $this->assertSame(Generator::UNDEFINED, $path->put);
     }
 }

@@ -13,6 +13,7 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
+use OpenApi\Generator;
 use OpenApi\Logger;
 
 /**
@@ -33,7 +34,7 @@ class MergeXmlContent
                 }
                 continue;
             }
-            if ($parent->content === UNDEFINED) {
+            if ($parent->content === Generator::UNDEFINED) {
                 $parent->content = [];
             }
             $parent->content['application/xml'] = new MediaType([
@@ -45,8 +46,8 @@ class MergeXmlContent
             if (!$parent instanceof Parameter) {
                 $parent->content['application/xml']->mediaType = 'application/xml';
             }
-            $xmlContent->example = UNDEFINED;
-            $xmlContent->examples = UNDEFINED;
+            $xmlContent->example = Generator::UNDEFINED;
+            $xmlContent->examples = Generator::UNDEFINED;
 
             $index = array_search($xmlContent, $parent->_unmerged, true);
             if ($index !== false) {

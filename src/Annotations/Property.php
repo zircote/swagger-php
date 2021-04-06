@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  */
@@ -16,7 +18,7 @@ class Property extends Schema
      *
      * @var string
      */
-    public $property = UNDEFINED;
+    public $property = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

@@ -10,6 +10,7 @@ use OpenApi\Analyser;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
+use OpenApi\Generator;
 use OpenApi\StaticAnalyser;
 use OpenApi\Tests\Fixtures\Parser\User;
 
@@ -133,7 +134,7 @@ class StaticAnalyserTest extends OpenApiTestCase
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
         Analyser::$whitelist[] = 'AnotherNamespace\\Annotations\\';
-        $openapi = \OpenApi\scan(__DIR__.'/Fixtures/ThirdPartyAnnotations.php');
+        $openapi = Generator::scan([__DIR__.'/Fixtures/ThirdPartyAnnotations.php']);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
         Analyser::$whitelist = $backup;

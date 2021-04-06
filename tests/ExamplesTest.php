@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Generator;
+
 class ExamplesTest extends OpenApiTestCase
 {
     public function exampleMappings()
@@ -33,7 +35,7 @@ class ExamplesTest extends OpenApiTestCase
     public function testExamples($example, $spec)
     {
         $path = __DIR__.'/../Examples/'.$example;
-        $openapi = \OpenApi\scan($path, []);
+        $openapi = Generator::scan([$path]);
         $this->assertSpecEquals(file_get_contents($path.'/'.$spec), $openapi, 'Examples/'.$example.'/'.$spec);
     }
 }

@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
+use OpenApi\Generator;
 use OpenApi\Logger;
 
 /**
@@ -21,7 +22,7 @@ class BuildPaths
     {
         $paths = [];
         // Merge @OA\PathItems with the same path.
-        if ($analysis->openapi->paths !== UNDEFINED) {
+        if ($analysis->openapi->paths !== Generator::UNDEFINED) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
                     Logger::notice($annotation->identity().' is missing required property "path" in '.$annotation->_context);

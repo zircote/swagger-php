@@ -82,7 +82,7 @@ class StaticAnalyser
                 continue;
             }
 
-            if ($token[0] === T_ATTRIBUTE) {
+            if (defined('T_ATTRIBUTE') && $token[0] === T_ATTRIBUTE) {
                 // consume
                 $this->parseAttribute($tokens, $token, $parseContext);
                 continue;
@@ -445,15 +445,21 @@ class StaticAnalyser
         }
     }
 
+    private function php8NamespaceToken()
+    {
+        return defined('T_NAME_QUALIFIED') ? [T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED] : [];
+    }
+
     /**
      * Parse namespaced string.
      */
     private function parseNamespace(array &$tokens, &$token, Context $parseContext): string
     {
         $namespace = '';
+        $nsToken = array_merge([T_STRING, T_NS_SEPARATOR], $this->php8NamespaceToken());
         while ($token !== false) {
             $token = $this->nextToken($tokens, $parseContext);
-            if (!in_array($token[0], [T_STRING, T_NS_SEPARATOR, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
+            if (!in_array($token[0], $nsToken)) {
                 break;
             }
             $namespace .= $token[1];
@@ -494,9 +500,10 @@ class StaticAnalyser
         $alias = '';
         $statements = [];
         $explicitAlias = false;
+        $nsToken = array_merge([T_STRING, T_NS_SEPARATOR], $this->php8NamespaceToken());
         while ($token !== false) {
             $token = $this->nextToken($tokens, $parseContext);
-            $isNameToken = in_array($token[0], [T_STRING, T_NS_SEPARATOR, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED]);
+            $isNameToken = in_array($token[0], $nsToken);
             if (!$explicitAlias && $isNameToken) {
                 $class .= $token[1];
                 $alias = $token[1];
@@ -526,7 +533,7 @@ class StaticAnalyser
      */
     private function parseTypeAndNextToken(array &$tokens, Context $parseContext): array
     {
-        $type = UNDEFINED;
+        $type = Generator::UNDEFINED;
         $nullable = false;
         $token = $this->nextToken($tokens, $parseContext);
 
@@ -539,9 +546,11 @@ class StaticAnalyser
             $token = $this->nextToken($tokens, $parseContext);
         }
 
+        $qualifiedToken = array_merge([T_NS_SEPARATOR, T_STRING, T_ARRAY], $this->php8NamespaceToken());
+        $typeToken = array_merge([T_STRING], $this->php8NamespaceToken());
         // drill down namespace segments to basename property type declaration
-        while (in_array($token[0], [T_NS_SEPARATOR, T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED, T_ARRAY])) {
-            if (in_array($token[0], [T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
+        while (in_array($token[0], $qualifiedToken)) {
+            if (in_array($token[0], $typeToken)) {
                 $type = $token[1];
             }
             $token = $this->nextToken($tokens, $parseContext);

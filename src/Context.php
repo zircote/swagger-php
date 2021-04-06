@@ -172,7 +172,7 @@ class Context
     {
         $content = $this->phpdocContent();
         if (!$content) {
-            return UNDEFINED;
+            return Generator::UNDEFINED;
         }
         $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
@@ -184,7 +184,7 @@ class Context
         }
         $summary = trim($summary);
         if ($summary === '') {
-            return UNDEFINED;
+            return Generator::UNDEFINED;
         }
 
         return $summary;
@@ -199,7 +199,7 @@ class Context
     {
         $summary = $this->phpdocSummary();
         if (!$summary) {
-            return UNDEFINED;
+            return Generator::UNDEFINED;
         }
         if (false !== ($substr = substr($this->phpdocContent(), strlen($summary)))) {
             $description = trim($substr);
@@ -207,7 +207,7 @@ class Context
             $description = '';
         }
         if ($description === '') {
-            return UNDEFINED;
+            return Generator::UNDEFINED;
         }
 
         return $description;
@@ -241,7 +241,7 @@ class Context
         }
         $description = trim(implode("\n", $lines));
         if ($description === '') {
-            return UNDEFINED;
+            return Generator::UNDEFINED;
         }
 
         return $description;

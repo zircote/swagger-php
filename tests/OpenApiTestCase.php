@@ -19,6 +19,9 @@ use OpenApi\Context;
 use OpenApi\Logger;
 use OpenApi\StaticAnalyser;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -27,7 +30,7 @@ class OpenApiTestCase extends TestCase
     /**
      * @var array
      */
-    private $expectedLogMessages;
+    public $expectedLogMessages = [];
 
     /**
      * @var Closure
@@ -70,6 +73,40 @@ class OpenApiTestCase extends TestCase
         );
         Logger::getInstance()->log = $this->originalLogger;
         parent::tearDown();
+    }
+
+    public function getPsrLogger(bool $tracking = false): ?LoggerInterface
+    {
+        if (!$tracking) {
+            // allow to test the default behaviour without injected PSR logger
+            switch (strtoupper($_ENV['NON_TRACKING_LOGGER'] ?? 'FALLBACK')) {
+                case 'NULL':
+                    return new NullLogger();
+                case 'FALLBACK':
+                default:
+                    // whatever is set up in Logger::$instance->log
+                    return null;
+            }
+        }
+
+        return new class($this) extends AbstractLogger {
+            protected $testCase;
+
+            public function __construct($testCase)
+            {
+                $this->testCase = $testCase;
+            }
+
+            public function log($level, $message, array $context = [])
+            {
+                if (count($this->testCase->expectedLogMessages)) {
+                    list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
+                    $assertion($message, $level);
+                } else {
+                    $this->testCase->fail('Unexpected \OpenApi\Logger::'.$level.'("'.$message.'")');
+                }
+            }
+        };
     }
 
     public function assertOpenApiLogEntryContains($needle, $message = '')
@@ -231,7 +268,7 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['AbstractAnnotation', 'Operation'])) {
                 continue;
             }
-            $classes[] = ['OpenApi\\Annotations\\'.$class];
+            $classes[$class] = ['OpenApi\\Annotations\\'.$class];
         }
 
         return $classes;

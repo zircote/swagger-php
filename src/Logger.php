@@ -10,6 +10,8 @@ use Exception;
 
 /**
  * Logger reports the parser and validation messages.
+ *
+ * @deprecated use \OpenApi\Generator and PSR logger instead
  */
 class Logger
 {

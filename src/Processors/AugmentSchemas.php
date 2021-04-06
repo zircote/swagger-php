@@ -9,6 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 
 /**
  * Use the Schema context to extract useful information and inject that into the annotation.
@@ -22,7 +23,7 @@ class AugmentSchemas
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         // Use the class names for @OA\Schema()
         foreach ($schemas as $schema) {
-            if ($schema->schema === UNDEFINED) {
+            if ($schema->schema === Generator::UNDEFINED) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
                 } elseif ($schema->_context->is('interface')) {
@@ -48,10 +49,10 @@ class AugmentSchemas
                             continue;
                         }
 
-                        if ($annotation->allOf !== UNDEFINED) {
+                        if ($annotation->allOf !== Generator::UNDEFINED) {
                             $schema = null;
                             foreach ($annotation->allOf as $nestedSchema) {
-                                if ($nestedSchema->ref !== UNDEFINED) {
+                                if ($nestedSchema->ref !== Generator::UNDEFINED) {
                                     continue;
                                 }
 
@@ -76,7 +77,7 @@ class AugmentSchemas
 
         // set schema type based on various properties
         foreach ($schemas as $schema) {
-            if ($schema->type === UNDEFINED) {
+            if ($schema->type === Generator::UNDEFINED) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
@@ -91,10 +92,10 @@ class AugmentSchemas
 
         // move schema properties into allOf if both exist
         foreach ($schemas as $schema) {
-            if ($schema->properties !== UNDEFINED and $schema->allOf !== UNDEFINED) {
+            if ($schema->properties !== Generator::UNDEFINED and $schema->allOf !== Generator::UNDEFINED) {
                 $allOfPropertiesSchema = null;
                 foreach ($schema->allOf as $allOfSchema) {
-                    if ($allOfSchema->ref === UNDEFINED) {
+                    if ($allOfSchema->ref === Generator::UNDEFINED) {
                         $allOfPropertiesSchema = $allOfSchema;
                         break;
                     }
@@ -104,7 +105,7 @@ class AugmentSchemas
                     $schema->allOf[] = $allOfPropertiesSchema;
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
-                $schema->properties = UNDEFINED;
+                $schema->properties = Generator::UNDEFINED;
             }
         }
     }

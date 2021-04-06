@@ -7,9 +7,9 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations\Operation;
+use OpenApi\Generator;
 use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Tests\OpenApiTestCase;
-use const OpenApi\UNDEFINED;
 
 class DocBlockDescriptionsTest extends OpenApiTestCase
 {
@@ -29,6 +29,6 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
 
         $this->assertSame('api/test2', $operations[1]->path);
         $this->assertSame('Example summary', $operations[1]->summary, 'Operation summary should be taken from phpDoc');
-        $this->assertSame(UNDEFINED, $operations[1]->description, 'This operation only has summary in the phpDoc, no description');
+        $this->assertSame(Generator::UNDEFINED, $operations[1]->description, 'This operation only has summary in the phpDoc, no description');
     }
 }
