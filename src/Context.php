@@ -201,7 +201,11 @@ class Context
         if (!$summary) {
             return UNDEFINED;
         }
-        $description = trim(substr($this->phpdocContent(), strlen($summary)));
+        if (false !== ($substr = substr($this->phpdocContent(), strlen($summary)))) {
+            $description = trim($substr);
+        } else {
+            $description = '';
+        }
         if ($description === '') {
             return UNDEFINED;
         }
