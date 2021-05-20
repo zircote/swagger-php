@@ -10,6 +10,7 @@ use UsingTraits\Decoration;
  */
 class SimpleProduct {
     use Decoration\Bells;
+    use Decoration\UndocumentedBell;
 
     /**
      * The unique identifier of a simple product in our catalog.

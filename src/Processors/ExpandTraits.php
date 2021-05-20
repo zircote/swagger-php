@@ -52,10 +52,12 @@ class ExpandTraits
 
     protected function mergeTrait(Schema $schema, array $trait, array &$existing): void
     {
-        foreach ($trait['context']->annotations as $annotation) {
-            if ($annotation instanceof Property && !in_array($annotation->_context->property, $existing)) {
-                $existing[] = $annotation->_context->property;
-                $schema->merge([$annotation], true);
+        if (is_iterable($trait['context']->annotations)) {
+            foreach ($trait['context']->annotations as $annotation) {
+                if ($annotation instanceof Property && !in_array($annotation->_context->property, $existing)) {
+                    $existing[] = $annotation->_context->property;
+                    $schema->merge([$annotation], true);
+                }
             }
         }
 
