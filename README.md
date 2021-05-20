@@ -54,14 +54,15 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = \OpenApi\scan('/path/to/project');
+$openapi = \OpenApi\Generator::scan(['/path/to/project']);
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```
+Documentation of how to use the `Generator` class can be found in the [Generator Migration](https://zircote.github.io/swagger-php/Generator-migration.html) guide.
 
 ### Usage from the Command Line Interface
 
-Generate the documentation to a static json file.
+The `openapi` command line interface can be used to generate the documentation to a static yaml/json file.
 
 ```bash
 ./vendor/bin/openapi --help

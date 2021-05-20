@@ -230,7 +230,7 @@ foreach ($options["processor"] as $processor) {
     Analysis::registerProcessor($processor);
 }
 
-$openapi = OpenApi\scan($paths, ['exclude' => $exclude, 'pattern' => $pattern]);
+$openapi = OpenApi\Generator::scan(OpenApi\Util::finder($paths, $exclude, $pattern));
 
 if ($exit !== 0) {
     error_log('');

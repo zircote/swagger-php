@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 use OpenApi\Util;
 use Traversable;
 
@@ -40,8 +40,8 @@ class ExpandTraits
 
     protected function inheritTrait(Schema $schema, array $trait, Schema $traitSchema): void
     {
-        $refPath = $traitSchema->schema !== UNDEFINED ? $traitSchema->schema : $trait['trait'];
-        if ($schema->allOf === UNDEFINED) {
+        $refPath = $traitSchema->schema !== Generator::UNDEFINED ? $traitSchema->schema : $trait['trait'];
+        if ($schema->allOf === Generator::UNDEFINED) {
             $schema->allOf = [];
         }
         $schema->allOf[] = new Schema([

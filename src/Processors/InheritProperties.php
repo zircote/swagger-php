@@ -11,7 +11,7 @@ use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 use OpenApi\Util;
 use Traversable;
 
@@ -47,7 +47,7 @@ class InheritProperties
                 foreach ($classes as $class) {
                     if ($class['context']->annotations) {
                         foreach ($class['context']->annotations as $annotation) {
-                            if ($annotation instanceof Schema && $annotation->schema !== UNDEFINED) {
+                            if ($annotation instanceof Schema && $annotation->schema !== Generator::UNDEFINED) {
                                 $this->inherit($schema, $annotation);
 
                                 continue 2;
@@ -76,7 +76,7 @@ class InheritProperties
      */
     private function inherit(Schema $to, Schema $from): void
     {
-        if ($to->allOf === UNDEFINED) {
+        if ($to->allOf === Generator::UNDEFINED) {
             // Move all properties into an `allOf` entry except the `schema` property.
             $clone = new Schema(['_context' => new Context(['generated' => true], $to->_context)]);
             $clone->mergeProperties($to);
@@ -84,7 +84,7 @@ class InheritProperties
             $defaultValues = get_class_vars(Schema::class);
             foreach (array_keys(get_object_vars($clone)) as $property) {
                 if (in_array($property, ['schema', 'title', 'description'])) {
-                    $clone->$property = UNDEFINED;
+                    $clone->$property = Generator::UNDEFINED;
                     continue;
                 }
                 if ($to->$property !== $defaultValues[$property]) {
@@ -99,7 +99,7 @@ class InheritProperties
         }
         $append = true;
         foreach ($to->allOf as $entry) {
-            if ($entry->ref !== UNDEFINED && $entry->ref === Components::SCHEMA_REF.Util::refEncode($from->schema)) {
+            if ($entry->ref !== Generator::UNDEFINED && $entry->ref === Components::SCHEMA_REF.Util::refEncode($from->schema)) {
                 $append = false; // ref was already specified manualy
             }
         }

@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use OpenApi\Util;
 
 class ExpandInterfaces
@@ -35,10 +36,10 @@ class ExpandInterfaces
 
     protected function inheritInterface(Schema $schema, array $interface, Schema $interfaceSchema): void
     {
-        if ($schema->allOf === UNDEFINED) {
+        if ($schema->allOf === Generator::UNDEFINED) {
             $schema->allOf = [];
         }
-        $refPath = $interfaceSchema->schema !== UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
+        $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
         $schema->allOf[] = new Schema([
             '_context' => $interface['context']->_context,
             'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),

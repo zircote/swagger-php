@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject
@@ -15,14 +17,14 @@ namespace OpenApi\Annotations;
  */
 class RequestBody extends AbstractAnnotation
 {
-    public $ref = UNDEFINED;
+    public $ref = Generator::UNDEFINED;
 
     /**
      * Request body model name.
      *
      * @var string
      */
-    public $request = UNDEFINED;
+    public $request = Generator::UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -31,7 +33,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = UNDEFINED;
+    public $description = Generator::UNDEFINED;
 
     /**
      * Determines whether this parameter is mandatory.
@@ -40,7 +42,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var bool
      */
-    public $required = UNDEFINED;
+    public $required = Generator::UNDEFINED;
 
     /**
      * The content of the request body.
@@ -49,7 +51,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var MediaType[]
      */
-    public $content = UNDEFINED;
+    public $content = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

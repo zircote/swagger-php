@@ -7,6 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Analysis;
+use OpenApi\Generator;
 use OpenApi\Logger;
 use OpenApi\Util;
 
@@ -32,7 +33,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Info
      */
-    public $info = UNDEFINED;
+    public $info = Generator::UNDEFINED;
 
     /**
      * An array of Server Objects, which provide connectivity information to a target server.
@@ -40,21 +41,21 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Server[]
      */
-    public $servers = UNDEFINED;
+    public $servers = Generator::UNDEFINED;
 
     /**
      * The available paths and operations for the API.
      *
      * @var PathItem[]
      */
-    public $paths = UNDEFINED;
+    public $paths = Generator::UNDEFINED;
 
     /**
      * An element to hold various components for the specification.
      *
      * @var Components
      */
-    public $components = UNDEFINED;
+    public $components = Generator::UNDEFINED;
 
     /**
      * Lists the required security schemes to execute this operation.
@@ -70,7 +71,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var array
      */
-    public $security = UNDEFINED;
+    public $security = Generator::UNDEFINED;
 
     /**
      * A list of tags used by the specification with additional metadata.
@@ -81,19 +82,19 @@ class OpenApi extends AbstractAnnotation
      *
      * @var Tag[]
      */
-    public $tags = UNDEFINED;
+    public $tags = Generator::UNDEFINED;
 
     /**
      * Additional external documentation.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = UNDEFINED;
+    public $externalDocs = Generator::UNDEFINED;
 
     /**
      * @var Analysis
      */
-    public $_analysis = UNDEFINED;
+    public $_analysis = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

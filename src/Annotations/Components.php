@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  * A Components Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#components-object
@@ -27,63 +29,63 @@ class Components extends AbstractAnnotation
      *
      * @var Schema[]
      */
-    public $schemas = UNDEFINED;
+    public $schemas = Generator::UNDEFINED;
 
     /**
      * Reusable Responses.
      *
      * @var Response[]
      */
-    public $responses = UNDEFINED;
+    public $responses = Generator::UNDEFINED;
 
     /**
      * Reusable Parameters.
      *
      * @var Parameter[]
      */
-    public $parameters = UNDEFINED;
+    public $parameters = Generator::UNDEFINED;
 
     /**
      * Reusable Examples.
      *
      * @var Examples[]
      */
-    public $examples = UNDEFINED;
+    public $examples = Generator::UNDEFINED;
 
     /**
      * Reusable Request Bodys.
      *
      * @var RequestBody[]
      */
-    public $requestBodies = UNDEFINED;
+    public $requestBodies = Generator::UNDEFINED;
 
     /**
      * Reusable Headers.
      *
      * @var Header[]
      */
-    public $headers = UNDEFINED;
+    public $headers = Generator::UNDEFINED;
 
     /**
      * Reusable Security Schemes.
      *
      * @var SecurityScheme[]
      */
-    public $securitySchemes = UNDEFINED;
+    public $securitySchemes = Generator::UNDEFINED;
 
     /**
      * Reusable Links.
      *
      * @var Link[]
      */
-    public $links = UNDEFINED;
+    public $links = Generator::UNDEFINED;
 
     /**
      * Reusable Callbacks.
      *
      * @var callable[]
      */
-    public $callbacks = UNDEFINED;
+    public $callbacks = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

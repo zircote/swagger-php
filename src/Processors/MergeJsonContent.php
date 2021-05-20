@@ -13,6 +13,7 @@ use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Context;
+use OpenApi\Generator;
 use OpenApi\Logger;
 
 /**
@@ -33,7 +34,7 @@ class MergeJsonContent
                 }
                 continue;
             }
-            if ($parent->content === UNDEFINED) {
+            if ($parent->content === Generator::UNDEFINED) {
                 $parent->content = [];
             }
             $parent->content['application/json'] = new MediaType([
@@ -45,8 +46,8 @@ class MergeJsonContent
             if (!$parent instanceof Parameter) {
                 $parent->content['application/json']->mediaType = 'application/json';
             }
-            $jsonContent->example = UNDEFINED;
-            $jsonContent->examples = UNDEFINED;
+            $jsonContent->example = Generator::UNDEFINED;
+            $jsonContent->examples = Generator::UNDEFINED;
 
             $index = array_search($jsonContent, $parent->_unmerged, true);
             if ($index !== false) {

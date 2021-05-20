@@ -46,11 +46,15 @@ class Analyser
      * Set to false to load all detected classes.
      *
      * @var array|false
+     *
+     * @deprecated use \OpenApi\Generator::setAliases() instead
      */
     public static $whitelist = ['OpenApi\\Annotations\\'];
 
     /**
      * Use @OA\* for OpenAPI annotations (unless overwritten by a use statement).
+     *
+     * @deprecated use \OpenApi\Generator::setNamespaces() instead
      */
     public static $defaultImports = ['oa' => 'OpenApi\\Annotations'];
 

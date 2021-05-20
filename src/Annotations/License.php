@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  * License information for the exposed API.
@@ -19,14 +21,14 @@ class License extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = UNDEFINED;
+    public $name = Generator::UNDEFINED;
 
     /**
      * A URL to the license used for the API.
      *
      * @var string
      */
-    public $url = UNDEFINED;
+    public $url = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

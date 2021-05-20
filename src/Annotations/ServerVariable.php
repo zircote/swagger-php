@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  * A Server Variable Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-variable-object
@@ -18,14 +20,14 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var string
      */
-    public $serverVariable = UNDEFINED;
+    public $serverVariable = Generator::UNDEFINED;
 
     /**
      * An enumeration of string values to be used if the substitution options are from a limited set.
      *
      * @var string[]
      */
-    public $enum = UNDEFINED;
+    public $enum = Generator::UNDEFINED;
 
     /**
      * The default value to use for substitution, and to send, if an alternate value is not supplied.
@@ -33,7 +35,7 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var string
      */
-    public $default = UNDEFINED;
+    public $default = Generator::UNDEFINED;
 
     /**
      * A map between a variable name and its value.
@@ -41,7 +43,7 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var array
      */
-    public $variables = UNDEFINED;
+    public $variables = Generator::UNDEFINED;
 
     /**
      * An optional description for the server variable.
@@ -49,7 +51,7 @@ class ServerVariable extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = UNDEFINED;
+    public $description = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}

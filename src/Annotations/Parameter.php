@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
 use OpenApi\Logger;
 
 /**
@@ -21,14 +22,14 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $ref = UNDEFINED;
+    public $ref = Generator::UNDEFINED;
 
     /**
      * The key into Components->parameters or PathItem->parameters array.
      *
      * @var string
      */
-    public $parameter = UNDEFINED;
+    public $parameter = Generator::UNDEFINED;
 
     /**
      * The name of the parameter.
@@ -39,7 +40,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = UNDEFINED;
+    public $name = Generator::UNDEFINED;
 
     /**
      * The location of the parameter.
@@ -47,7 +48,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $in = UNDEFINED;
+    public $in = Generator::UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -56,7 +57,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = UNDEFINED;
+    public $description = Generator::UNDEFINED;
 
     /**
      * Determines whether this parameter is mandatory.
@@ -65,14 +66,14 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $required = UNDEFINED;
+    public $required = Generator::UNDEFINED;
 
     /**
      * Specifies that a parameter is deprecated and should be transitioned out of usage.
      *
      * @var bool
      */
-    public $deprecated = UNDEFINED;
+    public $deprecated = Generator::UNDEFINED;
 
     /**
      * Sets the ability to pass empty-valued parameters.
@@ -81,7 +82,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowEmptyValue = UNDEFINED;
+    public $allowEmptyValue = Generator::UNDEFINED;
 
     /**
      * Describes how the parameter value will be serialized depending on the type of the parameter value.
@@ -89,7 +90,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var string
      */
-    public $style = UNDEFINED;
+    public $style = Generator::UNDEFINED;
 
     /**
      * When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
@@ -99,7 +100,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $explode = UNDEFINED;
+    public $explode = Generator::UNDEFINED;
 
     /**
      * Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
@@ -108,14 +109,14 @@ class Parameter extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowReserved = UNDEFINED;
+    public $allowReserved = Generator::UNDEFINED;
 
     /**
      * The schema defining the type used for the parameter.
      *
      * @var Schema
      */
-    public $schema = UNDEFINED;
+    public $schema = Generator::UNDEFINED;
 
     /**
      * Example of the media type.
@@ -124,7 +125,7 @@ class Parameter extends AbstractAnnotation
      * Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.
      * To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.
      */
-    public $example = UNDEFINED;
+    public $example = Generator::UNDEFINED;
 
     /**
      * Examples of the media type.
@@ -134,7 +135,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $examples = UNDEFINED;
+    public $examples = Generator::UNDEFINED;
 
     /**
      * A map containing the representations for the parameter.
@@ -143,23 +144,23 @@ class Parameter extends AbstractAnnotation
      *
      * @var MediaType[]
      */
-    public $content = UNDEFINED;
+    public $content = Generator::UNDEFINED;
 
     /**
      * Path-style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.7.
      */
-    public $matrix = UNDEFINED;
+    public $matrix = Generator::UNDEFINED;
 
     /**
      * Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5.
      */
-    public $label = UNDEFINED;
+    public $label = Generator::UNDEFINED;
 
     /**
      * Form style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.8
      * This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.
      */
-    public $form = UNDEFINED;
+    public $form = Generator::UNDEFINED;
 
     /**
      * Simple style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.2
@@ -167,7 +168,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $simple = UNDEFINED;
+    public $simple = Generator::UNDEFINED;
 
     /**
      * Space separated array values.
@@ -175,7 +176,7 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $spaceDelimited = UNDEFINED;
+    public $spaceDelimited = Generator::UNDEFINED;
 
     /**
      * Pipe separated array values.
@@ -183,12 +184,12 @@ class Parameter extends AbstractAnnotation
      *
      * @var array
      */
-    public $pipeDelimited = UNDEFINED;
+    public $pipeDelimited = Generator::UNDEFINED;
 
     /**
      * Provides a simple way of rendering nested objects using form parameters.
      */
-    public $deepObject = UNDEFINED;
+    public $deepObject = Generator::UNDEFINED;
 
     /**
      * {@inheritdoc}
@@ -240,9 +241,9 @@ class Parameter extends AbstractAnnotation
             return true;
         }
         $valid = parent::validate($parents, $skip, $ref);
-        if ($this->ref === UNDEFINED) {
+        if ($this->ref === Generator::UNDEFINED) {
             if ($this->in === 'body') {
-                if ($this->schema === UNDEFINED) {
+                if ($this->schema === Generator::UNDEFINED) {
                     Logger::notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
                     $valid = false;
                 }

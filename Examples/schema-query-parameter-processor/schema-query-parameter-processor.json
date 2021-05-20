@@ -30,6 +30,7 @@
                 "tags": [
                     "Products"
                 ],
+                "summary": "Controller that takes all `Product` properties as query parameter.",
                 "operationId": "App\\ProductController::findProducts",
                 "parameters": [
                     {
