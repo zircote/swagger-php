@@ -7,7 +7,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 'GET::UsingInterfaces\ProductController::getProduct'
+      operationId: 6a7963b92da560b8d7f16b0fdba847ef
       parameters:
         -
           name: id

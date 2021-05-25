@@ -20,7 +20,7 @@ class OperationId
     /**
      * @param bool $hash if `true` hash generated ids instead of clear text
      */
-    public function __construct(bool $hash = false)
+    public function __construct(bool $hash = true)
     {
         $this->hash = $hash;
     }
