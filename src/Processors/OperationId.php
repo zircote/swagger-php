@@ -25,6 +25,18 @@ class OperationId
         $this->hash = $hash;
     }
 
+    public function isHash(): bool
+    {
+        return $this->hash;
+    }
+
+    public function setHash(bool $hash): OperationId
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
