@@ -15,6 +15,28 @@ use OpenApi\Generator;
  */
 class OperationId
 {
+    protected $hash;
+
+    /**
+     * @param bool $hash if `true` hash generated ids instead of clear text
+     */
+    public function __construct(bool $hash = true)
+    {
+        $this->hash = $hash;
+    }
+
+    public function isHash(): bool
+    {
+        return $this->hash;
+    }
+
+    public function setHash(bool $hash): OperationId
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
@@ -26,15 +48,18 @@ class OperationId
             $context = $operation->_context;
             if ($context && $context->method) {
                 $source = $context->class ?? $context->interface ?? $context->trait;
+                $operationId = null;
                 if ($source) {
                     if ($context->namespace) {
-                        $operation->operationId = $context->namespace.'\\'.$source.'::'.$context->method;
+                        $operationId = $context->namespace.'\\'.$source.'::'.$context->method;
                     } else {
-                        $operation->operationId = $source.'::'.$context->method;
+                        $operationId = $source.'::'.$context->method;
                     }
                 } else {
-                    $operation->operationId = $context->method;
+                    $operationId = $context->method;
                 }
+                $operationId = strtoupper($operation->method).'::'.$operationId;
+                $operation->operationId = $this->hash ? md5($operationId) : $operationId;
             }
         }
     }

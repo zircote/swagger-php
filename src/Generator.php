@@ -144,6 +144,31 @@ class Generator
         return $this;
     }
 
+    /**
+     * Update/replace an existing processor with a new one.
+     *
+     * @param callable      $processor the new processor
+     * @param null|callable $matcher   Optional matcher callable to identify the processor to replace.
+     *                                 If none given, matching is based on the processors class.
+     */
+    public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
+    {
+        if (!$matcher) {
+            $matcher = $matcher ?: function ($other) use ($processor) {
+                $otherClass = get_class($other);
+
+                return $processor instanceof $otherClass;
+            };
+        }
+
+        $processors = array_map(function ($other) use ($processor, $matcher) {
+            return $matcher($other) ? $processor : $other;
+        }, $this->getProcessors());
+        $this->setProcessors($processors);
+
+        return $this;
+    }
+
     public function getLogger(): ?LoggerInterface
     {
         return $this->logger;
