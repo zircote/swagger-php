@@ -58,7 +58,7 @@ class OperationId
                 } else {
                     $operationId = $context->method;
                 }
-                $operationId = strtoupper($operation->method).'::'.$operationId;
+                $operationId = strtoupper($operation->method).'::'.$operation->path.'::'.$operationId;
                 $operation->operationId = $this->hash ? md5($operationId) : $operationId;
             }
         }
