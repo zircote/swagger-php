@@ -32,7 +32,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Post(
  *     path="/users",
- *     summary="Adds a new user",
+ *     summary="Adds a new user - with oneOf examples",
  *     @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",
@@ -45,13 +45,41 @@ use OpenApi\Annotations as OA;
  *                     property="name",
  *                     type="string"
  *                 ),
- *                 example={"id": "a3fb6", "name": "Jessica Smith"}
+ *                 @OA\Property(
+ *                     property="phone",
+ *                     oneOf={
+ *                     	   @OA\Schema(type="string"),
+ *                     	   @OA\Schema(type="integer"),
+ *                     }
+ *                 ),
+ *                 example={"id": "a3fb6", "name": "Jessica Smith", "phone": 12345678}
  *             )
  *         )
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="OK"
+ *         description="OK",
+ *         @OA\JsonContent(
+ *             oneOf={
+ *                 @OA\Schema(ref="#/components/schemas/Result"),
+ *                 @OA\Schema(type="boolean")
+ *             }
+ *         )
  *     )
+ * )
+ */
+
+/**
+ * @OA\Schema(
+ *  schema="Result",
+ *  title="Sample schema for using references",
+ * 	@OA\Property(
+ * 		property="status",
+ * 		type="string"
+ * 	),
+ * 	@OA\Property(
+ * 		property="error",
+ * 		type="string"
+ * 	)
  * )
  */
