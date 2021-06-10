@@ -7,7 +7,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: ecd4da135afcd55d0c1308b260c38060
+      operationId: 133f11c148f628647767a323bf78c68d
       responses:
         default:
           description: 'successful operation'
@@ -18,7 +18,7 @@ paths:
     patch:
       tags:
         - Products
-      operationId: ccfcd39d70ad7d7f367a54908d3a0db6
+      operationId: 7f26f01759fb7245bf4f7138a3717e0f
       requestBody:
         $ref: '#/components/requestBodies/product_in_body'
       responses:
@@ -35,7 +35,7 @@ paths:
     post:
       tags:
         - Products
-      operationId: ce046e4e523b43847bf9a5066145bda0
+      operationId: 779b6345f19f6b865527e6bd67819d2d
       parameters:
         -
           $ref: '#/components/requestBodies/product_in_body'

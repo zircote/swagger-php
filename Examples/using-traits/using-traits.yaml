@@ -7,7 +7,7 @@ paths:
     delete:
       tags:
         - Entities
-      operationId: e87b6b3d88068b6863f408c0ce77528f
+      operationId: 372df3207489872fd3c775f623f8340f
       parameters:
         -
           name: id
@@ -23,7 +23,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: d3096ee893a30bd6cd88099036a5cb3f
+      operationId: 569395beea865794cbde04d55c0ba4a2
       parameters:
         -
           name: product_id
