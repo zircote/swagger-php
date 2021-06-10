@@ -69,4 +69,4 @@ class MyCustomProcessor
 
   A processor that sorts components so they appear in alphabetical order. 
 
-  [source](processors/ssort-components)
+  [source](processors/sort-components)
