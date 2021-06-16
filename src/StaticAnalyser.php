@@ -54,7 +54,7 @@ class StaticAnalyser
     protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
         $analyser = new Analyser();
-        $analysis = new Analysis();
+        $analysis = new Analysis([], $parseContext);
 
         reset($tokens);
         $token = '';

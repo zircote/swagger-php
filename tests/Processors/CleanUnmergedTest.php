@@ -9,6 +9,7 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Contact;
 use OpenApi\Annotations\License;
+use OpenApi\Context;
 use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
@@ -31,7 +32,7 @@ class CleanUnmergedTest extends OpenApiTestCase
 )
 
 END;
-        $analysis = new Analysis($this->parseComment($comment));
+        $analysis = new Analysis($this->parseComment($comment), new Context());
         $this->assertCount(4, $analysis->annotations);
         $analysis->process(new MergeIntoOpenApi());
         $this->assertCount(5, $analysis->annotations);

@@ -232,7 +232,7 @@ class OpenApiTestCase extends TestCase
     public function analysisFromFixtures($files): Analysis
     {
         $analyser = new StaticAnalyser();
-        $analysis = new Analysis();
+        $analysis = new Analysis([], new Context());
 
         foreach ((array) $files as $file) {
             $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0]));

@@ -249,6 +249,8 @@ class Context
 
     /**
      * Create a Context based on the debug_backtrace.
+     *
+     * @deprecated
      */
     public static function detect(int $index = 0): Context
     {
