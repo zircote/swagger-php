@@ -246,4 +246,19 @@ class StaticAnalyserTest extends OpenApiTestCase
         $this->assertEquals('id', $properties[0]->property);
         $this->assertEquals('otherId', $properties[1]->property);
     }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testPhp8NamedProperty()
+    {
+        $analysis = $this->analysisFromFixtures('StaticAnalyser/Php8NamedProperty.php');
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
+        $this->assertCount(1, $schemas);
+        $analysis->process();
+        $properties = $analysis->getAnnotationsOfType(Property::class, true);
+        $this->assertCount(1, $properties);
+        $this->assertEquals('labels', $properties[0]->property);
+    }
 }
