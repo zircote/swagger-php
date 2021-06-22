@@ -10,6 +10,8 @@ use OpenApi\Logger as OpenApiLogger;
 use OpenApi\Annotations as OA;
 
 /**
+ * A customer.
+ *
  * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
  * @OA\Schema()
  */
