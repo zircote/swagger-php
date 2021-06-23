@@ -13,15 +13,15 @@ use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
-    const SOURCE_DIR = __DIR__.'/../Examples/swagger-spec/petstore-simple';
+    const SOURCE_DIR = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
 
     public function sourcesProvider()
     {
         $sourceDir = self::SOURCE_DIR;
         $sources = [
-            $sourceDir.'/SimplePet.php',
-            $sourceDir.'/SimplePetsController.php',
-            $sourceDir.'/api.php',
+            $sourceDir . '/SimplePet.php',
+            $sourceDir . '/SimplePetsController.php',
+            $sourceDir . '/api.php',
         ];
 
         return [

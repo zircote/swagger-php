@@ -54,19 +54,19 @@ class ServerVariable extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Server::class,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['default'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'default' => 'string',

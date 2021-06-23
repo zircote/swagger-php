@@ -15,7 +15,7 @@ use OpenApi\Logger;
 class Items extends Schema
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',
@@ -27,7 +27,7 @@ class Items extends Schema
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Property::class,
@@ -39,7 +39,7 @@ class Items extends Schema
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
@@ -51,7 +51,7 @@ class Items extends Schema
 
         $parent = end($parents);
         if ($parent instanceof Schema && $parent->type !== 'array') {
-            Logger::notice('@OA\\Items() parent type must be "array" in '.$this->_context);
+            Logger::notice('@OA\\Items() parent type must be "array" in ' . $this->_context);
             $valid = false;
         }
 

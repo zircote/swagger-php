@@ -65,19 +65,19 @@ class Response extends AbstractAnnotation
     public $links = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['description'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'description' => 'string',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         MediaType::class => ['content', 'mediaType'],
@@ -86,7 +86,7 @@ class Response extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Components::class,

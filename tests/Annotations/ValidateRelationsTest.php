@@ -29,7 +29,7 @@ class ValidateRelationsTest extends OpenApiTestCase
                 }
             }
             if ($found === false) {
-                $this->fail($class.' not found in '.$parent."::\$_nested. Found:\n  ".implode("\n  ", array_keys($parent::$_nested)));
+                $this->fail($class . ' not found in ' . $parent . "::\$_nested. Found:\n  " . implode("\n  ", array_keys($parent::$_nested)));
             }
         }
     }
@@ -50,7 +50,7 @@ class ValidateRelationsTest extends OpenApiTestCase
                 }
             }
             if ($found === false) {
-                $this->fail($class.' not found in '.$nestedClass."::\$parent. Found:\n  ".implode("\n  ", $nestedClass::$_parents));
+                $this->fail($class . ' not found in ' . $nestedClass . "::\$parent. Found:\n  " . implode("\n  ", $nestedClass::$_parents));
             }
         }
     }

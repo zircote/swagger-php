@@ -38,7 +38,7 @@ class Contact extends AbstractAnnotation
     public $email = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'name' => 'string',
@@ -47,7 +47,7 @@ class Contact extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Info::class,

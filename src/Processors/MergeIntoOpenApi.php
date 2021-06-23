@@ -7,8 +7,10 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * Merge all @OA\OpenApi annotations into one.
@@ -27,6 +29,7 @@ class MergeIntoOpenApi
 
         // Merge annotations into the target openapi
         $merge = [];
+        /** @var AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
             if ($annotation === $openapi) {
                 continue;

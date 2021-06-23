@@ -17,7 +17,9 @@ class ExpandInterfaces
 {
     public function __invoke(Analysis $analysis)
     {
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
+
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
                 $interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
@@ -42,7 +44,7 @@ class ExpandInterfaces
         $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
         $schema->allOf[] = new Schema([
             '_context' => $interface['context']->_context,
-            'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
+            'ref' => Components::SCHEMA_REF . Util::refEncode($refPath),
         ]);
     }
 

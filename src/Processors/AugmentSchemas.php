@@ -20,7 +20,9 @@ class AugmentSchemas
 {
     public function __invoke(Analysis $analysis)
     {
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
+
         // Use the class names for @OA\Schema()
         foreach ($schemas as $schema) {
             if ($schema->schema === Generator::UNDEFINED) {

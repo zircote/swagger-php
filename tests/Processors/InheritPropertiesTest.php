@@ -173,7 +173,7 @@ class InheritPropertiesTest extends OpenApiTestCase
 
         $this->assertCount(2, $extendedSchema->allOf);
 
-        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF.'Base');
+        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
     }
 
@@ -209,7 +209,7 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF.'Base');
+        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
         $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'nested');
         $this->assertEquals($extendedSchema->allOf[1]->properties[1]->property, 'extendedProperty');
 

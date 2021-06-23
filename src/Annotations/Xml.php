@@ -51,7 +51,7 @@ class Xml extends AbstractAnnotation
     public $wrapped = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'name' => 'string',
@@ -62,7 +62,7 @@ class Xml extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         AdditionalProperties::class,

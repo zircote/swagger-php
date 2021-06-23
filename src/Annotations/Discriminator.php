@@ -35,19 +35,19 @@ class Discriminator extends AbstractAnnotation
     public $mapping = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['propertyName'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'propertyName' => 'string',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Schema::class,
