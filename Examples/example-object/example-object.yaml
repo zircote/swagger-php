@@ -37,9 +37,7 @@ paths:
                 name:
                   type: string
                 phone:
-                  oneOf:
-                    - type: string
-                    - type: integer
+                  oneOf: [{ type: string }, { type: integer }]
               type: object
               example:
                 id: a3fb6
@@ -52,15 +50,15 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Result'
-                  - type: boolean
+                  - { $ref: '#/components/schemas/Result' }
+                  - { type: boolean }
 components:
   schemas:
     Result:
-      title: Sample schema for using references
-      type: object
+      title: 'Sample schema for using references'
       properties:
         status:
           type: string
         error:
           type: string
+      type: object

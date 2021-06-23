@@ -138,7 +138,7 @@ class AugmentProperties
                 $property->example = $varMatches['example'];
             }
 
-            if ($property->description === Generator::UNDEFINED) {
+            if ($property->description === Generator::UNDEFINED && $property->isRoot()) {
                 $property->description = $context->phpdocContent();
             }
         }

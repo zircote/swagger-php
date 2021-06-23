@@ -7,6 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Generator;
 
 /**
@@ -25,19 +26,20 @@ class DocBlockDescriptions
      */
     public function __invoke(Analysis $analysis)
     {
+        /** @var AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_context') === false) {
                 // only annotations with context
                 continue;
             }
             $count = count($annotation->_context->annotations);
-            if ($annotation->_context->annotations[$count - 1] !== $annotation) {
+            if (!$annotation->isRoot()) {
                 // only top-level annotations
                 continue;
             }
             $hasSummary = property_exists($annotation, 'summary');
             $hasDescription = property_exists($annotation, 'description');
-            if ($hasSummary === false && $hasDescription === false) {
+            if (!$hasSummary && !$hasDescription) {
                 continue;
             }
             if ($hasSummary && $hasDescription) {

@@ -514,6 +514,20 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
+     * An annotation is a root if it is the top-level / outermost annotation in a PHP docblock.
+     */
+    public function isRoot(): bool
+    {
+        if (!$this->_context) {
+            return true;
+        }
+
+        $count = count($this->_context->annotations);
+
+        return $count && $this->_context->annotations[$count - 1] === $this;
+    }
+
+    /**
      * Find matching nested details.
      *
      * @param string $class the class to match
