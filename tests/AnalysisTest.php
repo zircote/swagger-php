@@ -7,13 +7,14 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
+use OpenApi\Context;
 
 class AnalysisTest extends OpenApiTestCase
 {
     public function testRegisterProcessor()
     {
         $counter = 0;
-        $analysis = new Analysis();
+        $analysis = new Analysis([], new Context());
         $analysis->process();
         $this->assertSame(0, $counter);
         $countProcessor = function (Analysis $a) use (&$counter) {

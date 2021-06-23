@@ -26,7 +26,7 @@ class RefTest extends OpenApiTestCase
 )
 END;
         $openapi->merge($this->parseComment($comment));
-        $analysis = new Analysis();
+        $analysis = new Analysis([], new Context());
         $analysis->addAnnotation($openapi, Context::detect());
         $analysis->process();
 
