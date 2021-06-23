@@ -53,17 +53,17 @@ class Flow extends AbstractAnnotation
     public $scopes = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['scopes', 'flow'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_blacklist = ['_context', '_unmerged'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
@@ -73,13 +73,13 @@ class Flow extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         SecurityScheme::class,
     ];
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function jsonSerialize()
     {
         if (is_array($this->scopes) && empty($this->scopes)) {

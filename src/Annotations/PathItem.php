@@ -113,14 +113,14 @@ class PathItem extends AbstractAnnotation
     public $parameters = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'path' => 'string',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Get::class => 'get',
@@ -136,7 +136,7 @@ class PathItem extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         OpenApi::class,

@@ -97,17 +97,17 @@ class OpenApi extends AbstractAnnotation
     public $_analysis = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['openapi', 'info', 'paths'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Info::class => 'info',
@@ -119,17 +119,17 @@ class OpenApi extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function validate(array $parents = null, array $skip = null, string $ref = ''): bool
     {
         if ($parents !== null || $skip !== null || $ref !== '') {
-            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+            Logger::notice('Nested validation for ' . $this->identity() . ' not allowed');
 
             return false;
         }
@@ -151,7 +151,7 @@ class OpenApi extends AbstractAnnotation
             $content = $this->toYaml();
         }
         if (file_put_contents($filename, $content) === false) {
-            throw new \Exception('Failed to saveAs("'.$filename.'", "'.$format.'")');
+            throw new \Exception('Failed to saveAs("' . $filename . '", "' . $format . '")');
         }
     }
 
@@ -164,7 +164,7 @@ class OpenApi extends AbstractAnnotation
     {
         if (substr($ref, 0, 2) !== '#/') {
             // @todo Add support for external (http) refs?
-            throw new \Exception('Unsupported $ref "'.$ref.'", it should start with "#/"');
+            throw new \Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
 
         return $this->resolveRef($ref, '#/', $this, []);
@@ -183,11 +183,11 @@ class OpenApi extends AbstractAnnotation
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
         $property = Util::refDecode($subpath);
-        $unresolved = $slash === false ? $resolved.$subpath : $resolved.$subpath.'/';
+        $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
 
         if (is_object($container)) {
             if (property_exists($container, $property) === false) {
-                throw new \Exception('$ref "'.$ref.'" not found');
+                throw new \Exception('$ref "' . $ref . '" not found');
             }
             if ($slash === false) {
                 return $container->$property;
@@ -214,6 +214,6 @@ class OpenApi extends AbstractAnnotation
                 }
             }
         }
-        throw new \Exception('$ref "'.$unresolved.'" not found');
+        throw new \Exception('$ref "' . $unresolved . '" not found');
     }
 }

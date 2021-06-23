@@ -60,12 +60,12 @@ class Info extends AbstractAnnotation
     public $version = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['title', 'version'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'title' => 'string',
@@ -75,7 +75,7 @@ class Info extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Contact::class => 'contact',
@@ -83,7 +83,7 @@ class Info extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         OpenApi::class,

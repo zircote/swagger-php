@@ -41,6 +41,7 @@ class OperationId
     {
         $allOperations = $analysis->getAnnotationsOfType(Operation::class);
 
+        /** @var Operation $operation */
         foreach ($allOperations as $operation) {
             if ($operation->operationId !== Generator::UNDEFINED) {
                 continue;
@@ -51,14 +52,14 @@ class OperationId
                 $operationId = null;
                 if ($source) {
                     if ($context->namespace) {
-                        $operationId = $context->namespace.'\\'.$source.'::'.$context->method;
+                        $operationId = $context->namespace . '\\' . $source . '::' . $context->method;
                     } else {
-                        $operationId = $source.'::'.$context->method;
+                        $operationId = $source . '::' . $context->method;
                     }
                 } else {
                     $operationId = $context->method;
                 }
-                $operationId = strtoupper($operation->method).'::'.$operation->path.'::'.$operationId;
+                $operationId = strtoupper($operation->method) . '::' . $operation->path . '::' . $operationId;
                 $operation->operationId = $this->hash ? md5($operationId) : $operationId;
             }
         }

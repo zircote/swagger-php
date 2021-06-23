@@ -54,7 +54,7 @@ class RequestBody extends AbstractAnnotation
     public $content = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'description' => 'string',
@@ -76,7 +76,7 @@ class RequestBody extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         MediaType::class => ['content', 'mediaType'],

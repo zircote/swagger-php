@@ -22,12 +22,12 @@ class XmlContent extends Schema
     public $examples = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',

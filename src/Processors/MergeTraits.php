@@ -15,7 +15,9 @@ class MergeTraits
 {
     public function __invoke(Analysis $analysis)
     {
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
+
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
                 $existing = [];

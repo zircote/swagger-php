@@ -7,4 +7,4 @@
 /docs/.vuepress/dist
 /docs/node_modules/*
 .phpunit.result.cache
-/.php_cs.cache
+.php-cs-fixer.cache

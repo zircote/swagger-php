@@ -22,7 +22,7 @@ class InheritProperties
 {
     public function __invoke(Analysis $analysis)
     {
-        /* @var  $schemas Schema[] */
+        /* @var $schemas Schema[] */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $processed = [];
 
@@ -99,13 +99,13 @@ class InheritProperties
         }
         $append = true;
         foreach ($to->allOf as $entry) {
-            if ($entry->ref !== Generator::UNDEFINED && $entry->ref === Components::SCHEMA_REF.Util::refEncode($from->schema)) {
+            if ($entry->ref !== Generator::UNDEFINED && $entry->ref === Components::SCHEMA_REF . Util::refEncode($from->schema)) {
                 $append = false; // ref was already specified manualy
             }
         }
         if ($append) {
             array_unshift($to->allOf, new Schema([
-                'ref' => Components::SCHEMA_REF.Util::refEncode($from->schema),
+                'ref' => Components::SCHEMA_REF . Util::refEncode($from->schema),
                 '_context' => new Context(['generated' => true], $from->_context),
             ]));
         }

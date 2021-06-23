@@ -57,14 +57,14 @@ class MediaType extends AbstractAnnotation
     public $encoding = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Schema::class => 'schema',
         Examples::class => ['examples', 'example'],
     ];
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Response::class,

@@ -12,12 +12,12 @@ namespace OpenApi\Annotations;
 class Put extends Operation
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $method = 'put';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         PathItem::class,

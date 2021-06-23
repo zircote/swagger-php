@@ -88,14 +88,14 @@ class Components extends AbstractAnnotation
     public $callbacks = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         OpenApi::class,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Schema::class => ['schemas', 'schema'],

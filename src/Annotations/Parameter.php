@@ -192,12 +192,12 @@ class Parameter extends AbstractAnnotation
     public $deepObject = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['name', 'in'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'name' => 'string',
@@ -208,7 +208,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Schema::class => 'schema',
@@ -216,7 +216,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Components::class,
@@ -233,7 +233,7 @@ class Parameter extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
@@ -244,7 +244,7 @@ class Parameter extends AbstractAnnotation
         if ($this->ref === Generator::UNDEFINED) {
             if ($this->in === 'body') {
                 if ($this->schema === Generator::UNDEFINED) {
-                    Logger::notice('Field "schema" is required when '.$this->identity().' is in "'.$this->in.'" in '.$this->_context);
+                    Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }
             }
@@ -254,7 +254,7 @@ class Parameter extends AbstractAnnotation
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function identity(): string
     {

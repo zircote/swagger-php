@@ -37,12 +37,12 @@ class Tag extends AbstractAnnotation
     public $externalDocs = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['name'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'name' => 'string',
@@ -50,14 +50,14 @@ class Tag extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         OpenApi::class,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         ExternalDocumentation::class => 'externalDocs',

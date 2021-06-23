@@ -138,12 +138,12 @@ abstract class Operation extends AbstractAnnotation
     public $servers = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['responses'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'path' => 'string',
@@ -155,7 +155,7 @@ abstract class Operation extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Parameter::class => ['parameters'],
@@ -166,7 +166,7 @@ abstract class Operation extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function jsonSerialize()
     {
@@ -194,7 +194,7 @@ abstract class Operation extends AbstractAnnotation
         if ($this->responses !== Generator::UNDEFINED) {
             foreach ($this->responses as $response) {
                 if ($response->response !== Generator::UNDEFINED && $response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
-                    Logger::notice('Invalid value "'.$response->response.'" for '.$response->_identity([]).'->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in '.$response->_context);
+                    Logger::notice('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
                 }
             }
         }

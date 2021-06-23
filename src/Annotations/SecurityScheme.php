@@ -89,12 +89,12 @@ class SecurityScheme extends AbstractAnnotation
     public $openIdConnectUrl = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_required = ['securityScheme', 'type'];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
@@ -105,21 +105,21 @@ class SecurityScheme extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Flow::class => ['flows', 'flow'],
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Components::class,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function merge(array $annotations, bool $ignore = false): array
     {

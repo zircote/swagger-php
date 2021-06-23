@@ -79,14 +79,14 @@ class Link extends AbstractAnnotation
     public $server = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Server::class => 'server',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Components::class,

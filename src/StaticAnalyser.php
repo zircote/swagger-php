@@ -360,7 +360,7 @@ class StaticAnalyser
                             $imports[strtolower($alias)] = $target;
                         } else {
                             foreach (Analyser::$whitelist as $namespace) {
-                                if (strcasecmp(substr($target.'\\', 0, strlen($namespace)), $namespace) === 0) {
+                                if (strcasecmp(substr($target . '\\', 0, strlen($namespace)), $namespace) === 0) {
                                     $imports[strtolower($alias)] = $target;
                                     break;
                                 }
@@ -416,7 +416,7 @@ class StaticAnalyser
                     if ($pos) {
                         $line = $context->line ? $context->line + $token[2] : $token[2];
                         $commentContext = new Context(['line' => $line], $context);
-                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping '.$commentContext);
+                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
                     }
                     continue;
                 }

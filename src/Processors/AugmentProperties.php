@@ -49,13 +49,15 @@ class AugmentProperties
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== Generator::UNDEFINED) {
                     $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
-                        = Components::SCHEMA_REF.Util::refEncode($schema->schema);
+                        = Components::SCHEMA_REF . Util::refEncode($schema->schema);
                 }
             }
         }
 
-        $allProperties = $analysis->getAnnotationsOfType(Property::class);
-        foreach ($allProperties as $property) {
+        /** @var Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(Property::class);
+
+        foreach ($properties as $property) {
             $context = $property->_context;
             // Use the property names for @OA\Property()
             if ($property->property === Generator::UNDEFINED) {

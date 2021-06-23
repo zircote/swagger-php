@@ -325,7 +325,7 @@ class Schema extends AbstractAnnotation
     public $const = Generator::UNDEFINED;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_types = [
         'description' => 'string',
@@ -343,13 +343,13 @@ class Schema extends AbstractAnnotation
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',
         'multipleOf' => 'integer',
-        'allOf' => '['.Schema::class.']',
-        'oneOf' => '['.Schema::class.']',
-        'anyOf' => '['.Schema::class.']',
+        'allOf' => '[' . Schema::class . ']',
+        'oneOf' => '[' . Schema::class . ']',
+        'anyOf' => '[' . Schema::class . ']',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_nested = [
         Discriminator::class => 'discriminator',
@@ -361,7 +361,7 @@ class Schema extends AbstractAnnotation
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static $_parents = [
         Components::class,
@@ -373,7 +373,7 @@ class Schema extends AbstractAnnotation
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         if ($this->type === 'array' && $this->items === Generator::UNDEFINED) {
-            Logger::notice('@OA\\Items() is required when '.$this->identity().' has type "array" in '.$this->_context);
+            Logger::notice('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             return false;
         }

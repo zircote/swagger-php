@@ -18,7 +18,9 @@ class ExpandTraits
 {
     public function __invoke(Analysis $analysis)
     {
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
+
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class') || $schema->_context->is('trait')) {
                 $source = $schema->_context->class ?: $schema->_context->trait;
@@ -46,7 +48,7 @@ class ExpandTraits
         }
         $schema->allOf[] = new Schema([
             '_context' => $trait['context']->_context,
-            'ref' => Components::SCHEMA_REF.Util::refEncode($refPath),
+            'ref' => Components::SCHEMA_REF . Util::refEncode($refPath),
         ]);
     }
 
