@@ -188,8 +188,8 @@ class Generator
      *                          analyser:   null|StaticAnalyser           Defaults to a new `StaticAnalyser`.
      *                          analysis:   null|Analysis                 Defaults to a new `Analysis`.
      *                          processors: null|array                    Defaults to `Analysis::processors()`.
-     *                          validate:   bool                          Defaults to `true`.
      *                          logger:     null|\Psr\Log\LoggerInterface If not set logging will use \OpenApi\Logger as before.
+     *                          validate:   bool                          Defaults to `true`.
      */
     public static function scan(iterable $sources, array $options = []): OpenApi
     {
@@ -200,10 +200,11 @@ class Generator
                 'analyser' => null,
                 'analysis' => null,
                 'processors' => null,
+                'logger' => null,
                 'validate' => true,
             ];
 
-        return (new Generator())
+        return (new Generator($config['logger']))
             ->setAliases($config['aliases'])
             ->setNamespaces($config['namespaces'])
             ->setAnalyser($config['analyser'])
@@ -251,11 +252,15 @@ class Generator
             if (is_iterable($source)) {
                 $this->scanSources($source, $analysis);
             } else {
-                $source = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
-                if (is_dir($source)) {
-                    $this->scanSources(Util::finder($source), $analysis);
+                $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
+                if (!$resolvedSource) {
+                    Logger::warning(sprintf('Skipping invalid source: %s', $source));
+                    continue;
+                }
+                if (is_dir($resolvedSource)) {
+                    $this->scanSources(Util::finder($resolvedSource), $analysis);
                 } else {
-                    $analysis->addAnalysis($analyser->fromFile($source));
+                    $analysis->addAnalysis($analyser->fromFile($resolvedSource));
                 }
             }
         }
