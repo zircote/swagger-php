@@ -10,11 +10,7 @@ paths:
       operationId: 133f11c148f628647767a323bf78c68d
       responses:
         default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+          $ref: '#/components/responses/product'
     patch:
       tags:
         - Products
@@ -23,11 +19,7 @@ paths:
         $ref: '#/components/requestBodies/product_in_body'
       responses:
         default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+          $ref: '#/components/responses/product'
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
@@ -36,16 +28,11 @@ paths:
       tags:
         - Products
       operationId: 779b6345f19f6b865527e6bd67819d2d
-      parameters:
-        -
-          $ref: '#/components/requestBodies/product_in_body'
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
       responses:
         default:
-          description: 'successful operation'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/product'
+          $ref: '#/components/responses/product'
 components:
   schemas:
     Product:
