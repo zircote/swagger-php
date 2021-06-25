@@ -17,8 +17,7 @@ class ProductController
      *   path="/products/{product_id}",
      *   @OA\Response(
      *       response="default",
-     *       description="successful operation",
-     *       @OA\JsonContent(ref="#/components/responses/product")
+     *       ref="#/components/responses/product"
      *   )
      * )
      */
@@ -33,8 +32,7 @@ class ProductController
      *   @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
      *   @OA\Response(
      *       response="default",
-     *       description="successful operation",
-     *       @OA\JsonContent(ref="#/components/responses/product")
+     *       ref="#/components/responses/product"
      *   )
      * )
      */
@@ -46,11 +44,10 @@ class ProductController
      * @OA\Post(
      *   tags={"Products"},
      *   path="/products",
-     *   @OA\Parameter(ref="#/components/requestBodies/product_in_body"),
+     *   @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
      *   @OA\Response(
      *       response="default",
-     *       description="successful operation",
-     *       @OA\JsonContent(ref="#/components/responses/product")
+     *       ref="#/components/responses/product"
      *   )
      * )
      */
