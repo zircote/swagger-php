@@ -11,6 +11,9 @@ use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use Traversable;
 
+/**
+ * @deprecated
+ */
 class MergeTraits
 {
     public function __invoke(Analysis $analysis)
