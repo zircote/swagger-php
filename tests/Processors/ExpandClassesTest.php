@@ -23,7 +23,7 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class InheritPropertiesTest extends OpenApiTestCase
+class ExpandClassesTest extends OpenApiTestCase
 {
     protected function validate(Analysis $analysis)
     {
