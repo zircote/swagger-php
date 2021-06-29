@@ -12,6 +12,9 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use OpenApi\Util;
 
+/**
+ * @deprecated
+ */
 class InheritTraits
 {
     public function __invoke(Analysis $analysis)
