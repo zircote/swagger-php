@@ -235,7 +235,7 @@ class OpenApiTestCase extends TestCase
         $analysis = new Analysis([], new Context());
 
         foreach ((array) $files as $file) {
-            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0]));
+            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0], new Context()));
         }
 
         return $analysis;
@@ -248,7 +248,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromDockBlock($comment)
     {
-        return (new Analyser())->fromComment($comment, null);
+        return (new Analyser())->fromComment($comment, new Context());
     }
 
     /**

@@ -225,11 +225,12 @@ class Generator
      */
     public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): OpenApi
     {
-        $analysis = $analysis ?: new Analysis([], new Context());
+        $rootContext = new Context();
+        $analysis = $analysis ?: new Analysis([], $rootContext);
 
         $this->configStack->push($this);
         try {
-            $this->scanSources($sources, $analysis);
+            $this->scanSources($sources, $analysis, $rootContext);
 
             // post processing
             $analysis->process($this->getProcessors());
@@ -245,12 +246,12 @@ class Generator
         return $analysis->openapi;
     }
 
-    protected function scanSources(iterable $sources, Analysis $analysis): void
+    protected function scanSources(iterable $sources, Analysis $analysis, Context $rootContext): void
     {
         $analyser = $this->getAnalyser();
         foreach ($sources as $source) {
             if (is_iterable($source)) {
-                $this->scanSources($source, $analysis);
+                $this->scanSources($source, $analysis, $rootContext);
             } else {
                 $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
                 if (!$resolvedSource) {
@@ -258,9 +259,9 @@ class Generator
                     continue;
                 }
                 if (is_dir($resolvedSource)) {
-                    $this->scanSources(Util::finder($resolvedSource), $analysis);
+                    $this->scanSources(Util::finder($resolvedSource), $analysis, $rootContext);
                 } else {
-                    $analysis->addAnalysis($analyser->fromFile($resolvedSource));
+                    $analysis->addAnalysis($analyser->fromFile($resolvedSource, $rootContext));
                 }
             }
         }

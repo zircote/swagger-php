@@ -68,7 +68,7 @@ class Analysis
     /**
      * @var Context
      */
-    protected $context;
+    public $context;
 
     /**
      * Registry for the post-processing operations.
@@ -77,25 +77,21 @@ class Analysis
      */
     private static $processors;
 
-    public function __construct(array $annotations = [], ?Context $context = null)
+    public function __construct(array $annotations = [], Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();
-        if (count($annotations) !== 0) {
-            if ($context === null) {
-                $context = Context::detect(1);
-            }
-            $this->addAnnotations($annotations, $context);
-        }
         $this->context = $context;
+
+        $this->addAnnotations($annotations, $context);
     }
 
-    public function addAnnotation($annotation, ?Context $context): void
+    public function addAnnotation($annotation, Context $context): void
     {
         if ($this->annotations->contains($annotation)) {
             return;
         }
         if ($annotation instanceof AbstractAnnotation) {
-            $context = $annotation->_context;
+            $context = $annotation->_context ?: $this->context;
             if ($this->openapi === null && $annotation instanceof OpenApi) {
                 $this->openapi = $annotation;
             }

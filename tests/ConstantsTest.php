@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analyser;
+use OpenApi\Context;
 use OpenApi\StaticAnalyser;
 
 class ConstantsTest extends OpenApiTestCase
@@ -57,12 +58,12 @@ class ConstantsTest extends OpenApiTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = false;
         $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php', new Context());
         // @todo Only tests that $whitelist=false doesn't trigger errors,
         // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in OpenApi\Annotation namespace has a constant.
 
         // Scanning without whitelisting causes issues, to check uncomment next.
-        // $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
+        // $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php', new Context());
         Analyser::$whitelist = $backup;
     }
 
