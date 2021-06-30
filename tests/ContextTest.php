@@ -43,7 +43,7 @@ class ContextTest extends OpenApiTestCase
 
     public function testPhpdocContent()
     {
-        $singleLine = new Context(['comment' => <<<END
+        $singleLine = $this->getContext(['comment' => <<<END
     /**
      * A single line.
      *
@@ -53,7 +53,7 @@ END
         ]);
         $this->assertEquals('A single line.', $singleLine->phpdocContent());
 
-        $multiline = new Context(['comment' => <<<END
+        $multiline = $this->getContext(['comment' => <<<END
 /**
  * A description spread across
  * multiple lines.
@@ -66,7 +66,7 @@ END
         ]);
         $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $multiline->phpdocContent());
 
-        $escapedLinebreak = new Context(['comment' => <<<END
+        $escapedLinebreak = $this->getContext(['comment' => <<<END
 /**
  * A single line spread across \
  * multiple lines.
@@ -83,12 +83,12 @@ END
      */
     public function testPhpdocSummaryAndDescription()
     {
-        $single = new Context(['comment' => '/** This is a single line DocComment. */']);
+        $single = $this->getContext(['comment' => '/** This is a single line DocComment. */']);
         $this->assertEquals('This is a single line DocComment.', $single->phpdocContent());
-        $multi = new Context(['comment' => "/**\n * This is a multi-line DocComment.\n */"]);
+        $multi = $this->getContext(['comment' => "/**\n * This is a multi-line DocComment.\n */"]);
         $this->assertEquals('This is a multi-line DocComment.', $multi->phpdocContent());
 
-        $emptyWhiteline = new Context(['comment' => <<<END
+        $emptyWhiteline = $this->getContext(['comment' => <<<END
     /**
      * This is a summary
      *
@@ -97,7 +97,7 @@ END
 END
         ]);
         $this->assertEquals('This is a summary', $emptyWhiteline->phpdocSummary());
-        $periodNewline = new Context(['comment' => <<<END
+        $periodNewline = $this->getContext(['comment' => <<<END
      /**
      * This is a summary.
      * This is a description
@@ -105,7 +105,7 @@ END
 END
         ]);
         $this->assertEquals('This is a summary.', $periodNewline->phpdocSummary());
-        $multilineSummary = new Context(['comment' => <<<END
+        $multilineSummary = $this->getContext(['comment' => <<<END
      /**
      * This is a summary
      * but this is part of the summary

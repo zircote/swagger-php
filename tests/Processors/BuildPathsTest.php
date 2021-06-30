@@ -11,7 +11,6 @@ use OpenApi\Annotations\Get;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Post;
-use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\MergeIntoOpenApi;
@@ -26,7 +25,7 @@ class BuildPathsTest extends OpenApiTestCase
             new PathItem(['path' => '/comments']),
             new PathItem(['path' => '/comments']),
         ];
-        $analysis = new Analysis([$openapi], new Context());
+        $analysis = new Analysis([$openapi], $this->getContext());
         $analysis->openapi = $openapi;
         $analysis->process(new BuildPaths());
         $this->assertCount(1, $openapi->paths);
@@ -42,7 +41,7 @@ class BuildPathsTest extends OpenApiTestCase
                 new Get(['path' => '/comments']),
                 new Post(['path' => '/comments']),
             ],
-            new Context()
+            $this->getContext()
         );
         $analysis->process(new MergeIntoOpenApi());
         $analysis->process(new BuildPaths());

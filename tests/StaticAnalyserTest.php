@@ -9,7 +9,6 @@ namespace OpenApi\Tests;
 use OpenApi\Analyser;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
-use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\StaticAnalyser;
 use OpenApi\Tests\Fixtures\Parser\User;
@@ -114,7 +113,7 @@ class StaticAnalyserTest extends OpenApiTestCase
     {
         $analyser = new StaticAnalyser();
         $this->assertOpenApiLogEntryContains('Annotations are only parsed inside `/**` DocBlocks');
-        $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", new Context());
+        $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", $this->getContext());
     }
 
     public function testIndentationCorrection()
@@ -128,7 +127,7 @@ class StaticAnalyserTest extends OpenApiTestCase
         $backup = Analyser::$whitelist;
         Analyser::$whitelist = ['OpenApi\\Annotations\\'];
         $analyser = new StaticAnalyser();
-        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php', new Context());
+        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php', $this->getContext());
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might

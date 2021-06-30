@@ -225,7 +225,7 @@ class Generator
      */
     public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): OpenApi
     {
-        $rootContext = new Context();
+        $rootContext = new Context(['logger' => $this->getLogger()]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
 
         $this->configStack->push($this);

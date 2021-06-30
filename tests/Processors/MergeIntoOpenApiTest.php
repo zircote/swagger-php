@@ -9,7 +9,6 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
@@ -25,7 +24,7 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
                 $openapi,
                 $info,
             ],
-            new Context()
+            $this->getContext()
         );
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame(Generator::UNDEFINED, $openapi->info);
