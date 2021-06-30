@@ -16,7 +16,7 @@ class StaticAnalyser
      *
      * @param string $filename path to a php file
      */
-    public function fromFile(string $filename): Analysis
+    public function fromFile(string $filename, Context $context): Analysis
     {
         if (function_exists('opcache_get_status') && function_exists('opcache_get_configuration')) {
             if (empty($GLOBALS['openapi_opcache_warning'])) {
@@ -30,7 +30,7 @@ class StaticAnalyser
         }
         $tokens = token_get_all(file_get_contents($filename));
 
-        return $this->fromTokens($tokens, new Context(['filename' => $filename]));
+        return $this->fromTokens($tokens, new Context(['filename' => $filename], $context));
     }
 
     /**

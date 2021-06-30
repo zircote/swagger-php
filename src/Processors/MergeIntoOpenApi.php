@@ -21,7 +21,7 @@ class MergeIntoOpenApi
     {
         // Auto-create the OpenApi annotation.
         if (!$analysis->openapi) {
-            $context = new Context(['analysis' => $analysis]);
+            $context = new Context([], $analysis->context);
             $analysis->addAnnotation(new OpenApi(['_context' => $context]), $context);
         }
         $openapi = $analysis->openapi;

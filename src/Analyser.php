@@ -88,9 +88,8 @@ class Analyser
      *
      * @return array Annotations
      */
-    public function fromComment(string $comment, ?Context $context = null): array
+    public function fromComment(string $comment, Context $context): array
     {
-        $context = $context ?: new Context();
         $context->comment = $comment;
 
         try {
