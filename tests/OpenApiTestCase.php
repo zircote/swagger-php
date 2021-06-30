@@ -11,7 +11,6 @@ use DirectoryIterator;
 use Exception;
 use OpenApi\Analyser;
 use OpenApi\Analysis;
-use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
@@ -109,6 +108,11 @@ class OpenApiTestCase extends TestCase
         };
     }
 
+    public function getContext(array $properties = [])
+    {
+        return new Context($properties);
+    }
+
     public function assertOpenApiLogEntryContains($needle, $message = '')
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
@@ -167,7 +171,7 @@ class OpenApiTestCase extends TestCase
     private function formattedValue($value)
     {
         if (is_bool($value)) {
-            return  $value ? 'true' : 'false';
+            return $value ? 'true' : 'false';
         }
         if (is_numeric($value)) {
             return (string) $value;
@@ -182,17 +186,10 @@ class OpenApiTestCase extends TestCase
         return gettype($value);
     }
 
-    /**
-     * Parse a comment.
-     *
-     * @param string $comment Contents of a comment block
-     *
-     * @return AbstractAnnotation[]
-     */
-    protected function parseComment($comment)
+    protected function parseComment($comment, ?Context $context = null)
     {
         $analyser = new Analyser();
-        $context = Context::detect(1);
+        $context = $context ?: $this->getContext();
 
         return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
@@ -206,12 +203,12 @@ class OpenApiTestCase extends TestCase
             'info' => new Info([
                 'title' => 'swagger-php Test-API',
                 'version' => 'test',
-                '_context' => new Context(['unittest' => true]),
+                '_context' => $this->getContext(['unittest' => true]),
             ]),
             'paths' => [
                 new PathItem(['path' => '/test']),
             ],
-            '_context' => new Context(['unittest' => true]),
+            '_context' => $this->getContext(['unittest' => true]),
         ]);
     }
 
@@ -232,10 +229,10 @@ class OpenApiTestCase extends TestCase
     public function analysisFromFixtures($files): Analysis
     {
         $analyser = new StaticAnalyser();
-        $analysis = new Analysis([], new Context());
+        $analysis = new Analysis([], $this->getContext());
 
         foreach ((array) $files as $file) {
-            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0], new Context()));
+            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0], $this->getContext()));
         }
 
         return $analysis;
@@ -243,12 +240,12 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: new Context());
+        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: $this->getContext());
     }
 
     public function analysisFromDockBlock($comment)
     {
-        return (new Analyser())->fromComment($comment, new Context());
+        return (new Analyser())->fromComment($comment, $this->getContext());
     }
 
     /**

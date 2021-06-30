@@ -9,7 +9,6 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Response;
-use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Tests\OpenApiTestCase;
@@ -25,7 +24,7 @@ class MergeJsonContentTest extends OpenApiTestCase
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), new Context());
+        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $this->assertCount(3, $analysis->annotations);
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertSame(Generator::UNDEFINED, $response->content);
@@ -47,7 +46,7 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), new Context());
+        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertCount(1, $response->content);
         $analysis->process(new MergeJsonContent());
@@ -62,7 +61,7 @@ END;
                 @OA\Property(property="color", type="string")
             ))
 END;
-        $analysis = new Analysis($this->parseComment($comment), new Context());
+        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
         $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
@@ -84,7 +83,7 @@ END;
                 @OA\Items(ref="#/components/schemas/repository")
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), new Context());
+        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $analysis->process(new MergeJsonContent());
     }
 
@@ -98,7 +97,7 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), new Context());
+        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $analysis->process(new MergeJsonContent());
     }
 }
