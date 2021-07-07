@@ -54,13 +54,17 @@ class Generator
 
             public function push(Generator $generator): void
             {
+                // save current state
                 $this->defaultImports = Analyser::$defaultImports;
                 $this->whitelist = Analyser::$whitelist;
                 $this->log = Logger::getInstance()->log;
 
+                // update state with generator config
                 Analyser::$defaultImports = $generator->getAliases();
                 Analyser::$whitelist = $generator->getNamespaces();
-                if ($logger = $generator->getLogger()) {
+
+                // if PSR logger given and is not default logger, "inject" it into legacy logger
+                if (($logger = $generator->getLogger()) && !property_exists($logger, 'isDefaultLogger')) {
                     Logger::getInstance()->log = function ($msg, $type) use ($logger) {
                         $context = [];
                         if ($msg instanceof \Exception) {
@@ -169,9 +173,18 @@ class Generator
         return $this;
     }
 
+    public function getDefaultLogger()
+    {
+        $logger =  Logger::psrInstance();
+        // sigh, this is why static stuff is not worth it
+        $logger->isDefaultLogger = true;
+
+        return $logger;
+    }
+
     public function getLogger(): ?LoggerInterface
     {
-        return $this->logger;
+        return $this->logger ?: $this->getDefaultLogger();
     }
 
     /**
