@@ -116,7 +116,7 @@ class Schema extends AbstractAnnotation
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
      *
-     * @var bool
+     * @var number
      */
     public $exclusiveMaximum = Generator::UNDEFINED;
 
@@ -130,7 +130,7 @@ class Schema extends AbstractAnnotation
     /**
      * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
      *
-     * @var bool
+     * @var number
      */
     public $exclusiveMinimum = Generator::UNDEFINED;
 
