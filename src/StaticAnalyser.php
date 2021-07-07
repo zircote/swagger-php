@@ -24,7 +24,7 @@ class StaticAnalyser
                 $status = opcache_get_status();
                 $config = opcache_get_configuration();
                 if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
-                    Logger::warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
+                    $context->logger->error("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
                 }
             }
         }
@@ -416,7 +416,7 @@ class StaticAnalyser
                     if ($pos) {
                         $line = $context->line ? $context->line + $token[2] : $token[2];
                         $commentContext = new Context(['line' => $line], $context);
-                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                        $context->logger->warning('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
                     }
                     continue;
                 }

@@ -14,7 +14,6 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Logger;
 
 /**
  * Split JsonContent into Schema and MediaType.
@@ -30,9 +29,9 @@ class MergeJsonContent
             $parent = $jsonContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected ' . $jsonContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
+                    $jsonContent->_context->logger->warning('Unexpected ' . $jsonContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {
-                    Logger::notice('Unexpected ' . $jsonContent->identity() . ' must be nested');
+                    $jsonContent->_context->logger->warning('Unexpected ' . $jsonContent->identity() . ' must be nested');
                 }
                 continue;
             }

@@ -5,9 +5,9 @@
 namespace OpenApi\Tests\Fixtures;
 
 use Exception;
-use OpenApi\Logger;
-use OpenApi\Logger as OpenApiLogger;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
+use OpenApi\Generator as OpenApiGenerator;
 
 /**
  * A customer.
@@ -87,8 +87,8 @@ class Customer
      */
     public function testResolvingFullyQualifiedNames()
     {
-        OpenApiLogger::getInstance();
-        Logger::getInstance();
+        (new OpenApiGenerator())->getLogger();
+        (new Generator())->getLogger();
         new OA\Contact([]);
         throw new Exception();
     }

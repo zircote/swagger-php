@@ -26,7 +26,7 @@ class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName()
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = Generator::scan([__DIR__ . '/Fixtures/Customer.php']);
+        $openapi = Generator::scan([__DIR__ . '/Fixtures/Customer.php'], ['logger' => $this->getTrackingLogger()]);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
@@ -35,9 +35,9 @@ class ContextTest extends OpenApiTestCase
         // respect use statements
         $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
         $this->assertSame('\OpenApi\Tests\Fixtures\Customer', $context->fullyQualifiedName('Customer'));
-        $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('Logger'));
-        $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('lOgGeR')); // php has case-insensitive class names :-(
-        $this->assertSame('\OpenApi\Logger', $context->fullyQualifiedName('OpenApiLogger'));
+        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('Generator'));
+        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('gEnerator')); // php has case-insensitive class names :-(
+        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('OpenApiGenerator'));
         $this->assertSame('\OpenApi\Annotations\QualifiedAlias', $context->fullyQualifiedName('OA\QualifiedAlias'));
     }
 
