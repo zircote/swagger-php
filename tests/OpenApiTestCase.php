@@ -110,7 +110,7 @@ class OpenApiTestCase extends TestCase
 
     public function getContext(array $properties = [])
     {
-        return new Context($properties);
+        return new Context(['logger' => $this->getPsrLogger(true)] + $properties);
     }
 
     public function assertOpenApiLogEntryContains($needle, $message = '')

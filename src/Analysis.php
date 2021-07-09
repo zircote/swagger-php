@@ -495,7 +495,7 @@ class Analysis
         if ($this->openapi !== null) {
             return $this->openapi->validate();
         }
-        Logger::notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+        $this->context->logger->notice('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
 
         return false;
     }

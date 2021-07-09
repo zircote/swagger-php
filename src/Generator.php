@@ -268,7 +268,7 @@ class Generator
             } else {
                 $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
                 if (!$resolvedSource) {
-                    Logger::warning(sprintf('Skipping invalid source: %s', $source));
+                    $rootContext->logger->warning(sprintf('Skipping invalid source: %s', $source));
                     continue;
                 }
                 if (is_dir($resolvedSource)) {
