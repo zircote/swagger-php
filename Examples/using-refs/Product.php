@@ -25,4 +25,9 @@ class Product {
      * @OA\Property(ref="#/components/schemas/product_status")
      */
     public $status;
+
+    /**
+     * @OA\Property(ref="#/components/schemas/product_status", nullable=true)
+     */
+    public $nullableStatus;
 }
