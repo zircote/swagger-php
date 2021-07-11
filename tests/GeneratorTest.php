@@ -54,7 +54,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
 
-        (new Generator($this->getPsrLogger(true)))
+        (new Generator($this->getTrackingLogger()))
             ->setAliases(['swg' => 'OpenApi\Annotations'])
             ->generate($this->fixtures('Deprecated.php'));
     }
