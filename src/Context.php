@@ -60,6 +60,11 @@ class Context
             $this->$property = $value;
         }
         $this->_parent = $parent;
+
+        // BC
+        if (!$this->logger) {
+            $this->logger = Logger::psrInstance();
+        }
     }
 
     /**
