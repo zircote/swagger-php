@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Logger\DefaultLogger;
+
 /**
  * Context.
  *
@@ -61,9 +63,9 @@ class Context
         }
         $this->_parent = $parent;
 
-        // BC
         if (!$this->logger) {
-            $this->logger = Logger::psrInstance();
+            // BC
+            $this->logger = new DefaultLogger();
         }
     }
 
