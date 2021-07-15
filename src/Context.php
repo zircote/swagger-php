@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Logger\DefaultLogger;
+
 /**
  * Context.
  *
@@ -60,6 +62,11 @@ class Context
             $this->$property = $value;
         }
         $this->_parent = $parent;
+
+        if (!$this->logger) {
+            // BC
+            $this->logger = new DefaultLogger();
+        }
     }
 
     /**

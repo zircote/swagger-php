@@ -79,11 +79,6 @@ class Logger
      */
     public static function shorten($classes)
     {
-        $short = [];
-        foreach ((array) $classes as $class) {
-            $short[] = '@' . str_replace('OpenApi\\Annotations\\', 'OA\\', $class);
-        }
-
-        return is_array($classes) ? $short : array_pop($short);
+        return Util::shorten($classes);
     }
 }
