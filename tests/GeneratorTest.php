@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\Logger;
 use OpenApi\Processors\OperationId;
@@ -81,5 +82,27 @@ class GeneratorTest extends OpenApiTestCase
                 $this->assertSpecEquals($expected, $processor->isHash());
             }
         }
+    }
+
+    public function testAddProcessor()
+    {
+        $generator = new Generator();
+        $processors = $generator->getProcessors();
+        $generator->addProcessor(function (Analysis $analysis) {
+        });
+
+        $this->assertLessThan(count($generator->getProcessors()), count($processors));
+    }
+
+    public function testRemoveProcessor()
+    {
+        $generator = new Generator();
+        $processors = $generator->getProcessors();
+        $processor = function (Analysis $analysis) {
+        };
+        $generator->addProcessor($processor);
+        $generator->removeProcessor($processor);
+
+        $this->assertEquals($processors, $generator->getProcessors());
     }
 }

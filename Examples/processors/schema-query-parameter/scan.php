@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 // also load our custom processor...
 require __DIR__ . '/SchemaQueryParameter.php';
 
@@ -21,5 +21,5 @@ $openapi = (new OpenApi\Generator())
             ->setProcessors($processors)
             ->generate([__DIR__ . '/app']);
 $spec = json_encode($openapi, JSON_PRETTY_PRINT);
-file_put_contents(__DIR__ . '/schema-query-parameter-processor.json', $spec);
+file_put_contents(__DIR__ . '/schema-query-parameter.json', $spec);
 //echo $spec;

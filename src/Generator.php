@@ -144,6 +144,30 @@ class Generator
         return $this;
     }
 
+    public function addProcessor(callable $processor): Generator
+    {
+        $processors = $this->getProcessors();
+        $processors[] = $processor;
+        $this->setProcessors($processors);
+
+        return $this;
+    }
+
+    public function removeProcessor(callable $processor, bool $silent = false): Generator
+    {
+        $processors = $this->getProcessors();
+        if (false === ($key = array_search($processor, $processors, true))) {
+            if ($silent) {
+                return $this;
+            }
+            throw new \InvalidArgumentException('Processor not found');
+        }
+        unset($processors[$key]);
+        $this->setProcessors($processors);
+
+        return $this;
+    }
+
     /**
      * Update/replace an existing processor with a new one.
      *

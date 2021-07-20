@@ -10,7 +10,7 @@
                 "tags": [
                     "Products"
                 ],
-                "operationId": "App\\ProductController::getProduct",
+                "operationId": "399b71a7672f0a46be1b5f4c120c355d",
                 "responses": {
                     "200": {
                         "description": "A single product",
@@ -31,7 +31,7 @@
                     "Products"
                 ],
                 "summary": "Controller that takes all `Product` properties as query parameter.",
-                "operationId": "App\\ProductController::findProducts",
+                "operationId": "178f74de3417eec20dee95709821e6ca",
                 "parameters": [
                     {
                         "name": "id",
