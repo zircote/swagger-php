@@ -33,4 +33,11 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         unlink($filename);
         $this->assertSpecEquals(file_get_contents($path . '/petstore-simple.yaml'), $yaml);
     }
+
+    public function testAddProcessor()
+    {
+        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        exec(__DIR__ . '/../bin/openapi --processor OperationId --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
+        $this->assertSame(0, $retval);
+    }
 }

@@ -439,6 +439,8 @@ class Analysis
      * Get direct access to the processors array.
      *
      * @return array reference
+     *
+     * @deprecated Superseded by `Generator` methods
      */
     public static function &processors()
     {
@@ -469,6 +471,8 @@ class Analysis
      * Register a processor.
      *
      * @param \Closure $processor
+     *
+     * @deprecated Superseded by `Generator` methods
      */
     public static function registerProcessor($processor): void
     {
@@ -479,6 +483,8 @@ class Analysis
      * Unregister a processor.
      *
      * @param \Closure $processor
+     *
+     * @deprecated Superseded by `Generator` methods
      */
     public static function unregisterProcessor($processor): void
     {

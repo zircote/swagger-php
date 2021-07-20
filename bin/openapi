@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 use OpenApi\Logger;
-use OpenApi\Analysis;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
+use OpenApi\Util;
 use const OpenApi\COLOR_RED;
 use const OpenApi\COLOR_YELLOW;
 use const OpenApi\COLOR_STOP;
@@ -220,6 +220,7 @@ if ($options['pattern']) {
     $pattern = $options['pattern'];
 }
 
+$generator = new Generator();
 foreach ($options["processor"] as $processor) {
     $class = '\OpenApi\Processors\\'.$processor;
     if (class_exists($class)) {
@@ -227,10 +228,10 @@ foreach ($options["processor"] as $processor) {
     } elseif (class_exists($processor)) {
         $processor = new $processor();
     }
-    Analysis::registerProcessor($processor);
+    $generator->addProcessor($processor);
 }
 
-$openapi = OpenApi\Generator::scan(OpenApi\Util::finder($paths, $exclude, $pattern));
+$openapi = $generator->generate(Util::finder($paths, $exclude, $pattern));
 
 if ($exit !== 0) {
     error_log('');
