@@ -97,7 +97,7 @@ class Analyser
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
-            $annotations = $this->docParser->parse($comment, $context);
+            $annotations = $this->docParser->parse($comment);
             self::$context = null;
 
             return $annotations;
