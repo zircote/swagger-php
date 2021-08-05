@@ -102,7 +102,7 @@ class InheritProperties
         $append = true;
         foreach ($to->allOf as $entry) {
             if ($entry->ref !== Generator::UNDEFINED && $entry->ref === Components::SCHEMA_REF . Util::refEncode($from->schema)) {
-                $append = false; // ref was already specified manualy
+                $append = false; // ref was already specified manually
             }
         }
         if ($append) {

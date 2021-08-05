@@ -39,19 +39,4 @@ class ProductController
     public function updateProduct($id)
     {
     }
-
-    /**
-     * @OA\Post(
-     *   tags={"Products"},
-     *   path="/products",
-     *   @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
-     *   @OA\Response(
-     *       response="default",
-     *       ref="#/components/responses/product"
-     *   )
-     * )
-     */
-    public function addProduct($id)
-    {
-    }
 }
