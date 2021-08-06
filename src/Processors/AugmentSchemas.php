@@ -7,6 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
@@ -93,6 +94,7 @@ class AugmentSchemas
         }
 
         // move schema properties into allOf if both exist
+        $updatedRefs = [];
         foreach ($schemas as $schema) {
             if ($schema->properties !== Generator::UNDEFINED and $schema->allOf !== Generator::UNDEFINED) {
                 $allOfPropertiesSchema = null;
@@ -108,6 +110,30 @@ class AugmentSchemas
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
                 $schema->properties = Generator::UNDEFINED;
+
+                // keep track of ref changes
+                $updatedRefs[Components::SCHEMA_REF . $schema->schema . '/properties'] = Components::SCHEMA_REF . $schema->schema . '/allOf/0/properties';
+            }
+        }
+
+        // ref rewriting is simpler if properties is first...
+        foreach ($schemas as $schema) {
+            if ($schema->allOf !== Generator::UNDEFINED) {
+                usort($schema->allOf, function ($a, $b) {
+                    return $a->properties !== Generator::UNDEFINED ? -1 : ($b->properties !== Generator::UNDEFINED ? 1 : 0);
+                });
+            }
+        }
+
+        if ($updatedRefs) {
+            foreach ($analysis->annotations as $annotation) {
+                if (property_exists($annotation, 'ref') && $annotation->ref !== Generator::UNDEFINED && $annotation->ref !== null) {
+                    foreach ($updatedRefs as $origRef => $updatedRef) {
+                        if (0 === strpos($annotation->ref, $origRef)) {
+                            $annotation->ref = str_replace($origRef, $updatedRef, $annotation->ref);
+                        }
+                    }
+                }
             }
         }
     }

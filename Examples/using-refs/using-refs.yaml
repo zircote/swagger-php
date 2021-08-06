@@ -33,8 +33,6 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/Model'
-        -
           properties:
             id:
               description: 'The unique identifier of a product in our catalog.'
@@ -43,6 +41,8 @@ components:
               example: 1
             status:
               $ref: '#/components/schemas/product_status'
+        -
+          $ref: '#/components/schemas/Model'
     product_status:
       description: 'The status of a product'
       type: string

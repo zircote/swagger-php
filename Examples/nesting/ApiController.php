@@ -12,7 +12,16 @@ class ApiController
     /**
      * @OA\Get(
      *   tags={"api"},
-     *   path="entity/{id}",
+     *   path="/entity/{id}",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(
+     *       type="integer",
+     *       format="int64",
+     *     )
+     *   ),
      *   @OA\Response(
      *       response="default",
      *       description="successful operation",

@@ -4,11 +4,19 @@ info:
   description: 'An entity controller class.'
   version: 1.0.0
 paths:
-  'entity/{id}':
+  '/entity/{id}':
     get:
       tags:
         - api
-      operationId: ba071babc56eee118c82b2278c55f6c7
+      operationId: 4db0bcd1e9358f78c662034e39c702b6
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         default:
           description: 'successful operation'
@@ -22,24 +30,24 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/AlmostModel'
-        -
           properties:
             actual:
               type: string
             soClose:
               type: string
+        -
+          $ref: '#/components/schemas/AlmostModel'
     AlmostModel:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/BaseModel'
         -
           properties:
             almost:
               type: string
             intermediate:
               type: string
+        -
+          $ref: '#/components/schemas/BaseModel'
     BaseModel:
       properties:
         base:

@@ -174,8 +174,6 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/NewPet'
-        -
           required:
             - id
           properties:
@@ -183,6 +181,8 @@ components:
               type: integer
               format: int64
           type: object
+        -
+          $ref: '#/components/schemas/NewPet'
     ErrorModel:
       required:
         - code
