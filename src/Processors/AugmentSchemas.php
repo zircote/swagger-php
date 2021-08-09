@@ -94,12 +94,11 @@ class AugmentSchemas
         }
 
         // move schema properties into allOf if both exist
-        $updatedRefs = [];
         foreach ($schemas as $schema) {
             if ($schema->properties !== Generator::UNDEFINED and $schema->allOf !== Generator::UNDEFINED) {
                 $allOfPropertiesSchema = null;
                 foreach ($schema->allOf as $allOfSchema) {
-                    if ($allOfSchema->ref === Generator::UNDEFINED) {
+                    if ($allOfSchema->properties !== Generator::UNDEFINED) {
                         $allOfPropertiesSchema = $allOfSchema;
                         break;
                     }
@@ -110,15 +109,22 @@ class AugmentSchemas
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
                 $schema->properties = Generator::UNDEFINED;
-
-                // keep track of ref changes
-                $updatedRefs[Components::SCHEMA_REF . $schema->schema . '/properties'] = Components::SCHEMA_REF . $schema->schema . '/allOf/0/properties';
             }
         }
 
-        // ref rewriting is simpler if properties is first...
+        // ref rewriting
+        $updatedRefs = [];
         foreach ($schemas as $schema) {
             if ($schema->allOf !== Generator::UNDEFINED) {
+                // do we have to keep track of properties refs that need updating?
+                foreach ($schema->allOf as $allOfSchema) {
+                    if ($allOfSchema->properties !== Generator::UNDEFINED) {
+                        $updatedRefs[Components::SCHEMA_REF . $schema->schema . '/properties'] = Components::SCHEMA_REF . $schema->schema . '/allOf/0/properties';
+                        break;
+                    }
+                }
+
+                // rewriting is simpler if properties is first...
                 usort($schema->allOf, function ($a, $b) {
                     return $a->properties !== Generator::UNDEFINED ? -1 : ($b->properties !== Generator::UNDEFINED ? 1 : 0);
                 });

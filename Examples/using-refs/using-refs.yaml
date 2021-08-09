@@ -23,6 +23,17 @@ paths:
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
+  '/products/{product_id}/do-stuff':
+    get:
+      tags:
+        - Products
+      operationId: 9aed2c6f96bff805003c993b97822c06
+      parameters:
+        -
+          $ref: '#/components/schemas/Product/allOf/0/properties/id'
+      responses:
+        default:
+          $ref: '#/components/responses/product'
 components:
   schemas:
     Model:
