@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Tests\Fixtures;
+namespace OpenApi\Tests\Fixtures\InheritProperties;
 
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;

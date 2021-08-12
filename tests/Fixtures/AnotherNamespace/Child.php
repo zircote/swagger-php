@@ -2,10 +2,12 @@
 
 namespace AnotherNamespace;
 
+use OpenApi\Tests\Fixtures\InheritProperties\Ancestor;
+
 /**
  * @OA\Schema()
  */
-class Child extends \OpenApi\Tests\Fixtures\Ancestor
+class Child extends Ancestor
 {
 
     /**
