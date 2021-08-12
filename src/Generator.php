@@ -7,8 +7,8 @@
 namespace OpenApi;
 
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Logger\DefaultLogger;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * OpenApi spec generator.
@@ -50,35 +50,22 @@ class Generator
         $this->configStack = new class() {
             private $defaultImports;
             private $whitelist;
-            private $log;
 
             public function push(Generator $generator): void
             {
+                // save current state
                 $this->defaultImports = Analyser::$defaultImports;
                 $this->whitelist = Analyser::$whitelist;
-                $this->log = Logger::getInstance()->log;
 
+                // update state with generator config
                 Analyser::$defaultImports = $generator->getAliases();
                 Analyser::$whitelist = $generator->getNamespaces();
-                if ($logger = $generator->getLogger()) {
-                    Logger::getInstance()->log = function ($msg, $type) use ($logger) {
-                        $context = [];
-                        if ($msg instanceof \Exception) {
-                            $context['exception'] = $exception = $msg;
-                            $msg = $exception->getMessage();
-                        }
-
-                        $level = E_USER_ERROR == $type ? LogLevel::ERROR : LogLevel::INFO;
-                        $logger->log($level, $msg, $context);
-                    };
-                }
             }
 
             public function pop(): void
             {
                 Analyser::$defaultImports = $this->defaultImports;
                 Analyser::$whitelist = $this->whitelist;
-                Logger::getInstance()->log = $this->log;
             }
         };
     }
@@ -195,7 +182,7 @@ class Generator
 
     public function getLogger(): ?LoggerInterface
     {
-        return $this->logger;
+        return $this->logger ?: new DefaultLogger();
     }
 
     /**
@@ -279,7 +266,7 @@ class Generator
             } else {
                 $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
                 if (!$resolvedSource) {
-                    Logger::warning(sprintf('Skipping invalid source: %s', $source));
+                    $rootContext->logger->warning(sprintf('Skipping invalid source: %s', $source));
                     continue;
                 }
                 if (is_dir($resolvedSource)) {

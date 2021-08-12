@@ -8,7 +8,6 @@ namespace OpenApi\Annotations;
 
 use OpenApi\Analysis;
 use OpenApi\Generator;
-use OpenApi\Logger;
 use OpenApi\Util;
 
 /**
@@ -129,7 +128,7 @@ class OpenApi extends AbstractAnnotation
     public function validate(array $parents = null, array $skip = null, string $ref = ''): bool
     {
         if ($parents !== null || $skip !== null || $ref !== '') {
-            Logger::notice('Nested validation for ' . $this->identity() . ' not allowed');
+            $this->_context->logger->warning('Nested validation for ' . $this->identity() . ' not allowed');
 
             return false;
         }

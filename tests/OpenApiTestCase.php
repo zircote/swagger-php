@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use Closure;
 use DirectoryIterator;
 use Exception;
 use OpenApi\Analyser;
@@ -15,12 +14,10 @@ use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\Logger;
 use OpenApi\StaticAnalyser;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -31,31 +28,10 @@ class OpenApiTestCase extends TestCase
      */
     public $expectedLogMessages = [];
 
-    /**
-     * @var Closure
-     */
-    private $originalLogger;
-
     protected function setUp(): void
     {
         $this->expectedLogMessages = [];
-        $this->originalLogger = Logger::getInstance()->log;
-        Logger::getInstance()->log = function ($entry, $type) {
-            if (count($this->expectedLogMessages)) {
-                list($assertion, $needle) = array_shift($this->expectedLogMessages);
-                $assertion($entry, $type);
-            } else {
-                $map = [
-                    E_USER_NOTICE => 'notice',
-                    E_USER_WARNING => 'warning',
-                ];
-                if (isset($map[$type])) {
-                    $this->fail('Unexpected \OpenApi\Logger::' . $map[$type] . '("' . $entry . '")');
-                } else {
-                    $this->fail('Unexpected \OpenApi\Logger->getInstance()->log("' . $entry . '",' . $type . ')');
-                }
-            }
-        };
+
         parent::setUp();
     }
 
@@ -70,24 +46,12 @@ class OpenApiTestCase extends TestCase
                 }, $this->expectedLogMessages)
             ))
         );
-        Logger::getInstance()->log = $this->originalLogger;
+
         parent::tearDown();
     }
 
-    public function getPsrLogger(bool $tracking = false): ?LoggerInterface
+    public function getTrackingLogger(): ?LoggerInterface
     {
-        if (!$tracking) {
-            // allow to test the default behaviour without injected PSR logger
-            switch (strtoupper($_ENV['NON_TRACKING_LOGGER'] ?? 'FALLBACK')) {
-                case 'NULL':
-                    return new NullLogger();
-                case 'FALLBACK':
-                default:
-                    // whatever is set up in Logger::$instance->log
-                    return null;
-            }
-        }
-
         return new class($this) extends AbstractLogger {
             protected $testCase;
 
@@ -102,7 +66,7 @@ class OpenApiTestCase extends TestCase
                     list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
                     $assertion($message, $level);
                 } else {
-                    $this->testCase->fail('Unexpected \OpenApi\Logger::' . $level . '("' . $message . '")');
+                    $this->testCase->fail('Unexpected log line ::' . $level . '("' . $message . '")');
                 }
             }
         };
@@ -110,7 +74,7 @@ class OpenApiTestCase extends TestCase
 
     public function getContext(array $properties = [])
     {
-        return new Context($properties);
+        return new Context(['logger' => $this->getTrackingLogger()] + $properties);
     }
 
     public function assertOpenApiLogEntryContains($needle, $message = '')

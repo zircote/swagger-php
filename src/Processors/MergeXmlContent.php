@@ -14,7 +14,6 @@ use OpenApi\Annotations\Response;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Logger;
 
 /**
  * Split XmlContent into Schema and MediaType.
@@ -30,9 +29,9 @@ class MergeXmlContent
             $parent = $xmlContent->_context->nested;
             if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
                 if ($parent) {
-                    Logger::notice('Unexpected ' . $xmlContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
+                    $xmlContent->_context->logger->warning('Unexpected ' . $xmlContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {
-                    Logger::notice('Unexpected ' . $xmlContent->identity() . ' must be nested');
+                    $xmlContent->_context->logger->warning('Unexpected ' . $xmlContent->identity() . ' must be nested');
                 }
                 continue;
             }

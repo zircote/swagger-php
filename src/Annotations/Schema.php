@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Logger;
 
 /**
  * @Annotation
@@ -373,7 +372,7 @@ class Schema extends AbstractAnnotation
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         if ($this->type === 'array' && $this->items === Generator::UNDEFINED) {
-            Logger::notice('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             return false;
         }

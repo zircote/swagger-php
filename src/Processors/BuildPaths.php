@@ -11,7 +11,6 @@ use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Logger;
 
 /**
  * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc).
@@ -25,7 +24,7 @@ class BuildPaths
         if ($analysis->openapi->paths !== Generator::UNDEFINED) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
-                    Logger::notice($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
+                    $annotation->_context->logger->warning($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
                 } elseif (isset($paths[$annotation->path])) {
                     $paths[$annotation->path]->mergeProperties($annotation);
                     $analysis->annotations->detach($annotation);
@@ -51,7 +50,7 @@ class BuildPaths
                     $analysis->annotations->attach($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
-                    Logger::notice('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);
+                    $operation->_context->logger->warning('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);
                 }
             }
         }

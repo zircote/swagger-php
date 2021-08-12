@@ -132,4 +132,21 @@ class Util
     {
         return str_replace('~1', '/', str_replace('~0', '~', $encoded));
     }
+
+    /**
+     * Shorten class name(s).
+     *
+     * @param array|object|string $classes Class(es) to shorten
+     *
+     * @return string|string[] One or more shortened class names
+     */
+    public static function shorten($classes)
+    {
+        $short = [];
+        foreach ((array) $classes as $class) {
+            $short[] = '@' . str_replace('OpenApi\\Annotations\\', 'OA\\', $class);
+        }
+
+        return is_array($classes) ? $short : array_pop($short);
+    }
 }

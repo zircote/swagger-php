@@ -6,8 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Logger;
-
 /**
  * @Annotation
  * The description of an item in a Schema with type "array"
@@ -51,7 +49,7 @@ class Items extends Schema
 
         $parent = end($parents);
         if ($parent instanceof Schema && $parent->type !== 'array') {
-            Logger::notice('@OA\\Items() parent type must be "array" in ' . $this->_context);
+            $this->_context->logger->warning('@OA\\Items() parent type must be "array" in ' . $this->_context);
             $valid = false;
         }
 

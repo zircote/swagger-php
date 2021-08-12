@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Logger;
 
 /**
  * @Annotation
@@ -244,7 +243,7 @@ class Parameter extends AbstractAnnotation
         if ($this->ref === Generator::UNDEFINED) {
             if ($this->in === 'body') {
                 if ($this->schema === Generator::UNDEFINED) {
-                    Logger::notice('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                    $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }
             }
