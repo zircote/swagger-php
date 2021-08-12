@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Tests\Fixtures;
+namespace OpenApi\Tests\Fixtures\InheritProperties;
 
 /**
  *  @OA\Schema(

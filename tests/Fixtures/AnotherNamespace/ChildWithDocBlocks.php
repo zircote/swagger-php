@@ -2,10 +2,12 @@
 
 namespace AnotherNamespace;
 
+use OpenApi\Tests\Fixtures\InheritProperties\AncestorWithoutDocBlocks;
+
 /**
  * @OA\Schema()
  */
-class ChildWithDocBlocks extends \OpenApi\Tests\Fixtures\AncestorWithoutDocBlocks
+class ChildWithDocBlocks extends AncestorWithoutDocBlocks
 {
 
     /**

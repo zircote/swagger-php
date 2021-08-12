@@ -31,6 +31,7 @@
   ],
   "config": {
     "bin-dir": "bin",
+    "optimize-autoloader": true,
     "sort-packages": true
   },
   "minimum-stability": "stable",
@@ -50,6 +51,7 @@
     ]
   },
   "require-dev": {
+    "composer/package-versions-deprecated": "1.11.99.2",
     "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
     "phpunit/phpunit": ">=8"
   },
