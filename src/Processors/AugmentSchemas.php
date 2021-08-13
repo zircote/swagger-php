@@ -51,6 +51,13 @@ class AugmentSchemas
                             continue;
                         }
 
+                        // skip excluded properties
+                        if ($annotation->excludeProperties !== Generator::UNDEFINED) {
+                            if (is_array($annotation->excludeProperties) && in_array($property->_context->property, $annotation->excludeProperties)) {
+                                continue;
+                            }
+                        }
+
                         if ($annotation->allOf !== Generator::UNDEFINED) {
                             $schema = null;
                             foreach ($annotation->allOf as $nestedSchema) {

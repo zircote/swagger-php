@@ -70,6 +70,13 @@ class Schema extends AbstractAnnotation
     public $required = Generator::UNDEFINED;
 
     /**
+     * List of properties that have to be excluded from auto-generated list.
+     *
+     * @var string[]
+     */
+    public $excludeProperties = Generator::UNDEFINED;
+
+    /**
      * @var Property[]
      */
     public $properties = Generator::UNDEFINED;

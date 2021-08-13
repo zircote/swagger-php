@@ -45,4 +45,18 @@ class ItemsTest extends OpenApiTestCase
         $this->assertEquals('createdAt', $analysis->openapi->components->schemas[0]->properties[1]->property);
         $this->assertEquals('#/components/schemas/date', $analysis->openapi->components->schemas[0]->properties[1]->ref);
     }
+
+    public function testExcludeProperties()
+    {
+        $analyser = new StaticAnalyser();
+        $analysis = $analyser->fromFile($this->fixtures('InheritProperties/ExcludedProperties.php')[0], $this->getContext());
+        $analysis->process();
+
+        $this->assertCount(1, $analysis->openapi->components->schemas);
+        $this->assertEquals('ExcludedProperties', $analysis->openapi->components->schemas[0]->schema);
+
+        $this->assertIsArray($analysis->openapi->components->schemas[0]->properties);
+        $this->assertCount(1, $analysis->openapi->components->schemas[0]->properties);
+        $this->assertEquals('secondProperty', $analysis->openapi->components->schemas[0]->properties[0]->property);
+    }
 }
