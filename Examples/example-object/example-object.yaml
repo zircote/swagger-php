@@ -52,6 +52,13 @@ paths:
                 oneOf:
                   - { $ref: '#/components/schemas/Result' }
                   - { type: boolean }
+              examples:
+                result:
+                  summary: 'An result object.'
+                  value: { success: true }
+                bool:
+                  summary: 'A boolean value.'
+                  value: 'false'
 components:
   schemas:
     Result:
@@ -62,3 +69,4 @@ components:
         error:
           type: string
       type: object
+

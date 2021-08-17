@@ -1,4 +1,4 @@
-<?php
+/home/jeremy-smith/projects/coconut/resources/assets/js/src/analytics/worker/query/listeners/index<?php
 
 use OpenApi\Annotations as OA;
 
@@ -63,7 +63,9 @@ use OpenApi\Annotations as OA;
  *             oneOf={
  *                 @OA\Schema(ref="#/components/schemas/Result"),
  *                 @OA\Schema(type="boolean")
- *             }
+ *             },
+ *             @OA\Examples(example="result", value={"success": true}, summary="An result object."),
+ *             @OA\Examples(example="bool", value="false", summary="A boolean value."),
  *         )
  *     )
  * )
