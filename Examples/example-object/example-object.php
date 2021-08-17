@@ -1,4 +1,4 @@
-/home/jeremy-smith/projects/coconut/resources/assets/js/src/analytics/worker/query/listeners/index<?php
+<?php
 
 use OpenApi\Annotations as OA;
 
