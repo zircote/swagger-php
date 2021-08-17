@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenApi\Examples\SwaggerSpec\Petstore;
+
 /**
  * @OA\OpenApi(
  *     @OA\Info(
@@ -13,9 +15,12 @@
  *     ),
  * )
  */
+class OpenApiSpec
+{
+}
 
 /**
- *  @OA\Schema(
+ * @OA\Schema(
  *      schema="Error",
  *      required={"code", "message"},
  *      @OA\Property(
@@ -27,10 +32,19 @@
  *          property="message",
  *          type="string"
  *      )
- *  ),
- *  @OA\Schema(
+ *  )
+ */
+class Error
+{
+}
+
+/**
+ * @OA\Schema(
  *      schema="Pets",
  *      type="array",
  *      @OA\Items(ref="#/components/schemas/Pet")
  *  )
  */
+class Pets
+{
+}

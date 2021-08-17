@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenApi\Examples\ExampleObject;
+
 use OpenApi\Annotations as OA;
 
 /**
@@ -8,6 +10,9 @@ use OpenApi\Annotations as OA;
  *     title="Example for response examples value"
  * )
  */
+class OpenApiSpec
+{
+}
 
 /**
  * @OA\Put(
@@ -28,6 +33,9 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
+class UserUpdateEndpoint
+{
+}
 
 /**
  * @OA\Post(
@@ -70,18 +78,24 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
+class UserAddEndpoint
+{
+}
 
 /**
  * @OA\Schema(
  *  schema="Result",
  *  title="Sample schema for using references",
  * 	@OA\Property(
- * 		property="status",
- * 		type="string"
- * 	),
+ *        property="status",
+ *        type="string"
+ *    ),
  * 	@OA\Property(
- * 		property="error",
- * 		type="string"
- * 	)
+ *        property="error",
+ *        type="string"
+ *    )
  * )
  */
+class ResultSchema
+{
+}

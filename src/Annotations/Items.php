@@ -6,11 +6,14 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
+ * The description of an item in a Schema with type "array".
+ *
  * @Annotation
- * The description of an item in a Schema with type "array"
  */
-class Items extends Schema
+abstract class AbstractItems extends Schema
 {
     /**
      * @inheritdoc
@@ -56,5 +59,34 @@ class Items extends Schema
 
         return $valid;
         // @todo Additional validation when used inside a Header or Parameter context.
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+    class Items extends AbstractItems
+    {
+        public function __construct(
+            array $properties = [],
+            string $ref = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'ref' => $ref,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Items extends AbstractItems
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

@@ -32,7 +32,6 @@ class DocBlockDescriptions
                 // only annotations with context
                 continue;
             }
-            $count = count($annotation->_context->annotations);
             if (!$annotation->isRoot()) {
                 // only top-level annotations
                 continue;

@@ -6,7 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Analyser;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Util;
@@ -94,8 +93,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($properties['_context'])) {
             $this->_context = $properties['_context'];
             unset($properties['_context']);
-        } elseif (Analyser::$context) {
-            $this->_context = Analyser::$context;
+        } elseif (Generator::$context) {
+            $this->_context = Generator::$context;
         } else {
             $this->_context = Context::detect(1);
         }
@@ -119,7 +118,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             } elseif (is_array($value)) {
                 $annotations = [];
                 foreach ($value as $annotation) {
-                    if (is_object($annotation) && $annotation instanceof AbstractAnnotation) {
+                    if ($annotation instanceof AbstractAnnotation) {
                         $annotations[] = $annotation;
                     } else {
                         $this->_context->logger->warning('Unexpected field in ' . $this->identity() . ' in ' . $this->_context);
@@ -129,7 +128,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
             } elseif (is_object($value)) {
                 $this->merge([$value]);
             } else {
-                $this->_context->logger->warning('Unexpected parameter in ' . $this->identity());
+                if ($value !== Generator::UNDEFINED) {
+                    $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
+                }
             }
         }
     }
@@ -658,12 +659,32 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @return AbstractAnnotation
      */
-    private function nested($annotation, Context $nestedContext)
+    protected function nested($annotation, Context $nestedContext)
     {
+        if (!$annotation) {
+            return $annotation;
+        }
+
         if (property_exists($annotation, '_context') && $annotation->_context === $this->_context) {
             $annotation->_context = $nestedContext;
         }
 
         return $annotation;
+    }
+
+    protected function combine(...$args): array
+    {
+        $combined = [];
+        foreach ($args as $arg) {
+            if (is_array($arg)) {
+                $combined = array_merge($combined, $arg);
+            } else {
+                $combined[] =  $arg;
+            }
+        }
+
+        return array_filter($combined, function ($value) {
+            return $value !== Generator::UNDEFINED;
+        });
     }
 }

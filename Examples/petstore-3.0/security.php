@@ -25,3 +25,4 @@
  *     name="api_key"
  * )
  */
+class Security {}

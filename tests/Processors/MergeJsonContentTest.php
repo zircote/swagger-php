@@ -26,10 +26,12 @@ class MergeJsonContentTest extends OpenApiTestCase
 END;
         $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $this->assertCount(3, $analysis->annotations);
+        /** @var Response $response */
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertSame(Generator::UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process([new MergeJsonContent()]);
+
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
@@ -47,9 +49,11 @@ END;
             )
 END;
         $analysis = new Analysis($this->parseComment($comment), $this->getContext());
+        /** @var Response $response */
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertCount(1, $response->content);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process([new MergeJsonContent()]);
+
         $this->assertCount(2, $response->content);
     }
 
@@ -63,10 +67,12 @@ END;
 END;
         $analysis = new Analysis($this->parseComment($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
+        /** @var Parameter $parameter */
         $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
         $this->assertCount(1, $parameter->_unmerged);
-        $analysis->process(new MergeJsonContent());
+        $analysis->process([new MergeJsonContent()]);
+
         $this->assertCount(1, $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
         $json = json_decode(json_encode($parameter), true);
@@ -84,7 +90,7 @@ END;
             )
 END;
         $analysis = new Analysis($this->parseComment($comment), $this->getContext());
-        $analysis->process(new MergeJsonContent());
+        $analysis->process([new MergeJsonContent()]);
     }
 
     public function testInvalidParent()
@@ -98,6 +104,6 @@ END;
             )
 END;
         $analysis = new Analysis($this->parseComment($comment), $this->getContext());
-        $analysis->process(new MergeJsonContent());
+        $analysis->process([new MergeJsonContent()]);
     }
 }

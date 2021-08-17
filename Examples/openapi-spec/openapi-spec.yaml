@@ -15,7 +15,7 @@ paths:
             type: string
       responses:
         '200':
-          description: 'repositories owned by the supplied user'
+          description: 'Repositories owned by the supplied user'
           content:
             application/json:
               schema:
@@ -78,7 +78,7 @@ paths:
               - declined
       responses:
         '200':
-          description: 'an array of pull request objects'
+          description: 'An array of pull request objects'
           content:
             application/json:
               schema:
@@ -109,7 +109,7 @@ paths:
             type: string
       responses:
         '200':
-          description: 'a pull request object'
+          description: 'A pull request object'
           content:
             application/json:
               schema:
@@ -141,7 +141,7 @@ paths:
             type: string
       responses:
         '204':
-          description: 'the PR was successfully merged'
+          description: 'The PR was successfully merged'
   '/2.0/users/{username}':
     get:
       operationId: getUserByName

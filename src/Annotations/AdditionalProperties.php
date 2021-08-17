@@ -9,7 +9,8 @@ namespace OpenApi\Annotations;
 /**
  * @Annotation
  */
-class AdditionalProperties extends Schema
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractAdditionalProperties extends Schema
 {
     /**
      * @inheritdoc
@@ -35,4 +36,31 @@ class AdditionalProperties extends Schema
         AdditionalProperties::class => 'additionalProperties',
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class AdditionalProperties extends AbstractAdditionalProperties
+    {
+        public function __construct(
+            array $properties = []
+        ) {
+            parent::__construct($properties + [
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class AdditionalProperties extends AbstractAdditionalProperties
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

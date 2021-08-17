@@ -3,7 +3,7 @@
 
 use OpenApi\Generator;
 use OpenApi\Util;
-use OpenApi\Logger\ConsoleLogger;
+use OpenApi\Loggers\ConsoleLogger;
 
 if (class_exists(Generator::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?

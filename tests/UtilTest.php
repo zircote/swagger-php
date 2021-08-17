@@ -21,10 +21,13 @@ class UtilTest extends OpenApiTestCase
             'CustomerInterface.php',
             'GrandAncestor.php',
             'InheritProperties',
-            'Parser',
+            'Apis',
+            'PHP',
+            'Analysers',
             'Processors',
             'UsingRefs.php',
             'UsingPhpDoc.php',
+
         ];
         $openapi = Generator::scan(Util::finder(__DIR__ . '/Fixtures', $exclude));
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');

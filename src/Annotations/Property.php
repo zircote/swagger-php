@@ -11,7 +11,8 @@ use OpenApi\Generator;
 /**
  * @Annotation
  */
-class Property extends Schema
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+abstract class AbstractProperty extends Schema
 {
     /**
      * The key into Schema->properties array.
@@ -51,4 +52,45 @@ class Property extends Schema
         AdditionalProperties::class => 'additionalProperties',
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+    class Property extends AbstractProperty
+    {
+        public function __construct(
+            array $properties = [],
+            string $description = Generator::UNDEFINED,
+            string $title = Generator::UNDEFINED,
+            string $type = Generator::UNDEFINED,
+            string $format = Generator::UNDEFINED,
+            string $ref = Generator::UNDEFINED,
+            $example = Generator::UNDEFINED,
+            $x = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'description' => $description,
+                    'title' => $title,
+                    'type' => $type,
+                    'format' => $format,
+                    'ref' => $ref,
+                    'example' => $example,
+                    'x' => $x,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Property extends AbstractProperty
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

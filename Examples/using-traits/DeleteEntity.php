@@ -1,13 +1,14 @@
 <?php
 
-namespace UsingTraits;
+namespace OpenApi\Examples\UsingTraits;
 
 /**
  * @OA\Schema(title="Delete entity trait")
  *
  * @todo Not sure if this is correct or wanted behaviour...
  */
-trait DeleteEntity {
+trait DeleteEntity
+{
 
     /**
      * @OA\Delete(

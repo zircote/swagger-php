@@ -1,0 +1,13 @@
+parameters:
+    level: 3
+    paths:
+        - src
+        - tests
+    parallel:
+        processTimeout: 300.0
+    ignoreErrors:
+        - '#does not accept default value of type string#'
+        - "#does not accept default value of type '@OA\\Generator:UNDEFINED'#"
+    excludes_analyse:
+        - 'tests/Fixtures/*'
+

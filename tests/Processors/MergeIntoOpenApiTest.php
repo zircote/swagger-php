@@ -28,7 +28,8 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
         );
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame(Generator::UNDEFINED, $openapi->info);
-        $analysis->process(new MergeIntoOpenApi());
+        $analysis->process([new MergeIntoOpenApi()]);
+
         $this->assertSame($openapi, $analysis->openapi);
         $this->assertSame($info, $openapi->info);
         $this->assertCount(0, $analysis->unmerged()->annotations);

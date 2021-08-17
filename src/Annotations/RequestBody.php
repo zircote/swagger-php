@@ -9,13 +9,15 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject
+ * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject.
  *
  * Describes a single response from an API Operation, including design-time, static links to operations based on the
  * response.
+ *
+ * @Annotation
  */
-class RequestBody extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractRequestBody extends AbstractAnnotation
 {
     public $ref = Generator::UNDEFINED;
 
@@ -82,4 +84,33 @@ class RequestBody extends AbstractAnnotation
         MediaType::class => ['content', 'mediaType'],
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class RequestBody extends AbstractRequestBody
+    {
+        public function __construct(
+            array $properties = [],
+            $x = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class RequestBody extends AbstractRequestBody
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

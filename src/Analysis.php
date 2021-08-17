@@ -9,20 +9,6 @@ namespace OpenApi;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Schema;
-use OpenApi\Processors\AugmentParameters;
-use OpenApi\Processors\AugmentProperties;
-use OpenApi\Processors\AugmentSchemas;
-use OpenApi\Processors\BuildPaths;
-use OpenApi\Processors\CleanUnmerged;
-use OpenApi\Processors\DocBlockDescriptions;
-use OpenApi\Processors\ExpandInterfaces;
-use OpenApi\Processors\ExpandClasses;
-use OpenApi\Processors\ExpandTraits;
-use OpenApi\Processors\MergeIntoComponents;
-use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\Processors\MergeJsonContent;
-use OpenApi\Processors\MergeXmlContent;
-use OpenApi\Processors\OperationId;
 
 /**
  * Result of the analyser.
@@ -430,77 +416,12 @@ class Analysis
      */
     public function process($processors = null): void
     {
-        if ($processors === null) {
-            // Use the default and registered processors.
-            $processors = self::processors();
-        }
         if (is_array($processors) === false && is_callable($processors)) {
             $processors = [$processors];
         }
         foreach ($processors as $processor) {
             $processor($this);
         }
-    }
-
-    /**
-     * Get direct access to the processors array.
-     *
-     * @return array reference
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function &processors()
-    {
-        if (!self::$processors) {
-            // Add default processors.
-            self::$processors = [
-                new DocBlockDescriptions(),
-                new MergeIntoOpenApi(),
-                new MergeIntoComponents(),
-                new ExpandClasses(),
-                new ExpandInterfaces(),
-                new ExpandTraits(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new BuildPaths(),
-                new AugmentParameters(),
-                new MergeJsonContent(),
-                new MergeXmlContent(),
-                new OperationId(),
-                new CleanUnmerged(),
-            ];
-        }
-
-        return self::$processors;
-    }
-
-    /**
-     * Register a processor.
-     *
-     * @param \Closure $processor
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function registerProcessor($processor): void
-    {
-        array_push(self::processors(), $processor);
-    }
-
-    /**
-     * Unregister a processor.
-     *
-     * @param \Closure $processor
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function unregisterProcessor($processor): void
-    {
-        $processors = &self::processors();
-        $key = array_search($processor, $processors, true);
-        if ($key === false) {
-            throw new \Exception('Given processor was not registered');
-        }
-        unset($processors[$key]);
     }
 
     public function validate(): bool

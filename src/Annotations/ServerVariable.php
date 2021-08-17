@@ -9,11 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A Server Variable Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-variable-object
+ * A Server Variable Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-variable-object.
+ *
  * An object representing a Server Variable for server URL template substitution.
+ *
+ * @Annotation
  */
-class ServerVariable extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractServerVariable extends AbstractAnnotation
 {
     /**
      * The key into Server->variables array.
@@ -79,4 +82,43 @@ class ServerVariable extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class ServerVariable extends AbstractServerVariable
+    {
+        public function __construct(
+            array $properties = [],
+            string $serverVariable = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            string $default = Generator::UNDEFINED,
+            $enum = Generator::UNDEFINED,
+            $variables = Generator::UNDEFINED,
+            $x = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'serverVariable' => $serverVariable,
+                    'description' => $description,
+                    'default' => $default,
+                    'enum' => $enum,
+                    'variables' => $variables,
+                    'x' => $x,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class ServerVariable extends AbstractServerVariable
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

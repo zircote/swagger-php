@@ -6,7 +6,7 @@
 
 namespace OpenApi;
 
-use OpenApi\Logger\DefaultLogger;
+use OpenApi\Loggers\DefaultLogger;
 
 /**
  * Context.

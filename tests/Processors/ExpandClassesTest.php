@@ -16,9 +16,9 @@ use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\ExpandClasses;
 use OpenApi\Processors\ExpandInterfaces;
 use OpenApi\Processors\ExpandTraits;
-use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
@@ -32,13 +32,13 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->validate();
     }
 
-    public function testInheritProperties()
+    public function testExpandClasses()
     {
         $analysis = $this->analysisFromFixtures(
             [
                 'AnotherNamespace/Child.php',
-                'InheritProperties/GrandAncestor.php',
-                'InheritProperties/Ancestor.php',
+                'ExpandClasses/GrandAncestor.php',
+                'ExpandClasses/Ancestor.php',
             ]
         );
         $analysis->process([
@@ -52,13 +52,14 @@ class ExpandClassesTest extends OpenApiTestCase
         ]);
         $this->validate($analysis);
 
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
 
         $analysis->process([
-            new InheritProperties(),
+            new ExpandClasses(),
             new CleanUnmerged(),
         ]);
         $this->validate($analysis);
@@ -67,67 +68,48 @@ class ExpandClassesTest extends OpenApiTestCase
     }
 
     /**
-     * Tests, if InheritProperties works even without any
+     * Tests, if ExpandClasses works even without any
      * docBlocks at all in the parent class.
      */
-    public function testInheritPropertiesWithoutDocBlocks()
+    public function testExpandClassesWithoutDocBlocks()
     {
         $analysis = $this->analysisFromFixtures([
             // this class has docblocks
             'AnotherNamespace/ChildWithDocBlocks.php',
             // this one doesn't
-            'InheritProperties/AncestorWithoutDocBlocks.php',
+            'ExpandClasses/AncestorWithoutDocBlocks.php',
         ]);
-        $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new ExpandTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
-        ]);
+        $analysis->process((new Generator())->getProcessors());
         $this->validate($analysis);
 
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
 
         // no error occurs
-        $analysis->process(new InheritProperties());
+        $analysis->process([new ExpandClasses()]);
         $this->assertCount(1, $childSchema->properties);
     }
 
     /**
      * Tests inherit properties with all of block.
      */
-    public function testInheritPropertiesWithAllOf()
+    public function testExpandClassesWithAllOf()
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
-            'InheritProperties/Extended.php',
-            'InheritProperties/Base.php',
+            'ExpandClasses/Extended.php',
+            'ExpandClasses/Base.php',
         ]);
-        $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new ExpandTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
-        ]);
-//        $this->validate($analysis);
+        $analysis->process((new Generator())->getProcessors());
+        $this->validate($analysis);
 
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(3, $schemas);
 
-        /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
@@ -135,7 +117,6 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertArrayHasKey(0, $extendedSchema->allOf);
         $this->assertEquals($extendedSchema->allOf[0]->properties[0]->property, 'extendedProperty');
 
-        /* @var $includeSchemaWithRef Schema */
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(Generator::UNDEFINED, $includeSchemaWithRef->properties);
     }
@@ -143,81 +124,60 @@ class ExpandClassesTest extends OpenApiTestCase
     /**
      * Tests for inherit properties without all of block.
      */
-    public function testInheritPropertiesWithOutAllOf()
+    public function testExpandClassesWithOutAllOf()
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
-            'InheritProperties/ExtendedWithoutAllOf.php',
-            'InheritProperties/Base.php',
+            'ExpandClasses/ExtendedWithoutAllOf.php',
+            'ExpandClasses/Base.php',
         ]);
-        $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new ExpandTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
-        ]);
+        $analysis->process((new Generator())->getProcessors());
         $this->validate($analysis);
 
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(2, $schemas);
 
-        /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithoutAllOf', $extendedSchema->schema);
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
 
-        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
-        $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
+        $this->assertEquals(Components::SCHEMA_REF . 'Base', $extendedSchema->allOf[1]->ref);
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
     }
 
     /**
      * Tests for inherit properties in object with two schemas in the same context.
      */
-    public function testInheritPropertiesWitTwoChildSchemas()
+    public function testExpandClassesWithTwoChildSchemas()
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
-            'InheritProperties/ExtendedWithTwoSchemas.php',
-            'InheritProperties/Base.php',
+            'ExpandClasses/ExtendedWithTwoSchemas.php',
+            'ExpandClasses/Base.php',
         ]);
-        $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new ExpandTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
-        ]);
+        $analysis->process((new Generator())->getProcessors());
         $this->validate($analysis);
 
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(3, $schemas);
 
-        /* @var Schema $extendedSchema */
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithTwoSchemas', $extendedSchema->schema);
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[0]->ref, Components::SCHEMA_REF . 'Base');
-        $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'nested');
-        $this->assertEquals($extendedSchema->allOf[1]->properties[1]->property, 'extendedProperty');
+        $this->assertEquals(Components::SCHEMA_REF . 'Base', $extendedSchema->allOf[1]->ref);
+        $this->assertEquals('nested', $extendedSchema->allOf[0]->properties[1]->property);
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
 
-        /* @var  $nestedSchema Schema */
         $nestedSchema = $schemas[1];
-        $this->assertSame(Generator::UNDEFINED, $nestedSchema->allOf);
-        $this->assertCount(1, $nestedSchema->properties);
-        $this->assertEquals($nestedSchema->properties[0]->property, 'nestedProperty');
+        $this->assertCount(2, $nestedSchema->allOf);
+        $this->assertCount(1, $nestedSchema->allOf[0]->properties);
+        $this->assertEquals('nestedProperty', $nestedSchema->allOf[0]->properties[0]->property);
     }
 
     /**
@@ -226,22 +186,12 @@ class ExpandClassesTest extends OpenApiTestCase
     public function testPreserveExistingAllOf()
     {
         $analysis = $this->analysisFromFixtures([
-            'InheritProperties/BaseInterface.php',
-            'InheritProperties/ExtendsBaseThatImplements.php',
-            'InheritProperties/BaseThatImplements.php',
-            'InheritProperties/TraitUsedByExtendsBaseThatImplements.php',
+            'ExpandClasses/BaseInterface.php',
+            'ExpandClasses/ExtendsBaseThatImplements.php',
+            'ExpandClasses/BaseThatImplements.php',
+            'ExpandClasses/TraitUsedByExtendsBaseThatImplements.php',
         ]);
-        $analysis->process([
-            new MergeIntoOpenApi(),
-            new MergeIntoComponents(),
-            new ExpandInterfaces(),
-            new ExpandTraits(),
-            new AugmentSchemas(),
-            new AugmentProperties(),
-            new BuildPaths(),
-            new InheritProperties(),
-            new CleanUnmerged(),
-        ]);
+        $analysis->process((new Generator())->getProcessors());
         $this->validate($analysis);
 
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);

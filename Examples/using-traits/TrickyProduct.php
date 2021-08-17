@@ -1,14 +1,15 @@
 <?php
 
-namespace UsingTraits;
+namespace OpenApi\Examples\UsingTraits;
 
-use UsingTraits\Blink as TheBlink;
+use OpenApi\Examples\UsingTraits\Blink as TheBlink;
 
 /**
  * @OA\Schema(title="TrickyProduct model")
  * )
  */
-class TrickyProduct extends SimpleProduct {
+class TrickyProduct extends SimpleProduct
+{
     use TheBlink;
 
     /**

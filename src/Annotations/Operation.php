@@ -9,13 +9,15 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc
+ * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc.
  *
  * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object
  * Describes a single API operation on a path.
+ *
+ * @Annotation
  */
-abstract class Operation extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+abstract class AbstractOperation extends AbstractAnnotation
 {
     /**
      * key in the OpenApi "Paths Object" for this operation.
@@ -201,5 +203,45 @@ abstract class Operation extends AbstractAnnotation
         }
 
         return $valid;
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    class Operation extends AbstractOperation
+    {
+        public function __construct(
+            array $properties = [],
+            string $path = Generator::UNDEFINED,
+            string $operationId = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            $x = Generator::UNDEFINED,
+            $tags = Generator::UNDEFINED,
+            $parameters = Generator::UNDEFINED,
+            $responses = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'path' => $path,
+                    'operationId' => $operationId,
+                    'description' => $description,
+                    'tags' => $tags,
+                    'x' => $x,
+                    'value' => $this->combine($responses, $parameters),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+    class Operation extends AbstractOperation
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

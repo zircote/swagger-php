@@ -9,12 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
  * Shorthand for a json response.
  *
  * Use as an Schema inside a Response and the MediaType "application/json" will be generated.
+ *
+ * @Annotation
  */
-class JsonContent extends Schema
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractJsonContent extends Schema
 {
 
     /**
@@ -44,4 +46,37 @@ class JsonContent extends Schema
         Examples::class => ['examples', 'example'],
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class JsonContent extends AbstractJsonContent
+    {
+        public function __construct(
+            array $properties = [],
+            string $ref = Generator::UNDEFINED,
+            string $type = Generator::UNDEFINED,
+            $items = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'ref' => $ref,
+                    'type' => $type,
+                    'value' => $this->combine($items),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class JsonContent extends AbstractJsonContent
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

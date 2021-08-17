@@ -27,3 +27,6 @@
  *   )
  * )
  */
+class OpenApiSpec
+{
+}

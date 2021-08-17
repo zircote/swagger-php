@@ -6,26 +6,40 @@
 
 namespace OpenApi\Tests;
 
+use Composer\Autoload\ClassLoader;
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
+use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
 
 class ExamplesTest extends OpenApiTestCase
 {
     public function exampleMappings()
     {
-        return [
+        $analysers = [
+            'token' => new TokenAnalyser(),
+            'reflection/docblock' => new ReflectionAnalyser(new DocBlockAnnotationFactory()),
+        ];
+
+        $examples = [
+            'example-object' => ['example-object', 'example-object.yaml'],
             'misc' => ['misc', 'misc.yaml'],
+            'nesting' => ['nesting', 'nesting.yaml'],
             'openapi-spec' => ['openapi-spec', 'openapi-spec.yaml'],
-            'petstore.swagger.io' => ['petstore.swagger.io', 'petstore.swagger.io.yaml'],
             'petstore-3.0' => ['petstore-3.0', 'petstore-3.0.yaml'],
+            'petstore.swagger.io' => ['petstore.swagger.io', 'petstore.swagger.io.yaml'],
             'swagger-spec/petstore' => ['swagger-spec/petstore', 'petstore.yaml'],
             'swagger-spec/petstore-simple' => ['swagger-spec/petstore-simple', 'petstore-simple.yaml'],
             'swagger-spec/petstore-with-external-docs' => ['swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.yaml'],
-            'using-refs' => ['using-refs', 'using-refs.yaml'],
-            'example-object' => ['example-object', 'example-object.yaml'],
             'using-interfaces' => ['using-interfaces', 'using-interfaces.yaml'],
+            'using-refs' => ['using-refs', 'using-refs.yaml'],
             'using-traits' => ['using-traits', 'using-traits.yaml'],
-            'nesting' => ['nesting', 'nesting.yaml'],
         ];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'reflection/attribute:openapi-spec' => ['openapi-spec', 'openapi-spec.yaml', new ReflectionAnalyser(new AttributeAnnotationFactory())];
+        }
     }
 
     /**
@@ -33,11 +47,24 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleMappings
      */
-    public function testExamples($example, $spec)
+    public function testExamples($example, $spec, $analyser)
     {
+        // register autoloader for examples that require autoloading due to inheritance, etc.
         $path = __DIR__ . '/../Examples/' . $example;
-        $openapi = Generator::scan([$path], ['validate' => true]);
+        $exampleNS = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $example)));
+        $classloader = new ClassLoader();
+        $classloader->addPsr4('OpenApi\\Examples\\' . $exampleNS . '\\', $path);
+        $classloader->register();
+
+        $path = __DIR__ . '/../Examples/' . $example;
+        $openapi = (new Generator())
+            ->setAnalyser($analyser)
+            ->generate([$path], null, true);
         //file_put_contents($path . '/' . $spec, $openapi->toYaml());
-        $this->assertSpecEquals(file_get_contents($path . '/' . $spec), $openapi, 'Examples/' . $example . '/' . $spec);
+        $this->assertSpecEquals(
+            file_get_contents($path . '/' . $spec),
+            $openapi,
+            get_class($analyser) . ': Examples/' . $example . '/' . $spec
+        );
     }
 }

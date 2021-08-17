@@ -8,13 +8,13 @@ namespace OpenApi\Tests;
 
 use DirectoryIterator;
 use Exception;
-use OpenApi\Analyser;
+use OpenApi\Analysers\DocBlockParser;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\StaticAnalyser;
+use OpenApi\Analysers\TokenAnalyser;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -66,7 +66,7 @@ class OpenApiTestCase extends TestCase
                     list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
                     $assertion($message, $level);
                 } else {
-                    $this->testCase->fail('Unexpected log line ::' . $level . '("' . $message . '")');
+                    $this->testCase->fail('Unexpected log line: ' . $level . '("' . $message . '")');
                 }
             }
         };
@@ -97,10 +97,28 @@ class OpenApiTestCase extends TestCase
      */
     protected function assertSpecEquals($actual, $expected, $message = '', $normalized = false)
     {
-        $normalize = function ($in) {
+        $formattedValue = function ($value) {
+            if (is_bool($value)) {
+                return $value ? 'true' : 'false';
+            }
+            if (is_numeric($value)) {
+                return (string) $value;
+            }
+            if (is_string($value)) {
+                return '"' . $value . '"';
+            }
+            if (is_object($value)) {
+                return get_class($value);
+            }
+
+            return gettype($value);
+        };
+
+        $normalizeIn = function ($in) {
             if ($in instanceof OpenApi) {
                 $in = $in->toYaml();
             }
+
             if (is_string($in)) {
                 // assume YAML
                 try {
@@ -114,13 +132,13 @@ class OpenApiTestCase extends TestCase
         };
 
         if (!$normalized) {
-            $actual = $normalize($actual);
-            $expected = $normalize($expected);
+            $actual = $normalizeIn($actual);
+            $expected = $normalizeIn($expected);
         }
 
         if (is_iterable($actual) && is_iterable($expected)) {
             foreach ($actual as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $this->formattedValue($value));
+                $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $formattedValue($value));
                 $this->assertSpecEquals($value, ((array) $expected)[$key], $message . ' > ' . $key, true);
             }
             foreach ($expected as $key => $value) {
@@ -132,30 +150,12 @@ class OpenApiTestCase extends TestCase
         }
     }
 
-    private function formattedValue($value)
-    {
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-        if (is_numeric($value)) {
-            return (string) $value;
-        }
-        if (is_string($value)) {
-            return '"' . $value . '"';
-        }
-        if (is_object($value)) {
-            return get_class($value);
-        }
-
-        return gettype($value);
-    }
-
     protected function parseComment($comment, ?Context $context = null)
     {
-        $analyser = new Analyser();
+        $docBlockParser = new DocBlockParser();
         $context = $context ?: $this->getContext();
 
-        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
+        return $docBlockParser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
     }
 
     /**
@@ -176,6 +176,13 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
+    public function fixture(string $file): ?string
+    {
+        $fixtures = $this->fixtures($file);
+
+        return $fixtures ? $fixtures[0] : null;
+    }
+
     /**
      * Resolve fixture filenames.
      *
@@ -192,7 +199,7 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromFixtures($files): Analysis
     {
-        $analyser = new StaticAnalyser();
+        $analyser = new TokenAnalyser();
         $analysis = new Analysis([], $this->getContext());
 
         foreach ((array) $files as $file) {
@@ -204,12 +211,12 @@ class OpenApiTestCase extends TestCase
 
     public function analysisFromCode(string $code, ?Context $context = null)
     {
-        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: $this->getContext());
+        return (new TokenAnalyser())->fromCode("<?php\n" . $code, $context ?: $this->getContext());
     }
 
     public function analysisFromDockBlock($comment)
     {
-        return (new Analyser())->fromComment($comment, $this->getContext());
+        return (new DocBlockParser())->fromComment($comment, $this->getContext());
     }
 
     /**

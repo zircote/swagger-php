@@ -1,5 +1,6 @@
 <?php
-namespace UsingRefs;
+
+namespace OpenApi\Examples\UsingRefs;
 
 /**
  * @OA\PathItem(
@@ -7,10 +8,8 @@ namespace UsingRefs;
  *   @OA\Parameter(ref="#/components/parameters/product_id_in_path_required")
  * )
  */
-
 class ProductController
 {
-
     /**
      * @OA\Get(
      *   tags={"Products"},

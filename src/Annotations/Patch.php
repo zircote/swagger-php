@@ -9,6 +9,7 @@ namespace OpenApi\Annotations;
 /**
  * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Patch extends Operation
 {
     /**

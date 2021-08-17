@@ -7,14 +7,14 @@ paths:
     get:
       tags:
         - Products
-      operationId: 133f11c148f628647767a323bf78c68d
+      operationId: 9801cc0b0fc7a19fed854ffe6f29ae72
       responses:
         default:
           $ref: '#/components/responses/product'
     patch:
       tags:
         - Products
-      operationId: 7f26f01759fb7245bf4f7138a3717e0f
+      operationId: f66c51dd13f8079f836728c177bc5a64
       requestBody:
         $ref: '#/components/requestBodies/product_in_body'
       responses:
@@ -23,37 +23,30 @@ paths:
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
-  '/products/{product_id}/do-stuff':
-    get:
+  /products:
+    post:
       tags:
         - Products
-      operationId: 9aed2c6f96bff805003c993b97822c06
-      parameters:
-        -
-          $ref: '#/components/schemas/Product/allOf/0/properties/id'
+      operationId: a762eca121e113954963dab97897464a
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
       responses:
         default:
           $ref: '#/components/responses/product'
 components:
   schemas:
-    Model:
-      description: 'A model'
     Product:
       title: 'Product model'
       description: 'Product model'
+      properties:
+        id:
+          description: 'The unique identifier of a product in our catalog.'
+          type: integer
+          format: int64
+          example: 1
+        status:
+          $ref: '#/components/schemas/product_status'
       type: object
-      allOf:
-        -
-          properties:
-            id:
-              description: 'The unique identifier of a product in our catalog.'
-              type: integer
-              format: int64
-              example: 1
-            status:
-              $ref: '#/components/schemas/product_status'
-        -
-          $ref: '#/components/schemas/Model'
     product_status:
       description: 'The status of a product'
       type: string

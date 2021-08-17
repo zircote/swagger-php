@@ -9,13 +9,15 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * An "Info Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#info-object
+ * An "Info Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#info-object.
  *
  * The object provides metadata about the API.
  * The metadata may be used by the clients if needed, and may be presented in editing or documentation generation tools for convenience.
+ *
+ * @Annotation
  */
-class Info extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractInfo extends AbstractAnnotation
 {
     /**
      * The title of the application.
@@ -89,4 +91,44 @@ class Info extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Info extends AbstractInfo
+    {
+        public function __construct(
+            array $properties = [],
+            string $version = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            string $title = Generator::UNDEFINED,
+            string $termsOfService = Generator::UNDEFINED,
+            $x = Generator::UNDEFINED,
+            $contact = Generator::UNDEFINED,
+            $license = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'version' => $version,
+                    'description' => $description,
+                    'title' => $title,
+                    'termsOfService' => $termsOfService,
+                    'x' => $x,
+                    'value' => $this->combine($contact, $license),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Info extends AbstractInfo
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

@@ -54,7 +54,7 @@ class BuildPaths
                 }
             }
         }
-        if (count($paths)) {
+        if ($paths) {
             $analysis->openapi->paths = array_values($paths);
         }
     }

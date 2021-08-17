@@ -6,8 +6,25 @@
 
 namespace OpenApi;
 
+use OpenApi\Analysers\AnalyserInterface;
+use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Logger\DefaultLogger;
+use OpenApi\Loggers\DefaultLogger;
+use OpenApi\Processors\AugmentParameters;
+use OpenApi\Processors\AugmentProperties;
+use OpenApi\Processors\AugmentSchemas;
+use OpenApi\Processors\BuildPaths;
+use OpenApi\Processors\CleanUnmerged;
+use OpenApi\Processors\DocBlockDescriptions;
+use OpenApi\Processors\ExpandClasses;
+use OpenApi\Processors\ExpandInterfaces;
+use OpenApi\Processors\ExpandTraits;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\Processors\MergeJsonContent;
+use OpenApi\Processors\MergeXmlContent;
+use OpenApi\Processors\OperationId;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,10 +35,17 @@ use Psr\Log\LoggerInterface;
  * This is an object oriented alternative to using the now deprecated `\OpenApi\scan()` function and
  * static class properties of the `Analyzer` and `Analysis` classes.
  *
- * The `aliases` property supersedes the `Analyser::$defaultImports`; `namespaces` maps to `Analysis::$whitelist`.
+ * The `aliases` property supersedes the `DocBlockParser::$defaultImports`; `namespaces` maps to `DocBlockParser::$whitelist`.
  */
 class Generator
 {
+    /**
+     * Allows Annotation classes to know the context of the annotation that is being processed.
+     *
+     * @var null|Context
+     */
+    public static $context;
+
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
 
@@ -31,7 +55,7 @@ class Generator
     /** @var array List of annotation namespaces to be autoloaded by doctrine. */
     protected $namespaces = null;
 
-    /** @var StaticAnalyser The configured analyzer. */
+    /** @var AnalyserInterface The configured analyzer. */
     protected $analyser;
 
     /** @var null|callable[] List of configured processors. */
@@ -54,25 +78,25 @@ class Generator
             public function push(Generator $generator): void
             {
                 // save current state
-                $this->defaultImports = Analyser::$defaultImports;
-                $this->whitelist = Analyser::$whitelist;
+                $this->defaultImports = DocBlockParser::$defaultImports;
+                $this->whitelist = DocBlockParser::$whitelist;
 
                 // update state with generator config
-                Analyser::$defaultImports = $generator->getAliases();
-                Analyser::$whitelist = $generator->getNamespaces();
+                DocBlockParser::$defaultImports = $generator->getAliases();
+                DocBlockParser::$whitelist = $generator->getNamespaces();
             }
 
             public function pop(): void
             {
-                Analyser::$defaultImports = $this->defaultImports;
-                Analyser::$whitelist = $this->whitelist;
+                DocBlockParser::$defaultImports = $this->defaultImports;
+                DocBlockParser::$whitelist = $this->whitelist;
             }
         };
     }
 
     public function getAliases(): array
     {
-        $aliases = null !== $this->aliases ? $this->aliases : Analyser::$defaultImports;
+        $aliases = null !== $this->aliases ? $this->aliases : DocBlockParser::$defaultImports;
         $aliases['oa'] = 'OpenApi\\Annotations';
 
         return $aliases;
@@ -87,7 +111,7 @@ class Generator
 
     public function getNamespaces(): array
     {
-        $namespaces = null !== $this->namespaces ? $this->namespaces : Analyser::$whitelist;
+        $namespaces = null !== $this->namespaces ? $this->namespaces : DocBlockParser::$whitelist;
         $namespaces = false !== $namespaces ? $namespaces : [];
         $namespaces[] = 'OpenApi\\Annotations\\';
 
@@ -101,12 +125,12 @@ class Generator
         return $this;
     }
 
-    public function getAnalyser(): StaticAnalyser
+    public function getAnalyser(): AnalyserInterface
     {
-        return $this->analyser ?: new StaticAnalyser();
+        return $this->analyser ?: new TokenAnalyser();
     }
 
-    public function setAnalyser(?StaticAnalyser $analyser): Generator
+    public function setAnalyser(?AnalyserInterface $analyser): Generator
     {
         $this->analyser = $analyser;
 
@@ -118,7 +142,26 @@ class Generator
      */
     public function getProcessors(): array
     {
-        return null !== $this->processors ? $this->processors : Analysis::processors();
+        if (null === $this->processors) {
+            $this->processors = [
+                new DocBlockDescriptions(),
+                new MergeIntoOpenApi(),
+                new MergeIntoComponents(),
+                new ExpandClasses(),
+                new ExpandInterfaces(),
+                new ExpandTraits(),
+                new AugmentSchemas(),
+                new AugmentProperties(),
+                new BuildPaths(),
+                new AugmentParameters(),
+                new MergeJsonContent(),
+                new MergeXmlContent(),
+                new OperationId(),
+                new CleanUnmerged(),
+            ];
+        }
+
+        return $this->processors;
     }
 
     /**
@@ -194,8 +237,8 @@ class Generator
      *                          * \SplFileInfo
      *                          * \Symfony\Component\Finder\Finder
      * @param array    $options
-     *                          aliases:    null|array                    Defaults to `Analyser::$defaultImports`.
-     *                          namespaces: null|array                    Defaults to `Analyser::$whitelist`.
+     *                          aliases:    null|array                    Defaults to `DocBlockParser::$defaultImports`.
+     *                          namespaces: null|array                    Defaults to `DocBlockParser::$whitelist`.
      *                          analyser:   null|StaticAnalyser           Defaults to a new `StaticAnalyser`.
      *                          analysis:   null|Analysis                 Defaults to a new `Analysis`.
      *                          processors: null|array                    Defaults to `Analysis::processors()`.

@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenApi\Examples\PetstoreSwaggerIo;
+
 /**
  * @OA\Tag(
  *   name="pet",
@@ -22,3 +24,6 @@
  *   )
  * )
  */
+class OpenApiTags
+{
+}

@@ -14,7 +14,8 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-class Flow extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractFlow extends AbstractAnnotation
 {
     /**
      * The authorization url to be used for this flow.
@@ -95,5 +96,34 @@ class Flow extends AbstractAnnotation
         }
 
         return parent::jsonSerialize();
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Flow extends AbstractFlow
+    {
+        public function __construct(
+            array $properties = [],
+            $x = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Flow extends AbstractFlow
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

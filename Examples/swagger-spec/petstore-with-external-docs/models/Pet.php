@@ -6,7 +6,7 @@
  *   required={"name"}
  * )
  */
-class Pet
+class NewPet
 {
     public $id;
     /**
@@ -21,7 +21,7 @@ class Pet
 }
 
 /**
- *  @OA\Schema(
+ * @OA\Schema(
  *   schema="Pet",
  *   type="object",
  *   allOf={
@@ -33,3 +33,6 @@ class Pet
  *   }
  * )
  */
+class Pet
+{
+}

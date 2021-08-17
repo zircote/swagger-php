@@ -51,10 +51,7 @@
   "autoload": {
     "psr-4": {
       "OpenApi\\": "src"
-    },
-    "files": [
-      "src/functions.php"
-    ]
+    }
   },
   "require-dev": {
     "composer/package-versions-deprecated": "1.11.99.2",
@@ -74,11 +71,9 @@
       "phpunit",
       "@lint"
     ],
-    "phpstan": "phpstan analyze --level=3 src | grep -v 'does not accept default value of type string'",
-    "psalm": "psalm",
     "analyse": [
-      "@phpstan",
-      "@psalm"
+      "phpstan",
+      "psalm"
     ],
     "validate-examples": {
       "spectral": "for ff in `find Examples -name *.yaml`; do spectral lint $ff; done",

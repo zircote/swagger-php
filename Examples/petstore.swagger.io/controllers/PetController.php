@@ -1,6 +1,6 @@
 <?php
 
-namespace PetstoreIO;
+namespace OpenApi\Examples\PetstoreSwaggerIo;
 
 final class PetController
 {

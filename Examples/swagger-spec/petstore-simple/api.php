@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
+
 /**
  * @OA\OpenApi(
  *     @OA\Server(
@@ -16,6 +18,9 @@
  *     ),
  * )
  */
+class OpenApiSpec
+{
+}
 
 /**
  * @OA\Schema(
@@ -32,3 +37,6 @@
  *     )
  * )
  */
+class ErrorModel
+{
+}

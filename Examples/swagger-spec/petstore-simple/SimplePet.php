@@ -1,6 +1,6 @@
 <?php
 
-namespace Petstore;
+namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
 
 /**
  * @OA\Schema(schema="NewPet", required={"name"})
@@ -23,7 +23,7 @@ class SimplePet
 }
 
 /**
- *  @OA\Schema(
+ * @OA\Schema(
  *   schema="Pet",
  *   type="object",
  *   allOf={
@@ -35,3 +35,6 @@ class SimplePet
  *   }
  * )
  */
+class Pet
+{
+}

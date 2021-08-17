@@ -22,9 +22,12 @@ class AugmentPropertiesTest extends OpenApiTestCase
     public function testAugmentProperties()
     {
         $analysis = $this->analysisFromFixtures('Customer.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new AugmentSchemas(),
+        ]);
+
         $customer = $analysis->openapi->components->schemas[0];
         $firstName = $customer->properties[0];
         $secondName = $customer->properties[1];
@@ -133,9 +136,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
     public function testTypedProperties()
     {
         $analysis = $this->analysisFromFixtures('TypedProperties.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new AugmentSchemas(),
+        ]);
         [
             $stringType,
             $intType,
@@ -225,7 +230,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process([new AugmentProperties()]);
 
         $this->assertName($stringType, [
             'property' => 'stringType',

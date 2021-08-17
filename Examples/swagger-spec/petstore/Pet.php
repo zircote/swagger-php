@@ -1,6 +1,6 @@
 <?php
 
-namespace petstore;
+namespace OpenApi\Examples\SwaggerSpec\Petstore;
 
 /**
  * @OA\Schema(required={"id", "name"})

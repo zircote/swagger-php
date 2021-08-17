@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenApi\Examples\PetstoreSwaggerIo;
+
 /**
  * @OA\OpenApi(
  *     @OA\Info(
@@ -25,3 +27,6 @@
  *     )
  * )
  */
+class OpenApiSpec
+{
+}

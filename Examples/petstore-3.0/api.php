@@ -21,8 +21,6 @@ out more about Swagger at
  *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *     )
  * )
- */
-/**
  * @OA\Tag(
  *     name="pet",
  *     description="Everything about your Pets",
@@ -52,3 +50,4 @@ out more about Swagger at
  *     url="http://swagger.io"
  * )
  */
+class Petstore {}

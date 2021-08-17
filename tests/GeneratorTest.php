@@ -8,10 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
 use OpenApi\Generator;
-use OpenApi\Logger;
 use OpenApi\Processors\OperationId;
 use OpenApi\Util;
-use Psr\Log\NullLogger;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -43,31 +41,6 @@ class GeneratorTest extends OpenApiTestCase
             ->scan($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
-    }
-
-    public function testUsingPsrLogger()
-    {
-        Logger::getInstance()->log = function ($entry, $type) {
-            $this->fail('Wrong logger');
-        };
-
-        (new Generator(new NullLogger()))
-            ->setAliases(['swg' => 'OpenApi\Annotations'])
-            ->generate($this->fixtures('Deprecated.php'));
-    }
-
-    public function testUsingLegacyLogger()
-    {
-        $legacyLoggerCalled = false;
-        Logger::getInstance()->log = function ($entry, $type) use (&$legacyLoggerCalled) {
-            $legacyLoggerCalled = true;
-        };
-
-        (new Generator())
-            ->setAliases(['swg' => 'OpenApi\Annotations'])
-            ->generate($this->fixtures('Deprecated.php'));
-
-        $this->assertTrue($legacyLoggerCalled, 'Expected legacy logger to be called');
     }
 
     public function processorCases()

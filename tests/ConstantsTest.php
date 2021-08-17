@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analyser;
-use OpenApi\StaticAnalyser;
+use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysers\TokenAnalyser;
 
 class ConstantsTest extends OpenApiTestCase
 {
@@ -54,27 +54,27 @@ class ConstantsTest extends OpenApiTestCase
 
     public function testDynamicImports()
     {
-        $backup = Analyser::$whitelist;
-        Analyser::$whitelist = false;
-        $analyser = new StaticAnalyser();
+        $backup = DocBlockParser::$whitelist;
+        DocBlockParser::$whitelist = false;
+        $analyser = new TokenAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php', $this->getContext());
         // @todo Only tests that $whitelist=false doesn't trigger errors,
         // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in OpenApi\Annotation namespace has a constant.
 
         // Scanning without whitelisting causes issues, to check uncomment next.
         // $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php', $this->getContext());
-        Analyser::$whitelist = $backup;
+        DocBlockParser::$whitelist = $backup;
     }
 
     public function testDefaultImports()
     {
-        $backup = Analyser::$defaultImports;
-        Analyser::$defaultImports = [
+        $backup = DocBlockParser::$defaultImports;
+        DocBlockParser::$defaultImports = [
             'contact' => 'OpenApi\Annotations\Contact', // use OpenApi\Annotations\Contact;
             'ctest' => 'OpenApi\Tests\ConstantsTesT', // use OpenApi\Tests\ConstantsTesT as CTest;
         ];
         $annotations = $this->parseComment('@Contact(url=CTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
-        Analyser::$defaultImports = $backup;
+        DocBlockParser::$defaultImports = $backup;
     }
 }

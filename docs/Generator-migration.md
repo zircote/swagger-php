@@ -6,10 +6,10 @@ Code to perform a fully customized scan using `swagger-php` so far required to u
 1. `\OpenApi\scan()`
    
     The function to scan for OpenApi annotations.
-1. `Analyser::$whitelist`
+1. `DocBlockParser::$whitelist`
   
     List of namespaces that should be detected by the doctrine annotation parser.
-1. `Analyser::$defaultImports`
+1. `DocBlockParser::$defaultImports`
 
     Imports to be set on the used doctrine `DocParser`.
     Allows to pre-define annotation namespaces. The `@OA` namespace, for example, is configured
@@ -45,7 +45,7 @@ require("vendor/autoload.php");
 $openapi = \OpenApi\scan(__DIR__, ['exclude' => ['tests'], 'pattern' => '*.php']);
 ```
 
-The two configuration options for the underlying Doctrine doc-block parser `Analyser::$whitelist` and `Analyser::$defaultImports`
+The two configuration options for the underlying Doctrine doc-block parser `DocBlockParser::$whitelist` and `DocBlockParser::$defaultImports`
 are not part of this function and need to be set separately. 
 
 Being static this means setting them back is the callers responsibility and there is also the fact that 
@@ -73,7 +73,7 @@ $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in
 $openapi = (new \OpenApi\Generator($logger))
             ->setProcessors($processors)
             ->setAliases(['MY' => 'My\Annotations'])
-            ->setAnalyser(new \OpenApi\StaticAnalyser())
+            ->setAnalyser(new \OpenApi\Analysers\TokenAnalyser())
             ->setNamespaces(['My\\Annotations\\'])
             ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis(), $validate);
 ```
@@ -137,8 +137,8 @@ echo $openapi->toYaml();
      *                          * \SplFileInfo
      *                          * \Symfony\Component\Finder\Finder
      * @param array    $options
-     *                          aliases:    null|array                    Defaults to `Analyser::$defaultImports`.
-     *                          namespaces: null|array                    Defaults to `Analyser::$whitelist`.
+     *                          aliases:    null|array                    Defaults to `DocBlockParser::$defaultImports`.
+     *                          namespaces: null|array                    Defaults to `DocBlockParser::$whitelist`.
      *                          analyser:   null|StaticAnalyser           Defaults to a new `StaticAnalyser`.
      *                          analysis:   null|Analysis                 Defaults to a new `Analysis`.
      *                          processors: null|array                    Defaults to `Analysis::processors()`.

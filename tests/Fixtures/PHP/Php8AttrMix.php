@@ -1,0 +1,23 @@
+<?php declare(strict_types=1);
+
+namespace OpenApi\Tests\Fixtures\PHP;
+
+use OpenApi\Tests\Fixtures\PHP\label;
+
+/**
+ * @OA\Schema()
+*/
+class Php8AttrMix
+{
+    #[label('Id', [1])]
+    /** @OA\Property() */
+    public string $id = '';
+
+    /** @OA\Property() */
+    #[
+        label('OtherId', [2, 3]),
+        label('OtherId', [2, 3]),
+    ]
+    public string $otherId = '';
+
+}

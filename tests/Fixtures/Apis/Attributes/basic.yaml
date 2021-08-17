@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: 'Basic single file Attributes API'
+  version: 1.0.0
+paths:
+  '/products/{product_id}':
+    get:
+      tags:
+        - Products
+      operationId: ce0e618e1b2e89d5464e39a96cc178dd
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '401':
+          description: oops
+components:
+  schemas:
+    NameTrait:
+      properties:
+        name:
+          description: 'The name.'
+      type: object
+    Product:
+      title: Product
+      description: Product
+      allOf:
+        -
+          properties:
+            id:
+              description: 'The id.'
+              format: int64
+              example: 1
+        -
+          $ref: '#/components/schemas/NameTrait'

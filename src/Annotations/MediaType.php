@@ -9,12 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A "Media Type Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#media-type-object
+ * A "Media Type Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#media-type-object.
  *
  * Each Media Type Object provides schema and examples for the media type identified by its key.
+ *
+ * @Annotation
  */
-class MediaType extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+abstract class AbstractMediaType extends AbstractAnnotation
 {
 
     /**
@@ -72,4 +74,33 @@ class MediaType extends AbstractAnnotation
         Response::class,
         RequestBody::class,
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class MediaType extends AbstractMediaType
+    {
+        public function __construct(
+            array $properties = [],
+            $x = Generator::UNDEFINED
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x,
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class MediaType extends AbstractMediaType
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }
