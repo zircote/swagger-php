@@ -265,6 +265,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Customize the way json_encode() renders the annotations.
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $data = new \stdClass();
