@@ -80,6 +80,7 @@ class Flow extends AbstractAnnotation
     ];
 
     /** @inheritdoc */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         if (is_array($this->scopes) && empty($this->scopes)) {
