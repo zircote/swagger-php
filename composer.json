@@ -35,6 +35,11 @@
     "sort-packages": true
   },
   "minimum-stability": "stable",
+  "extra": {
+    "branch-alias": {
+      "dev-master": "4.x-dev"
+    }
+  },
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
