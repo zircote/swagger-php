@@ -23,7 +23,7 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class InheritPropertiesTest extends OpenApiTestCase
+class ExpandClassesTest extends OpenApiTestCase
 {
     protected function validate(Analysis $analysis)
     {
@@ -132,8 +132,8 @@ class InheritPropertiesTest extends OpenApiTestCase
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
-        $this->assertArrayHasKey(1, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
+        $this->assertArrayHasKey(0, $extendedSchema->allOf);
+        $this->assertEquals($extendedSchema->allOf[0]->properties[0]->property, 'extendedProperty');
 
         /* @var $includeSchemaWithRef Schema */
         $includeSchemaWithRef = $schemas[1];

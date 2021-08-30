@@ -17,13 +17,15 @@ use Traversable;
 
 /**
  * Copy the annotated properties from parent classes;.
+ *
+ * @deprecated
  */
 class InheritProperties
 {
     public function __invoke(Analysis $analysis)
     {
         /* @var $schemas Schema[] */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $processed = [];
 
         foreach ($schemas as $schema) {
@@ -100,7 +102,7 @@ class InheritProperties
         $append = true;
         foreach ($to->allOf as $entry) {
             if ($entry->ref !== Generator::UNDEFINED && $entry->ref === Components::SCHEMA_REF . Util::refEncode($from->schema)) {
-                $append = false; // ref was already specified manualy
+                $append = false; // ref was already specified manually
             }
         }
         if ($append) {

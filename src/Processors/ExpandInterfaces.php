@@ -7,18 +7,22 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
-use OpenApi\Util;
 
+/**
+ * Look at all (direct) interfaces for a schema and:
+ * - merge interfaces annotations/methods into the schema if the interface does not have a schema itself
+ * - inherit from the interface if it has a schema (allOf).
+ */
 class ExpandInterfaces
 {
+    use MergeTrait;
+
     public function __invoke(Analysis $analysis)
     {
         /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
@@ -27,44 +31,11 @@ class ExpandInterfaces
                 foreach ($interfaces as $interface) {
                     $interfaceSchema = $analysis->getSchemaForSource($interface['context']->fullyQualifiedName($interface['interface']));
                     if ($interfaceSchema) {
-                        $this->inheritInterface($schema, $interface, $interfaceSchema);
+                        $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
+                        $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']->_context);
                     } else {
-                        $this->mergeInterface($schema, $interface, $existing);
-                    }
-                }
-            }
-        }
-    }
-
-    protected function inheritInterface(Schema $schema, array $interface, Schema $interfaceSchema): void
-    {
-        if ($schema->allOf === Generator::UNDEFINED) {
-            $schema->allOf = [];
-        }
-        $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
-        $schema->allOf[] = new Schema([
-            '_context' => $interface['context']->_context,
-            'ref' => Components::SCHEMA_REF . Util::refEncode($refPath),
-        ]);
-    }
-
-    protected function mergeInterface(Schema $schema, array $interface, array &$existing): void
-    {
-        if (is_iterable($interface['context']->annotations)) {
-            foreach ($interface['context']->annotations as $annotation) {
-                if ($annotation instanceof Property && !in_array($annotation->_context->property, $existing)) {
-                    $existing[] = $annotation->_context->property;
-                    $schema->merge([$annotation], true);
-                }
-            }
-        }
-
-        foreach ($interface['methods'] as $method) {
-            if (is_iterable($method->annotations)) {
-                foreach ($method->annotations as $annotation) {
-                    if ($annotation instanceof Property && !in_array($annotation->_context->property, $existing)) {
-                        $existing[] = $annotation->_context->property;
-                        $schema->merge([$annotation], true);
+                        $this->mergeAnnotations($schema, $interface, $existing);
+                        $this->mergeMethods($schema, $interface, $existing);
                     }
                 }
             }

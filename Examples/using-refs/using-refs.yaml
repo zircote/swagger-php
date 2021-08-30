@@ -23,30 +23,37 @@ paths:
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
-  /products:
-    post:
+  '/products/{product_id}/do-stuff':
+    get:
       tags:
         - Products
-      operationId: 779b6345f19f6b865527e6bd67819d2d
-      requestBody:
-        $ref: '#/components/requestBodies/product_in_body'
+      operationId: 9aed2c6f96bff805003c993b97822c06
+      parameters:
+        -
+          $ref: '#/components/schemas/Product/allOf/0/properties/id'
       responses:
         default:
           $ref: '#/components/responses/product'
 components:
   schemas:
+    Model:
+      description: 'A model'
     Product:
       title: 'Product model'
       description: 'Product model'
-      properties:
-        id:
-          description: 'The unique identifier of a product in our catalog.'
-          type: integer
-          format: int64
-          example: 1
-        status:
-          $ref: '#/components/schemas/product_status'
       type: object
+      allOf:
+        -
+          properties:
+            id:
+              description: 'The unique identifier of a product in our catalog.'
+              type: integer
+              format: int64
+              example: 1
+            status:
+              $ref: '#/components/schemas/product_status'
+        -
+          $ref: '#/components/schemas/Model'
     product_status:
       description: 'The status of a product'
       type: string

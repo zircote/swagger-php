@@ -16,8 +16,8 @@ use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Processors\ExpandInterfaces;
+use OpenApi\Processors\ExpandClasses;
 use OpenApi\Processors\ExpandTraits;
-use OpenApi\Processors\InheritProperties;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Processors\MergeJsonContent;
@@ -186,11 +186,12 @@ class Analysis
     /**
      * Get a list of all super classes for the given class.
      *
-     * @param string $class the class name
+     * @param string $class  the class name
+     * @param bool   $direct flag to find only the actual class parents
      *
      * @return array map of class => definition pairs of parent classes
      */
-    public function getSuperClasses(string $class): array
+    public function getSuperClasses(string $class, bool $direct = false): array
     {
         $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
         if (!$classDefinition || empty($classDefinition['extends'])) {
@@ -204,7 +205,13 @@ class Analysis
             return [];
         }
 
-        return array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
+        $parentDetails = [$extends => $extendsDefinition];
+
+        if ($direct) {
+            return $parentDetails;
+        }
+
+        return array_merge($parentDetails, $this->getSuperClasses($extends));
     }
 
     /**
@@ -450,12 +457,12 @@ class Analysis
                 new DocBlockDescriptions(),
                 new MergeIntoOpenApi(),
                 new MergeIntoComponents(),
+                new ExpandClasses(),
                 new ExpandInterfaces(),
                 new ExpandTraits(),
                 new AugmentSchemas(),
                 new AugmentProperties(),
                 new BuildPaths(),
-                new InheritProperties(),
                 new AugmentParameters(),
                 new MergeJsonContent(),
                 new MergeXmlContent(),
