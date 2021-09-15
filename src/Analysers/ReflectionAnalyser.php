@@ -19,11 +19,15 @@ use OpenApi\Context;
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
-    protected $annotationFactory;
+    /** @var AnnotationFactoryInterface[] */
+    protected $annotationFactories;
 
-    public function __construct(AnnotationFactoryInterface $annotationFactory)
+    public function __construct(array $annotationFactories = [])
     {
-        $this->annotationFactory = $annotationFactory;
+        $this->annotationFactories = $annotationFactories;
+        if (!$this->annotationFactories) {
+            throw new \InvalidArgumentException('Need at least one annotation factory');
+        }
     }
 
     public function fromFile(string $filename, Context $context): Analysis
@@ -83,7 +87,9 @@ class ReflectionAnalyser implements AnalyserInterface
             'methods' => [],
             'context' => $context,
         ];
-        $analysis->addAnnotations($this->annotationFactory->build($rc, $context), $context);
+        foreach ($this->annotationFactories as $annotationFactory) {
+            $analysis->addAnnotations($annotationFactory->build($rc, $context), $context);
+        }
 
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = '\\' . $parentClass->getName();
@@ -104,7 +110,10 @@ class ReflectionAnalyser implements AnalyserInterface
         foreach ($rc->getMethods() as $method) {
             if (in_array($method->name, $details['methods'])) {
                 $definition['methods'][$method->getName()] = $ctx = new Context(['method' => $method->getName()], $context);
-                $analysis->addAnnotations($this->annotationFactory->build($method, $ctx), $ctx);
+                foreach ($this->annotationFactories as $annotationFactory) {
+                    $buildContext = new Context([], $ctx);
+                    $analysis->addAnnotations($annotationFactory->build($method, $buildContext), $buildContext);
+                }
             }
         }
 
@@ -120,7 +129,10 @@ class ReflectionAnalyser implements AnalyserInterface
                         $ctx->type = $type->getName();
                     }
                 }
-                $analysis->addAnnotations($this->annotationFactory->build($property, $ctx), $ctx);
+                foreach ($this->annotationFactories as $annotationFactory) {
+                    $buildContext = new Context([], $ctx);
+                    $analysis->addAnnotations($annotationFactory->build($property, $buildContext), $buildContext);
+                }
             }
         }
 

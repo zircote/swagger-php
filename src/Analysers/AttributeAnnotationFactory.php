@@ -18,6 +18,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             $context->annotations = [];
         }
 
+        $context->comment = $reflector->getDocComment() ?: Generator::UNDEFINED;
+
+        // no proper way to inject
         Generator::$context = $context;
         $annotations = [];
         try {

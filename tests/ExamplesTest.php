@@ -19,7 +19,7 @@ class ExamplesTest extends OpenApiTestCase
     {
         $analysers = [
             'token' => new TokenAnalyser(),
-            'reflection/docblock' => new ReflectionAnalyser(new DocBlockAnnotationFactory()),
+            'reflection/docblock' => new ReflectionAnalyser([new DocBlockAnnotationFactory()]),
         ];
 
         $examples = [
@@ -38,7 +38,7 @@ class ExamplesTest extends OpenApiTestCase
         ];
 
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'reflection/attribute:openapi-spec' => ['openapi-spec', 'openapi-spec.yaml', new ReflectionAnalyser(new AttributeAnnotationFactory())];
+            yield 'reflection/attribute:openapi-spec' => ['openapi-spec', 'openapi-spec.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
         }
     }
 

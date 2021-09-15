@@ -36,7 +36,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     public function testClassInheritance()
     {
-        $analyser = new ReflectionAnalyser($annotationFactory = $this->collectingAnnotationFactory());
+        $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
         $analyser->fromFqdn(ExtendsClass::class, new Analysis([], $this->getContext()));
 
         $expected = [
@@ -49,7 +49,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     public function testTraitInheritance()
     {
-        $analyser = new ReflectionAnalyser($annotationFactory = $this->collectingAnnotationFactory());
+        $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
         $analyser->fromFqdn(ExtendsTrait::class, new Analysis([], $this->getContext()));
 
         $expected = [
@@ -60,9 +60,9 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
     }
 
-    public function testSingleFileDocBlock()
+    public function testApiDocBlockBasic()
     {
-        $analyser = new ReflectionAnalyser(new DocBlockAnnotationFactory());
+        $analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory()]);
 
         $fixture = $this->fixture('Apis/DocBlocks/basic.php');
         require_once $fixture;
@@ -82,9 +82,9 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     /**
      * @requires PHP 8.1
      */
-    public function testSingleFileAttributes()
+    public function testApiAttributesBasic()
     {
-        $analyser = new ReflectionAnalyser(new AttributeAnnotationFactory());
+        $analyser = new ReflectionAnalyser([new AttributeAnnotationFactory()]);
 
         $fixture = $this->fixture('Apis/Attributes/basic.php');
         require_once $fixture;
@@ -96,6 +96,28 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/Attributes/basic.yaml');
+        //file_put_contents($spec, $analysis->openapi->toYaml());
+        $this->assertTrue($analysis->validate());
+        $this->assertSpecEquals(file_get_contents($spec), $analysis->openapi);
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testApiMixedBasic()
+    {
+        $analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+
+        $fixture = $this->fixture('Apis/Mixed/basic.php');
+        require_once $fixture;
+
+        $analysis = $analyser->fromFile($fixture, $this->getContext());
+        $analysis->process((new Generator())->getProcessors());
+
+        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        $this->assertIsArray($operations);
+
+        $spec = $this->fixture('Apis/Mixed/basic.yaml');
         //file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals(file_get_contents($spec), $analysis->openapi);
