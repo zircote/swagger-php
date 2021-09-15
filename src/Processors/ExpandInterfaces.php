@@ -32,7 +32,7 @@ class ExpandInterfaces
                     $interfaceSchema = $analysis->getSchemaForSource($interface['context']->fullyQualifiedName($interface['interface']));
                     if ($interfaceSchema) {
                         $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
-                        $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']->_context);
+                        $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {
                         $this->mergeAnnotations($schema, $interface, $existing);
                         $this->mergeMethods($schema, $interface, $existing);

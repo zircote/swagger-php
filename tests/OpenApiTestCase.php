@@ -167,12 +167,12 @@ class OpenApiTestCase extends TestCase
             'info' => new Info([
                 'title' => 'swagger-php Test-API',
                 'version' => 'test',
-                '_context' => $this->getContext(['unittest' => true]),
+                '_context' => $this->getContext(),
             ]),
             'paths' => [
-                new PathItem(['path' => '/test']),
+                new PathItem(['path' => '/test', '_context' => $this->getContext()]),
             ],
-            '_context' => $this->getContext(['unittest' => true]),
+            '_context' => $this->getContext(),
         ]);
     }
 

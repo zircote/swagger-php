@@ -15,16 +15,16 @@ class SerializerTest extends OpenApiTestCase
 {
     private function getExpected()
     {
-        $path = new Annotations\PathItem([]);
+        $path = new Annotations\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';
-        $path->post = new Annotations\Post([]);
+        $path->post = new Annotations\Post(['_context' => $this->getContext()]);
         $path->post->tags = ['products'];
         $path->post->summary = 's1';
         $path->post->description = 'd1';
-        $path->post->requestBody = new Annotations\RequestBody([]);
-        $mediaType = new Annotations\MediaType([]);
+        $path->post->requestBody = new Annotations\RequestBody(['_context' => $this->getContext()]);
+        $mediaType = new Annotations\MediaType(['_context' => $this->getContext()]);
         $mediaType->mediaType = 'application/json';
-        $mediaType->schema = new Annotations\Schema([]);
+        $mediaType->schema = new Annotations\Schema(['_context' => $this->getContext()]);
         $mediaType->schema->type = 'object';
         $mediaType->schema->additionalProperties = true;
         $path->post->requestBody->content = [$mediaType];
@@ -32,39 +32,39 @@ class SerializerTest extends OpenApiTestCase
         $path->post->requestBody->x = [];
         $path->post->requestBody->x['repository'] = 'def';
 
-        $resp = new Annotations\Response([]);
+        $resp = new Annotations\Response(['_context' => $this->getContext()]);
         $resp->response = '200';
         $resp->description = 'Success';
-        $content = new Annotations\MediaType([]);
+        $content = new Annotations\MediaType(['_context' => $this->getContext()]);
         $content->mediaType = 'application/json';
-        $content->schema = new Annotations\Schema([]);
+        $content->schema = new Annotations\Schema(['_context' => $this->getContext()]);
         $content->schema->ref = '#/components/schemas/Pet';
         $resp->content = [$content];
         $resp->x = [];
         $resp->x['repository'] = 'def';
 
-        $respRange = new Annotations\Response([]);
+        $respRange = new Annotations\Response(['_context' => $this->getContext()]);
         $respRange->response = '4XX';
         $respRange->description = 'Client error response';
 
         $path->post->responses = [$resp, $respRange];
 
-        $expected = new Annotations\OpenApi([]);
+        $expected = new Annotations\OpenApi(['_context' => $this->getContext()]);
         $expected->openapi = '3.0.0';
         $expected->paths = [
             $path,
         ];
 
-        $info = new Annotations\Info([]);
+        $info = new Annotations\Info(['_context' => $this->getContext()]);
         $info->title = 'Pet store';
         $info->version = '1.0';
         $expected->info = $info;
 
-        $schema = new Annotations\Schema([]);
+        $schema = new Annotations\Schema(['_context' => $this->getContext()]);
         $schema->schema = 'Pet';
         $schema->required = ['name', 'photoUrls'];
 
-        $expected->components = new Annotations\Components([]);
+        $expected->components = new Annotations\Components(['_context' => $this->getContext()]);
         $expected->components->schemas = [$schema];
 
         return $expected;

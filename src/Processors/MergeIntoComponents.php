@@ -8,6 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
+use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
@@ -19,7 +20,8 @@ class MergeIntoComponents
     {
         $components = $analysis->openapi->components;
         if ($components === Generator::UNDEFINED) {
-            $components = new Components([]);
+            $context = new Context([], $analysis->context);
+            $components = new Components(['_context' => $context]);
             $components->_context->generated = true;
         }
 

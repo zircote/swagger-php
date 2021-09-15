@@ -20,10 +20,10 @@ class BuildPathsTest extends OpenApiTestCase
 {
     public function testMergePathsWithSamePath()
     {
-        $openapi = new OpenApi([]);
+        $openapi = new OpenApi(['_context' => $this->getContext()]);
         $openapi->paths = [
-            new PathItem(['path' => '/comments']),
-            new PathItem(['path' => '/comments']),
+            new PathItem(['path' => '/comments', '_context' => $this->getContext()]),
+            new PathItem(['path' => '/comments', '_context' => $this->getContext()]),
         ];
         $analysis = new Analysis([$openapi], $this->getContext());
         $analysis->openapi = $openapi;
@@ -34,12 +34,12 @@ class BuildPathsTest extends OpenApiTestCase
 
     public function testMergeOperationsWithSamePath()
     {
-        $openapi = new OpenApi([]);
+        $openapi = new OpenApi(['_context' => $this->getContext()]);
         $analysis = new Analysis(
             [
                 $openapi,
-                new Get(['path' => '/comments']),
-                new Post(['path' => '/comments']),
+                new Get(['path' => '/comments', '_context' => $this->getContext()]),
+                new Post(['path' => '/comments', '_context' => $this->getContext()]),
             ],
             $this->getContext()
         );
