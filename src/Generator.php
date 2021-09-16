@@ -115,7 +115,16 @@ class Generator
         $namespaces = false !== $namespaces ? $namespaces : [];
         $namespaces[] = 'OpenApi\\Annotations\\';
 
-        return $namespaces;
+        return array_unique($namespaces);
+    }
+
+    public function addNamespace(string $namespace): Generator
+    {
+        $namespaces = $this->getNamespaces();
+        $namespaces[] = $namespace;
+        $this->setNamespaces($namespaces);
+
+        return $this;
     }
 
     public function setNamespaces(?array $namespaces): Generator
@@ -201,7 +210,7 @@ class Generator
     /**
      * Update/replace an existing processor with a new one.
      *
-     * @param callable      $processor the new processor
+     * @param callable      $processor The new processor
      * @param null|callable $matcher   Optional matcher callable to identify the processor to replace.
      *                                 If none given, matching is based on the processors class.
      */
