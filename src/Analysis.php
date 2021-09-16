@@ -76,15 +76,14 @@ class Analysis
         if ($this->annotations->contains($annotation)) {
             return;
         }
-        if ($annotation instanceof AbstractAnnotation) {
-            $context = $annotation->_context ?: $this->context;
-            if ($this->openapi === null && $annotation instanceof OpenApi) {
-                $this->openapi = $annotation;
-            }
+
+        if ($annotation instanceof OpenApi) {
+            $this->openapi = $this->openapi ?: $annotation;
         } else {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
+
             if (in_array($annotation, $context->annotations, true) === false) {
                 $context->annotations[] = $annotation;
             }

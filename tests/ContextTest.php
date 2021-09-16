@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -26,7 +27,9 @@ class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName()
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = Generator::scan([__DIR__ . '/Fixtures/Customer.php'], ['logger' => $this->getTrackingLogger()]);
+        $openapi = (new Generator($this->getTrackingLogger()))
+            ->setAnalyser(new TokenAnalyser())
+            ->generate([__DIR__ . '/Fixtures/Customer.php']);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));

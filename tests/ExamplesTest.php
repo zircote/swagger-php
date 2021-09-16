@@ -37,8 +37,14 @@ class ExamplesTest extends OpenApiTestCase
             'using-traits' => ['using-traits', 'using-traits.yaml'],
         ];
 
+        foreach ($examples as $ekey => $example) {
+            foreach ($analysers as $akey => $analyser) {
+                yield $akey . ':' . $ekey => array_merge($example, [$analyser]);
+            }
+        }
+
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'reflection/attribute:openapi-spec' => ['openapi-spec', 'openapi-spec.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
+            yield 'reflection/attribute:openapi-spec-attributes' => ['openapi-spec-attributes', 'openapi-spec-attributes.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
         }
     }
 
@@ -62,8 +68,8 @@ class ExamplesTest extends OpenApiTestCase
             ->generate([$path], null, true);
         //file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
-            file_get_contents($path . '/' . $spec),
             $openapi,
+            file_get_contents($path . '/' . $spec),
             get_class($analyser) . ': Examples/' . $example . '/' . $spec
         );
     }

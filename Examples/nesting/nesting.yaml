@@ -8,7 +8,7 @@ paths:
     get:
       tags:
         - api
-      operationId: 4db0bcd1e9358f78c662034e39c702b6
+      operationId: dd148eadcee53770e24b2350f932e3bd
       parameters:
         -
           name: id

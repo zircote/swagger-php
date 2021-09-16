@@ -83,7 +83,7 @@ if (\PHP_VERSION_ID >= 80100) {
             parent::__construct($properties + [
                     'name' => $name,
                     'description' => $description,
-                    'externalDocs' => $externalDocs,
+                    'value' => $this->combine($externalDocs),
                     'x' => $x,
                 ]);
         }

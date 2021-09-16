@@ -100,7 +100,7 @@ if (\PHP_VERSION_ID >= 80100) {
             parent::__construct($properties + [
                     'url' => $url,
                     'description' => $description,
-                    'variables' => $variables,
+                    'value' => $this->combine($variables),
                     'x' => $x,
                 ]);
         }

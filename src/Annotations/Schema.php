@@ -400,6 +400,7 @@ if (\PHP_VERSION_ID >= 80100) {
             string $type = Generator::UNDEFINED,
             string $format = Generator::UNDEFINED,
             $enum = Generator::UNDEFINED,
+            $externalDocs = Generator::UNDEFINED,
             $x = Generator::UNDEFINED
         ) {
             parent::__construct($properties + [
@@ -410,6 +411,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'format' => $format,
                     'enum' => $enum,
                     'x' => $x,
+                    'value' => $this->combine($externalDocs),
                 ]);
         }
     }

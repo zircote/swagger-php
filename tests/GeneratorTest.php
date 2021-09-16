@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
@@ -38,7 +39,8 @@ class GeneratorTest extends OpenApiTestCase
     public function testScan(string $sourceDir, iterable $sources)
     {
         $openapi = (new Generator())
-            ->scan($sources);
+            ->setAnalyser(new TokenAnalyser())
+            ->generate($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
     }

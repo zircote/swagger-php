@@ -85,9 +85,13 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
+            string $description = Generator::UNDEFINED,
+            string $url = Generator::UNDEFINED,
             $x = Generator::UNDEFINED
         ) {
             parent::__construct($properties + [
+                    'description' => $description,
+                    'url' => $url,
                     'x' => $x,
                 ]);
         }

@@ -25,7 +25,7 @@ class DocBlockParserTest extends OpenApiTestCase
 
     public function testParseContents()
     {
-        $annotations = $this->parseComment('@OA\Parameter(description="This is my parameter")');
+        $annotations = $this->annotationsFromDocBlock('@OA\Parameter(description="This is my parameter")');
         $this->assertIsArray($annotations);
         $parameter = $annotations[0];
         $this->assertInstanceOf('OpenApi\Annotations\Parameter', $parameter);
@@ -35,6 +35,6 @@ class DocBlockParserTest extends OpenApiTestCase
     public function testDeprecatedAnnotationWarning()
     {
         $this->assertOpenApiLogEntryContains('The annotation @SWG\Definition() is deprecated.');
-        $this->parseComment('@SWG\Definition()');
+        $this->annotationsFromDocBlock('@SWG\Definition()');
     }
 }

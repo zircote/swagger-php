@@ -679,7 +679,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if (is_array($arg)) {
                 $combined = array_merge($combined, $arg);
             } else {
-                $combined[] =  $arg;
+                $combined[] = $arg;
             }
         }
 

@@ -220,7 +220,8 @@ if (\PHP_VERSION_ID >= 80100) {
             $x = Generator::UNDEFINED,
             $tags = Generator::UNDEFINED,
             $parameters = Generator::UNDEFINED,
-            $responses = Generator::UNDEFINED
+            $responses = Generator::UNDEFINED,
+            $externalDocs = Generator::UNDEFINED
         ) {
             parent::__construct($properties + [
                     'path' => $path,
@@ -228,7 +229,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'description' => $description,
                     'tags' => $tags,
                     'x' => $x,
-                    'value' => $this->combine($responses, $parameters),
+                    'value' => $this->combine($responses, $parameters, $externalDocs),
                 ]);
         }
     }

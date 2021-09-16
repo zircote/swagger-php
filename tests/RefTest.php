@@ -25,7 +25,7 @@ class RefTest extends OpenApiTestCase
     @OA\Response(response="default", description="A response")
 )
 END;
-        $openapi->merge($this->parseComment($comment));
+        $openapi->merge($this->annotationsFromDocBlock($comment));
         $analysis = new Analysis([], $this->getContext());
         $analysis->addAnnotation($openapi, $this->getContext());
         $analysis->process((new Generator())->getProcessors());

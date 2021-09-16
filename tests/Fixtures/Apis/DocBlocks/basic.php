@@ -3,7 +3,7 @@
 namespace OpenApi\Tests\Fixtures\Apis\DocBlocks;
 
 /**
- * Single file API.
+ * Single file API using DockBlocks.
  */
 
 use OpenApi\Annotations as OA;
@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *   version="1.0.0",
- *   title="Basic single file DocBlocks API"
+ *   title="Basic single file API"
  * )
  */
 class OpenApiSpec
@@ -63,6 +63,7 @@ class ProductController
      * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{product_id}",
+     *   operationId="getProducts",
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",

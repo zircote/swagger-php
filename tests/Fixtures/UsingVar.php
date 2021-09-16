@@ -31,3 +31,4 @@ class UsingVar
  *   type="datetime"
  * )
  */
+class UsingVarSchema {}

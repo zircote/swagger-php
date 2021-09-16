@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpec;
+namespace OpenApi\Examples\OpenapiSpecAttributes;
 
 use OpenApi\Annotations as OA;
 
@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
  *  version="1.0.0"
  * )
  */
+#[OA\Info(version: '1.0.0', title: 'Link Example')]
 class OpenApiSpec
 {
 }

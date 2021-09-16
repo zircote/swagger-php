@@ -1,12 +1,13 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpec;
+namespace OpenApi\Examples\OpenapiSpecAttributes;
 
 use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(schema="user")
  */
+#[OA\Schema(schema: 'user')]
 class User
 {
 
@@ -14,11 +15,13 @@ class User
      * @OA\Property()
      * @var string
      */
+    #[OA\Property(type: 'string')]
     public $username;
 
     /**
      * @OA\Property()
      * @var string
      */
+    #[OA\Property(type: 'string')]
     public $uuid;
 }

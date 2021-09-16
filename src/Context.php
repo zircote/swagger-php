@@ -229,6 +229,10 @@ class Context
      */
     public function phpdocContent()
     {
+        if ($this->comment === Generator::UNDEFINED) {
+            return Generator::UNDEFINED;
+        }
+
         $comment = preg_split('/(\n|\r\n)/', (string) $this->comment);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;

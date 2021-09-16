@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 
 use OpenApi\Annotations as OA;
 
-#[OA\Info(version: '1.0.0', title: 'Basic single file Attributes API')]
+#[OA\Info(version: '1.0.0', title: 'Basic single file API')]
 class OpenApiSpec
 {
 
@@ -42,6 +42,7 @@ class ProductController
     #[OA\Get(
         path: '/products/{product_id}',
         tags: ['Products'],
+        operationId: 'getProducts',
         responses: [
             new OA\Response(response: 200, description: 'successful operation', content: new OA\JsonContent(ref: '#/components/schemas/Product')),
             new OA\Response(response: 401, description: 'oops'),

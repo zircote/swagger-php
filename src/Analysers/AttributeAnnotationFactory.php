@@ -6,19 +6,24 @@
 
 namespace OpenApi\Analysers;
 
-use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Context;
 use OpenApi\Generator;
 
 class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
+    /** @var Generator */
+    protected $generator;
+
+    public function setGenerator(Generator $generator): void
+    {
+        $this->generator = $generator;
+    }
+
     public function build(\Reflector $reflector, Context $context): array
     {
-        if ($context->is('annotations') === false) {
-            $context->annotations = [];
+        if (\PHP_VERSION_ID < 80100) {
+            return [];
         }
-
-        $context->comment = $reflector->getDocComment() ?: Generator::UNDEFINED;
 
         // no proper way to inject
         Generator::$context = $context;
@@ -26,16 +31,13 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         try {
             foreach ($reflector->getAttributes() as $attribute) {
                 $instance = $attribute->newInstance();
-                if ($instance instanceof AbstractAnnotation) {
-                    $instance->_context = $context;
-                }
                 $annotations[] = $instance;
             }
         } finally {
             Generator::$context = null;
         }
 
-        return $context->annotations = array_filter($annotations, function ($a) {
+        return array_filter($annotations, function ($a) {
             return $a !== null;
         });
     }

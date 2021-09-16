@@ -7,14 +7,26 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Context;
+use OpenApi\Generator;
 
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
+    /** @var DocBlockParser */
     protected $docBlockParser;
+
+    /** @var Generator */
+    protected $generator;
 
     public function __construct(?DocBlockParser $docBlockParser = null)
     {
         $this->docBlockParser = $docBlockParser ?: new DocBlockParser();
+    }
+
+    public function setGenerator(Generator $generator): void
+    {
+        $this->generator = $generator;
+
+        $this->docBlockParser->docParser->setImports($generator->getAliases());
     }
 
     public function build(\Reflector $reflector, Context $context): array

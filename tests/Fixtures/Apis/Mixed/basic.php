@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Single file API using PHP8 attributes.
+ * Single file API using DockBlocks and PHP8 attributes.
  */
 
 namespace OpenApi\Tests\Fixtures\Apis\Mixed;
@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *   version="1.0.0",
- *   title="Basic single file Mixed API"
+ *   title="Basic single file API"
  * )
  */
 class OpenApiSpec
@@ -54,6 +54,7 @@ class ProductController
     #[OA\Get(
         path: '/products/{product_id}',
         tags: ['Products'],
+        operationId: 'getProducts',
         responses: [
             new OA\Response(response: 200, description: 'successful operation', content: new OA\JsonContent(ref: '#/components/schemas/Product')),
             new OA\Response(response: 401, description: 'oops'),

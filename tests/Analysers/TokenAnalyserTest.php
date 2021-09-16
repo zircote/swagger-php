@@ -23,9 +23,9 @@ class TokenAnalyserTest extends OpenApiTestCase
             'global-interface' => ['interface AInterface {}', '\AInterface', 'AInterface', 'interfaces', 'interface'],
             'global-trait' => ['trait ATrait {}', '\ATrait', 'ATrait', 'traits', 'trait'],
 
-            'namespaced-class' => ['namespace Foo; class AClass {}', '\Foo\AClass', 'AClass', 'classes', 'class'],
-            'namespaced-interface' => ['namespace Foo; interface AInterface {}', '\Foo\AInterface', 'AInterface', 'interfaces', 'interface'],
-            'namespaced-trait' => ['namespace Foo; trait ATrait {}', '\Foo\ATrait', 'ATrait', 'traits', 'trait'],
+            'namespaced-class' => ['namespace SNS\Foo; class AClass {}', '\SNS\Foo\AClass', 'AClass', 'classes', 'class'],
+            'namespaced-interface' => ['namespace SNS\Foo; interface AInterface {}', '\SNS\Foo\AInterface', 'AInterface', 'interfaces', 'interface'],
+            'namespaced-trait' => ['namespace SNS\Foo; trait ATrait {}', '\SNS\Foo\ATrait', 'ATrait', 'traits', 'trait'],
         ];
     }
 
@@ -47,23 +47,23 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function extendsDefinitionCases()
     {
         return [
-            'global-class' => ['class AClass extends Other {}', '\AClass', 'AClass', '\Other', 'classes', 'class'],
-            'namespaced-class' => ['namespace Foo; class AClass extends \Other {}', '\Foo\AClass', 'AClass', '\Other', 'classes', 'class'],
-            'global-class-explicit' => ['class AClass extends \Bar\Other {}', '\AClass', 'AClass', '\Bar\Other', 'classes', 'class'],
-            'namespaced-class-explicit' => ['namespace Foo; class AClass extends \Bar\Other {}', '\Foo\AClass', 'AClass', '\Bar\Other', 'classes', 'class'],
-            'global-class-use' => ['use Bar\Other; class AClass extends Other {}', '\AClass', 'AClass', '\Bar\Other', 'classes', 'class'],
-            'namespaced-class-use' => ['namespace Foo; use Bar\Other; class AClass extends Other {}', '\Foo\AClass', 'AClass', '\Bar\Other', 'classes', 'class'],
-            'namespaced-class-as' => ['namespace Foo; use Bar\Some as Other; class AClass extends Other {}', '\Foo\AClass', 'AClass', '\Bar\Some', 'classes', 'class'],
-            'namespaced-class-same' => ['namespace Foo; class AClass extends Other {}', '\Foo\AClass', 'AClass', '\Foo\Other', 'classes', 'class'],
+            'global-class' => ['class BClass extends Other {}', '\BClass', 'BClass', '\Other', 'classes', 'class'],
+            'namespaced-class' => ['namespace NC\Foo; class BClass extends \Other {}', '\NC\Foo\BClass', 'BClass', '\Other', 'classes', 'class'],
+            'global-class-explicit' => ['class EClass extends \Bar\Other {}', '\EClass', 'EClass', '\Bar\Other', 'classes', 'class'],
+            'namespaced-class-explicit' => ['namespace NCE\Foo; class AClass extends \Bar\Other {}', '\NCE\Foo\AClass', 'AClass', '\Bar\Other', 'classes', 'class'],
+            'global-class-use' => ['use XBar\Other; class XClass extends Other {}', '\XClass', 'XClass', '\XBar\Other', 'classes', 'class'],
+            'namespaced-class-use' => ['namespace NCU\Foo; use YBar\Other; class AClass extends Other {}', '\NCU\Foo\AClass', 'AClass', '\YBar\Other', 'classes', 'class'],
+            'namespaced-class-as' => ['namespace NCA\Foo; use Bar\Some as Other; class AClass extends Other {}', '\NCA\Foo\AClass', 'AClass', '\Bar\Some', 'classes', 'class'],
+            'namespaced-class-same' => ['namespace NCS\Foo; class AClass extends Other {}', '\NCS\Foo\AClass', 'AClass', '\NCS\Foo\Other', 'classes', 'class'],
 
-            'global-interface' => ['interface AInterface extends Other {}', '\AInterface', 'AInterface', ['\Other'], 'interfaces', 'interface'],
-            'namespaced-interface' => ['namespace Foo; interface AInterface extends \Other {}', '\Foo\AInterface', 'AInterface', ['\Other'], 'interfaces', 'interface'],
-            'global-interface-explicit' => ['interface AInterface extends \Bar\Other {}', '\AInterface', 'AInterface', ['\Bar\Other'], 'interfaces', 'interface'],
-            'namespaced-interface-explicit' => ['namespace Foo; interface AInterface extends \Bar\Other {}', '\Foo\AInterface', 'AInterface', ['\Bar\Other'], 'interfaces', 'interface'],
-            'global-interface-use' => ['use Bar\Other; interface AInterface extends Other {}', '\AInterface', 'AInterface', ['\Bar\Other'], 'interfaces', 'interface'],
-            'namespaced-interface-use' => ['namespace Foo; use Bar\Other; interface AInterface extends Other {}', '\Foo\AInterface', 'AInterface', ['\Bar\Other'], 'interfaces', 'interface'],
-            'namespaced-interface-use-multi' => ['namespace Foo; use Bar\Other; interface AInterface extends Other, \More {}', '\Foo\AInterface', 'AInterface', ['\Bar\Other', '\More'], 'interfaces', 'interface'],
-            'namespaced-interface-as' => ['namespace Foo; use Bar\Some as Other; interface AInterface extends Other {}', '\Foo\AInterface', 'AInterface', ['\Bar\Some'], 'interfaces', 'interface'],
+            'global-interface' => ['interface BInterface extends Other {}', '\BInterface', 'BInterface', ['\Other'], 'interfaces', 'interface'],
+            'namespaced-interface' => ['namespace NI\Foo; interface AInterface extends \Other {}', '\NI\Foo\AInterface', 'AInterface', ['\Other'], 'interfaces', 'interface'],
+            'global-interface-explicit' => ['interface XInterface extends \ZBar\Other {}', '\XInterface', 'XInterface', ['\ZBar\Other'], 'interfaces', 'interface'],
+            'namespaced-interface-explicit' => ['namespace NIE\Foo; interface AInterface extends \ABar\Other {}', '\NIE\Foo\AInterface', 'AInterface', ['\ABar\Other'], 'interfaces', 'interface'],
+            'global-interface-use' => ['use BBar\Other; interface YInterface extends Other {}', '\YInterface', 'YInterface', ['\BBar\Other'], 'interfaces', 'interface'],
+            'namespaced-interface-use' => ['namespace NIU\Foo; use EBar\Other; interface AInterface extends Other {}', '\NIU\Foo\AInterface', 'AInterface', ['\EBar\Other'], 'interfaces', 'interface'],
+            'namespaced-interface-use-multi' => ['namespace NIUM\Foo; use FBar\Other; interface AInterface extends Other, \More {}', '\NIUM\Foo\AInterface', 'AInterface', ['\FBar\Other', '\More'], 'interfaces', 'interface'],
+            'namespaced-interface-as' => ['namespace NIA\Foo; use Bar\Some as Other; interface AInterface extends Other {}', '\NIA\Foo\AInterface', 'AInterface', ['\Bar\Some'], 'interfaces', 'interface'],
         ];
     }
 
@@ -83,17 +83,17 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function usesDefinitionCases()
     {
         return [
-            'global-class-use' => ['class AClass { use Other; }', '\AClass', 'AClass', ['\Other'], 'classes', 'class'],
-            'namespaced-class-use' => ['namespace Foo; class AClass { use \Other; }', '\Foo\AClass', 'AClass', ['\Other'], 'classes', 'class'],
-            'namespaced-class-use-namespaced' => ['namespace Foo; use Bar\Other; class AClass { use Other; }', '\Foo\AClass', 'AClass', ['\Bar\Other'], 'classes', 'class'],
-            'namespaced-class-use-namespaced-as' => ['namespace Foo; use Bar\Other as Some; class AClass { use Some; }', '\Foo\AClass', 'AClass', ['\Bar\Other'], 'classes', 'class'],
+            'global-class-use' => ['class YClass { use Other; }', '\YClass', 'YClass', ['\Other'], 'classes', 'class'],
+            'namespaced-class-use' => ['namespace UNCU\Foo; class AClass { use \Other; }', '\UNCU\Foo\AClass', 'AClass', ['\Other'], 'classes', 'class'],
+            'namespaced-class-use-namespaced' => ['namespace UNCUN\Foo; use GBar\Other; class AClass { use Other; }', '\UNCUN\Foo\AClass', 'AClass', ['\GBar\Other'], 'classes', 'class'],
+            'namespaced-class-use-namespaced-as' => ['namespace UNCUNA\Foo; use HBar\Other as Some; class AClass { use Some; }', '\UNCUNA\Foo\AClass', 'AClass', ['\HBar\Other'], 'classes', 'class'],
 
             'global-trait-use' => ['trait ATrait { use Other; }', '\ATrait', 'ATrait', ['\Other'], 'traits', 'trait'],
-            'namespaced-trait-use' => ['namespace Foo; trait ATrait { use \Other; }', '\Foo\ATrait', 'ATrait', ['\Other'], 'traits', 'trait'],
-            'namespaced-trait-use-explicit' => ['namespace Foo; trait ATrait { use \Bar\Other; }', '\Foo\ATrait', 'ATrait', ['\Bar\Other'], 'traits', 'trait'],
-            'namespaced-trait-use-multi' => ['namespace Foo; trait ATrait { use \Other; use \More; }', '\Foo\ATrait', 'ATrait', ['\Other', '\More'], 'traits', 'trait'],
-            'namespaced-trait-use-mixed' => ['namespace Foo; use Bar\Other; trait ATrait { use Other, \More; }', '\Foo\ATrait', 'ATrait', ['\Bar\Other', '\More'], 'traits', 'trait'],
-            'namespaced-trait-use-as' => ['namespace Foo; use Bar\Other as Some; trait ATrait { use Some; }', '\Foo\ATrait', 'ATrait', ['\Bar\Other'], 'traits', 'trait'],
+            'namespaced-trait-use' => ['namespace UNTU\Foo; trait ATrait { use \Other; }', '\UNTU\Foo\ATrait', 'ATrait', ['\Other'], 'traits', 'trait'],
+            'namespaced-trait-use-explicit' => ['namespace UNTUE\Foo; trait ATrait { use \DBar\Other; }', '\UNTUE\Foo\ATrait', 'ATrait', ['\DBar\Other'], 'traits', 'trait'],
+            'namespaced-trait-use-multi' => ['namespace UNTUEM\Foo; trait ATrait { use \Other; use \More; }', '\UNTUEM\Foo\ATrait', 'ATrait', ['\Other', '\More'], 'traits', 'trait'],
+            'namespaced-trait-use-mixed' => ['namespace UNTUEX\Foo; use TBar\Other; trait ATrait { use Other, \More; }', '\UNTUEX\Foo\ATrait', 'ATrait', ['\TBar\Other', '\More'], 'traits', 'trait'],
+            'namespaced-trait-use-as' => ['namespace UNTUEA\Foo; use MBar\Other as Some; trait ATrait { use Some; }', '\UNTUEA\Foo\ATrait', 'ATrait', ['\MBar\Other'], 'traits', 'trait'],
         ];
     }
 
@@ -117,12 +117,6 @@ class TokenAnalyserTest extends OpenApiTestCase
         $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", $this->getContext());
     }
 
-    public function testIndentationCorrection()
-    {
-        $analysis = $this->analysisFromFixtures('PHP/routes.php');
-        $this->assertCount(20, $analysis->annotations);
-    }
-
     public function testThirdPartyAnnotations()
     {
         $backup = DocBlockParser::$whitelist;
@@ -134,7 +128,9 @@ class TokenAnalyserTest extends OpenApiTestCase
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
         DocBlockParser::$whitelist[] = 'AnotherNamespace\\Annotations\\';
-        $openapi = Generator::scan([__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php']);
+        $openapi = (new Generator())
+            ->setAnalyser(new TokenAnalyser())
+            ->generate([__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php']);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
         DocBlockParser::$whitelist = $backup;

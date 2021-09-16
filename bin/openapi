@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
 use OpenApi\Util;
 use OpenApi\Loggers\ConsoleLogger;
@@ -192,7 +193,9 @@ foreach ($options["processor"] as $processor) {
     $generator->addProcessor($processor);
 }
 
-$openapi = $generator->generate(Util::finder($paths, $exclude, $pattern));
+$openapi = $generator
+    ->setAnalyser(new TokenAnalyser())
+    ->generate(Util::finder($paths, $exclude, $pattern));
 
 if ($logger->called()) {
     $logger->notice('', ['prefix' => '']);

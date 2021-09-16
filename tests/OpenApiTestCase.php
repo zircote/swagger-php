@@ -8,13 +8,18 @@ namespace OpenApi\Tests;
 
 use DirectoryIterator;
 use Exception;
+use OpenApi\Analysers\AnalyserInterface;
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -72,12 +77,18 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function getContext(array $properties = [])
+    public function getContext(array $properties = []): Context
     {
         return new Context(['logger' => $this->getTrackingLogger()] + $properties);
     }
 
-    public function assertOpenApiLogEntryContains($needle, $message = '')
+    public function getAnalyzer(): AnalyserInterface
+    {
+        //return new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        return new TokenAnalyser();
+    }
+
+    public function assertOpenApiLogEntryContains($needle, $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
             if ($entry instanceof Exception) {
@@ -95,7 +106,7 @@ class OpenApiTestCase extends TestCase
      * @param string                         $message
      * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
      */
-    protected function assertSpecEquals($actual, $expected, $message = '', $normalized = false)
+    protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
         $formattedValue = function ($value) {
             if (is_bool($value)) {
@@ -150,18 +161,10 @@ class OpenApiTestCase extends TestCase
         }
     }
 
-    protected function parseComment($comment, ?Context $context = null)
-    {
-        $docBlockParser = new DocBlockParser();
-        $context = $context ?: $this->getContext();
-
-        return $docBlockParser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
-    }
-
     /**
      * Create a valid OpenApi object with Info.
      */
-    protected function createOpenApiWithInfo()
+    protected function createOpenApiWithInfo(): OpenApi
     {
         return new OpenApi([
             'info' => new Info([
@@ -186,7 +189,7 @@ class OpenApiTestCase extends TestCase
     /**
      * Resolve fixture filenames.
      *
-     * @param array|string $files one ore more files
+     * @param array|string $files one or more files
      *
      * @return array resolved filenames for loading scanning etc
      */
@@ -197,34 +200,42 @@ class OpenApiTestCase extends TestCase
         }, (array) $files);
     }
 
-    public function analysisFromFixtures($files): Analysis
+    public function analysisFromFixtures($files, array $processors = []): Analysis
     {
-        $analyser = new TokenAnalyser();
         $analysis = new Analysis([], $this->getContext());
 
-        foreach ((array) $files as $file) {
-            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0], $this->getContext()));
-        }
+        (new Generator($this->getTrackingLogger()))
+            ->setAnalyser($this->getAnalyzer())
+            ->setProcessors($processors)
+            ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;
     }
 
-    public function analysisFromCode(string $code, ?Context $context = null)
+    public function analysisFromCode(string $code, ?Context $context = null): Analysis
     {
-        return (new TokenAnalyser())->fromCode("<?php\n" . $code, $context ?: $this->getContext());
+        $analyser = $this->getAnalyzer();
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'openapi_test_');
+        file_put_contents($tmpFile, '<?php ' . $code);
+
+        return $analyser->fromFile($tmpFile, $context ?: $this->getContext());
     }
 
-    public function analysisFromDockBlock($comment)
+    protected function annotationsFromDocBlock($docBlock, ?Context $context = null): array
     {
-        return (new DocBlockParser())->fromComment($comment, $this->getContext());
+        $docBlockParser = new DocBlockParser();
+        $context = $context ?: $this->getContext();
+
+        return $docBlockParser->fromComment($docBlock, $context);
     }
 
     /**
-     * Collect list of all non abstract annotation classes.
+     * Collect list of all non-abstract annotation classes.
      *
      * @return array
      */
-    public function allAnnotationClasses()
+    public function allAnnotationClasses(): array
     {
         $classes = [];
         $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');

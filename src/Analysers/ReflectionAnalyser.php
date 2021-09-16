@@ -8,6 +8,7 @@ namespace OpenApi\Analysers;
 
 use OpenApi\Analysis;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * OpenApi analyser using reflection.
@@ -22,11 +23,23 @@ class ReflectionAnalyser implements AnalyserInterface
     /** @var AnnotationFactoryInterface[] */
     protected $annotationFactories;
 
+    /** @var Generator */
+    protected $generator;
+
     public function __construct(array $annotationFactories = [])
     {
         $this->annotationFactories = $annotationFactories;
         if (!$this->annotationFactories) {
             throw new \InvalidArgumentException('Need at least one annotation factory');
+        }
+    }
+
+    public function setGenerator(Generator $generator): void
+    {
+        $this->generator = $generator;
+
+        foreach ($this->annotationFactories as $annotationFactory) {
+            $annotationFactory->setGenerator($generator);
         }
     }
 
@@ -57,8 +70,6 @@ class ReflectionAnalyser implements AnalyserInterface
         $scanner = new TokenScanner();
         $fileDetails = $scanner->scanFile($filename);
 
-        require_once $filename;
-
         $this->analyzeFqdn($fqdn, $analysis, $fileDetails[$fqdn]);
 
         return $analysis;
@@ -72,11 +83,14 @@ class ReflectionAnalyser implements AnalyserInterface
         }
 
         $rc = new \ReflectionClass($fqdn);
-        $contextType = $this->contextType($rc);
-        $context = new Context([$contextType => $rc->getShortName()]);
-        if ($namespace = $rc->getNamespaceName()) {
-            $context->namespace = $namespace;
-        }
+        $contextType = $rc->isInterface() ? 'interface' : ($rc->isTrait() ? 'trait' : 'class');
+        $context = new Context([
+            $contextType => $rc->getShortName(),
+            'namespace' => $rc->getNamespaceName() ?: Generator::UNDEFINED,
+            'comment' => $rc->getDocComment() ?: Generator::UNDEFINED,
+            'line' => $rc->getStartLine(),
+            'annotations' => [],
+        ], $analysis->context);
 
         $definition = [
             $contextType => $rc->getShortName(),
@@ -87,39 +101,44 @@ class ReflectionAnalyser implements AnalyserInterface
             'methods' => [],
             'context' => $context,
         ];
+        $normaliseClass = function (string $name): string {
+            return '\\' . $name;
+        };
+        if ($parentClass = $rc->getParentClass()) {
+            $definition['extends'] = $normaliseClass($parentClass->getName());
+        }
+        if ($interfaceNames = $rc->getInterfaceNames()) {
+            $definition['implements'] = array_map($normaliseClass, $interfaceNames);
+        }
+        if ($traitNames = $rc->getTraitNames()) {
+            $definition['traits'] = array_map($normaliseClass, $traitNames);
+        }
+
         foreach ($this->annotationFactories as $annotationFactory) {
             $analysis->addAnnotations($annotationFactory->build($rc, $context), $context);
         }
 
-        if ($parentClass = $rc->getParentClass()) {
-            $definition['extends'] = '\\' . $parentClass->getName();
-        }
-
-        if ($interfaceNames = $rc->getInterfaceNames()) {
-            $definition['implements'] = array_map(function ($name) {
-                return '\\' . $name;
-            }, $interfaceNames);
-        }
-
-        if ($traitNames = $rc->getTraitNames()) {
-            $definition['traits'] = array_map(function ($name) {
-                return '\\' . $name;
-            }, $traitNames);
-        }
-
         foreach ($rc->getMethods() as $method) {
             if (in_array($method->name, $details['methods'])) {
-                $definition['methods'][$method->getName()] = $ctx = new Context(['method' => $method->getName()], $context);
+                $definition['methods'][$method->getName()] = $ctx = new Context([
+                    'method' => $method->getName(),
+                    'comment' => $method->getDocComment() ?: Generator::UNDEFINED,
+                    'line' => $method->getStartLine(),
+                    'annotations' => [],
+                ], $context);
                 foreach ($this->annotationFactories as $annotationFactory) {
-                    $buildContext = new Context([], $ctx);
-                    $analysis->addAnnotations($annotationFactory->build($method, $buildContext), $buildContext);
+                    $analysis->addAnnotations($annotationFactory->build($method, $ctx), $ctx);
                 }
             }
         }
 
         foreach ($rc->getProperties() as $property) {
             if (in_array($property->name, $details['properties'])) {
-                $definition['properties'][$property->getName()] = $ctx = new Context(['property' => $property->getName()], $context);
+                $definition['properties'][$property->getName()] = $ctx = new Context([
+                    'property' => $property->getName(),
+                    'comment' => $property->getDocComment() ?: Generator::UNDEFINED,
+                    'annotations' => [],
+                ], $context);
                 if ($property->isStatic()) {
                     $ctx->static = true;
                 }
@@ -130,8 +149,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     }
                 }
                 foreach ($this->annotationFactories as $annotationFactory) {
-                    $buildContext = new Context([], $ctx);
-                    $analysis->addAnnotations($annotationFactory->build($property, $buildContext), $buildContext);
+                    $analysis->addAnnotations($annotationFactory->build($property, $ctx), $ctx);
                 }
             }
         }
@@ -140,10 +158,5 @@ class ReflectionAnalyser implements AnalyserInterface
         $analysis->{$addDefinition}($definition);
 
         return $analysis;
-    }
-
-    protected function contextType(\ReflectionClass $rc): string
-    {
-        return $rc->isInterface() ? 'interface' : ($rc->isTrait() ? 'trait' : 'class');
     }
 }

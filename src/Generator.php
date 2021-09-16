@@ -7,7 +7,10 @@
 namespace OpenApi;
 
 use OpenApi\Analysers\AnalyserInterface;
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
@@ -136,7 +139,8 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-        return $this->analyser ?: new TokenAnalyser();
+//        return $this->analyser ?: new TokenAnalyser();
+        return $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
     public function setAnalyser(?AnalyserInterface $analyser): Generator
@@ -254,7 +258,7 @@ class Generator
      *                          logger:     null|\Psr\Log\LoggerInterface If not set logging will use \OpenApi\Logger as before.
      *                          validate:   bool                          Defaults to `true`.
      */
-    public static function scan(iterable $sources, array $options = []): OpenApi
+    public static function scan(iterable $sources, array $options = []): ?OpenApi
     {
         // merge with defaults
         $config = $options + [
@@ -286,7 +290,7 @@ class Generator
      * @param null|Analysis $analysis custom analysis instance
      * @param bool          $validate flag to enable/disable validation of the returned spec
      */
-    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): OpenApi
+    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
     {
         $rootContext = new Context(['logger' => $this->getLogger()]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
@@ -312,6 +316,8 @@ class Generator
     protected function scanSources(iterable $sources, Analysis $analysis, Context $rootContext): void
     {
         $analyser = $this->getAnalyser();
+        $analyser->setGenerator($this);
+
         foreach ($sources as $source) {
             if (is_iterable($source)) {
                 $this->scanSources($source, $analysis, $rootContext);

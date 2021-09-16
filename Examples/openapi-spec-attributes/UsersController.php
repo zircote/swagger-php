@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpec;
+namespace OpenApi\Examples\OpenapiSpecAttributes;
 
 use OpenApi\Annotations as OA;
 
@@ -25,6 +25,7 @@ class UsersController
      *   )
      * )
      */
+    #[OA\Get(path: '/2.0/users/{username}', operationId: 'getUserByName', parameters: [new OA\Parameter(name: 'username', in: 'path', required: true, schema: new OA\Schema(type: 'string'))], responses: [new OA\Response(response: 200, description: 'The User', content: new OA\JsonContent(ref: '#/components/schemas/user'), links: [new OA\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')])])]
     public function getUserByName($username)
     {
     }

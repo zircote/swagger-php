@@ -8,6 +8,7 @@ Collection of code/annotation examples and their corresponding OpenAPI specs gen
   using swagger-php annotations.
   
   * openapi-spec: [source](openapi-spec) / [spec](openapi-spec/openapi-spec.yaml)
+  * openapi-spec-attributes: [source](openapi-spec-attributes) / [spec](openapi-spec-attributes/openapi-spec-attributes.yaml) - **requires PHP 8.1**
   * petstore-3.0 (includes oauth2 auth flow): [source](petstore-3.0) / [spec](openapi-spec/petstore-3.0.yaml)
   
 * **petstore.swagger.io**
