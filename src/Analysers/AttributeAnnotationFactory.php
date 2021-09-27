@@ -37,8 +37,24 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             Generator::$context = null;
         }
 
-        return array_filter($annotations, function ($a) {
+        $annotations = array_filter($annotations, function ($a) {
             return $a !== null;
         });
+
+        // merge backwards into parents...
+        foreach ($annotations as $index => $annotation) {
+            $class = get_class($annotation);
+            for ($ii = 0; $ii < count($annotations); ++$ii) {
+                if ($ii === $index) {
+                    continue;
+                }
+                $possibleParent = $annotations[$ii];
+                if (array_key_exists($class, $possibleParent::$_nested)) {
+                    $possibleParent->merge([$annotation]);
+                }
+            }
+        }
+
+        return $annotations;
     }
 }

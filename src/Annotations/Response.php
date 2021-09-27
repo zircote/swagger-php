@@ -15,7 +15,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 abstract class AbstractResponse extends AbstractAnnotation
 {
     /**
@@ -109,7 +108,7 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
     class Response extends AbstractResponse
     {
         public function __construct(

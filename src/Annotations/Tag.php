@@ -13,7 +13,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
 abstract class AbstractTag extends AbstractAnnotation
 {
     /**

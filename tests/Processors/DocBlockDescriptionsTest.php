@@ -15,7 +15,7 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
 {
     public function testDocBlockDescription()
     {
-        $analysis = $this->analysisFromFixtures('UsingPhpDoc.php');
+        $analysis = $this->analysisFromFixtures(['UsingPhpDoc.php']);
         $analysis->process([
             new DocBlockDescriptions(),
         ]);

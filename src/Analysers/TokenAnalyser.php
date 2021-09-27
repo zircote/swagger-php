@@ -11,7 +11,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
- * OpenApi\StaticAnalyser extracts swagger-php annotations from php code using static analysis.
+ * Extracts swagger-php annotations from php code using static analysis.
  */
 class TokenAnalyser implements AnalyserInterface
 {
@@ -65,13 +65,14 @@ class TokenAnalyser implements AnalyserInterface
      */
     protected function fromTokens(array $tokens, Context $parseContext): Analysis
     {
-        $docBlockParser = new DocBlockParser();
+        $generator = $this->generator ?: new Generator();
         $analysis = new Analysis([], $parseContext);
+        $docBlockParser = new DocBlockParser($generator->getAliases());
 
         reset($tokens);
         $token = '';
 
-        $imports = DocBlockParser::$defaultImports;
+        $aliases = $generator->getAliases();
 
         $parseContext->uses = [];
         // default to parse context to start with
@@ -350,8 +351,8 @@ class TokenAnalyser implements AnalyserInterface
 
             if ($token[0] === T_NAMESPACE) {
                 $parseContext->namespace = $this->parseNamespace($tokens, $token, $parseContext);
-                $imports['__NAMESPACE__'] = $parseContext->namespace;
-                $docBlockParser->docParser->setImports($imports);
+                $aliases['__NAMESPACE__'] = $parseContext->namespace;
+                $docBlockParser->setAliases($aliases);
                 continue;
             }
 
@@ -368,17 +369,18 @@ class TokenAnalyser implements AnalyserInterface
                         // not a trait use
                         $parseContext->uses[$alias] = $target;
 
-                        if (DocBlockParser::$whitelist === false) {
-                            $imports[strtolower($alias)] = $target;
+                        $namespaces = $generator->getNamespaces();
+                        if (null === $namespaces) {
+                            $aliases[strtolower($alias)] = $target;
                         } else {
-                            foreach (DocBlockParser::$whitelist as $namespace) {
+                            foreach ($namespaces as $namespace) {
                                 if (strcasecmp(substr($target . '\\', 0, strlen($namespace)), $namespace) === 0) {
-                                    $imports[strtolower($alias)] = $target;
+                                    $aliases[strtolower($alias)] = $target;
                                     break;
                                 }
                             }
                         }
-                        $docBlockParser->docParser->setImports($imports);
+                        $docBlockParser->setAliases($aliases);
                     }
                 }
             }
@@ -415,7 +417,7 @@ class TokenAnalyser implements AnalyserInterface
      *
      * @return array|string The next token (or false)
      */
-    private function nextToken(array & $tokens, Context $context)
+    private function nextToken(array &$tokens, Context $context)
     {
         while (true) {
             $token = next($tokens);
@@ -438,7 +440,7 @@ class TokenAnalyser implements AnalyserInterface
         }
     }
 
-    private function parseAttribute(array & $tokens, & $token, Context $parseContext): void
+    private function parseAttribute(array &$tokens, &$token, Context $parseContext): void
     {
         $nesting = 1;
         while ($token !== false) {
@@ -465,7 +467,7 @@ class TokenAnalyser implements AnalyserInterface
     /**
      * Parse namespaced string.
      */
-    private function parseNamespace(array & $tokens, & $token, Context $parseContext): string
+    private function parseNamespace(array &$tokens, &$token, Context $parseContext): string
     {
         $namespace = '';
         $nsToken = array_merge([T_STRING, T_NS_SEPARATOR], $this->php8NamespaceToken());
@@ -483,7 +485,7 @@ class TokenAnalyser implements AnalyserInterface
     /**
      * Parse comma separated list of namespaced strings.
      */
-    private function parseNamespaceList(array & $tokens, & $token, Context $parseContext): array
+    private function parseNamespaceList(array &$tokens, &$token, Context $parseContext): array
     {
         $namespaces = [];
         while ($namespace = $this->parseNamespace($tokens, $token, $parseContext)) {
@@ -499,7 +501,7 @@ class TokenAnalyser implements AnalyserInterface
     /**
      * Parse a use statement.
      */
-    private function parseUseStatement(array & $tokens, & $token, Context $parseContext): array
+    private function parseUseStatement(array &$tokens, &$token, Context $parseContext): array
     {
         $normalizeAlias = function ($alias) {
             $alias = ltrim($alias, '\\');
@@ -543,7 +545,7 @@ class TokenAnalyser implements AnalyserInterface
     /**
      * Parse type of variable (if it exists).
      */
-    private function parseTypeAndNextToken(array & $tokens, Context $parseContext): array
+    private function parseTypeAndNextToken(array &$tokens, Context $parseContext): array
     {
         $type = Generator::UNDEFINED;
         $nullable = false;

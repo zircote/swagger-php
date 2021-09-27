@@ -40,7 +40,7 @@ class SecuritySchemesTest extends OpenApiTestCase
  */
 
 INFO;
-        $annotations = $this->annotationsFromDocBlock($comment);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
 
         $this->assertCount(3, $annotations);
         $this->assertInstanceOf(Info::class, $annotations[0]);
@@ -79,7 +79,7 @@ INFO;
  */
 SCHEME;
 
-        $annotations = $this->annotationsFromDocBlock($comment);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
         $this->assertCount(1, $annotations);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $annotations[0];
@@ -119,7 +119,7 @@ SCHEME;
  */
 SCHEME;
 
-        $annotations = $this->annotationsFromDocBlock($comment);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
         $this->assertCount(1, $annotations);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $annotations[0];

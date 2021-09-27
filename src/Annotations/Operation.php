@@ -16,7 +16,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 abstract class AbstractOperation extends AbstractAnnotation
 {
     /**
@@ -210,13 +209,15 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    class Operation extends AbstractOperation
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+    abstract class Operation extends AbstractOperation
     {
         public function __construct(
             array $properties = [],
             string $path = Generator::UNDEFINED,
             string $operationId = Generator::UNDEFINED,
             string $description = Generator::UNDEFINED,
+            string $summary = Generator::UNDEFINED,
             $x = Generator::UNDEFINED,
             $tags = Generator::UNDEFINED,
             $parameters = Generator::UNDEFINED,
@@ -227,6 +228,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'path' => $path,
                     'operationId' => $operationId,
                     'description' => $description,
+                    'summary' => $summary,
                     'tags' => $tags,
                     'x' => $x,
                     'value' => $this->combine($responses, $parameters, $externalDocs),
@@ -237,8 +239,7 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-    class Operation extends AbstractOperation
+    abstract class Operation extends AbstractOperation
     {
         public function __construct(array $properties)
         {

@@ -9,7 +9,6 @@ namespace OpenApi\Annotations;
 /**
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
 abstract class AbstractAdditionalProperties extends Schema
 {
     /**

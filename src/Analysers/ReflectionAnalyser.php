@@ -88,6 +88,7 @@ class ReflectionAnalyser implements AnalyserInterface
             $contextType => $rc->getShortName(),
             'namespace' => $rc->getNamespaceName() ?: Generator::UNDEFINED,
             'comment' => $rc->getDocComment() ?: Generator::UNDEFINED,
+            'filename' => $rc->getFileName() ?: Generator::UNDEFINED,
             'line' => $rc->getStartLine(),
             'annotations' => [],
         ], $analysis->context);
@@ -123,6 +124,7 @@ class ReflectionAnalyser implements AnalyserInterface
                 $definition['methods'][$method->getName()] = $ctx = new Context([
                     'method' => $method->getName(),
                     'comment' => $method->getDocComment() ?: Generator::UNDEFINED,
+                    'filename' => $method->getFileName() ?: Generator::UNDEFINED,
                     'line' => $method->getStartLine(),
                     'annotations' => [],
                 ], $context);

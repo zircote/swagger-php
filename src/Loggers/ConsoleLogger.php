@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Loggers;
 
 use Psr\Log\AbstractLogger;

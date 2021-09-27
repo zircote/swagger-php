@@ -12,7 +12,7 @@ use OpenApi\Generator;
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
     /** @var DocBlockParser */
-    protected $docBlockParser;
+    protected $docBlockParser = null;
 
     /** @var Generator */
     protected $generator;
@@ -26,7 +26,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
     {
         $this->generator = $generator;
 
-        $this->docBlockParser->docParser->setImports($generator->getAliases());
+        $this->docBlockParser->setAliases($generator->getAliases());
     }
 
     public function build(\Reflector $reflector, Context $context): array

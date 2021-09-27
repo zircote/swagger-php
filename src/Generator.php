@@ -6,12 +6,11 @@
 
 namespace OpenApi;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
-use OpenApi\Analysers\DocBlockParser;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
 use OpenApi\Processors\AugmentParameters;
@@ -37,8 +36,6 @@ use Psr\Log\LoggerInterface;
  *
  * This is an object oriented alternative to using the now deprecated `\OpenApi\scan()` function and
  * static class properties of the `Analyzer` and `Analysis` classes.
- *
- * The `aliases` property supersedes the `DocBlockParser::$defaultImports`; `namespaces` maps to `DocBlockParser::$whitelist`.
  */
 class Generator
 {
@@ -52,11 +49,16 @@ class Generator
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
 
-    /** @var array Map of namespace aliases to be supported by doctrine. */
-    protected $aliases = null;
+    /** @var string[] */
+    public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
+    /** @var string[] */
+    public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
-    /** @var array List of annotation namespaces to be autoloaded by doctrine. */
-    protected $namespaces = null;
+    /** @var array Map of namespace aliases to be supported by doctrine. */
+    protected $aliases;
+
+    /** @var array|null List of annotation namespaces to be autoloaded by doctrine. */
+    protected $namespaces;
 
     /** @var AnalyserInterface The configured analyzer. */
     protected $analyser;
@@ -73,61 +75,81 @@ class Generator
     {
         $this->logger = $logger;
 
+        $this->setAliases(self::DEFAULT_ALIASES);
+        $this->setNamespaces(self::DEFAULT_NAMESPACES);
+
         // kinda config stack to stay BC...
         $this->configStack = new class() {
-            private $defaultImports;
-            private $whitelist;
+            protected $generator;
 
             public function push(Generator $generator): void
             {
-                // save current state
-                $this->defaultImports = DocBlockParser::$defaultImports;
-                $this->whitelist = DocBlockParser::$whitelist;
+                $this->generator = $generator;
+                if (class_exists(AnnotationRegistry::class, true)) {
+                    // keeping track of &this->generator allows to 'disable' the loader after we are done;
+                    // no unload, unfortunately :/
+                    $gref = &$this->generator;
+                    AnnotationRegistry::registerLoader(
+                        function (string $class) use (&$gref): bool {
+                            if ($gref) {
+                                foreach ($gref->getNamespaces() as $namespace) {
+                                    if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
+                                        $loaded = class_exists($class);
+                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
+                                            if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
+                                                // Detected an 2.x annotation?
+                                                throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                                            }
+                                        }
 
-                // update state with generator config
-                DocBlockParser::$defaultImports = $generator->getAliases();
-                DocBlockParser::$whitelist = $generator->getNamespaces();
+                                        return $loaded;
+                                    }
+                                }
+                            }
+
+                            return false;
+                        }
+                    );
+                }
             }
 
             public function pop(): void
             {
-                DocBlockParser::$defaultImports = $this->defaultImports;
-                DocBlockParser::$whitelist = $this->whitelist;
+                $this->generator = null;
             }
         };
     }
 
     public function getAliases(): array
     {
-        $aliases = null !== $this->aliases ? $this->aliases : DocBlockParser::$defaultImports;
-        $aliases['oa'] = 'OpenApi\\Annotations';
-
-        return $aliases;
+        return $this->aliases;
     }
 
-    public function setAliases(?array $aliases): Generator
+    public function addAlias(string $alias, string $namespace): Generator
+    {
+        $this->aliases[$alias] = $namespace;
+
+        return $this;
+    }
+
+    public function setAliases(array $aliases): Generator
     {
         $this->aliases = $aliases;
 
         return $this;
     }
 
-    public function getNamespaces(): array
+    public function getNamespaces(): ?array
     {
-        $namespaces = null !== $this->namespaces ? $this->namespaces : DocBlockParser::$whitelist;
-        $namespaces = false !== $namespaces ? $namespaces : [];
-        $namespaces[] = 'OpenApi\\Annotations\\';
-
-        return array_unique($namespaces);
+        return $this->namespaces;
     }
 
     public function addNamespace(string $namespace): Generator
     {
-        $namespaces = $this->getNamespaces();
+        $namespaces = (array) $this->getNamespaces();
         $namespaces[] = $namespace;
-        $this->setNamespaces($namespaces);
 
-        return $this;
+        return $this->setNamespaces(array_unique($namespaces));
     }
 
     public function setNamespaces(?array $namespaces): Generator
@@ -139,7 +161,6 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-//        return $this->analyser ?: new TokenAnalyser();
         return $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
@@ -241,29 +262,12 @@ class Generator
         return $this->logger ?: new DefaultLogger();
     }
 
-    /**
-     * Static  wrapper around `Generator::generate()`.
-     *
-     * @param iterable $sources PHP source files to scan.
-     *                          Supported sources:
-     *                          * string
-     *                          * \SplFileInfo
-     *                          * \Symfony\Component\Finder\Finder
-     * @param array    $options
-     *                          aliases:    null|array                    Defaults to `DocBlockParser::$defaultImports`.
-     *                          namespaces: null|array                    Defaults to `DocBlockParser::$whitelist`.
-     *                          analyser:   null|StaticAnalyser           Defaults to a new `StaticAnalyser`.
-     *                          analysis:   null|Analysis                 Defaults to a new `Analysis`.
-     *                          processors: null|array                    Defaults to `Analysis::processors()`.
-     *                          logger:     null|\Psr\Log\LoggerInterface If not set logging will use \OpenApi\Logger as before.
-     *                          validate:   bool                          Defaults to `true`.
-     */
     public static function scan(iterable $sources, array $options = []): ?OpenApi
     {
         // merge with defaults
         $config = $options + [
-                'aliases' => null,
-                'namespaces' => null,
+                'aliases' => self::DEFAULT_ALIASES,
+                'namespaces' => self::DEFAULT_NAMESPACES,
                 'analyser' => null,
                 'analysis' => null,
                 'processors' => null,
@@ -277,6 +281,24 @@ class Generator
             ->setAnalyser($config['analyser'])
             ->setProcessors($config['processors'])
             ->generate($sources, $config['analysis'], $config['validate']);
+    }
+
+    /**
+     * Run code in the context of this generator.
+     *
+     * @return mixed the result of the `callable`
+     */
+    public function withContext(callable $callable)
+    {
+        $rootContext = new Context(['logger' => $this->getLogger()]);
+        $analysis = new Analysis([], $rootContext);
+
+        $this->configStack->push($this);
+        try {
+            return $callable($this, $analysis, $rootContext);
+        } finally {
+            $this->configStack->pop();
+        }
     }
 
     /**

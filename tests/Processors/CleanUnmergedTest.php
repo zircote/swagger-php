@@ -31,7 +31,7 @@ class CleanUnmergedTest extends OpenApiTestCase
 )
 
 END;
-        $analysis = new Analysis($this->annotationsFromDocBlock($comment), $this->getContext());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
         $analysis->process([new MergeIntoOpenApi()]);
 

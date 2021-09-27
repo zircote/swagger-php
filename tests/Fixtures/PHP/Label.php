@@ -2,7 +2,7 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Label
 {
     protected $name;

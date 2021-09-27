@@ -19,7 +19,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 abstract class AbstractSchema extends AbstractAnnotation
 {
     /**

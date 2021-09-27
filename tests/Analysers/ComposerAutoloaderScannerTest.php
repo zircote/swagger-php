@@ -32,7 +32,7 @@ class ComposerAutoloaderScannerTest extends OpenApiTestCase
             'OpenApi\Tests\\Scanners\\Foo',
             'OpenApi\Tests\\Scanners\\Bar',
         ];
-        $result = (new ComposerAutoloaderScanner())->scan('OpenApi\Tests');
+        $result = (new ComposerAutoloaderScanner())->scan(['OpenApi\Tests']);
         $this->assertEquals($expected, $result);
     }
 }

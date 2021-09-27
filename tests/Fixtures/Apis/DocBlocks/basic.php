@@ -11,7 +11,8 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *   version="1.0.0",
- *   title="Basic single file API"
+ *   title="Basic single file API",
+ *   @OA\License(name="MIT")
  * )
  */
 class OpenApiSpec
@@ -61,7 +62,7 @@ class ProductController
 
     /**
      * @OA\Get(
-     *   tags={"Products"},
+     *   tags={"products"},
      *   path="/products/{product_id}",
      *   operationId="getProducts",
      *   @OA\Response(
@@ -76,6 +77,31 @@ class ProductController
      * )
      */
     public function getProduct($id)
+    {
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/products",
+     *     tags={"products"},
+     *     summary="Add products",
+     *     operationId="addProducts",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="New product",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Product")
+     *         )
+     *     )
+     * )
+     */
+    public function addProduct()
     {
     }
 }

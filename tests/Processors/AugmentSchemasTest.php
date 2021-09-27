@@ -16,7 +16,7 @@ class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas()
     {
-        $analysis = $this->analysisFromFixtures('Customer.php');
+        $analysis = $this->analysisFromFixtures(['Customer.php']);
         $analysis->process([
             // create openapi->components
             new MergeIntoOpenApi(),
@@ -36,7 +36,7 @@ class AugmentSchemasTest extends OpenApiTestCase
 
     public function testAugmentSchemasForInterface()
     {
-        $analysis = $this->analysisFromFixtures('CustomerInterface.php');
+        $analysis = $this->analysisFromFixtures(['CustomerInterface.php']);
         $analysis->process([
             // create openapi->components
             new MergeIntoOpenApi(),

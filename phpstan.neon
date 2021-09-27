@@ -1,5 +1,5 @@
 parameters:
-    level: 3
+    level: 5
     paths:
         - src
         - tests
@@ -7,7 +7,7 @@ parameters:
         processTimeout: 300.0
     ignoreErrors:
         - '#does not accept default value of type string#'
-        - "#does not accept default value of type '@OA\\Generator:UNDEFINED'#"
+        - '#(object) does not accept string.#'
     excludes_analyse:
         - 'tests/Fixtures/*'
 

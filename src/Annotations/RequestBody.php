@@ -16,7 +16,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
 abstract class AbstractRequestBody extends AbstractAnnotation
 {
     public $ref = Generator::UNDEFINED;
@@ -90,15 +89,21 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
     class RequestBody extends AbstractRequestBody
     {
         public function __construct(
             array $properties = [],
+            string $description = Generator::UNDEFINED,
+            $required = Generator::UNDEFINED,
+            $content = Generator::UNDEFINED,
             $x = Generator::UNDEFINED
         ) {
             parent::__construct($properties + [
+                    'description' => $description,
+                    'required' => $required,
                     'x' => $x,
+                    'value' => $this->combine($content),
                 ]);
         }
     }

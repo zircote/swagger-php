@@ -11,7 +11,6 @@ use OpenApi\Generator;
 /**
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 abstract class AbstractProperty extends Schema
 {
     /**

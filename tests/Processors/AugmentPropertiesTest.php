@@ -21,7 +21,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
-        $analysis = $this->analysisFromFixtures('Customer.php');
+        $analysis = $this->analysisFromFixtures(['Customer.php']);
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
@@ -135,7 +135,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
-        $analysis = $this->analysisFromFixtures('TypedProperties.php');
+        $analysis = $this->analysisFromFixtures(['TypedProperties.php']);
         $analysis->process([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),

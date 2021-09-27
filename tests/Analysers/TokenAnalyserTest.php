@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Analysers;
 
-use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysis;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
@@ -16,6 +16,14 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class TokenAnalyserTest extends OpenApiTestCase
 {
+    protected function analysisFromCode(string $code): Analysis
+    {
+        $analyser = new TokenAnalyser();
+        $analyser->setGenerator(new Generator());
+
+        return $analyser->fromCode('<?php ' . $code, $this->getContext());
+    }
+
     public function singleDefinitionCases()
     {
         return [
@@ -119,21 +127,21 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     public function testThirdPartyAnnotations()
     {
-        $backup = DocBlockParser::$whitelist;
-        DocBlockParser::$whitelist = ['OpenApi\\Annotations\\'];
+        $generator = new Generator();
         $analyser = new TokenAnalyser();
+        $analyser->setGenerator($generator);
         $defaultAnalysis = $analyser->fromFile(__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php', $this->getContext());
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
-        DocBlockParser::$whitelist[] = 'AnotherNamespace\\Annotations\\';
-        $openapi = (new Generator())
+        $generator->addNamespace('AnotherNamespace\\Annotations\\');
+        $openapi = $generator
             ->setAnalyser(new TokenAnalyser())
             ->generate([__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php']);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
-        DocBlockParser::$whitelist = $backup;
+
         $analysis = $openapi->_analysis;
         $annotations = $analysis->getAnnotationsOfType('AnotherNamespace\Annotations\Unrelated');
         $this->assertCount(4, $annotations);
@@ -198,7 +206,7 @@ class TokenAnalyserTest extends OpenApiTestCase
      */
     public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits)
     {
-        $analysis = $this->analysisFromFixtures($fixture);
+        $analysis = $this->analysisFromFixtures([$fixture]);
 
         list($pType, $sType) = $type;
         $description = $analysis->$pType[$fqdn];
@@ -220,7 +228,7 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     public function testNamespacedConstAccess()
     {
-        $analysis = $this->analysisFromFixtures('Parser/User.php');
+        $analysis = $this->analysisFromFixtures(['Parser/User.php']);
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
@@ -232,7 +240,7 @@ class TokenAnalyserTest extends OpenApiTestCase
      */
     public function testPhp8AttributeMix()
     {
-        $analysis = $this->analysisFromFixtures('PHP/Php8AttrMix.php');
+        $analysis = $this->analysisFromFixtures(['PHP/Label.php', 'PHP/Php8AttrMix.php']);
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
@@ -249,7 +257,7 @@ class TokenAnalyserTest extends OpenApiTestCase
      */
     public function testPhp8NamedProperty()
     {
-        $analysis = $this->analysisFromFixtures('PHP/Php8NamedProperty.php');
+        $analysis = $this->analysisFromFixtures(['PHP/Php8NamedProperty.php']);
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);

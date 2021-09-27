@@ -181,7 +181,7 @@ class OpenApiTestCase extends TestCase
 
     public function fixture(string $file): ?string
     {
-        $fixtures = $this->fixtures($file);
+        $fixtures = $this->fixtures([$file]);
 
         return $fixtures ? $fixtures[0] : null;
     }
@@ -189,18 +189,16 @@ class OpenApiTestCase extends TestCase
     /**
      * Resolve fixture filenames.
      *
-     * @param array|string $files one or more files
-     *
      * @return array resolved filenames for loading scanning etc
      */
-    public function fixtures($files): array
+    public function fixtures(array $files): array
     {
         return array_map(function ($file) {
             return __DIR__ . '/Fixtures/' . $file;
         }, (array) $files);
     }
 
-    public function analysisFromFixtures($files, array $processors = []): Analysis
+    public function analysisFromFixtures(array $files, array $processors = []): Analysis
     {
         $analysis = new Analysis([], $this->getContext());
 
@@ -212,22 +210,13 @@ class OpenApiTestCase extends TestCase
         return $analysis;
     }
 
-    public function analysisFromCode(string $code, ?Context $context = null): Analysis
+    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = []): array
     {
-        $analyser = $this->getAnalyzer();
+        return (new Generator())->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
+            $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'openapi_test_');
-        file_put_contents($tmpFile, '<?php ' . $code);
-
-        return $analyser->fromFile($tmpFile, $context ?: $this->getContext());
-    }
-
-    protected function annotationsFromDocBlock($docBlock, ?Context $context = null): array
-    {
-        $docBlockParser = new DocBlockParser();
-        $context = $context ?: $this->getContext();
-
-        return $docBlockParser->fromComment($docBlock, $context);
+            return $docBlockParser->fromComment($docBlock, $this->getContext());
+        });
     }
 
     /**

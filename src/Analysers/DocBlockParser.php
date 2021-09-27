@@ -6,37 +6,9 @@
 
 namespace OpenApi\Analysers;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use OpenApi\Context;
 use OpenApi\Generator;
-
-if (class_exists(AnnotationRegistry::class, true)) {
-    AnnotationRegistry::registerLoader(
-        function (string $class): bool {
-            if (DocBlockParser::$whitelist === false) {
-                $whitelist = ['OpenApi\\Annotations\\'];
-            } else {
-                $whitelist = DocBlockParser::$whitelist;
-            }
-            foreach ($whitelist as $namespace) {
-                if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-                    $loaded = class_exists($class);
-                    if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
-                        if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
-                            // Detected an 2.x annotation?
-                            throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                        }
-                    }
-
-                    return $loaded;
-                }
-            }
-
-            return false;
-        }
-    );
-}
 
 /**
  * Extract swagger-php annotations from a [PHPDoc](http://en.wikipedia.org/wiki/PHPDoc) using Doctrine's DocParser.
@@ -44,35 +16,21 @@ if (class_exists(AnnotationRegistry::class, true)) {
 class DocBlockParser
 {
     /**
-     * List of namespaces that should be detected by the doctrine annotation parser.
-     * Set to false to load all detected classes.
-     *
-     * @var array|false
-     *
-     * @deprecated use \OpenApi\Generator::setAliases() instead
-     */
-    public static $whitelist = ['OpenApi\\Annotations\\'];
-
-    /**
-     * Use @OA\* for OpenAPI annotations (unless overwritten by a use statement).
-     *
-     * @deprecated use \OpenApi\Generator::setNamespaces() instead
-     */
-    public static $defaultImports = ['oa' => 'OpenApi\\Annotations'];
-
-    /**
      * @var DocParser
      */
-    public $docParser;
+    protected $docParser;
 
-    public function __construct(?DocParser $docParser = null)
+    public function __construct(array $aliases = [])
     {
-        if ($docParser === null) {
-            $docParser = new DocParser();
-            $docParser->setIgnoreNotImportedAnnotations(true);
-            $docParser->setImports(static::$defaultImports);
-        }
+        $docParser = new DocParser();
+        $docParser->setIgnoreNotImportedAnnotations(true);
+        $docParser->setImports($aliases);
         $this->docParser = $docParser;
+    }
+
+    public function setAliases(array $aliases): void
+    {
+        $this->docParser->setImports($aliases);
     }
 
     /**
@@ -104,7 +62,7 @@ class DocBlockParser
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
                 $context->logger->error($errorMessage . ' in ' . $context, ['exception' => $e]);
             } else {
-                $context->logger->error($e);
+                $context->logger->error($e->getMessage(), ['exception' => $e]);
             }
 
             return [];

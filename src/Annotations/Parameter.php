@@ -17,7 +17,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
 abstract class AbstractParameter extends AbstractAnnotation
 {
     /**

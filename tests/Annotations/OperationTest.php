@@ -51,7 +51,7 @@ class OperationTest extends OpenApiTestCase
         $json = $operation->toJson($flags);
         $this->assertEquals($expected, $json);
 
-        $annotations = $this->annotationsFromDocBlock($dockBlock);
+        $annotations = $this->annotationsFromDocBlockParser($dockBlock);
         $this->assertCount(1, $annotations);
         $json = $annotations[0]->toJson($flags);
         $this->assertEquals($expected, $json);

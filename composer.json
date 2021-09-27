@@ -72,8 +72,8 @@
       "@lint"
     ],
     "analyse": [
-      "phpstan",
-      "psalm"
+      "phpstan analyse --memory-limit=2G",
+      "psalm --show-info=true"
     ],
     "validate-examples": {
       "spectral": "for ff in `find Examples -name *.yaml`; do spectral lint $ff; done",

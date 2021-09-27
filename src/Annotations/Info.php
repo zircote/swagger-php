@@ -16,7 +16,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
 abstract class AbstractInfo extends AbstractAnnotation
 {
     /**

@@ -2,21 +2,19 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Tests\Fixtures\PHP\label;
-
 /**
  * @OA\Schema()
 */
 class Php8AttrMix
 {
-    #[label('Id', [1])]
+    #[Label('Id', [1])]
     /** @OA\Property() */
     public string $id = '';
 
     /** @OA\Property() */
     #[
-        label('OtherId', [2, 3]),
-        label('OtherId', [2, 3]),
+        Label('OtherId', [2, 3]),
+        Label('OtherId', [2, 3]),
     ]
     public string $otherId = '';
 

@@ -15,7 +15,6 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
 abstract class AbstractLicense extends AbstractAnnotation
 {
     /**
@@ -69,9 +68,13 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
+            string $name = Generator::UNDEFINED,
+            string $url = Generator::UNDEFINED,
             $x = Generator::UNDEFINED
         ) {
             parent::__construct($properties + [
+                    'name' => $name,
+                    'url' => $url,
                     'x' => $x,
                 ]);
         }

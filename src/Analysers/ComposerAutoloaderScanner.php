@@ -19,12 +19,12 @@ class ComposerAutoloaderScanner
     /**
      * Collect all classes/interfaces/traits known by autoloaders.
      */
-    public function scan($namespaces): array
+    public function scan(array $namespaces): array
     {
         $units = [];
         if ($autoloader = $this->getComposerAutoloader()) {
             foreach (array_keys($autoloader->getClassMap()) as $unit) {
-                foreach ((array) $namespaces as $namespace) {
+                foreach ($namespaces as $namespace) {
                     if (0 === strpos($unit, $namespace)) {
                         $units[] = $unit;
                         break;

@@ -1,13 +1,15 @@
 openapi: 3.0.0
 info:
   title: 'Basic single file API'
+  license:
+    name: MIT
   version: 1.0.0
 paths:
   '/products/{product_id}':
     get:
       tags:
-        - Products
-      operationId: 'getProducts'
+        - products
+      operationId: getProducts
       responses:
         '200':
           description: 'successful operation'
@@ -17,6 +19,28 @@ paths:
                 $ref: '#/components/schemas/Product'
         '401':
           description: oops
+  /products:
+    post:
+      tags:
+        - products
+      summary: 'Add products'
+      operationId: addProducts
+      requestBody:
+        description: 'New product'
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
 components:
   schemas:
     NameTrait:

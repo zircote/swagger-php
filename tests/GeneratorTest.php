@@ -79,6 +79,14 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertLessThan(count($generator->getProcessors()), count($processors));
     }
 
+    public function testAddAlias()
+    {
+        $generator = new Generator();
+        $generator->addAlias('foo', 'Foo\\Bar');
+
+        $this->assertEquals(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
+    }
+
     public function testAddNamespace()
     {
         $generator = new Generator();

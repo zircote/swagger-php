@@ -11,7 +11,6 @@ use OpenApi\Generator;
 /**
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 abstract class AbstractOptions extends Operation
 {
     /**
