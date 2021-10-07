@@ -80,12 +80,9 @@ class Pet
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             type="array",
      *             default="available",
-     *             @OA\Items(
-     *                 type="string",
-     *                 enum = {"available", "pending", "sold"},
-     *             )
+     *             type="string",
+     *             enum = {"available", "pending", "sold"},
      *         )
      *     ),
      *     @OA\Response(
