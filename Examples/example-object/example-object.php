@@ -65,7 +65,7 @@ use OpenApi\Annotations as OA;
  *                 @OA\Schema(type="boolean")
  *             },
  *             @OA\Examples(example="result", value={"success": true}, summary="An result object."),
- *             @OA\Examples(example="bool", value="false", summary="A boolean value."),
+ *             @OA\Examples(example="bool", value=false, summary="A boolean value."),
  *         )
  *     )
  * )

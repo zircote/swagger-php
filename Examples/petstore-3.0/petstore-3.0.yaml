@@ -64,14 +64,12 @@ paths:
           required: true
           explode: true
           schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - available
-                - pending
-                - sold
+            type: string
             default: available
+            enum:
+              - available
+              - pending
+              - sold
       responses:
         '200':
           description: 'successful operation'
@@ -580,7 +578,7 @@ components:
           description: 'Complete status'
           type: boolean
           format: int64
-          default: 'false'
+          default: false
       type: object
     Pet:
       title: 'Pet model'

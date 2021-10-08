@@ -58,7 +58,7 @@ paths:
                   value: { success: true }
                 bool:
                   summary: 'A boolean value.'
-                  value: 'false'
+                  value: false
 components:
   schemas:
     Result:
@@ -69,4 +69,3 @@ components:
         error:
           type: string
       type: object
-
