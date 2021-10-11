@@ -10,6 +10,13 @@ paths:
       tags:
         - products
       operationId: getProducts
+      parameters:
+        -
+          name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'successful operation'

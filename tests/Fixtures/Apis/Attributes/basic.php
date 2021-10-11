@@ -43,7 +43,8 @@ class ProductController
     #[OA\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
     #[OA\Response(response: 200, description: 'successful operation', content: new OA\JsonContent(ref: '#/components/schemas/Product'))]
     #[OA\Response(response: 401, description: 'oops')]
-    public function getProduct($id)
+    public function getProduct(
+        #[OA\PathParameter] string $product_id)
     {
     }
 

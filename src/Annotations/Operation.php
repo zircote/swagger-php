@@ -159,6 +159,7 @@ abstract class AbstractOperation extends AbstractAnnotation
      */
     public static $_nested = [
         Parameter::class => ['parameters'],
+        PathParameter::class => ['parameters'],
         Response::class => ['responses', 'response'],
         ExternalDocumentation::class => 'externalDocs',
         Server::class => ['servers'],

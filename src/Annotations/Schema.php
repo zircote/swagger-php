@@ -368,6 +368,7 @@ abstract class AbstractSchema extends AbstractAnnotation
     public static $_parents = [
         Components::class,
         Parameter::class,
+        PathParameter::class,
         MediaType::class,
         Header::class,
     ];

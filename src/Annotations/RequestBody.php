@@ -89,7 +89,7 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER)]
     class RequestBody extends AbstractRequestBody
     {
         public function __construct(

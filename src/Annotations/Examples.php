@@ -76,6 +76,7 @@ abstract class AbstractExamples extends AbstractAnnotation
     public static $_parents = [
         Components::class,
         Parameter::class,
+        PathParameter::class,
         MediaType::class,
         JsonContent::class,
         XmlContent::class,

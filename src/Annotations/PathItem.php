@@ -136,6 +136,7 @@ abstract class AbstractPathItem extends AbstractAnnotation
         Head::class => 'head',
         Options::class => 'options',
         Parameter::class => ['parameters'],
+        PathParameter::class => ['parameters'],
         Server::class => ['servers'],
         Attachable::class => ['attachables'],
     ];

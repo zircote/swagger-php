@@ -269,7 +269,7 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_PROPERTY)]
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
     class Parameter extends AbstractParameter
     {
         public function __construct(
@@ -283,8 +283,8 @@ if (\PHP_VERSION_ID >= 80100) {
         ) {
             parent::__construct($properties + [
                     'name' => $name,
-                    'in' => $in,
-                    'required' => $required,
+                    'in' => $this->in !== Generator::UNDEFINED ? $this->in : $in,
+                    'required' => $this->required !== Generator::UNDEFINED ? $this->required : $required,
                     'ref' => $ref,
                     'x' => $x,
                     'value' => $this->combine($schema),

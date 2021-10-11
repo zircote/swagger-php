@@ -61,7 +61,8 @@ class ProductController
             new OA\Response(response: 401, description: 'oops'),
         ],
     )]
-    public function getProduct($id)
+    #[OA\PathParameter(name: 'product_id', schema: new OA\Schema(type: 'string'))]
+    public function getProduct(string $product_id)
     {
     }
 

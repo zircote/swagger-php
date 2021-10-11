@@ -102,6 +102,7 @@ abstract class AbstractComponents extends AbstractAnnotation
         Schema::class => ['schemas', 'schema'],
         Response::class => ['responses', 'response'],
         Parameter::class => ['parameters', 'parameter'],
+        PathParameter::class => ['parameters', 'parameter'],
         RequestBody::class => ['requestBodies', 'request'],
         Examples::class => ['examples', 'example'],
         Header::class => ['headers', 'header'],

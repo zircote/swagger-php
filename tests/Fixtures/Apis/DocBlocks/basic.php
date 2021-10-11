@@ -65,6 +65,10 @@ class ProductController
      *   tags={"products"},
      *   path="/products/{product_id}",
      *   operationId="getProducts",
+     *   @OA\PathParameter(
+     *     name="product_id",
+     *     @OA\Schema(type="string")
+     *   ),
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",
@@ -76,7 +80,7 @@ class ProductController
      *   )
      * )
      */
-    public function getProduct($id)
+    public function getProduct(string $product_id)
     {
     }
 
