@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi\Tests\Fixtures\Apis\DocBlocks;
-
 /**
- * Single file API using DockBlocks.
+ * @license Apache 2.0
  */
+
+namespace OpenApi\Tests\Fixtures\Apis\DocBlocks;
 
 use OpenApi\Annotations as OA;
 

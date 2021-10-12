@@ -93,14 +93,14 @@ if (\PHP_VERSION_ID >= 80100) {
             array $properties = [],
             string $url = Generator::UNDEFINED,
             string $description = Generator::UNDEFINED,
-            $variables = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?array $variables = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'url' => $url,
                     'description' => $description,
                     'value' => $this->combine($variables),
-                    'x' => $x,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

@@ -684,7 +684,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return array_filter($combined, function ($value) {
-            return $value !== Generator::UNDEFINED;
+            return $value !== Generator::UNDEFINED && $value !== null;
         });
     }
 }

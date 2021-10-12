@@ -108,15 +108,15 @@ if (\PHP_VERSION_ID >= 80100) {
             string $link = Generator::UNDEFINED,
             string $ref = Generator::UNDEFINED,
             string $operationId = Generator::UNDEFINED,
-            $parameters = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?array $parameters = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'link' => $link,
                     'ref' => $ref,
                     'operationId' => $operationId,
-                    'parameters' => $parameters,
-                    'x' => $x,
+                    'parameters' => $parameters ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

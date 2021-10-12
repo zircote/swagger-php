@@ -15,7 +15,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
     protected $docBlockParser = null;
 
     /** @var Generator */
-    protected $generator;
+    protected $generator = null;
 
     public function __construct(?DocBlockParser $docBlockParser = null)
     {
@@ -31,6 +31,19 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 
     public function build(\Reflector $reflector, Context $context): array
     {
+        $aliases = $this->generator ? $this->generator->getAliases() : [];
+        if (method_exists($reflector, 'getShortName')) {
+            $aliases[strtolower($reflector->getShortName())] = $reflector->getName();
+        }
+
+        if ($context->with('scanned')) {
+            $details = $context->scanned;
+            foreach ($details as $alias => $name) {
+                $aliases[strtolower($alias)] = $name;
+            }
+        }
+        $this->docBlockParser->setAliases($aliases);
+
         if ($comment = $reflector->getDocComment()) {
             return $this->docBlockParser->fromComment($comment, $context);
         }

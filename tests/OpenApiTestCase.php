@@ -84,8 +84,11 @@ class OpenApiTestCase extends TestCase
 
     public function getAnalyzer(): AnalyserInterface
     {
-        //return new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
-        return new TokenAnalyser();
+        $legacyAnalyser = getenv('PHPUNIT_ANALYSER') === 'legacy';
+
+        return $legacyAnalyser
+            ? new TokenAnalyser()
+            : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
     public function assertOpenApiLogEntryContains($needle, $message = ''): void
@@ -198,12 +201,12 @@ class OpenApiTestCase extends TestCase
         }, (array) $files);
     }
 
-    public function analysisFromFixtures(array $files, array $processors = []): Analysis
+    public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null): Analysis
     {
         $analysis = new Analysis([], $this->getContext());
 
         (new Generator($this->getTrackingLogger()))
-            ->setAnalyser($this->getAnalyzer())
+            ->setAnalyser($analyzer ?: $this->getAnalyzer())
             ->setProcessors($processors)
             ->generate($this->fixtures($files), $analysis, false);
 

@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations\Property;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
@@ -135,6 +136,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
+        if ($this->getAnalyzer() instanceof ReflectionAnalyser && PHP_VERSION_ID < 70400) {
+            $this->markTestSkipped();
+        }
+
         $analysis = $this->analysisFromFixtures(['TypedProperties.php']);
         $analysis->process([
             new MergeIntoOpenApi(),
@@ -159,6 +164,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $staticUndefined,
             $staticString,
             $staticNullableString,
+            $nativeArray,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -226,6 +232,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
         $this->assertName($staticNullableString, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($nativeArray, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
@@ -310,6 +320,18 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'staticNullableString',
             'type' => 'string',
         ]);
+        $this->assertName($nativeArray, [
+            'property' => 'nativeArray',
+            'type' => 'array',
+        ]);
+        $this->assertObjectHasAttribute(
+            'ref',
+            $nativeArray->items
+        );
+        $this->assertEquals(
+            'string',
+            $nativeArray->items->type
+        );
     }
 
     protected function assertName(Property $property, array $expectedValues)

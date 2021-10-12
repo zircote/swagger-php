@@ -26,10 +26,12 @@ class ExpandInterfaces
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
-                $interfaces = $analysis->getInterfacesOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
+                $className = $schema->_context->fullyQualifiedName($schema->_context->class);
+                $interfaces = $analysis->getInterfacesOfClass($className, true);
                 $existing = [];
                 foreach ($interfaces as $interface) {
-                    $interfaceSchema = $analysis->getSchemaForSource($interface['context']->fullyQualifiedName($interface['interface']));
+                    $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
+                    $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
                     if ($interfaceSchema) {
                         $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
                         $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']);

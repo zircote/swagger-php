@@ -411,7 +411,7 @@ class Analysis
     /**
      * Apply the processor(s).
      *
-     * @param \Closure|\Closure[] $processors One or more processors
+     * @param callable|callable[] $processors One or more processors
      */
     public function process($processors = null): void
     {

@@ -105,16 +105,16 @@ if (\PHP_VERSION_ID >= 80100) {
             string $description = Generator::UNDEFINED,
             string $title = Generator::UNDEFINED,
             string $termsOfService = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED,
-            $contact = Generator::UNDEFINED,
-            $license = Generator::UNDEFINED
+            ?Contact $contact = null,
+            ?License $license = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'version' => $version,
                     'description' => $description,
                     'title' => $title,
                     'termsOfService' => $termsOfService,
-                    'x' => $x,
+                    'x' => $x ?? Generator::UNDEFINED,
                     'value' => $this->combine($contact, $license),
                 ]);
         }

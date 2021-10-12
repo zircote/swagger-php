@@ -99,10 +99,20 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
-            $x = Generator::UNDEFINED
+            string $summary = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            string $value = Generator::UNDEFINED,
+            string $externalValue = Generator::UNDEFINED,
+            string $ref = Generator::UNDEFINED,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
-                    'x' => $x,
+                    'summary' => $summary,
+                    'description' => $description,
+                    'value' => $value,
+                    'externalValue' => $externalValue,
+                    'ref' => $ref,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

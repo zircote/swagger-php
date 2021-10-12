@@ -101,10 +101,10 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
-            $x = Generator::UNDEFINED
+            ?array $x = null
         ) {
             parent::__construct($properties + [
-                    'x' => $x,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

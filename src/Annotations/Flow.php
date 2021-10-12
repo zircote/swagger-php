@@ -107,10 +107,20 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
-            $x = Generator::UNDEFINED
+            string $authorizationUrl = Generator::UNDEFINED,
+            string $tokenUrl = Generator::UNDEFINED,
+            string $refreshUrl = Generator::UNDEFINED,
+            string $flow = Generator::UNDEFINED,
+            ?array $scopes = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
-                    'x' => $x,
+                    'authorizationUrl' => $authorizationUrl,
+                    'tokenUrl' => $tokenUrl,
+                    'refreshUrl' => $refreshUrl,
+                    'flow' => $flow,
+                    'scopes' => $scopes ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

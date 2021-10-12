@@ -91,6 +91,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'filename' => $rc->getFileName() ?: Generator::UNDEFINED,
             'line' => $rc->getStartLine(),
             'annotations' => [],
+            'scanned' => $details,
         ], $analysis->context);
 
         $definition = [
@@ -108,12 +109,8 @@ class ReflectionAnalyser implements AnalyserInterface
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
         }
-        if ($interfaceNames = $rc->getInterfaceNames()) {
-            $definition['implements'] = array_map($normaliseClass, $interfaceNames);
-        }
-        if ($traitNames = $rc->getTraitNames()) {
-            $definition['traits'] = array_map($normaliseClass, $traitNames);
-        }
+        $definition[$contextType == 'class' ? 'implements' : 'extends'] = array_map($normaliseClass, $details['interfaces']);
+        $definition['traits'] = array_map($normaliseClass, $details['traits']);
 
         foreach ($this->annotationFactories as $annotationFactory) {
             $analysis->addAnnotations($annotationFactory->build($rc, $context), $context);
@@ -148,6 +145,10 @@ class ReflectionAnalyser implements AnalyserInterface
                     $ctx->nullable = $type->allowsNull();
                     if ($type instanceof \ReflectionNamedType) {
                         $ctx->type = $type->getName();
+                        // Context::fullyQualifiedName(...) exppects this
+                        if (class_exists($absFqn = '\\' . $ctx->type)) {
+                            $ctx->type = $absFqn;
+                        }
                     }
                 }
                 foreach ($this->annotationFactories as $annotationFactory) {

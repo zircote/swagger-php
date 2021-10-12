@@ -210,7 +210,6 @@ if (\PHP_VERSION_ID >= 80100) {
     /**
      * @Annotation
      */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
     abstract class Operation extends AbstractOperation
     {
         public function __construct(
@@ -219,20 +218,25 @@ if (\PHP_VERSION_ID >= 80100) {
             string $operationId = Generator::UNDEFINED,
             string $description = Generator::UNDEFINED,
             string $summary = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED,
-            $tags = Generator::UNDEFINED,
-            $parameters = Generator::UNDEFINED,
-            $responses = Generator::UNDEFINED,
-            $externalDocs = Generator::UNDEFINED
+            ?array $security = null,
+            ?array $servers = null,
+            ?RequestBody $requestBody = null,
+            ?array $tags = null,
+            ?array $parameters = null,
+            ?array $responses = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'path' => $path,
                     'operationId' => $operationId,
                     'description' => $description,
                     'summary' => $summary,
-                    'tags' => $tags,
-                    'x' => $x,
-                    'value' => $this->combine($responses, $parameters, $externalDocs),
+                    'security' => $security ?? Generator::UNDEFINED,
+                    'servers' => $servers ?? Generator::UNDEFINED,
+                    'tags' => $tags ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs),
                 ]);
         }
     }

@@ -399,9 +399,12 @@ if (\PHP_VERSION_ID >= 80100) {
             string $title = Generator::UNDEFINED,
             string $type = Generator::UNDEFINED,
             string $format = Generator::UNDEFINED,
-            $enum = Generator::UNDEFINED,
-            $externalDocs = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            string $ref = Generator::UNDEFINED,
+            ?Items $items = null,
+            ?array $enum = null,
+            ?bool $deprecated = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'schema' => $schema,
@@ -409,9 +412,11 @@ if (\PHP_VERSION_ID >= 80100) {
                     'title' => $title,
                     'type' => $type,
                     'format' => $format,
-                    'enum' => $enum,
-                    'x' => $x,
-                    'value' => $this->combine($externalDocs),
+                    'ref' => $ref,
+                    'enum' => $enum ?? Generator::UNDEFINED,
+                    'deprecated' => $deprecated ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($externalDocs, $items),
                 ]);
         }
     }

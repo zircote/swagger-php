@@ -2,7 +2,6 @@
 
 namespace OpenApi\Examples\UsingTraits;
 
-
 use OpenApi\Examples\UsingTraits\Decoration\Bells;
 
 /**

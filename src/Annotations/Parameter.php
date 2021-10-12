@@ -276,18 +276,19 @@ if (\PHP_VERSION_ID >= 80100) {
             array $properties = [],
             string $name = Generator::UNDEFINED,
             string $in = Generator::UNDEFINED,
-            $required = Generator::UNDEFINED,
+            ?bool $required = null,
             string $ref = Generator::UNDEFINED,
-            $schema = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?Schema $schema = null,
+            ?array $examples = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'name' => $name,
                     'in' => $this->in !== Generator::UNDEFINED ? $this->in : $in,
-                    'required' => $this->required !== Generator::UNDEFINED ? $this->required : $required,
+                    'required' => $this->required !== Generator::UNDEFINED ? $this->required : ($required ?? Generator::UNDEFINED),
                     'ref' => $ref,
-                    'x' => $x,
-                    'value' => $this->combine($schema),
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($schema, $examples),
                 ]);
         }
     }

@@ -155,8 +155,9 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testAnonymousClassProducesNoError()
     {
         try {
-            $analyser = new TokenAnalyser($this->fixture('PHP/php7.php'));
-            $this->assertNotNull($analyser);
+            $analyser = new TokenAnalyser();
+            $analysis = $analyser->fromFile($this->fixture('PHP/php7.php'), $this->getContext());
+            $this->assertNotNull($analysis);
         } catch (\Throwable $t) {
             $this->fail("Analyser produced an error: {$t->getMessage()}");
         }
@@ -257,7 +258,7 @@ class TokenAnalyserTest extends OpenApiTestCase
      */
     public function testPhp8NamedProperty()
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Php8NamedProperty.php']);
+        $analysis = $this->analysisFromFixtures(['PHP/Php8NamedProperty.php'], [], new TokenAnalyser());
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);

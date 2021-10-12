@@ -64,7 +64,7 @@ class GeneratorTest extends OpenApiTestCase
             ->updateProcessor($p);
         foreach ($generator->getProcessors() as $processor) {
             if ($processor instanceof OperationId) {
-                $this->assertSpecEquals($expected, $processor->isHash());
+                $this->assertEquals($expected, $processor->isHash());
             }
         }
     }

@@ -7,7 +7,6 @@ parameters:
         processTimeout: 300.0
     ignoreErrors:
         - '#does not accept default value of type string#'
-        - '#(object) does not accept string.#'
     excludes_analyse:
         - 'tests/Fixtures/*'
 

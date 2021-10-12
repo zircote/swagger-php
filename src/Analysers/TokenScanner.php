@@ -29,7 +29,10 @@ class TokenScanner
     protected function scanTokens(array $tokens): array
     {
         $units = [];
+        $uses = [];
+        $isInterface = false;
         $namespace = '';
+        $currentName = null;
         $lastToken = null;
         $curlyNested = 0;
         $stack = [];
@@ -46,7 +49,7 @@ class TokenScanner
                 }
                 if ($stack) {
                     $last = array_pop($stack);
-                    if ($last[1] <= $curlyNested) {
+                    if ($last[1] < $curlyNested) {
                         $stack[] = $last;
                     }
                 }
@@ -55,6 +58,14 @@ class TokenScanner
             switch ($token[0]) {
                 case T_NAMESPACE:
                     $namespace = $this->nextWord($tokens);
+                    break;
+                case T_USE:
+                    if (!$stack) {
+                        $uses = array_merge($uses, $this->parseFQNStatement($tokens, $token));
+                    } elseif ($currentName) {
+                        $traits = $this->resolveFQN($this->parseFQNStatement($tokens, $token), $namespace, $uses);
+                        $units[$currentName]['traits'] = array_merge($units[$currentName]['traits'], $traits);
+                    }
                     break;
                 case T_CLASS:
                     if ($lastToken && is_array($lastToken) && $lastToken[0] === T_DOUBLE_COLON) {
@@ -74,26 +85,54 @@ class TokenScanner
                         break;
                     }
 
-                    $name = $namespace . '\\' . $token[1];
-                    $this->skipTo($tokens, '{');
-                    $stack[] = [$name, ++$curlyNested];
-                    $units[$name] = ['methods' =>[], 'properties' => []];
+                    $isInterface = false;
+                    $currentName = $namespace . '\\' . $token[1];
+                    $stack[] = [$currentName, $curlyNested];
+                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
                 case T_INTERFACE:
-                case T_TRAIT:
+                    $isInterface = true;
                     $token = $this->nextToken($tokens);
-                    $name = $namespace . '\\' . $token[1];
+                    $currentName = $namespace . '\\' . $token[1];
+                    $stack[] = [$currentName, $curlyNested];
+                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
+                    break;
+                case T_TRAIT:
+                    $isInterface = false;
+                    $token = $this->nextToken($tokens);
+                    $currentName = $namespace . '\\' . $token[1];
                     $this->skipTo($tokens, '{');
-                    $stack[] = [$name, ++$curlyNested];
-                    $units[$name] = ['methods' =>[], 'properties' => []];
+                    $stack[] = [$currentName, $curlyNested++];
+                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
+                    break;
+                case T_EXTENDS:
+                    $fqns = $this->parseFQNStatement($tokens, $token);
+                    if ($isInterface && $currentName) {
+                        $units[$currentName]['interfaces'] = $this->resolveFQN($fqns, $namespace, $uses);
+                    }
+                    if (!is_array($token) || T_IMPLEMENTS !== $token[0]) {
+                        break;
+                    }
+                    // no break
+                case T_IMPLEMENTS:
+                    $fqns = $this->parseFQNStatement($tokens, $token);
+                    if ($currentName) {
+                        $units[$currentName]['interfaces'] = $this->resolveFQN($fqns, $namespace, $uses);
+                    }
                     break;
                 case T_FUNCTION:
                     $token = $this->nextToken($tokens);
 
                     if (1 == count($stack)) {
                         $name = $stack[0][0];
-                        $this->skipTo($tokens, '{');
-                        $stack[] = [$token[1], ++$curlyNested];
+                        if (!$isInterface) {
+                            // more nesting
+                            $this->skipTo($tokens, '{');
+                            $stack[] = [$token[1], ++$curlyNested];
+                        } else {
+                            // no function body
+                            $this->skipTo($tokens, ';');
+                        }
 
                         $units[$name]['methods'][] = $token[1];
                     }
@@ -131,6 +170,23 @@ class TokenScanner
         return $token;
     }
 
+    protected function resolveFQN(array $names, string $namespace, array $uses): array
+    {
+        $resolve = function ($name) use ($namespace, $uses) {
+            if ('\\' == $name[0]) {
+                return substr($name, 1);
+            }
+
+            if (array_key_exists($name, $uses)) {
+                return $uses[$name];
+            }
+
+            return $namespace . '\\' . $name;
+        };
+
+        return array_values(array_map($resolve, $names));
+    }
+
     protected function skipTo(array &$tokens, $char): void
     {
         while (false !== ($token = next($tokens))) {
@@ -161,5 +217,57 @@ class TokenScanner
         }
 
         return $word;
+    }
+
+    /**
+     * Parse a use statement.
+     */
+    protected function parseFQNStatement(array &$tokens, &$token): array
+    {
+        $normalizeAlias = function ($alias) {
+            $alias = ltrim($alias, '\\');
+            $elements = explode('\\', $alias);
+
+            return array_pop($elements);
+        };
+
+        $class = '';
+        $alias = '';
+        $statements = [];
+        $explicitAlias = false;
+        $php8NSToken = defined('T_NAME_QUALIFIED') ? [T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED] : [];
+        $nsToken = array_merge([T_STRING, T_NS_SEPARATOR], $php8NSToken);
+        while ($token !== false) {
+            $token = $this->nextToken($tokens);
+            $isNameToken = in_array($token[0], $nsToken);
+            if (!$explicitAlias && $isNameToken) {
+                $class .= $token[1];
+                $alias = $token[1];
+            } elseif ($explicitAlias && $isNameToken) {
+                $alias .= $token[1];
+            } elseif ($token[0] === T_AS) {
+                $explicitAlias = true;
+                $alias = '';
+            } elseif ($token[0] === T_IMPLEMENTS) {
+                $statements[$normalizeAlias($alias)] = $class;
+                break;
+            } elseif ($token === ',') {
+                $statements[$normalizeAlias($alias)] = $class;
+                $class = '';
+                $alias = '';
+                $explicitAlias = false;
+            } elseif ($token === ';') {
+                $statements[$normalizeAlias($alias)] = $class;
+                break;
+            } elseif ($token === '{') {
+                $statements[$normalizeAlias($alias)] = $class;
+                prev($tokens);
+                break;
+            } else {
+                break;
+            }
+        }
+
+        return $statements;
     }
 }

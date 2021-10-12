@@ -57,12 +57,20 @@ if (\PHP_VERSION_ID >= 80100) {
         public function __construct(
             array $properties = [],
             string $ref = Generator::UNDEFINED,
+            ?array $allOf = null,
+            ?array $anyOf = null,
+            ?array $oneOf = null,
             string $type = Generator::UNDEFINED,
-            $items = Generator::UNDEFINED
+            $items = Generator::UNDEFINED,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'ref' => $ref,
+                    'allOf' => $allOf ?? Generator::UNDEFINED,
+                    'anyOf' => $anyOf ?? Generator::UNDEFINED,
+                    'oneOf' => $oneOf ?? Generator::UNDEFINED,
                     'type' => $type,
+                    'x' => $x ?? Generator::UNDEFINED,
                     'value' => $this->combine($items),
                 ]);
         }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Single file API using DockBlocks and PHP8 attributes.
+ * @license Apache 2.0
  */
 
 namespace OpenApi\Tests\Fixtures\Apis\Mixed;

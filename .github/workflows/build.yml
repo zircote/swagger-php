@@ -2,7 +2,11 @@ name: build
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
 
 jobs:
   test:
@@ -36,3 +40,8 @@ jobs:
 
       - name: PHPUnit Tests
         run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+
+      - name: PHPUnit Legacy Tests
+        run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        env:
+          PHPUNIT_ANALYSER: 'legacy'

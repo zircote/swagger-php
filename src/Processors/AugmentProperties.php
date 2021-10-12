@@ -48,8 +48,8 @@ class AugmentProperties
         if ($analysis->openapi->components !== Generator::UNDEFINED && $analysis->openapi->components->schemas !== Generator::UNDEFINED) {
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== Generator::UNDEFINED) {
-                    $refs[strtolower($schema->_context->fullyQualifiedName($schema->_context->class))]
-                        = Components::SCHEMA_REF . Util::refEncode($schema->schema);
+                    $refKey = $this->toRefKey($schema->_context, $schema->_context->class);
+                    $refs[$refKey] = Components::SCHEMA_REF . Util::refEncode($schema->schema);
                 }
             }
         }
@@ -59,92 +59,109 @@ class AugmentProperties
 
         foreach ($properties as $property) {
             $context = $property->_context;
-            // Use the property names for @OA\Property()
+
             if ($property->property === Generator::UNDEFINED) {
                 $property->property = $context->property;
             }
+
             if ($property->ref !== Generator::UNDEFINED) {
                 continue;
             }
-            $comment = str_replace("\r\n", "\n", (string) $context->comment);
-            if ($property->type === Generator::UNDEFINED && $context->type && $context->type !== Generator::UNDEFINED) {
-                if ($context->nullable === true) {
-                    $property->nullable = true;
-                }
-                $type = strtolower($context->type);
-                if (isset(self::$types[$type])) {
-                    $this->applyType($property, static::$types[$type]);
-                } else {
-                    $key = strtolower($context->fullyQualifiedName($type));
-                    if ($property->ref === Generator::UNDEFINED && array_key_exists($key, $refs)) {
-                        $this->applyRef($property, $refs[$key]);
-                        continue;
-                    }
-                }
-            } elseif (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
-                if ($property->type === Generator::UNDEFINED) {
-                    $allTypes = trim($varMatches['type']);
-                    $isNullable = $this->isNullable($allTypes);
-                    $allTypes = $this->stripNull($allTypes);
-                    preg_match('/^([^\[]+)(.*$)/', trim($allTypes), $typeMatches);
-                    $type = $typeMatches[1];
 
-                    if (array_key_exists(strtolower($type), static::$types) === false) {
-                        $key = strtolower($context->fullyQualifiedName($type));
-                        if ($property->ref === Generator::UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
-                            if ($isNullable) {
-                                $property->oneOf = [
-                                    new Schema([
-                                        '_context' => $property->_context,
-                                        'ref' => $refs[$key],
-                                    ]),
-                                ];
-                                $property->nullable = true;
-                            } else {
-                                $property->ref = $refs[$key];
-                            }
-                            continue;
-                        }
-                    } else {
-                        $type = static::$types[strtolower($type)];
-                        if (is_array($type)) {
-                            if ($property->format === Generator::UNDEFINED) {
-                                $property->format = $type[1];
-                            }
-                            $type = $type[0];
-                        }
-                        $property->type = $type;
-                    }
-                    if ($typeMatches[2] === '[]') {
-                        if ($property->items === Generator::UNDEFINED) {
-                            $property->items = new Items(
-                                [
-                                    'type' => $property->type,
-                                    '_context' => new Context(['generated' => true], $context),
-                                ]
-                            );
-                            if ($property->items->type === Generator::UNDEFINED) {
-                                $key = strtolower($context->fullyQualifiedName($type));
-                                $property->items->ref = array_key_exists($key, $refs) ? $refs[$key] : null;
-                            }
-                        }
-                        $property->type = 'array';
-                    }
-                    if ($isNullable && $property->nullable === Generator::UNDEFINED) {
-                        $property->nullable = true;
-                    }
-                }
-                if ($property->description === Generator::UNDEFINED && isset($varMatches['description'])) {
-                    $property->description = trim($varMatches['description']);
-                }
+            $comment = str_replace("\r\n", "\n", (string) $context->comment);
+            preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches);
+
+            if ($property->type === Generator::UNDEFINED) {
+                $this->augmentType($property, $context, $refs, $varMatches);
+            }
+
+            if ($property->description === Generator::UNDEFINED && isset($varMatches['description'])) {
+                $property->description = trim($varMatches['description']);
+            }
+            if ($property->description === Generator::UNDEFINED && $property->isRoot()) {
+                $property->description = $context->phpdocContent();
             }
 
             if ($property->example === Generator::UNDEFINED && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
                 $property->example = $varMatches['example'];
             }
+        }
+    }
 
-            if ($property->description === Generator::UNDEFINED && $property->isRoot()) {
-                $property->description = $context->phpdocContent();
+    protected function toRefKey(Context $context, $name)
+    {
+        $fqn = strtolower($context->fullyQualifiedName($name));
+
+        return ltrim($fqn, '\\');
+    }
+
+    protected function augmentType(Property $property, Context $context, array $refs, array $varMatches)
+    {
+        // docblock typehints
+        if (isset($varMatches['type'])) {
+            $allTypes = strtolower(trim($varMatches['type']));
+
+            if ($this->isNullable($allTypes) && $property->nullable === Generator::UNDEFINED) {
+                $property->nullable = true;
+            }
+
+            $allTypes = $this->stripNull($allTypes);
+            preg_match('/^([^\[]+)(.*$)/', $allTypes, $typeMatches);
+            $type = $typeMatches[1];
+
+            // finalise property type/ref
+            if (array_key_exists($type, static::$types)) {
+                $this->applyType($property, static::$types[$type]);
+            } else {
+                $refKey = $this->toRefKey($context, $type);
+                if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
+                    $property->ref = $refs[$refKey];
+                }
+            }
+
+            // ok, so we possibly have a type or ref
+            if ($property->ref !== Generator::UNDEFINED && $typeMatches[2] === '' && $property->nullable) {
+                $refKey = $this->toRefKey($context, $type);
+                $property->oneOf = [
+                    new Schema([
+                        '_context' => $property->_context,
+                        'ref' => $refs[$refKey],
+                    ]),
+                ];
+                $property->nullable = true;
+            } elseif ($typeMatches[2] === '[]') {
+                if ($property->items === Generator::UNDEFINED) {
+                    $property->items = new Items(
+                        [
+                            'type' => $property->type,
+                            '_context' => new Context(['generated' => true], $context),
+                        ]
+                    );
+                    if ($property->ref !== Generator::UNDEFINED) {
+                        $property->items->ref = $property->ref;
+                        $property->ref = Generator::UNDEFINED;
+                    }
+                    $property->type = 'array';
+                }
+            }
+        }
+
+        // native typehints
+        if ($context->type && $context->type !== Generator::UNDEFINED) {
+            if ($context->nullable === true) {
+                $property->nullable = true;
+            }
+            $type = strtolower($context->type);
+            if (isset(self::$types[$type])) {
+                $this->applyType($property, static::$types[$type]);
+            } else {
+                $refKey = $this->toRefKey($context, $type);
+                if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
+                    $this->applyRef($property, $refs[$refKey]);
+
+                    // cannot get more specific
+                    return;
+                }
             }
         }
     }

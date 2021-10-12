@@ -90,10 +90,20 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
-            $x = Generator::UNDEFINED
+            string $name = Generator::UNDEFINED,
+            string $namespace = Generator::UNDEFINED,
+            string $prefix = Generator::UNDEFINED,
+            ?bool $attribute = null,
+            ?bool $wrapped = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
-                    'x' => $x,
+                    'name' => $name,
+                    'namespace' => $namespace,
+                    'prefix' => $prefix,
+                    'attribute' => $attribute ?? Generator::UNDEFINED,
+                    'wrapped' => $wrapped ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

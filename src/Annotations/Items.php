@@ -71,10 +71,24 @@ if (\PHP_VERSION_ID >= 80100) {
     {
         public function __construct(
             array $properties = [],
-            string $ref = Generator::UNDEFINED
+            string $type = Generator::UNDEFINED,
+            string $ref = Generator::UNDEFINED,
+            ?bool $deprecated = null,
+            ?array $allOf = null,
+            ?array $anyOf = null,
+            ?array $oneOf = null,
+            ?bool $nullable = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
+                    'type' => $type,
                     'ref' => $ref,
+                    'nullable' => $nullable ?? Generator::UNDEFINED,
+                    'deprecated' => $deprecated ?? Generator::UNDEFINED,
+                    'allOf' => $allOf ?? Generator::UNDEFINED,
+                    'anyOf' => $anyOf ?? Generator::UNDEFINED,
+                    'oneOf' => $oneOf ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

@@ -70,12 +70,12 @@ if (\PHP_VERSION_ID >= 80100) {
             array $properties = [],
             string $name = Generator::UNDEFINED,
             string $url = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'name' => $name,
                     'url' => $url,
-                    'x' => $x,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

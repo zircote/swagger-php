@@ -95,17 +95,17 @@ if (\PHP_VERSION_ID >= 80100) {
             string $serverVariable = Generator::UNDEFINED,
             string $description = Generator::UNDEFINED,
             string $default = Generator::UNDEFINED,
-            $enum = Generator::UNDEFINED,
-            $variables = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?array $enum = null,
+            ?array $variables = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'serverVariable' => $serverVariable,
                     'description' => $description,
                     'default' => $default,
-                    'enum' => $enum,
-                    'variables' => $variables,
-                    'x' => $x,
+                    'enum' => $enum ?? Generator::UNDEFINED,
+                    'variables' => $variables ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }

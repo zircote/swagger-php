@@ -234,15 +234,15 @@ if (\PHP_VERSION_ID >= 80100) {
         public function __construct(
             array $properties = [],
             string $openapi = self::DEFAULT_VERSION,
-            $info = Generator::UNDEFINED,
-            $servers = Generator::UNDEFINED,
-            $tags = Generator::UNDEFINED,
-            $externalDocs = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?Info $info = null,
+            ?array $servers = null,
+            ?array $tags = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'openapi' => $openapi,
-                    'x' => $x,
+                    'x' => $x ?? Generator::UNDEFINED,
                     'value' => $this->combine($info, $servers, $tags, $externalDocs),
                 ]);
         }

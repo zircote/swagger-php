@@ -95,14 +95,14 @@ if (\PHP_VERSION_ID >= 80100) {
         public function __construct(
             array $properties = [],
             string $description = Generator::UNDEFINED,
-            $required = Generator::UNDEFINED,
+            ?bool $required = null,
             $content = Generator::UNDEFINED,
-            $x = Generator::UNDEFINED
+            ?array $x = null
         ) {
             parent::__construct($properties + [
                     'description' => $description,
-                    'required' => $required,
-                    'x' => $x,
+                    'required' => $required ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
                     'value' => $this->combine($content),
                 ]);
         }

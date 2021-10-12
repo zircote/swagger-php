@@ -42,6 +42,7 @@ use OpenApi\Loggers\DefaultLogger;
  * @property Annotations\AbstractAnnotation   $nested
  * @property Annotations\AbstractAnnotation[] $annotations
  * @property \Psr\Log\LoggerInterface         $logger      Guaranteed to be set when using the `Generator`
+ * @property array                            $scanned     Details of file scanner when using ReflectionAnalyser
  */
 class Context
 {
@@ -210,6 +211,7 @@ class Context
         if (!$summary) {
             return Generator::UNDEFINED;
         }
+
         if (false !== ($substr = substr($this->phpdocContent(), strlen($summary)))) {
             $description = trim($substr);
         } else {

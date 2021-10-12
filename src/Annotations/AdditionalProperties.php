@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  */
@@ -45,9 +47,11 @@ if (\PHP_VERSION_ID >= 80100) {
     class AdditionalProperties extends AbstractAdditionalProperties
     {
         public function __construct(
-            array $properties = []
+            array $properties = [],
+            ?array $x = null
         ) {
             parent::__construct($properties + [
+                    'x' => $x ?? Generator::UNDEFINED,
                 ]);
         }
     }
