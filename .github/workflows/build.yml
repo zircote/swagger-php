@@ -5,29 +5,8 @@ on:
   pull_request:
 
 jobs:
-  php-cs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        name: Checkout repository
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '7.4'
-
-      - name: Composer install
-        uses: ramsey/composer-install@v1
-        with:
-          dependency-versions: 'highest'
-
-      - name: Static Code Analysis
-        run: composer lint
-
   test:
     runs-on: ${{ matrix.operating-system }}
-    needs:
-      - php-cs
     strategy:
       fail-fast: true
       matrix:
