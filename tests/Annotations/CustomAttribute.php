@@ -21,5 +21,4 @@ class CustomAttribute extends Attribute
      * @inheritdoc
      */
     public static $_required = ['value'];
-
 }

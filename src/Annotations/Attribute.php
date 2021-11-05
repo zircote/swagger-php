@@ -6,8 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
-
 /**
  * @Annotation
  *
