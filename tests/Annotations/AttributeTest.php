@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Attribute;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
@@ -16,8 +17,11 @@ class AttributeTest extends OpenApiTestCase
     public function testAttributeAreAttached()
     {
         $analysis = $this->analysisFromFixtures('UsingVar.php');
+
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
         $this->assertCount(2, $schemas[0]->attributes);
+        $this->assertInstanceOf(Attribute::class, $schemas[0]->attributes[0]);
     }
 
     public function testCustomAttributeImplementationsAreAttached()
@@ -29,6 +33,8 @@ class AttributeTest extends OpenApiTestCase
             ->generate($this->fixtures('UsingCustomAttributes.php'), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
         $this->assertCount(2, $schemas[0]->attributes);
+        $this->assertInstanceOf(CustomAttribute::class, $schemas[0]->attributes[0]);
     }
 }
