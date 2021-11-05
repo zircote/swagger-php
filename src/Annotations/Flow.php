@@ -79,6 +79,13 @@ class Flow extends AbstractAnnotation
         SecurityScheme::class,
     ];
 
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attribute::class => ['attributes'],
+    ];
+
     /** @inheritdoc */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()

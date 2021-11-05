@@ -63,6 +63,7 @@ class Server extends AbstractAnnotation
      */
     public static $_nested = [
         ServerVariable::class => ['variables', 'serverVariable'],
+        Attribute::class => ['attributes'],
     ];
 
     /**

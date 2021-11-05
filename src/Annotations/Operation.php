@@ -162,6 +162,7 @@ abstract class Operation extends AbstractAnnotation
         ExternalDocumentation::class => 'externalDocs',
         Server::class => ['servers'],
         RequestBody::class => 'requestBody',
+        Attribute::class => ['attributes'],
     ];
 
     /**

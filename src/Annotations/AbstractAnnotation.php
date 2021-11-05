@@ -27,6 +27,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public $x = Generator::UNDEFINED;
 
     /**
+     * Arbitrary attributes attached to this annotation.
+     * These will be ignored but can be used for custom processing.
+     */
+    public $attributes = Generator::UNDEFINED;
+
+    /**
      * @var Context
      */
     public $_context;
@@ -81,7 +87,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @var array
      */
-    public static $_blacklist = ['_context', '_unmerged'];
+    public static $_blacklist = ['_context', '_unmerged', 'attributes'];
 
     public function __construct(array $properties)
     {

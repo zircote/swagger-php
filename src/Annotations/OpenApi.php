@@ -115,6 +115,7 @@ class OpenApi extends AbstractAnnotation
         Components::class => 'components',
         Tag::class => ['tags'],
         ExternalDocumentation::class => 'externalDocs',
+        Attribute::class => ['attributes'],
     ];
 
     /**

@@ -52,4 +52,11 @@ class Contact extends AbstractAnnotation
     public static $_parents = [
         Info::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attribute::class => ['attributes'],
+    ];
 }

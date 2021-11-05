@@ -80,4 +80,11 @@ class Examples extends AbstractAnnotation
         JsonContent::class,
         XmlContent::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attribute::class => ['attributes'],
+    ];
 }

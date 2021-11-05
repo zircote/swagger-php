@@ -83,6 +83,7 @@ class Link extends AbstractAnnotation
      */
     public static $_nested = [
         Server::class => 'server',
+        Attribute::class => ['attributes'],
     ];
 
     /**

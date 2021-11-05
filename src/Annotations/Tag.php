@@ -61,5 +61,6 @@ class Tag extends AbstractAnnotation
      */
     public static $_nested = [
         ExternalDocumentation::class => 'externalDocs',
+        Attribute::class => ['attributes'],
     ];
 }
