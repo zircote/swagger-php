@@ -77,6 +77,6 @@ class ServerVariable extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 }

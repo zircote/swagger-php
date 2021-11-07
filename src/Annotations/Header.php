@@ -80,7 +80,7 @@ class Header extends AbstractAnnotation
      */
     public static $_nested = [
         Schema::class => 'schema',
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

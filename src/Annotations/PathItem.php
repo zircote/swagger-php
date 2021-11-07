@@ -133,7 +133,7 @@ class PathItem extends AbstractAnnotation
         Options::class => 'options',
         Parameter::class => ['parameters'],
         Server::class => ['servers'],
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

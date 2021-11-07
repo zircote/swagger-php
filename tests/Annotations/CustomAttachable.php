@@ -2,13 +2,13 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\Attribute;
+use OpenApi\Annotations\Attachable;
 use OpenApi\Generator;
 
 /**
  * @Annotation
  */
-class CustomAttribute extends Attribute
+class CustomAttachable extends Attachable
 {
     /**
      * The attribute value.

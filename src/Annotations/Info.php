@@ -80,7 +80,7 @@ class Info extends AbstractAnnotation
     public static $_nested = [
         Contact::class => 'contact',
         License::class => 'license',
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

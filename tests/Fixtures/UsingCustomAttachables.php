@@ -6,16 +6,15 @@ use OpenApi\Tests\Annotations as OAF;
 
 /**
  * @OA\Info(title="Custom annotation attributes", version="1.0")
- *
  * @OA\PathItem(path="/")
  *
  * @OA\Schema(
- *   schema="UsingCustomAttribute",
+ *   schema="UsingCustomAttachables",
  *   required={"name"},
- *   @OAF\CustomAttribute(value=1),
- *   @OAF\CustomAttribute(value={"foo"=false, "ping"="pong"})
+ *   @OAF\CustomAttachable(value=1),
+ *   @OAF\CustomAttachable(value={"foo"=false, "ping"="pong"})
  * )
  */
-class UsingCustomAttributes
+class UsingCustomAttachables
 {
 }

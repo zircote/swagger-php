@@ -80,6 +80,6 @@ class RequestBody extends AbstractAnnotation
      */
     public static $_nested = [
         MediaType::class => ['content', 'mediaType'],
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 }

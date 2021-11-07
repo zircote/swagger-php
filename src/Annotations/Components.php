@@ -106,6 +106,6 @@ class Components extends AbstractAnnotation
         Header::class => ['headers', 'header'],
         SecurityScheme::class => ['securitySchemes', 'securityScheme'],
         Link::class => ['links', 'link'],
-        Attribute::class => ['attributes'],
+        Attachable::class => ['attachables'],
     ];
 }

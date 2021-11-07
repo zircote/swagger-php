@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
  * A container for custom data to be attached to an annotation.
  * These will be ignored by swagger-php but can be used for custom processing.
  */
-class Attribute extends AbstractAnnotation
+class Attachable extends AbstractAnnotation
 {
     /**
      * @inheritdoc
