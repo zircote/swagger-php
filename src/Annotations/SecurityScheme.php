@@ -109,6 +109,7 @@ class SecurityScheme extends AbstractAnnotation
      */
     public static $_nested = [
         Flow::class => ['flows', 'flow'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

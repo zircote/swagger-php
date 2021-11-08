@@ -72,4 +72,11 @@ class ServerVariable extends AbstractAnnotation
         'default' => 'string',
         'description' => 'string',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
+    ];
 }

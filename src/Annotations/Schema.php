@@ -357,6 +357,7 @@ class Schema extends AbstractAnnotation
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
+        Attachable::class => ['attachables'],
     ];
 
     /**

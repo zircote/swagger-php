@@ -49,4 +49,11 @@ class License extends AbstractAnnotation
     public static $_parents = [
         Info::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
+    ];
 }

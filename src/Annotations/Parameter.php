@@ -212,6 +212,7 @@ class Parameter extends AbstractAnnotation
     public static $_nested = [
         Schema::class => 'schema',
         Examples::class => ['examples', 'example'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

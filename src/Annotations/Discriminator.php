@@ -57,4 +57,11 @@ class Discriminator extends AbstractAnnotation
         JsonContent::class,
         XmlContent::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
+    ];
 }

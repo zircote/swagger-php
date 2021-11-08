@@ -83,6 +83,7 @@ class Response extends AbstractAnnotation
         MediaType::class => ['content', 'mediaType'],
         Header::class => ['headers', 'header'],
         Link::class => ['links', 'link'],
+        Attachable::class => ['attachables'],
     ];
 
     /**

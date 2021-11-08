@@ -17,6 +17,7 @@ class Serializer
 {
     private static $VALID_ANNOTATIONS = [
         OA\AdditionalProperties::class,
+        OA\Attachable::class,
         OA\Components::class,
         OA\Contact::class,
         OA\Delete::class,

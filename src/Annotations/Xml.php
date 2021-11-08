@@ -72,4 +72,11 @@ class Xml extends AbstractAnnotation
         Items::class,
         XmlContent::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public static $_nested = [
+        Attachable::class => ['attachables'],
+    ];
 }

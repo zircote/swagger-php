@@ -9,7 +9,8 @@
  *         securityScheme="bearerAuth",
  *         type="http",
  *         scheme="bearer",
- *     )
+ *     ),
+ *     @OA\Attachable()
  * )
  */
 
