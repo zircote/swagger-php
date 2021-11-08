@@ -104,7 +104,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $value = Generator::UNDEFINED,
             string $externalValue = Generator::UNDEFINED,
             string $ref = Generator::UNDEFINED,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'summary' => $summary,

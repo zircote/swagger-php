@@ -28,6 +28,7 @@ class UtilTest extends OpenApiTestCase
             'Processors',
             'UsingRefs.php',
             'UsingPhpDoc.php',
+            'UsingCustomAttachables',
 
         ];
         $openapi = (new Generator())

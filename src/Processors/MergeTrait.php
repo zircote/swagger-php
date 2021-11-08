@@ -24,7 +24,7 @@ use OpenApi\Util;
  */
 trait MergeTrait
 {
-    protected function inheritFrom(Schema $schema, Schema $from, string $refPath, ?Context $context): void
+    protected function inheritFrom(Schema $schema, Schema $from, string $refPath, Context $context): void
     {
         if ($schema->allOf === Generator::UNDEFINED) {
             $schema->allOf = [];

@@ -107,7 +107,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $termsOfService = Generator::UNDEFINED,
             ?Contact $contact = null,
             ?License $license = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'version' => $version,
@@ -115,7 +116,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'title' => $title,
                     'termsOfService' => $termsOfService,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($contact, $license),
+                    'value' => $this->combine($contact, $license, $attachables),
                 ]);
         }
     }

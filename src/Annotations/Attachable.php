@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
  * A container for custom data to be attached to an annotation.
  * These will be ignored by swagger-php but can be used for custom processing.
  */
-class Attachable extends AbstractAnnotation
+abstract class AbstractAttachable extends AbstractAnnotation
 {
     /**
      * @inheritdoc
@@ -41,6 +41,7 @@ class Attachable extends AbstractAnnotation
         Parameter::class,
         Patch::class,
         PathItem::class,
+        PathParameter::class,
         Post::class,
         Property::class,
         Put::class,
@@ -68,5 +69,32 @@ class Attachable extends AbstractAnnotation
     public function allowedParents(): ?array
     {
         return null;
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
+    class Attachable extends AbstractAttachable
+    {
+        public function __construct(
+            array $properties = []
+        ) {
+            parent::__construct($properties + [
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Attachable extends AbstractAttachable
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

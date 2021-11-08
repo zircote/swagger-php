@@ -16,7 +16,7 @@ class AttachableTest extends OpenApiTestCase
 {
     public function testAttachablesAreAttached()
     {
-        $analysis = $this->analysisFromFixtures('UsingVar.php');
+        $analysis = $this->analysisFromFixtures(['UsingVar.php']);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
@@ -28,9 +28,9 @@ class AttachableTest extends OpenApiTestCase
     {
         $analysis = new Analysis([], $this->getContext());
         (new Generator())
-            //->setAliases(['oaf' => 'OpenApi\\Tests\\Annotations'])
-            ->setNamespaces(['OpenApi\\Tests\\Annotations\\'])
-            ->generate($this->fixtures('UsingCustomAttachables.php'), $analysis);
+            ->addAlias('oaf', 'OpenApi\\Tests\\Annotations')
+            ->addNamespace('OpenApi\\Tests\\Annotations\\')
+            ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 

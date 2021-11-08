@@ -155,7 +155,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $scheme = Generator::UNDEFINED,
             string $openIdConnectUrl = Generator::UNDEFINED,
             ?array $flows = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'ref' => $ref,
@@ -168,7 +169,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'scheme' => $scheme,
                     'openIdConnectUrl' => $openIdConnectUrl,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($flows),
+                    'value' => $this->combine($flows, $attachables),
                 ]);
         }
     }

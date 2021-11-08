@@ -9,10 +9,12 @@ namespace OpenApi\Tests\Analysers;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AnnotationFactoryInterface;
 use OpenApi\Analysis;
+use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Operation;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Annotations\Response;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
@@ -103,16 +105,38 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testApiAttributesBasic(AnalyserInterface $analyser)
     {
-        $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext());
-        $analysis->process((new Generator())->getProcessors());
+        /** @var Analysis $analysis */
+        $analysis = (new Generator())
+            ->addAlias('oaf', 'OpenApi\\Tests\\Annotations')
+            ->addNamespace('OpenApi\\Tests\\Annotations\\')
+            ->withContext(function (Generator $generator) use ($analyser) {
+                $analyser->setGenerator($generator);
+                $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext());
+                $analysis->process((new Generator())->getProcessors());
+
+                return $analysis;
+            });
 
         $operations = $analysis->getAnnotationsOfType(Operation::class);
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/basic.yaml');
-        //file_put_contents($spec, $analysis->openapi->toYaml());
+        file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
+
+        // check CustomAttachable is only attached to @OA\Get
+        /** @var Get[] $gets */
+        $gets = $analysis->getAnnotationsOfType(Get::class, true);
+        $this->assertCount(1, $gets);
+        $this->assertTrue(is_array($gets[0]->attachables), 'Attachables not set');
+        $this->assertCount(1, $gets[0]->attachables);
+
+        /** @var Response[] $responses */
+        $responses = $analysis->getAnnotationsOfType(Response::class, true);
+        foreach ($responses as $response) {
+            $this->assertEquals(Generator::UNDEFINED, $response->attachables);
+        }
     }
 
     /**

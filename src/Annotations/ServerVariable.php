@@ -97,7 +97,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $default = Generator::UNDEFINED,
             ?array $enum = null,
             ?array $variables = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'serverVariable' => $serverVariable,
@@ -106,6 +107,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'enum' => $enum ?? Generator::UNDEFINED,
                     'variables' => $variables ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

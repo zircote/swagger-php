@@ -225,7 +225,8 @@ if (\PHP_VERSION_ID >= 80100) {
             ?array $parameters = null,
             ?array $responses = null,
             ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'path' => $path,
@@ -236,7 +237,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'servers' => $servers ?? Generator::UNDEFINED,
                     'tags' => $tags ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs),
+                    'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs, $attachables),
                 ]);
         }
     }

@@ -109,7 +109,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $ref = Generator::UNDEFINED,
             string $operationId = Generator::UNDEFINED,
             ?array $parameters = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'link' => $link,
@@ -117,6 +118,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'operationId' => $operationId,
                     'parameters' => $parameters ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

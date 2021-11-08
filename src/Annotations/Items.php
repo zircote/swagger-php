@@ -78,7 +78,8 @@ if (\PHP_VERSION_ID >= 80100) {
             ?array $anyOf = null,
             ?array $oneOf = null,
             ?bool $nullable = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'type' => $type,
@@ -89,6 +90,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'anyOf' => $anyOf ?? Generator::UNDEFINED,
                     'oneOf' => $oneOf ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

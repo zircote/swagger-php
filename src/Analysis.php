@@ -71,7 +71,7 @@ class Analysis
         $this->addAnnotations($annotations, $context);
     }
 
-    public function addAnnotation($annotation, ?Context $context): void
+    public function addAnnotation($annotation, Context $context): void
     {
         if ($this->annotations->contains($annotation)) {
             return;
@@ -110,7 +110,7 @@ class Analysis
         }
     }
 
-    public function addAnnotations(array $annotations, ?Context $context): void
+    public function addAnnotations(array $annotations, Context $context): void
     {
         foreach ($annotations as $annotation) {
             $this->addAnnotation($annotation, $context);

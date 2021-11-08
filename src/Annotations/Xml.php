@@ -95,7 +95,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $prefix = Generator::UNDEFINED,
             ?bool $attribute = null,
             ?bool $wrapped = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'name' => $name,
@@ -104,6 +105,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'attribute' => $attribute ?? Generator::UNDEFINED,
                     'wrapped' => $wrapped ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

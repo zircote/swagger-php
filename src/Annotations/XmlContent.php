@@ -57,7 +57,8 @@ if (\PHP_VERSION_ID >= 80100) {
             ?array $oneOf = null,
             string $type = Generator::UNDEFINED,
             ?Items $items = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'ref' => $ref,
@@ -66,7 +67,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'oneOf' => $oneOf ?? Generator::UNDEFINED,
                     'type' => $type,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($items),
+                    'value' => $this->combine($items, $attachables),
                 ]);
         }
     }

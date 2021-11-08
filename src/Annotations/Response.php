@@ -117,13 +117,14 @@ if (\PHP_VERSION_ID >= 80100) {
             string $description = Generator::UNDEFINED,
             $content = Generator::UNDEFINED,
             ?array $links = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'response' => $response,
                     'description' => $description,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($content, $links),
+                    'value' => $this->combine($content, $links, $attachables),
                 ]);
         }
     }

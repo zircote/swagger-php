@@ -404,7 +404,8 @@ if (\PHP_VERSION_ID >= 80100) {
             ?array $enum = null,
             ?bool $deprecated = null,
             ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'schema' => $schema,
@@ -416,7 +417,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'enum' => $enum ?? Generator::UNDEFINED,
                     'deprecated' => $deprecated ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($externalDocs, $items),
+                    'value' => $this->combine($externalDocs, $items, $attachables),
                 ]);
         }
     }

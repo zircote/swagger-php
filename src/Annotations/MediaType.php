@@ -89,14 +89,15 @@ if (\PHP_VERSION_ID >= 80100) {
             $example = Generator::UNDEFINED,
             ?array $examples = null,
             string $encoding = Generator::UNDEFINED,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'mediaType' => $mediaType,
                     'example' => $example,
                     'encoding' => $encoding,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($schema, $examples),
+                    'value' => $this->combine($schema, $examples, $attachables),
                 ]);
         }
     }

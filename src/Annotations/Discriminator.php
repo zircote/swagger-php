@@ -79,12 +79,14 @@ if (\PHP_VERSION_ID >= 80100) {
             array $properties = [],
             string $propertyName = Generator::UNDEFINED,
             string $mapping = Generator::UNDEFINED,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'propertyName' => $propertyName,
                     'mapping' => $mapping,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

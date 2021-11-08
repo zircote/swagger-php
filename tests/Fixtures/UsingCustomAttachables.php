@@ -6,6 +6,7 @@ use OpenApi\Tests\Annotations as OAF;
 
 /**
  * @OA\Info(title="Custom annotation attributes", version="1.0")
+ *
  * @OA\PathItem(path="/")
  *
  * @OA\Schema(

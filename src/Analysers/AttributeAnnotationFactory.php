@@ -7,6 +7,7 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\Attachable;
 use OpenApi\Annotations\PathParameter;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
@@ -30,6 +31,8 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
         // no proper way to inject
         Generator::$context = $context;
+
+        /** @var AbstractAnnotation[] $annotations */
         $annotations = [];
         try {
             foreach ($reflector->getAttributes() as $attribute) {
@@ -53,23 +56,46 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             Generator::$context = null;
         }
 
-        $annotations = array_filter($annotations, function ($a) {
+        $annotations = array_values(array_filter($annotations, function ($a) {
             return $a !== null && $a instanceof AbstractAnnotation;
-        });
+        }));
 
         // merge backwards into parents...
+        $isParent = function (AbstractAnnotation $annotation, AbstractAnnotation $possibleParent): bool {
+            // regular anootation hierachy
+            $explicitParent = array_key_exists(get_class($annotation), $possibleParent::$_nested);
+
+            $isParentAllowed = false;
+            // support Attachable subclasses
+            if ($isAttachable = $annotation instanceof Attachable && array_key_exists(Attachable::class, $possibleParent::$_nested)) {
+                if (!$isParentAllowed = (null === $annotation->allowedParents())) {
+                    // check for allowed parents
+                    foreach ($annotation->allowedParents() as $allowedParent) {
+                        if ($possibleParent instanceof $allowedParent) {
+                            $isParentAllowed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return $explicitParent || ($isAttachable && $isParentAllowed);
+        };
         foreach ($annotations as $index => $annotation) {
-            $class = get_class($annotation);
             for ($ii = 0; $ii < count($annotations); ++$ii) {
                 if ($ii === $index) {
                     continue;
                 }
                 $possibleParent = $annotations[$ii];
-                if (array_key_exists($class, $possibleParent::$_nested)) {
+                if ($isParent($annotation, $possibleParent)) {
                     $possibleParent->merge([$annotation]);
                 }
             }
         }
+
+        $annotations = array_filter($annotations, function ($a) {
+            return !$a instanceof Attachable;
+        });
 
         return $annotations;
     }

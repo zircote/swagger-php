@@ -238,12 +238,13 @@ if (\PHP_VERSION_ID >= 80100) {
             ?array $servers = null,
             ?array $tags = null,
             ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'openapi' => $openapi,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($info, $servers, $tags, $externalDocs),
+                    'value' => $this->combine($info, $servers, $tags, $externalDocs, $attachables),
                 ]);
         }
     }

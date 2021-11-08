@@ -19,18 +19,11 @@ class GeneratorTest extends OpenApiTestCase
     public function sourcesProvider()
     {
         $sourceDir = self::SOURCE_DIR;
-        $sources = [
-            $sourceDir . '/SimplePet.php',
-            $sourceDir . '/SimplePetsController.php',
-            $sourceDir . '/api.php',
-        ];
 
-        return [
-            'dir-list' => [$sourceDir, [$sourceDir]],
-            'file-list' => [$sourceDir, $sources],
-            'finder' => [$sourceDir, Util::finder($sourceDir)],
-            'finder-list' => [$sourceDir, [Util::finder($sourceDir)]],
-        ];
+        yield 'dir-list' => [$sourceDir, [$sourceDir]];
+        yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/api.php"]];
+        yield 'finder' => [$sourceDir, Util::finder($sourceDir)];
+        yield 'finder-list' => [$sourceDir, [Util::finder($sourceDir)]];
     }
 
     /**

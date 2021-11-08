@@ -36,7 +36,7 @@ trait NameTrait
 
 }
 
-#[OA\Schema(title: 'Product', description: 'Product')]
+#[OA\Schema(title: 'Product', description: 'Product', attachables: [new OA\Attachable()])]
 class Product implements ProductInterface
 {
     use NameTrait;
@@ -44,7 +44,7 @@ class Product implements ProductInterface
     /**
      * The id.
      *
-     * @OA\Property(format="int64", example=1)
+     * @OA\Property(format="int64", example=1, @OA\Attachable())
      */
     public $id;
 }

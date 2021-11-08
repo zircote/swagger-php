@@ -112,7 +112,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $refreshUrl = Generator::UNDEFINED,
             string $flow = Generator::UNDEFINED,
             ?array $scopes = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'authorizationUrl' => $authorizationUrl,
@@ -121,6 +122,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'flow' => $flow,
                     'scopes' => $scopes ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
                 ]);
         }
     }

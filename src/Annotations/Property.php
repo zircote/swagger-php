@@ -76,7 +76,8 @@ if (\PHP_VERSION_ID >= 80100) {
             ?bool $deprecated = null,
             $example = Generator::UNDEFINED,
             $examples = Generator::UNDEFINED,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'property' => $property,
@@ -92,7 +93,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'anyOf' => $anyOf ?? Generator::UNDEFINED,
                     'oneOf' => $oneOf ?? Generator::UNDEFINED,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($items, $examples),
+                    'value' => $this->combine($items, $examples, $attachables),
                 ]);
         }
     }

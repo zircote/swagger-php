@@ -280,7 +280,8 @@ if (\PHP_VERSION_ID >= 80100) {
             string $ref = Generator::UNDEFINED,
             ?Schema $schema = null,
             ?array $examples = null,
-            ?array $x = null
+            ?array $x = null,
+            ?array $attachables = null
         ) {
             parent::__construct($properties + [
                     'name' => $name,
@@ -288,7 +289,7 @@ if (\PHP_VERSION_ID >= 80100) {
                     'required' => $this->required !== Generator::UNDEFINED ? $this->required : ($required ?? Generator::UNDEFINED),
                     'ref' => $ref,
                     'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($schema, $examples),
+                    'value' => $this->combine($schema, $examples, $attachables),
                 ]);
         }
     }
