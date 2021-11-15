@@ -35,6 +35,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $submittedBy = $customer->properties[6];
         $friends = $customer->properties[7];
         $bestFriend = $customer->properties[8];
+        $endorsedFriends = $customer->properties[9];
 
         // Verify no values where defined in the annotation.
         $this->assertSame(Generator::UNDEFINED, $firstName->property);
@@ -58,6 +59,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $bestFriend->property);
         $this->assertSame(Generator::UNDEFINED, $bestFriend->nullable);
         $this->assertSame(Generator::UNDEFINED, $bestFriend->allOf);
+
+        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->property);
+        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
+        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
 
         $analysis->process(new AugmentProperties());
 
@@ -118,6 +123,11 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame('bestFriend', $bestFriend->property);
         $this->assertTrue($bestFriend->nullable);
         $this->assertSame('#/components/schemas/Customer', $bestFriend->oneOf[0]->ref);
+
+        $this->assertSame('endorsedFriends', $endorsedFriends->property);
+        $this->assertSame('array', $endorsedFriends->type);
+        $this->assertTrue($endorsedFriends->nullable);
+        $this->assertSame('#/components/schemas/Customer', $endorsedFriends->items->ref);
     }
 
     public function testTypedProperties()

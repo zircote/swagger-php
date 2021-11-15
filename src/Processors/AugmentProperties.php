@@ -83,9 +83,12 @@ class AugmentProperties
                 }
             } elseif (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches)) {
                 if ($property->type === Generator::UNDEFINED) {
-                    preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
-                    $isNullable = $this->isNullable($typeMatches[1]);
-                    $type = $this->stripNull($typeMatches[1]);
+                    $allTypes = trim($varMatches['type']);
+                    $isNullable = $this->isNullable($allTypes);
+                    $allTypes = $this->stripNull($allTypes);
+                    preg_match('/^([^\[]+)(.*$)/', trim($allTypes), $typeMatches);
+                    $type = $typeMatches[1];
+
                     if (array_key_exists(strtolower($type), static::$types) === false) {
                         $key = strtolower($context->fullyQualifiedName($type));
                         if ($property->ref === Generator::UNDEFINED && $typeMatches[2] === '' && array_key_exists($key, $refs)) {
