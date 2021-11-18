@@ -56,13 +56,6 @@ class Analysis
      */
     public $context;
 
-    /**
-     * Registry for the post-processing operations.
-     *
-     * @var callable[]
-     */
-    private static $processors;
-
     public function __construct(array $annotations = [], Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();

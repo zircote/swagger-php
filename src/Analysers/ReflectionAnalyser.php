@@ -77,7 +77,6 @@ class ReflectionAnalyser implements AnalyserInterface
 
     protected function analyzeFqdn(string $fqdn, Analysis $analysis, array $details): Analysis
     {
-        // autoload if needed
         if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn)) {
             return $analysis;
         }

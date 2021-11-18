@@ -43,6 +43,23 @@ Add annotations to your php files.
  */
 ```
 
+Or, as of PHP 8.1 use attributes
+
+
+```php
+#[OA\Info(title="My First API", version="0.1")]
+class OpenApi {}
+
+class Controller{
+    #[OA\Get(path: '/api/resource.json')]
+    #[OA\Response(response: '200', description: 'An example resource')]
+    public function getResource()
+    {
+       // ...
+    }
+}
+```
+
 And view and interact with your API using [Swagger UI ](https://swagger.io/tools/swagger-ui/)
 
 ## Links
@@ -51,6 +68,7 @@ And view and interact with your API using [Swagger UI ](https://swagger.io/tools
 - [OpenApi Documentation](https://swagger.io/docs/)
 - [OpenApi Specification](http://swagger.io/specification/)
 - [Migration from 2.x to 3.x](Migrating-to-v3.md)
+- [Migration from 3.x to 4.x](Migrating-to-v4.md)
 - [Learn by example](https://github.com/zircote/swagger-php/tree/master/Examples) lots of example of how to generate
 - [Related projects](Related-projects.md)
 - [Swagger-php 2.x documentation](https://github.com/zircote/swagger-php/tree/2.x/docs) The docs for swagger-php v2

@@ -7,6 +7,6 @@ parameters:
         processTimeout: 300.0
     ignoreErrors:
         - '#does not accept default value of type string#'
-    excludes_analyse:
+        - '#Access to an undefined property#'
+    excludePaths:
         - 'tests/Fixtures/*'
-

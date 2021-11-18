@@ -241,13 +241,11 @@ class Generator
      */
     public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
     {
-        if (!$matcher) {
-            $matcher = $matcher ?: function ($other) use ($processor) {
-                $otherClass = get_class($other);
+        $matcher = $matcher ?: function ($other) use ($processor) {
+            $otherClass = get_class($other);
 
-                return $processor instanceof $otherClass;
-            };
-        }
+            return $processor instanceof $otherClass;
+        };
 
         $processors = array_map(function ($other) use ($processor, $matcher) {
             return $matcher($other) ? $processor : $other;
@@ -285,6 +283,9 @@ class Generator
 
     /**
      * Run code in the context of this generator.
+     *
+     * @param callable $callable Callable in the form of
+     *                           `function(Generator $generator, Analysis $analysis, Context $context): mixed`
      *
      * @return mixed the result of the `callable`
      */
