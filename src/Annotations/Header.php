@@ -8,11 +8,11 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
+ * A "Header Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject.
  *
- * A "Header Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject
+ * @Annotation
  */
-class Header extends AbstractAnnotation
+abstract class AbstractHeader extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -90,4 +90,35 @@ class Header extends AbstractAnnotation
         Components::class,
         Response::class,
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Header extends AbstractHeader
+    {
+        public function __construct(
+            array $properties = [],
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Header extends AbstractHeader
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

@@ -9,11 +9,13 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A Server Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-object
+ * A Server Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-object.
+ *
  * An object representing a Server.
+ *
+ * @Annotation
  */
-class Server extends AbstractAnnotation
+abstract class AbstractServer extends AbstractAnnotation
 {
     /**
      * A URL to the target host. This URL supports Server Variables and may be relative,
@@ -78,4 +80,40 @@ class Server extends AbstractAnnotation
         'url' => 'string',
         'description' => 'string',
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Server extends AbstractServer
+    {
+        public function __construct(
+            array $properties = [],
+            string $url = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            ?array $variables = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'url' => $url,
+                    'description' => $description,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($variables, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Server extends AbstractServer
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

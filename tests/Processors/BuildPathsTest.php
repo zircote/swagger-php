@@ -27,7 +27,8 @@ class BuildPathsTest extends OpenApiTestCase
         ];
         $analysis = new Analysis([$openapi], $this->getContext());
         $analysis->openapi = $openapi;
-        $analysis->process(new BuildPaths());
+        $analysis->process([new BuildPaths()]);
+
         $this->assertCount(1, $openapi->paths);
         $this->assertSame('/comments', $openapi->paths[0]->path);
     }
@@ -43,8 +44,10 @@ class BuildPathsTest extends OpenApiTestCase
             ],
             $this->getContext()
         );
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new BuildPaths());
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new BuildPaths(),
+        ]);
         $this->assertCount(1, $openapi->paths);
         $path = $openapi->paths[0];
         $this->assertSame('/comments', $path->path);

@@ -1,6 +1,8 @@
 <?php
 
-namespace OpenApi\LinkExample;
+namespace OpenApi\Examples\OpenapiSpec;
+
+use OpenApi\Annotations as OA;
 
 class RepositoriesController
 {
@@ -14,7 +16,7 @@ class RepositoriesController
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(response=200,
-     *     description="repositories owned by the supplied user",
+     *     description="Repositories owned by the supplied user",
      *     @OA\JsonContent(type="array",
      *       @OA\Items(ref="#/components/schemas/repository")
      *     ),
@@ -82,7 +84,7 @@ class RepositoriesController
      *     )
      *   ),
      *   @OA\Response(response=200,
-     *     description="an array of pull request objects",
+     *     description="An array of pull request objects",
      *     @OA\JsonContent(type="array",
      *         @OA\Items(ref="#/components/schemas/pullrequest")
      *     )
@@ -119,7 +121,7 @@ class RepositoriesController
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(response=200,
-     *     description="a pull request object",
+     *     description="A pull request object",
      *     @OA\JsonContent(ref="#/components/schemas/pullrequest"),
      *     @OA\Link(link="pullRequestMerge", ref="#/components/links/PullRequestMerge")
      *   )
@@ -148,7 +150,7 @@ class RepositoriesController
      *     @OA\Schema(type="string")
      *   ),
      *   @OA\Response(response=204,
-     *     description="the PR was successfully merged"
+     *     description="The PR was successfully merged"
      *   )
      * )
      * @OA\Link(link="PullRequestMerge",
@@ -164,9 +166,3 @@ class RepositoriesController
     {
     }
 }
-
-?>
-
-
-
-

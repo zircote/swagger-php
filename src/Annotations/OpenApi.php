@@ -11,13 +11,16 @@ use OpenApi\Generator;
 use OpenApi\Util;
 
 /**
- * @Annotation
  * This is the root document object for the API specification.
  *
  * A  "OpenApi Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object
+ *
+ * @Annotation
  */
-class OpenApi extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class AbstractOpenApi extends AbstractAnnotation
 {
+    public const DEFAULT_VERSION = '3.0.0';
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
@@ -25,7 +28,7 @@ class OpenApi extends AbstractAnnotation
      *
      * @var string
      */
-    public $openapi = '3.0.0';
+    public $openapi = self::DEFAULT_VERSION;
 
     /**
      * Provides metadata about the API. The metadata may be used by tooling as required.
@@ -218,5 +221,42 @@ class OpenApi extends AbstractAnnotation
         }
 
         throw new \Exception('$ref "' . $unresolved . '" not found');
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class OpenApi extends AbstractOpenApi
+    {
+        public function __construct(
+            array $properties = [],
+            string $openapi = self::DEFAULT_VERSION,
+            ?Info $info = null,
+            ?array $servers = null,
+            ?array $tags = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'openapi' => $openapi,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($info, $servers, $tags, $externalDocs, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class OpenApi extends AbstractOpenApi
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

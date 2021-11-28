@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Tests\Fixtures;
 
 /**
@@ -32,6 +36,7 @@ class UsingRefs
  *   description="protected item name",
  * )
  */
+class UsingRefsParameter {}
 
 /**
  * @OA\Response (
@@ -39,3 +44,4 @@ class UsingRefs
  *   description="A protected item"
  * )
  */
+class UsingRefsResponse {}

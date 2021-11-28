@@ -38,6 +38,7 @@ class Serializer
         OA\Operation::class,
         OA\Options::class,
         OA\Parameter::class,
+        OA\PathParameter::class,
         OA\Patch::class,
         OA\PathItem::class,
         OA\Post::class,

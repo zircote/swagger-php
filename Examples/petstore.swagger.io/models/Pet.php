@@ -1,6 +1,6 @@
 <?php
 
-namespace PetstoreIO;
+namespace OpenApi\Examples\PetstoreSwaggerIo;
 
 /**
  * @OA\Schema(required={"name", "photoUrls"}, @OA\Xml(name="Pet"))

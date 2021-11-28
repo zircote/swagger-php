@@ -6,10 +6,12 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Generator;
+
 /**
  * @Annotation
  */
-class AdditionalProperties extends Schema
+abstract class AbstractAdditionalProperties extends Schema
 {
     /**
      * @inheritdoc
@@ -35,4 +37,35 @@ class AdditionalProperties extends Schema
         AdditionalProperties::class => 'additionalProperties',
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class AdditionalProperties extends AbstractAdditionalProperties
+    {
+        public function __construct(
+            array $properties = [],
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class AdditionalProperties extends AbstractAdditionalProperties
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

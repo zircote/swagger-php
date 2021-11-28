@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations\Property;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
@@ -21,10 +22,13 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties()
     {
-        $analysis = $this->analysisFromFixtures('Customer.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        $analysis = $this->analysisFromFixtures(['Customer.php']);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new AugmentSchemas(),
+        ]);
+
         $customer = $analysis->openapi->components->schemas[0];
         $firstName = $customer->properties[0];
         $secondName = $customer->properties[1];
@@ -132,10 +136,16 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties()
     {
-        $analysis = $this->analysisFromFixtures('TypedProperties.php');
-        $analysis->process(new MergeIntoOpenApi());
-        $analysis->process(new MergeIntoComponents());
-        $analysis->process(new AugmentSchemas());
+        if ($this->getAnalyzer() instanceof ReflectionAnalyser && PHP_VERSION_ID < 70400) {
+            $this->markTestSkipped();
+        }
+
+        $analysis = $this->analysisFromFixtures(['TypedProperties.php']);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new AugmentSchemas(),
+        ]);
         [
             $stringType,
             $intType,
@@ -154,6 +164,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $staticUndefined,
             $staticString,
             $staticNullableString,
+            $nativeArray,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -224,8 +235,12 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
+        $this->assertName($nativeArray, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process([new AugmentProperties()]);
 
         $this->assertName($stringType, [
             'property' => 'stringType',
@@ -305,6 +320,18 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'staticNullableString',
             'type' => 'string',
         ]);
+        $this->assertName($nativeArray, [
+            'property' => 'nativeArray',
+            'type' => 'array',
+        ]);
+        $this->assertObjectHasAttribute(
+            'ref',
+            $nativeArray->items
+        );
+        $this->assertEquals(
+            'string',
+            $nativeArray->items->type
+        );
     }
 
     protected function assertName(Property $property, array $expectedValues)

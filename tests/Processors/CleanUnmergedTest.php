@@ -31,9 +31,10 @@ class CleanUnmergedTest extends OpenApiTestCase
 )
 
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
-        $analysis->process(new MergeIntoOpenApi());
+        $analysis->process([new MergeIntoOpenApi()]);
+
         $this->assertCount(5, $analysis->annotations);
         $before = $analysis->split();
         $this->assertCount(3, $before->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
@@ -42,7 +43,8 @@ END;
         $analysis->validate(); // Validation fails to detect the unmerged annotations.
 
         // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array.
-        $analysis->process(new CleanUnmerged());
+        $analysis->process([new CleanUnmerged()]);
+
         $between = $analysis->split();
         $this->assertCount(3, $between->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
         $this->assertCount(2, $between->unmerged->annotations, '@OA\License + @OA\Contact');
@@ -53,10 +55,12 @@ END;
 
         // When a processor places a previously unmerged annotation into the swagger obect.
         $license = $analysis->getAnnotationsOfType(License::class)[0];
+        /** @var Contact $contact */
         $contact = $analysis->getAnnotationsOfType(Contact::class)[0];
         $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);
-        $analysis->process(new CleanUnmerged());
+        $analysis->process([new CleanUnmerged()]);
+
         $this->assertCount(0, $license->_unmerged);
         $after = $analysis->split();
         $this->assertCount(4, $after->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem, @OA\Info and @OA\Contact');

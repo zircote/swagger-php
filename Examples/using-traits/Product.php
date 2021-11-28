@@ -1,12 +1,13 @@
 <?php
 
-namespace UsingTraits;
+namespace OpenApi\Examples\UsingTraits;
 
 /**
  * @OA\Schema(title="Product model")
  */
-class Product {
-    use \UsingTraits\Colour;
+class Product
+{
+    use \OpenApi\Examples\UsingTraits\Colour;
     use BellsAndWhistles;
 
     /**

@@ -9,12 +9,13 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
  * License information for the exposed API.
  *
  * A "License Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#license-object
+ *
+ * @Annotation
  */
-class License extends AbstractAnnotation
+abstract class AbstractLicense extends AbstractAnnotation
 {
     /**
      * The license name used for the API.
@@ -56,4 +57,39 @@ class License extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class License extends AbstractLicense
+    {
+        public function __construct(
+            array $properties = [],
+            string $name = Generator::UNDEFINED,
+            string $url = Generator::UNDEFINED,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'name' => $name,
+                    'url' => $url,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class License extends AbstractLicense
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

@@ -1,14 +1,13 @@
 <?php
 
-namespace UsingTraits;
-
-use UsingTraits\Decoration;
+namespace OpenApi\Examples\UsingTraits;
 
 /**
  * @OA\Schema(title="SimpleProduct model")
  * )
  */
-class SimpleProduct {
+class SimpleProduct
+{
     use Decoration\Bells;
     use Decoration\UndocumentedBell;
 

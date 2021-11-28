@@ -7,14 +7,14 @@ paths:
     get:
       tags:
         - Products
-      operationId: 133f11c148f628647767a323bf78c68d
+      operationId: 9801cc0b0fc7a19fed854ffe6f29ae72
       responses:
         default:
           $ref: '#/components/responses/product'
     patch:
       tags:
         - Products
-      operationId: 7f26f01759fb7245bf4f7138a3717e0f
+      operationId: f66c51dd13f8079f836728c177bc5a64
       requestBody:
         $ref: '#/components/requestBodies/product_in_body'
       responses:

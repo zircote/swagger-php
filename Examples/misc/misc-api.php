@@ -1,7 +1,17 @@
 <?php
+
+namespace OpenApi\Examples\Misc;
+
 /**
  * @OA\OpenApi(
  *    security={{"bearerAuth": {}}}
+ * )
+ *
+ * @OA\Info(
+ *   title="Testing annotations from bugreports",
+ *   version="1.0.0",
+ *   description="NOTE:
+This sentence is on a new line"
  * )
  *
  * @OA\Components(
@@ -12,18 +22,7 @@
  *     ),
  *     @OA\Attachable()
  * )
- */
-
-/**
- * @OA\Info(
- *   title="Testing annotations from bugreports",
- *   version="1.0.0",
- *   description="NOTE:
-This sentence is on a new line"
- * )
- */
-
-/**
+ *
  * @OA\Server(
  *      url="{schema}://host.dev",
  *      description="OpenApi parameters",
@@ -34,6 +33,9 @@ This sentence is on a new line"
  *      )
  * )
  */
+class OpenApiSpec
+{
+}
 
 /**
  * An API endpoint.
@@ -48,7 +50,10 @@ This sentence is on a new line"
  *   @OA\Response(response=200, description="Success")
  * )
  */
-  
+class Endpoint
+{
+}
+
 /**
  * @OA\Response(
  *     response=200,
@@ -64,4 +69,6 @@ This sentence is on a new line"
  *     )
  *   )
  */
-
+class Response
+{
+}

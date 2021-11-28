@@ -6,36 +6,34 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\StaticAnalyser;
+use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
 class ItemsTest extends OpenApiTestCase
 {
     public function testItemTypeArray()
     {
-        $annotations = $this->parseComment('@OA\Items(type="array")');
+        $annotations = $this->annotationsFromDocBlockParser('@OA\Items(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testSchemaTypeArray()
     {
-        $annotations = $this->parseComment('@OA\Schema(type="array")');
+        $annotations = $this->annotationsFromDocBlockParser('@OA\Schema(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testParentTypeArray()
     {
-        $annotations = $this->parseComment('@OA\Items() parent type must be "array"');
+        $annotations = $this->annotationsFromDocBlockParser('@OA\Items() parent type must be "array"');
         $annotations[0]->validate();
     }
 
     public function testRefDefinitionInProperty()
     {
-        $analyser = new StaticAnalyser();
-        $analysis = $analyser->fromFile($this->fixtures('UsingVar.php')[0], $this->getContext());
-        $analysis->process();
+        $analysis = $this->analysisFromFixtures(['UsingVar.php'], (new Generator())->getProcessors());
 
         $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);

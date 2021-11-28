@@ -2,7 +2,11 @@ name: build
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
 
 jobs:
   test:
@@ -11,8 +15,11 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.2', '7.3', '7.4', '8.0' ]
+        php: [ '7.2', '7.3', '7.4', '8.0', '8.1' ]
         dependencies: [ 'lowest', 'highest' ]
+        exclude:
+          - php: '8.1'
+            dependencies: 'lowest'
 
     name: PHP ${{ matrix.php }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
 
@@ -33,3 +40,8 @@ jobs:
 
       - name: PHPUnit Tests
         run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+
+      - name: PHPUnit Legacy Tests
+        run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        env:
+          PHPUNIT_ANALYSER: 'legacy'

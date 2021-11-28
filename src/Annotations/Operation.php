@@ -9,13 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc
+ * Base class for the @OA\Get(),  @OA\Post(),  @OA\Put(),  @OA\Delete(), @OA\Patch(), etc.
  *
  * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object
  * Describes a single API operation on a path.
+ *
+ * @Annotation
  */
-abstract class Operation extends AbstractAnnotation
+abstract class AbstractOperation extends AbstractAnnotation
 {
     /**
      * key in the OpenApi "Paths Object" for this operation.
@@ -158,6 +159,7 @@ abstract class Operation extends AbstractAnnotation
      */
     public static $_nested = [
         Parameter::class => ['parameters'],
+        PathParameter::class => ['parameters'],
         Response::class => ['responses', 'response'],
         ExternalDocumentation::class => 'externalDocs',
         Server::class => ['servers'],
@@ -201,5 +203,53 @@ abstract class Operation extends AbstractAnnotation
         }
 
         return $valid;
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    abstract class Operation extends AbstractOperation
+    {
+        public function __construct(
+            array $properties = [],
+            string $path = Generator::UNDEFINED,
+            string $operationId = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            string $summary = Generator::UNDEFINED,
+            ?array $security = null,
+            ?array $servers = null,
+            ?RequestBody $requestBody = null,
+            ?array $tags = null,
+            ?array $parameters = null,
+            ?array $responses = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'path' => $path,
+                    'operationId' => $operationId,
+                    'description' => $description,
+                    'summary' => $summary,
+                    'security' => $security ?? Generator::UNDEFINED,
+                    'servers' => $servers ?? Generator::UNDEFINED,
+                    'tags' => $tags ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    abstract class Operation extends AbstractOperation
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

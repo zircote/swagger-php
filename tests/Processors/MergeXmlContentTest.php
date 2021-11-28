@@ -24,12 +24,14 @@ class MergeXmlContentTest extends OpenApiTestCase
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(3, $analysis->annotations);
+        /** @var Response $response */
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertSame(Generator::UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
-        $analysis->process(new MergeXmlContent());
+        $analysis->process([new MergeXmlContent()]);
+
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
@@ -46,10 +48,11 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
+        /** @var Response $response */
         $response = $analysis->getAnnotationsOfType(Response::class)[0];
         $this->assertCount(1, $response->content);
-        $analysis->process(new MergeXmlContent());
+        $analysis->process([new MergeXmlContent()]);
         $this->assertCount(2, $response->content);
     }
 
@@ -61,12 +64,14 @@ END;
                 @OA\Property(property="color", type="string")
             ))
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
+        /** @var Parameter $parameter */
         $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
         $this->assertCount(1, $parameter->_unmerged);
-        $analysis->process(new MergeXmlContent());
+        $analysis->process([new MergeXmlContent()]);
+
         $this->assertCount(1, $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
         $json = json_decode(json_encode($parameter), true);
@@ -83,8 +88,8 @@ END;
                 @OA\Items(ref="#/components/schemas/repository")
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
-        $analysis->process(new MergeXmlContent());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
+        $analysis->process([new MergeXmlContent()]);
     }
 
     public function testInvalidParent()
@@ -97,7 +102,7 @@ END;
                 )
             )
 END;
-        $analysis = new Analysis($this->parseComment($comment), $this->getContext());
-        $analysis->process(new MergeXmlContent());
+        $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
+        $analysis->process([new MergeXmlContent()]);
     }
 }

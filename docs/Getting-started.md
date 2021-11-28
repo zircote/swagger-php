@@ -41,9 +41,9 @@ For cli usage from anywhere install swagger-php globally and add the `~/.compose
 composer global require zircote/swagger-php
 ```
 
-## Write annotations
+## Document your code using annotations or PHP attributes
 
-The goal of swagger-php is to generate a openapi.json using phpdoc annotations.
+The goal of swagger-php is to generate a openapi.json using phpdoc annotations or PHP attributes.
 
 #### When you write:
 
@@ -75,6 +75,24 @@ paths:
           description: "An example resource"
 ```
 
+#### PHP Attributes
+This documentation uses annotations in its examples. However, as per PHP 8.1 you may also use all documented
+annotations as attributes. Then the above example would look like this:
+
+```php
+#[OA\Info(title="My First API", version="0.1")]
+class OpenApi {}
+
+class Controller{
+    #[OA\Get(path: '/api/resource.json')]
+    #[OA\Response(response: '200', description: 'An example resource')]
+    public function getResource()
+    {
+       // ...
+    }
+}
+```
+
 ### Using variables
 
 You can use constants inside doctrine annotations.
@@ -101,6 +119,8 @@ You shouldn't place all annotations inside one big @OA\OpenApi() annotation bloc
 swagger-php will scan your project and merge all annotations into one @OA\OpenApi annotation.
 
 The big benefit swagger-php provides is that the documentation lives close to the code implementing the API.
+
+**As of swagger-php v4 all annotations or attributes must be associated with code (class, method, parameter)**
 
 ### Arrays and Objects
 

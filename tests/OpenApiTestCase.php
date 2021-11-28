@@ -8,13 +8,18 @@ namespace OpenApi\Tests;
 
 use DirectoryIterator;
 use Exception;
-use OpenApi\Analyser;
+use OpenApi\Analysers\AnalyserInterface;
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
+use OpenApi\Analysers\DocBlockParser;
+use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\StaticAnalyser;
+use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -66,18 +71,27 @@ class OpenApiTestCase extends TestCase
                     list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
                     $assertion($message, $level);
                 } else {
-                    $this->testCase->fail('Unexpected log line ::' . $level . '("' . $message . '")');
+                    $this->testCase->fail('Unexpected log line: ' . $level . '("' . $message . '")');
                 }
             }
         };
     }
 
-    public function getContext(array $properties = [])
+    public function getContext(array $properties = []): Context
     {
         return new Context(['logger' => $this->getTrackingLogger()] + $properties);
     }
 
-    public function assertOpenApiLogEntryContains($needle, $message = '')
+    public function getAnalyzer(): AnalyserInterface
+    {
+        $legacyAnalyser = getenv('PHPUNIT_ANALYSER') === 'legacy';
+
+        return $legacyAnalyser
+            ? new TokenAnalyser()
+            : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+    }
+
+    public function assertOpenApiLogEntryContains($needle, $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
             if ($entry instanceof Exception) {
@@ -95,12 +109,30 @@ class OpenApiTestCase extends TestCase
      * @param string                         $message
      * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
      */
-    protected function assertSpecEquals($actual, $expected, $message = '', $normalized = false)
+    protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
-        $normalize = function ($in) {
+        $formattedValue = function ($value) {
+            if (is_bool($value)) {
+                return $value ? 'true' : 'false';
+            }
+            if (is_numeric($value)) {
+                return (string) $value;
+            }
+            if (is_string($value)) {
+                return '"' . $value . '"';
+            }
+            if (is_object($value)) {
+                return get_class($value);
+            }
+
+            return gettype($value);
+        };
+
+        $normalizeIn = function ($in) {
             if ($in instanceof OpenApi) {
                 $in = $in->toYaml();
             }
+
             if (is_string($in)) {
                 // assume YAML
                 try {
@@ -114,13 +146,13 @@ class OpenApiTestCase extends TestCase
         };
 
         if (!$normalized) {
-            $actual = $normalize($actual);
-            $expected = $normalize($expected);
+            $actual = $normalizeIn($actual);
+            $expected = $normalizeIn($expected);
         }
 
         if (is_iterable($actual) && is_iterable($expected)) {
             foreach ($actual as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $this->formattedValue($value));
+                $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $formattedValue($value));
                 $this->assertSpecEquals($value, ((array) $expected)[$key], $message . ' > ' . $key, true);
             }
             foreach ($expected as $key => $value) {
@@ -132,36 +164,10 @@ class OpenApiTestCase extends TestCase
         }
     }
 
-    private function formattedValue($value)
-    {
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-        if (is_numeric($value)) {
-            return (string) $value;
-        }
-        if (is_string($value)) {
-            return '"' . $value . '"';
-        }
-        if (is_object($value)) {
-            return get_class($value);
-        }
-
-        return gettype($value);
-    }
-
-    protected function parseComment($comment, ?Context $context = null)
-    {
-        $analyser = new Analyser();
-        $context = $context ?: $this->getContext();
-
-        return $analyser->fromComment("<?php\n/**\n * " . implode("\n * ", explode("\n", $comment)) . "\n*/", $context);
-    }
-
     /**
      * Create a valid OpenApi object with Info.
      */
-    protected function createOpenApiWithInfo()
+    protected function createOpenApiWithInfo(): OpenApi
     {
         return new OpenApi([
             'info' => new Info([
@@ -176,48 +182,52 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
+    public function fixture(string $file): ?string
+    {
+        $fixtures = $this->fixtures([$file]);
+
+        return $fixtures ? $fixtures[0] : null;
+    }
+
     /**
      * Resolve fixture filenames.
      *
-     * @param array|string $files one ore more files
-     *
      * @return array resolved filenames for loading scanning etc
      */
-    public function fixtures($files): array
+    public function fixtures(array $files): array
     {
         return array_map(function ($file) {
             return __DIR__ . '/Fixtures/' . $file;
         }, (array) $files);
     }
 
-    public function analysisFromFixtures($files): Analysis
+    public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null): Analysis
     {
-        $analyser = new StaticAnalyser();
         $analysis = new Analysis([], $this->getContext());
 
-        foreach ((array) $files as $file) {
-            $analysis->addAnalysis($analyser->fromFile($this->fixtures($file)[0], $this->getContext()));
-        }
+        (new Generator($this->getTrackingLogger()))
+            ->setAnalyser($analyzer ?: $this->getAnalyzer())
+            ->setProcessors($processors)
+            ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;
     }
 
-    public function analysisFromCode(string $code, ?Context $context = null)
+    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = []): array
     {
-        return (new StaticAnalyser())->fromCode("<?php\n" . $code, $context ?: $this->getContext());
-    }
+        return (new Generator())->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
+            $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
 
-    public function analysisFromDockBlock($comment)
-    {
-        return (new Analyser())->fromComment($comment, $this->getContext());
+            return $docBlockParser->fromComment($docBlock, $this->getContext());
+        });
     }
 
     /**
-     * Collect list of all non abstract annotation classes.
+     * Collect list of all non-abstract annotation classes.
      *
      * @return array
      */
-    public function allAnnotationClasses()
+    public function allAnnotationClasses(): array
     {
         $classes = [];
         $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');

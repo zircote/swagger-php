@@ -7,7 +7,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 664dbedf1321cf9bebfe80ce09f95b6a
+      operationId: fef5577fd78858297fd2e4291598d8d0
       parameters:
         -
           name: id

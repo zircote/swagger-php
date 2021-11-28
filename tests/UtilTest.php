@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
 use OpenApi\Generator;
@@ -21,12 +22,18 @@ class UtilTest extends OpenApiTestCase
             'CustomerInterface.php',
             'GrandAncestor.php',
             'InheritProperties',
-            'Parser',
+            'Apis',
+            'PHP',
+            'Analysers',
             'Processors',
             'UsingRefs.php',
             'UsingPhpDoc.php',
+            'UsingCustomAttachables',
+
         ];
-        $openapi = Generator::scan(Util::finder(__DIR__ . '/Fixtures', $exclude));
+        $openapi = (new Generator())
+            ->setAnalyser(new TokenAnalyser())
+            ->generate(Util::finder(__DIR__ . '/Fixtures', $exclude));
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }
 

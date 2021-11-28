@@ -9,15 +9,16 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
  * Shorthand for a xml response.
  *
  * Use as an Schema inside a Response and the MediaType "application/xml" will be generated.
+ *
+ * @Annotation
  */
-class XmlContent extends Schema
+abstract class AbstractXmlContent extends Schema
 {
     /**
-     * @var object
+     * @var Examples
      */
     public $examples = Generator::UNDEFINED;
 
@@ -39,4 +40,46 @@ class XmlContent extends Schema
         Examples::class => ['examples', 'example'],
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class XmlContent extends AbstractXmlContent
+    {
+        public function __construct(
+            array $properties = [],
+            string $ref = Generator::UNDEFINED,
+            ?array $allOf = null,
+            ?array $anyOf = null,
+            ?array $oneOf = null,
+            string $type = Generator::UNDEFINED,
+            ?Items $items = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'ref' => $ref,
+                    'allOf' => $allOf ?? Generator::UNDEFINED,
+                    'anyOf' => $anyOf ?? Generator::UNDEFINED,
+                    'oneOf' => $oneOf ?? Generator::UNDEFINED,
+                    'type' => $type,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($items, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class XmlContent extends AbstractXmlContent
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

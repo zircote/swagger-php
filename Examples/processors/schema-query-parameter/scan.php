@@ -1,15 +1,21 @@
 <?php
 
+use OpenApi\Generator;
+use OpenApi\Processors\BuildPaths;
+use SchemaQueryParameterProcessor\SchemaQueryParameter;
+
 require __DIR__ . '/../../../vendor/autoload.php';
 // also load our custom processor...
 require __DIR__ . '/SchemaQueryParameter.php';
 
+$generator = new Generator();
+
 // merge our custom processor
 $processors = [];
-foreach (\OpenApi\Analysis::processors() as $processor) {
+foreach ($generator->getProcessors() as $processor) {
     $processors[] = $processor;
-    if ($processor instanceof \OpenApi\Processors\BuildPaths) {
-        $processors[] = new \SchemaQueryParameterProcessor\SchemaQueryParameter();
+    if ($processor instanceof BuildPaths) {
+        $processors[] = new SchemaQueryParameter();
     }
 }
 
@@ -17,9 +23,8 @@ $options = [
     'processors' => $processors,
 ];
 
-$openapi = (new OpenApi\Generator())
-            ->setProcessors($processors)
-            ->generate([__DIR__ . '/app']);
-$spec = json_encode($openapi, JSON_PRETTY_PRINT);
-file_put_contents(__DIR__ . '/schema-query-parameter.json', $spec);
-//echo $spec;
+$openapi = $generator
+    ->setProcessors($processors)
+    ->generate([__DIR__ . '/app']);
+//file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
+echo $openapi->toYaml();

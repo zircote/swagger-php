@@ -9,13 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A Components Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#components-object
+ * A Components Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#components-object.
  *
  * Holds a set of reusable objects for different aspects of the OA.
  * All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object.
+ *
+ * @Annotation
  */
-class Components extends AbstractAnnotation
+abstract class AbstractComponents extends AbstractAnnotation
 {
     /**
      * Schema reference.
@@ -101,6 +102,7 @@ class Components extends AbstractAnnotation
         Schema::class => ['schemas', 'schema'],
         Response::class => ['responses', 'response'],
         Parameter::class => ['parameters', 'parameter'],
+        PathParameter::class => ['parameters', 'parameter'],
         RequestBody::class => ['requestBodies', 'request'],
         Examples::class => ['examples', 'example'],
         Header::class => ['headers', 'header'],
@@ -108,4 +110,31 @@ class Components extends AbstractAnnotation
         Link::class => ['links', 'link'],
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Components extends AbstractComponents
+    {
+        public function __construct(
+            array $properties = []
+        ) {
+            parent::__construct($properties + [
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Components extends AbstractComponents
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
-namespace UsingInterfaces;
+namespace OpenApi\Examples\UsingInterfaces;
+
 
 /**
  * @OA\Schema()

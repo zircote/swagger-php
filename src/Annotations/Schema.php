@@ -9,7 +9,6 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
  * The definition of input and output data types.
  * These types can be objects, but also primitives and arrays.
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
@@ -17,8 +16,10 @@ use OpenApi\Generator;
  *
  * A "Schema Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#schemaObject
  * JSON Schema: http://json-schema.org/
+ *
+ * @Annotation
  */
-class Schema extends AbstractAnnotation
+abstract class AbstractSchema extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -327,6 +328,7 @@ class Schema extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_types = [
+        'title' => 'string',
         'description' => 'string',
         'required' => '[string]',
         'format' => 'string',
@@ -366,6 +368,7 @@ class Schema extends AbstractAnnotation
     public static $_parents = [
         Components::class,
         Parameter::class,
+        PathParameter::class,
         MediaType::class,
         Header::class,
     ];
@@ -379,5 +382,54 @@ class Schema extends AbstractAnnotation
         }
 
         return parent::validate($parents, $skip, $ref);
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+    class Schema extends AbstractSchema
+    {
+        public function __construct(
+            array $properties = [],
+            string $schema = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            string $title = Generator::UNDEFINED,
+            string $type = Generator::UNDEFINED,
+            string $format = Generator::UNDEFINED,
+            string $ref = Generator::UNDEFINED,
+            ?Items $items = null,
+            ?array $enum = null,
+            ?bool $deprecated = null,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'schema' => $schema,
+                    'description' => $description,
+                    'title' => $title,
+                    'type' => $type,
+                    'format' => $format,
+                    'ref' => $ref,
+                    'enum' => $enum ?? Generator::UNDEFINED,
+                    'deprecated' => $deprecated ?? Generator::UNDEFINED,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($externalDocs, $items, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Schema extends AbstractSchema
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

@@ -9,12 +9,15 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object
+ * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object.
+ *
  * Describes a single operation parameter.
+ *
  * A unique parameter is defined by a combination of a name and location.
+ *
+ * @Annotation
  */
-class Parameter extends AbstractAnnotation
+abstract class AbstractParameter extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -259,5 +262,46 @@ class Parameter extends AbstractAnnotation
     public function identity(): string
     {
         return parent::_identity(['name', 'in']);
+    }
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+    class Parameter extends AbstractParameter
+    {
+        public function __construct(
+            array $properties = [],
+            string $name = Generator::UNDEFINED,
+            string $in = Generator::UNDEFINED,
+            ?bool $required = null,
+            string $ref = Generator::UNDEFINED,
+            ?Schema $schema = null,
+            ?array $examples = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'name' => $name,
+                    'in' => $this->in !== Generator::UNDEFINED ? $this->in : $in,
+                    'required' => $this->required !== Generator::UNDEFINED ? $this->required : ($required ?? Generator::UNDEFINED),
+                    'ref' => $ref,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($schema, $examples, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Parameter extends AbstractParameter
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
     }
 }

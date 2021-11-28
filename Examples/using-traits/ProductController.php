@@ -1,6 +1,6 @@
 <?php
 
-namespace UsingTraits;
+namespace OpenApi\Examples\UsingTraits;
 
 /**
  * A controller.

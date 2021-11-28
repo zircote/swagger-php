@@ -1,4 +1,7 @@
 <?php
+
+namespace OpenApi\Examples\PetstoreSwaggerIo;
+
 /**
  * @OA\SecurityScheme(
  *   securityScheme="api_key",
@@ -7,6 +10,9 @@
  *   name="api_key"
  * )
  */
+class ApiAuth
+{
+}
 
 /**
  * @OA\SecurityScheme(
@@ -22,3 +28,6 @@
  *   )
  * )
  */
+class PetstoreAuth
+{
+}

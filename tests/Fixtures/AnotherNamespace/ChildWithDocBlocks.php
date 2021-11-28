@@ -1,8 +1,12 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\InheritProperties\AncestorWithoutDocBlocks;
+use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
 
 /**
  * @OA\Schema()

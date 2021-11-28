@@ -1,6 +1,6 @@
 <?php
 
-namespace Petstore;
+namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
 
 class SimplePetsController
 {

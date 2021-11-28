@@ -1,10 +1,13 @@
 <?php
-namespace OpenApi\LinkExample;
+
+namespace OpenApi\Examples\OpenapiSpec;
+
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(schema="pullrequest")
  */
-class Repository
+class PullRequest
 {
 
     /**
@@ -20,9 +23,9 @@ class Repository
     public $title;
 
     /**
-    * @OA\Property()
-    * @var Repository
-    */
+     * @OA\Property()
+     * @var Repository
+     */
     public $repository;
 
     /**

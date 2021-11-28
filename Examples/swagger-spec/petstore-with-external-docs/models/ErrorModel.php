@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @OA\Schema(required={"code", "message"})
  */

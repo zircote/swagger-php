@@ -40,18 +40,18 @@ class SecuritySchemesTest extends OpenApiTestCase
  */
 
 INFO;
-        $analysis = $this->analysisFromDockBlock($comment);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
 
-        $this->assertCount(3, $analysis);
-        $this->assertInstanceOf(Info::class, $analysis[0]);
-        $this->assertInstanceOf(Server::class, $analysis[1]);
-        $this->assertInstanceOf(Server::class, $analysis[2]);
+        $this->assertCount(3, $annotations);
+        $this->assertInstanceOf(Info::class, $annotations[0]);
+        $this->assertInstanceOf(Server::class, $annotations[1]);
+        $this->assertInstanceOf(Server::class, $annotations[2]);
 
-        $this->assertEquals('http://example.com', $analysis[1]->url);
-        $this->assertEquals('First host', $analysis[1]->description);
+        $this->assertEquals('http://example.com', $annotations[1]->url);
+        $this->assertEquals('First host', $annotations[1]->description);
 
-        $this->assertEquals('http://example-second.com', $analysis[2]->url);
-        $this->assertEquals('Second host', $analysis[2]->description);
+        $this->assertEquals('http://example-second.com', $annotations[2]->url);
+        $this->assertEquals('Second host', $annotations[2]->description);
     }
 
     /**
@@ -79,10 +79,10 @@ INFO;
  */
 SCHEME;
 
-        $analysis = $this->analysisFromDockBlock($comment);
-        $this->assertCount(1, $analysis);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
+        $this->assertCount(1, $annotations);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
-        $security = $analysis[0];
+        $security = $annotations[0];
         $this->assertInstanceOf(SecurityScheme::class, $security);
 
         $this->assertCount(1, $security->flows);
@@ -119,10 +119,10 @@ SCHEME;
  */
 SCHEME;
 
-        $analysis = $this->analysisFromDockBlock($comment);
-        $this->assertCount(1, $analysis);
+        $annotations = $this->annotationsFromDocBlockParser($comment);
+        $this->assertCount(1, $annotations);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
-        $security = $analysis[0];
+        $security = $annotations[0];
 
         $this->assertCount(2, $security->flows);
         $this->assertEquals('implicit', $security->flows[0]->flow);

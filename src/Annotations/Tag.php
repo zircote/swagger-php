@@ -9,11 +9,11 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
+ * A "Tag Object":  https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject.
  *
- * A "Tag Object":  https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject
+ * @Annotation
  */
-class Tag extends AbstractAnnotation
+abstract class AbstractTag extends AbstractAnnotation
 {
     /**
      * The name of the tag.
@@ -63,4 +63,40 @@ class Tag extends AbstractAnnotation
         ExternalDocumentation::class => 'externalDocs',
         Attachable::class => ['attachables'],
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class Tag extends AbstractTag
+    {
+        public function __construct(
+            array $properties = [],
+            string $name = Generator::UNDEFINED,
+            string $description = Generator::UNDEFINED,
+            ?ExternalDocumentation $externalDocs = null,
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'name' => $name,
+                    'description' => $description,
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($externalDocs, $attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class Tag extends AbstractTag
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

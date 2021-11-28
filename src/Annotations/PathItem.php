@@ -9,13 +9,16 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @Annotation
- * A "Path Item Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#path-item-object
+ * A "Path Item Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#path-item-object.
+ *
  * Describes the operations available on a single path.
+ *
  * A Path Item may be empty, due to ACL constraints.
  * The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
+ *
+ * @Annotation
  */
-class PathItem extends AbstractAnnotation
+abstract class AbstractPathItem extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -117,6 +120,7 @@ class PathItem extends AbstractAnnotation
      */
     public static $_types = [
         'path' => 'string',
+        'summary' => 'string',
     ];
 
     /**
@@ -132,6 +136,7 @@ class PathItem extends AbstractAnnotation
         Head::class => 'head',
         Options::class => 'options',
         Parameter::class => ['parameters'],
+        PathParameter::class => ['parameters'],
         Server::class => ['servers'],
         Attachable::class => ['attachables'],
     ];
@@ -142,4 +147,35 @@ class PathItem extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_CLASS)]
+    class PathItem extends AbstractPathItem
+    {
+        public function __construct(
+            array $properties = [],
+            ?array $x = null,
+            ?array $attachables = null
+        ) {
+            parent::__construct($properties + [
+                    'x' => $x ?? Generator::UNDEFINED,
+                    'value' => $this->combine($attachables),
+                ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    class PathItem extends AbstractPathItem
+    {
+        public function __construct(array $properties)
+        {
+            parent::__construct($properties);
+        }
+    }
 }

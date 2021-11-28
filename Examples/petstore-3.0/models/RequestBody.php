@@ -17,6 +17,7 @@
  *     )
  * )
  */
+class PetRequestBody {}
 
 /**
  * @OA\RequestBody(
@@ -29,3 +30,4 @@
  *     )
  * )
  */
+class UserArrayRequestBody {}

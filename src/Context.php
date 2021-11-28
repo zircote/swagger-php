@@ -6,7 +6,7 @@
 
 namespace OpenApi;
 
-use OpenApi\Logger\DefaultLogger;
+use OpenApi\Loggers\DefaultLogger;
 
 /**
  * Context.
@@ -42,6 +42,7 @@ use OpenApi\Logger\DefaultLogger;
  * @property Annotations\AbstractAnnotation   $nested
  * @property Annotations\AbstractAnnotation[] $annotations
  * @property \Psr\Log\LoggerInterface         $logger      Guaranteed to be set when using the `Generator`
+ * @property array                            $scanned     Details of file scanner when using ReflectionAnalyser
  */
 class Context
 {
@@ -210,6 +211,7 @@ class Context
         if (!$summary) {
             return Generator::UNDEFINED;
         }
+
         if (false !== ($substr = substr($this->phpdocContent(), strlen($summary)))) {
             $description = trim($substr);
         } else {
@@ -229,6 +231,10 @@ class Context
      */
     public function phpdocContent()
     {
+        if ($this->comment === Generator::UNDEFINED) {
+            return Generator::UNDEFINED;
+        }
+
         $comment = preg_split('/(\n|\r\n)/', (string) $this->comment);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;

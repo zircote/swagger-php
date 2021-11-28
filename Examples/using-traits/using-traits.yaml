@@ -7,7 +7,7 @@ paths:
     delete:
       tags:
         - Entities
-      operationId: 372df3207489872fd3c775f623f8340f
+      operationId: 341f63c1bb8a9c0c0392b112a967a05f
       parameters:
         -
           name: id
@@ -23,7 +23,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 569395beea865794cbde04d55c0ba4a2
+      operationId: 1395fb672d283f343885d77e3a1ce8a5
       parameters:
         -
           name: product_id
@@ -67,7 +67,7 @@ components:
       title: 'Bells trait'
       properties:
         bell:
-          description: 'The bell.'
+          description: 'The bell (clashes with Product::bell).'
           example: chime
       type: object
     Whistles:

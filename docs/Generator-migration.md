@@ -1,21 +1,7 @@
 # Using the `Generator`
 
 ## Motivation
-
-Code to perform a fully customized scan using `swagger-php` so far required to use 3 separate static elements:
-1. `\OpenApi\scan()`
-   
-    The function to scan for OpenApi annotations.
-1. `Analyser::$whitelist`
-  
-    List of namespaces that should be detected by the doctrine annotation parser.
-1. `Analyser::$defaultImports`
-
-    Imports to be set on the used doctrine `DocParser`.
-    Allows to pre-define annotation namespaces. The `@OA` namespace, for example, is configured
-    as `['oa' => 'OpenApi\\Annotations']`. 
-
-The new `Generator` class provides an object-oriented way to use `swagger-php` and all its aspects in a single place.
+The `Generator` class provides an object-oriented way to use `swagger-php` and all its aspects in a single place.
 
 ## The `\OpenApi\scan()` function
 
@@ -45,7 +31,7 @@ require("vendor/autoload.php");
 $openapi = \OpenApi\scan(__DIR__, ['exclude' => ['tests'], 'pattern' => '*.php']);
 ```
 
-The two configuration options for the underlying Doctrine doc-block parser `Analyser::$whitelist` and `Analyser::$defaultImports`
+The two configuration options for the underlying Doctrine doc-block parser `aliases` and `namespaces`
 are not part of this function and need to be set separately. 
 
 Being static this means setting them back is the callers responsibility and there is also the fact that 
@@ -55,7 +41,7 @@ Therefore, having a single side-effect free way of using swwagger-php seemed lik
 
 ## The `\OpenApi\Generator` class
 
-The new `Generator` class can  be used in object-oriented (and fluent) style which allows for easy customization
+The `Generator` class can  be used in object-oriented (and fluent) style which allows for easy customization
 if needed.
 
 In that case to actually process the given input files the **non-static** method `generate()` is to be used.
@@ -73,13 +59,23 @@ $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in
 $openapi = (new \OpenApi\Generator($logger))
             ->setProcessors($processors)
             ->setAliases(['MY' => 'My\Annotations'])
-            ->setAnalyser(new \OpenApi\StaticAnalyser())
             ->setNamespaces(['My\\Annotations\\'])
+            ->setAnalyser(new \OpenApi\Analysers\TokenAnalyser())
             ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis(), $validate);
 ```
 
-The `aliases` property corresponds to the now also deprecated static `Analyser::$defaultImports`,
-`namespaces` to `Analysis::$whitelist`.
+`Aliases` and `namespaces` are additional options that allow to customize the parsing of docblocks.
+
+Defaults:
+* **aliases**: `['oa' => 'OpenApi\\Annotations']`
+
+  Aliases help the underlying `doctrine annotations library` to parse annotations. Effectively they avoid having
+  to write `use OpenApi\Annotations as OA;` in your code and make `@OA\property(..)` annotations still work.
+
+* **namespaces**: `['OpenApi\\Annotations\\']`
+
+  Namespaces control which annotation namespaces can be autoloaded automatically. Under the hood this
+  is handled by registering a custom loader with the `doctrine annotation library`.
 
 Advantages:
 * The `Generator` code will handle configuring things as before in a single place
@@ -137,13 +133,13 @@ echo $openapi->toYaml();
      *                          * \SplFileInfo
      *                          * \Symfony\Component\Finder\Finder
      * @param array    $options
-     *                          aliases:    null|array                    Defaults to `Analyser::$defaultImports`.
-     *                          namespaces: null|array                    Defaults to `Analyser::$whitelist`.
-     *                          analyser:   null|StaticAnalyser           Defaults to a new `StaticAnalyser`.
+     *                          aliases:    null|array                    Defaults to `['oa' => 'OpenApi\\Annotations']`.
+     *                          namespaces: null|array                    Defaults to `['OpenApi\\Annotations\\']`.
+     *                          analyser:   null|AnalyserInterface        Defaults to a new `ReflectionAnalyser` supporting both docblocks and attributes.
      *                          analysis:   null|Analysis                 Defaults to a new `Analysis`.
      *                          processors: null|array                    Defaults to `Analysis::processors()`.
-     *                          validate:   bool                          Defaults to `true`.
      *                          logger:     null|\Psr\Log\LoggerInterface If not set logging will use \OpenApi\Logger as before.
+     *                          validate:   bool                          Defaults to `true`.
      */
     public static function scan(iterable $sources, array $options = []): OpenApi { /* ... */ }
 ```

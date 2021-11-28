@@ -9,20 +9,6 @@ namespace OpenApi;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Schema;
-use OpenApi\Processors\AugmentParameters;
-use OpenApi\Processors\AugmentProperties;
-use OpenApi\Processors\AugmentSchemas;
-use OpenApi\Processors\BuildPaths;
-use OpenApi\Processors\CleanUnmerged;
-use OpenApi\Processors\DocBlockDescriptions;
-use OpenApi\Processors\ExpandInterfaces;
-use OpenApi\Processors\ExpandClasses;
-use OpenApi\Processors\ExpandTraits;
-use OpenApi\Processors\MergeIntoComponents;
-use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\Processors\MergeJsonContent;
-use OpenApi\Processors\MergeXmlContent;
-use OpenApi\Processors\OperationId;
 
 /**
  * Result of the analyser.
@@ -70,13 +56,6 @@ class Analysis
      */
     public $context;
 
-    /**
-     * Registry for the post-processing operations.
-     *
-     * @var callable[]
-     */
-    private static $processors;
-
     public function __construct(array $annotations = [], Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();
@@ -85,20 +64,19 @@ class Analysis
         $this->addAnnotations($annotations, $context);
     }
 
-    public function addAnnotation($annotation, ?Context $context): void
+    public function addAnnotation($annotation, Context $context): void
     {
         if ($this->annotations->contains($annotation)) {
             return;
         }
-        if ($annotation instanceof AbstractAnnotation) {
-            $context = $annotation->_context ?: $this->context;
-            if ($this->openapi === null && $annotation instanceof OpenApi) {
-                $this->openapi = $annotation;
-            }
+
+        if ($annotation instanceof OpenApi) {
+            $this->openapi = $this->openapi ?: $annotation;
         } else {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
+
             if (in_array($annotation, $context->annotations, true) === false) {
                 $context->annotations[] = $annotation;
             }
@@ -125,7 +103,7 @@ class Analysis
         }
     }
 
-    public function addAnnotations(array $annotations, ?Context $context): void
+    public function addAnnotations(array $annotations, Context $context): void
     {
         foreach ($annotations as $annotation) {
             $this->addAnnotation($annotation, $context);
@@ -426,81 +404,16 @@ class Analysis
     /**
      * Apply the processor(s).
      *
-     * @param \Closure|\Closure[] $processors One or more processors
+     * @param callable|callable[] $processors One or more processors
      */
     public function process($processors = null): void
     {
-        if ($processors === null) {
-            // Use the default and registered processors.
-            $processors = self::processors();
-        }
         if (is_array($processors) === false && is_callable($processors)) {
             $processors = [$processors];
         }
         foreach ($processors as $processor) {
             $processor($this);
         }
-    }
-
-    /**
-     * Get direct access to the processors array.
-     *
-     * @return array reference
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function &processors()
-    {
-        if (!self::$processors) {
-            // Add default processors.
-            self::$processors = [
-                new DocBlockDescriptions(),
-                new MergeIntoOpenApi(),
-                new MergeIntoComponents(),
-                new ExpandClasses(),
-                new ExpandInterfaces(),
-                new ExpandTraits(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new BuildPaths(),
-                new AugmentParameters(),
-                new MergeJsonContent(),
-                new MergeXmlContent(),
-                new OperationId(),
-                new CleanUnmerged(),
-            ];
-        }
-
-        return self::$processors;
-    }
-
-    /**
-     * Register a processor.
-     *
-     * @param \Closure $processor
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function registerProcessor($processor): void
-    {
-        array_push(self::processors(), $processor);
-    }
-
-    /**
-     * Unregister a processor.
-     *
-     * @param \Closure $processor
-     *
-     * @deprecated Superseded by `Generator` methods
-     */
-    public static function unregisterProcessor($processor): void
-    {
-        $processors = &self::processors();
-        $key = array_search($processor, $processors, true);
-        if ($key === false) {
-            throw new \Exception('Given processor was not registered');
-        }
-        unset($processors[$key]);
     }
 
     public function validate(): bool

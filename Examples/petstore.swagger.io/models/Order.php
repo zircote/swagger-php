@@ -1,6 +1,6 @@
 <?php
 
-namespace PetstoreIO;
+namespace OpenApi\Examples\PetstoreSwaggerIo;
 
 /**
  * @OA\Schema(@OA\Xml(name="Order"))

@@ -1,9 +1,13 @@
 #!/usr/bin/env php
 <?php
 
+use OpenApi\Analysers\AttributeAnnotationFactory;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
+use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
 use OpenApi\Util;
-use OpenApi\Logger\ConsoleLogger;
+use OpenApi\Loggers\ConsoleLogger;
 
 if (class_exists(Generator::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
@@ -17,6 +21,7 @@ error_reporting(E_ALL);
 
 // Possible options and their default values.
 $options = [
+    'legacy' => false,
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
@@ -27,6 +32,7 @@ $options = [
     'processor' => [],
 ];
 $aliases = [
+    'l' => 'legacy',
     'o' => 'output',
     'e' => 'exclude',
     'n' => 'pattern',
@@ -109,6 +115,7 @@ if ($options['help']) {
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
+  --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).
@@ -192,7 +199,13 @@ foreach ($options["processor"] as $processor) {
     $generator->addProcessor($processor);
 }
 
-$openapi = $generator->generate(Util::finder($paths, $exclude, $pattern));
+$analyser = $options['legacy']
+    ? new TokenAnalyser()
+    : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+
+$openapi = $generator
+    ->setAnalyser($analyser)
+    ->generate(Util::finder($paths, $exclude, $pattern));
 
 if ($logger->called()) {
     $logger->notice('', ['prefix' => '']);

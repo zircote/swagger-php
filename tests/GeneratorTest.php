@@ -6,12 +6,11 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Generator;
-use OpenApi\Logger;
 use OpenApi\Processors\OperationId;
 use OpenApi\Util;
-use Psr\Log\NullLogger;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -20,18 +19,11 @@ class GeneratorTest extends OpenApiTestCase
     public function sourcesProvider()
     {
         $sourceDir = self::SOURCE_DIR;
-        $sources = [
-            $sourceDir . '/SimplePet.php',
-            $sourceDir . '/SimplePetsController.php',
-            $sourceDir . '/api.php',
-        ];
 
-        return [
-            'dir-list' => [$sourceDir, [$sourceDir]],
-            'file-list' => [$sourceDir, $sources],
-            'finder' => [$sourceDir, Util::finder($sourceDir)],
-            'finder-list' => [$sourceDir, [Util::finder($sourceDir)]],
-        ];
+        yield 'dir-list' => [$sourceDir, [$sourceDir]];
+        yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/api.php"]];
+        yield 'finder' => [$sourceDir, Util::finder($sourceDir)];
+        yield 'finder-list' => [$sourceDir, [Util::finder($sourceDir)]];
     }
 
     /**
@@ -40,34 +32,10 @@ class GeneratorTest extends OpenApiTestCase
     public function testScan(string $sourceDir, iterable $sources)
     {
         $openapi = (new Generator())
-            ->scan($sources);
+            ->setAnalyser(new TokenAnalyser())
+            ->generate($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
-    }
-
-    public function testUsingPsrLogger()
-    {
-        Logger::getInstance()->log = function ($entry, $type) {
-            $this->fail('Wrong logger');
-        };
-
-        (new Generator(new NullLogger()))
-            ->setAliases(['swg' => 'OpenApi\Annotations'])
-            ->generate($this->fixtures('Deprecated.php'));
-    }
-
-    public function testUsingLegacyLogger()
-    {
-        $legacyLoggerCalled = false;
-        Logger::getInstance()->log = function ($entry, $type) use (&$legacyLoggerCalled) {
-            $legacyLoggerCalled = true;
-        };
-
-        (new Generator())
-            ->setAliases(['swg' => 'OpenApi\Annotations'])
-            ->generate($this->fixtures('Deprecated.php'));
-
-        $this->assertTrue($legacyLoggerCalled, 'Expected legacy logger to be called');
     }
 
     public function processorCases()
@@ -89,7 +57,7 @@ class GeneratorTest extends OpenApiTestCase
             ->updateProcessor($p);
         foreach ($generator->getProcessors() as $processor) {
             if ($processor instanceof OperationId) {
-                $this->assertSpecEquals($expected, $processor->isHash());
+                $this->assertEquals($expected, $processor->isHash());
             }
         }
     }
@@ -102,6 +70,22 @@ class GeneratorTest extends OpenApiTestCase
         });
 
         $this->assertLessThan(count($generator->getProcessors()), count($processors));
+    }
+
+    public function testAddAlias()
+    {
+        $generator = new Generator();
+        $generator->addAlias('foo', 'Foo\\Bar');
+
+        $this->assertEquals(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
+    }
+
+    public function testAddNamespace()
+    {
+        $generator = new Generator();
+        $generator->addNamespace('Foo\\Bar\\');
+
+        $this->assertEquals(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
     }
 
     public function testRemoveProcessor()

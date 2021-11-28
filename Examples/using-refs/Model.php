@@ -1,6 +1,6 @@
 <?php
 
-namespace UsingRefs;
+namespace OpenApi\Examples\UsingRefs;
 
 /**
  * @OA\Schema(description="A model")

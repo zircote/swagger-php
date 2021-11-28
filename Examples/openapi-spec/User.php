@@ -1,5 +1,8 @@
 <?php
-namespace OpenApi\LinkExample;
+
+namespace OpenApi\Examples\OpenapiSpec;
+
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(schema="user")

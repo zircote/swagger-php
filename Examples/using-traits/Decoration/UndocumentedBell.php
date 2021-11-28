@@ -1,8 +1,8 @@
 <?php
 
-namespace UsingTraits\Decoration;
+namespace OpenApi\Examples\UsingTraits\Decoration;
 
-trait UndocumentedBell {
-
+trait UndocumentedBell
+{
     public $undocumentedBell;
 }

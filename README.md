@@ -15,6 +15,7 @@ For a full list of supported annotations, please have look at the [`OpenApi\Anno
 - Command-line interface available.
 - [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Exceptional error reporting (with hints, context)
+- As of PHP 8.1 all annotations are also available as PHP attributes
 
 ## Installation (with [Composer](https://getcomposer.org))
 
@@ -67,6 +68,9 @@ The `openapi` command line interface can be used to generate the documentation t
 ```bash
 ./vendor/bin/openapi --help
 ```
+Starting with version 4 the default analyser used on the command line is the new `ReflectionAnalyser`.
+
+Using the `--legacy` flag (`-l`) the legacy `TokenAnalyser` can still be used.
 
 ### Usage from the Deserializer
 

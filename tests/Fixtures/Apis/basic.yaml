@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: 'Basic single file API'
+  license:
+    name: MIT
+  version: 1.0.0
+paths:
+  '/products/{product_id}':
+    get:
+      tags:
+        - products
+      operationId: getProducts
+      parameters:
+        -
+          name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '401':
+          description: oops
+  /products:
+    post:
+      tags:
+        - products
+      summary: 'Add products'
+      operationId: addProducts
+      requestBody:
+        description: 'New product'
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    NameTrait:
+      properties:
+        name:
+          description: 'The name.'
+      type: object
+    Product:
+      title: Product
+      description: Product
+      allOf:
+        -
+          properties:
+            id:
+              description: 'The id.'
+              format: int64
+              example: 1
+        -
+          $ref: '#/components/schemas/NameTrait'

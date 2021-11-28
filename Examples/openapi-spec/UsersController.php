@@ -1,6 +1,8 @@
 <?php
 
-namespace OpenApi\LinkExample;
+namespace OpenApi\Examples\OpenapiSpec;
+
+use OpenApi\Annotations as OA;
 
 /**
  * MVC controller that handles "users/*" urls.
