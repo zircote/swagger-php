@@ -13,7 +13,7 @@ use Psr\Log\LogLevel;
 
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         // BC: delegate to the static instance
         if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO, LogLevel::DEBUG])) {
