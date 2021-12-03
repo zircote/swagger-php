@@ -65,7 +65,7 @@ class OpenApiTestCase extends TestCase
                 $this->testCase = $testCase;
             }
 
-            public function log($level, $message, array $context = [])
+            public function log($level, $message, array $context = []): void
             {
                 if (count($this->testCase->expectedLogMessages)) {
                     list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);

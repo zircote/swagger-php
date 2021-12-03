@@ -12,7 +12,7 @@ use Psr\Log\LogLevel;
 
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if ($message instanceof \Exception) {
             $message = $message->getMessage();
