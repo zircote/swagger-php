@@ -29,7 +29,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setAnalyser(new TokenAnalyser())
-            ->generate([__DIR__ . '/Fixtures/Customer.php']);
+            ->generate([$this->fixture('Customer.php')]);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));

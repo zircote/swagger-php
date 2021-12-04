@@ -130,7 +130,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $generator = new Generator();
         $analyser = new TokenAnalyser();
         $analyser->setGenerator($generator);
-        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php', $this->getContext());
+        $defaultAnalysis = $analyser->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
@@ -138,7 +138,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $generator->addNamespace('AnotherNamespace\\Annotations\\');
         $openapi = $generator
             ->setAnalyser(new TokenAnalyser())
-            ->generate([__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php']);
+            ->generate([$this->fixture('ThirdPartyAnnotations.php')]);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
 

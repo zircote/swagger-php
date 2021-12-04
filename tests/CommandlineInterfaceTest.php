@@ -15,7 +15,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testStdout()
     {
-        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
         $yaml = implode(PHP_EOL, $output);
@@ -24,7 +24,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testOutputTofile()
     {
-        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        $path = $this->example('swagger-spec/petstore-simple');
         $filename = sys_get_temp_dir() . '/swagger-php-clitest.yaml';
         exec(__DIR__ . '/../bin/openapi --format yaml -o ' . escapeshellarg($filename) . ' ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
@@ -36,14 +36,14 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testAddProcessor()
     {
-        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --processor OperationId --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval);
     }
 
     public function testExcludeListWarning()
     {
-        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi -e foo,bar ' . escapeshellarg($path) . ' 2>&1', $output, $retval);
         $this->assertSame(1, $retval);
         $output = implode(PHP_EOL, $output);
@@ -52,7 +52,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
 
     public function testMissingArg()
     {
-        $path = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
+        $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi ' . escapeshellarg($path) . ' -e 2>&1', $output, $retval);
         $this->assertSame(1, $retval);
         $output = implode(PHP_EOL, $output);

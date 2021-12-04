@@ -182,6 +182,11 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
+    public function example(string $name): string
+    {
+        return __DIR__ . '/../Examples/' . $name;
+    }
+
     public function fixture(string $file): ?string
     {
         $fixtures = $this->fixtures([$file]);
@@ -198,7 +203,7 @@ class OpenApiTestCase extends TestCase
     {
         return array_map(function ($file) {
             return __DIR__ . '/Fixtures/' . $file;
-        }, (array) $files);
+        }, $files);
     }
 
     public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null): Analysis
