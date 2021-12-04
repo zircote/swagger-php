@@ -18,15 +18,15 @@ class AnalysisTest extends OpenApiTestCase
 
         $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
 
-        $subclasses = $analysis->getSubClasses('\OpenApi\Tests\Fixtures\ExpandClasses\GrandAncestor');
+        $subclasses = $analysis->getSubClasses('\\OpenApi\\Tests\\Fixtures\\ExpandClasses\\GrandAncestor');
         $this->assertCount(2, $subclasses, 'GrandAncestor has 2 subclasses');
         $this->assertSame(
-            ['\OpenApi\Tests\Fixtures\ExpandClasses\Ancestor', '\AnotherNamespace\Child'],
+            ['\\OpenApi\\Tests\\Fixtures\\ExpandClasses\\Ancestor', '\\AnotherNamespace\\Child'],
             array_keys($subclasses)
         );
         $this->assertSame(
             ['\AnotherNamespace\Child'],
-            array_keys($analysis->getSubClasses('\OpenApi\Tests\Fixtures\ExpandClasses\Ancestor'))
+            array_keys($analysis->getSubClasses('\\OpenApi\\Tests\\Fixtures\\ExpandClasses\\Ancestor'))
         );
     }
 

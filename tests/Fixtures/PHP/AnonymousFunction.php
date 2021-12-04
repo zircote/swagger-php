@@ -8,10 +8,9 @@ namespace OpenApi\Tests\Fixtures\PHP;
 
 use OpenApi\Annotations\Info;
 
-#[Info(
-    title: 'Foobar',
-    version: '1.0',
-)]
+/**
+ * @OA\Info(title="Foobar", version="1.0")
+ */
 class AnonymousFunction
 {
     public function index()

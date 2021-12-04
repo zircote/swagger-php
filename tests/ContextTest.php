@@ -17,11 +17,11 @@ class ContextTest extends OpenApiTestCase
         $context = Context::detect();
         $line = __LINE__ - 1;
         $this->assertSame('ContextTest', $context->class);
-        $this->assertSame('\OpenApi\Tests\ContextTest', $context->fullyQualifiedName($context->class));
+        $this->assertSame('\\OpenApi\\Tests\\ContextTest', $context->fullyQualifiedName($context->class));
         $this->assertSame('testDetect', $context->method);
         $this->assertSame(__FILE__, $context->filename);
         $this->assertSame($line, $context->line);
-        $this->assertSame('OpenApi\Tests', $context->namespace);
+        $this->assertSame('OpenApi\\Tests', $context->namespace);
     }
 
     public function testFullyQualifiedName()

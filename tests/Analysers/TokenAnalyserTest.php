@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Info;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
@@ -267,5 +268,14 @@ class TokenAnalyserTest extends OpenApiTestCase
         $properties = $analysis->getAnnotationsOfType(Property::class, true);
         $this->assertCount(1, $properties);
         $this->assertEquals('labels', $properties[0]->property);
+    }
+
+    public function testAnonymousFunction()
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunction.php'], [], new TokenAnalyser());
+        $analysis->process((new Generator())->getProcessors());
+
+        $infos = $analysis->getAnnotationsOfType(Info::class, true);
+        $this->assertCount(1, $infos);
     }
 }
