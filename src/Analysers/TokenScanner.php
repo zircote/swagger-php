@@ -45,13 +45,13 @@ class TokenScanner
                         break;
                     case '}':
                         --$curlyNested;
+                        if ($stack) {
+                            $last = array_pop($stack);
+                            if ($last[1] < $curlyNested) {
+                                $stack[] = $last;
+                            }
+                        }
                         break;
-                }
-                if ($stack) {
-                    $last = array_pop($stack);
-                    if ($last[1] < $curlyNested) {
-                        $stack[] = $last;
-                    }
                 }
                 continue;
             }
