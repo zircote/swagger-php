@@ -39,7 +39,7 @@
     "php": ">=7.2",
     "ext-json": "*",
     "doctrine/annotations": "^1.7",
-    "psr/log": "^1.1",
+    "psr/log": "^1.1 || ^2.0 || ^3.0",
     "symfony/finder": ">=2.2",
     "symfony/yaml": ">=3.3"
   },
