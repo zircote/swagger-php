@@ -270,9 +270,9 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertEquals('labels', $properties[0]->property);
     }
 
-    public function testAnonymousFunction()
+    public function testAnonymousFunctions()
     {
-        $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunction.php'], [], new TokenAnalyser());
+        $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunctions.php'], [], new TokenAnalyser());
         $analysis->process((new Generator())->getProcessors());
 
         $infos = $analysis->getAnnotationsOfType(Info::class, true);
