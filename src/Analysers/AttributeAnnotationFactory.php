@@ -25,7 +25,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
     public function build(\Reflector $reflector, Context $context): array
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (\PHP_VERSION_ID < 80100 || !method_exists($reflector, 'getAttributes')) {
             return [];
         }
 
@@ -45,7 +45,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                     foreach ($rp->getAttributes(PathParameter::class) as $attribute) {
                         $instance = $attribute->newInstance();
                         $instance->name = $rp->getName();
-                        if ($rnt = $rp->getType()) {
+                        if (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) {
                             $instance->schema = new Schema(['type' => $rnt->getName(), '_context' => new Context(['nested' => $this], $context)]);
                         }
                         $annotations[] = $instance;
