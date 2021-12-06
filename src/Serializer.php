@@ -58,7 +58,7 @@ class Serializer
 
     public static function isValidAnnotationClass($className)
     {
-        return in_array($className, static::$VALID_ANNOTATIONS);
+        return in_array($className, self::$VALID_ANNOTATIONS);
     }
 
     /**

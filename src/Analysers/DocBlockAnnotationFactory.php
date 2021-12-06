@@ -32,7 +32,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
     public function build(\Reflector $reflector, Context $context): array
     {
         $aliases = $this->generator ? $this->generator->getAliases() : [];
-        if (method_exists($reflector, 'getShortName')) {
+        if (method_exists($reflector, 'getShortName') && method_exists($reflector, 'getName')) {
             $aliases[strtolower($reflector->getShortName())] = $reflector->getName();
         }
 
@@ -44,7 +44,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         }
         $this->docBlockParser->setAliases($aliases);
 
-        if ($comment = $reflector->getDocComment()) {
+        if (method_exists($reflector, 'getDocComment') && ($comment = $reflector->getDocComment())) {
             return $this->docBlockParser->fromComment($comment, $context);
         }
 
