@@ -56,13 +56,13 @@ class ExamplesTest extends OpenApiTestCase
     public function testExamples($example, $spec, $analyser)
     {
         // register autoloader for examples that require autoloading due to inheritance, etc.
-        $path = __DIR__ . '/../Examples/' . $example;
+        $path = $this->example($example);
         $exampleNS = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $example)));
         $classloader = new ClassLoader();
         $classloader->addPsr4('OpenApi\\Examples\\' . $exampleNS . '\\', $path);
         $classloader->register();
 
-        $path = __DIR__ . '/../Examples/' . $example;
+        $path = $this->example($example);
         $openapi = (new Generator())
             ->setAnalyser($analyser)
             ->generate([$path], null, true);

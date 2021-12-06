@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Info;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
@@ -130,7 +131,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $generator = new Generator();
         $analyser = new TokenAnalyser();
         $analyser->setGenerator($generator);
-        $defaultAnalysis = $analyser->fromFile(__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php', $this->getContext());
+        $defaultAnalysis = $analyser->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
         $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
 
         // Allow the analyser to parse 3rd party annotations, which might
@@ -138,7 +139,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $generator->addNamespace('AnotherNamespace\\Annotations\\');
         $openapi = $generator
             ->setAnalyser(new TokenAnalyser())
-            ->generate([__DIR__ . '/../Fixtures/ThirdPartyAnnotations.php']);
+            ->generate([$this->fixture('ThirdPartyAnnotations.php')]);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);
 
@@ -267,5 +268,14 @@ class TokenAnalyserTest extends OpenApiTestCase
         $properties = $analysis->getAnnotationsOfType(Property::class, true);
         $this->assertCount(1, $properties);
         $this->assertEquals('labels', $properties[0]->property);
+    }
+
+    public function testAnonymousFunctions()
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunctions.php'], [], new TokenAnalyser());
+        $analysis->process((new Generator())->getProcessors());
+
+        $infos = $analysis->getAnnotationsOfType(Info::class, true);
+        $this->assertCount(1, $infos);
     }
 }

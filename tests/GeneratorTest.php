@@ -14,11 +14,9 @@ use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
-    const SOURCE_DIR = __DIR__ . '/../Examples/swagger-spec/petstore-simple';
-
-    public function sourcesProvider()
+    public function sourcesProvider(): iterable
     {
-        $sourceDir = self::SOURCE_DIR;
+        $sourceDir = $this->example('swagger-spec/petstore-simple');
 
         yield 'dir-list' => [$sourceDir, [$sourceDir]];
         yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/api.php"]];
@@ -38,7 +36,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
     }
 
-    public function processorCases()
+    public function processorCases(): iterable
     {
         return [
             [new OperationId(false), false],

@@ -33,7 +33,7 @@ class UtilTest extends OpenApiTestCase
         ];
         $openapi = (new Generator())
             ->setAnalyser(new TokenAnalyser())
-            ->generate(Util::finder(__DIR__ . '/Fixtures', $exclude));
+            ->generate(Util::finder($this->fixture(''), $exclude));
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }
 
@@ -50,10 +50,10 @@ class UtilTest extends OpenApiTestCase
     public function testFinder()
     {
         // Create a finder for one of the example directories that has a subdirectory.
-        $finder = (new Finder())->in(__DIR__ . '/../Examples/using-traits');
+        $finder = (new Finder())->in($this->example('using-traits'));
         $this->assertGreaterThan(0, iterator_count($finder), 'There should be at least a few files and a directory.');
         $finder_array = \iterator_to_array($finder);
-        $directory_path = __DIR__ . '/../Examples/using-traits/Decoration';
+        $directory_path = $this->example('using-traits/Decoration');
         $this->assertArrayHasKey($directory_path, $finder_array, 'The directory should be a path in the finder.');
         // Use the Util method that should set the finder to only find files, since swagger-php only needs files.
         $finder_result = Util::finder($finder);

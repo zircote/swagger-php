@@ -149,7 +149,7 @@ JSON;
     public function testPetstoreExample()
     {
         $serializer = new Serializer();
-        $spec = __DIR__ . '/../Examples/petstore.swagger.io/petstore.swagger.io.json';
+        $spec = $this->example('petstore.swagger.io/petstore.swagger.io.json');
         $openapi = $serializer->deserializeFile($spec);
         $this->assertInstanceOf(OpenApi::class, $openapi);
         $this->assertJsonStringEqualsJsonString(file_get_contents($spec), $openapi->toJson());

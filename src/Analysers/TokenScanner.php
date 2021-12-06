@@ -34,24 +34,17 @@ class TokenScanner
         $namespace = '';
         $currentName = null;
         $lastToken = null;
-        $curlyNested = 0;
         $stack = [];
 
         while (false !== ($token = $this->nextToken($tokens))) {
             if (!is_array($token)) {
                 switch ($token) {
                     case '{':
-                        ++$curlyNested;
+                        $stack[] = $token;
                         break;
                     case '}':
-                        --$curlyNested;
+                        array_pop($stack);
                         break;
-                }
-                if ($stack) {
-                    $last = array_pop($stack);
-                    if ($last[1] < $curlyNested) {
-                        $stack[] = $last;
-                    }
                 }
                 continue;
             }
@@ -79,6 +72,9 @@ class TokenScanner
                     // unless ...
                     if (is_string($token) && ($token === '(' || $token === '{')) {
                         // new class[()] { ... }
+                        if ('{' == $token) {
+                            prev($tokens);
+                        }
                         break;
                     } elseif (is_array($token) && in_array($token[1], ['extends', 'implements'])) {
                         // new class[()] extends { ... }
@@ -87,22 +83,19 @@ class TokenScanner
 
                     $isInterface = false;
                     $currentName = $namespace . '\\' . $token[1];
-                    $stack[] = [$currentName, $curlyNested];
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
                 case T_INTERFACE:
                     $isInterface = true;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
-                    $stack[] = [$currentName, $curlyNested];
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
                 case T_TRAIT:
                     $isInterface = false;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
-                    $this->skipTo($tokens, '{');
-                    $stack[] = [$currentName, $curlyNested++];
+                    $this->skipTo($tokens, '{', true);
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
                 case T_EXTENDS:
@@ -123,24 +116,21 @@ class TokenScanner
                 case T_FUNCTION:
                     $token = $this->nextToken($tokens);
 
-                    if (1 == count($stack)) {
-                        $name = $stack[0][0];
+                    if (1 == count($stack) && $currentName) {
                         if (!$isInterface) {
                             // more nesting
-                            $this->skipTo($tokens, '{');
-                            $stack[] = [$token[1], ++$curlyNested];
+                            $this->skipTo($tokens, '{', true);
                         } else {
                             // no function body
                             $this->skipTo($tokens, ';');
                         }
 
-                        $units[$name]['methods'][] = $token[1];
+                        $units[$currentName]['methods'][] = $token[1];
                     }
                     break;
                 case T_VARIABLE:
-                    if (1 == count($stack)) {
-                        $name = $stack[0][0];
-                        $units[$name]['properties'][] = substr($token[1], 1);
+                    if (1 == count($stack) && $currentName) {
+                        $units[$currentName]['properties'][] = substr($token[1], 1);
                     }
                     break;
             }
@@ -187,10 +177,14 @@ class TokenScanner
         return array_values(array_map($resolve, $names));
     }
 
-    protected function skipTo(array &$tokens, $char): void
+    protected function skipTo(array &$tokens, $char, bool $prev = false): void
     {
         while (false !== ($token = next($tokens))) {
             if (is_string($token) && $token == $char) {
+                if ($prev) {
+                    prev($tokens);
+                }
+
                 break;
             }
         }

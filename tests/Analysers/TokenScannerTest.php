@@ -18,35 +18,35 @@ class TokenScannerTest extends OpenApiTestCase
                 'Apis/DocBlocks/basic.php',
                 [
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\OpenApiSpec' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => [],
                         'properties' => [],
                     ],
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Product' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => ['OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductInterface'],
                         'traits' => ['OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\NameTrait'],
                         'methods' => [],
                         'properties' => ['id'],
                     ],
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductController' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => ['getProduct', 'addProduct'],
                         'properties' => [],
                     ],
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductInterface' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => [],
                         'properties' => [],
                     ],
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\NameTrait' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => [],
@@ -61,14 +61,14 @@ class TokenScannerTest extends OpenApiTestCase
             'php8' => [
                 'PHP/php8.php',
                 [
-                    'OpenApi\\Tests\Fixtures\\PHP\\MethodAttr' => [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\MethodAttr' => [
                         'uses' => [],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => [],
                         'properties' => [],
                     ],
-                    'OpenApi\Tests\\Fixtures\\PHP\\GenericAttr' => [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\GenericAttr' => [
                         'uses' => [],
                         'interfaces' => [],
                         'traits' => [],
@@ -112,7 +112,7 @@ class TokenScannerTest extends OpenApiTestCase
                 'CustomerInterface.php',
                 [
                     'OpenApi\\Tests\\Fixtures\\CustomerInterface' => [
-                        'uses' => ['OA' => 'OpenApi\Annotations'],
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => ['firstname', 'secondname', 'thirdname', 'fourthname', 'lastname', 'tags', 'submittedBy', 'friends', 'bestFriend'],
@@ -151,10 +151,22 @@ class TokenScannerTest extends OpenApiTestCase
                 'PHP/Php8NamedProperty.php',
                 [
                     'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedProperty' => [
-                        'uses' => ['Label' => 'OpenApi\Tests\Fixtures\PHP\Label'],
+                        'uses' => ['Label' => 'OpenApi\\Tests\\Fixtures\\PHP\\Label'],
                         'interfaces' => [],
                         'traits' => [],
                         'methods' => ['__construct'],
+                        'properties' => [],
+                    ],
+                ],
+            ],
+            'AnonymousFunctions' => [
+                'PHP/AnonymousFunctions.php',
+                [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
+                        'uses' => ['Info' => 'OpenApi\\Annotations\\Info'],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'methods' => ['index', 'query', 'other'],
                         'properties' => [],
                     ],
                 ],
