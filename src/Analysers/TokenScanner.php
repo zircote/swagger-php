@@ -49,6 +49,10 @@ class TokenScanner
                 continue;
             }
             switch ($token[0]) {
+                case T_CURLY_OPEN:
+                case T_DOLLAR_OPEN_CURLY_BRACES:
+                    $stack[] = $token[1];
+                    break;
                 case T_NAMESPACE:
                     $namespace = $this->nextWord($tokens);
                     break;

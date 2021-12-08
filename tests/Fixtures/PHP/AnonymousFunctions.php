@@ -13,9 +13,9 @@ use OpenApi\Annotations\Info;
  */
 class AnonymousFunctions
 {
-    public function index()
+    public function index($ding)
     {
-        array_map(function ($item) {
+        array_map(static function ($item) use ($ding) {
             return '';
         }, []);
     }
@@ -39,5 +39,47 @@ class AnonymousFunctions
                 $join->on('user.bar_id', 'bar.id');
             })
             ->get();
+    }
+
+    public function shortFn(): callable
+    {
+        return fn() => strlen("3");
+    }
+
+    public function staticShortFn(): callable
+    {
+        return static fn() => strlen("3");
+    }
+
+    public function withUse($foo): callable
+    {
+        return function () use ($foo) {
+            return false;
+        };
+    }
+
+    public function dollarCurly1(string $key = 'xx')
+    {
+        preg_replace("/:${key}/", 'y', 'abx');
+
+        $this->shortFn();
+    }
+
+    public function dollarCurly2(string $key = 'xx')
+    {
+        preg_replace("/:${key}/", 'y', 'abx');
+
+        array_map(static function ($issue) use ($key) {
+            return $issue;
+        }, []);
+    }
+
+    public function curlyOpen(string $key = 'xx')
+    {
+        $s = "a {$key}";
+
+        array_map(static function ($issue) use ($key) {
+            return $issue;
+        }, []);
     }
 }
