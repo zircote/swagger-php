@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
+use PHPUnit\Framework\TestCase;
+
 $a = new class {
     public function foo()
     {
@@ -57,3 +59,5 @@ $f = new class() implements i2 {
 function deng()
 {
 }
+
+$foo = TestCase::class;

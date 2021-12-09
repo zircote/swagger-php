@@ -159,6 +159,18 @@ class TokenScannerTest extends OpenApiTestCase
                     ],
                 ],
             ],
+            'Php8NamedArguments' => [
+                'PHP/Php8NamedArguments.php',
+                [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedArguments' => [
+                        'uses' => [],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'methods' => ['useFoo', 'foo'],
+                        'properties' => [],
+                    ],
+                ],
+            ],
             'AnonymousFunctions' => [
                 'PHP/AnonymousFunctions.php',
                 [

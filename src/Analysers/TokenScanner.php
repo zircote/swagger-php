@@ -48,14 +48,17 @@ class TokenScanner
                 }
                 continue;
             }
+
             switch ($token[0]) {
                 case T_CURLY_OPEN:
                 case T_DOLLAR_OPEN_CURLY_BRACES:
                     $stack[] = $token[1];
                     break;
+
                 case T_NAMESPACE:
                     $namespace = $this->nextWord($tokens);
                     break;
+
                 case T_USE:
                     if (!$stack) {
                         $uses = array_merge($uses, $this->parseFQNStatement($tokens, $token));
@@ -64,7 +67,12 @@ class TokenScanner
                         $units[$currentName]['traits'] = array_merge($units[$currentName]['traits'], $traits);
                     }
                     break;
+
                 case T_CLASS:
+                    if ($stack) {
+                        break;
+                    }
+
                     if ($lastToken && is_array($lastToken) && $lastToken[0] === T_DOUBLE_COLON) {
                         // ::class
                         break;
@@ -89,19 +97,30 @@ class TokenScanner
                     $currentName = $namespace . '\\' . $token[1];
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
+
                 case T_INTERFACE:
+                    if ($stack) {
+                        break;
+                    }
+
                     $isInterface = true;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
+
                 case T_TRAIT:
+                    if ($stack) {
+                        break;
+                    }
+
                     $isInterface = false;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
                     $this->skipTo($tokens, '{', true);
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
+
                 case T_EXTENDS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($isInterface && $currentName) {
@@ -117,6 +136,7 @@ class TokenScanner
                         $units[$currentName]['interfaces'] = $this->resolveFQN($fqns, $namespace, $uses);
                     }
                     break;
+
                 case T_FUNCTION:
                     $token = $this->nextToken($tokens);
 
@@ -128,10 +148,10 @@ class TokenScanner
                             // no function body
                             $this->skipTo($tokens, ';');
                         }
-
                         $units[$currentName]['methods'][] = $token[1];
                     }
                     break;
+
                 case T_VARIABLE:
                     if (1 == count($stack) && $currentName) {
                         $units[$currentName]['properties'][] = substr($token[1], 1);
