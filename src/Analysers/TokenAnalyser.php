@@ -135,6 +135,11 @@ class TokenAnalyser implements AnalyserInterface
                     continue;
                 }
 
+                if (!is_array($token)) {
+                    // PHP 8 named argument
+                    continue;
+                }
+
                 $interfaceDefinition = false;
                 $traitDefinition = false;
 
@@ -177,6 +182,12 @@ class TokenAnalyser implements AnalyserInterface
                 $traitDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
+
+                if (!is_array($token)) {
+                    // PHP 8 named argument
+                    continue;
+                }
+
                 $schemaContext = new Context(['interface' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($interfaceDefinition) {
                     $analysis->addInterfaceDefinition($interfaceDefinition);
@@ -211,6 +222,12 @@ class TokenAnalyser implements AnalyserInterface
                 $interfaceDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
+
+                if (!is_array($token)) {
+                    // PHP 8 named argument
+                    continue;
+                }
+
                 $schemaContext = new Context(['trait' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($traitDefinition) {
                     $analysis->addTraitDefinition($traitDefinition);

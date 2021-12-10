@@ -278,4 +278,16 @@ class TokenAnalyserTest extends OpenApiTestCase
         $infos = $analysis->getAnnotationsOfType(Info::class, true);
         $this->assertCount(1, $infos);
     }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testPhp8NamedArguments()
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/Php8NamedArguments.php'], [], new TokenAnalyser());
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
+        $this->assertCount(1, $schemas);
+        $analysis->process((new Generator())->getProcessors());
+    }
 }
