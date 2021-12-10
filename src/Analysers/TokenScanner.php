@@ -33,6 +33,7 @@ class TokenScanner
         $isInterface = false;
         $namespace = '';
         $currentName = null;
+        $unitLevel = 0;
         $lastToken = null;
         $stack = [];
 
@@ -44,6 +45,9 @@ class TokenScanner
                         break;
                     case '}':
                         array_pop($stack);
+                        if (count($stack) == $unitLevel) {
+                            $currentName = null;
+                        }
                         break;
                 }
                 continue;
@@ -69,7 +73,7 @@ class TokenScanner
                     break;
 
                 case T_CLASS:
-                    if ($stack) {
+                    if ($currentName) {
                         break;
                     }
 
@@ -95,28 +99,31 @@ class TokenScanner
 
                     $isInterface = false;
                     $currentName = $namespace . '\\' . $token[1];
+                    $unitLevel = count($stack);
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
 
                 case T_INTERFACE:
-                    if ($stack) {
+                    if ($currentName) {
                         break;
                     }
 
                     $isInterface = true;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
+                    $unitLevel = count($stack);
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
 
                 case T_TRAIT:
-                    if ($stack) {
+                    if ($currentName) {
                         break;
                     }
 
                     $isInterface = false;
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
+                    $unitLevel = count($stack);
                     $this->skipTo($tokens, '{', true);
                     $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
                     break;
@@ -129,7 +136,7 @@ class TokenScanner
                     if (!is_array($token) || T_IMPLEMENTS !== $token[0]) {
                         break;
                     }
-                    // no break
+                // no break
                 case T_IMPLEMENTS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($currentName) {
@@ -140,7 +147,7 @@ class TokenScanner
                 case T_FUNCTION:
                     $token = $this->nextToken($tokens);
 
-                    if (1 == count($stack) && $currentName) {
+                    if (($unitLevel + 1) == count($stack) && $currentName) {
                         if (!$isInterface) {
                             // more nesting
                             $this->skipTo($tokens, '{', true);
@@ -153,7 +160,7 @@ class TokenScanner
                     break;
 
                 case T_VARIABLE:
-                    if (1 == count($stack) && $currentName) {
+                    if (($unitLevel + 1) == count($stack) && $currentName) {
                         $units[$currentName]['properties'][] = substr($token[1], 1);
                     }
                     break;

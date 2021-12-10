@@ -191,6 +191,44 @@ class TokenScannerTest extends OpenApiTestCase
                     ],
                 ],
             ],
+            'namespaces1' => [
+                'PHP/namespaces1.php',
+                [
+                    'Foo\\FooClass' => [
+                        'uses' => [],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'methods' => [],
+                        'properties' => [],
+                    ],
+                    'Bar\\BarClass' => [
+                        'uses' => [],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'methods' => [],
+                        'properties' => [],
+                    ],
+                ],
+                'namespaces2' => [
+                    'PHP/namespaces2.php',
+                    [
+                        'Foo\\FooClass' => [
+                            'uses' => [],
+                            'interfaces' => [],
+                            'traits' => [],
+                            'methods' => [],
+                            'properties' => [],
+                        ],
+                        'Bar\\BarClass' => [
+                            'uses' => [],
+                            'interfaces' => [],
+                            'traits' => [],
+                            'methods' => [],
+                            'properties' => [],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
