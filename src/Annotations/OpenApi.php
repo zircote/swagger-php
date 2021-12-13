@@ -17,8 +17,7 @@ use OpenApi\Util;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
-class AbstractOpenApi extends AbstractAnnotation
+class OpenApi extends AbstractAnnotation
 {
     public const DEFAULT_VERSION = '3.0.0';
     /**
@@ -39,7 +38,8 @@ class AbstractOpenApi extends AbstractAnnotation
 
     /**
      * An array of Server Objects, which provide connectivity information to a target server.
-     * If the servers property is not provided, or is an empty array, the default value would be a Server Object with a url value of /.
+     * If the servers property is not provided, or is an empty array, the default value would be a Server Object with a
+     * url value of /.
      *
      * @var Server[]
      */
@@ -216,42 +216,5 @@ class AbstractOpenApi extends AbstractAnnotation
         }
 
         throw new \Exception('$ref "' . $unresolved . '" not found');
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class OpenApi extends AbstractOpenApi
-    {
-        public function __construct(
-            array $properties = [],
-            string $openapi = self::DEFAULT_VERSION,
-            ?Info $info = null,
-            ?array $servers = null,
-            ?array $tags = null,
-            ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'openapi' => $openapi,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($info, $servers, $tags, $externalDocs, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class OpenApi extends AbstractOpenApi
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

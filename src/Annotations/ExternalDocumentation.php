@@ -11,11 +11,12 @@ use OpenApi\Generator;
 /**
  * Allows referencing an external resource for extended documentation.
  *
- * A "External Documentation Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
+ * A "External Documentation Object":
+ * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object
  *
  * @Annotation
  */
-abstract class AbstractExternalDocumentation extends AbstractAnnotation
+class ExternalDocumentation extends AbstractAnnotation
 {
     /**
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
@@ -73,39 +74,4 @@ abstract class AbstractExternalDocumentation extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class ExternalDocumentation extends AbstractExternalDocumentation
-    {
-        public function __construct(
-            array $properties = [],
-            string $description = Generator::UNDEFINED,
-            string $url = Generator::UNDEFINED,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'description' => $description,
-                    'url' => $url,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class ExternalDocumentation extends AbstractExternalDocumentation
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

@@ -11,11 +11,12 @@ use OpenApi\Generator;
 /**
  * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#response-object.
  *
- * Describes a single response from an API Operation, including design-time, static links to operations based on the response.
+ * Describes a single response from an API Operation, including design-time, static links to operations based on the
+ * response.
  *
  * @Annotation
  */
-abstract class AbstractResponse extends AbstractAnnotation
+class Response extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -51,7 +52,8 @@ abstract class AbstractResponse extends AbstractAnnotation
     /**
      * A map containing descriptions of potential response payloads.
      * The key is a media type or media type range and the value describes it.
-     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides text/*.
+     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides
+     * text/*.
      *
      * @var MediaType[]
      */
@@ -59,7 +61,8 @@ abstract class AbstractResponse extends AbstractAnnotation
 
     /**
      * A map of operations links that can be followed from the response.
-     * The key of the map is a short name for the link, following the naming constraints of the names for Component Objects.
+     * The key of the map is a short name for the link, following the naming constraints of the names for Component
+     * Objects.
      *
      * @var array
      */
@@ -102,41 +105,4 @@ abstract class AbstractResponse extends AbstractAnnotation
         Options::class,
         Trace::class,
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-    class Response extends AbstractResponse
-    {
-        public function __construct(
-            array $properties = [],
-            $response = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            $content = Generator::UNDEFINED,
-            ?array $links = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'response' => $response,
-                    'description' => $description,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($content, $links, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Response extends AbstractResponse
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

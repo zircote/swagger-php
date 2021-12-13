@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractInfo extends AbstractAnnotation
+class Info extends AbstractAnnotation
 {
     /**
      * The title of the application.
@@ -90,45 +90,4 @@ abstract class AbstractInfo extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Info extends AbstractInfo
-    {
-        public function __construct(
-            array $properties = [],
-            string $version = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $title = Generator::UNDEFINED,
-            string $termsOfService = Generator::UNDEFINED,
-            ?Contact $contact = null,
-            ?License $license = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'version' => $version,
-                    'description' => $description,
-                    'title' => $title,
-                    'termsOfService' => $termsOfService,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($contact, $license, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Info extends AbstractInfo
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

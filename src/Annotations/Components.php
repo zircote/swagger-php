@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractComponents extends AbstractAnnotation
+class Components extends AbstractAnnotation
 {
     /**
      * Schema reference.
@@ -110,31 +110,4 @@ abstract class AbstractComponents extends AbstractAnnotation
         Link::class => ['links', 'link'],
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Components extends AbstractComponents
-    {
-        public function __construct(
-            array $properties = []
-        ) {
-            parent::__construct($properties + [
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Components extends AbstractComponents
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

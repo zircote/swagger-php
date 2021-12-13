@@ -15,7 +15,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractLicense extends AbstractAnnotation
+class License extends AbstractAnnotation
 {
     /**
      * The license name used for the API.
@@ -57,39 +57,4 @@ abstract class AbstractLicense extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class License extends AbstractLicense
-    {
-        public function __construct(
-            array $properties = [],
-            string $name = Generator::UNDEFINED,
-            string $url = Generator::UNDEFINED,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'name' => $name,
-                    'url' => $url,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class License extends AbstractLicense
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

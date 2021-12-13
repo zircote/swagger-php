@@ -19,7 +19,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractSchema extends AbstractAnnotation
+class Schema extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -36,7 +36,8 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $schema = Generator::UNDEFINED;
 
     /**
-     * Can be used to decorate a user interface with information about the data produced by this user interface. preferrably be short.
+     * Can be used to decorate a user interface with information about the data produced by this user interface.
+     * preferrably be short.
      *
      * @var string
      */
@@ -50,21 +51,24 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the value of this property.
+     * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the
+     * value of this property.
      *
      * @var int
      */
     public $maxProperties = Generator::UNDEFINED;
 
     /**
-     * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to, the value of this property.
+     * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to,
+     * the value of this property.
      *
      * @var int
      */
     public $minProperties = Generator::UNDEFINED;
 
     /**
-     * An object instance is valid against this property if its property set contains all elements in this property's array value.
+     * An object instance is valid against this property if its property set contains all elements in this property's
+     * array value.
      *
      * @var string[]
      */
@@ -76,7 +80,8 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $properties = Generator::UNDEFINED;
 
     /**
-     * The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
+     * The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or
+     * "object".
      *
      * @var string
      */
@@ -97,12 +102,17 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $items = Generator::UNDEFINED;
 
     /**
-     * @var string Determines the format of the array if type array is used. Possible values are: csv - comma separated values foo,bar. ssv - space separated values foo bar. tsv - tab separated values foo\tbar. pipes - pipe separated values foo|bar. multi - corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz. This is valid only for parameters in "query" or "formData". Default value is csv.
+     * @var string Determines the format of the array if type array is used. Possible values are: csv - comma separated
+     *             values foo,bar. ssv - space separated values foo bar. tsv - tab separated values foo\tbar. pipes - pipe
+     *             separated values foo|bar. multi - corresponds to multiple parameter instances instead of multiple values
+     *             for a single instance foo=bar&foo=baz. This is valid only for parameters in "query" or "formData". Default
+     *             value is csv.
      */
     public $collectionFormat = Generator::UNDEFINED;
 
     /**
-     * Sets a default value to the parameter. The type of the value depends on the defined type. See http://json-schema.org/latest/json-schema-validation.html#anchor101.
+     * Sets a default value to the parameter. The type of the value depends on the defined type. See
+     * http://json-schema.org/latest/json-schema-validation.html#anchor101.
      */
     public $default = Generator::UNDEFINED;
 
@@ -184,7 +194,8 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $enum = Generator::UNDEFINED;
 
     /**
-     * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this property's value is an integer.
+     * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this
+     * property's value is an integer.
      *
      * @var number
      */
@@ -192,8 +203,8 @@ abstract class AbstractSchema extends AbstractAnnotation
 
     /**
      * Adds support for polymorphism.
-     * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
-     * See Composition and Inheritance for more details.
+     * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the
+     * payload description. See Composition and Inheritance for more details.
      *
      * @var Discriminator
      */
@@ -203,9 +214,9 @@ abstract class AbstractSchema extends AbstractAnnotation
      * Relevant only for Schema "properties" definitions.
      * Declares the property as "read only".
      * This means that it may be sent as part of a response but should not be sent as part of the request.
-     * If the property is marked as readOnly being true and is in the required list, the required will take effect on the response only.
-     * A property must not be marked as both readOnly and writeOnly being true.
-     * Default value is false.
+     * If the property is marked as readOnly being true and is in the required list, the required will take effect on
+     * the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is
+     * false.
      *
      * @var bool
      */
@@ -215,9 +226,9 @@ abstract class AbstractSchema extends AbstractAnnotation
      * Relevant only for Schema "properties" definitions.
      * Declares the property as "write only".
      * Therefore, it may be sent as part of a request but should not be sent as part of the response.
-     * If the property is marked as writeOnly being true and is in the required list, the required will take effect on the request only.
-     * A property must not be marked as both readOnly and writeOnly being true.
-     * Default value is false.
+     * If the property is marked as writeOnly being true and is in the required list, the required will take effect on
+     * the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is
+     * false.
      *
      * @var bool
      */
@@ -241,7 +252,8 @@ abstract class AbstractSchema extends AbstractAnnotation
 
     /**
      * A free-form property to include an example of an instance for this schema.
-     * To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to contain the example with escaping where necessary.
+     * To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to
+     * contain the example with escaping where necessary.
      */
     public $example = Generator::UNDEFINED;
 
@@ -262,21 +274,24 @@ abstract class AbstractSchema extends AbstractAnnotation
     public $deprecated = Generator::UNDEFINED;
 
     /**
-     * An instance validates successfully against this property if it validates successfully against all schemas defined by this property's value.
+     * An instance validates successfully against this property if it validates successfully against all schemas
+     * defined by this property's value.
      *
      * @var Schema[]
      */
     public $allOf = Generator::UNDEFINED;
 
     /**
-     * An instance validates successfully against this property if it validates successfully against at least one schema defined by this property's value.
+     * An instance validates successfully against this property if it validates successfully against at least one
+     * schema defined by this property's value.
      *
      * @var Schema[]
      */
     public $anyOf = Generator::UNDEFINED;
 
     /**
-     * An instance validates successfully against this property if it validates successfully against exactly one schema defined by this property's value.
+     * An instance validates successfully against this property if it validates successfully against exactly one schema
+     * defined by this property's value.
      *
      * @var Schema[]
      */
@@ -382,54 +397,5 @@ abstract class AbstractSchema extends AbstractAnnotation
         }
 
         return parent::validate($parents, $skip, $ref);
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
-    class Schema extends AbstractSchema
-    {
-        public function __construct(
-            array $properties = [],
-            string $schema = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $title = Generator::UNDEFINED,
-            string $type = Generator::UNDEFINED,
-            string $format = Generator::UNDEFINED,
-            string $ref = Generator::UNDEFINED,
-            ?Items $items = null,
-            ?array $enum = null,
-            ?bool $deprecated = null,
-            ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'schema' => $schema,
-                    'description' => $description,
-                    'title' => $title,
-                    'type' => $type,
-                    'format' => $format,
-                    'ref' => $ref,
-                    'enum' => $enum ?? Generator::UNDEFINED,
-                    'deprecated' => $deprecated ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($externalDocs, $items, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Schema extends AbstractSchema
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

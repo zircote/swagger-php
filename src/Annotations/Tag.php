@@ -13,7 +13,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractTag extends AbstractAnnotation
+class Tag extends AbstractAnnotation
 {
     /**
      * The name of the tag.
@@ -63,40 +63,4 @@ abstract class AbstractTag extends AbstractAnnotation
         ExternalDocumentation::class => 'externalDocs',
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Tag extends AbstractTag
-    {
-        public function __construct(
-            array $properties = [],
-            string $name = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'name' => $name,
-                    'description' => $description,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($externalDocs, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Tag extends AbstractTag
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

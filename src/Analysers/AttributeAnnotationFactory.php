@@ -7,9 +7,9 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\Attachable;
-use OpenApi\Annotations\PathParameter;
 use OpenApi\Annotations\Schema;
+use OpenApi\Attributes\Attachable;
+use OpenApi\Attributes\PathParameter;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -63,11 +63,11 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         // merge backwards into parents...
         $isParent = function (AbstractAnnotation $annotation, AbstractAnnotation $possibleParent): bool {
             // regular anootation hierachy
-            $explicitParent = array_key_exists(get_class($annotation), $possibleParent::$_nested);
+            $explicitParent = null !== $possibleParent::matchNested(get_class($annotation));
 
             $isParentAllowed = false;
             // support Attachable subclasses
-            if ($isAttachable = $annotation instanceof Attachable && array_key_exists(Attachable::class, $possibleParent::$_nested)) {
+            if ($isAttachable = $annotation instanceof Attachable) {
                 if (!$isParentAllowed = (null === $annotation->allowedParents())) {
                     // check for allowed parents
                     foreach ($annotation->allowedParents() as $allowedParent) {

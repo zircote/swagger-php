@@ -18,7 +18,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractPathItem extends AbstractAnnotation
+class PathItem extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -147,35 +147,4 @@ abstract class AbstractPathItem extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class PathItem extends AbstractPathItem
-    {
-        public function __construct(
-            array $properties = [],
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class PathItem extends AbstractPathItem
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

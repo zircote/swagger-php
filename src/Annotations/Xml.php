@@ -13,10 +13,13 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractXml extends AbstractAnnotation
+class Xml extends AbstractAnnotation
 {
     /**
-     * Replaces the name of the element/attribute used for the described schema property. When defined within the Items Object (items), it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored.
+     * Replaces the name of the element/attribute used for the described schema property. When defined within the Items
+     * Object (items), it will affect the name of the individual XML elements within the list. When defined alongside
+     * type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If
+     * wrapped is false, it will be ignored.
      *
      * @var string
      */
@@ -37,14 +40,17 @@ abstract class AbstractXml extends AbstractAnnotation
     public $prefix = Generator::UNDEFINED;
 
     /**
-     * Declares whether the property definition translates to an attribute instead of an element. Default value is false.
+     * Declares whether the property definition translates to an attribute instead of an element. Default value is
+     * false.
      *
      * @var bool
      */
     public $attribute = Generator::UNDEFINED;
 
     /**
-     * MAY be used only for an array definition. Signifies whether the array is wrapped (for example, <books><book/><book/></books>) or unwrapped (<book/><book/>). Default value is false. The definition takes effect only when defined alongside type being array (outside the items).
+     * MAY be used only for an array definition. Signifies whether the array is wrapped (for example,
+     * <books><book/><book/></books>) or unwrapped (<book/><book/>). Default value is false. The definition takes
+     * effect only when defined alongside type being array (outside the items).
      *
      * @var bool
      */
@@ -79,45 +85,4 @@ abstract class AbstractXml extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Xml extends AbstractXml
-    {
-        public function __construct(
-            array $properties = [],
-            string $name = Generator::UNDEFINED,
-            string $namespace = Generator::UNDEFINED,
-            string $prefix = Generator::UNDEFINED,
-            ?bool $attribute = null,
-            ?bool $wrapped = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'name' => $name,
-                    'namespace' => $namespace,
-                    'prefix' => $prefix,
-                    'attribute' => $attribute ?? Generator::UNDEFINED,
-                    'wrapped' => $wrapped ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Xml extends AbstractXml
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

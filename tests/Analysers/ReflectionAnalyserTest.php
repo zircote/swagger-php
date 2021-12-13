@@ -8,13 +8,13 @@ namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AnnotationFactoryInterface;
-use OpenApi\Analysis;
-use OpenApi\Annotations\Get;
-use OpenApi\Annotations\Operation;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Analysis;
+use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\Response;
+use OpenApi\Attributes\Get;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
@@ -72,7 +72,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     {
         return [
             'docblocks-attributes' => [new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()])],
-            'attributes-docblocks' => [new ReflectionAnalyser([new AttributeAnnotationFactory(),new DocBlockAnnotationFactory()])],
+            'attributes-docblocks' => [new ReflectionAnalyser([new AttributeAnnotationFactory(), new DocBlockAnnotationFactory()])],
         ];
     }
 
@@ -101,7 +101,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
-     * @requires PHP 8.1
+     * @requires     PHP 8.1
      */
     public function testApiAttributesBasic(AnalyserInterface $analyser)
     {
@@ -121,7 +121,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/basic.yaml');
-        file_put_contents($spec, $analysis->openapi->toYaml());
+        //file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
 
@@ -141,7 +141,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
-     * @requires PHP 8.1
+     * @requires     PHP 8.1
      */
     public function testApiMixedBasic(AnalyserInterface $analyser)
     {

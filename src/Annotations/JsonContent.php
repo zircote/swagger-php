@@ -15,7 +15,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractJsonContent extends Schema
+class JsonContent extends Schema
 {
 
     /**
@@ -45,46 +45,4 @@ abstract class AbstractJsonContent extends Schema
         Examples::class => ['examples', 'example'],
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class JsonContent extends AbstractJsonContent
-    {
-        public function __construct(
-            array $properties = [],
-            string $ref = Generator::UNDEFINED,
-            ?array $allOf = null,
-            ?array $anyOf = null,
-            ?array $oneOf = null,
-            string $type = Generator::UNDEFINED,
-            $items = Generator::UNDEFINED,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'ref' => $ref,
-                    'allOf' => $allOf ?? Generator::UNDEFINED,
-                    'anyOf' => $anyOf ?? Generator::UNDEFINED,
-                    'oneOf' => $oneOf ?? Generator::UNDEFINED,
-                    'type' => $type,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($items, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class JsonContent extends AbstractJsonContent
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

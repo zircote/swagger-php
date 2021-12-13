@@ -2,15 +2,9 @@
 
 namespace OpenApi\Examples\OpenapiSpecAttributes;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(
- *  title="Link Example",
- *  version="1.0.0"
- * )
- */
-#[OA\Info(version: '1.0.0', title: 'Link Example')]
+#[OAT\Info(version: '1.0.0', title: 'Link Example')]
 class OpenApiSpec
 {
 }

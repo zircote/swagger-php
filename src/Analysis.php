@@ -8,7 +8,8 @@ namespace OpenApi;
 
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations\Schema as AnnotationSchema;
+use OpenApi\Attributes\Schema as AttributeSchema;
 
 /**
  * Result of the analyser.
@@ -142,7 +143,7 @@ class Analysis
     }
 
     /**
-     * Get all sub classes of the given parent class.
+     * Get all subclasses of the given parent class.
      *
      * @param string $parent the parent class
      *
@@ -267,7 +268,7 @@ class Analysis
         }
 
         if (!$direct) {
-            // expand recursively for traits using other tratis
+            // expand recursively for traits using other traits
             $collect = function ($traits, $cb) use (&$definitions) {
                 foreach ($traits as $trait) {
                     if (isset($this->traits[$trait]['traits'])) {
@@ -285,23 +286,28 @@ class Analysis
     }
 
     /**
-     * @param bool $strict in non-strict mode child classes are also detected
+     * @param string|array $classes One ore more class names
+     * @param bool         $strict  in non-strict mode child classes are also detected
      *
      * @return AbstractAnnotation[]
      */
-    public function getAnnotationsOfType(string $class, bool $strict = false): array
+    public function getAnnotationsOfType($classes, bool $strict = false): array
     {
         $annotations = [];
         if ($strict) {
-            foreach ($this->annotations as $annotation) {
-                if (get_class($annotation) === $class) {
-                    $annotations[] = $annotation;
+            foreach ((array) $classes as $class) {
+                foreach ($this->annotations as $annotation) {
+                    if (get_class($annotation) === $class) {
+                        $annotations[] = $annotation;
+                    }
                 }
             }
         } else {
-            foreach ($this->annotations as $annotation) {
-                if ($annotation instanceof $class) {
-                    $annotations[] = $annotation;
+            foreach ((array) $classes as $class) {
+                foreach ($this->annotations as $annotation) {
+                    if ($annotation instanceof $class) {
+                        $annotations[] = $annotation;
+                    }
                 }
             }
         }
@@ -312,7 +318,7 @@ class Analysis
     /**
      * @param string $fqdn the source class/interface/trait
      */
-    public function getSchemaForSource(string $fqdn): ?Schema
+    public function getSchemaForSource(string $fqdn): ?AnnotationSchema
     {
         $sourceDefinitions = [
             $this->classes,
@@ -325,7 +331,7 @@ class Analysis
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if (get_class($annotation) === Schema::class && !$annotation->_aux) {
+                        if (in_array(get_class($annotation), [AnnotationSchema::class, AttributeSchema::class]) && !$annotation->_aux) {
                             return $annotation;
                         }
                     }
