@@ -6,8 +6,8 @@ features:
   - title: OpenAPI specification
     details: Compatible with the OpenAPI Specification version 3.
       formerly known as Swagger.
-  - title: Use @Annotations
-    details: Write the documentation inside the php source files which helps to keep the documentation in sync.
+  - title: "Incode your php file"
+    details: "Using #[Attributes] or @Annotations lets you write the documentation inside the php source files which helps keeping the documentation in sync."
   - title: Useful error messages
     details: Enhanced errors messages with hints and context.
 ---
@@ -44,7 +44,6 @@ Add annotations to your php files.
 ```
 
 Or, as of PHP 8.1 use attributes
-
 
 ```php
 #[OA\Info(title="My First API", version="0.1")]

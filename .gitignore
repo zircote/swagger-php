@@ -3,7 +3,7 @@
 bin/
 !bin/openapi
 composer.lock
-docs/.vuepress/dist/
+docs/.vitepress/dist/
 docs/node_modules/
 local/
 openapi.json

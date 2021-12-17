@@ -1,8 +1,8 @@
 module.exports = {
-  title: "Swagger-PHP v3.x",
+  title: "Swagger-PHP",
   base: "/swagger-php/",
   description:
-    "Generate interactive OpenAPI documentation for your RESTful API using doctrine annotations.",
+    "Generate OpenAPI documentation for your RESTful API using attributes or annotations.",
   themeConfig: {
     sidebar: "auto",
     nav: [
