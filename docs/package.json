@@ -4,9 +4,11 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vitepress dev .",
-    "build": "vitepress build ."
+    "build": "vitepress build .",
+    "deploy": "npm run build && git-directory-deploy --branch gh-pages --directory .vitepress/dist/"
   },
   "devDependencies": {
-    "vitepress": "^0.20.9"
+    "vitepress": "^0.20.9",
+    "git-directory-deploy": "^1.5.1"
   }
 }
