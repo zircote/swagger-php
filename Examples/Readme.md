@@ -35,6 +35,7 @@ Collection of code/annotation examples and their corresponding OpenAPI specs gen
   * using traits: [source](using-traits) / [spec](using-traits/using-traits.yaml)
   * using refs: [source](using-refs) / [spec](using-refs/using-refs.yaml) 
   * nested schemas and class hierachies: [source](nesting) / [spec](nesting/nesting.yaml)
+  * polymorphism using `@OA\Discriminator`: [source](polymorphism) / [spec](polymorphism/polymorphism.yaml)
   
 
 ## Custom processors

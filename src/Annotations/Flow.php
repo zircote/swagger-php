@@ -60,11 +60,6 @@ abstract class AbstractFlow extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public static $_blacklist = ['_context', '_unmerged'];
-
-    /**
-     * @inheritdoc
-     */
     public static $_types = [
         'flow' => ['implicit', 'password', 'authorizationCode', 'clientCredentials'],
         'refreshUrl' => 'string',
