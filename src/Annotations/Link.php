@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Link Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#link-object.
+ * A "Link Object" https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object.
  *
  * The Link object represents a possible design-time link for a response.
  * The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known
