@@ -9,13 +9,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A Server Variable Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-variable-object.
+ * A Server Variable Object
+ * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-variable-object.
  *
  * An object representing a Server Variable for server URL template substitution.
  *
  * @Annotation
  */
-abstract class AbstractServerVariable extends AbstractAnnotation
+class ServerVariable extends AbstractAnnotation
 {
     /**
      * The key into Server->variables array.
@@ -81,45 +82,4 @@ abstract class AbstractServerVariable extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class ServerVariable extends AbstractServerVariable
-    {
-        public function __construct(
-            array $properties = [],
-            string $serverVariable = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $default = Generator::UNDEFINED,
-            ?array $enum = null,
-            ?array $variables = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'serverVariable' => $serverVariable,
-                    'description' => $description,
-                    'default' => $default,
-                    'enum' => $enum ?? Generator::UNDEFINED,
-                    'variables' => $variables ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class ServerVariable extends AbstractServerVariable
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

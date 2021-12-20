@@ -11,7 +11,6 @@ namespace OpenApi\Annotations;
  *
  * @Annotation
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class PathParameter extends Parameter
 {
     /**

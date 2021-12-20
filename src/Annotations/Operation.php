@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractOperation extends AbstractAnnotation
+abstract class Operation extends AbstractAnnotation
 {
     /**
      * key in the OpenApi "Paths Object" for this operation.
@@ -66,7 +66,8 @@ abstract class AbstractOperation extends AbstractAnnotation
     /**
      * Unique string used to identify the operation.
      * The id must be unique among all operations described in the API.
-     * Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to follow common programming naming conventions.
+     * Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to
+     * follow common programming naming conventions.
      *
      * @var string
      */
@@ -77,7 +78,8 @@ abstract class AbstractOperation extends AbstractAnnotation
      * If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.
      * The list must not include duplicated parameters.
      * A unique parameter is defined by a combination of a name and location.
-     * The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
+     * The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's
+     * components/parameters.
      *
      * @var Parameter[]
      */
@@ -85,8 +87,9 @@ abstract class AbstractOperation extends AbstractAnnotation
 
     /**
      * The request body applicable for this operation.
-     * The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly defined semantics for request bodies.
-     * In other cases where the HTTP spec is vague, requestBody shall be ignored by consumers.
+     * The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly
+     * defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored
+     * by consumers.
      *
      * @var RequestBody
      */
@@ -102,8 +105,9 @@ abstract class AbstractOperation extends AbstractAnnotation
     /**
      * A map of possible out-of band callbacks related to the parent operation.
      * The key is a unique identifier for the Callback Object.
-     * Each value in the map is a Callback Object that describes a request that may be initiated by the API provider and the expected responses.
-     * The key value used to identify the callback object is an expression, evaluated at runtime, that identifies a URL to use for the callback operation.
+     * Each value in the map is a Callback Object that describes a request that may be initiated by the API provider
+     * and the expected responses. The key value used to identify the callback object is an expression, evaluated at
+     * runtime, that identifies a URL to use for the callback operation.
      *
      * @var callable[]
      */
@@ -131,7 +135,8 @@ abstract class AbstractOperation extends AbstractAnnotation
 
     /**
      * An alternative server array to service this operation.
-     * If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by this value.
+     * If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by
+     * this value.
      *
      * @var Server[]
      */
@@ -203,53 +208,5 @@ abstract class AbstractOperation extends AbstractAnnotation
         }
 
         return $valid;
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    abstract class Operation extends AbstractOperation
-    {
-        public function __construct(
-            array $properties = [],
-            string $path = Generator::UNDEFINED,
-            string $operationId = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $summary = Generator::UNDEFINED,
-            ?array $security = null,
-            ?array $servers = null,
-            ?RequestBody $requestBody = null,
-            ?array $tags = null,
-            ?array $parameters = null,
-            ?array $responses = null,
-            ?ExternalDocumentation $externalDocs = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'path' => $path,
-                    'operationId' => $operationId,
-                    'description' => $description,
-                    'summary' => $summary,
-                    'security' => $security ?? Generator::UNDEFINED,
-                    'servers' => $servers ?? Generator::UNDEFINED,
-                    'tags' => $tags ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    abstract class Operation extends AbstractOperation
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

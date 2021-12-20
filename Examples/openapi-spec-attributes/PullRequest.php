@@ -2,40 +2,33 @@
 
 namespace OpenApi\Examples\OpenapiSpecAttributes;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="pullrequest")
- */
-#[OA\Schema(schema: 'pullrequest')]
+#[OAT\Schema(schema: 'pullrequest')]
 class PullRequest
 {
 
     /**
-     * @OA\Property()
      * @var integer
      */
-    #[OA\Property(type: 'integer')]
+    #[OAT\Property(type: 'integer')]
     public $id;
 
     /**
-     * @OA\Property()
      * @var string
      */
-    #[OA\Property(type: 'string')]
+    #[OAT\Property(type: 'string')]
     public $title;
 
     /**
-     * @OA\Property()
      * @var Repository
      */
-    #[OA\Property(ref: '#/components/schemas/repository')]
+    #[OAT\Property(ref: '#/components/schemas/repository')]
     public $repository;
 
     /**
-     * @OA\Property()
      * @var User
      */
-    #[OA\Property(ref: '#/components/schemas/user')]
+    #[OAT\Property(ref: '#/components/schemas/user')]
     public $author;
 }

@@ -2,26 +2,21 @@
 
 namespace OpenApi\Examples\OpenapiSpecAttributes;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="user")
- */
-#[OA\Schema(schema: 'user')]
+#[OAT\Schema(schema: 'user')]
 class User
 {
 
     /**
-     * @OA\Property()
      * @var string
      */
-    #[OA\Property(type: 'string')]
+    #[OAT\Property(type: 'string')]
     public $username;
 
     /**
-     * @OA\Property()
      * @var string
      */
-    #[OA\Property(type: 'string')]
+    #[OAT\Property(type: 'string')]
     public $uuid;
 }

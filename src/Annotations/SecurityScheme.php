@@ -15,7 +15,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractSecurityScheme extends AbstractAnnotation
+class SecurityScheme extends AbstractAnnotation
 {
     /**
      * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7.
@@ -133,55 +133,5 @@ abstract class AbstractSecurityScheme extends AbstractAnnotation
         }
 
         return $unmerged;
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class SecurityScheme extends AbstractSecurityScheme
-    {
-        public function __construct(
-            array $properties = [],
-            string $ref = Generator::UNDEFINED,
-            string $securityScheme = Generator::UNDEFINED,
-            string $type = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $name = Generator::UNDEFINED,
-            string $in = Generator::UNDEFINED,
-            string $bearerFormat = Generator::UNDEFINED,
-            string $scheme = Generator::UNDEFINED,
-            string $openIdConnectUrl = Generator::UNDEFINED,
-            ?array $flows = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'ref' => $ref,
-                    'securityScheme' => $securityScheme,
-                    'type' => $type,
-                    'description' => $description,
-                    'name' => $name,
-                    'in' => $in,
-                    'bearerFormat' => $bearerFormat,
-                    'scheme' => $scheme,
-                    'openIdConnectUrl' => $openIdConnectUrl,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($flows, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class SecurityScheme extends AbstractSecurityScheme
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

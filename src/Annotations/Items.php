@@ -6,14 +6,12 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
-
 /**
  * The description of an item in a Schema with type "array".
  *
  * @Annotation
  */
-abstract class AbstractItems extends Schema
+class Items extends Schema
 {
     /**
      * @inheritdoc
@@ -59,50 +57,5 @@ abstract class AbstractItems extends Schema
 
         return $valid;
         // @todo Additional validation when used inside a Header or Parameter context.
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-    class Items extends AbstractItems
-    {
-        public function __construct(
-            array $properties = [],
-            string $type = Generator::UNDEFINED,
-            string $ref = Generator::UNDEFINED,
-            ?bool $deprecated = null,
-            ?array $allOf = null,
-            ?array $anyOf = null,
-            ?array $oneOf = null,
-            ?bool $nullable = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'type' => $type,
-                    'ref' => $ref,
-                    'nullable' => $nullable ?? Generator::UNDEFINED,
-                    'deprecated' => $deprecated ?? Generator::UNDEFINED,
-                    'allOf' => $allOf ?? Generator::UNDEFINED,
-                    'anyOf' => $anyOf ?? Generator::UNDEFINED,
-                    'oneOf' => $oneOf ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Items extends AbstractItems
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

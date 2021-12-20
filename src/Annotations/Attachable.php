@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
  * A container for custom data to be attached to an annotation.
  * These will be ignored by swagger-php but can be used for custom processing.
  */
-abstract class AbstractAttachable extends AbstractAnnotation
+class Attachable extends AbstractAnnotation
 {
     /**
      * @inheritdoc
@@ -58,43 +58,15 @@ abstract class AbstractAttachable extends AbstractAnnotation
     ];
 
     /**
-     * Allows to type hint a specific parent annotation class.
+     * Allows to type-hint a specific parent annotation class.
      *
-     * Allows to implement custom annotations that are limited to a subset of potential parent
+     * Container to allow custom annotations that are limited to a subset of potential parent
      * annotation classes.
-     * This is most likely going to be a v4 (PHP 8.1) PHP attribute feature only.
      *
      * @return array List of valid parent annotation classes. If `null`` the default nesting rules apply.
      */
     public function allowedParents(): ?array
     {
         return null;
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
-    class Attachable extends AbstractAttachable
-    {
-        public function __construct(
-            array $properties = []
-        ) {
-            parent::__construct($properties + [
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Attachable extends AbstractAttachable
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

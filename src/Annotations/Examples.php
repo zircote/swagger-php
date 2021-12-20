@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * @Annotation
  */
-abstract class AbstractExamples extends AbstractAnnotation
+class Examples extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -88,47 +88,4 @@ abstract class AbstractExamples extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Examples extends AbstractExamples
-    {
-        public function __construct(
-            array $properties = [],
-            string $summary = Generator::UNDEFINED,
-            string $description = Generator::UNDEFINED,
-            string $value = Generator::UNDEFINED,
-            string $externalValue = Generator::UNDEFINED,
-            string $ref = Generator::UNDEFINED,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'summary' => $summary,
-                    'description' => $description,
-                    'value' => $value,
-                    'externalValue' => $externalValue,
-                    'ref' => $ref,
-                    'x' => $x ?? Generator::UNDEFINED,
-                ]);
-            if ($attachables) {
-                $this->merge([$attachables]);
-            }
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Examples extends AbstractExamples
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

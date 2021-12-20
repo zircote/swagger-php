@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Fixtures\Apis\Mixed;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * @OA\Info(
@@ -25,18 +26,18 @@ interface ProductInterface
 
 }
 
-#[OA\Schema([])]
+#[OAT\Schema()]
 trait NameTrait
 {
     /**
      * The name.
      */
-    #[OA\Property()]
+    #[OAT\Property()]
     public $name;
 
 }
 
-#[OA\Schema(title: 'Product', description: 'Product', attachables: [new OA\Attachable()])]
+#[OAT\Schema(title: 'Product', description: 'Product', attachables: [new OAT\Attachable()])]
 class Product implements ProductInterface
 {
     use NameTrait;
@@ -52,16 +53,16 @@ class Product implements ProductInterface
 class ProductController
 {
 
-    #[OA\Get(
+    #[OAT\Get(
         path: '/products/{product_id}',
         tags: ['products'],
         operationId: 'getProducts',
         responses: [
-            new OA\Response(response: 200, description: 'successful operation', content: new OA\JsonContent(ref: '#/components/schemas/Product')),
-            new OA\Response(response: 401, description: 'oops'),
+            new OAT\Response(response: 200, description: 'successful operation', content: new OAT\JsonContent(ref: '#/components/schemas/Product')),
+            new OAT\Response(response: 401, description: 'oops'),
         ],
     )]
-    #[OA\PathParameter(name: 'product_id', schema: new OA\Schema(type: 'string'))]
+    #[OAT\PathParameter(name: 'product_id', schema: new OAT\Schema(type: 'string'))]
     public function getProduct(string $product_id)
     {
     }

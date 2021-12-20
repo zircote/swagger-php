@@ -12,7 +12,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractHeader extends AbstractAnnotation
+class Header extends AbstractAnnotation
 {
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
@@ -32,7 +32,8 @@ abstract class AbstractHeader extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich text representation.
+     * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich
+     * text representation.
      *
      * @var bool
      */
@@ -90,35 +91,4 @@ abstract class AbstractHeader extends AbstractAnnotation
         Components::class,
         Response::class,
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS)]
-    class Header extends AbstractHeader
-    {
-        public function __construct(
-            array $properties = [],
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Header extends AbstractHeader
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

@@ -9,7 +9,7 @@ use OpenApi\Generator;
 /**
  * @Annotation
  */
-abstract class AbstractCustomAttachable extends Attachable
+class CustomAttachable extends Attachable
 {
     /**
      * The attribute value.
@@ -26,34 +26,5 @@ abstract class AbstractCustomAttachable extends Attachable
     public function allowedParents(): ?array
     {
         return [Operation::class];
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
-    class CustomAttachable extends AbstractCustomAttachable
-    {
-        public function __construct(
-            array $properties = [],
-            $value = Generator::UNDEFINED
-        ) {
-            parent::__construct($properties + [
-                'value' => $value,
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class CustomAttachable extends AbstractCustomAttachable
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
     }
 }

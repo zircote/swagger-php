@@ -2,26 +2,21 @@
 
 namespace OpenApi\Examples\OpenapiSpecAttributes;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="repository")
- */
-#[OA\Schema(schema: 'repository')]
+#[OAT\Schema(schema: 'repository')]
 class Repository
 {
 
     /**
-     * @OA\Property()
      * @var string
      */
-    #[OA\Property(type: 'string')]
+    #[OAT\Property(type: 'string')]
     public $slug;
 
     /**
-     * @OA\Property()
      * @var User
      */
-    #[OA\Property(ref: '#/components/schemas/user')]
+    #[OAT\Property(ref: '#/components/schemas/user')]
     public $owner;
 }

@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * @Annotation
  */
-abstract class AbstractRequestBody extends AbstractAnnotation
+class RequestBody extends AbstractAnnotation
 {
     public $ref = Generator::UNDEFINED;
 
@@ -83,40 +83,4 @@ abstract class AbstractRequestBody extends AbstractAnnotation
         MediaType::class => ['content', 'mediaType'],
         Attachable::class => ['attachables'],
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER)]
-    class RequestBody extends AbstractRequestBody
-    {
-        public function __construct(
-            array $properties = [],
-            string $description = Generator::UNDEFINED,
-            ?bool $required = null,
-            $content = Generator::UNDEFINED,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'description' => $description,
-                    'required' => $required ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($content, $attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class RequestBody extends AbstractRequestBody
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }

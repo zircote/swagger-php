@@ -7,7 +7,8 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations\Schema as AnnotationSchema;
+use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
 
 /**
@@ -21,8 +22,8 @@ class ExpandInterfaces
 
     public function __invoke(Analysis $analysis)
     {
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var AnnotationSchema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType([AnnotationSchema::class, AttributeSchema::class], true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {

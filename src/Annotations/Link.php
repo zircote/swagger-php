@@ -12,13 +12,15 @@ use OpenApi\Generator;
  * A "Link Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#link-object.
  *
  * The Link object represents a possible design-time link for a response.
- * The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known relationship and traversal mechanism between responses and other operations.
- * Unlike dynamic links (i.e. links provided in the response payload), the OA linking mechanism does not require link information in the runtime response.
- * For computing links, and providing instructions to execute them, a runtime expression is used for accessing values in an operation and using them as parameters while invoking the linked operation.
+ * The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known
+ * relationship and traversal mechanism between responses and other operations. Unlike dynamic links (i.e. links
+ * provided in the response payload), the OA linking mechanism does not require link information in the runtime
+ * response. For computing links, and providing instructions to execute them, a runtime expression is used for
+ * accessing values in an operation and using them as parameters while invoking the linked operation.
  *
  * @Annotation
  */
-abstract class AbstractLink extends AbstractAnnotation
+class Link extends AbstractAnnotation
 {
 
     /**
@@ -53,9 +55,10 @@ abstract class AbstractLink extends AbstractAnnotation
     public $operationId = Generator::UNDEFINED;
 
     /**
-     * A map representing parameters to pass to an operation as specified with operationId or identified via operationRef.
-     * The key is the parameter name to be used, whereas the value can be a constant or an expression to be evaluated and passed to the linked operation.
-     * The parameter name can be qualified using the parameter location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id).
+     * A map representing parameters to pass to an operation as specified with operationId or identified via
+     * operationRef. The key is the parameter name to be used, whereas the value can be a constant or an expression to
+     * be evaluated and passed to the linked operation. The parameter name can be qualified using the parameter
+     * location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id).
      */
     public $parameters = Generator::UNDEFINED;
 
@@ -94,43 +97,4 @@ abstract class AbstractLink extends AbstractAnnotation
         Components::class,
         Response::class,
     ];
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-    class Link extends AbstractLink
-    {
-        public function __construct(
-            array $properties = [],
-            string $link = Generator::UNDEFINED,
-            string $ref = Generator::UNDEFINED,
-            string $operationId = Generator::UNDEFINED,
-            ?array $parameters = null,
-            ?array $x = null,
-            ?array $attachables = null
-        ) {
-            parent::__construct($properties + [
-                    'link' => $link,
-                    'ref' => $ref,
-                    'operationId' => $operationId,
-                    'parameters' => $parameters ?? Generator::UNDEFINED,
-                    'x' => $x ?? Generator::UNDEFINED,
-                    'value' => $this->combine($attachables),
-                ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    class Link extends AbstractLink
-    {
-        public function __construct(array $properties)
-        {
-            parent::__construct($properties);
-        }
-    }
 }
