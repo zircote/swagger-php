@@ -28,6 +28,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Arbitrary attachables for this annotation.
      * These will be ignored but can be used for custom processing.
+     *
+     * @var array
      */
     public $attachables = Generator::UNDEFINED;
 
@@ -271,6 +273,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Customize the way json_encode() renders the annotations.
+     *
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
