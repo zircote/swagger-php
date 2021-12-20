@@ -43,6 +43,7 @@ class MergeJsonContent
                 'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
                 '_context' => new Context(['generated' => true], $jsonContent->_context),
+                '_aux' => true,
             ]);
             if (!$parent instanceof Parameter) {
                 $parent->content['application/json']->mediaType = 'application/json';

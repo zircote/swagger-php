@@ -324,8 +324,8 @@ class Analysis
             if (array_key_exists($fqdn, $definitions)) {
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
-                    foreach ($definition['context']->annotations as $annotation) {
-                        if (get_class($annotation) === Schema::class) {
+                    foreach (array_reverse($definition['context']->annotations) as $annotation) {
+                        if (get_class($annotation) === Schema::class && !$annotation->_aux) {
                             return $annotation;
                         }
                     }

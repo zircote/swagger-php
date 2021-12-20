@@ -34,6 +34,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public $attachables = Generator::UNDEFINED;
 
     /**
+     * @var bool
+     */
+    public $_aux = false;
+
+    /**
      * @var Context
      */
     public $_context;
@@ -88,7 +93,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @var array
      */
-    public static $_blacklist = ['_context', '_unmerged', 'attachables'];
+    public static $_blacklist = ['_context', '_unmerged', '_analysis', '_aux', 'attachables'];
 
     public function __construct(array $properties)
     {

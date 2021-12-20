@@ -124,8 +124,9 @@ class AugmentProperties
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
                     new Schema([
-                        '_context' => $property->_context,
                         'ref' => $refs[$refKey],
+                        '_context' => $property->_context,
+                        '_aux' => true,
                     ]),
                 ];
                 $property->nullable = true;
@@ -135,6 +136,7 @@ class AugmentProperties
                         [
                             'type' => $property->type,
                             '_context' => new Context(['generated' => true], $context),
+                            '_aux' => true,
                         ]
                     );
                     if ($property->ref !== Generator::UNDEFINED) {
@@ -204,8 +206,9 @@ class AugmentProperties
         if ($property->nullable === true) {
             $property->oneOf = [
                 new Schema([
-                    '_context' => $property->_context,
                     'ref' => $ref,
+                    '_context' => $property->_context,
+                    '_aux' => true,
                 ]),
             ];
         } else {
