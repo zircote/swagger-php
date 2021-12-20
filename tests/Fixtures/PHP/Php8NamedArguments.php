@@ -11,6 +11,14 @@ namespace OpenApi\Tests\Fixtures\PHP;
  */
 class Php8NamedArguments
 {
+    public function __construct(
+        /**
+         * @OA\Property(description="baz")
+         */
+        public int $baz,
+    ) {
+    }
+
     public function useFoo(): void
     {
         $this->foo(class: 'abc', interface: 'def', trait: 'xyz');

@@ -166,7 +166,7 @@ class TokenScannerTest extends OpenApiTestCase
                         'uses' => [],
                         'interfaces' => [],
                         'traits' => [],
-                        'methods' => ['useFoo', 'foo'],
+                        'methods' => ['__construct', 'useFoo', 'foo'],
                         'properties' => [],
                     ],
                 ],

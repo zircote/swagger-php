@@ -15,6 +15,7 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations\Response;
+use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
@@ -161,5 +162,25 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         //file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
+    }
+
+
+    /**
+     * @dataProvider analysers
+     * @requires PHP 8.0
+     */
+    public function testPhp8NamedArguments(AnalyserInterface $analyser)
+    {
+        $analysis = (new Generator())
+            ->withContext(function (Generator $generator) use ($analyser) {
+                $analyser->setGenerator($generator);
+                $analysis = $analyser->fromFile($this->fixture('PHP/Php8NamedArguments.php'), $this->getContext());
+
+                return $analysis;
+            });
+        $this->assertCount(2, $analysis->annotations);
+
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $this->assertCount(1, $schemas);
     }
 }
