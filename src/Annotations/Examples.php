@@ -115,6 +115,9 @@ if (\PHP_VERSION_ID >= 80100) {
                     'ref' => $ref,
                     'x' => $x ?? Generator::UNDEFINED,
                 ]);
+            if ($attachables) {
+                $this->merge([$attachables]);
+            }
         }
     }
 } else {
