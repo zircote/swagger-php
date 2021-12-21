@@ -27,6 +27,9 @@ There are some limitations to type hints which can only be resolved once support
 ### Example
 **Using annotations**
 ```php
+
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(
  *   version="1.0.0",
@@ -41,6 +44,9 @@ class OpenApiSpec
 ```
 **Using attributes**
 ```php
+
+use OpenApi\Attributes as OA;
+
 #[OA\Info(
     version: '1.0.0',
     title: 'My API',

@@ -31,6 +31,9 @@ echo $openapi->toYaml();
 Add annotations to your php files.
 
 ```php
+
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="My First API", version="0.1")
  */
@@ -43,9 +46,12 @@ Add annotations to your php files.
  */
 ```
 
-Or, as of PHP 8.1 use attributes
+Or, as of PHP 8.1 use attributes.
 
 ```php
+
+use OpenApi\Attributes as OA;
+
 #[OA\Info(title="My First API", version="0.1")]
 class OpenApi {}
 
