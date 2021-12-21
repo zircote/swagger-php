@@ -48,6 +48,9 @@ The goal of swagger-php is to generate a openapi.json using phpdoc annotations o
 #### When you write:
 
 ```php
+
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="My First API", version="0.1")
  */
@@ -79,7 +82,12 @@ paths:
 This documentation uses annotations in its examples. However, as per PHP 8.1 you may also use all documented
 annotations as attributes. Then the above example would look like this:
 
+**Note: Attributes use a different namespace: `OpenApi\Attributes`.**
+
 ```php
+
+use OpenApi\Attributes as OA;
+
 #[OA\Info(title="My First API", version="0.1")]
 class OpenApi {}
 
