@@ -3,6 +3,7 @@ info:
   title: 'Swagger Petstore'
   license:
     name: MIT
+    identifier: MIT
   version: 1.0.0
 servers:
   -

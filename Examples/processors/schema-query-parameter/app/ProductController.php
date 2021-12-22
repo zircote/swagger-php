@@ -12,6 +12,10 @@ class ProductController
      * @OA\Get(
      *   tags={"Products"},
      *   path="/products/{id}",
+     *   @OA\PathParameter(
+     *     name="id",
+     *     required=true
+     *   ),
      *   @OA\Response(
      *     response=200,
      *     description="A single product",

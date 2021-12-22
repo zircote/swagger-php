@@ -7,6 +7,7 @@ info:
     name: 'Swagger API Team'
   license:
     name: MIT
+    identifier: MIT
   version: 1.0.0
 servers:
   -

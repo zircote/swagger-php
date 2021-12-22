@@ -7,7 +7,7 @@ namespace OpenApi\Examples\SwaggerSpec\Petstore;
  *     @OA\Info(
  *         version="1.0.0",
  *         title="Swagger Petstore",
- *         @OA\License(name="MIT")
+ *         @OA\License(name="MIT", identifier="MIT")
  *     ),
  *     @OA\Server(
  *         description="Api server",
