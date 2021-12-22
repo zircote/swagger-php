@@ -11,10 +11,10 @@ use OpenApi\Generator;
 trait OperationTrait
 {
     public function __construct(
-        string $path = Generator::UNDEFINED,
-        string $operationId = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        string $summary = Generator::UNDEFINED,
+        ?string $path = null,
+        ?string $operationId = null,
+        ?string $description = null,
+        ?string $summary = null,
         ?array $security = null,
         ?array $servers = null,
         ?RequestBody $requestBody = null,
@@ -22,14 +22,15 @@ trait OperationTrait
         ?array $parameters = null,
         ?array $responses = null,
         ?ExternalDocumentation $externalDocs = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'path' => $path,
-                'operationId' => $operationId,
-                'description' => $description,
-                'summary' => $summary,
+                'path' => $path ?? Generator::UNDEFINED,
+                'operationId' => $operationId ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
+                'summary' => $summary ?? Generator::UNDEFINED,
                 'security' => $security ?? Generator::UNDEFINED,
                 'servers' => $servers ?? Generator::UNDEFINED,
                 'tags' => $tags ?? Generator::UNDEFINED,

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi\Tests\Annotations;
+namespace OpenApi\Tests\Fixtures\Annotations;
 
 use OpenApi\Annotations\Attachable;
 use OpenApi\Annotations\Operation;

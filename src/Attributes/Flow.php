@@ -12,19 +12,20 @@ use OpenApi\Generator;
 class Flow extends \OpenApi\Annotations\Flow
 {
     public function __construct(
-        string $authorizationUrl = Generator::UNDEFINED,
-        string $tokenUrl = Generator::UNDEFINED,
-        string $refreshUrl = Generator::UNDEFINED,
-        string $flow = Generator::UNDEFINED,
+        ?string $authorizationUrl = null,
+        ?string $tokenUrl = null,
+        ?string $refreshUrl = null,
+        ?string $flow = null,
         ?array $scopes = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'authorizationUrl' => $authorizationUrl,
-                'tokenUrl' => $tokenUrl,
-                'refreshUrl' => $refreshUrl,
-                'flow' => $flow,
+                'authorizationUrl' => $authorizationUrl ?? Generator::UNDEFINED,
+                'tokenUrl' => $tokenUrl ?? Generator::UNDEFINED,
+                'refreshUrl' => $refreshUrl ?? Generator::UNDEFINED,
+                'flow' => $flow ?? Generator::UNDEFINED,
                 'scopes' => $scopes ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($attachables),

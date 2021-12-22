@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
  * @OA\Info(
  *   version="1.0.0",
  *   title="Basic single file API",
- *   @OA\License(name="MIT", @OA\Attachable())
+ *   @OA\License(name="MIT", identifier="MIT", @OA\Attachable())
  * )
  */
 class OpenApiSpec
@@ -106,6 +106,34 @@ class ProductController
      * )
      */
     public function addProduct()
+    {
+    }
+
+    /**
+     * @OA\Get(
+     *   tags={"products"},
+     *   path="/products",
+     *   operationId="getAll",
+     *   @OA\Response(
+     *       response=200,
+     *       description="successful operation",
+     *       @OA\JsonContent(
+     *           type="object",
+     *           required={"data"},
+     *           @OA\Property(
+     *               property="data",
+     *               type="array",
+     *               @OA\Items(ref="#/components/schemas/Product")
+     *           )
+     *       )
+     *   ),
+     *   @OA\Response(
+     *       response=401,
+     *       description="oops"
+     *   )
+     * )
+     */
+    public function getAll()
     {
     }
 }

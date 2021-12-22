@@ -12,29 +12,30 @@ use OpenApi\Generator;
 class SecurityScheme extends \OpenApi\Annotations\SecurityScheme
 {
     public function __construct(
-        string $ref = Generator::UNDEFINED,
-        string $securityScheme = Generator::UNDEFINED,
-        string $type = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        string $name = Generator::UNDEFINED,
-        string $in = Generator::UNDEFINED,
-        string $bearerFormat = Generator::UNDEFINED,
-        string $scheme = Generator::UNDEFINED,
-        string $openIdConnectUrl = Generator::UNDEFINED,
+        string|object|null $ref = null,
+        ?string $securityScheme = null,
+        ?string $type = null,
+        ?string $description = null,
+        ?string $name = null,
+        ?string $in = null,
+        ?string $bearerFormat = null,
+        ?string $scheme = null,
+        ?string $openIdConnectUrl = null,
         ?array $flows = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'ref' => $ref,
-                'securityScheme' => $securityScheme,
-                'type' => $type,
-                'description' => $description,
-                'name' => $name,
-                'in' => $in,
-                'bearerFormat' => $bearerFormat,
-                'scheme' => $scheme,
-                'openIdConnectUrl' => $openIdConnectUrl,
+                'ref' => $ref ?? Generator::UNDEFINED,
+                'securityScheme' => $securityScheme ?? Generator::UNDEFINED,
+                'type' => $type ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
+                'name' => $name ?? Generator::UNDEFINED,
+                'in' => $in ?? Generator::UNDEFINED,
+                'bearerFormat' => $bearerFormat ?? Generator::UNDEFINED,
+                'scheme' => $scheme ?? Generator::UNDEFINED,
+                'openIdConnectUrl' => $openIdConnectUrl ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($flows, $attachables),
             ]);

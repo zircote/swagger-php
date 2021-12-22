@@ -12,18 +12,19 @@ use OpenApi\Generator;
 class ServerVariable extends \OpenApi\Annotations\ServerVariable
 {
     public function __construct(
-        string $serverVariable = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        string $default = Generator::UNDEFINED,
+        ?string $serverVariable = null,
+        ?string $description = null,
+        ?string $default = null,
         ?array $enum = null,
         ?array $variables = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'serverVariable' => $serverVariable,
-                'description' => $description,
-                'default' => $default,
+                'serverVariable' => $serverVariable ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
+                'default' => $default ?? Generator::UNDEFINED,
                 'enum' => $enum ?? Generator::UNDEFINED,
                 'variables' => $variables ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,

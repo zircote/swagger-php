@@ -12,16 +12,17 @@ use OpenApi\Generator;
 class Discriminator extends \OpenApi\Annotations\Discriminator
 {
     public function __construct(
-        string $propertyName = Generator::UNDEFINED,
-        string $mapping = Generator::UNDEFINED,
+        ?string $propertyName = null,
+        ?string $mapping = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'propertyName' => $propertyName,
-                'mapping' => $mapping,
-                'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
-            ]);
+            'propertyName' => $propertyName ?? Generator::UNDEFINED,
+            'mapping' => $mapping ?? Generator::UNDEFINED,
+            'x' => $x ?? Generator::UNDEFINED,
+            'value' => $this->combine($attachables),
+        ]);
     }
 }

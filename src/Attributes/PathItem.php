@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class PathItem extends \OpenApi\Annotations\PathItem
 {
     public function __construct(
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

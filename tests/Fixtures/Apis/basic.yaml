@@ -3,6 +3,7 @@ info:
   title: 'Basic single file API'
   license:
     name: MIT
+    identifier: MIT
   version: 1.0.0
 paths:
   '/products/{product_id}':
@@ -27,6 +28,23 @@ paths:
         '401':
           description: oops
   /products:
+    get:
+      tags:
+        - products
+      operationId: getAll
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                required:
+                  - data
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/Product' } }
+                type: object
+        '401':
+          description: oops
     post:
       tags:
         - products

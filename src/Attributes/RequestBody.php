@@ -12,14 +12,15 @@ use OpenApi\Generator;
 class RequestBody extends \OpenApi\Annotations\RequestBody
 {
     public function __construct(
-        string $description = Generator::UNDEFINED,
+        ?string $description = null,
         ?bool $required = null,
-        $content = Generator::UNDEFINED,
+        $content = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'description' => $description,
+                'description' => $description ?? Generator::UNDEFINED,
                 'required' => $required ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($content, $attachables),
