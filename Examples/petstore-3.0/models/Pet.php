@@ -38,7 +38,6 @@ class Pet
 
     /**
      * @OA\Property(
-     *     description="Category relation",
      *     title="Category",
      * )
      *

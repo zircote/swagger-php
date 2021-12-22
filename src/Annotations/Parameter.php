@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#parameter-object.
+ * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object.
  *
  * Describes a single operation parameter.
  *

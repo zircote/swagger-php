@@ -47,7 +47,7 @@ class OpenApiSpec
  *      @OA\Property(property="color", type="string"),
  *   )),
  *   security={{ "bearerAuth":{} }},
- *   @OA\Response(response=200, description="Success")
+ *   @OA\Response(response="200",ref="#/components/responses/200", description="Success")
  * )
  */
 class Endpoint

@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Media Type Object" https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#media-type-object.
+ * A "Media Type Object" https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#media-type-object.
  *
  * Each Media Type Object provides schema and examples for the media type identified by its key.
  *

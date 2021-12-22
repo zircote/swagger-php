@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * License information for the exposed API.
  *
- * A "License Object": https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#license-object
+ * A "License Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#license-object
  *
  * @Annotation
  */

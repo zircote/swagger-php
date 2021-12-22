@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A Server Object https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#server-object.
+ * A Server Object https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object.
  *
  * An object representing a Server.
  *

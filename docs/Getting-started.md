@@ -66,7 +66,7 @@ use OpenApi\Annotations as OA;
 #### swagger-php will generate:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: "My First API"
   version: "0.1"
@@ -79,6 +79,7 @@ paths:
 ```
 
 #### PHP Attributes
+
 This documentation uses annotations in its examples. However, as per PHP 8.1 you may also use all documented
 annotations as attributes. Then the above example would look like this:
 
@@ -196,7 +197,7 @@ For objects, the key is defined by the field with the same name as the annotatio
 #### Results in:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 paths:
   /products:
     get:
@@ -230,7 +231,7 @@ class Product {
 #### Results in:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     Product:
@@ -325,7 +326,7 @@ To keep things DRY (Don't Repeat Yourself) the specification includes referencin
 #### Results in:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     product_id:
@@ -399,7 +400,7 @@ The specification allows for [custom properties](http://swagger.io/specification
 #### Results in:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: Example
   version: 1

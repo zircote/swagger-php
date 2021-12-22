@@ -18,7 +18,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 {
     /**
      * While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
-     * For further details see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions
+     * For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions
      * The keys inside the array will be prefixed with `x-`.
      *
      * @var array
@@ -51,7 +51,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public $_unmerged = [];
 
     /**
-     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md).
+     * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md).
      *
      * @var array
      */
@@ -345,8 +345,17 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // $ref
         if (isset($data->ref)) {
-            // OAS 3.0 does not allow $ref to have siblings: http://spec.openapis.org/oas/v3.0.3#fixed-fields-18
-            $data = (object) ['$ref' => $data->ref];
+            // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
+            $ref = ['$ref' => $data->ref];
+            $defaultValues = get_class_vars(get_class($this));
+            foreach (['summary', 'description'] as $prop) {
+                if (property_exists($this, $prop)) {
+                    if ($this->$prop !== $defaultValues[$prop]) {
+                        $ref[$prop] = $data->$prop;
+                    }
+                }
+            }
+            $data = (object) $ref;
         }
 
         return $data;
