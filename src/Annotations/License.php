@@ -25,7 +25,16 @@ class License extends AbstractAnnotation
     public $name = Generator::UNDEFINED;
 
     /**
-     * A URL to the license used for the API.
+     * An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.
+     *
+     * @var string
+     */
+    public $identifier = Generator::UNDEFINED;
+
+    /**
+     * A URL to the license used for the API. This MUST be in the form of a URL.
+     *
+     * The `url` field is mutually exclusive of the `identifier` field.
      *
      * @var string
      */
@@ -36,6 +45,7 @@ class License extends AbstractAnnotation
      */
     public static $_types = [
         'name' => 'string',
+        'identifier' => 'string',
         'url' => 'string',
     ];
 
@@ -57,4 +67,19 @@ class License extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    {
+        $valid = parent::validate($parents, $skip);
+
+        if ($this->url !== Generator::UNDEFINED && $this->identifier !== Generator::UNDEFINED) {
+            $this->_context->logger->warning('@OA\\License() url and identifier are mutually exclusive');
+            $valid = false;
+        }
+
+        return $valid;
+    }
 }

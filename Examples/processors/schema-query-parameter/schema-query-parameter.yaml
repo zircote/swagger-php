@@ -8,6 +8,11 @@ paths:
       tags:
         - Products
       operationId: 399b71a7672f0a46be1b5f4c120c355d
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
       responses:
         '200':
           description: 'A single product'

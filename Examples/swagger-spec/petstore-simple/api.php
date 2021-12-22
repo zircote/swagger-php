@@ -14,7 +14,7 @@ namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
  *         description="A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
  *         termsOfService="http://swagger.io/terms/",
  *         @OA\Contact(name="Swagger API Team"),
- *         @OA\License(name="MIT")
+ *         @OA\License(name="MIT", identifier="MIT")
  *     ),
  * )
  */
