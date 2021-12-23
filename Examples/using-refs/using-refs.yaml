@@ -52,6 +52,9 @@ components:
               example: 1
             status:
               $ref: '#/components/schemas/product_status'
+            nullableStatus:
+              $ref: '#/components/schemas/product_status'
+              nullable: true
         -
           $ref: '#/components/schemas/Model'
     product_status:
