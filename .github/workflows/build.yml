@@ -11,7 +11,7 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.2', '7.3', '7.4', '8.0' ]
+        php: [ '7.2', '7.3', '7.4', '8.0', '8.1' ]
         dependencies: [ 'lowest', 'highest' ]
 
     name: PHP ${{ matrix.php }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
