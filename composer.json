@@ -54,7 +54,7 @@
   "require-dev": {
     "composer/package-versions-deprecated": "1.11.99.2",
     "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
-    "phpunit/phpunit": ">=8"
+    "phpunit/phpunit": ">=8.5.14"
   },
   "autoload-dev": {
     "psr-4": {
