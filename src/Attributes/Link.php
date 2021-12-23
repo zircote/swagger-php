@@ -12,17 +12,18 @@ use OpenApi\Generator;
 class Link extends \OpenApi\Annotations\Link
 {
     public function __construct(
-        string $link = Generator::UNDEFINED,
-        string $ref = Generator::UNDEFINED,
-        string $operationId = Generator::UNDEFINED,
+        ?string $link = null,
+        string|object|null $ref = null,
+        ?string $operationId = null,
         ?array $parameters = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'link' => $link,
-                'ref' => $ref,
-                'operationId' => $operationId,
+                'link' => $link ?? Generator::UNDEFINED,
+                'ref' => $ref ?? Generator::UNDEFINED,
+                'operationId' => $operationId ?? Generator::UNDEFINED,
                 'parameters' => $parameters ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($attachables),

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi\Tests\Attributes;
+namespace OpenApi\Tests\Fixtures\Attributes;
 
 use OpenApi\Attributes\Attachable;
 use OpenApi\Attributes\Get;

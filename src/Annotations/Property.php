@@ -21,13 +21,6 @@ class Property extends Schema
     public $property = Generator::UNDEFINED;
 
     /**
-     * Indicates the property is nullable.
-     *
-     * @var bool
-     */
-    public $nullable = Generator::UNDEFINED;
-
-    /**
      * @inheritdoc
      */
     public static $_parents = [

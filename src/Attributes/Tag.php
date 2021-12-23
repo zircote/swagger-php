@@ -12,15 +12,16 @@ use OpenApi\Generator;
 class Tag extends \OpenApi\Annotations\Tag
 {
     public function __construct(
-        string $name = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
+        ?string $name = null,
+        ?string $description = null,
         ?ExternalDocumentation $externalDocs = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'name' => $name,
-                'description' => $description,
+                'name' => $name ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($externalDocs, $attachables),
             ]);

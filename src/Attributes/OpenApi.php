@@ -17,6 +17,7 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
         ?array $servers = null,
         ?array $tags = null,
         ?ExternalDocumentation $externalDocs = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

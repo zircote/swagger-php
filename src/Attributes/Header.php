@@ -11,6 +11,7 @@ use OpenApi\Generator;
 class Header extends \OpenApi\Annotations\Header
 {
     public function __construct(
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

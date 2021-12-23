@@ -13,7 +13,7 @@ use OpenApi\Attributes as OAT;
  * @OA\Info(
  *   version="1.0.0",
  *   title="Basic single file API",
- *   @OA\License(name="MIT")
+ *   @OA\License(name="MIT", identifier="MIT")
  * )
  */
 class OpenApiSpec
@@ -89,6 +89,25 @@ class ProductController
      * )
      */
     public function addProduct()
+    {
+    }
+
+    #[OAT\Get(path: '/products', tags: ['products'], operationId: 'getAll')]
+    #[OAT\Response(
+        response: 200,
+        description: 'successful operation',
+        content: new OAT\JsonContent(
+            type: 'object',
+            required: ['data'],
+            properties: [
+                new OAT\Property(
+                    property: 'data',
+                    type: 'array',
+                    items: new OAT\Items(ref: '#/components/schemas/Product'))
+            ])
+    )]
+    #[OAT\Response(response: 401, description: 'oops')]
+    public function getAll()
     {
     }
 }

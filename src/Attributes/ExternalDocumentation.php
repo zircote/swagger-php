@@ -12,14 +12,15 @@ use OpenApi\Generator;
 class ExternalDocumentation extends \OpenApi\Annotations\ExternalDocumentation
 {
     public function __construct(
-        string $description = Generator::UNDEFINED,
-        string $url = Generator::UNDEFINED,
+        ?string $description = null,
+        ?string $url = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'description' => $description,
-                'url' => $url,
+                'description' => $description ?? Generator::UNDEFINED,
+                'url' => $url ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($attachables),
             ]);

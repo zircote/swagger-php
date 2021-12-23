@@ -11,25 +11,25 @@ use OpenApi\Generator;
 trait ParameterTrait
 {
     public function __construct(
-        array $properties = [],
-        string $parameter = Generator::UNDEFINED,
-        string $name = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        string $in = Generator::UNDEFINED,
+        ?string $parameter = null,
+        ?string $name = null,
+        ?string $description = null,
+        ?string $in = null,
         ?bool $required = null,
-        string $ref = Generator::UNDEFINED,
+        string|object|null $ref = null,
         ?Schema $schema = null,
         ?array $examples = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
-        parent::__construct($properties + [
-                'parameter' => $parameter,
-                'name' => $name,
-                'description' => $description,
+        parent::__construct([
+                'parameter' => $parameter ?? Generator::UNDEFINED,
+                'name' => $name ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
                 'in' => $this->in !== Generator::UNDEFINED ? $this->in : $in,
                 'required' => $this->required !== Generator::UNDEFINED ? $this->required : ($required ?? Generator::UNDEFINED),
-                'ref' => $ref,
+                'ref' => $ref ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($schema, $examples, $attachables),
             ]);

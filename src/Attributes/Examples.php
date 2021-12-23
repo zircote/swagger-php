@@ -12,22 +12,23 @@ use OpenApi\Generator;
 class Examples extends \OpenApi\Annotations\Examples
 {
     public function __construct(
-        string $summary = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        string $value = Generator::UNDEFINED,
-        string $externalValue = Generator::UNDEFINED,
-        string $ref = Generator::UNDEFINED,
+        ?string $summary = null,
+        ?string $description = null,
+        ?string $value = null,
+        ?string $externalValue = null,
+        string|object|null $ref = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'summary' => $summary,
-                'description' => $description,
-                'value' => $value,
-                'externalValue' => $externalValue,
-                'ref' => $ref,
-                'x' => $x ?? Generator::UNDEFINED,
-            ]);
+            'summary' => $summary ?? Generator::UNDEFINED,
+            'description' => $description ?? Generator::UNDEFINED,
+            'value' => $value ?? Generator::UNDEFINED,
+            'externalValue' => $externalValue ?? Generator::UNDEFINED,
+            'ref' => $ref ?? Generator::UNDEFINED,
+            'x' => $x ?? Generator::UNDEFINED,
+        ]);
         if ($attachables) {
             $this->merge($attachables);
         }

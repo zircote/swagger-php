@@ -12,16 +12,17 @@ use OpenApi\Generator;
 class License extends \OpenApi\Annotations\License
 {
     public function __construct(
-        string $name = Generator::UNDEFINED,
-        string $identifier = Generator::UNDEFINED,
-        string $url = Generator::UNDEFINED,
+        ?string $name = null,
+        ?string $identifier = null,
+        ?string $url = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-            'name' => $name,
-            'identifier' => $identifier,
-            'url' => $url,
+            'name' => $name ?? Generator::UNDEFINED,
+            'identifier' => $identifier ?? Generator::UNDEFINED,
+            'url' => $url ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'value' => $this->combine($attachables),
         ]);

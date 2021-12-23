@@ -61,7 +61,8 @@
   "autoload-dev": {
     "psr-4": {
       "OpenApi\\Tests\\": "tests/",
-      "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
+      "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
+      "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
     }
   },
   "scripts": {

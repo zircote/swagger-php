@@ -12,16 +12,17 @@ use OpenApi\Generator;
 class Response extends \OpenApi\Annotations\Response
 {
     public function __construct(
-        $response = Generator::UNDEFINED,
-        string $description = Generator::UNDEFINED,
-        $content = Generator::UNDEFINED,
+        $response = null,
+        ?string $description = null,
+        $content = null,
         ?array $links = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'response' => $response,
-                'description' => $description,
+                'response' => $response ?? Generator::UNDEFINED,
+                'description' => $description ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($content, $links, $attachables),
             ]);

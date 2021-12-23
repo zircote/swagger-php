@@ -17,12 +17,6 @@ use OpenApi\Generator;
  */
 class JsonContent extends Schema
 {
-
-    /**
-     * @var object
-     */
-    public $example = Generator::UNDEFINED;
-
     /**
      * @var object
      */

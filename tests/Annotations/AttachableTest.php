@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Attachable;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
+use OpenApi\Tests\Fixtures\Annotations\CustomAttachable;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AttachableTest extends OpenApiTestCase
@@ -28,8 +29,8 @@ class AttachableTest extends OpenApiTestCase
     {
         $analysis = new Analysis([], $this->getContext());
         (new Generator())
-            ->addAlias('oaf', 'OpenApi\\Tests\\Annotations')
-            ->addNamespace('OpenApi\\Tests\\Annotations\\')
+            ->addAlias('oaf', 'OpenApi\Tests\Fixtures\Annotations')
+            ->addNamespace('OpenApi\Tests\Fixtures\Annotations\\')
             ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);

@@ -12,18 +12,19 @@ use OpenApi\Generator;
 class Xml extends \OpenApi\Annotations\Xml
 {
     public function __construct(
-        string $name = Generator::UNDEFINED,
-        string $namespace = Generator::UNDEFINED,
-        string $prefix = Generator::UNDEFINED,
+        ?string $name = null,
+        ?string $namespace = null,
+        ?string $prefix = null,
         ?bool $attribute = null,
         ?bool $wrapped = null,
+        // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'name' => $name,
-                'namespace' => $namespace,
-                'prefix' => $prefix,
+                'name' => $name ?? Generator::UNDEFINED,
+                'namespace' => $namespace ?? Generator::UNDEFINED,
+                'prefix' => $prefix ?? Generator::UNDEFINED,
                 'attribute' => $attribute ?? Generator::UNDEFINED,
                 'wrapped' => $wrapped ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
