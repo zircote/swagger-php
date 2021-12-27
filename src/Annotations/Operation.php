@@ -141,7 +141,9 @@ abstract class Operation extends AbstractAnnotation
         'Swagger\Annotations\ExternalDocumentation' => 'externalDocs'
     ];
 
-    /** @inheritdoc */
+    /**
+     * @return mixed
+     */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {

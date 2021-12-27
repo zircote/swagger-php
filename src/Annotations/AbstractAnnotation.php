@@ -237,6 +237,7 @@ abstract class AbstractAnnotation implements JsonSerializable
 
     /**
      * Customize the way json_encode() renders the annotations.
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
