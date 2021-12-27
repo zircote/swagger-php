@@ -30,6 +30,7 @@ class Logger
         /**
          * @param \Exception|string $entry
          * @param int $type Error type
+         * @return void
          */
         $this->log = function ($entry, $type) {
             if ($entry instanceof Exception) {
