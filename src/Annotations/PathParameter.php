@@ -22,21 +22,4 @@ class PathParameter extends Parameter
      * @inheritdoc
      */
     public $required = true;
-
-    /**
-     * @inheritdoc
-     */
-    public static $_parents = [
-        Components::class,
-        PathItem::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Delete::class,
-        Patch::class,
-        Head::class,
-        Options::class,
-        Trace::class,
-    ];
 }

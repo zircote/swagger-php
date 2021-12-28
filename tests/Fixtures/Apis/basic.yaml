@@ -15,9 +15,10 @@ paths:
         -
           name: product_id
           in: path
+          description: 'The product id.'
           required: true
           schema:
-            type: string
+            type: int
       responses:
         '200':
           description: 'successful operation'

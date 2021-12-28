@@ -54,7 +54,7 @@ class ProductController
     #[OAT\Response(response: 401, description: 'oops')]
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
-        #[OAT\PathParameter] string $product_id)
+        #[OAT\PathParameter(description: 'The product id.')] int $product_id)
     {
     }
 

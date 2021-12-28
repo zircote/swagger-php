@@ -62,8 +62,8 @@ class ProductController
             new OAT\Response(response: 401, description: 'oops'),
         ],
     )]
-    #[OAT\PathParameter(name: 'product_id', schema: new OAT\Schema(type: 'string'))]
-    public function getProduct(string $product_id)
+    #[OAT\PathParameter(name: 'product_id', description: 'The product id.', schema: new OAT\Schema(type: 'int'))]
+    public function getProduct(int $product_id)
     {
     }
 
