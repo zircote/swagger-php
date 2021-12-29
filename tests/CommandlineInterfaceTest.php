@@ -17,7 +17,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
-        $this->assertSame(0, $retval);
+        $this->assertSame(0, $retval, implode(PHP_EOL, $output));
         $yaml = implode(PHP_EOL, $output);
         $this->assertSpecEquals(file_get_contents($path . '/petstore-simple.yaml'), $yaml);
     }
@@ -27,7 +27,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         $path = $this->example('swagger-spec/petstore-simple');
         $filename = sys_get_temp_dir() . '/swagger-php-clitest.yaml';
         exec(__DIR__ . '/../bin/openapi --format yaml -o ' . escapeshellarg($filename) . ' ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
-        $this->assertSame(0, $retval);
+        $this->assertSame(0, $retval, implode(PHP_EOL, $output));
         $this->assertCount(0, $output, 'No output to stdout');
         $yaml = file_get_contents($filename);
         unlink($filename);
@@ -38,7 +38,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --processor OperationId --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
-        $this->assertSame(0, $retval);
+        $this->assertSame(0, $retval, implode(PHP_EOL, $output));
     }
 
     public function testExcludeListWarning()

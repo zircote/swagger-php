@@ -67,7 +67,8 @@ class ProductController
      *   operationId="getProducts",
      *   @OA\PathParameter(
      *     name="product_id",
-     *     @OA\Schema(type="string")
+     *     description="The product id.",
+     *     @OA\Schema(type="int")
      *   ),
      *   @OA\Response(
      *       response=200,
@@ -80,7 +81,7 @@ class ProductController
      *   )
      * )
      */
-    public function getProduct(string $product_id)
+    public function getProduct(int $product_id)
     {
     }
 
