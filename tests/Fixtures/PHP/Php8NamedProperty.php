@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
+use OpenApi\Attributes\Property;
 use OpenApi\Tests\Fixtures\PHP\Label;
 
 /**
@@ -20,7 +21,9 @@ class Php8NamedProperty
          * @var Label[]|null $labels
          * @OA\Property()
          */
-        public ?array $labels
+        public ?array $labels,
+        #[Property()]
+        public int $id,
     )
     {
     }
