@@ -148,14 +148,18 @@ class TokenScanner
                     $token = $this->nextToken($tokens);
 
                     if (($unitLevel + 1) == count($stack) && $currentName) {
+                        $units[$currentName]['methods'][] = $token[1];
                         if (!$isInterface) {
                             // more nesting
+                            $units[$currentName]['properties'] = array_merge(
+                                $units[$currentName]['properties'],
+                                $this->parsePromotedProperties($tokens)
+                            );
                             $this->skipTo($tokens, '{', true);
                         } else {
                             // no function body
                             $this->skipTo($tokens, ';');
                         }
-                        $units[$currentName]['methods'][] = $token[1];
                     }
                     break;
 
@@ -294,5 +298,45 @@ class TokenScanner
         }
 
         return $statements;
+    }
+
+    protected function parsePromotedProperties(array &$tokens): array
+    {
+        $properties = [];
+
+        $this->skipTo($tokens, '(');
+        $round = 1;
+        $promoted = false;
+        while (false !== ($token = $this->nextToken($tokens))) {
+            if (is_string($token)) {
+                switch ($token) {
+                    case '(':
+                        ++$round;
+                        break;
+                    case ')':
+                        --$round;
+                        if (0 == $round) {
+                            return $properties;
+                        }
+                }
+            }
+            if (is_array($token)) {
+                switch ($token[0]) {
+                    case T_PUBLIC:
+                    case T_PROTECTED:
+                    case T_PRIVATE:
+                        $promoted = true;
+                        break;
+                    case T_VARIABLE:
+                        if ($promoted) {
+                            $properties[] = ltrim($token[1], '$');
+                            $promoted = false;
+                        }
+                        break;
+                }
+            }
+        }
+
+        return $properties;
     }
 }
