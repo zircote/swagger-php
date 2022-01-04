@@ -13,20 +13,6 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
-use OpenApi\Processors\AugmentParameters;
-use OpenApi\Processors\AugmentProperties;
-use OpenApi\Processors\AugmentSchemas;
-use OpenApi\Processors\BuildPaths;
-use OpenApi\Processors\CleanUnmerged;
-use OpenApi\Processors\DocBlockDescriptions;
-use OpenApi\Processors\ExpandClasses;
-use OpenApi\Processors\ExpandInterfaces;
-use OpenApi\Processors\ExpandTraits;
-use OpenApi\Processors\MergeIntoComponents;
-use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\Processors\MergeJsonContent;
-use OpenApi\Processors\MergeXmlContent;
-use OpenApi\Processors\OperationId;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -178,20 +164,21 @@ class Generator
     {
         if (null === $this->processors) {
             $this->processors = [
-                new DocBlockDescriptions(),
-                new MergeIntoOpenApi(),
-                new MergeIntoComponents(),
-                new ExpandClasses(),
-                new ExpandInterfaces(),
-                new ExpandTraits(),
-                new AugmentSchemas(),
-                new AugmentProperties(),
-                new BuildPaths(),
-                new AugmentParameters(),
-                new MergeJsonContent(),
-                new MergeXmlContent(),
-                new OperationId(),
-                new CleanUnmerged(),
+                new Processors\DocBlockDescriptions(),
+                new Processors\MergeIntoOpenApi(),
+                new Processors\MergeIntoComponents(),
+                new Processors\ExpandClasses(),
+                new Processors\ExpandInterfaces(),
+                new Processors\ExpandTraits(),
+                new Processors\ExpandEnums(),
+                new Processors\AugmentSchemas(),
+                new Processors\AugmentProperties(),
+                new Processors\BuildPaths(),
+                new Processors\AugmentParameters(),
+                new Processors\MergeJsonContent(),
+                new Processors\MergeXmlContent(),
+                new Processors\OperationId(),
+                new Processors\CleanUnmerged(),
             ];
         }
 

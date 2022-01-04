@@ -32,6 +32,13 @@ class Analysis
     public $classes = [];
 
     /**
+     * Interface definitions.
+     *
+     * @var array
+     */
+    public $interfaces = [];
+
+    /**
      * Trait definitions.
      *
      * @var array
@@ -39,11 +46,11 @@ class Analysis
     public $traits = [];
 
     /**
-     * Interface definitions.
+     * Enum definitions.
      *
      * @var array
      */
-    public $interfaces = [];
+    public $enums = [];
 
     /**
      * The target OpenApi annotation.
@@ -127,6 +134,12 @@ class Analysis
     {
         $trait = $definition['context']->fullyQualifiedName($definition['trait']);
         $this->traits[$trait] = $definition;
+    }
+
+    public function addEnumDefinition(array $definition): void
+    {
+        $enum = $definition['context']->fullyQualifiedName($definition['enum']);
+        $this->enums[$enum] = $definition;
     }
 
     public function addAnalysis(Analysis $analysis): void
