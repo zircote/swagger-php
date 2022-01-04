@@ -32,7 +32,9 @@ class ExpandEnums
                 $source = $schema->_context->enum;
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($source));
                 $schema->schema = $schema->schema !== Generator::UNDEFINED ? $schema->schema : $re->getShortName();
-                $schema->enum = array_map(fn ($case) => $case->name, $re->getCases());
+                $schema->enum = array_map(function ($case) {
+                    return $case->name;
+                }, $re->getCases());
                 $type = 'string';
                 if ($re->isBacked() && $backingType = $re->getBackingType()) {
                     $type = $schema->type !== Generator::UNDEFINED ? $schema->type : $backingType->getName();

@@ -37,14 +37,16 @@ class TokenScanner
         $lastToken = null;
         $stack = [];
 
-        $initUnit = fn ($uses) => [
-            'uses' => $uses,
-            'interfaces' => [],
-            'traits' => [],
-            'enums' => [],
-            'methods' => [],
-            'properties' => [],
-        ];
+        $initUnit = function ($uses) {
+            return [
+                'uses' => $uses,
+                'interfaces' => [],
+                'traits' => [],
+                'enums' => [],
+                'methods' => [],
+                'properties' => [],
+            ];
+        };
 
         while (false !== ($token = $this->nextToken($tokens))) {
             if (!is_array($token)) {
@@ -132,7 +134,7 @@ class TokenScanner
                     if (!is_array($token) || T_IMPLEMENTS !== $token[0]) {
                         break;
                     }
-                    // no break
+                // no break
                 case T_IMPLEMENTS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($currentName) {
