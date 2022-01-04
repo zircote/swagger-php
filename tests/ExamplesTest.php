@@ -39,7 +39,10 @@ class ExamplesTest extends OpenApiTestCase
 
         foreach ($examples as $ekey => $example) {
             foreach ($analysers as $akey => $analyser) {
-                yield $akey . ':' . $ekey => array_merge($example, [$analyser]);
+                if (\PHP_VERSION_ID < 80100 && 'using-refs' == $ekey) {
+                    continue;
+                }
+                yield $ekey . ':' . $akey => array_merge($example, [$analyser]);
             }
         }
 

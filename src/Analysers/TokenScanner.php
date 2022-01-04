@@ -124,20 +124,6 @@ class TokenScanner
                     $units[$currentName] = $initUnit($uses);
                     break;
 
-                case T_ENUM:
-                case T_TRAIT:
-                    if ($currentName) {
-                        break;
-                    }
-
-                    $isInterface = false;
-                    $token = $this->nextToken($tokens);
-                    $currentName = $namespace . '\\' . $token[1];
-                    $unitLevel = count($stack);
-                    $this->skipTo($tokens, '{', true);
-                    $units[$currentName] = $initUnit($uses);
-                    break;
-
                 case T_EXTENDS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($isInterface && $currentName) {
@@ -146,7 +132,7 @@ class TokenScanner
                     if (!is_array($token) || T_IMPLEMENTS !== $token[0]) {
                         break;
                     }
-                // no break
+                    // no break
                 case T_IMPLEMENTS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($currentName) {
@@ -178,6 +164,22 @@ class TokenScanner
                         $units[$currentName]['properties'][] = substr($token[1], 1);
                     }
                     break;
+                default:
+                    // handle trait here too to avoid duplication
+                    if (T_TRAIT === $token[0] || (defined('T_ENUM') && T_ENUM === $token[0])) {
+                        if ($currentName) {
+                            break;
+                        }
+
+                        $isInterface = false;
+                        $token = $this->nextToken($tokens);
+                        $currentName = $namespace . '\\' . $token[1];
+                        $unitLevel = count($stack);
+                        $this->skipTo($tokens, '{', true);
+                        $units[$currentName] = $initUnit($uses);
+                    }
+                    break;
+
             }
             $lastToken = $token;
         }
