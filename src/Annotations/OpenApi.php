@@ -19,7 +19,7 @@ use OpenApi\Util;
  */
 class OpenApi extends AbstractAnnotation
 {
-    public const DEFAULT_VERSION = '3.1.0';
+    public const DEFAULT_VERSION = '3.0.0';
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
