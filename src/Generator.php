@@ -69,6 +69,8 @@ class Generator
     /** @var null|LoggerInterface PSR logger. */
     protected $logger = null;
 
+    protected $openApiVersion = OpenApi::DEFAULT_VERSION;
+
     private $configStack;
 
     public function __construct(?LoggerInterface $logger = null)
@@ -260,6 +262,18 @@ class Generator
         return $this->logger ?: new DefaultLogger();
     }
 
+    public function getOpenApiVersion(): string
+    {
+        return $this->openApiVersion;
+    }
+
+    public function setOpenApiVersion(string $openApiVersion): Generator
+    {
+        $this->openApiVersion = $openApiVersion;
+
+        return $this;
+    }
+
     public static function scan(iterable $sources, array $options = []): ?OpenApi
     {
         // merge with defaults
@@ -324,6 +338,10 @@ class Generator
 
             // post processing
             $analysis->process($this->getProcessors());
+
+            if ($analysis->openapi) {
+                $analysis->openapi->openapi = $this->openApiVersion;
+            }
 
             // validation
             if ($validate) {

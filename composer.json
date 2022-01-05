@@ -32,7 +32,10 @@
   "config": {
     "bin-dir": "bin",
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true
+    }
   },
   "minimum-stability": "stable",
   "extra": {
