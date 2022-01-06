@@ -77,12 +77,12 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function getContext(array $properties = []): Context
+    public function getContext(array $properties = [], string $version = OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
             [
-            'version' => OpenApi::DEFAULT_VERSION,
-            'logger' => $this->getTrackingLogger(),
+                'version' => $version,
+                'logger' => $this->getTrackingLogger(),
             ] + $properties
         );
     }
@@ -112,7 +112,8 @@ class OpenApiTestCase extends TestCase
      * @param array|OpenApi|\stdClass|string $actual     The generated output
      * @param array|OpenApi|\stdClass|string $expected   The specification
      * @param string                         $message
-     * @param bool                           $normalized flag indicating whether the inputs are already normalized or not
+     * @param bool                           $normalized flag indicating whether the inputs are already normalized or
+     *                                                   not
      */
     protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
@@ -223,13 +224,15 @@ class OpenApiTestCase extends TestCase
         return $analysis;
     }
 
-    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = []): array
+    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OpenApi::DEFAULT_VERSION): array
     {
-        return (new Generator())->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
-            $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
+        return (new Generator())
+            ->setVersion($version)
+            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
+                $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
 
-            return $docBlockParser->fromComment($docBlock, $this->getContext());
-        });
+                return $docBlockParser->fromComment($docBlock, $this->getContext([], $generator->getVersion()));
+            });
     }
 
     /**

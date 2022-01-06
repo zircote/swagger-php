@@ -69,7 +69,8 @@ class Generator
     /** @var null|LoggerInterface PSR logger. */
     protected $logger = null;
 
-    protected $openApiVersion = OpenApi::DEFAULT_VERSION;
+    /** @var string */
+    protected $version = OpenApi::DEFAULT_VERSION;
 
     private $configStack;
 
@@ -262,14 +263,14 @@ class Generator
         return $this->logger ?: new DefaultLogger();
     }
 
-    public function getOpenApiVersion(): string
+    public function getVersion(): string
     {
-        return $this->openApiVersion;
+        return $this->version;
     }
 
-    public function setOpenApiVersion(string $openApiVersion): Generator
+    public function setVersion(string $version): Generator
     {
-        $this->openApiVersion = $openApiVersion;
+        $this->version = $version;
 
         return $this;
     }
@@ -285,9 +286,11 @@ class Generator
                 'processors' => null,
                 'logger' => null,
                 'validate' => true,
+                'version' => OpenApi::DEFAULT_VERSION,
             ];
 
         return (new Generator($config['logger']))
+            ->setVersion($config['version'])
             ->setAliases($config['aliases'])
             ->setNamespaces($config['namespaces'])
             ->setAnalyser($config['analyser'])
@@ -306,7 +309,7 @@ class Generator
     public function withContext(callable $callable)
     {
         $rootContext = new Context([
-            'version' => $this->getOpenApiVersion(),
+            'version' => $this->getVersion(),
             'logger' => $this->getLogger(),
         ]);
         $analysis = new Analysis([], $rootContext);
@@ -333,7 +336,7 @@ class Generator
     public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
     {
         $rootContext = new Context([
-            'version' => $this->getOpenApiVersion(),
+            'version' => $this->getVersion(),
             'logger' => $this->getLogger(),
         ]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
@@ -346,7 +349,7 @@ class Generator
             $analysis->process($this->getProcessors());
 
             if ($analysis->openapi) {
-                $analysis->openapi->openapi = $this->openApiVersion;
+                $analysis->openapi->openapi = $this->version;
             }
 
             // validation

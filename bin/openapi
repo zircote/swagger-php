@@ -209,7 +209,7 @@ $analyser = $options['legacy']
     : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
 
 $openapi = $generator
-    ->setOpenApiVersion($options['version'])
+    ->setVersion($options['version'])
     ->setAnalyser($analyser)
     ->generate(Util::finder($paths, $exclude, $pattern));
 
