@@ -12,8 +12,9 @@ class LicenseTest extends OpenApiTestCase
 {
     public function testValidation()
     {
-        $annotations = $this->annotationsFromDocBlockParser('@OA\License(name="MIT", identifier="MIT", url="http://localhost")');
         $this->assertOpenApiLogEntryContains('@OA\License() url and identifier are mutually exclusive');
+
+        $annotations = $this->annotationsFromDocBlockParser('@OA\License(name="MIT", identifier="MIT", url="http://localhost")');
         $annotations[0]->validate();
     }
 }

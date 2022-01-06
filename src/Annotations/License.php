@@ -71,13 +71,30 @@ class License extends AbstractAnnotation
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        if ($this->_context->version == OpenApi::VERSION_3_0_0) {
+            unset($data->identifier);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
         $valid = parent::validate($parents, $skip);
 
-        if ($this->url !== Generator::UNDEFINED && $this->identifier !== Generator::UNDEFINED) {
-            $this->_context->logger->warning('@OA\\License() url and identifier are mutually exclusive');
-            $valid = false;
+        if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+            if ($this->url !== Generator::UNDEFINED && $this->identifier !== Generator::UNDEFINED) {
+                $this->_context->logger->warning('@OA\\License() url and identifier are mutually exclusive');
+                $valid = false;
+            }
         }
 
         return $valid;

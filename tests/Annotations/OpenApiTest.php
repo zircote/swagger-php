@@ -23,7 +23,7 @@ class OpenApiTest extends OpenApiTestCase
 
     public function testInvalidVersion()
     {
-        $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.1.0, 3.0.0');
+        $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.0.0, 3.1.0');
 
         $openapi = new OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '2';

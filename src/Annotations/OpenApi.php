@@ -19,8 +19,10 @@ use OpenApi\Util;
  */
 class OpenApi extends AbstractAnnotation
 {
-    public const DEFAULT_VERSION = '3.1.0';
-    public const SUPPORTED_VERSIONS = [self::DEFAULT_VERSION, '3.0.0'];
+    public const VERSION_3_0_0 = '3.0.0';
+    public const VERSION_3_1_0 = '3.1.0';
+    public const DEFAULT_VERSION = self::VERSION_3_1_0;
+    public const SUPPORTED_VERSIONS = [self::VERSION_3_0_0, self::VERSION_3_1_0];
 
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.

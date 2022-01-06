@@ -305,7 +305,10 @@ class Generator
      */
     public function withContext(callable $callable)
     {
-        $rootContext = new Context(['logger' => $this->getLogger()]);
+        $rootContext = new Context([
+            'version' => $this->getOpenApiVersion(),
+            'logger' => $this->getLogger(),
+        ]);
         $analysis = new Analysis([], $rootContext);
 
         $this->configStack->push($this);
@@ -329,7 +332,10 @@ class Generator
      */
     public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
     {
-        $rootContext = new Context(['logger' => $this->getLogger()]);
+        $rootContext = new Context([
+            'version' => $this->getOpenApiVersion(),
+            'logger' => $this->getLogger(),
+        ]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
 
         $this->configStack->push($this);

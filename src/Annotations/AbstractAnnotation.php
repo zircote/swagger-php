@@ -347,11 +347,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            $defaultValues = get_class_vars(get_class($this));
-            foreach (['summary', 'description'] as $prop) {
-                if (property_exists($this, $prop)) {
-                    if ($this->$prop !== $defaultValues[$prop]) {
-                        $ref[$prop] = $data->$prop;
+            if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+                $defaultValues = get_class_vars(get_class($this));
+                foreach (['summary', 'description'] as $prop) {
+                    if (property_exists($this, $prop)) {
+                        if ($this->$prop !== $defaultValues[$prop]) {
+                            $ref[$prop] = $data->$prop;
+                        }
                     }
                 }
             }

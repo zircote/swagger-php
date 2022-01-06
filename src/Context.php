@@ -43,6 +43,7 @@ use OpenApi\Loggers\DefaultLogger;
  * @property Annotations\AbstractAnnotation[] $annotations
  * @property \Psr\Log\LoggerInterface         $logger      Guaranteed to be set when using the `Generator`
  * @property array                            $scanned     Details of file scanner when using ReflectionAnalyser
+ * @property string                           $version     The OpenAPI version in use
  */
 class Context
 {

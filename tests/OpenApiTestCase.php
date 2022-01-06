@@ -79,7 +79,12 @@ class OpenApiTestCase extends TestCase
 
     public function getContext(array $properties = []): Context
     {
-        return new Context(['logger' => $this->getTrackingLogger()] + $properties);
+        return new Context(
+            [
+            'version' => OpenApi::DEFAULT_VERSION,
+            'logger' => $this->getTrackingLogger(),
+            ] + $properties
+        );
     }
 
     public function getAnalyzer(): AnalyserInterface
