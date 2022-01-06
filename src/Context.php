@@ -106,13 +106,16 @@ class Context
         return null;
     }
 
-    public function getRootContext(): Context
+    /**
+     * Check if one of the given version numbers matches the current OpenAPI version.
+     *
+     * @param string|array $versions One or more version numbers
+     */
+    public function isVersion($versions): bool
     {
-        if ($this->_parent !== null) {
-            return $this->_parent->getRootContext();
-        }
+        $versions = (array) $versions;
 
-        return $this;
+        return in_array($this->version, $versions);
     }
 
     /**

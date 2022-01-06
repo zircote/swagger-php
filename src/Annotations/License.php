@@ -76,7 +76,7 @@ class License extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if ($this->_context->version == OpenApi::VERSION_3_0_0) {
+        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
             unset($data->identifier);
         }
 
@@ -90,7 +90,7 @@ class License extends AbstractAnnotation
     {
         $valid = parent::validate($parents, $skip);
 
-        if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+        if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
             if ($this->url !== Generator::UNDEFINED && $this->identifier !== Generator::UNDEFINED) {
                 $this->_context->logger->warning('@OA\\License() url and identifier are mutually exclusive');
                 $valid = false;
