@@ -92,7 +92,7 @@ class License extends AbstractAnnotation
 
         if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
             if ($this->url !== Generator::UNDEFINED && $this->identifier !== Generator::UNDEFINED) {
-                $this->_context->logger->warning('@OA\\License() url and identifier are mutually exclusive');
+                $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
                 $valid = false;
             }
         }
