@@ -6,6 +6,7 @@
 
 namespace OpenApi;
 
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
 
 /**
@@ -114,8 +115,9 @@ class Context
     public function isVersion($versions): bool
     {
         $versions = (array) $versions;
+        $currentVersion = $this->version ?: OpenApi::DEFAULT_VERSION;
 
-        return in_array($this->version, $versions);
+        return in_array($currentVersion, $versions);
     }
 
     /**
