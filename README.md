@@ -10,12 +10,20 @@ For a full list of supported annotations, please have look at the [`OpenApi\Anno
 
 ## Features
 
-- Compatible with the OpenAPI 3.0 specification.
+- Compatible with the OpenAPI **3.0** and **3.1** specification.
 - Extracts information from code & existing phpdoc annotations.
 - Command-line interface available.
 - [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Exceptional error reporting (with hints, context)
 - As of PHP 8.1 all annotations are also available as PHP attributes
+
+## OpenAPI version support
+
+`swagger-php` allows to generate specs either for **OpenAPI 3.0.0** or **OpenAPI 3.1.0**.
+By default the spec will be in version `3.0.0`. The command line option `--version` may be used to change this
+to `3.1.0`.
+
+Programmatically, the method `Generator::setVersion()` can be used to change the version.
 
 ## Installation (with [Composer](https://getcomposer.org))
 

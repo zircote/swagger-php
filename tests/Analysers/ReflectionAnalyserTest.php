@@ -12,6 +12,7 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\Response;
 use OpenApi\Attributes\Get;
@@ -82,10 +83,12 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     public function testApiDocBlockBasic(AnalyserInterface $analyser)
     {
         $analysis = (new Generator())
+            ->setVersion(OpenApi::VERSION_3_1_0)
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
-                $analysis = $analyser->fromFile($this->fixture('Apis/DocBlocks/basic.php'), $this->getContext());
+                $analysis = $analyser->fromFile($this->fixture('Apis/DocBlocks/basic.php'), $this->getContext([], $generator->getVersion()));
                 $analysis->process($generator->getProcessors());
+                $analysis->openapi->openapi = $generator->getVersion();
 
                 return $analysis;
             });
@@ -107,12 +110,14 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     {
         /** @var Analysis $analysis */
         $analysis = (new Generator())
+            ->setVersion(OpenApi::VERSION_3_1_0)
             ->addAlias('oaf', 'OpenApi\\Tests\\Annotations')
             ->addNamespace('OpenApi\\Tests\\Annotations\\')
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
-                $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext());
+                $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext([], $generator->getVersion()));
                 $analysis->process((new Generator())->getProcessors());
+                $analysis->openapi->openapi = $generator->getVersion();
 
                 return $analysis;
             });
@@ -146,10 +151,12 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     public function testApiMixedBasic(AnalyserInterface $analyser)
     {
         $analysis = (new Generator())
+            ->setVersion(OpenApi::VERSION_3_1_0)
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
-                $analysis = $analyser->fromFile($this->fixture('Apis/Mixed/basic.php'), $this->getContext());
+                $analysis = $analyser->fromFile($this->fixture('Apis/Mixed/basic.php'), $this->getContext([], $generator->getVersion()));
                 $analysis->process((new Generator())->getProcessors());
+                $analysis->openapi->openapi = $generator->getVersion();
 
                 return $analysis;
             });

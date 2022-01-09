@@ -19,7 +19,11 @@ use OpenApi\Util;
  */
 class OpenApi extends AbstractAnnotation
 {
-    public const DEFAULT_VERSION = '3.1.0';
+    public const VERSION_3_0_0 = '3.0.0';
+    public const VERSION_3_1_0 = '3.1.0';
+    public const DEFAULT_VERSION = self::VERSION_3_0_0;
+    public const SUPPORTED_VERSIONS = [self::VERSION_3_0_0, self::VERSION_3_1_0];
+
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
@@ -128,6 +132,12 @@ class OpenApi extends AbstractAnnotation
     {
         if ($parents !== null || $skip !== null || $ref !== '') {
             $this->_context->logger->warning('Nested validation for ' . $this->identity() . ' not allowed');
+
+            return false;
+        }
+
+        if (!in_array($this->openapi, self::SUPPORTED_VERSIONS)) {
+            $this->_context->logger->warning('Unsupported OpenAPI version "' . $this->openapi . '". Allowed versions are: ' . implode(', ', self::SUPPORTED_VERSIONS));
 
             return false;
         }

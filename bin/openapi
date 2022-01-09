@@ -5,6 +5,7 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
 use OpenApi\Loggers\ConsoleLogger;
@@ -30,6 +31,7 @@ $options = [
     'help' => false,
     'debug' => false,
     'processor' => [],
+    'version' => OpenApi::DEFAULT_VERSION,
 ];
 $aliases = [
     'l' => 'legacy',
@@ -49,6 +51,7 @@ $needsArgument = [
     'pattern',
     'bootstrap',
     'processor',
+    'version',
 ];
 $paths = [];
 $error = false;
@@ -109,6 +112,7 @@ if ($options['help'] === false && $error) {
     // Show help
     $options['help'] = true;
 }
+$defaultVersion = OpenApi::DEFAULT_VERSION;
 if ($options['help']) {
     $help = <<<EOF
 
@@ -127,6 +131,7 @@ Options:
   --processor       Register an additional processor.
   --format          Force yaml or json.
   --debug           Show additional error information.
+  --version         The OpenAPI version; defaults to {$defaultVersion}.
   --help (-h)       Display this help message.
 
 
@@ -204,6 +209,7 @@ $analyser = $options['legacy']
     : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
 
 $openapi = $generator
+    ->setVersion($options['version'])
     ->setAnalyser($analyser)
     ->generate(Util::finder($paths, $exclude, $pattern));
 

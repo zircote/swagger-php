@@ -6,6 +6,7 @@
 
 namespace OpenApi;
 
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
 
 /**
@@ -43,6 +44,7 @@ use OpenApi\Loggers\DefaultLogger;
  * @property Annotations\AbstractAnnotation[] $annotations
  * @property \Psr\Log\LoggerInterface         $logger      Guaranteed to be set when using the `Generator`
  * @property array                            $scanned     Details of file scanner when using ReflectionAnalyser
+ * @property string                           $version     The OpenAPI version in use
  */
 class Context
 {
@@ -105,13 +107,17 @@ class Context
         return null;
     }
 
-    public function getRootContext(): Context
+    /**
+     * Check if one of the given version numbers matches the current OpenAPI version.
+     *
+     * @param string|array $versions One or more version numbers
+     */
+    public function isVersion($versions): bool
     {
-        if ($this->_parent !== null) {
-            return $this->_parent->getRootContext();
-        }
+        $versions = (array) $versions;
+        $currentVersion = $this->version ?: OpenApi::DEFAULT_VERSION;
 
-        return $this;
+        return in_array($currentVersion, $versions);
     }
 
     /**
