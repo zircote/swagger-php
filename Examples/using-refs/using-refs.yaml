@@ -54,6 +54,12 @@ components:
               $ref: '#/components/schemas/product_status'
         -
           $ref: '#/components/schemas/Model'
+    StockLevel:
+      type: int
+      enum:
+        - AVAILABLE
+        - SOLD_OUT
+        - BACK_ORDER
     product_status:
       description: 'The status of a product'
       type: string

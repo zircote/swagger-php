@@ -182,6 +182,12 @@ components:
         owner:
           $ref: '#/components/schemas/user'
       type: object
+    StockLevel:
+      type: string
+      enum:
+        - AVAILABLE
+        - SOLD_OUT
+        - BACK_ORDER
     user:
       properties:
         username:

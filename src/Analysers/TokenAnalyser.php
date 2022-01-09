@@ -81,6 +81,7 @@ class TokenAnalyser implements AnalyserInterface
         $classDefinition = false;
         $interfaceDefinition = false;
         $traitDefinition = false;
+        $enumDefinition = false;
         $comment = false;
 
         $line = 0;
@@ -142,6 +143,7 @@ class TokenAnalyser implements AnalyserInterface
 
                 $interfaceDefinition = false;
                 $traitDefinition = false;
+                $enumDefinition = false;
 
                 $schemaContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
@@ -180,6 +182,7 @@ class TokenAnalyser implements AnalyserInterface
             if ($token[0] === T_INTERFACE) { // Doc-comment before an interface?
                 $classDefinition = false;
                 $traitDefinition = false;
+                $enumDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
 
@@ -220,6 +223,7 @@ class TokenAnalyser implements AnalyserInterface
             if ($token[0] === T_TRAIT) {
                 $classDefinition = false;
                 $interfaceDefinition = false;
+                $enumDefinition = false;
 
                 $token = $this->nextToken($tokens, $parseContext);
 
@@ -234,6 +238,39 @@ class TokenAnalyser implements AnalyserInterface
                 }
                 $traitDefinition = [
                     'trait' => $token[1],
+                    'properties' => [],
+                    'methods' => [],
+                    'context' => $schemaContext,
+                ];
+
+                if ($comment) {
+                    $schemaContext->line = $line;
+                    $this->analyseComment($analysis, $docBlockParser, $comment, $schemaContext);
+                    $comment = false;
+                    continue;
+                }
+
+                // @todo detect end-of-trait and reset $schemaContext
+            }
+
+            if (defined('T_ENUM') && $token[0] === T_ENUM) {
+                $classDefinition = false;
+                $interfaceDefinition = false;
+                $traitDefinition = false;
+
+                $token = $this->nextToken($tokens, $parseContext);
+
+                if (!is_array($token)) {
+                    // PHP 8 named argument
+                    continue;
+                }
+
+                $schemaContext = new Context(['enum' => $token[1], 'line' => $token[2]], $parseContext);
+                if ($enumDefinition) {
+                    $analysis->addEnumDefinition($enumDefinition);
+                }
+                $enumDefinition = [
+                    'enum' => $token[1],
                     'properties' => [],
                     'methods' => [],
                     'context' => $schemaContext,
@@ -415,6 +452,9 @@ class TokenAnalyser implements AnalyserInterface
         }
         if ($traitDefinition) {
             $analysis->addTraitDefinition($traitDefinition);
+        }
+        if ($enumDefinition) {
+            $analysis->addEnumDefinition($enumDefinition);
         }
 
         return $analysis;

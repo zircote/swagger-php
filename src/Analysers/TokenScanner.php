@@ -37,6 +37,17 @@ class TokenScanner
         $lastToken = null;
         $stack = [];
 
+        $initUnit = function ($uses) {
+            return [
+                'uses' => $uses,
+                'interfaces' => [],
+                'traits' => [],
+                'enums' => [],
+                'methods' => [],
+                'properties' => [],
+            ];
+        };
+
         while (false !== ($token = $this->nextToken($tokens))) {
             if (!is_array($token)) {
                 switch ($token) {
@@ -100,7 +111,7 @@ class TokenScanner
                     $isInterface = false;
                     $currentName = $namespace . '\\' . $token[1];
                     $unitLevel = count($stack);
-                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
+                    $units[$currentName] = $initUnit($uses);
                     break;
 
                 case T_INTERFACE:
@@ -112,20 +123,7 @@ class TokenScanner
                     $token = $this->nextToken($tokens);
                     $currentName = $namespace . '\\' . $token[1];
                     $unitLevel = count($stack);
-                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
-                    break;
-
-                case T_TRAIT:
-                    if ($currentName) {
-                        break;
-                    }
-
-                    $isInterface = false;
-                    $token = $this->nextToken($tokens);
-                    $currentName = $namespace . '\\' . $token[1];
-                    $unitLevel = count($stack);
-                    $this->skipTo($tokens, '{', true);
-                    $units[$currentName] = ['uses' => $uses, 'interfaces' => [], 'traits' => [], 'methods' => [], 'properties' => []];
+                    $units[$currentName] = $initUnit($uses);
                     break;
 
                 case T_EXTENDS:
@@ -168,6 +166,22 @@ class TokenScanner
                         $units[$currentName]['properties'][] = substr($token[1], 1);
                     }
                     break;
+                default:
+                    // handle trait here too to avoid duplication
+                    if (T_TRAIT === $token[0] || (defined('T_ENUM') && T_ENUM === $token[0])) {
+                        if ($currentName) {
+                            break;
+                        }
+
+                        $isInterface = false;
+                        $token = $this->nextToken($tokens);
+                        $currentName = $namespace . '\\' . $token[1];
+                        $unitLevel = count($stack);
+                        $this->skipTo($tokens, '{', true);
+                        $units[$currentName] = $initUnit($uses);
+                    }
+                    break;
+
             }
             $lastToken = $token;
         }
