@@ -9,10 +9,9 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject.
+ * A "Request Body Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject.
  *
- * Describes a single response from an API Operation, including design-time, static links to operations based on the
- * response.
+ * Describes a single request body.
  *
  * @Annotation
  */
