@@ -37,7 +37,7 @@ paths:
 components:
   responses:
     '200':
-      description: ''
+      description: Success
       content:
         application/json:
           schema:

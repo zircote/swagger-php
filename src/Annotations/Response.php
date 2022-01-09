@@ -28,7 +28,7 @@ class Response extends AbstractAnnotation
     /**
      * The key into Operations->responses array.
      *
-     * @var string a HTTP Status Code or "default"
+     * @var string|int a HTTP Status Code or "default"
      */
     public $response = Generator::UNDEFINED;
 
@@ -71,11 +71,6 @@ class Response extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public static $_required = ['description'];
-
-    /**
-     * @inheritdoc
-     */
     public static $_types = [
         'description' => 'string',
     ];
@@ -105,4 +100,19 @@ class Response extends AbstractAnnotation
         Options::class,
         Trace::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    {
+        $valid = parent::validate($parents, $skip);
+
+        if ($this->description === Generator::UNDEFINED && $this->ref === Generator::UNDEFINED) {
+            $this->_context->logger->warning($this->identity() . ' One of description or ref is required');
+            $valid = false;
+        }
+
+        return $valid;
+    }
 }
