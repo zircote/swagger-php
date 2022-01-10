@@ -23,6 +23,7 @@ class Response extends \OpenApi\Annotations\Response
         ?array $attachables = null
     ) {
         parent::__construct([
+                'ref' => $ref ?? Generator::UNDEFINED,
                 'response' => $response ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
