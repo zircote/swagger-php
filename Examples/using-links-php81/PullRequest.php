@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpecAttributes;
+namespace OpenApi\Examples\UsingLinksPhp81;
 
 use OpenApi\Attributes as OAT;
 

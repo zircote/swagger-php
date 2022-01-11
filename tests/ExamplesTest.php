@@ -27,7 +27,6 @@ class ExamplesTest extends OpenApiTestCase
             'example-object' => [OpenApi::VERSION_3_0_0, 'example-object', 'example-object.yaml'],
             'misc' => [OpenApi::VERSION_3_0_0, 'misc', 'misc.yaml'],
             'nesting' => [OpenApi::VERSION_3_0_0, 'nesting', 'nesting.yaml'],
-            'openapi-spec' => [OpenApi::VERSION_3_0_0, 'openapi-spec', 'openapi-spec.yaml'],
             'petstore-3.0' => [OpenApi::VERSION_3_0_0, 'petstore-3.0', 'petstore-3.0.yaml'],
             'petstore.swagger.io' => [OpenApi::VERSION_3_0_0, 'petstore.swagger.io', 'petstore.swagger.io.yaml'],
             'swagger-spec/petstore' => [OpenApi::VERSION_3_0_0, 'swagger-spec/petstore', 'petstore.yaml'],
@@ -37,6 +36,7 @@ class ExamplesTest extends OpenApiTestCase
             'using-interfaces' => [OpenApi::VERSION_3_0_0, 'using-interfaces', 'using-interfaces.yaml'],
             'using-refs' => [OpenApi::VERSION_3_0_0, 'using-refs', 'using-refs.yaml'],
             'using-traits' => [OpenApi::VERSION_3_0_0, 'using-traits', 'using-traits.yaml'],
+            'using-links' => [OpenApi::VERSION_3_0_0, 'using-links', 'using-links.yaml'],
         ];
 
         foreach ($examples as $ekey => $example) {
@@ -49,7 +49,7 @@ class ExamplesTest extends OpenApiTestCase
         }
 
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'reflection/attribute:openapi-spec-attributes' => [OpenApi::VERSION_3_0_0, 'openapi-spec-attributes', 'openapi-spec-attributes.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
+            yield 'reflection/attribute:using-links-php81' => [OpenApi::VERSION_3_0_0, 'using-links-php81', 'using-links-php81.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
         }
     }
 
