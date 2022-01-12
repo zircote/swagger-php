@@ -5,9 +5,9 @@ namespace OpenApi\Examples\UsingLinksPhp81;
 use OpenApi\Attributes\Schema;
 
 #[Schema()]
-enum StockLevel
+enum State
 {
-    case AVAILABLE;
-    case SOLD_OUT;
-    case BACK_ORDER;
+    case OPEN;
+    case MERGED;
+    case DECLINED;
 }

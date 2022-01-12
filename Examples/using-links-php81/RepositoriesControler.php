@@ -52,19 +52,18 @@ class RepositoriesController
     }
 
     #[OAT\Get(
-        path: '/2.0/repositories/{username}/{slug}/pullrequests',
+        path: '/2.0/repositories/{username}/{slug}/{state}/pullrequests',
         operationId: 'getPullRequestsByRepository',
-        parameters: [
-            new OAT\Parameter(name: 'username', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
-            new OAT\Parameter(name: 'slug', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
-            new OAT\Parameter(name: 'state', in: 'query', schema: new OAT\Schema(type: 'string', enum: ['open', 'merged', 'declined']))
-        ],
         responses: [
             new OAT\Response(response: 200, description: 'An array of pull request objects', content: new OAT\JsonContent(type: 'array', items: new OAT\Items(ref: '#/components/schemas/pullrequest')))
         ])
     ]
     #[OAT\Link(link: 'RepositoryPullRequests', operationId: 'getPullRequestsByRepository', parameters: ['username' => '$response.body#/owner/username', 'slug' => '$response.body#/slug'])]
-    public function getPullRequestsByRepository()
+    public function getPullRequestsByRepository(
+        #[OAT\PathParameter()] string $username,
+        #[OAT\PathParameter()] string $slug,
+        #[OAT\PathParameter()] State $state
+    )
     {
     }
 

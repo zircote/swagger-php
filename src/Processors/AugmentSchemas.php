@@ -33,6 +33,8 @@ class AugmentSchemas
                     $schema->schema = $schema->_context->interface;
                 } elseif ($schema->_context->is('trait')) {
                     $schema->schema = $schema->_context->trait;
+                } elseif ($schema->_context->is('enum')) {
+                    $schema->schema = $schema->_context->enum;
                 }
             }
         }
@@ -43,7 +45,8 @@ class AugmentSchemas
             if ($property->_context->nested) {
                 continue;
             }
-            $schemaContext = $property->_context->with('class') ?: $property->_context->with('trait') ?: $property->_context->with('interface');
+
+            $schemaContext = $property->_context->with('class') ?: $property->_context->with('interface') ?: $property->_context->with('trait') ?: $property->_context->with('enum');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {

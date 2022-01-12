@@ -51,7 +51,7 @@ paths:
           links:
             repositoryPullRequests:
               $ref: '#/components/links/RepositoryPullRequests'
-  '/2.0/repositories/{username}/{slug}/pullrequests':
+  '/2.0/repositories/{username}/{slug}/{state}/pullrequests':
     get:
       operationId: getPullRequestsByRepository
       parameters:
@@ -69,13 +69,10 @@ paths:
             type: string
         -
           name: state
-          in: query
+          in: path
+          required: true
           schema:
-            type: string
-            enum:
-              - open
-              - merged
-              - declined
+            $ref: '#/components/schemas/State'
       responses:
         '200':
           description: 'An array of pull request objects'
@@ -166,6 +163,8 @@ components:
   schemas:
     pullrequest:
       properties:
+        state:
+          $ref: '#/components/schemas/State'
         id:
           type: integer
         title:
@@ -182,12 +181,12 @@ components:
         owner:
           $ref: '#/components/schemas/user'
       type: object
-    StockLevel:
+    State:
       type: string
       enum:
-        - AVAILABLE
-        - SOLD_OUT
-        - BACK_ORDER
+        - OPEN
+        - MERGED
+        - DECLINED
     user:
       properties:
         username:
