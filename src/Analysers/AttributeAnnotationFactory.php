@@ -9,6 +9,7 @@ namespace OpenApi\Analysers;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Schema;
 use OpenApi\Attributes\Attachable;
+use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\PathParameter;
 use OpenApi\Context;
 use OpenApi\Generator;
@@ -42,13 +43,15 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
-                    foreach ($rp->getAttributes(PathParameter::class) as $attribute) {
-                        $instance = $attribute->newInstance();
-                        $instance->name = $rp->getName();
-                        if (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) {
-                            $instance->schema = new Schema(['type' => $rnt->getName(), '_context' => new Context(['nested' => $this], $context)]);
+                    foreach ([Parameter::class, PathParameter::class] as $attributeName) {
+                        foreach ($rp->getAttributes($attributeName) as $attribute) {
+                            $instance = $attribute->newInstance();
+                            $instance->name = $rp->getName();
+                            if (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) {
+                                $instance->merge([new Schema(['type' => $rnt->getName(), '_context' => new Context(['nested' => $this], $context)])]);
+                            }
+                            $annotations[] = $instance;
                         }
-                        $annotations[] = $instance;
                     }
                 }
             }
