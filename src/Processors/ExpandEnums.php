@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Look at all enums with a schema and:
@@ -39,7 +40,7 @@ class ExpandEnums
                 if ($re->isBacked() && $backingType = $re->getBackingType()) {
                     $type = $schema->type !== Generator::UNDEFINED ? $schema->type : $backingType->getName();
                 }
-                $schema->type = $type;
+                Util::mapNativeType($schema, $type);
             }
         }
     }

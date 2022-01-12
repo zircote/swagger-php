@@ -39,7 +39,7 @@ class SchemaQueryParameter
     protected function schemaForRef(array $schemas, string $ref)
     {
         foreach ($schemas as $schema) {
-            if (Components::SCHEMA_REF . $schema->schema === $ref) {
+            if (Components::ref($schema) === $ref) {
                 return $schema;
             }
         }
@@ -78,4 +78,3 @@ class SchemaQueryParameter
         }
     }
 }
-

@@ -144,7 +144,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         $this->assertCount(2, $extendedSchema->allOf);
 
-        $this->assertEquals(Components::SCHEMA_REF . 'Base', $extendedSchema->allOf[1]->ref);
+        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[1]->ref);
         $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
     }
 
@@ -170,7 +170,7 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
-        $this->assertEquals(Components::SCHEMA_REF . 'Base', $extendedSchema->allOf[1]->ref);
+        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[1]->ref);
         $this->assertEquals('nested', $extendedSchema->allOf[0]->properties[1]->property);
         $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
 

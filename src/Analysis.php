@@ -150,6 +150,7 @@ class Analysis
         $this->classes = array_merge($this->classes, $analysis->classes);
         $this->interfaces = array_merge($this->interfaces, $analysis->interfaces);
         $this->traits = array_merge($this->traits, $analysis->traits);
+        $this->enums = array_merge($this->enums, $analysis->enums);
         if ($this->openapi === null && $analysis->openapi !== null) {
             $this->openapi = $analysis->openapi;
         }
@@ -333,13 +334,9 @@ class Analysis
      */
     public function getSchemaForSource(string $fqdn): ?AnnotationSchema
     {
-        $sourceDefinitions = [
-            $this->classes,
-            $this->interfaces,
-            $this->traits,
-        ];
+        $fqdn = '\\' . ltrim($fqdn, '\\');
 
-        foreach ($sourceDefinitions as $definitions) {
+        foreach ([$this->classes, $this->interfaces, $this->traits, $this->enums] as $definitions) {
             if (array_key_exists($fqdn, $definitions)) {
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
