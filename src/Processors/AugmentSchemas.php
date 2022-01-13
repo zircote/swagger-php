@@ -96,6 +96,14 @@ class AugmentSchemas
                 } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
                     $schema->type = 'object';
                 }
+
+            } else {
+                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
+                    if ($schema->format === Generator::UNDEFINED) {
+                        $schema->ref = Components::ref($typeSchema);
+                        $schema->type = Generator::UNDEFINED;
+                    }
+                }
             }
         }
 
@@ -129,7 +137,7 @@ class AugmentSchemas
                 // do we have to keep track of properties refs that need updating?
                 foreach ($schema->allOf as $allOfSchema) {
                     if ($allOfSchema->properties !== Generator::UNDEFINED) {
-                        $updatedRefs[Components::SCHEMA_REF . $schema->schema . '/properties'] = Components::SCHEMA_REF . $schema->schema . '/allOf/0/properties';
+                        $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/0/properties', false);
                         break;
                     }
                 }
