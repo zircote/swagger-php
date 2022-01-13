@@ -96,7 +96,6 @@ class AugmentSchemas
                 } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
                     $schema->type = 'object';
                 }
-
             } else {
                 if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
                     if ($schema->format === Generator::UNDEFINED) {

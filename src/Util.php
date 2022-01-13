@@ -7,7 +7,6 @@
 namespace OpenApi;
 
 use InvalidArgumentException;
-use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use Symfony\Component\Finder\Finder;
 

@@ -144,7 +144,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     $ctx->nullable = $type->allowsNull();
                     if ($type instanceof \ReflectionNamedType) {
                         $ctx->type = $type->getName();
-                        // Context::fullyQualifiedName(...) exppects this
+                        // Context::fullyQualifiedName(...) expects this
                         if (class_exists($absFqn = '\\' . $ctx->type)) {
                             $ctx->type = $absFqn;
                         }
