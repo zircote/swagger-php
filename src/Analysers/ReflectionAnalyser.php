@@ -23,7 +23,7 @@ class ReflectionAnalyser implements AnalyserInterface
     /** @var AnnotationFactoryInterface[] */
     protected $annotationFactories;
 
-    /** @var Generator */
+    /** @var Generator|null */
     protected $generator;
 
     public function __construct(array $annotationFactories = [])

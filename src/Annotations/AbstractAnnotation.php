@@ -77,14 +77,14 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *   Parameter::clas => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
      *   PathItem::clas => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
      *
-     * @var array
+     * @var array<class-string<AbstractAnnotation>,string|string[]>
      */
     public static $_nested = [];
 
     /**
      * Reverse mapping of $_nested with the allowed parent annotations.
      *
-     * @var string[]
+     * @var class-string<AbstractAnnotation>[]
      */
     public static $_parents = [];
 

@@ -53,7 +53,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 $instance->type = $type;
                             } else {
                                 $instance->name = $rp->getName();
-                                $instance->merge([new Schema(['type' => $rnt->getName(), '_context' => new Context(['nested' => $this], $context)])]);
+                                $instance->merge([new Schema(['type' => $type, '_context' => new Context(['nested' => $this], $context)])]);
                             }
                             $annotations[] = $instance;
                         }

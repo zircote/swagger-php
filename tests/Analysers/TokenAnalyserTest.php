@@ -231,6 +231,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testNamespacedConstAccess()
     {
         $analysis = $this->analysisFromFixtures(['Parser/User.php']);
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
@@ -243,11 +244,13 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testPhp8AttributeMix()
     {
         $analysis = $this->analysisFromFixtures(['PHP/Label.php', 'PHP/Php8AttrMix.php']);
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process((new Generator())->getProcessors());
 
+        /** @var Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(Property::class, true);
         $this->assertCount(2, $properties);
         $this->assertEquals('id', $properties[0]->property);
@@ -265,6 +268,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertCount(1, $schemas);
         $analysis->process((new Generator())->getProcessors());
 
+        /** @var Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(Property::class, true);
         $this->assertCount(1, $properties);
         $this->assertEquals('labels', $properties[0]->property);

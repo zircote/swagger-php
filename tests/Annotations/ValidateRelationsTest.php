@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Tests\OpenApiTestCase;
 
 /**
@@ -37,7 +38,7 @@ class ValidateRelationsTest extends OpenApiTestCase
     /**
      * @dataProvider allAnnotationClasses
      *
-     * @param string $class
+     * @param class-string<AbstractAnnotation> $class
      */
     public function testNested($class)
     {

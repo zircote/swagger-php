@@ -198,7 +198,7 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->openapi->paths = [new PathItem(['path' => '/test', '_context' => $this->getContext()])];
         $analysis->validate();
 
-        /* @var Schema[] $schemas */
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
         $this->assertCount(4, $schemas);
 
