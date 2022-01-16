@@ -23,6 +23,7 @@ class OperationIdTest extends OpenApiTestCase
             'Processors/EntityControllerTrait.php',
         ]);
         $analysis->process([new OperationId(false)]);
+        /** @var Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(Operation::class);
 
         $this->assertCount(3, $operations);

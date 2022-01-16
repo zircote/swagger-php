@@ -1,12 +1,15 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpecAttributes;
+namespace OpenApi\Examples\UsingLinksPhp81;
 
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(schema: 'pullrequest')]
 class PullRequest
 {
+    public function __construct(
+        #[OAT\Property()] public State $state
+    ) {}
 
     /**
      * @var integer

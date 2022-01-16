@@ -7,12 +7,14 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * A Components Object: https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object.
  *
  * Holds a set of reusable objects for different aspects of the OA.
- * All objects defined within the components object will have no effect on the API unless they are explicitly referenced from properties outside the components object.
+ * All objects defined within the components object will have no effect on the API unless they are explicitly
+ * referenced from properties outside the components object.
  *
  * @Annotation
  */
@@ -110,4 +112,11 @@ class Components extends AbstractAnnotation
         Link::class => ['links', 'link'],
         Attachable::class => ['attachables'],
     ];
+
+    public static function ref($schema, bool $encode = true): string
+    {
+        $name = $schema instanceof Schema ? $schema->schema : $schema;
+
+        return Components::SCHEMA_REF . ($encode ? Util::refEncode($name) : $name);
+    }
 }

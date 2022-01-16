@@ -6,7 +6,6 @@ parameters:
     parallel:
         processTimeout: 300.0
     ignoreErrors:
-        - '#does not accept default value of type string#'
-        - '#Access to an undefined property#'
+        - '#does not accept default value of type #'
     excludePaths:
         - 'tests/Fixtures/*'

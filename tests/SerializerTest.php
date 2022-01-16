@@ -186,7 +186,7 @@ JSON;
             	}
             }
 JSON;
-        /* @var $annotation Annotations\OpenApi */
+        /** @var $annotation Annotations\OpenApi */
         $annotation = $serializer->deserialize($json, Annotations\OpenApi::class);
 
         foreach ($annotation->components->schemas as $schemaObject) {

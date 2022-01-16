@@ -8,7 +8,7 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
 
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER)]
 class Property extends \OpenApi\Annotations\Property
 {
     public function __construct(

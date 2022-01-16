@@ -9,7 +9,9 @@ namespace OpenApi\Analysers;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Schema;
 use OpenApi\Attributes\Attachable;
+use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\PathParameter;
+use OpenApi\Attributes\Property;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -42,13 +44,19 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
-                    foreach ($rp->getAttributes(PathParameter::class) as $attribute) {
-                        $instance = $attribute->newInstance();
-                        $instance->name = $rp->getName();
-                        if (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) {
-                            $instance->schema = new Schema(['type' => $rnt->getName(), '_context' => new Context(['nested' => $this], $context)]);
+                    foreach ([Property::class, Parameter::class, PathParameter::class] as $attributeName) {
+                        foreach ($rp->getAttributes($attributeName) as $attribute) {
+                            $instance = $attribute->newInstance();
+                            $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
+                            if ($instance instanceof Property) {
+                                $instance->property = $rp->getName();
+                                $instance->type = $type;
+                            } else {
+                                $instance->name = $rp->getName();
+                                $instance->merge([new Schema(['type' => $type, '_context' => new Context(['nested' => $this], $context)])]);
+                            }
+                            $annotations[] = $instance;
                         }
-                        $annotations[] = $instance;
                     }
                 }
             }
@@ -62,7 +70,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
         // merge backwards into parents...
         $isParent = function (AbstractAnnotation $annotation, AbstractAnnotation $possibleParent): bool {
-            // regular anootation hierachy
+            // regular annotation hierarchy
             $explicitParent = null !== $possibleParent::matchNested(get_class($annotation));
 
             $isParentAllowed = false;

@@ -33,6 +33,8 @@ class AugmentSchemas
                     $schema->schema = $schema->_context->interface;
                 } elseif ($schema->_context->is('trait')) {
                     $schema->schema = $schema->_context->trait;
+                } elseif ($schema->_context->is('enum')) {
+                    $schema->schema = $schema->_context->enum;
                 }
             }
         }
@@ -43,7 +45,8 @@ class AugmentSchemas
             if ($property->_context->nested) {
                 continue;
             }
-            $schemaContext = $property->_context->with('class') ?: $property->_context->with('trait') ?: $property->_context->with('interface');
+
+            $schemaContext = $property->_context->with('class') ?: $property->_context->with('interface') ?: $property->_context->with('trait') ?: $property->_context->with('enum');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {
@@ -93,6 +96,13 @@ class AugmentSchemas
                 } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
                     $schema->type = 'object';
                 }
+            } else {
+                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
+                    if ($schema->format === Generator::UNDEFINED) {
+                        $schema->ref = Components::ref($typeSchema);
+                        $schema->type = Generator::UNDEFINED;
+                    }
+                }
             }
         }
 
@@ -126,7 +136,7 @@ class AugmentSchemas
                 // do we have to keep track of properties refs that need updating?
                 foreach ($schema->allOf as $allOfSchema) {
                     if ($allOfSchema->properties !== Generator::UNDEFINED) {
-                        $updatedRefs[Components::SCHEMA_REF . $schema->schema . '/properties'] = Components::SCHEMA_REF . $schema->schema . '/allOf/0/properties';
+                        $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/0/properties', false);
                         break;
                     }
                 }

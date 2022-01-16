@@ -15,7 +15,7 @@ use OpenApi\Generator;
  */
 class TokenAnalyser implements AnalyserInterface
 {
-    /** @var Generator */
+    /** @var Generator|null */
     protected $generator;
 
     public function setGenerator(Generator $generator): void

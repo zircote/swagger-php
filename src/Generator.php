@@ -28,7 +28,7 @@ class Generator
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
      *
-     * @var null|Context
+     * @var Context|null
      */
     public static $context;
 

@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use InvalidArgumentException;
+use OpenApi\Annotations\Schema;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -14,6 +15,47 @@ use Symfony\Component\Finder\Finder;
  */
 class Util
 {
+    public static $NATIVE_TYPE_MAP = [
+        'array' => 'array',
+        'byte' => ['string', 'byte'],
+        'boolean' => 'boolean',
+        'bool' => 'boolean',
+        'int' => 'integer',
+        'integer' => 'integer',
+        'long' => ['integer', 'long'],
+        'float' => ['number', 'float'],
+        'double' => ['number', 'double'],
+        'string' => 'string',
+        'date' => ['string', 'date'],
+        'datetime' => ['string', 'date-time'],
+        '\\datetime' => ['string', 'date-time'],
+        'datetimeimmutable' => ['string', 'date-time'],
+        '\\datetimeimmutable' => ['string', 'date-time'],
+        'datetimeinterface' => ['string', 'date-time'],
+        '\\datetimeinterface' => ['string', 'date-time'],
+        'number' => 'number',
+        'object' => 'object',
+    ];
+
+    public static function mapNativeType(Schema $schema, $type): bool
+    {
+        if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
+            return false;
+        }
+
+        $type = self::$NATIVE_TYPE_MAP[$type];
+        if (is_array($type)) {
+            if ($schema->format === Generator::UNDEFINED) {
+                $schema->format = $type[1];
+            }
+            $type = $type[0];
+        }
+
+        $schema->type = $type;
+
+        return true;
+    }
+
     /**
      * Turns the given $fullPath into a relative path based on $basePaths, which can either
      * be a single string path, or a list of possible paths. If a list is given, the first

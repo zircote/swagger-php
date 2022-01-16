@@ -49,7 +49,7 @@ class AugmentProperties
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== Generator::UNDEFINED) {
                     $refKey = $this->toRefKey($schema->_context, $schema->_context->class);
-                    $refs[$refKey] = Components::SCHEMA_REF . Util::refEncode($schema->schema);
+                    $refs[$refKey] = Components::ref($schema);
                 }
             }
         }
@@ -110,9 +110,7 @@ class AugmentProperties
             $type = $typeMatches[1];
 
             // finalise property type/ref
-            if (array_key_exists($type, static::$types)) {
-                $this->applyType($property, static::$types[$type]);
-            } else {
+            if (!Util::mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
                     $property->ref = $refs[$refKey];
@@ -154,9 +152,7 @@ class AugmentProperties
                 $property->nullable = true;
             }
             $type = strtolower($context->type);
-            if (isset(self::$types[$type])) {
-                $this->applyType($property, static::$types[$type]);
-            } else {
+            if (!Util::mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
                     $this->applyRef($property, $refs[$refKey]);
@@ -187,18 +183,6 @@ class AugmentProperties
         }
 
         return implode('|', $types);
-    }
-
-    protected function applyType(Property $property, $type): void
-    {
-        if (is_array($type)) {
-            if ($property->format === Generator::UNDEFINED) {
-                $property->format = $type[1];
-            }
-            $type = $type[0];
-        }
-
-        $property->type = $type;
     }
 
     protected function applyRef(Property $property, string $ref): void

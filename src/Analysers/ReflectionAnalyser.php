@@ -23,7 +23,7 @@ class ReflectionAnalyser implements AnalyserInterface
     /** @var AnnotationFactoryInterface[] */
     protected $annotationFactories;
 
-    /** @var Generator */
+    /** @var Generator|null */
     protected $generator;
 
     public function __construct(array $annotationFactories = [])
@@ -132,6 +132,10 @@ class ReflectionAnalyser implements AnalyserInterface
 
         foreach ($rc->getProperties() as $property) {
             if (in_array($property->name, $details['properties'])) {
+                if (method_exists($property, 'isPromoted') && $property->isPromoted()) {
+                    // handled via __construct() parameter
+                    continue;
+                }
                 $definition['properties'][$property->getName()] = $ctx = new Context([
                     'property' => $property->getName(),
                     'comment' => $property->getDocComment() ?: Generator::UNDEFINED,
@@ -144,7 +148,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     $ctx->nullable = $type->allowsNull();
                     if ($type instanceof \ReflectionNamedType) {
                         $ctx->type = $type->getName();
-                        // Context::fullyQualifiedName(...) exppects this
+                        // Context::fullyQualifiedName(...) expects this
                         if (class_exists($absFqn = '\\' . $ctx->type)) {
                             $ctx->type = $absFqn;
                         }

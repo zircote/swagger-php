@@ -11,7 +11,6 @@ use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * Steps:
@@ -31,7 +30,7 @@ trait MergeTrait
         }
         // merging other properties into allOf is done in the AugmentSchemas processor
         $schema->allOf[] = new Schema([
-            'ref' => Components::SCHEMA_REF . Util::refEncode($refPath),
+            'ref' => Components::ref($refPath),
             '_context' => $context,
             '_aux' => true,
         ]);

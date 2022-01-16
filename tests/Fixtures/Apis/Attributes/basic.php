@@ -69,7 +69,7 @@ class ProductController
         description: 'New product',
         content: new OAT\JsonContent(
             type: 'array',
-            items: new OAT\Items(ref: '#/components/schemas/Product'))
+            items: new OAT\Items(type: Product::class))
     )]
     public function addProduct()
     {
