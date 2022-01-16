@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class Link extends \OpenApi\Annotations\Link
 {
     /**
+     * @param array<string,mixed>       $properties
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

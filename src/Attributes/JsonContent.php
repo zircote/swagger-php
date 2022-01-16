@@ -12,6 +12,8 @@ use OpenApi\Generator;
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
     /**
+     * @param string[]                  $required
+     * @param Property[]                $properties
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

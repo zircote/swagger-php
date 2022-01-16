@@ -12,6 +12,8 @@ use OpenApi\Generator;
 class Items extends \OpenApi\Annotations\Items
 {
     /**
+     * @param string[]                  $required
+     * @param Property[]                $properties
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

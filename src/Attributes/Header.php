@@ -7,7 +7,7 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
 
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Header extends \OpenApi\Annotations\Header
 {
     /**
@@ -15,13 +15,25 @@ class Header extends \OpenApi\Annotations\Header
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        // annotation
+        string|object|null $ref = null,
+        ?string $header = null,
+        ?string $description = null,
+        ?bool $required = null,
+        ?Schema $schema = null,
+        ?bool $deprecated = null,
+        ?bool $allowEmptyValue = null,
+        // annotation4
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
-            ]);
+            'ref' => $ref ?? Generator::UNDEFINED,
+            'header' => $header ?? Generator::UNDEFINED,
+            'description' => $description ?? Generator::UNDEFINED,
+            'required' => $required ?? Generator::UNDEFINED,
+            'deprecated' => $deprecated ?? Generator::UNDEFINED,
+            'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
+            'value' => $this->combine($attachables, $schema),
+        ]);
     }
 }

@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class SecurityScheme extends \OpenApi\Annotations\SecurityScheme
 {
     /**
+     * @param Flow[]                    $flows
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

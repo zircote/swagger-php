@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
 {
     /**
+     * @param string[]|null             $required
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
