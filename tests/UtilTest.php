@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
 
 class UtilTest extends OpenApiTestCase
 {
-    public function testExclude()
+    public function testExclude(): void
     {
         $exclude = [
             'Customer.php',
@@ -38,17 +38,17 @@ class UtilTest extends OpenApiTestCase
         $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
     }
 
-    public function testRefEncode()
+    public function testRefEncode(): void
     {
         $this->assertSame('#/paths/~1blogs~1{blog_id}~1new~0posts', '#/paths/' . Util::refEncode('/blogs/{blog_id}/new~posts'));
     }
 
-    public function testRefDecode()
+    public function testRefDecode(): void
     {
         $this->assertSame('/blogs/{blog_id}/new~posts', Util::refDecode('~1blogs~1{blog_id}~1new~0posts'));
     }
 
-    public function testFinder()
+    public function testFinder(): void
     {
         // Create a finder for one of the example directories that has a subdirectory.
         $finder = (new Finder())->in($this->example('using-traits'));
@@ -74,7 +74,7 @@ class UtilTest extends OpenApiTestCase
     /**
      * @dataProvider shortenFixtures
      */
-    public function testShorten($classes, $expected)
+    public function testShorten($classes, $expected): void
     {
         $this->assertEquals($expected, Util::shorten($classes));
     }

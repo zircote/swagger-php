@@ -13,7 +13,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class DocBlockDescriptionsTest extends OpenApiTestCase
 {
-    public function testDocBlockDescription()
+    public function testDocBlockDescription(): void
     {
         $analysis = $this->analysisFromFixtures(['UsingPhpDoc.php']);
         $analysis->process([

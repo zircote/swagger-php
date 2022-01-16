@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class MediaType extends \OpenApi\Annotations\MediaType
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $mediaType = null,
         ?Schema $schema = null,

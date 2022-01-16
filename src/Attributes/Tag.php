@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Tag extends \OpenApi\Annotations\Tag
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $name = null,
         ?string $description = null,

@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class XmlContent extends \OpenApi\Annotations\XmlContent
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         object $examples = null,
         // schema

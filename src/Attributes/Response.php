@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends \OpenApi\Annotations\Response
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         string|object|null $ref = null,
         $response = null,

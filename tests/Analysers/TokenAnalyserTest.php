@@ -41,7 +41,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider singleDefinitionCases
      */
-    public function testSingleDefinition($code, $fqdn, $name, $type, $typeKey)
+    public function testSingleDefinition($code, $fqdn, $name, $type, $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -79,7 +79,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider extendsDefinitionCases
      */
-    public function testExtendsDefinition($code, $fqdn, $name, $extends, $type, $typeKey)
+    public function testExtendsDefinition($code, $fqdn, $name, $extends, $type, $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -109,7 +109,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider usesDefinitionCases
      */
-    public function testUsesDefinition($code, $fqdn, $name, $traits, $type, $typeKey)
+    public function testUsesDefinition($code, $fqdn, $name, $traits, $type, $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -119,14 +119,14 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertSame($traits, $definition['traits']);
     }
 
-    public function testWrongCommentType()
+    public function testWrongCommentType(): void
     {
         $analyser = new TokenAnalyser();
         $this->assertOpenApiLogEntryContains('Annotations are only parsed inside `/**` DocBlocks');
         $analyser->fromCode("<?php\n/*\n * @OA\Parameter() */", $this->getContext());
     }
 
-    public function testThirdPartyAnnotations()
+    public function testThirdPartyAnnotations(): void
     {
         $generator = new Generator();
         $analyser = new TokenAnalyser();
@@ -153,7 +153,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertCount(1, $context->annotations);
     }
 
-    public function testAnonymousClassProducesNoError()
+    public function testAnonymousClassProducesNoError(): void
     {
         try {
             $analyser = new TokenAnalyser();
@@ -206,7 +206,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider descriptions
      */
-    public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits)
+    public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits): void
     {
         $analysis = $this->analysisFromFixtures([$fixture]);
 
@@ -228,7 +228,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         }
     }
 
-    public function testNamespacedConstAccess()
+    public function testNamespacedConstAccess(): void
     {
         $analysis = $this->analysisFromFixtures(['Parser/User.php']);
         /** @var Schema[] $schemas */
@@ -241,7 +241,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @requires PHP 8
      */
-    public function testPhp8AttributeMix()
+    public function testPhp8AttributeMix(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Label.php', 'PHP/Php8AttrMix.php']);
         /** @var Schema[] $schemas */
@@ -260,7 +260,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @requires PHP 8
      */
-    public function testPhp8NamedProperty()
+    public function testPhp8NamedProperty(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8NamedProperty.php'], [], new TokenAnalyser());
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
@@ -274,7 +274,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertEquals('labels', $properties[0]->property);
     }
 
-    public function testAnonymousFunctions()
+    public function testAnonymousFunctions(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunctions.php'], [], new TokenAnalyser());
         $analysis->process((new Generator())->getProcessors());
@@ -286,7 +286,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @requires PHP 8
      */
-    public function testPhp8NamedArguments()
+    public function testPhp8NamedArguments(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8NamedArguments.php'], [], new TokenAnalyser());
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);

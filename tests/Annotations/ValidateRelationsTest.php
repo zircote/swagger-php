@@ -19,7 +19,7 @@ class ValidateRelationsTest extends OpenApiTestCase
      *
      * @param string $class
      */
-    public function testAncestors($class)
+    public function testAncestors($class): void
     {
         foreach ($class::$_parents as $parent) {
             $found = false;
@@ -40,7 +40,7 @@ class ValidateRelationsTest extends OpenApiTestCase
      *
      * @param class-string<AbstractAnnotation> $class
      */
-    public function testNested($class)
+    public function testNested($class): void
     {
         foreach (array_keys($class::$_nested) as $nestedClass) {
             $found = false;

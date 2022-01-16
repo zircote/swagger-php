@@ -21,7 +21,7 @@ class SecuritySchemesTest extends OpenApiTestCase
     /**
      * Test parse servers.
      */
-    public function testParseServers()
+    public function testParseServers(): void
     {
         $comment = <<<INFO
 /**
@@ -57,7 +57,7 @@ INFO;
     /**
      * Test parse security scheme.
      */
-    public function testImplicitFlowAnnotation()
+    public function testImplicitFlowAnnotation(): void
     {
         $comment = <<<SCHEME
 /**
@@ -91,7 +91,7 @@ SCHEME;
         $this->assertEquals('http://auth.test.com/refresh-token', $security->flows[0]->refreshUrl);
     }
 
-    public function testMultipleAnnotations()
+    public function testMultipleAnnotations(): void
     {
         $comment = <<<SCHEME
 /**

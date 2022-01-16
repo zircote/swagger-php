@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class License extends \OpenApi\Annotations\License
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $name = null,
         ?string $identifier = null,

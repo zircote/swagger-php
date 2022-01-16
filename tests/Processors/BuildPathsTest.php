@@ -18,7 +18,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class BuildPathsTest extends OpenApiTestCase
 {
-    public function testMergePathsWithSamePath()
+    public function testMergePathsWithSamePath(): void
     {
         $openapi = new OpenApi(['_context' => $this->getContext()]);
         $openapi->paths = [
@@ -33,7 +33,7 @@ class BuildPathsTest extends OpenApiTestCase
         $this->assertSame('/comments', $openapi->paths[0]->path);
     }
 
-    public function testMergeOperationsWithSamePath()
+    public function testMergeOperationsWithSamePath(): void
     {
         $openapi = new OpenApi(['_context' => $this->getContext()]);
         $analysis = new Analysis(

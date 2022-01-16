@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class CleanUnmergedTest extends OpenApiTestCase
 {
-    public function testCleanUnmergedProcessor()
+    public function testCleanUnmergedProcessor(): void
     {
         $comment = <<<END
 @OA\Info(

@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Discriminator extends \OpenApi\Annotations\Discriminator
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $propertyName = null,
         ?string $mapping = null,

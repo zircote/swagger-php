@@ -12,7 +12,7 @@ use OpenApi\Generator;
 
 class ContextTest extends OpenApiTestCase
 {
-    public function testDetect()
+    public function testDetect(): void
     {
         $context = Context::detect();
         $line = __LINE__ - 1;
@@ -24,7 +24,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('OpenApi\\Tests', $context->namespace);
     }
 
-    public function testFullyQualifiedName()
+    public function testFullyQualifiedName(): void
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
@@ -44,7 +44,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('\OpenApi\Annotations\QualifiedAlias', $context->fullyQualifiedName('OA\QualifiedAlias'));
     }
 
-    public function testPhpdocContent()
+    public function testPhpdocContent(): void
     {
         $singleLine = $this->getContext(['comment' => <<<END
     /**
@@ -84,7 +84,7 @@ END
     /**
      * https://phpdoc.org/docs/latest/guides/docblocks.html.
      */
-    public function testPhpdocSummaryAndDescription()
+    public function testPhpdocSummaryAndDescription(): void
     {
         $single = $this->getContext(['comment' => '/** This is a single line DocComment. */']);
         $this->assertEquals('This is a single line DocComment.', $single->phpdocContent());

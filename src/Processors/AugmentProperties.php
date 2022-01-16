@@ -45,7 +45,7 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
-        if ($analysis->openapi->components !== Generator::UNDEFINED && $analysis->openapi->components->schemas !== Generator::UNDEFINED) {
+        if ($analysis->openapi->components!== Generator::UNDEFINED && $analysis->openapi->components->schemas!== Generator::UNDEFINED) {
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if ($schema->schema !== Generator::UNDEFINED) {
                     $refKey = $this->toRefKey($schema->_context, $schema->_context->class);

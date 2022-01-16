@@ -70,7 +70,7 @@ class SerializerTest extends OpenApiTestCase
         return $expected;
     }
 
-    public function testDeserializeAnnotation()
+    public function testDeserializeAnnotation(): void
     {
         $serializer = new Serializer();
 
@@ -146,7 +146,7 @@ JSON;
         $this->assertTrue($schema->additionalProperties);
     }
 
-    public function testPetstoreExample()
+    public function testPetstoreExample(): void
     {
         $serializer = new Serializer();
         $spec = $this->example('petstore.swagger.io/petstore.swagger.io.json');
@@ -160,7 +160,7 @@ JSON;
      *
      * @throws \Exception
      */
-    public function testDeserializeAllOfProperty()
+    public function testDeserializeAllOfProperty(): void
     {
         $serializer = new Serializer();
         $json = <<<JSON
@@ -186,7 +186,7 @@ JSON;
             	}
             }
 JSON;
-        /** @var $annotation Annotations\OpenApi */
+        /** @var Annotations\OpenApi $annotation */
         $annotation = $serializer->deserialize($json, Annotations\OpenApi::class);
 
         foreach ($annotation->components->schemas as $schemaObject) {
@@ -205,7 +205,7 @@ JSON;
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testValidAnnotationsListComplete($annotation)
+    public function testValidAnnotationsListComplete($annotation): void
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
         $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));

@@ -12,7 +12,7 @@ class DocBlockParserTest extends OpenApiTestCase
 {
     const SWG_ALIAS = ['swg' => 'OpenApi\Annotations'];
 
-    public function testParseContents()
+    public function testParseContents(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Parameter(description="This is my parameter")', self::SWG_ALIAS);
         $this->assertIsArray($annotations);
@@ -21,13 +21,13 @@ class DocBlockParserTest extends OpenApiTestCase
         $this->assertSame('This is my parameter', $parameter->description);
     }
 
-    public function testDeprecatedAnnotationWarning()
+    public function testDeprecatedAnnotationWarning(): void
     {
         $this->assertOpenApiLogEntryContains('The annotation @SWG\Definition() is deprecated.');
         $this->annotationsFromDocBlockParser('@SWG\Definition()', self::SWG_ALIAS);
     }
 
-    public function testExtraAliases()
+    public function testExtraAliases(): void
     {
         $extraAliases = [
             'contact' => 'OpenApi\Annotations\Contact', // use OpenApi\Annotations\Contact;

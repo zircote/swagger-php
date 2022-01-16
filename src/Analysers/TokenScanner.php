@@ -24,7 +24,7 @@ class TokenScanner
     /**
      * Scan file for all classes, interfaces and traits.
      *
-     * @return string[][] File details
+     * @return array<string, array<string, mixed>> File details
      */
     protected function scanTokens(array $tokens): array
     {

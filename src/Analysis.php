@@ -55,14 +55,14 @@ class Analysis
     /**
      * The target OpenApi annotation.
      *
-     * @var OpenApi
+     * @var OpenApi|null
      */
-    public $openapi;
+    public $openapi = null;
 
     /**
-     * @var Context
+     * @var Context|null
      */
-    public $context;
+    public $context = null;
 
     public function __construct(array $annotations = [], Context $context = null)
     {

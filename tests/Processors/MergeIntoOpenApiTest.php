@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class MergeIntoOpenApiTest extends OpenApiTestCase
 {
-    public function testProcessor()
+    public function testProcessor(): void
     {
         $openapi = new OpenApi(['_context' => $this->getContext()]);
         $info = new Info(['_context' => $this->getContext()]);

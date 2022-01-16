@@ -26,7 +26,7 @@ class ComposerAutoloaderScannerTest extends OpenApiTestCase
         spl_autoload_register([$mockClassloader, 'findFile'], true, true);
     }
 
-    public function testComposerClassloader()
+    public function testComposerClassloader(): void
     {
         $expected = [
             'OpenApi\Tests\\Scanners\\Foo',

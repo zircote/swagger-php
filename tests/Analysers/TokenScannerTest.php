@@ -298,7 +298,7 @@ class TokenScannerTest extends OpenApiTestCase
     /**
      * @dataProvider scanCases
      */
-    public function testScanFile($fixture, $expected)
+    public function testScanFile($fixture, $expected): void
     {
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));
         $this->assertEquals($expected, $result);

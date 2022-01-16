@@ -32,7 +32,7 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->validate();
     }
 
-    public function testExpandClasses()
+    public function testExpandClasses(): void
     {
         $analysis = $this->analysisFromFixtures(
             [
@@ -71,7 +71,7 @@ class ExpandClassesTest extends OpenApiTestCase
      * Tests, if ExpandClasses works even without any
      * docBlocks at all in the parent class.
      */
-    public function testExpandClassesWithoutDocBlocks()
+    public function testExpandClassesWithoutDocBlocks(): void
     {
         $analysis = $this->analysisFromFixtures([
             // this class has docblocks
@@ -96,7 +96,7 @@ class ExpandClassesTest extends OpenApiTestCase
     /**
      * Tests inherit properties with all of block.
      */
-    public function testExpandClassesWithAllOf()
+    public function testExpandClassesWithAllOf(): void
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -124,7 +124,7 @@ class ExpandClassesTest extends OpenApiTestCase
     /**
      * Tests for inherit properties without all of block.
      */
-    public function testExpandClassesWithOutAllOf()
+    public function testExpandClassesWithOutAllOf(): void
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -151,7 +151,7 @@ class ExpandClassesTest extends OpenApiTestCase
     /**
      * Tests for inherit properties in object with two schemas in the same context.
      */
-    public function testExpandClassesWithTwoChildSchemas()
+    public function testExpandClassesWithTwoChildSchemas(): void
     {
         $analysis = $this->analysisFromFixtures([
             // this class has all of
@@ -183,7 +183,7 @@ class ExpandClassesTest extends OpenApiTestCase
     /**
      * Tests inherit properties with interface.
      */
-    public function testPreserveExistingAllOf()
+    public function testPreserveExistingAllOf(): void
     {
         $analysis = $this->analysisFromFixtures([
             'ExpandClasses/BaseInterface.php',

@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Link extends \OpenApi\Annotations\Link
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $link = null,
         string|object|null $ref = null,

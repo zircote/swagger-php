@@ -27,7 +27,7 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider sourcesProvider
      */
-    public function testScan(string $sourceDir, iterable $sources)
+    public function testScan(string $sourceDir, iterable $sources): void
     {
         $openapi = (new Generator())
             ->setAnalyser(new TokenAnalyser())
@@ -49,7 +49,7 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider processorCases
      */
-    public function testUpdateProcessor($p, $expected)
+    public function testUpdateProcessor($p, $expected): void
     {
         $generator = (new Generator())
             ->updateProcessor($p);
@@ -60,7 +60,7 @@ class GeneratorTest extends OpenApiTestCase
         }
     }
 
-    public function testAddProcessor()
+    public function testAddProcessor(): void
     {
         $generator = new Generator();
         $processors = $generator->getProcessors();
@@ -70,7 +70,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertLessThan(count($generator->getProcessors()), count($processors));
     }
 
-    public function testAddAlias()
+    public function testAddAlias(): void
     {
         $generator = new Generator();
         $generator->addAlias('foo', 'Foo\\Bar');
@@ -78,7 +78,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertEquals(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
     }
 
-    public function testAddNamespace()
+    public function testAddNamespace(): void
     {
         $generator = new Generator();
         $generator->addNamespace('Foo\\Bar\\');
@@ -86,7 +86,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertEquals(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
     }
 
-    public function testRemoveProcessor()
+    public function testRemoveProcessor(): void
     {
         $generator = new Generator();
         $processors = $generator->getProcessors();

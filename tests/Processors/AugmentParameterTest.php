@@ -12,7 +12,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentParameterTest extends OpenApiTestCase
 {
-    public function testAugmentParameter()
+    public function testAugmentParameter(): void
     {
         $openapi = (new Generator())
             ->setAnalyser(new TokenAnalyser())

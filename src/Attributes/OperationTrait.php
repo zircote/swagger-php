@@ -10,6 +10,10 @@ use OpenApi\Generator;
 
 trait OperationTrait
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $path = null,
         ?string $operationId = null,

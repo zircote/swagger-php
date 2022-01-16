@@ -10,17 +10,17 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class ResponseTest extends OpenApiTestCase
 {
-    public function testMisspelledDefault()
+    public function testMisspelledDefault(): void
     {
         $this->validateMisspelledAnnotation('Default');
     }
 
-    public function testMisspelledRangeDefinition()
+    public function testMisspelledRangeDefinition(): void
     {
         $this->validateMisspelledAnnotation('5xX');
     }
 
-    public function testWrongRangeDefinition()
+    public function testWrongRangeDefinition(): void
     {
         $this->validateMisspelledAnnotation('6XX');
     }
