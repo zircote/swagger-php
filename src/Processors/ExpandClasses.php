@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
-use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Iterate over the chain of anchestors of a schema and:
@@ -32,7 +32,7 @@ class ExpandClasses
                 foreach ($anchestors as $anchestor) {
                     $anchestorSchema = $analysis->getSchemaForSource($anchestor['context']->fullyQualifiedName($anchestor['class']));
                     if ($anchestorSchema) {
-                        $refPath = $anchestorSchema->schema !== Generator::UNDEFINED ? $anchestorSchema->schema : $anchestor['class'];
+                        $refPath = !Util::isDefault($anchestorSchema->schema) ? $anchestorSchema->schema : $anchestor['class'];
                         $this->inheritFrom($schema, $anchestorSchema, $refPath, $anchestor['context']);
 
                         // one anchestor is enough

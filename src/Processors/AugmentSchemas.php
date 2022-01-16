@@ -11,6 +11,7 @@ use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Use the Schema context to extract useful information and inject that into the annotation.
@@ -26,7 +27,7 @@ class AugmentSchemas
 
         // Use the class names for @OA\Schema()
         foreach ($schemas as $schema) {
-            if ($schema->schema === Generator::UNDEFINED) {
+            if (Util::isDefault($schema->schema)) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
                 } elseif ($schema->_context->is('interface')) {
@@ -55,10 +56,10 @@ class AugmentSchemas
                             continue;
                         }
 
-                        if ($annotation->allOf!== Generator::UNDEFINED) {
+                        if (!Util::isDefault($annotation->allOf)) {
                             $schema = null;
                             foreach ($annotation->allOf as $nestedSchema) {
-                                if ($nestedSchema->ref !== Generator::UNDEFINED) {
+                                if (!Util::isDefault($nestedSchema->ref)) {
                                     continue;
                                 }
 
@@ -86,7 +87,7 @@ class AugmentSchemas
 
         // set schema type based on various properties
         foreach ($schemas as $schema) {
-            if ($schema->type === Generator::UNDEFINED) {
+            if (Util::isDefault($schema->type)) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
@@ -98,7 +99,7 @@ class AugmentSchemas
                 }
             } else {
                 if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
-                    if ($schema->format === Generator::UNDEFINED) {
+                    if (Util::isDefault($schema->format)) {
                         $schema->ref = Components::ref($typeSchema);
                         $schema->type = Generator::UNDEFINED;
                     }
@@ -108,10 +109,10 @@ class AugmentSchemas
 
         // move schema properties into allOf if both exist
         foreach ($schemas as $schema) {
-            if ($schema->properties!== Generator::UNDEFINED and $schema->allOf!== Generator::UNDEFINED) {
+            if (!Util::isDefault($schema->properties) && !Util::isDefault($schema->allOf)) {
                 $allOfPropertiesSchema = null;
                 foreach ($schema->allOf as $allOfSchema) {
-                    if ($allOfSchema->properties !== Generator::UNDEFINED) {
+                    if (!Util::isDefault($allOfSchema->properties)) {
                         $allOfPropertiesSchema = $allOfSchema;
                         break;
                     }

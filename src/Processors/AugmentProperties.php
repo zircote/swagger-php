@@ -45,9 +45,9 @@ class AugmentProperties
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
-        if ($analysis->openapi->components!== Generator::UNDEFINED && $analysis->openapi->components->schemas!== Generator::UNDEFINED) {
+        if (!Util::isDefault($analysis->openapi->components) && !Util::isDefault($analysis->openapi->components->schemas)) {
             foreach ($analysis->openapi->components->schemas as $schema) {
-                if ($schema->schema !== Generator::UNDEFINED) {
+                if (!Util::isDefault($schema->schema)) {
                     $refKey = $this->toRefKey($schema->_context, $schema->_context->class);
                     $refs[$refKey] = Components::ref($schema);
                 }
@@ -60,29 +60,29 @@ class AugmentProperties
         foreach ($properties as $property) {
             $context = $property->_context;
 
-            if ($property->property === Generator::UNDEFINED) {
+            if (Util::isDefault($property->property)) {
                 $property->property = $context->property;
             }
 
-            if ($property->ref !== Generator::UNDEFINED) {
+            if (!Util::isDefault($property->ref)) {
                 continue;
             }
 
             $comment = str_replace("\r\n", "\n", (string) $context->comment);
             preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches);
 
-            if ($property->type === Generator::UNDEFINED) {
+            if (Util::isDefault($property->type)) {
                 $this->augmentType($property, $context, $refs, $varMatches);
             }
 
-            if ($property->description === Generator::UNDEFINED && isset($varMatches['description'])) {
+            if (Util::isDefault($property->description) && isset($varMatches['description'])) {
                 $property->description = trim($varMatches['description']);
             }
-            if ($property->description === Generator::UNDEFINED && $property->isRoot()) {
+            if (Util::isDefault($property->description) && $property->isRoot()) {
                 $property->description = $context->phpdocContent();
             }
 
-            if ($property->example === Generator::UNDEFINED && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
+            if (Util::isDefault($property->example) && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
                 $property->example = $varMatches['example'];
             }
         }
@@ -101,7 +101,7 @@ class AugmentProperties
         if (isset($varMatches['type'])) {
             $allTypes = strtolower(trim($varMatches['type']));
 
-            if ($this->isNullable($allTypes) && $property->nullable === Generator::UNDEFINED) {
+            if ($this->isNullable($allTypes) && Util::isDefault($property->nullable)) {
                 $property->nullable = true;
             }
 
@@ -112,13 +112,13 @@ class AugmentProperties
             // finalise property type/ref
             if (!Util::mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
-                if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
+                if (Util::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $property->ref = $refs[$refKey];
                 }
             }
 
             // ok, so we possibly have a type or ref
-            if ($property->ref !== Generator::UNDEFINED && $typeMatches[2] === '' && $property->nullable) {
+            if (!Util::isDefault($property->ref) && $typeMatches[2] === '' && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
                     new Schema([
@@ -129,7 +129,7 @@ class AugmentProperties
                 ];
                 $property->nullable = true;
             } elseif ($typeMatches[2] === '[]') {
-                if ($property->items === Generator::UNDEFINED) {
+                if (Util::isDefault($property->items)) {
                     $property->items = new Items(
                         [
                             'type' => $property->type,
@@ -137,7 +137,7 @@ class AugmentProperties
                             '_aux' => true,
                         ]
                     );
-                    if ($property->ref !== Generator::UNDEFINED) {
+                    if (!Util::isDefault($property->ref)) {
                         $property->items->ref = $property->ref;
                         $property->ref = Generator::UNDEFINED;
                     }
@@ -147,14 +147,14 @@ class AugmentProperties
         }
 
         // native typehints
-        if ($context->type && $context->type !== Generator::UNDEFINED) {
+        if ($context->type && !Util::isDefault($context->type)) {
             if ($context->nullable === true) {
                 $property->nullable = true;
             }
             $type = strtolower($context->type);
             if (!Util::mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
-                if ($property->ref === Generator::UNDEFINED && array_key_exists($refKey, $refs)) {
+                if (Util::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($property, $refs[$refKey]);
 
                     // cannot get more specific

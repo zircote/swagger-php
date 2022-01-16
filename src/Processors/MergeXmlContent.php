@@ -14,6 +14,7 @@ use OpenApi\Annotations\Response;
 use OpenApi\Annotations\XmlContent;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Split XmlContent into Schema and MediaType.
@@ -35,7 +36,7 @@ class MergeXmlContent
                 }
                 continue;
             }
-            if ($parent->content === Generator::UNDEFINED) {
+            if (Util::isDefault($parent->content)) {
                 $parent->content = [];
             }
             $parent->content['application/xml'] = new MediaType([

@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Merge all @OA\OpenApi annotations into one.
@@ -38,9 +38,9 @@ class MergeIntoOpenApi
                 $paths = $annotation->paths;
                 unset($annotation->paths);
                 $openapi->mergeProperties($annotation);
-                if ($paths !== Generator::UNDEFINED) {
+                if (!Util::isDefault($paths)) {
                     foreach ($paths as $path) {
-                        if ($openapi->paths === Generator::UNDEFINED) {
+                        if (Util::isDefault($openapi->paths)) {
                             $openapi->paths = [];
                         }
                         $openapi->paths[] = $path;

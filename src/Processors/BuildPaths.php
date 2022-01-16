@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc).
@@ -21,7 +21,7 @@ class BuildPaths
     {
         $paths = [];
         // Merge @OA\PathItems with the same path.
-        if ($analysis->openapi->paths !== Generator::UNDEFINED) {
+        if (!Util::isDefault($analysis->openapi->paths)) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
                     $annotation->_context->logger->warning($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);

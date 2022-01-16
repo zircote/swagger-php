@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
-use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Look at all (direct) traits for a schema and:
@@ -33,7 +33,7 @@ class ExpandTraits
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = $traitSchema->schema !== Generator::UNDEFINED ? $traitSchema->schema : $trait['trait'];
+                        $refPath = !Util::isDefault($traitSchema->schema) ? $traitSchema->schema : $trait['trait'];
                         $this->inheritFrom($schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         if ($schema->_context->is('class')) {
