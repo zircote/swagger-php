@@ -9,6 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
+use OpenApi\Generator;
 use OpenApi\Util;
 
 /**
@@ -31,13 +32,13 @@ class ExpandEnums
             if ($schema->_context->is('enum')) {
                 $source = $schema->_context->enum;
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($source));
-                $schema->schema = !Util::isDefault($schema->schema) ? $schema->schema : $re->getShortName();
+                $schema->schema = !Generator::isDefault($schema->schema) ? $schema->schema : $re->getShortName();
                 $schema->enum = array_map(function ($case) {
                     return $case->name;
                 }, $re->getCases());
                 $type = 'string';
                 if ($re->isBacked() && ($backingType = $re->getBackingType())) {
-                    $type = !Util::isDefault($schema->type) ? $schema->type : $backingType->getName();
+                    $type = !Generator::isDefault($schema->type) ? $schema->type : $backingType->getName();
                 }
                 Util::mapNativeType($schema, $type);
             }

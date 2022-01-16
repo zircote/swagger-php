@@ -8,7 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
-use OpenApi\Util;
+use OpenApi\Generator;
 
 /**
  * Generate the OperationId based on the context of the OpenApi annotation.
@@ -43,7 +43,7 @@ class OperationId
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            if (!Util::isDefault($operation->operationId)) {
+            if (!Generator::isDefault($operation->operationId)) {
                 continue;
             }
             $context = $operation->_context;

@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Context;
-use OpenApi\Util;
+use OpenApi\Generator;
 
 /**
  * Merge reusable annotation into @OA\Schemas.
@@ -19,7 +19,7 @@ class MergeIntoComponents
     public function __invoke(Analysis $analysis)
     {
         $components = $analysis->openapi->components;
-        if (Util::isDefault($components)) {
+        if (Generator::isDefault($components)) {
             $context = new Context([], $analysis->context);
             $components = new Components(['_context' => $context]);
             $components->_context->generated = true;

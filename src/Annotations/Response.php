@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * A "Response Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object.
@@ -109,7 +108,7 @@ class Response extends AbstractAnnotation
     {
         $valid = parent::validate($parents, $skip);
 
-        if (Util::isDefault($this->description) && Util::isDefault($this->ref)) {
+        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
             $this->_context->logger->warning($this->identity() . ' One of description or ref is required');
             $valid = false;
         }

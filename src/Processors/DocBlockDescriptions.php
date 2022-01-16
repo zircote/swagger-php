@@ -9,7 +9,6 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * This would be detected as summary.
@@ -52,7 +51,7 @@ class DocBlockDescriptions
 
     private function description($annotation): void
     {
-        if (!Util::isDefault($annotation->description)) {
+        if (!Generator::isDefault($annotation->description)) {
             if ($annotation->description === null) {
                 $annotation->description = Generator::UNDEFINED;
             }
@@ -64,8 +63,8 @@ class DocBlockDescriptions
 
     private function summaryAndDescription($annotation): void
     {
-        $ignoreSummary = !Util::isDefault($annotation->summary);
-        $ignoreDescription = !Util::isDefault($annotation->description);
+        $ignoreSummary = !Generator::isDefault($annotation->summary);
+        $ignoreDescription = !Generator::isDefault($annotation->description);
         if ($annotation->summary === null) {
             $ignoreSummary = true;
             $annotation->summary = Generator::UNDEFINED;

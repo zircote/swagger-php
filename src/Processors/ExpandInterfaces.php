@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
-use OpenApi\Util;
+use OpenApi\Generator;
 
 /**
  * Look at all (direct) interfaces for a schema and:
@@ -34,7 +34,7 @@ class ExpandInterfaces
                     $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
                     $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
                     if ($interfaceSchema) {
-                        $refPath = !Util::isDefault($interfaceSchema->schema) ? $interfaceSchema->schema : $interface['interface'];
+                        $refPath = !Generator::isDefault($interfaceSchema->schema) ? $interfaceSchema->schema : $interface['interface'];
                         $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {
                         $this->mergeAnnotations($schema, $interface, $existing);

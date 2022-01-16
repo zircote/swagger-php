@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 trait ParameterTrait
 {
@@ -32,8 +31,8 @@ trait ParameterTrait
                 'parameter' => $parameter ?? Generator::UNDEFINED,
                 'name' => $name ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
-                'in' => Util::isDefault($this->in) ? $in : $this->in,
-                'required' => !Util::isDefault($this->required) ? $this->required : ($required ?? Generator::UNDEFINED),
+                'in' => Generator::isDefault($this->in) ? $in : $this->in,
+                'required' => !Generator::isDefault($this->required) ? $this->required : ($required ?? Generator::UNDEFINED),
                 'ref' => $ref ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($schema, $examples, $attachables),

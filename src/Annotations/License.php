@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * License information for the exposed API.
@@ -92,7 +91,7 @@ class License extends AbstractAnnotation
         $valid = parent::validate($parents, $skip);
 
         if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
-            if (!Util::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
+            if (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
                 $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
                 $valid = false;
             }

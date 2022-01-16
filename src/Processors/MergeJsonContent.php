@@ -14,7 +14,6 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * Split JsonContent into Schema and MediaType.
@@ -36,7 +35,7 @@ class MergeJsonContent
                 }
                 continue;
             }
-            if (Util::isDefault($parent->content)) {
+            if (Generator::isDefault($parent->content)) {
                 $parent->content = [];
             }
             $parent->content['application/json'] = new MediaType([

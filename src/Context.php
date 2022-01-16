@@ -238,7 +238,7 @@ class Context
      */
     public function phpdocContent()
     {
-        if (Util::isDefault($this->comment)) {
+        if (Generator::isDefault($this->comment)) {
             return Generator::UNDEFINED;
         }
 

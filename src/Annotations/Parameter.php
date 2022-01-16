@@ -7,7 +7,6 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * [A "Parameter Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object.
@@ -245,9 +244,9 @@ class Parameter extends AbstractAnnotation
             return true;
         }
         $valid = parent::validate($parents, $skip, $ref);
-        if (Util::isDefault($this->ref)) {
+        if (Generator::isDefault($this->ref)) {
             if ($this->in === 'body') {
-                if (Util::isDefault($this->schema)) {
+                if (Generator::isDefault($this->schema)) {
                     $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }
