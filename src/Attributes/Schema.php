@@ -11,6 +11,13 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Schema extends \OpenApi\Annotations\Schema
 {
+    /**
+     * @param string[]                  $required
+     * @param array<string, mixed>      $properties
+     * @param string[]                  $enum
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         // schema
         string|object|null $ref = null,

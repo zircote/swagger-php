@@ -11,7 +11,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class OpenApiTest extends OpenApiTestCase
 {
-    public function testValidVersion()
+    public function testValidVersion(): void
     {
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
@@ -21,7 +21,7 @@ class OpenApiTest extends OpenApiTestCase
         $openapi->validate();
     }
 
-    public function testInvalidVersion()
+    public function testInvalidVersion(): void
     {
         $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.0.0, 3.1.0');
 

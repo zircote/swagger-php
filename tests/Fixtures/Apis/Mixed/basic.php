@@ -58,7 +58,14 @@ class ProductController
         tags: ['products'],
         operationId: 'getProducts',
         responses: [
-            new OAT\Response(response: 200, description: 'successful operation', content: new OAT\JsonContent(ref: '#/components/schemas/Product')),
+            new OAT\Response(
+                response: 200,
+                description: 'successful operation',
+                content: new OAT\JsonContent(ref: '#/components/schemas/Product'),
+                headers: [
+                    new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+                ]
+            ),
             new OAT\Response(response: 401, description: 'oops'),
         ],
     )]

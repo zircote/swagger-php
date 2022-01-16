@@ -11,6 +11,12 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
+    /**
+     * @param string[]                  $required
+     * @param Property[]                $properties
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         object $examples = null,
         // schema

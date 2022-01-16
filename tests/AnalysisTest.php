@@ -8,7 +8,7 @@ namespace OpenApi\Tests;
 
 class AnalysisTest extends OpenApiTestCase
 {
-    public function testGetSubclasses()
+    public function testGetSubclasses(): void
     {
         $analysis = $this->analysisFromFixtures([
             'AnotherNamespace/Child.php',
@@ -30,7 +30,7 @@ class AnalysisTest extends OpenApiTestCase
         );
     }
 
-    public function testGetAllAncestorClasses()
+    public function testGetAllAncestorClasses(): void
     {
         $analysis = $this->analysisFromFixtures([
             'AnotherNamespace/Child.php',
@@ -52,7 +52,7 @@ class AnalysisTest extends OpenApiTestCase
         );
     }
 
-    public function testGetDirectAncestorClass()
+    public function testGetDirectAncestorClass(): void
     {
         $analysis = $this->analysisFromFixtures([
             'AnotherNamespace/Child.php',
@@ -74,7 +74,7 @@ class AnalysisTest extends OpenApiTestCase
         );
     }
 
-    public function testGetInterfacesOfClass()
+    public function testGetInterfacesOfClass(): void
     {
         $analysis = $this->analysisFromFixtures([
             'Parser/User.php',
@@ -93,7 +93,7 @@ class AnalysisTest extends OpenApiTestCase
         ], array_keys($interfaces));
     }
 
-    public function testGetTraitsOfClass()
+    public function testGetTraitsOfClass(): void
     {
         $analysis = $this->analysisFromFixtures([
             'Parser/User.php',

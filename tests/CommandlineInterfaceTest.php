@@ -13,7 +13,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         parent::setUp();
     }
 
-    public function testStdout()
+    public function testStdout(): void
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
@@ -22,7 +22,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents($path . '/petstore-simple.yaml'), $yaml);
     }
 
-    public function testOutputTofile()
+    public function testOutputTofile(): void
     {
         $path = $this->example('swagger-spec/petstore-simple');
         $filename = sys_get_temp_dir() . '/swagger-php-clitest.yaml';
@@ -34,14 +34,14 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents($path . '/petstore-simple.yaml'), $yaml);
     }
 
-    public function testAddProcessor()
+    public function testAddProcessor(): void
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi --processor OperationId --format yaml ' . escapeshellarg($path) . ' 2> /dev/null', $output, $retval);
         $this->assertSame(0, $retval, implode(PHP_EOL, $output));
     }
 
-    public function testExcludeListWarning()
+    public function testExcludeListWarning(): void
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi -e foo,bar ' . escapeshellarg($path) . ' 2>&1', $output, $retval);
@@ -50,7 +50,7 @@ class CommandlineInterfaceTest extends OpenApiTestCase
         $this->assertStringContainsString('Comma-separated exclude paths are deprecated', $output);
     }
 
-    public function testMissingArg()
+    public function testMissingArg(): void
     {
         $path = $this->example('swagger-spec/petstore-simple');
         exec(__DIR__ . '/../bin/openapi ' . escapeshellarg($path) . ' -e 2>&1', $output, $retval);

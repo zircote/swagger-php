@@ -43,7 +43,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         };
     }
 
-    public function testClassInheritance()
+    public function testClassInheritance(): void
     {
         $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
         $analyser->fromFqdn(ExtendsClass::class, new Analysis([], $this->getContext()));
@@ -56,7 +56,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
     }
 
-    public function testTraitInheritance()
+    public function testTraitInheritance(): void
     {
         $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
         $analyser->fromFqdn(ExtendsTrait::class, new Analysis([], $this->getContext()));
@@ -80,7 +80,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider analysers
      */
-    public function testApiDocBlockBasic(AnalyserInterface $analyser)
+    public function testApiDocBlockBasic(AnalyserInterface $analyser): void
     {
         $analysis = (new Generator())
             ->setVersion(OpenApi::VERSION_3_1_0)
@@ -106,7 +106,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      * @dataProvider analysers
      * @requires     PHP 8.1
      */
-    public function testApiAttributesBasic(AnalyserInterface $analyser)
+    public function testApiAttributesBasic(AnalyserInterface $analyser): void
     {
         /** @var Analysis $analysis */
         $analysis = (new Generator())
@@ -148,7 +148,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      * @dataProvider analysers
      * @requires     PHP 8.1
      */
-    public function testApiMixedBasic(AnalyserInterface $analyser)
+    public function testApiMixedBasic(AnalyserInterface $analyser): void
     {
         $analysis = (new Generator())
             ->setVersion(OpenApi::VERSION_3_1_0)

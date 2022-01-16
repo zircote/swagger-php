@@ -17,7 +17,7 @@ use OpenApi\Generator;
 
 class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
-    /** @var Generator */
+    /** @var Generator|null */
     protected $generator;
 
     public function setGenerator(Generator $generator): void

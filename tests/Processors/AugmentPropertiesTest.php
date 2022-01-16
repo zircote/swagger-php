@@ -20,7 +20,7 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class AugmentPropertiesTest extends OpenApiTestCase
 {
-    public function testAugmentProperties()
+    public function testAugmentProperties(): void
     {
         $analysis = $this->analysisFromFixtures(['Customer.php']);
         $analysis->process([
@@ -134,7 +134,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame('#/components/schemas/Customer', $endorsedFriends->items->ref);
     }
 
-    public function testTypedProperties()
+    public function testTypedProperties(): void
     {
         if ($this->getAnalyzer() instanceof ReflectionAnalyser && PHP_VERSION_ID < 70400) {
             $this->markTestSkipped();

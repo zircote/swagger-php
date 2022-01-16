@@ -39,9 +39,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public $_aux = false;
 
     /**
-     * @var Context
+     * @var Context|null
      */
-    public $_context;
+    public $_context = null;
 
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
@@ -679,12 +679,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @return AbstractAnnotation
      */
-    protected function nested($annotation, Context $nestedContext)
+    protected function nested(AbstractAnnotation $annotation, Context $nestedContext)
     {
-        if (!$annotation) {
-            return $annotation;
-        }
-
         if (property_exists($annotation, '_context') && $annotation->_context === $this->_context) {
             $annotation->_context = $nestedContext;
         }

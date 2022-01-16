@@ -8,12 +8,14 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
 
-/**
- * @Annotation
- */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
 {
+    /**
+     * @param string[]|null             $required
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         // schema
         string|object|null $ref = null,

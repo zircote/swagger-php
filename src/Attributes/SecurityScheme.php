@@ -11,6 +11,11 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class SecurityScheme extends \OpenApi\Annotations\SecurityScheme
 {
+    /**
+     * @param Flow[]                    $flows
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         string|object|null $ref = null,
         ?string $securityScheme = null,

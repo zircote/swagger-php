@@ -16,7 +16,7 @@ class AugmentParameters
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->openapi->components !== Generator::UNDEFINED && $analysis->openapi->components->parameters !== Generator::UNDEFINED) {
+        if ($analysis->openapi->components!== Generator::UNDEFINED && $analysis->openapi->components->parameters!== Generator::UNDEFINED) {
             $keys = [];
             $parametersWithoutKey = [];
             foreach ($analysis->openapi->components->parameters as $parameter) {

@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AttachableTest extends OpenApiTestCase
 {
-    public function testAttachablesAreAttached()
+    public function testAttachablesAreAttached(): void
     {
         $analysis = $this->analysisFromFixtures(['UsingVar.php']);
 
@@ -25,7 +25,7 @@ class AttachableTest extends OpenApiTestCase
         $this->assertInstanceOf(Attachable::class, $schemas[0]->attachables[0]);
     }
 
-    public function testCustomAttachableImplementationsAreAttached()
+    public function testCustomAttachableImplementationsAreAttached(): void
     {
         $analysis = new Analysis([], $this->getContext());
         (new Generator())

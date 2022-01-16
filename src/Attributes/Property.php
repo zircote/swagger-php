@@ -11,6 +11,12 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER)]
 class Property extends \OpenApi\Annotations\Property
 {
+    /**
+     * @param string[]                  $required
+     * @param Property[]                $properties
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         ?string $property = null,
         // schema

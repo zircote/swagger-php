@@ -73,6 +73,14 @@ class ProductController
      *   @OA\Response(
      *       response=200,
      *       description="successful operation",
+     *       @OA\Header(
+     *           header="X-Rate-Limit",
+     *           description="calls per hour allowed by the user",
+     *           @OA\Schema(
+     *               type="integer",
+     *               format="int32"
+     *           )
+     *       ),
      *       @OA\JsonContent(ref="#/components/schemas/Product")
      *   ),
      *   @OA\Response(

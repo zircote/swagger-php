@@ -96,7 +96,7 @@ class Customer
     /**
      * for ContextTest
      */
-    public function testResolvingFullyQualifiedNames()
+    public function testResolvingFullyQualifiedNames(): void
     {
         (new OpenApiGenerator())->getLogger();
         (new Generator())->getLogger();

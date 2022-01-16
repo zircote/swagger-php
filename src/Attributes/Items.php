@@ -11,6 +11,12 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Items extends \OpenApi\Annotations\Items
 {
+    /**
+     * @param string[]                  $required
+     * @param Property[]                $properties
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         // schema
         string|object|null $ref = null,

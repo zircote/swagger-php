@@ -22,7 +22,6 @@ return (new PhpCsFixer\Config())
         'single_blank_line_before_namespace' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_around_offset' => true,
-        'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
         'object_operator_without_whitespace' => true,

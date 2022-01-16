@@ -11,27 +11,27 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class ItemsTest extends OpenApiTestCase
 {
-    public function testItemTypeArray()
+    public function testItemTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Items(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
-    public function testSchemaTypeArray()
+    public function testSchemaTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Schema(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 
-    public function testParentTypeArray()
+    public function testParentTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Items() parent type must be "array"');
         $annotations[0]->validate();
     }
 
-    public function testRefDefinitionInProperty()
+    public function testRefDefinitionInProperty(): void
     {
         $analysis = $this->analysisFromFixtures(['UsingVar.php'], (new Generator())->getProcessors());
 

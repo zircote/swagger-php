@@ -14,7 +14,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentSchemasTest extends OpenApiTestCase
 {
-    public function testAugmentSchemas()
+    public function testAugmentSchemas(): void
     {
         $analysis = $this->analysisFromFixtures(['Customer.php']);
         $analysis->process([
@@ -34,7 +34,7 @@ class AugmentSchemasTest extends OpenApiTestCase
         $this->assertCount(10, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 
-    public function testAugmentSchemasForInterface()
+    public function testAugmentSchemasForInterface(): void
     {
         $analysis = $this->analysisFromFixtures(['CustomerInterface.php']);
         $analysis->process([

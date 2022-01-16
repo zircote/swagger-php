@@ -46,13 +46,13 @@ class Generator
     /** @var array|null List of annotation namespaces to be autoloaded by doctrine. */
     protected $namespaces;
 
-    /** @var AnalyserInterface The configured analyzer. */
+    /** @var AnalyserInterface|null The configured analyzer. */
     protected $analyser;
 
-    /** @var null|callable[] List of configured processors. */
+    /** @var callable[]|null List of configured processors. */
     protected $processors = null;
 
-    /** @var null|LoggerInterface PSR logger. */
+    /** @var LoggerInterface|null PSR logger. */
     protected $logger = null;
 
     /** @var string */

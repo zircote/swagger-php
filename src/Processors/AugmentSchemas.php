@@ -55,7 +55,7 @@ class AugmentSchemas
                             continue;
                         }
 
-                        if ($annotation->allOf !== Generator::UNDEFINED) {
+                        if ($annotation->allOf!== Generator::UNDEFINED) {
                             $schema = null;
                             foreach ($annotation->allOf as $nestedSchema) {
                                 if ($nestedSchema->ref !== Generator::UNDEFINED) {
@@ -108,7 +108,7 @@ class AugmentSchemas
 
         // move schema properties into allOf if both exist
         foreach ($schemas as $schema) {
-            if ($schema->properties !== Generator::UNDEFINED and $schema->allOf !== Generator::UNDEFINED) {
+            if ($schema->properties!== Generator::UNDEFINED and $schema->allOf!== Generator::UNDEFINED) {
                 $allOfPropertiesSchema = null;
                 foreach ($schema->allOf as $allOfSchema) {
                     if ($allOfSchema->properties !== Generator::UNDEFINED) {
@@ -132,10 +132,10 @@ class AugmentSchemas
         // ref rewriting
         $updatedRefs = [];
         foreach ($schemas as $schema) {
-            if ($schema->allOf !== Generator::UNDEFINED) {
+            if ($schema->allOf!== Generator::UNDEFINED) {
                 // do we have to keep track of properties refs that need updating?
                 foreach ($schema->allOf as $allOfSchema) {
-                    if ($allOfSchema->properties !== Generator::UNDEFINED) {
+                    if ($allOfSchema->properties!== Generator::UNDEFINED) {
                         $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/0/properties', false);
                         break;
                     }
@@ -143,7 +143,7 @@ class AugmentSchemas
 
                 // rewriting is simpler if properties is first...
                 usort($schema->allOf, function ($a, $b) {
-                    return $a->properties !== Generator::UNDEFINED ? -1 : ($b->properties !== Generator::UNDEFINED ? 1 : 0);
+                    return $a->properties!== Generator::UNDEFINED ? -1 : ($b->properties!== Generator::UNDEFINED ? 1 : 0);
                 });
             }
         }

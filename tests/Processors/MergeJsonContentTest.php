@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class MergeJsonContentTest extends OpenApiTestCase
 {
-    public function testJsonContent()
+    public function testJsonContent(): void
     {
         $comment = <<<END
             @OA\Response(response=200,
@@ -38,7 +38,7 @@ END;
         $this->assertSame('#/components/schemas/repository', $json['content']['application/json']['schema']['items']['$ref']);
     }
 
-    public function testMultipleMediaTypes()
+    public function testMultipleMediaTypes(): void
     {
         $comment = <<<END
             @OA\Response(response=200,
@@ -57,7 +57,7 @@ END;
         $this->assertCount(2, $response->content);
     }
 
-    public function testParameter()
+    public function testParameter(): void
     {
         $comment = <<<END
             @OA\Parameter(name="filter",in="query", @OA\JsonContent(
@@ -81,7 +81,7 @@ END;
         $this->assertArrayNotHasKey('mediaType', $json['content']['application/json']);
     }
 
-    public function testNoParent()
+    public function testNoParent(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() must be nested');
         $comment = <<<END
@@ -93,7 +93,7 @@ END;
         $analysis->process([new MergeJsonContent()]);
     }
 
-    public function testInvalidParent()
+    public function testInvalidParent(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected @OA\JsonContent() in @OA\Property() in');
         $comment = <<<END

@@ -11,6 +11,10 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class OpenApi extends \OpenApi\Annotations\OpenApi
 {
+    /**
+     * @param array<string,string>|null $x
+     * @param Attachable[]|null         $attachables
+     */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,
         ?Info $info = null,

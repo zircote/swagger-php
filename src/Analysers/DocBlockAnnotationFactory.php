@@ -11,10 +11,10 @@ use OpenApi\Generator;
 
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
-    /** @var DocBlockParser */
+    /** @var DocBlockParser|null` */
     protected $docBlockParser = null;
 
-    /** @var Generator */
+    /** @var Generator|null */
     protected $generator = null;
 
     public function __construct(?DocBlockParser $docBlockParser = null)

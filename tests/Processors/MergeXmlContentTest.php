@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class MergeXmlContentTest extends OpenApiTestCase
 {
-    public function testXmlContent()
+    public function testXmlContent(): void
     {
         $comment = <<<END
             @OA\Response(response=200,
@@ -38,7 +38,7 @@ END;
         $this->assertSame('#/components/schemas/repository', $json['content']['application/xml']['schema']['items']['$ref']);
     }
 
-    public function testMultipleMediaTypes()
+    public function testMultipleMediaTypes(): void
     {
         $comment = <<<END
             @OA\Response(response=200,
@@ -56,7 +56,7 @@ END;
         $this->assertCount(2, $response->content);
     }
 
-    public function testParameter()
+    public function testParameter(): void
     {
         $comment = <<<END
             @OA\Parameter(name="filter",in="query", @OA\XmlContent(
@@ -80,7 +80,7 @@ END;
         $this->assertArrayNotHasKey('mediaType', $json['content']['application/xml']);
     }
 
-    public function testNoParent()
+    public function testNoParent(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() must be nested');
         $comment = <<<END
@@ -92,7 +92,7 @@ END;
         $analysis->process([new MergeXmlContent()]);
     }
 
-    public function testInvalidParent()
+    public function testInvalidParent(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() in @OA\Property() in');
         $comment = <<<END

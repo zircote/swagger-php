@@ -15,7 +15,7 @@ class ConstantsTest extends OpenApiTestCase
 
     private static $counter = 0;
 
-    public function testConstant()
+    public function testConstant(): void
     {
         self::$counter++;
         $const = 'OPENAPI_TEST_' . self::$counter;
@@ -28,7 +28,7 @@ class ConstantsTest extends OpenApiTestCase
         $this->assertSame('me@domain.org', $annotations[0]->email);
     }
 
-    public function testFQCNConstant()
+    public function testFQCNConstant(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(url=OpenApi\Tests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
@@ -37,13 +37,13 @@ class ConstantsTest extends OpenApiTestCase
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 
-    public function testInvalidClass()
+    public function testInvalidClass(): void
     {
         $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant ConstantsTest::URL");
         $this->annotationsFromDocBlockParser('@OA\Contact(url=ConstantsTest::URL)');
     }
 
-    public function testAutoloadConstant()
+    public function testAutoloadConstant(): void
     {
         if (class_exists('AnotherNamespace\Annotations\Constants', false)) {
             $this->markTestSkipped();
@@ -52,7 +52,7 @@ class ConstantsTest extends OpenApiTestCase
         $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 
-    public function testDynamicImports()
+    public function testDynamicImports(): void
     {
         $analyser = new TokenAnalyser();
         $analyser->setGenerator((new Generator())->setNamespaces(null));

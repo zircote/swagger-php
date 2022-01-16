@@ -13,7 +13,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AbstractAnnotationTest extends OpenApiTestCase
 {
-    public function testVendorFields()
+    public function testVendorFields(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Get(x={"internal-id": 123})');
         $output = $annotations[0]->jsonSerialize();
@@ -21,13 +21,13 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
-    public function testInvalidField()
+    public function testInvalidField(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');
         $this->annotationsFromDocBlockParser('@OA\Get(doesnot="exist")');
     }
 
-    public function testUmergedAnnotation()
+    public function testUmergedAnnotation(): void
     {
         $openapi = $this->createOpenApiWithInfo();
         $openapi->merge($this->annotationsFromDocBlockParser('@OA\Items()'));
@@ -35,7 +35,7 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $openapi->validate();
     }
 
-    public function testConflictedNesting()
+    public function testConflictedNesting(): void
     {
         $comment = <<<END
 @OA\Info(
@@ -50,7 +50,7 @@ END;
         $annotations[0]->validate();
     }
 
-    public function testKey()
+    public function testKey(): void
     {
         $comment = <<<END
 @OA\Response(
@@ -61,7 +61,7 @@ END;
         $this->assertEquals('{"headers":{"X-CSRF-Token":{"description":"Token to prevent Cross Site Request Forgery"}}}', json_encode($annotations[0]));
     }
 
-    public function testConflictingKey()
+    public function testConflictingKey(): void
     {
         $comment = <<<END
 @OA\Response(
@@ -75,7 +75,7 @@ END;
         $annotations[0]->validate();
     }
 
-    public function testRequiredFields()
+    public function testRequiredFields(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Info()');
         $info = $annotations[0];
@@ -84,7 +84,7 @@ END;
         $info->validate();
     }
 
-    public function testTypeValidation()
+    public function testTypeValidation(): void
     {
         $comment = <<<END
 @OA\Parameter(
@@ -123,7 +123,7 @@ END;
     /**
      * @dataProvider nestedMatches
      */
-    public function testMatchNested($class, $expected)
+    public function testMatchNested($class, $expected): void
     {
         $this->assertEquals($expected, Get::matchNested($class));
     }

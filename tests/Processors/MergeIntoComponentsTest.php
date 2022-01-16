@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class MergeIntoComponentsTest extends OpenApiTestCase
 {
-    public function testProcessor()
+    public function testProcessor(): void
     {
         $openapi = new OpenApi(['_context' => $this->getContext()]);
         $response = new Response(['response' => '2xx', '_context' => $this->getContext()]);

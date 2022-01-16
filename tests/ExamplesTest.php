@@ -58,7 +58,7 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleMappings
      */
-    public function testExamples($version, $example, $spec, $analyser)
+    public function testExamples($version, $example, $spec, $analyser): void
     {
         // register autoloader for examples that require autoloading due to inheritance, etc.
         $path = $this->example($example);

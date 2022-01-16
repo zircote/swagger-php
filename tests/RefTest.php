@@ -13,7 +13,7 @@ use OpenApi\Generator;
 
 class RefTest extends OpenApiTestCase
 {
-    public function testRef()
+    public function testRef(): void
     {
         $openapi = $this->createOpenApiWithInfo();
         $info = $openapi->ref('#/info');
