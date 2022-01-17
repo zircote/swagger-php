@@ -30,24 +30,24 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/AlmostModel'
+        -
           properties:
             actual:
               type: string
             soClose:
               type: string
-        -
-          $ref: '#/components/schemas/AlmostModel'
     AlmostModel:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/BaseModel'
         -
           properties:
             almost:
               type: string
             intermediate:
               type: string
-        -
-          $ref: '#/components/schemas/BaseModel'
     BaseModel:
       properties:
         base:

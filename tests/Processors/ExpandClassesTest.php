@@ -115,7 +115,7 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertArrayHasKey(0, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[0]->properties[0]->property, 'extendedProperty');
+        $this->assertEquals($extendedSchema->allOf[2]->properties[0]->property, 'extendedProperty');
 
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(Generator::UNDEFINED, $includeSchemaWithRef->properties);
@@ -144,8 +144,8 @@ class ExpandClassesTest extends OpenApiTestCase
 
         $this->assertCount(2, $extendedSchema->allOf);
 
-        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[1]->ref);
-        $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
+        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[0]->ref);
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
     }
 
     /**
@@ -170,14 +170,14 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
-        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[1]->ref);
-        $this->assertEquals('nested', $extendedSchema->allOf[0]->properties[1]->property);
-        $this->assertEquals('extendedProperty', $extendedSchema->allOf[0]->properties[0]->property);
+        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[0]->ref);
+        $this->assertEquals('nested', $extendedSchema->allOf[1]->properties[1]->property);
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
 
         $nestedSchema = $schemas[1];
         $this->assertCount(2, $nestedSchema->allOf);
-        $this->assertCount(1, $nestedSchema->allOf[0]->properties);
-        $this->assertEquals('nestedProperty', $nestedSchema->allOf[0]->properties[0]->property);
+        $this->assertCount(1, $nestedSchema->allOf[1]->properties);
+        $this->assertEquals('nestedProperty', $nestedSchema->allOf[1]->properties[0]->property);
     }
 
     /**

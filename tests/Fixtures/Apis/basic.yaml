@@ -85,10 +85,10 @@ components:
       description: Product
       allOf:
         -
+          $ref: '#/components/schemas/NameTrait'
+        -
           properties:
             id:
               description: 'The id.'
               format: int64
               example: 1
-        -
-          $ref: '#/components/schemas/NameTrait'

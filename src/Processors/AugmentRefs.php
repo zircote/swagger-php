@@ -28,15 +28,10 @@ class AugmentRefs
                 // do we have to keep track of properties refs that need updating?
                 foreach ($schema->allOf as $ii => $allOfSchema) {
                     if ($allOfSchema->properties!== Generator::UNDEFINED) {
-                        $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/0/properties', false);
+                        $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
                         break;
                     }
                 }
-
-                // rewriting is simpler if properties is first...
-                usort($schema->allOf, function ($a, $b) {
-                    return $a->properties!== Generator::UNDEFINED ? -1 : ($b->properties!== Generator::UNDEFINED ? 1 : 0);
-                });
             }
         }
 
