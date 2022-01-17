@@ -12,13 +12,14 @@ use OpenApi\Generator;
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
     /**
+     * @param array<string,Examples>    $examples
      * @param string[]                  $required
      * @param Property[]                $properties
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        object $examples = null,
+        ?array $examples = null,
         // schema
         string|object|null $ref = null,
         ?string $schema = null,
@@ -44,6 +45,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
         ?array $allOf = null,
         ?array $anyOf = null,
         ?array $oneOf = null,
+        ?AdditionalProperties $additionalProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -72,8 +74,9 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
+            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             // annotation
+            'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
         ]);

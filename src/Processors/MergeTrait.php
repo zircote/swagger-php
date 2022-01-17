@@ -25,7 +25,7 @@ trait MergeTrait
 {
     protected function inheritFrom(Schema $schema, Schema $from, string $refPath, Context $context): void
     {
-        if ($schema->allOf === Generator::UNDEFINED) {
+        if (Generator::isDefault($schema->allOf)) {
             $schema->allOf = [];
         }
         // merging other properties into allOf is done in the AugmentSchemas processor

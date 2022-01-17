@@ -33,7 +33,7 @@ class ExpandTraits
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = $traitSchema->schema !== Generator::UNDEFINED ? $traitSchema->schema : $trait['trait'];
+                        $refPath = !Generator::isDefault($traitSchema->schema) ? $traitSchema->schema : $trait['trait'];
                         $this->inheritFrom($schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         if ($schema->_context->is('class')) {

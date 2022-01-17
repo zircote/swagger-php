@@ -35,7 +35,7 @@ class MergeXmlContent
                 }
                 continue;
             }
-            if ($parent->content === Generator::UNDEFINED) {
+            if (Generator::isDefault($parent->content)) {
                 $parent->content = [];
             }
             $parent->content['application/xml'] = new MediaType([

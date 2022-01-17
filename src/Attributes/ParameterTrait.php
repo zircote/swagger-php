@@ -11,6 +11,7 @@ use OpenApi\Generator;
 trait ParameterTrait
 {
     /**
+     * @param array<string,Examples>    $examples
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
@@ -31,8 +32,8 @@ trait ParameterTrait
                 'parameter' => $parameter ?? Generator::UNDEFINED,
                 'name' => $name ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
-                'in' => $this->in !== Generator::UNDEFINED ? $this->in : $in,
-                'required' => $this->required !== Generator::UNDEFINED ? $this->required : ($required ?? Generator::UNDEFINED),
+                'in' => Generator::isDefault($this->in) ? $in : $this->in,
+                'required' => !Generator::isDefault($this->required) ? $this->required : ($required ?? Generator::UNDEFINED),
                 'ref' => $ref ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($schema, $examples, $attachables),

@@ -45,7 +45,7 @@ class Util
 
         $type = self::$NATIVE_TYPE_MAP[$type];
         if (is_array($type)) {
-            if ($schema->format === Generator::UNDEFINED) {
+            if (Generator::isDefault($schema->format)) {
                 $schema->format = $type[1];
             }
             $type = $type[0];

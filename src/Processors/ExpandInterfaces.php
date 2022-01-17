@@ -34,7 +34,7 @@ class ExpandInterfaces
                     $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
                     $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
                     if ($interfaceSchema) {
-                        $refPath = $interfaceSchema->schema !== Generator::UNDEFINED ? $interfaceSchema->schema : $interface['interface'];
+                        $refPath = !Generator::isDefault($interfaceSchema->schema) ? $interfaceSchema->schema : $interface['interface'];
                         $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {
                         $this->mergeAnnotations($schema, $interface, $existing);

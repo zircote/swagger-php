@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class MediaType extends \OpenApi\Annotations\MediaType
 {
     /**
+     * @param array<string,Examples>    $examples
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

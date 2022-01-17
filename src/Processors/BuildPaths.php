@@ -21,7 +21,7 @@ class BuildPaths
     {
         $paths = [];
         // Merge @OA\PathItems with the same path.
-        if ($analysis->openapi->paths !== Generator::UNDEFINED) {
+        if (!Generator::isDefault($analysis->openapi->paths)) {
             foreach ($analysis->openapi->paths as $annotation) {
                 if (empty($annotation->path)) {
                     $annotation->_context->logger->warning($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);

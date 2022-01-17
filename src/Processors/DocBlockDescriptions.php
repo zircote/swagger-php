@@ -51,7 +51,7 @@ class DocBlockDescriptions
 
     private function description($annotation): void
     {
-        if ($annotation->description !== Generator::UNDEFINED) {
+        if (!Generator::isDefault($annotation->description)) {
             if ($annotation->description === null) {
                 $annotation->description = Generator::UNDEFINED;
             }
@@ -63,8 +63,8 @@ class DocBlockDescriptions
 
     private function summaryAndDescription($annotation): void
     {
-        $ignoreSummary = $annotation->summary !== Generator::UNDEFINED;
-        $ignoreDescription = $annotation->description !== Generator::UNDEFINED;
+        $ignoreSummary = !Generator::isDefault($annotation->summary);
+        $ignoreDescription = !Generator::isDefault($annotation->description);
         if ($annotation->summary === null) {
             $ignoreSummary = true;
             $annotation->summary = Generator::UNDEFINED;

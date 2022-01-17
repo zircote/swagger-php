@@ -43,7 +43,7 @@ class OperationId
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
-            if ($operation->operationId !== Generator::UNDEFINED) {
+            if (!Generator::isDefault($operation->operationId)) {
                 continue;
             }
             $context = $operation->_context;

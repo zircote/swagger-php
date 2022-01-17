@@ -305,7 +305,7 @@ class Schema extends AbstractAnnotation
     /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64.
      *
-     * @var bool|object
+     * @var AdditionalProperties
      */
     public $additionalProperties = Generator::UNDEFINED;
 
@@ -390,7 +390,7 @@ class Schema extends AbstractAnnotation
 
     public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
     {
-        if ($this->type === 'array' && $this->items === Generator::UNDEFINED) {
+        if ($this->type === 'array' && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             return false;

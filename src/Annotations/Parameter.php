@@ -244,9 +244,9 @@ class Parameter extends AbstractAnnotation
             return true;
         }
         $valid = parent::validate($parents, $skip, $ref);
-        if ($this->ref === Generator::UNDEFINED) {
+        if (Generator::isDefault($this->ref)) {
             if ($this->in === 'body') {
-                if ($this->schema === Generator::UNDEFINED) {
+                if (Generator::isDefault($this->schema)) {
                     $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
                     $valid = false;
                 }

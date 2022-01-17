@@ -38,9 +38,9 @@ class MergeIntoOpenApi
                 $paths = $annotation->paths;
                 unset($annotation->paths);
                 $openapi->mergeProperties($annotation);
-                if ($paths !== Generator::UNDEFINED) {
+                if (!Generator::isDefault($paths)) {
                     foreach ($paths as $path) {
-                        if ($openapi->paths === Generator::UNDEFINED) {
+                        if (Generator::isDefault($openapi->paths)) {
                             $openapi->paths = [];
                         }
                         $openapi->paths[] = $path;

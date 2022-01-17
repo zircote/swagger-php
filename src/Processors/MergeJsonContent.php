@@ -35,7 +35,7 @@ class MergeJsonContent
                 }
                 continue;
             }
-            if ($parent->content === Generator::UNDEFINED) {
+            if (Generator::isDefault($parent->content)) {
                 $parent->content = [];
             }
             $parent->content['application/json'] = new MediaType([

@@ -199,9 +199,9 @@ abstract class Operation extends AbstractAnnotation
             return true;
         }
         $valid = parent::validate($parents, $skip);
-        if ($this->responses !== Generator::UNDEFINED) {
+        if (!Generator::isDefault($this->responses)) {
             foreach ($this->responses as $response) {
-                if ($response->response !== Generator::UNDEFINED && $response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
+                if (!Generator::isDefault($response->response) && $response->response !== 'default' && preg_match('/^([12345]{1}[0-9]{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
                     $this->_context->logger->warning('Invalid value "' . $response->response . '" for ' . $response->_identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
                 }
             }

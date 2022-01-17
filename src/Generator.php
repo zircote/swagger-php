@@ -109,6 +109,11 @@ class Generator
         };
     }
 
+    public static function isDefault($value): bool
+    {
+        return $value === Generator::UNDEFINED;
+    }
+
     public function getAliases(): array
     {
         return $this->aliases;

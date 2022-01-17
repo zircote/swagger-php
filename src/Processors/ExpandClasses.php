@@ -32,7 +32,7 @@ class ExpandClasses
                 foreach ($anchestors as $anchestor) {
                     $anchestorSchema = $analysis->getSchemaForSource($anchestor['context']->fullyQualifiedName($anchestor['class']));
                     if ($anchestorSchema) {
-                        $refPath = $anchestorSchema->schema !== Generator::UNDEFINED ? $anchestorSchema->schema : $anchestor['class'];
+                        $refPath = !Generator::isDefault($anchestorSchema->schema) ? $anchestorSchema->schema : $anchestor['class'];
                         $this->inheritFrom($schema, $anchestorSchema, $refPath, $anchestor['context']);
 
                         // one anchestor is enough

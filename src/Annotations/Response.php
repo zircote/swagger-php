@@ -108,7 +108,7 @@ class Response extends AbstractAnnotation
     {
         $valid = parent::validate($parents, $skip);
 
-        if ($this->description === Generator::UNDEFINED && $this->ref === Generator::UNDEFINED) {
+        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
             $this->_context->logger->warning($this->identity() . ' One of description or ref is required');
             $valid = false;
         }
