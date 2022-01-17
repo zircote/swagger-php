@@ -37,6 +37,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/ProductInterface'
+        -
           properties:
             id:
               description: 'The unique identifier of a product in our catalog.'
@@ -46,8 +48,6 @@ components:
             color:
               description: 'The product color.'
               example: blue
-        -
-          $ref: '#/components/schemas/ProductInterface'
     ProductInterface:
       properties:
         name:

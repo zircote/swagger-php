@@ -178,6 +178,7 @@ class Generator
                 new Processors\AugmentProperties(),
                 new Processors\BuildPaths(),
                 new Processors\AugmentParameters(),
+                new Processors\AugmentRefs(),
                 new Processors\MergeJsonContent(),
                 new Processors\MergeXmlContent(),
                 new Processors\OperationId(),

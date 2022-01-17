@@ -30,7 +30,7 @@ paths:
       operationId: 9aed2c6f96bff805003c993b97822c06
       parameters:
         -
-          $ref: '#/components/schemas/Product/allOf/0/properties/id'
+          $ref: '#/components/schemas/Product/allOf/1/properties/id'
       responses:
         default:
           $ref: '#/components/responses/product'
@@ -44,6 +44,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/Model'
+        -
           properties:
             id:
               description: 'The unique identifier of a product in our catalog.'
@@ -52,8 +54,6 @@ components:
               example: 1
             status:
               $ref: '#/components/schemas/product_status'
-        -
-          $ref: '#/components/schemas/Model'
     StockLevel:
       type: integer
       enum:
