@@ -33,6 +33,7 @@ class Header extends \OpenApi\Annotations\Header
             'required' => $required ?? Generator::UNDEFINED,
             'deprecated' => $deprecated ?? Generator::UNDEFINED,
             'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
+            'x' => $x ?? Generator::UNDEFINED,
             'value' => $this->combine($attachables, $schema),
         ]);
     }

@@ -305,7 +305,7 @@ class Schema extends AbstractAnnotation
     /**
      * http://json-schema.org/latest/json-schema-validation.html#anchor64.
      *
-     * @var bool|object
+     * @var AdditionalProperties
      */
     public $additionalProperties = Generator::UNDEFINED;
 
