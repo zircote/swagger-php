@@ -79,6 +79,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     * @requires     PHP 8.1
      */
     public function testApiDocBlockBasic(AnalyserInterface $analyser): void
     {
