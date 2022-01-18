@@ -67,10 +67,7 @@ class Context
         }
         $this->_parent = $parent;
 
-        if (!$this->logger) {
-            // BC
-            $this->logger = new DefaultLogger();
-        }
+        $this->logger = $this->logger ?: new DefaultLogger();
     }
 
     /**
