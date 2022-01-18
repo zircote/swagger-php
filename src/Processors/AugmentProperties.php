@@ -72,7 +72,7 @@ class AugmentProperties
             preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches);
 
             if (Generator::isDefault($property->type)) {
-                $this->augmentType($property, $context, $refs, $varMatches);
+                $this->augmentType($analysis, $property, $context, $refs, $varMatches);
             }
 
             if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
@@ -95,7 +95,7 @@ class AugmentProperties
         return ltrim($fqn, '\\');
     }
 
-    protected function augmentType(Property $property, Context $context, array $refs, array $varMatches)
+    protected function augmentType(Analysis $analysis, Property $property, Context $context, array $refs, array $varMatches)
     {
         // docblock typehints
         if (isset($varMatches['type'])) {
@@ -159,6 +159,13 @@ class AugmentProperties
 
                     // cannot get more specific
                     return;
+                } else {
+                    if ($typeSchema = $analysis->getSchemaForSource($context->type)) {
+                        if (Generator::isDefault($property->format)) {
+                            $property->ref = Components::ref($typeSchema);
+                            $property->type = Generator::UNDEFINED;
+                        }
+                    }
                 }
             }
         }

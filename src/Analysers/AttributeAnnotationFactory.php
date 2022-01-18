@@ -87,7 +87,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                 }
             }
 
-            return $explicitParent || ($isAttachable && $isParentAllowed);
+            // Property can be nested...
+            return get_class($annotation) != get_class($possibleParent)
+                && ($explicitParent || ($isAttachable && $isParentAllowed));
         };
         foreach ($annotations as $index => $annotation) {
             for ($ii = 0; $ii < count($annotations); ++$ii) {

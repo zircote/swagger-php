@@ -30,7 +30,7 @@ class TokenScannerTest extends OpenApiTestCase
                     'traits' => ['OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\NameTrait'],
                     'enums' => [],
                     'methods' => [],
-                    'properties' => ['id'],
+                    'properties' => ['id', 'brand', 'colour'],
                 ],
                 'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductController' => [
                     'uses' => ['OA' => 'OpenApi\\Annotations'],
@@ -55,6 +55,14 @@ class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => ['name'],
+                ],
+                'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Colour' => [
+                    'uses' => ['OA' => 'OpenApi\\Annotations'],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [],
+                    'properties' => [],
                 ],
             ],
         ];
