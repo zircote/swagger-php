@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
+use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Tests\Fixtures\Parser\User;
@@ -128,17 +129,18 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     public function testThirdPartyAnnotations(): void
     {
-        $generator = new Generator();
-        $analyser = new TokenAnalyser();
-        $analyser->setGenerator($generator);
-        $defaultAnalysis = $analyser->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
-        $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
+        $generator = (new Generator())
+            ->setAnalyser($analyser = new TokenAnalyser());
+        $generator
+            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) {
+                $defaultAnalysis = $generator->getAnalyser()->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
+                $this->assertCount(3, $defaultAnalysis->annotations, 'Only read the @OA annotations, skip the others.');
+            });
 
         // Allow the analyser to parse 3rd party annotations, which might
         // contain useful info that could be extracted with a custom processor
         $generator->addNamespace('AnotherNamespace\\Annotations\\');
         $openapi = $generator
-            ->setAnalyser(new TokenAnalyser())
             ->generate([$this->fixture('ThirdPartyAnnotations.php')]);
         $this->assertSame('api/3rd-party', $openapi->paths[0]->path);
         $this->assertCount(4, $openapi->_unmerged);

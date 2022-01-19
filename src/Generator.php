@@ -155,7 +155,10 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-        return $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        $this->analyser->setGenerator($this);
+
+        return $this->analyser;
     }
 
     public function setAnalyser(?AnalyserInterface $analyser): Generator
@@ -359,7 +362,6 @@ class Generator
     protected function scanSources(iterable $sources, Analysis $analysis, Context $rootContext): void
     {
         $analyser = $this->getAnalyser();
-        $analyser->setGenerator($this);
 
         foreach ($sources as $source) {
             if (is_iterable($source)) {
