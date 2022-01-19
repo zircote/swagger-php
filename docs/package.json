@@ -8,7 +8,7 @@
     "deploy": "npm run build && git-directory-deploy --branch gh-pages --directory .vitepress/dist/"
   },
   "devDependencies": {
-    "vitepress": "^0.20.9",
-    "git-directory-deploy": "^1.5.1"
+    "git-directory-deploy": "^1.5.1",
+    "vitepress": "^0.21.6"
   }
 }

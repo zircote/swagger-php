@@ -14,9 +14,6 @@ class Repository
     #[OAT\Property(type: 'string')]
     public $slug;
 
-    /**
-     * @var User
-     */
-    #[OAT\Property(ref: '#/components/schemas/user')]
-    public $owner;
+    #[OAT\Property()]
+    public User $owner;
 }

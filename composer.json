@@ -62,6 +62,9 @@
     "phpunit/phpunit": ">=8"
   },
   "autoload-dev": {
+    "exclude-from-classmap": [
+      "/tests/Fixtures"
+    ],
     "psr-4": {
       "OpenApi\\Tests\\": "tests/",
       "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
@@ -80,7 +83,8 @@
       "psalm --show-info=true"
     ],
     "spectral": "for ff in `find Examples -name *.yaml`; do spectral lint $ff; done",
-    "docs": "./docs/node_modules/.bin/vuepress dev docs/",
-    "deploy_docs": "./docs/node_modules/.bin/vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
+    "docs:dev": "cd docs && npm run dev",
+    "docs:build": "cd docs && npm run build",
+    "docs:deploy": "cd docs && npm run deploy"
   }
 }
