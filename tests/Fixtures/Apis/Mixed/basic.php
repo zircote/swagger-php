@@ -58,6 +58,9 @@ class Product implements ProductInterface
     public $id;
 
     #[OAT\Property()]
+    public int $quantity;
+
+    #[OAT\Property()]
     public string $brand;
 
     /** @OA\Property() */
