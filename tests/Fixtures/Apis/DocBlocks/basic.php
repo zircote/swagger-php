@@ -59,6 +59,15 @@ class Product implements ProductInterface
 {
     use NameTrait;
 
+    /** @OA\Property() */
+    public int $quantity;
+
+    /** @OA\Property() */
+    public string $brand;
+
+    /** @OA\Property() */
+    public Colour $colour;
+
     /**
      * The id.
      *
@@ -66,12 +75,6 @@ class Product implements ProductInterface
      */
     public $id;
 
-
-    /** @OA\Property() */
-    public string $brand;
-
-    /** @OA\Property() */
-    public Colour $colour;
 }
 
 class ProductController

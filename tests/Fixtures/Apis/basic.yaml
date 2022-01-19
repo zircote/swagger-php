@@ -94,6 +94,8 @@ components:
           $ref: '#/components/schemas/NameTrait'
         -
           properties:
+            quantity:
+              type: integer
             brand:
               type: string
             colour:

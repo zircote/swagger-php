@@ -73,6 +73,8 @@ class AugmentProperties
 
             if (Generator::isDefault($property->type)) {
                 $this->augmentType($analysis, $property, $context, $refs, $varMatches);
+            } else {
+                Util::mapNativeType($property, $property->type);
             }
 
             if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
@@ -156,9 +158,6 @@ class AugmentProperties
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($property, $refs[$refKey]);
-
-                    // cannot get more specific
-                    return;
                 } else {
                     if ($typeSchema = $analysis->getSchemaForSource($context->type)) {
                         if (Generator::isDefault($property->format)) {
