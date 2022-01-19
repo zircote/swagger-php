@@ -31,7 +31,7 @@ class DocBlockParserTest extends OpenApiTestCase
     {
         $extraAliases = [
             'contact' => 'OpenApi\Annotations\Contact', // use OpenApi\Annotations\Contact;
-            'ctest' => 'OpenApi\Tests\ConstantsTesT', // use OpenApi\Tests\ConstantsTesT as CTest;
+            'ctest' => 'OpenApi\Tests\ConstantsTest', // use OpenApi\Tests\ConstantsTest as CTest;
         ];
         $annotations = $this->annotationsFromDocBlockParser('@Contact(url=CTest::URL)', $extraAliases);
         $this->assertSame('http://example.com', $annotations[0]->url);

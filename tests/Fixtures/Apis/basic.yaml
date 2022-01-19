@@ -75,6 +75,12 @@ paths:
                 $ref: '#/components/schemas/Product'
 components:
   schemas:
+    Colour:
+      type: string
+      enum:
+        - GREEN
+        - BLUE
+        - RED
     NameTrait:
       properties:
         name:
@@ -88,6 +94,10 @@ components:
           $ref: '#/components/schemas/NameTrait'
         -
           properties:
+            brand:
+              type: string
+            colour:
+              $ref: '#/components/schemas/Colour'
             id:
               description: 'The id.'
               format: int64

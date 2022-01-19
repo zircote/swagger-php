@@ -21,6 +21,14 @@ class OpenApiSpec
 
 }
 
+#[OAT\Schema()]
+enum Colour
+{
+    case GREEN;
+    case BLUE;
+    case RED;
+}
+
 interface ProductInterface
 {
 
@@ -48,6 +56,12 @@ class Product implements ProductInterface
      * @OA\Property(format="int64", example=1, @OA\Attachable())
      */
     public $id;
+
+    #[OAT\Property()]
+    public string $brand;
+
+    /** @OA\Property() */
+    public Colour $colour;
 }
 
 class ProductController

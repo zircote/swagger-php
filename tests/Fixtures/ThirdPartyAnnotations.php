@@ -8,7 +8,8 @@ namespace OpenApi\Tests\Fixtures;
 
 /**
  * @OA\Info(title="Fixture for ParserTest", version="test")
- * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
+ *
+ * Based on the example http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use AnotherNamespace\Annotations as Annotation;
 
