@@ -13,7 +13,7 @@ trait OperationTrait
     /**
      * @param string[]                  $security
      * @param Server[]                  $servers
-     * @param Tag[]                     $tags
+     * @param string[]                  $tags
      * @param Parameter[]               $parameters
      * @param Response[]                $responses
      * @param array<string,string>|null $x
