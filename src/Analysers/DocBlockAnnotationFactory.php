@@ -11,7 +11,7 @@ use OpenApi\Generator;
 
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
-    /** @var DocBlockParser|null` */
+    /** @var DocBlockParser|null */
     protected $docBlockParser = null;
 
     /** @var Generator|null */
