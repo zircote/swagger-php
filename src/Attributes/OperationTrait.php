@@ -11,7 +11,7 @@ use OpenApi\Generator;
 trait OperationTrait
 {
     /**
-     * @param string[]                  $security
+     * @param array<string,array>|null  $security
      * @param Server[]                  $servers
      * @param string[]                  $tags
      * @param Parameter[]               $parameters
