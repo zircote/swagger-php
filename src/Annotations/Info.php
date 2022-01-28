@@ -54,6 +54,13 @@ class Info extends AbstractAnnotation
     public $license = Generator::UNDEFINED;
 
     /**
+     * The logo information for the exposed API.
+     *
+     * @var License
+     */
+    public $xlogo = Generator::UNDEFINED;
+
+    /**
      * The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).
      *
      * @var string
@@ -81,6 +88,7 @@ class Info extends AbstractAnnotation
     public static $_nested = [
         Contact::class => 'contact',
         License::class => 'license',
+        XLogo::class => 'xlogo',
         Attachable::class => ['attachables'],
     ];
 
