@@ -132,10 +132,6 @@ class ReflectionAnalyser implements AnalyserInterface
 
         foreach ($rc->getProperties() as $property) {
             if (in_array($property->name, $details['properties'])) {
-                if (method_exists($property, 'isPromoted') && $property->isPromoted()) {
-                    // handled via __construct() parameter
-                    continue;
-                }
                 $definition['properties'][$property->getName()] = $ctx = new Context([
                     'property' => $property->getName(),
                     'comment' => $property->getDocComment() ?: Generator::UNDEFINED,
