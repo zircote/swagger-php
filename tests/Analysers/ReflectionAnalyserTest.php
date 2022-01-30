@@ -14,7 +14,9 @@ use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
+use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Response;
+use OpenApi\Annotations\Schema;
 use OpenApi\Attributes\Get;
 use OpenApi\Context;
 use OpenApi\Generator;
@@ -169,5 +171,23 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         //file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testPhp8PromotedProperties(): void
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+
+        $this->assertCount(1, $schemas);
+        $analysis->process((new Generator())->getProcessors());
+
+        /** @var Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(Property::class);
+        $this->assertCount(2, $properties);
+        $this->assertEquals('id', $properties[0]->property);
+        $this->assertEquals('labels', $properties[1]->property);
     }
 }

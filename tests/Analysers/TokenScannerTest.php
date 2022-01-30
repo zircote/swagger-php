@@ -177,12 +177,11 @@ class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'Php8NamedProperty' => [
-            'PHP/Php8NamedProperty.php',
+        yield 'Php8PromotedProperties' => [
+            'PHP/Php8PromotedProperties.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedProperty' => [
+                'OpenApi\\Tests\\Fixtures\\PHP\\Php8PromotedProperties' => [
                     'uses' => [
-                        'Label' => 'OpenApi\\Tests\\Fixtures\\PHP\\Label',
                         'Property' => 'OpenApi\\Attributes\\Property',
                     ],
                     'interfaces' => [],
