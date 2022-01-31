@@ -262,16 +262,17 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @requires PHP 8
      */
-    public function testPhp8NamedProperty(): void
+    public function testPhp8PromotedProperties(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Php8NamedProperty.php'], [], new TokenAnalyser());
+        $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php'], [], new TokenAnalyser());
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process((new Generator())->getProcessors());
 
         /** @var Property[] $properties */
-        $properties = $analysis->getAnnotationsOfType(Property::class, true);
+        $properties = $analysis->getAnnotationsOfType(Property::class);
+        // ignores the attribute on $id
         $this->assertCount(1, $properties);
         $this->assertEquals('labels', $properties[0]->property);
     }

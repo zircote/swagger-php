@@ -31,6 +31,11 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             return [];
         }
 
+        if ($reflector instanceof \ReflectionProperty && method_exists($reflector, 'isPromoted') && $reflector->isPromoted()) {
+            // handled via __construct() parameter
+            return [];
+        }
+
         // no proper way to inject
         Generator::$context = $context;
 

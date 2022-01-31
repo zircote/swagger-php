@@ -7,12 +7,11 @@
 namespace OpenApi\Tests\Fixtures\PHP;
 
 use OpenApi\Attributes\Property;
-use OpenApi\Tests\Fixtures\PHP\Label;
 
 /**
  * @OA\Schema()
  */
-class Php8NamedProperty
+class Php8PromotedProperties
 {
     public function __construct(
         /**
