@@ -12,7 +12,7 @@ use OpenApi\Generator;
 class Discriminator extends \OpenApi\Annotations\Discriminator
 {
     /**
-     * @param string[]|null $mapping
+     * @param string[]|null             $mapping
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
