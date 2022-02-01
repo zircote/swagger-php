@@ -12,12 +12,13 @@ use OpenApi\Generator;
 class Discriminator extends \OpenApi\Annotations\Discriminator
 {
     /**
+     * @param string[]|null $mapping
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
         ?string $propertyName = null,
-        ?string $mapping = null,
+        ?array $mapping = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
