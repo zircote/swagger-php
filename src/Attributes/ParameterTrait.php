@@ -24,6 +24,8 @@ trait ParameterTrait
         string|object|null $ref = null,
         ?Schema $schema = null,
         ?array $examples = null,
+        ?string $style = null,
+        ?bool $explode = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -35,6 +37,8 @@ trait ParameterTrait
                 'in' => Generator::isDefault($this->in) ? $in : $this->in,
                 'required' => !Generator::isDefault($this->required) ? $this->required : ($required ?? Generator::UNDEFINED),
                 'ref' => $ref ?? Generator::UNDEFINED,
+                'style' => $style ?? Generator::UNDEFINED,
+                'explode' => $explode ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($schema, $examples, $attachables),
             ]);
