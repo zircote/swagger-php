@@ -54,7 +54,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
         ?array $allOf = null,
         ?array $anyOf = null,
         ?array $oneOf = null,
-        ?AdditionalProperties $additionalProperties = null,
+        AdditionalProperties|bool|null $additionalProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
