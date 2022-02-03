@@ -21,13 +21,14 @@ class RequestBody extends \OpenApi\Annotations\RequestBody
         $content = null,
         // annotation
         ?array $x = null,
-        ?array $attachables = null
+        ?array $attachables = null,
+        ?MediaType $mediaType = null,
     ) {
         parent::__construct([
                 'description' => $description ?? Generator::UNDEFINED,
                 'required' => $required ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($content, $attachables),
+                'value' => $this->combine($content, $attachables, $mediaType),
             ]);
     }
 }
