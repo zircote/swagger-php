@@ -19,6 +19,7 @@ class User
      * @var string
      */
     #[OAT\Property(type: 'string')]
+    #[MyAttribute]
     public $uuid;
 
     #[ArrayShape(['ping' => 'pong'])]
