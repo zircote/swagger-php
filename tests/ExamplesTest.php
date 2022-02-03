@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use Composer\Autoload\ClassLoader;
+use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
@@ -24,19 +25,84 @@ class ExamplesTest extends OpenApiTestCase
         ];
 
         $examples = [
-            'example-object' => [OpenApi::VERSION_3_0_0, 'example-object', 'example-object.yaml'],
-            'misc' => [OpenApi::VERSION_3_0_0, 'misc', 'misc.yaml'],
-            'nesting' => [OpenApi::VERSION_3_0_0, 'nesting', 'nesting.yaml'],
-            'petstore-3.0' => [OpenApi::VERSION_3_0_0, 'petstore-3.0', 'petstore-3.0.yaml'],
-            'petstore.swagger.io' => [OpenApi::VERSION_3_0_0, 'petstore.swagger.io', 'petstore.swagger.io.yaml'],
-            'swagger-spec/petstore' => [OpenApi::VERSION_3_0_0, 'swagger-spec/petstore', 'petstore.yaml'],
-            'swagger-spec/petstore-simple' => [OpenApi::VERSION_3_0_0, 'swagger-spec/petstore-simple', 'petstore-simple.yaml'],
-            'swagger-spec/petstore-simple-3.1.0' => [OpenApi::VERSION_3_1_0, 'swagger-spec/petstore-simple', 'petstore-simple-3.1.0.yaml'],
-            'swagger-spec/petstore-with-external-docs' => [OpenApi::VERSION_3_0_0, 'swagger-spec/petstore-with-external-docs', 'petstore-with-external-docs.yaml'],
-            'using-interfaces' => [OpenApi::VERSION_3_0_0, 'using-interfaces', 'using-interfaces.yaml'],
-            'using-refs' => [OpenApi::VERSION_3_0_0, 'using-refs', 'using-refs.yaml'],
-            'using-traits' => [OpenApi::VERSION_3_0_0, 'using-traits', 'using-traits.yaml'],
-            'using-links' => [OpenApi::VERSION_3_0_0, 'using-links', 'using-links.yaml'],
+            'example-object' => [
+                OpenApi::VERSION_3_0_0,
+                'example-object',
+                'example-object.yaml',
+                [],
+            ],
+            'misc' => [
+                OpenApi::VERSION_3_0_0,
+                'misc',
+                'misc.yaml',
+                [],
+            ],
+            'nesting' => [
+                OpenApi::VERSION_3_0_0,
+                'nesting',
+                'nesting.yaml',
+                [],
+            ],
+            'petstore-3.0' => [
+                OpenApi::VERSION_3_0_0,
+                'petstore-3.0',
+                'petstore-3.0.yaml',
+                [],
+            ],
+            'petstore.swagger.io' => [
+                OpenApi::VERSION_3_0_0,
+                'petstore.swagger.io',
+                'petstore.swagger.io.yaml',
+                [],
+            ],
+            'swagger-spec/petstore' => [
+                OpenApi::VERSION_3_0_0,
+                'swagger-spec/petstore',
+                'petstore.yaml',
+                [],
+            ],
+            'swagger-spec/petstore-simple' => [
+                OpenApi::VERSION_3_0_0,
+                'swagger-spec/petstore-simple',
+                'petstore-simple.yaml',
+                [],
+            ],
+            'swagger-spec/petstore-simple-3.1.0' => [
+                OpenApi::VERSION_3_1_0,
+                'swagger-spec/petstore-simple',
+                'petstore-simple-3.1.0.yaml',
+                [],
+            ],
+            'swagger-spec/petstore-with-external-docs' => [
+                OpenApi::VERSION_3_0_0,
+                'swagger-spec/petstore-with-external-docs',
+                'petstore-with-external-docs.yaml',
+                [],
+            ],
+            'using-interfaces' => [
+                OpenApi::VERSION_3_0_0,
+                'using-interfaces',
+                'using-interfaces.yaml',
+                [],
+            ],
+            'using-refs' => [
+                OpenApi::VERSION_3_0_0,
+                'using-refs',
+                'using-refs.yaml',
+                [],
+            ],
+            'using-traits' => [
+                OpenApi::VERSION_3_0_0,
+                'using-traits',
+                'using-traits.yaml',
+                [],
+            ],
+            'using-links' => [
+                OpenApi::VERSION_3_0_0,
+                'using-links',
+                'using-links.yaml',
+                [],
+            ],
         ];
 
         foreach ($examples as $ekey => $example) {
@@ -49,7 +115,13 @@ class ExamplesTest extends OpenApiTestCase
         }
 
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'reflection/attribute:using-links-php81' => [OpenApi::VERSION_3_0_0, 'using-links-php81', 'using-links-php81.yaml', new ReflectionAnalyser([new AttributeAnnotationFactory()])];
+            yield 'reflection/attribute:using-links-php81' => [
+                OpenApi::VERSION_3_0_0,
+                'using-links-php81',
+                'using-links-php81.yaml',
+                ['JetBrains\PhpStorm\ArrayShape'],
+                new ReflectionAnalyser([new AttributeAnnotationFactory()]),
+            ];
         }
     }
 
@@ -58,7 +130,7 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleMappings
      */
-    public function testExamples($version, $example, $spec, $analyser): void
+    public function testExamples(string $version, string $example, string $spec, array $expectedLog, AnalyserInterface $analyser): void
     {
         // register autoloader for examples that require autoloading due to inheritance, etc.
         $path = $this->example($example);
@@ -67,11 +139,15 @@ class ExamplesTest extends OpenApiTestCase
         $classloader->addPsr4('OpenApi\\Examples\\' . $exampleNS . '\\', $path);
         $classloader->register();
 
+        foreach ($expectedLog as $logLine) {
+            $this->assertOpenApiLogEntryContains($logLine);
+        }
+
         $path = $this->example($example);
-        $openapi = (new Generator())
+        $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
             ->setAnalyser($analyser)
-            ->generate([$path], null, true);
+            ->generate([$path]);
         //file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
