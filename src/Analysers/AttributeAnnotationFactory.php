@@ -43,9 +43,16 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         $annotations = [];
         try {
             foreach ($reflector->getAttributes() as $attribute) {
-                $instance = $attribute->newInstance();
-                $annotations[] = $instance;
+                try {
+                    $instance = $attribute->newInstance();
+                    if ($instance instanceof AbstractAnnotation) {
+                        $annotations[] = $instance;
+                    }
+                } catch (\Error $e) {
+                    $context->logger->warning('Could not instantiate attribute: ' . $e->getMessage(), ['exception' => $e]);
+                }
             }
+
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
