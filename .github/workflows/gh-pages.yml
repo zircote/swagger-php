@@ -1,0 +1,28 @@
+name: gh-pages
+
+on:
+  workflow_dispatch
+
+jobs:
+  gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install vitepress
+        run: cd docs && npm install vitepress
+
+      - name: Build site
+        run: cd docs && npm run build
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: docs/.vitepress/dist
+          dry_run: true
+          verbose: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

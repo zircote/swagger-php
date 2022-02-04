@@ -5,7 +5,5 @@ bin/
 composer.lock
 docs/.vitepress/dist/
 docs/node_modules/
-local/
-openapi.json
-openapi.yaml
+docs/package-lock.json
 vendor/
