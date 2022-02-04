@@ -19,7 +19,7 @@ class Examples extends \OpenApi\Annotations\Examples
         ?string $example = null,
         ?string $summary = null,
         ?string $description = null,
-        ?string $value = null,
+        string|array|null $value = null,
         ?string $externalValue = null,
         string|object|null $ref = null,
         // annotation
