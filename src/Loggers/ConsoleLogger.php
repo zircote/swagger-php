@@ -37,12 +37,15 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = []): void
     {
-        $this->called = true;
-
         $prefix = '';
         $color = '';
         // level adjustments
         switch ($level) {
+            case LogLevel::DEBUG:
+                if (!$this->debug) {
+                    return;
+                }
+                // no break
             case LogLevel::WARNING:
                 $prefix = $context['prefix'] ?? 'Warning: ';
                 $color = static::COLOR_WARNING;
@@ -53,6 +56,8 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
                 break;
         }
         $stop = !empty($color) ? static::COLOR_STOP : '';
+
+        $this->called = true;
 
         /** @var ?\Exception $exception */
         $exception = $context['exception'] ?? null;

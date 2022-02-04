@@ -14,11 +14,15 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
     public function log($level, $message, array $context = []): void
     {
+        if (LogLevel::DEBUG == $level) {
+            return;
+        }
+
         if ($message instanceof \Exception) {
             $message = $message->getMessage();
         }
 
-        if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO, LogLevel::DEBUG])) {
+        if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO])) {
             $error_level = E_USER_NOTICE;
         } else {
             $error_level = E_USER_WARNING;

@@ -49,7 +49,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         $annotations[] = $instance;
                     }
                 } catch (\Error $e) {
-                    $context->logger->warning('Could not instantiate attribute: ' . $e->getMessage(), ['exception' => $e]);
+                    $context->logger->debug('Could not instantiate attribute: ' . $e->getMessage(), ['exception' => $e]);
                 }
             }
 
