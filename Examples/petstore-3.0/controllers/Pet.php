@@ -7,7 +7,7 @@
 namespace Petstore30\controllers;
 
 /**
- * Class Pet
+ * Class Pet.
  *
  * @package Petstore30\controllers
  *
@@ -16,8 +16,8 @@ namespace Petstore30\controllers;
 class Pet
 {
     /**
-     * Add a new pet to the store
-     * 
+     * Add a new pet to the store.
+     *
      * @OA\Post(
      *     path="/pet",
      *     tags={"pet"},
@@ -37,7 +37,7 @@ class Pet
     }
 
     /**
-     * Update an existing pet
+     * Update an existing pet.
      *
      * @OA\Put(
      *     path="/pet",
@@ -82,7 +82,7 @@ class Pet
      *         @OA\Schema(
      *             default="available",
      *             type="string",
-     *             enum = {"available", "pending", "sold"},
+     *             enum={"available", "pending", "sold"},
      *         )
      *     ),
      *     @OA\Response(

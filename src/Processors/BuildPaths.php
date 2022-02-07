@@ -13,7 +13,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
- * Build the openapi->paths using the detected @OA\PathItem and @OA\Operations (like @OA\Get, @OA\Post, etc).
+ * Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (`@OA\Get`, `@OA\Post`, etc).
  */
 class BuildPaths
 {

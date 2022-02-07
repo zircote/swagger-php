@@ -4,8 +4,8 @@ namespace OpenApi\Examples\UsingRefs;
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using references in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using references in swagger-php",
  * )
  */
 class OpenApiSpec
@@ -18,15 +18,15 @@ class OpenApiSpec
 
 /**
  * @OA\Parameter(
- *   parameter="product_id_in_path_required",
- *   name="product_id",
- *   description="The ID of the product",
- *   @OA\Schema(
- *     type="integer",
- *     format="int64",
- *   ),
- *   in="path",
- *   required=true
+ *     parameter="product_id_in_path_required",
+ *     name="product_id",
+ *     description="The ID of the product",
+ *     @OA\Schema(
+ *         type="integer",
+ *         format="int64",
+ *     ),
+ *     in="path",
+ *     required=true
  * )
  */
 class ProductIdParamerter
@@ -35,10 +35,10 @@ class ProductIdParamerter
 
 /**
  * @OA\RequestBody(
- *   request="product_in_body",
- *   required=true,
- *   description="product_request",
- *   @OA\JsonContent(ref="#/components/schemas/Product")
+ *     request="product_in_body",
+ *     required=true,
+ *     description="product_request",
+ *     @OA\JsonContent(ref="#/components/schemas/Product")
  * )
  */
 class ProductRequestBody
@@ -56,9 +56,9 @@ class ProductRequestBody
 
 /**
  * @OA\Response(
- *   response="product",
- *   description="All information about a product",
- *   @OA\JsonContent(ref="#/components/schemas/Product")
+ *     response="product",
+ *     description="All information about a product",
+ *     @OA\JsonContent(ref="#/components/schemas/Product")
  * )
  */
 class ProductResponse
@@ -67,8 +67,8 @@ class ProductResponse
 
 /**
  * @OA\Response(
- *   response="todo",
- *   description="This API call has no documentated response (yet)",
+ *     response="todo",
+ *     description="This API call has no documentated response (yet)",
  * )
  */
 class TodoResponse
@@ -84,11 +84,11 @@ class TodoResponse
 
 /**
  * @OA\Schema(
- *   schema="product_status",
- *   type="string",
- *   description="The status of a product",
- *   enum={"available", "discontinued"},
- *   default="available"
+ *     schema="product_status",
+ *     type="string",
+ *     description="The status of a product",
+ *     enum={"available", "discontinued"},
+ *     default="available"
  * )
  */
 class ProductStatus

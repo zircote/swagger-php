@@ -5,7 +5,6 @@
  */
 
 /**
- *
  * @OA\RequestBody(
  *     request="Pet",
  *     description="Pet object that needs to be added to the store",
@@ -17,7 +16,9 @@
  *     )
  * )
  */
-class PetRequestBody {}
+class PetRequestBody
+{
+}
 
 /**
  * @OA\RequestBody(
@@ -30,4 +31,6 @@ class PetRequestBody {}
  *     )
  * )
  */
-class UserArrayRequestBody {}
+class UserArrayRequestBody
+{
+}

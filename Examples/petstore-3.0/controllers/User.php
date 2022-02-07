@@ -7,7 +7,7 @@
 namespace Petstore30\controllers;
 
 /**
- * Class User
+ * Class User.
  *
  * @package Petstore30\controllers
  *

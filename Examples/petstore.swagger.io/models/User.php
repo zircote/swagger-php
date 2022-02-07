@@ -10,48 +10,53 @@ class User
 
     /**
      * @OA\Property(format="int64")
+     *
      * @var int
      */
     public $id;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $username;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $firstName;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $lastName;
 
     /**
      * @var string
-     * @OA\Property()
+     * @OA\Property
      */
     public $email;
 
     /**
      * @var string
-     * @OA\Property()
+     * @OA\Property
      */
     public $password;
 
     /**
      * @var string
-     * @OA\Property()
+     * @OA\Property
      */
     public $phone;
 
     /**
-     * User Status
+     * User Status.
+     *
      * @var int
      * @OA\Property(format="int32")
      */

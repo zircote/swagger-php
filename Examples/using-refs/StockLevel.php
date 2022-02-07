@@ -3,7 +3,7 @@
 namespace OpenApi\Examples\UsingRefs;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 enum StockLevel: int
 {

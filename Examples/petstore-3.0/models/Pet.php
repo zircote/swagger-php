@@ -7,7 +7,7 @@
 namespace Petstore30;
 
 /**
- * Class Pet
+ * Class Pet.
  *
  * @package Petstore30
  *
@@ -32,7 +32,7 @@ class Pet
      *     title="ID",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -52,7 +52,7 @@ class Pet
      *     title="Pet name",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $name;
 

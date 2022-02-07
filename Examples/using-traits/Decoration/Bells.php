@@ -5,7 +5,8 @@ namespace OpenApi\Examples\UsingTraits\Decoration;
 /**
  * @OA\Schema(title="Bells trait")
  */
-trait Bells {
+trait Bells
+{
 
     /**
      * The bell (clashes with Product::bell).

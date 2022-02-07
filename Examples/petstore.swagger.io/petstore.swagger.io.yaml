@@ -177,7 +177,7 @@ paths:
     put:
       tags:
         - pet
-      summary: 'Update an existing pet'
+      summary: 'Update an existing pet.'
       description: ''
       operationId: updatePet
       requestBody:
@@ -555,7 +555,7 @@ components:
           type: string
           format: date-time
         status:
-          description: 'Order Status'
+          description: 'Order Status.'
           type: string
           enum:
             - placed
@@ -592,7 +592,7 @@ components:
             name: tag
             wrapped: true
         status:
-          description: 'pet status in the store'
+          description: 'pet status in the store.'
           type: string
           enum:
             - available
@@ -629,7 +629,7 @@ components:
         phone:
           type: string
         userStatus:
-          description: 'User Status'
+          description: 'User Status.'
           type: integer
           format: int32
       type: object

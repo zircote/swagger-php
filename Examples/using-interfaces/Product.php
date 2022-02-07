@@ -11,24 +11,24 @@ class Product implements ProductInterface, ColorInterface
     /**
      * The unique identifier of a product in our catalog.
      *
-     * @var integer
+     * @var int
      * @OA\Property(format="int64", example=1)
      */
     public $id;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getName()
     {
-        return "kettle";
+        return 'kettle';
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getColor()
     {
-        return "green";
+        return 'green';
     }
 }

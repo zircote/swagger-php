@@ -14,7 +14,7 @@ class SimpleProduct
     /**
      * The unique identifier of a simple product in our catalog.
      *
-     * @var integer
+     * @var int
      * @OA\Property(format="int64", example=1)
      */
     public $id;

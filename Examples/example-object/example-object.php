@@ -84,16 +84,16 @@ class UserAddEndpoint
 
 /**
  * @OA\Schema(
- *  schema="Result",
- *  title="Sample schema for using references",
+ *     schema="Result",
+ *     title="Sample schema for using references",
  * 	@OA\Property(
- *        property="status",
- *        type="string"
- *    ),
+ *         property="status",
+ *         type="string"
+ *     ),
  * 	@OA\Property(
- *        property="error",
- *        type="string"
- *    )
+ *         property="error",
+ *         type="string"
+ *     )
  * )
  */
 class ResultSchema

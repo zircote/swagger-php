@@ -4,7 +4,7 @@ namespace OpenApi\Examples\PetstoreSwaggerIo;
 
 /**
  * @OA\Schema(
- *   @OA\Xml(name="Tag")
+ *     @OA\Xml(name="Tag")
  * )
  */
 class Tag
@@ -12,12 +12,14 @@ class Tag
 
     /**
      * @OA\Property(format="int64")
+     *
      * @var int
      */
     public $id;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $name;

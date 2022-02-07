@@ -11,13 +11,15 @@ class Repository
 {
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $slug;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var User
      */
     public $owner;

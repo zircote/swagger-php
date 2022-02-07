@@ -7,7 +7,6 @@ namespace OpenApi\Examples\UsingInterfaces;
  */
 interface ColorInterface
 {
-
     /**
      * The product color.
      *

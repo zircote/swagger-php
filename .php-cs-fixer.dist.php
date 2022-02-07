@@ -3,6 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tests')->name('*.php')
+    //->path('Examples')->name('*.php')
     ->exclude('tests/Fixtures')
     ->in(__DIR__)
 ;
@@ -10,6 +11,7 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
+        '@DoctrineAnnotation' => true,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],

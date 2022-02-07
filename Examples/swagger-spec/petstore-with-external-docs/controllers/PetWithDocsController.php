@@ -1,11 +1,7 @@
 <?php
 
-/**
- *
- */
 class PetWithDocsController
 {
-
     /**
      * @OA\Post(
      *     path="/pets",

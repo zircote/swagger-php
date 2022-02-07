@@ -10,11 +10,10 @@ namespace OpenApi\Examples\UsingTraits;
  * If this is not working for you this processor can be swapped for the `MergeTraits` (this used to be the default).
  */
 
-
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using traits in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using traits in swagger-php",
  * )
  */
 class OpenApiSpec

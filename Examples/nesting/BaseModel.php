@@ -3,15 +3,14 @@
 namespace OpenApi\Examples\Nesting;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class BaseModel
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      *
      * @var string
      */
     public $base;
-
 }
