@@ -3,15 +3,14 @@
 namespace OpenApi\Examples\Nesting;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class AlmostModel extends IntermediateModel
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      *
      * @var string
      */
     public $almost;
-
 }

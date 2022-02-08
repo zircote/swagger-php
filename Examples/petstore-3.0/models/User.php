@@ -7,7 +7,7 @@
 namespace Petstore30;
 
 /**
- * Class User
+ * Class User.
  *
  * @package Petstore30
  *
@@ -27,7 +27,7 @@ class User
      *     title="ID",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -102,7 +102,7 @@ class User
      *     title="User status",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $userStatus;
 }

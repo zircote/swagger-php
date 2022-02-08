@@ -7,7 +7,7 @@
 namespace Petstore30;
 
 /**
- * Class Order
+ * Class Order.
  *
  * @package Petstore30
  *
@@ -27,7 +27,7 @@ class Order
      *     description="ID",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -39,7 +39,7 @@ class Order
      *     title="Pet ID",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $petId;
 
@@ -51,7 +51,7 @@ class Order
      *     title="Quantity",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $quantity;
 
@@ -71,8 +71,8 @@ class Order
     /**
      * @OA\Property(
      *     default="placed",
-     *     title="Order status",
-     *     description="Order status",
+     *     title="Order status.",
+     *     description="Order status.",
      *     enum={"placed", "approved", "delivered"},
      * )
      *
@@ -88,7 +88,7 @@ class Order
      *     title="Complete status",
      * )
      *
-     * @var boolean
+     * @var bool
      */
     private $complete;
 }

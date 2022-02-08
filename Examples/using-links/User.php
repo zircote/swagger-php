@@ -11,13 +11,15 @@ class User
 {
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $username;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $uuid;

@@ -7,5 +7,6 @@ namespace OpenApi\Examples\UsingRefs;
  *
  * This is here to force the use of allOf in the Product schema.
  */
-class Model {
+class Model
+{
 }

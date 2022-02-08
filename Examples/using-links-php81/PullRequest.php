@@ -9,10 +9,11 @@ class PullRequest
 {
     public function __construct(
         #[OAT\Property()] public State $state
-    ) {}
+    ) {
+    }
 
     /**
-     * @var integer
+     * @var int
      */
     #[OAT\Property(type: 'integer')]
     public $id;

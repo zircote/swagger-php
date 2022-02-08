@@ -7,7 +7,7 @@
 namespace Petstore30;
 
 /**
- * Tag
+ * Tag.
  *
  * @package Petstore30
  *
@@ -29,7 +29,7 @@ class Tag
      *     title="ID"
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 

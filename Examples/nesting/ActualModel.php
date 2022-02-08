@@ -3,15 +3,14 @@
 namespace OpenApi\Examples\Nesting;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class ActualModel extends SoCloseModel
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      *
      * @var string
      */
     public $actual;
-
 }

@@ -8,10 +8,9 @@ namespace OpenApi\Examples\Nesting;
 class SoCloseModel extends AlmostModel
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      *
      * @var string
      */
     public $soClose;
-
 }

@@ -10,29 +10,30 @@ class SimplePet
     public $id;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string
      */
     public $name;
 
     /**
      * @var string
-     * @OA\Property()
+     * @OA\Property
      */
     public $tag;
 }
 
 /**
  * @OA\Schema(
- *   schema="Pet",
- *   type="object",
- *   allOf={
- *       @OA\Schema(ref="#/components/schemas/NewPet"),
- *       @OA\Schema(
- *           required={"id"},
- *           @OA\Property(property="id", format="int64", type="integer")
- *       )
- *   }
+ *     schema="Pet",
+ *     type="object",
+ *     allOf={
+ *         @OA\Schema(ref="#/components/schemas/NewPet"),
+ *         @OA\Schema(
+ *             required={"id"},
+ *             @OA\Property(property="id", format="int64", type="integer")
+ *         )
+ *     }
  * )
  */
 class Pet

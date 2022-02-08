@@ -7,14 +7,14 @@
 namespace Petstore30;
 
 /**
- * Pets Category
+ * Pets Category.
  *
  * @package Petstore30
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(
- *     title="Pets Category",
+ *     title="Pets Category.",
  *     @OA\Xml(
  *         name="Category"
  *     )
@@ -29,7 +29,7 @@ class Category
      *     format="int64",
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 

@@ -8,10 +8,9 @@ namespace OpenApi\Examples\Nesting;
 class IntermediateModel extends BaseModel
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      *
      * @var string
      */
     public $intermediate;
-
 }

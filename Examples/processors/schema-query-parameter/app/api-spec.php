@@ -4,8 +4,8 @@ namespace App;
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Example of using a custom processor in swagger-php",
+ *     version="1.0.0",
+ *     title="Example of using a custom processor in swagger-php",
  * )
  */
 class OpenApi

@@ -7,7 +7,7 @@
 namespace Petstore30;
 
 /**
- * Class ApiResponse
+ * Class ApiResponse.
  *
  * @package Petstore30
  *
@@ -35,7 +35,7 @@ class ApiResponse
      * OA\Property(
      *    description="Type",
      *    title="Type",
-     * )
+     * ).
      *
      * @var string
      */

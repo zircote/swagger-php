@@ -7,7 +7,7 @@
 namespace Petstore30\controllers;
 
 /**
- * Class Store
+ * Class Store.
  *
  * @package Petstore30\controllers
  *
@@ -24,13 +24,13 @@ class Store
      *     operationId="getInventory",
      *     @OA\Response(
      *         response=200,
-     *          description="successful operation",
-     *          @OA\JsonContent(
-     *              @OA\AdditionalProperties(
-     *                  type="integer",
-     *                  format="int32"
-     *              )
-     *          )
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             @OA\AdditionalProperties(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
+     *         )
      *     ),
      *     security={
      *         {"api_key": {}}

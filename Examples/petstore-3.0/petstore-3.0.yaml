@@ -18,7 +18,7 @@ paths:
     put:
       tags:
         - pet
-      summary: 'Update an existing pet'
+      summary: 'Update an existing pet.'
       operationId: updatePet
       requestBody:
         $ref: '#/components/requestBodies/Pet'
@@ -37,7 +37,7 @@ paths:
     post:
       tags:
         - pet
-      summary: 'Add a new pet to the store'
+      summary: 'Add a new pet to the store.'
       operationId: addPet
       requestBody:
         $ref: '#/components/requestBodies/Pet'
@@ -521,8 +521,8 @@ components:
           type: string
       type: object
     Category:
-      title: 'Pets Category'
-      description: 'Pets Category'
+      title: 'Pets Category.'
+      description: 'Pets Category.'
       properties:
         id:
           title: ID
@@ -565,8 +565,8 @@ components:
           format: datetime
           default: '2017-02-02 18:31:45'
         status:
-          title: 'Order status'
-          description: 'Order status'
+          title: 'Order status.'
+          description: 'Order status.'
           type: string
           default: placed
           enum:
@@ -623,7 +623,7 @@ components:
         name: Pet
     Tag:
       title: Tag
-      description: Tag
+      description: Tag.
       properties:
         id:
           title: ID

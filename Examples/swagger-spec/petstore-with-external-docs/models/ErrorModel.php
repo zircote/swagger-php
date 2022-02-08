@@ -7,11 +7,13 @@ class ErrorModel extends Exception
 {
     /**
      * @OA\Property(format="int32");
+     *
      * @var int
      */
     public $code;
     /**
-     * @OA\Property();
+     * @OA\Property;
+     *
      * @var string
      */
     public $message;

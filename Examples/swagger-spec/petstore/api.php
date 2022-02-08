@@ -21,18 +21,18 @@ class OpenApiSpec
 
 /**
  * @OA\Schema(
- *      schema="Error",
- *      required={"code", "message"},
- *      @OA\Property(
- *          property="code",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @OA\Property(
- *          property="message",
- *          type="string"
- *      )
- *  )
+ *     schema="Error",
+ *     required={"code", "message"},
+ *     @OA\Property(
+ *         property="code",
+ *         type="integer",
+ *         format="int32"
+ *     ),
+ *     @OA\Property(
+ *         property="message",
+ *         type="string"
+ *     )
+ * )
  */
 class Error
 {
@@ -40,10 +40,10 @@ class Error
 
 /**
  * @OA\Schema(
- *      schema="Pets",
- *      type="array",
- *      @OA\Items(ref="#/components/schemas/Pet")
- *  )
+ *     schema="Pets",
+ *     type="array",
+ *     @OA\Items(ref="#/components/schemas/Pet")
+ * )
  */
 class Pets
 {

@@ -4,7 +4,6 @@ namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
 
 class SimplePetsController
 {
-
     /**
      * @OA\Get(
      *     path="/pets",

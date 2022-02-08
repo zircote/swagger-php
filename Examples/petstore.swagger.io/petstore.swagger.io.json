@@ -258,7 +258,7 @@
                 "tags": [
                     "pet"
                 ],
-                "summary": "Update an existing pet",
+                "summary": "Update an existing pet.",
                 "description": "",
                 "operationId": "updatePet",
                 "requestBody": {
@@ -814,7 +814,7 @@
                         "format": "date-time"
                     },
                     "status": {
-                        "description": "Order Status",
+                        "description": "Order Status.",
                         "type": "string",
                         "enum": [
                             "placed",

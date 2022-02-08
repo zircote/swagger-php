@@ -50,4 +50,6 @@ out more about Swagger at
  *     url="http://swagger.io"
  * )
  */
-class Petstore {}
+class Petstore
+{
+}

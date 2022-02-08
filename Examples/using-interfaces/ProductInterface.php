@@ -2,13 +2,11 @@
 
 namespace OpenApi\Examples\UsingInterfaces;
 
-
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 interface ProductInterface
 {
-
     /**
      * The product name.
      *

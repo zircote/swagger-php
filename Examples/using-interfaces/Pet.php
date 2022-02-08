@@ -7,12 +7,11 @@ namespace OpenApi\Examples\UsingInterfaces;
  */
 class Pet implements ColorInterface
 {
-
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getColor()
     {
-        return "green";
+        return 'green';
     }
 }
