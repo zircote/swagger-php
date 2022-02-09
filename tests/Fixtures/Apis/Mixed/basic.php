@@ -57,6 +57,9 @@ class Product implements ProductInterface
      */
     public $id;
 
+    #[OAT\Property(type: 'string')]
+    public \DateTimeInterface $releasedAt;
+
     #[OAT\Property()]
     public int $quantity;
 

@@ -75,6 +75,14 @@ class Product implements ProductInterface
      */
     public $id;
 
+    public function __construct(
+        /**
+         * @OA\Property(type="string")
+         */
+        public \DateTimeInterface $releasedAt,
+    )
+    {
+    }
 }
 
 class ProductController

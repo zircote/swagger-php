@@ -62,7 +62,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             if ($instance instanceof Property) {
                                 $instance->property = $rp->getName();
-                                $instance->type = $type;
+                                if (Generator::isDefault($instance->type)) {
+                                    $instance->type = $type;
+                                }
                             } else {
                                 $instance->name = $rp->getName();
                                 $instance->merge([new Schema(['type' => $type, '_context' => new Context(['nested' => $this], $context)])]);
