@@ -104,3 +104,5 @@ components:
               description: 'The id.'
               format: int64
               example: 1
+            releasedAt:
+              type: string
