@@ -12,13 +12,14 @@ use OpenApi\Generator;
 class RequestBody extends \OpenApi\Annotations\RequestBody
 {
     /**
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<string, MediaType>|JsonContent|XmlContent|null $content
+     * @param array<string,string>|null                            $x
+     * @param Attachable[]|null                                    $attachables
      */
     public function __construct(
         ?string $description = null,
         ?bool $required = null,
-        $content = null,
+        array|JsonContent|XmlContent|null $content = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
