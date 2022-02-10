@@ -1,13 +1,23 @@
 openapi: 3.0.0
 info:
   title: Polymorphism
+  description: 'Polymorphism example'
+  contact:
+    name: 'Swagger API Team'
   version: '1'
+servers:
+  -
+    url: example.localhost
+    description: 'API server'
 paths:
   /test:
     get:
-      operationId: ef7f8a05d4ce52bae215869c1decc7c1
+      tags:
+        - api
+      description: 'Get test'
+      operationId: 2bf08e1a95c02130edf82da5846bfca3
       responses:
-        default:
+        '200':
           description: Polymorphism
           content:
             application/json:
@@ -18,12 +28,12 @@ components:
     Responsible:
       properties:
         type:
-          nullable: false
           type: string
           enum:
             - employee
             - assignee
             - fl
+          nullable: false
       type: object
       discriminator:
         propertyName: type
@@ -38,24 +48,27 @@ components:
     EmployeeResponsible:
       allOf:
         -
+          $ref: '#/components/schemas/Responsible'
+        -
           properties:
             property2:
-              nullable: false
               type: string
-        -
-          $ref: '#/components/schemas/Responsible'
+              nullable: false
     FlResponsible:
       allOf:
         -
+          $ref: '#/components/schemas/Responsible'
+        -
           properties:
             property3:
-              nullable: false
               type: string
-        -
-          $ref: '#/components/schemas/Responsible'
+              nullable: false
     Request:
       properties:
         payload:
           $ref: '#/components/schemas/Responsible'
       type: object
-
+tags:
+  -
+    name: api
+    description: 'API operations'
