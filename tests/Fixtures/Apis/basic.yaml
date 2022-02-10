@@ -5,6 +5,10 @@ info:
     name: MIT
     identifier: MIT
   version: 1.0.0
+servers:
+  -
+    url: 'https://localhost/api'
+    description: 'API server'
 paths:
   '/products/{product_id}':
     get:
@@ -38,6 +42,7 @@ paths:
     get:
       tags:
         - products
+        - catalog
       operationId: getAll
       responses:
         '200':
@@ -106,3 +111,10 @@ components:
               example: 1
             releasedAt:
               type: string
+tags:
+  -
+    name: products
+    description: 'All about products'
+  -
+    name: catalog
+    description: 'Catalog API'
