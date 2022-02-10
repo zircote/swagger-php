@@ -79,6 +79,12 @@ class ExamplesTest extends OpenApiTestCase
                 'petstore-with-external-docs.yaml',
                 [],
             ],
+            'polymorphism' => [
+                OpenApi::VERSION_3_0_0,
+                'polymorphism',
+                'polymorphism.yaml',
+                [],
+            ],
             'using-interfaces' => [
                 OpenApi::VERSION_3_0_0,
                 'using-interfaces',
@@ -148,7 +154,7 @@ class ExamplesTest extends OpenApiTestCase
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
-        file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        //file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($path . '/' . $spec),
