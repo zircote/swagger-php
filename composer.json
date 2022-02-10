@@ -82,7 +82,7 @@
       "phpstan analyse --memory-limit=2G",
       "psalm --show-info=true"
     ],
-    "spectral": "for ff in `find Examples -name *.yaml`; do spectral lint $ff; done",
+    "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "docs:deploy": "cd docs && npm run deploy"
