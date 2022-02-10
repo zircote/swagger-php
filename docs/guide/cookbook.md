@@ -552,3 +552,50 @@ components:
         - MERGED
         - DECLINED
 ```
+
+## Multi value query parameter: `&q[]=1&q[]=1`
+
+PHP allows to have query parameters multiple times in the url and will combine the values to an array if the parameter
+name uses trailing `[]`. In fact, it is possible to create nested arrays too by using more than one pair of `[]`.
+
+In terms of OpenAPI, the parameters can be considered a single parameter with a list of values.
+
+```php
+/**
+ * @OA\Get(
+ *     path="/api/endpoint",
+ *     description="The endpoint",
+ *     operationId="endpoint",
+ *     tags={"endpoints"},
+ *     @OA\Parameter(
+ *         name="things[]",
+ *         in="query",
+ *         description="A list of things.",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="array",
+ *             @OA\Items(type="integer")
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="All good")
+ * )
+ */
+```
+
+The corresponding bit of the spec will look like this:
+
+```yaml
+      parameters:
+        -
+          name: 'things[]'
+          in: query
+          description: 'A list of things.'
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+```
+
+`swagger-ui` will show  a form that allows to add/remove items (`integer`  values in this case) to/from a list
+and post those values as something like ```?things[]=1&things[]=2&things[]=0``` 
