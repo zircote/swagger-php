@@ -2,6 +2,8 @@ openapi: 3.0.0
 info:
   title: 'Testing annotations from bugreports'
   description: "NOTE:\nThis sentence is on a new line"
+  contact:
+    name: 'Swagger API Team'
   version: 1.0.0
 servers:
   -
@@ -16,7 +18,11 @@ servers:
 paths:
   /api/endpoint:
     get:
+      tags:
+        - endpoints
       summary: 'An API endpoint.'
+      description: 'An endpoint'
+      operationId: endpoints
       parameters:
         -
           name: filter
@@ -66,3 +72,6 @@ components:
 security:
   -
     bearerAuth: []
+tags:
+  -
+    name: endpoints

@@ -5,9 +5,19 @@ namespace OpenApi\Examples\ExampleObject;
 use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Tag(
+ *     name="user",
+ *     description="User related operations"
+ * )
  * @OA\Info(
  *     version="1.0",
- *     title="Example for response examples value"
+ *     title="Example for response examples value",
+ *     description="Example info",
+ *     @OA\Contact(name="Swagger API Team")
+ * )
+ * @OA\Server(
+ *     url="example.localhost",
+ *     description="API server"
  * )
  */
 class OpenApiSpec
@@ -18,6 +28,9 @@ class OpenApiSpec
  * @OA\Put(
  *     path="/users/{id}",
  *     summary="Updates a user",
+ *     description="Updates a user",
+ *     operationId="updateUser",
+ *     tags={"user"},
  *     @OA\Parameter(
  *         description="Parameter with mutliple examples",
  *         in="path",
@@ -41,6 +54,9 @@ class UserUpdateEndpoint
  * @OA\Post(
  *     path="/users",
  *     summary="Adds a new user - with oneOf examples",
+ *     description="Adds a new user",
+ *     operationId="addUser",
+ *     tags={"user"},
  *     @OA\RequestBody(
  *         @OA\MediaType(
  *             mediaType="application/json",

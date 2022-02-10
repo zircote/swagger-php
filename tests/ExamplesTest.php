@@ -148,7 +148,7 @@ class ExamplesTest extends OpenApiTestCase
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
-        //file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($path . '/' . $spec),

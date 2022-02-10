@@ -4,14 +4,18 @@ namespace OpenApi\Examples\Misc;
 
 /**
  * @OA\OpenApi(
- *     security={{"bearerAuth": {}}}
+ *     security={{"bearerAuth": {}}},
+ *     @OA\Tag(
+ *         name="endpoints"
+ *     )
  * )
  *
  * @OA\Info(
  *     title="Testing annotations from bugreports",
  *     version="1.0.0",
  *     description="NOTE:
-This sentence is on a new line"
+This sentence is on a new line",
+ *     @OA\Contact(name="Swagger API Team")
  * )
  *
  * @OA\Components(
@@ -42,6 +46,9 @@ class OpenApiSpec
  *
  * @OA\Get(
  *     path="/api/endpoint",
+ *     description="An endpoint",
+ *     operationId="endpoints",
+ *     tags={"endpoints"},
  *     @OA\Parameter(name="filter", in="query", @OA\JsonContent(
  *         @OA\Property(property="type", type="string"),
  *         @OA\Property(property="color", type="string"),
