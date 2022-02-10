@@ -47,7 +47,7 @@ class OpenApiSpec
  * @OA\Get(
  *     path="/api/endpoint",
  *     description="An endpoint",
- *     operationId="endpoints",
+ *     operationId="endpoint",
  *     tags={"endpoints"},
  *     @OA\Parameter(name="filter", in="query", @OA\JsonContent(
  *         @OA\Property(property="type", type="string"),
@@ -77,5 +77,31 @@ class Endpoint
  * )
  */
 class Response
+{
+}
+
+/**
+ * Another API endpoint.
+ *
+ * @OA\Get(
+ *     path="/api/anotherendpoint",
+ *     description="Another endpoint",
+ *     operationId="anotherendpoints",
+ *     tags={"endpoints"},
+ *     @OA\Parameter(
+ *         name="things[]",
+ *         in="query",
+ *         description="A list of things.",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="array",
+ *             @OA\Items(type="integer")
+ *         )
+ *     ),
+ *     security={{ "bearerAuth": {} }},
+ *     @OA\Response(response="200", ref="#/components/responses/200")
+ * )
+ */
+class MultiValueQueryParam
 {
 }

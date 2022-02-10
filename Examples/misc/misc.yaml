@@ -22,7 +22,7 @@ paths:
         - endpoints
       summary: 'An API endpoint.'
       description: 'An endpoint'
-      operationId: endpoints
+      operationId: endpoint
       parameters:
         -
           name: filter
@@ -34,6 +34,29 @@ paths:
                   type: { type: string }
                   color: { type: string }
                 type: object
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+      security:
+        -
+          bearerAuth: []
+  /api/anotherendpoint:
+    get:
+      tags:
+        - endpoints
+      summary: 'Another API endpoint.'
+      description: 'Another endpoint'
+      operationId: anotherendpoints
+      parameters:
+        -
+          name: 'things[]'
+          in: query
+          description: 'A list of things.'
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
       responses:
         '200':
           $ref: '#/components/responses/200'
