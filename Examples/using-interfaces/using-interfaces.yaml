@@ -1,12 +1,20 @@
 openapi: 3.0.0
 info:
   title: 'Example of using interfaces in swagger-php'
+  description: 'Using interfaces'
+  contact:
+    name: 'Swagger API Team'
   version: 1.0.0
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
 paths:
   '/products/{id}':
     get:
       tags:
-        - Products
+        - api
+      description: 'Get product in any colour for id'
       operationId: fef5577fd78858297fd2e4291598d8d0
       parameters:
         -
@@ -17,21 +25,46 @@ paths:
           schema:
             type: string
       responses:
-        default:
+        '200':
           description: 'successful operation'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+  '/products/green/{id}':
+    get:
+      tags:
+        - api
+      description: 'Get green products'
+      operationId: d6617b71407f39c923d01fe82bb4ed65
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GreenProduct'
 components:
   schemas:
-    Pet:
+    GreenProduct:
       title: Pet
-      properties:
-        color:
-          description: 'The product color.'
-          example: blue
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Product'
+        -
+          properties:
+            color:
+              description: 'The product color.'
+              example: blue
     Product:
       title: 'Product model'
       type: object
@@ -54,3 +87,7 @@ components:
           description: 'The product name.'
           example: toaster
       type: object
+tags:
+  -
+    name: api
+    description: 'API operations'

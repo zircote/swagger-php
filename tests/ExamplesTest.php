@@ -79,6 +79,12 @@ class ExamplesTest extends OpenApiTestCase
                 'petstore-with-external-docs.yaml',
                 [],
             ],
+            'polymorphism' => [
+                OpenApi::VERSION_3_0_0,
+                'polymorphism',
+                'polymorphism.yaml',
+                [],
+            ],
             'using-interfaces' => [
                 OpenApi::VERSION_3_0_0,
                 'using-interfaces',

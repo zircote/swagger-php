@@ -1,13 +1,20 @@
 openapi: 3.0.0
 info:
   title: 'Nested schemas'
-  description: 'An entity controller class.'
+  description: 'Example info'
+  contact:
+    name: 'Swagger API Team'
   version: 1.0.0
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
 paths:
   '/entity/{id}':
     get:
       tags:
         - api
+      description: 'Get the entity'
       operationId: dd148eadcee53770e24b2350f932e3bd
       parameters:
         -
@@ -18,7 +25,7 @@ paths:
             type: integer
             format: int64
       responses:
-        default:
+        '200':
           description: 'successful operation'
           content:
             application/json:
@@ -53,3 +60,7 @@ components:
         base:
           type: string
       type: object
+tags:
+  -
+    name: api
+    description: 'All API endpoints'

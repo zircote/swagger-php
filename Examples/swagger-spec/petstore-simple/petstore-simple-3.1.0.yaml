@@ -16,6 +16,8 @@ servers:
 paths:
   /pets:
     get:
+      tags:
+        - store
       description: 'Returns all pets from the system that the user has access to'
       operationId: findPets
       parameters:
@@ -77,6 +79,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorModel'
     post:
+      tags:
+        - store
       description: 'Creates a new pet in the store.  Duplicates are allowed'
       operationId: addPet
       requestBody:
@@ -101,6 +105,8 @@ paths:
                 $ref: '#/components/schemas/ErrorModel'
   '/pets/{id}':
     get:
+      tags:
+        - store
       description: 'Returns a user based on a single ID, if the user does not have access to the pet'
       operationId: findPetById
       parameters:
@@ -144,6 +150,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorModel'
     delete:
+      tags:
+        - store
       description: 'deletes a single pet based on the ID supplied'
       operationId: deletePet
       parameters:
@@ -195,3 +203,7 @@ components:
         message:
           type: string
       type: object
+tags:
+  -
+    name: store
+    description: 'The Pet Store'

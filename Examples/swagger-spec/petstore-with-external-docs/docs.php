@@ -26,6 +26,10 @@
  *         url="https://swagger.io/about"
  *     )
  * )
+ * @OA\Tag(
+ *     name="store",
+ *     description="The Pet Store"
+ * )
  */
 class OpenApiSpec
 {
