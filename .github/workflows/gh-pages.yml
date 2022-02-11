@@ -18,7 +18,7 @@ jobs:
         run: cd docs && npm install vitepress
 
       - name: Build site
-        run: cd docs && npm run build
+        run: cd docs && php refgen.php && npm run build
 
       - name: Deploy to GitHub Pages
         if: success()
