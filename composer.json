@@ -84,7 +84,7 @@
     ],
     "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
     "docs:dev": "cd docs && npm run dev",
-    "docs:build": "cd docs && npm run build",
+    "docs:build": "cd docs && php refgen.php && npm run build",
     "docs:deploy": "cd docs && npm run deploy"
   }
 }
