@@ -17,6 +17,10 @@ namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
  *         @OA\License(name="MIT", identifier="MIT")
  *     ),
  * )
+ * @OA\Tag(
+ *     name="store",
+ *     description="The Pet Store"
+ * )
  */
 class OpenApiSpec
 {

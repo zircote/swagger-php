@@ -12,7 +12,7 @@ namespace OpenApi\Examples\Nesting;
  *     @OA\Contact(name="Swagger API Team")
  * )
  * @OA\Server(
- *     url="example.localhost",
+ *     url="https://example.localhost",
  *     description="API server"
  * )
  * @OA\Tag(

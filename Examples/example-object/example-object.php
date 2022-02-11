@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
  *     @OA\Contact(name="Swagger API Team")
  * )
  * @OA\Server(
- *     url="example.localhost",
+ *     url="https://example.localhost",
  *     description="API server"
  * )
  */

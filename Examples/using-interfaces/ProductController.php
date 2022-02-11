@@ -8,6 +8,7 @@ class ProductController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/{id}",
+     *     tags={"api"},
      *     @OA\Parameter(
      *         description="ID of product to return",
      *         in="path",

@@ -1,12 +1,18 @@
 openapi: 3.0.0
 info:
   title: 'Example of using interfaces in swagger-php'
+  contact:
+    name: 'Swagger API Team'
   version: 1.0.0
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
 paths:
   '/products/{id}':
     get:
       tags:
-        - Products
+        - api
       operationId: fef5577fd78858297fd2e4291598d8d0
       parameters:
         -
@@ -54,3 +60,7 @@ components:
           description: 'The product name.'
           example: toaster
       type: object
+tags:
+  -
+    name: api
+    description: 'API operations'

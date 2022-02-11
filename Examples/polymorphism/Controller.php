@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
  *     description="API operations"
  * )
  * @OA\Server(
- *     url="example.localhost",
+ *     url="https://example.localhost",
  *     description="API server"
  * )
  */
