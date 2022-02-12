@@ -599,3 +599,59 @@ The corresponding bit of the spec will look like this:
 
 `swagger-ui` will show  a form that allows to add/remove items (`integer`  values in this case) to/from a list
 and post those values as something like ```?things[]=1&things[]=2&things[]=0``` 
+
+## Custom response classes
+
+Even with using refs there is a bit of overhead in sharing responses. One way around that is to write
+your own response classes.
+The beauty is that in your custom `__construct()` method you can prefill as much as you need.
+
+Best of all, this works for both annotations and attributes.
+
+Example:
+```php
+use OpenApi\Attributes as OA;
+
+/**
+ * @Annotation
+ */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+class BadRequest extends OA\Response
+{
+    public function __construct()
+    {
+        parent::__construct(response: 400, description: 'Bad request');
+    }
+}
+
+class Controller
+{
+
+    #[OA\Get(path: '/foo', responses: [new BadRequest()])]
+    public function get()
+    {
+    }
+
+    #[OA\Post(path: '/foo')]
+    #[BadRequest]
+    public function post()
+    {
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/foo",
+     *     @BadRequest()
+     * )
+     */
+    public function delete()
+    {
+    }
+}
+```
+
+::: tip Annotations only?
+If you are only interested in annotations you canleave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.   
+
+Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace. 
+:::
