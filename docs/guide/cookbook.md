@@ -36,7 +36,7 @@ support further grouping via the vendor extension `x-tagGroups`.
 ```
 
 ## External documentation
-OpenApi allows a single reference to external documentation. This isa part of the top level `@OA\OpenApi`.
+OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
 
 ```php
 /**
@@ -65,7 +65,7 @@ That means the above example would also work with just the `OA\ExternalDocumenta
 :::
 
 ## Properties with union types
-Sometimes properties or even lists (arrays) may data of different type. This can be expressed using `oneOf`.
+Sometimes properties or even lists (arrays) may contain data of different types. This can be expressed using `oneOf`.
 
 ```php
 /**
