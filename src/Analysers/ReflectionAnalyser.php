@@ -48,10 +48,10 @@ class ReflectionAnalyser implements AnalyserInterface
         $scanner = new TokenScanner();
         $fileDetails = $scanner->scanFile($filename);
 
-        require_once $filename;
-
         $analysis = new Analysis([], $context);
         foreach ($fileDetails as $fqdn => $details) {
+            require_once $filename;
+
             $this->analyzeFqdn($fqdn, $analysis, $details);
         }
 
