@@ -23,11 +23,11 @@ paths:
     parameters:
       -
         $ref: '#/components/parameters/product_id_in_path_required'
-  '/products/{product_id}/do-stuff':
+  '/products/{product_id}/do-other-stuff':
     get:
       tags:
         - Products
-      operationId: 9aed2c6f96bff805003c993b97822c06
+      operationId: d358e9376f913a26873e8579fc33a043
       parameters:
         -
           $ref: '#/components/schemas/Product/allOf/1/properties/id'
@@ -38,6 +38,13 @@ components:
   schemas:
     Model:
       description: 'A model'
+    product_status:
+      description: 'The status of a product'
+      type: string
+      default: available
+      enum:
+        - available
+        - discontinued
     Product:
       title: 'Product model'
       description: 'Product model'
@@ -60,13 +67,6 @@ components:
         - AVAILABLE
         - SOLD_OUT
         - BACK_ORDER
-    product_status:
-      description: 'The status of a product'
-      type: string
-      default: available
-      enum:
-        - available
-        - discontinued
   responses:
     product:
       description: 'All information about a product'
