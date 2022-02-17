@@ -12,7 +12,7 @@ final class Fl extends AbstractResponsible
     public const TYPE = 'fl';
 
     /**
-     * @OA\Property(nullable=false)
+     * @OA\Property(nullable=true)
      *
      * @var string
      */

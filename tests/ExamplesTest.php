@@ -85,6 +85,12 @@ class ExamplesTest extends OpenApiTestCase
                 'polymorphism.yaml',
                 [],
             ],
+            'polymorphism-3.1.0' => [
+                OpenApi::VERSION_3_1_0,
+                'polymorphism',
+                'polymorphism-3.1.0.yaml',
+                [],
+            ],
             'using-interfaces' => [
                 OpenApi::VERSION_3_0_0,
                 'using-interfaces',
