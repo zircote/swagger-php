@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Examples\OpenapiSpec;
+namespace OpenApi\Examples\UsingLinks;
 
 use OpenApi\Annotations as OA;
 

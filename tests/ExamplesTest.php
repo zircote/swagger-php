@@ -141,6 +141,7 @@ class ExamplesTest extends OpenApiTestCase
         // register autoloader for examples that require autoloading due to inheritance, etc.
         $path = $this->example($example);
         $exampleNS = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $example)));
+        $exampleNS = str_replace(' ', '\\', ucwords(str_replace('/', ' ', $exampleNS)));
         $classloader = new ClassLoader();
         $classloader->addPsr4('OpenApi\\Examples\\' . $exampleNS . '\\', $path);
         $classloader->register();

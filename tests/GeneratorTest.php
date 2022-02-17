@@ -19,7 +19,7 @@ class GeneratorTest extends OpenApiTestCase
         $sourceDir = $this->example('swagger-spec/petstore-simple');
 
         yield 'dir-list' => [$sourceDir, [$sourceDir]];
-        yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/api.php"]];
+        yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/OpenApiSpec.php"]];
         yield 'finder' => [$sourceDir, Util::finder($sourceDir)];
         yield 'finder-list' => [$sourceDir, [Util::finder($sourceDir)]];
     }

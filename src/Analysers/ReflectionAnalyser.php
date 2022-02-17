@@ -50,8 +50,6 @@ class ReflectionAnalyser implements AnalyserInterface
 
         $analysis = new Analysis([], $context);
         foreach ($fileDetails as $fqdn => $details) {
-            require_once $filename;
-
             $this->analyzeFqdn($fqdn, $analysis, $details);
         }
 
@@ -77,7 +75,9 @@ class ReflectionAnalyser implements AnalyserInterface
 
     protected function analyzeFqdn(string $fqdn, Analysis $analysis, array $details): Analysis
     {
-        if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn)) {
+        if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn) && (!function_exists('enum_exists') || !enum_exists($fqdn))) {
+            $analysis->context->logger->warning('Skipping unknown ' . $fqdn);
+
             return $analysis;
         }
 
