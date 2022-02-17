@@ -1,13 +1,13 @@
 <?php
 
-namespace UsingRefs;
+namespace OpenApi\Examples\UsingRefs;
 
-class ProductController
+class PropertyRefController
 {
     /**
      * @OA\Get(
      *     tags={"Products"},
-     *     path="/products/{product_id}/do-stuff",
+     *     path="/products/{product_id}/do-other-stuff",
      *     @OA\Parameter(ref="#/components/schemas/Product/properties/id"),
      *     @OA\Response(
      *         response="default",

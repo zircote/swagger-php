@@ -86,6 +86,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testApiDocBlockBasic(AnalyserInterface $analyser): void
     {
+        require_once $this->fixture('Apis/DocBlocks/basic.php');
+
         $analysis = (new Generator())
             ->setVersion(OpenApi::VERSION_3_1_0)
             ->withContext(function (Generator $generator) use ($analyser) {
@@ -112,6 +114,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testApiAttributesBasic(AnalyserInterface $analyser): void
     {
+        require_once $this->fixture('Apis/Attributes/basic.php');
+
         /** @var Analysis $analysis */
         $analysis = (new Generator())
             ->setVersion(OpenApi::VERSION_3_1_0)
@@ -154,6 +158,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testApiMixedBasic(AnalyserInterface $analyser): void
     {
+        require_once $this->fixture('Apis/Mixed/basic.php');
+
         $analysis = (new Generator())
             ->setVersion(OpenApi::VERSION_3_1_0)
             ->withContext(function (Generator $generator) use ($analyser) {

@@ -65,19 +65,6 @@ paths:
           description: 'unexpected error'
 components:
   schemas:
-    Pet:
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
-      type: object
     Error:
       required:
         - code
@@ -93,3 +80,16 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Pet'
+    Pet:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+      type: object

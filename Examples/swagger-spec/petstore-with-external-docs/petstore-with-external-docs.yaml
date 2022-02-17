@@ -186,15 +186,6 @@ components:
         message:
           type: string
       type: object
-    NewPet:
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        tag:
-          type: string
-      type: object
     Pet:
       type: object
       allOf:
@@ -208,6 +199,15 @@ components:
               type: integer
               format: int64
           type: object
+    NewPet:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        tag:
+          type: string
+      type: object
 tags:
   -
     name: store

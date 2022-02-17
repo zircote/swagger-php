@@ -170,6 +170,17 @@ paths:
           description: 'unexpected error'
 components:
   schemas:
+    ErrorModel:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      type: object
     NewPet:
       required:
         - name
@@ -192,17 +203,6 @@ components:
               type: integer
               format: int64
           type: object
-    ErrorModel:
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-      type: object
 tags:
   -
     name: store
