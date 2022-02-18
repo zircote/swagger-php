@@ -16,8 +16,17 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     public const COLOR_WARNING = "\033[33m";
     public const COLOR_STOP = "\033[0m";
 
+    private const LOG_LEVELS_UP_TO_NOTICE = [
+        LogLevel::DEBUG,
+        LogLevel::INFO,
+        LogLevel::NOTICE,
+    ];
+
     /** @var bool */
     protected $called = false;
+
+    /** @var bool */
+    protected $loggedMessageAboveNotice = false;
 
     /** @var bool */
     protected $debug;
@@ -30,6 +39,11 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     public function called()
     {
         return $this->called;
+    }
+
+    public function loggedMessageAboveNotice()
+    {
+        return $this->loggedMessageAboveNotice;
     }
 
     /**
@@ -56,6 +70,10 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
                 break;
         }
         $stop = !empty($color) ? static::COLOR_STOP : '';
+
+        if (!in_array($level, self::LOG_LEVELS_UP_TO_NOTICE, true)) {
+            $this->loggedMessageAboveNotice = true;
+        }
 
         $this->called = true;
 
