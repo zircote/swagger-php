@@ -9,6 +9,12 @@ servers:
   -
     url: 'https://localhost/api'
     description: 'API server'
+  -
+    url: 'https://example.localhost'
+    description: 'The local environment.'
+  -
+    url: 'https://example.com'
+    description: 'The production server.'
 paths:
   '/products/{product_id}':
     get:

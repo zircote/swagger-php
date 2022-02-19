@@ -33,6 +33,20 @@ class OpenApiSpec
 }
 
 /**
+ * @OA\Server(
+ *     url="https://example.localhost",
+ *     description="The local environment."
+ * )
+ * @OA\Server(
+ *     url="https://example.com",
+ *     description="The production server."
+ * )
+ */
+class Server
+{
+}
+
+/**
  * @OA\Schema()
  */
 enum Colour

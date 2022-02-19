@@ -65,6 +65,14 @@ class TokenScannerTest extends OpenApiTestCase
                         'methods' => [],
                         'properties' => [],
                     ],
+                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Server' => [
+                        'uses' => ['OA' => 'OpenApi\\Annotations'],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'enums' => [],
+                        'methods' => [],
+                        'properties' => [],
+                    ],
                 ],
             ];
         }

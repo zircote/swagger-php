@@ -23,6 +23,18 @@ class OpenApiSpec
 
 }
 
+#[OAT\Server(
+    url: 'https://example.localhost',
+    description: 'The local environment.'
+)]
+#[OAT\Server(
+    url: 'https://example.com',
+    description: 'The production server.'
+)]
+class Server
+{
+}
+
 #[OAT\Schema()]
 enum Colour
 {
