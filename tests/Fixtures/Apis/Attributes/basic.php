@@ -81,7 +81,7 @@ class ProductController
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
-        content: new OAT\JsonContent(ref: '#/components/schemas/Product'),
+        content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: '#/components/schemas/Product'))],
         headers: [
             new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
         ]
@@ -102,9 +102,13 @@ class ProductController
     #[OAT\RequestBody(
         required: true,
         description: 'New product',
-        content: new OAT\JsonContent(
-            type: 'array',
-            items: new OAT\Items(type: Product::class))
+        content: [new OAT\MediaType(
+            mediaType: 'application/json',
+            schema: new OAT\Schema(
+                type: 'array',
+                items: new OAT\Items(type: Product::class)
+            )
+        )]
     )]
     public function addProduct()
     {
