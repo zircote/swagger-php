@@ -163,7 +163,12 @@ set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $op
         return;
     }
     $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
-    $logger->error($errstr, ['prefix' => $type]);
+    if ($type === 'Deprecated') {
+        $logger->info($errstr, ['prefix' => $type]);
+    } else {
+        $logger->error($errstr, ['prefix' => $type]);
+    }
+
     if ($options['debug']) {
         $logger->info(' in '.$file.' on line '.$line);
     }
@@ -213,9 +218,6 @@ $openapi = $generator
     ->setAnalyser($analyser)
     ->generate(Util::finder($paths, $exclude, $pattern));
 
-if ($logger->called()) {
-    $logger->notice('', ['prefix' => '']);
-}
 if ($options['output'] === false) {
     if (strtolower($options['format']) === 'json') {
         echo $openapi->toJson();
@@ -229,4 +231,4 @@ if ($options['output'] === false) {
     }
     $openapi->saveAs($options['output'], $options['format']);
 }
-exit($logger->called() ? 1 : 0);
+exit($logger->loggedMessageAboveNotice() ? 1 : 0);
