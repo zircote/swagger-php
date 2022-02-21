@@ -23,9 +23,6 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     ];
 
     /** @var bool */
-    protected $called = false;
-
-    /** @var bool */
     protected $loggedMessageAboveNotice = false;
 
     /** @var bool */
@@ -34,11 +31,6 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     public function __construct(bool $debug = false)
     {
         $this->debug = $debug;
-    }
-
-    public function called()
-    {
-        return $this->called;
     }
 
     public function loggedMessageAboveNotice()
@@ -74,8 +66,6 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         if (!in_array($level, self::LOG_LEVELS_UP_TO_NOTICE, true)) {
             $this->loggedMessageAboveNotice = true;
         }
-
-        $this->called = true;
 
         /** @var ?\Exception $exception */
         $exception = $context['exception'] ?? null;

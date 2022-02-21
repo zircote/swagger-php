@@ -218,9 +218,6 @@ $openapi = $generator
     ->setAnalyser($analyser)
     ->generate(Util::finder($paths, $exclude, $pattern));
 
-if ($logger->called()) {
-    $logger->notice('', ['prefix' => '']);
-}
 if ($options['output'] === false) {
     if (strtolower($options['format']) === 'json') {
         echo $openapi->toJson();
