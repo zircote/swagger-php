@@ -47,14 +47,14 @@ class Analyser
      *
      * @var array|false
      *
-     * @deprecated use \OpenApi\Generator::setAliases() instead
+     * @deprecated use \OpenApi\Generator::setNamespaces() instead
      */
     public static $whitelist = ['OpenApi\\Annotations\\'];
 
     /**
      * Use @OA\* for OpenAPI annotations (unless overwritten by a use statement).
      *
-     * @deprecated use \OpenApi\Generator::setNamespaces() instead
+     * @deprecated use \OpenApi\Generator::setAliases() instead
      */
     public static $defaultImports = ['oa' => 'OpenApi\\Annotations'];
 
