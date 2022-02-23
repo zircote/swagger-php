@@ -164,9 +164,9 @@ set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $op
     }
     $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
     if ($type === 'Deprecated') {
-        $logger->info($errstr, ['prefix' => $type]);
+        $logger->info($errstr, ['prefix' => $type . ': ']);
     } else {
-        $logger->error($errstr, ['prefix' => $type]);
+        $logger->error($errstr, ['prefix' => $type . ': ']);
     }
 
     if ($options['debug']) {
