@@ -81,7 +81,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $expectedValues = [
             'property' => 'secondname',
             'example' => 'Allan',
-            'description' => 'The second name of the customer.',
+            'description' => 'the second name of the customer',
             'type' => 'string',
             'nullable' => true,
         ];
@@ -108,7 +108,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $expectedValues = [
             'property' => 'lastname',
             'example' => Generator::UNDEFINED,
-            'description' => 'The lastname of the customer.',
+            'description' => 'the lastname of the customer',
             'type' => 'string',
         ];
         $this->assertName($lastName, $expectedValues);

@@ -21,7 +21,7 @@ class User extends ParentClass implements \OpenApi\Tests\Fixtures\Parser\UserInt
     const CONSTANT = 'value';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFirstName()
     {

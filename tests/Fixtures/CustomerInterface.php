@@ -17,15 +17,17 @@ interface CustomerInterface
      * The first name of the customer.
      *
      * @var string
+     *
      * @example John
-     * @OA\Property()
+     * @OA\Property
      */
     public function firstname();
 
     /**
-     * @var null|string The second name of the customer.
+     * @var null|string the second name of the customer
+     *
      * @example Allan
-     * @OA\Property()
+     * @OA\Property
      */
     public function secondname();
 
@@ -33,8 +35,9 @@ interface CustomerInterface
      * The third name of the customer.
      *
      * @var string|null
+     *
      * @example Peter
-     * @OA\Property()
+     * @OA\Property
      */
     public function thirdname();
 
@@ -42,37 +45,42 @@ interface CustomerInterface
      * The unknown name of the customer.
      *
      * @var unknown|null
+     *
      * @example Unknown
-     * @OA\Property()
+     * @OA\Property
      */
     public function fourthname();
 
     /**
-     * @var string The lastname of the customer.
-     * @OA\Property()
+     * @var string the lastname of the customer
+     * @OA\Property
      */
     public function lastname();
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string[]
      */
     public function tags();
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer
      */
     public function submittedBy();
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer[]
      */
     public function friends();
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer|null
      */
     public function bestFriend();

@@ -10,13 +10,13 @@ use OpenApi\Annotations as OA;
 
 interface UserInterface extends OtherInterface
 {
-
     /**
      * The first name of the user.
      *
      * @return string
+     *
      * @example John
-     * @OA\Property()
+     * @OA\Property
      */
     public function getFirstName();
 }

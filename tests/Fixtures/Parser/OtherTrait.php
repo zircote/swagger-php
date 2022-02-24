@@ -13,7 +13,7 @@ trait OtherTrait
 {
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public $so = 'what?';
 }

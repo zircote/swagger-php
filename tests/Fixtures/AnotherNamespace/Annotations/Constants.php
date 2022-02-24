@@ -11,5 +11,5 @@ namespace AnotherNamespace\Annotations;
  */
 class Constants
 {
-    const INVALID_TIMEZONE_LOCATION = "invalidTimezoneLocation";
+    const INVALID_TIMEZONE_LOCATION = 'invalidTimezoneLocation';
 }

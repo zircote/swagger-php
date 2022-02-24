@@ -20,7 +20,6 @@ use OpenApi\Tests\Fixtures\Attributes as OAF;
 #[OAT\Tag(name: 'catalog', description: 'Catalog API')]
 class OpenApiSpec
 {
-
 }
 
 #[OAT\Server(
@@ -45,7 +44,6 @@ enum Colour
 
 interface ProductInterface
 {
-
 }
 
 #[OAT\Schema()]
@@ -53,7 +51,6 @@ trait NameTrait
 {
     #[OAT\Property(description: 'The name.')]
     public $name;
-
 }
 
 #[OAT\Schema(title: 'Product', description: 'Product')]
@@ -69,14 +66,12 @@ class Product implements ProductInterface
         #[OAT\Property()] public string $brand,
         #[OAT\Property()] public Colour $colour,
         #[OAT\Property(type: 'string')] public \DateTimeInterface $releasedAt,
-    )
-    {
+    ) {
     }
 }
 
 class ProductController
 {
-
     #[OAT\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
     #[OAT\Response(
         response: 200,
@@ -89,7 +84,8 @@ class ProductController
     #[OAT\Response(response: 401, description: 'oops')]
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
-        #[OAT\PathParameter(description: 'The product id.')] int $product_id)
+        #[OAT\PathParameter(description: 'The product id.')] int $product_id
+    )
     {
     }
 
@@ -125,8 +121,10 @@ class ProductController
                 new OAT\Property(
                     property: 'data',
                     type: 'array',
-                    items: new OAT\Items(ref: '#/components/schemas/Product'))
-            ])
+                    items: new OAT\Items(ref: '#/components/schemas/Product')
+                ),
+            ]
+        )
     )]
     #[OAT\Response(response: 401, description: 'oops')]
     public function getAll()

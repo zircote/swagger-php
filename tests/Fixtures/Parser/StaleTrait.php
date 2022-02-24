@@ -13,7 +13,7 @@ trait StaleTrait
 {
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public $expired = true;
 }

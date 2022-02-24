@@ -9,22 +9,22 @@ namespace OpenApi\Tests\Fixtures;
 use DateTime;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class TypedProperties
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public string $stringType;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public int $intType;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public ?string $nullableString;
 
@@ -35,28 +35,28 @@ class TypedProperties
     public array $arrayType;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public DateTime $dateTime;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public \DateTimeInterface $qualified;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public \OpenApi\Tests\Fixtures\TypedProperties $namespaced;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public TypedProperties $importedNamespace;
 
     /**
      * @var int
-     * @OA\Property()
+     * @OA\Property
      */
     public string $nativeTrumpsVar;
 
@@ -77,7 +77,7 @@ class TypedProperties
     public string $annotationTrumpsAll;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public $undefined;
 
@@ -90,7 +90,7 @@ class TypedProperties
 
     /**
      * @var int
-     * @OA\Property()
+     * @OA\Property
      */
     public $onlyVar;
 

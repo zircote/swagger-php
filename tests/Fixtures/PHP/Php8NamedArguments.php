@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Fixtures\PHP;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Php8NamedArguments
 {
@@ -18,6 +18,5 @@ class Php8NamedArguments
 
     public function foo(string $class, string $interface, string $trait): void
     {
-
     }
 }

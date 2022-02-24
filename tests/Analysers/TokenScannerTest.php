@@ -219,7 +219,7 @@ class TokenScannerTest extends OpenApiTestCase
             'PHP/AnonymousFunctions.php',
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
-                    'uses' => ['Info' => 'OpenApi\\Annotations\\Info'],
+                    'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
                     'enums' => [],

@@ -6,12 +6,16 @@
 
 namespace OpenApi\Tests\Fixtures;
 
+use AnotherNamespace\Annotations as Annotation;
+
 /**
  * @OA\Info(title="Fixture for ParserTest", version="test")
  *
  * Based on the example http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
-use AnotherNamespace\Annotations as Annotation;
+class Fixture
+{
+}
 
 /**
  * @Annotation\Unrelated("user")
@@ -19,7 +23,7 @@ use AnotherNamespace\Annotations as Annotation;
 class ThirdPartyAnnotations
 {
     /**
-     * @Annotation\Unrelated()
+     * @Annotation\Unrelated
      */
     public $id;
 

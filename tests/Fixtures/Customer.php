@@ -4,7 +4,6 @@
  * @license Apache 2.0
  */
 
-
 // NOTE: this file uses "\r\n" linebreaks on purpose
 
 namespace OpenApi\Tests\Fixtures;
@@ -18,7 +17,7 @@ use OpenApi\Generator as OpenApiGenerator;
  * A customer.
  *
  * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @OA\Schema()
+ * @OA\Schema
  */
 class Customer
 {
@@ -27,15 +26,17 @@ class Customer
      * The first name of the customer.
      *
      * @var string
+     *
      * @example John
-     * @OA\Property()
+     * @OA\Property
      */
     public $firstname;
 
     /**
-     * @var null|string The second name of the customer.
+     * @var null|string the second name of the customer
+     *
      * @example Allan
-     * @OA\Property()
+     * @OA\Property
      */
     public $secondname;
 
@@ -43,8 +44,9 @@ class Customer
      * The third name of the customer.
      *
      * @var string|null
+     *
      * @example Peter
-     * @OA\Property()
+     * @OA\Property
      */
     public $thirdname;
 
@@ -52,49 +54,55 @@ class Customer
      * The unknown name of the customer.
      *
      * @var unknown|null
+     *
      * @example Unknown
-     * @OA\Property()
+     * @OA\Property
      */
     public $fourthname;
 
     /**
-     * @var string The lastname of the customer.
-     * @OA\Property()
+     * @var string the lastname of the customer
+     * @OA\Property
      */
     public $lastname;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var string[]
      */
     public $tags;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer
      */
     public $submittedBy;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer[]
      */
     public $friends;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer|null
      */
     public $bestFriend;
 
     /**
-     * @OA\Property()
+     * @OA\Property
+     *
      * @var Customer[]|null
      */
     public $endorsedFriends;
 
     /**
-     * for ContextTest
+     * for ContextTest.
      */
     public function testResolvingFullyQualifiedNames(): void
     {

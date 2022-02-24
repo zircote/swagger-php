@@ -8,10 +8,10 @@ namespace OpenApi\Tests\Fixtures;
 
 /**
  * @OA\Schema(
- *   schema="UsingVar",
- *   required={"name"},
- *   @OA\Attachable(),
- *   @OA\Attachable()
+ *     schema="UsingVar",
+ *     required={"name"},
+ *     @OA\Attachable,
+ *     @OA\Attachable
  * )
  */
 class UsingVar
@@ -31,8 +31,10 @@ class UsingVar
 
 /**
  * @OA\Schema(
- *   schema="date",
- *   type="datetime"
+ *     schema="date",
+ *     type="datetime"
  * )
  */
-class UsingVarSchema {}
+class UsingVarSchema
+{
+}

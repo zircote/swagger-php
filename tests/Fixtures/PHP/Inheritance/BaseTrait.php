@@ -12,6 +12,5 @@ trait BaseTrait
 
     public function baseTraitFunc()
     {
-
     }
 }

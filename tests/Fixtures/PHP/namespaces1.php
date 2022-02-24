@@ -6,7 +6,6 @@ class FooClass
 {
 }
 
-
 namespace Bar;
 
 class BarClass

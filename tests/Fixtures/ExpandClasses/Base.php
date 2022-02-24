@@ -7,13 +7,14 @@
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Base
 {
 
     /**
-     * @OA\Property();
+     * @OA\Property;
+     *
      * @var string
      */
     public $baseProperty;

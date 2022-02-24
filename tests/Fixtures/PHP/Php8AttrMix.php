@@ -7,12 +7,12 @@
 namespace OpenApi\Tests\Fixtures\PHP;
 
 /**
- * @OA\Schema()
-*/
+ * @OA\Schema
+ */
 class Php8AttrMix
 {
     #[Label('Id', [1])]
-    /** @OA\Property() */
+    /** @OA\Property */
     public string $id = '';
 
     /** @OA\Property() */
@@ -21,5 +21,4 @@ class Php8AttrMix
         Label('OtherId', [2, 3]),
     ]
     public string $otherId = '';
-
 }
