@@ -10,26 +10,25 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
- *   version="1.0.0",
- *   title="Basic single file API",
- *   @OA\License(name="MIT", identifier="MIT", @OA\Attachable())
+ *     version="1.0.0",
+ *     title="Basic single file API",
+ *     @OA\License(name="MIT", identifier="MIT", @OA\Attachable)
  * )
  * @OA\Server(
- *   url="https://localhost/api",
- *   description="API server"
+ *     url="https://localhost/api",
+ *     description="API server"
  * )
  * @OA\Tag(
- *   name="products",
- *   description="All about products"
+ *     name="products",
+ *     description="All about products"
  * )
  * @OA\Tag(
- *   name="catalog",
- *   description="Catalog API"
+ *     name="catalog",
+ *     description="Catalog API"
  * )
  */
 class OpenApiSpec
 {
-
 }
 
 /**
@@ -58,21 +57,19 @@ enum Colour
 
 interface ProductInterface
 {
-
 }
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 trait NameTrait
 {
     /**
      * The name.
      *
-     * @OA\Property()
+     * @OA\Property
      */
     public $name;
-
 }
 
 /**
@@ -85,13 +82,13 @@ class Product implements ProductInterface
 {
     use NameTrait;
 
-    /** @OA\Property() */
+    /** @OA\Property */
     public int $quantity;
 
-    /** @OA\Property() */
+    /** @OA\Property */
     public string $brand;
 
-    /** @OA\Property() */
+    /** @OA\Property */
     public Colour $colour;
 
     /**
@@ -106,41 +103,39 @@ class Product implements ProductInterface
          * @OA\Property(type="string")
          */
         public \DateTimeInterface $releasedAt,
-    )
-    {
+    ) {
     }
 }
 
 class ProductController
 {
-
     /**
      * @OA\Get(
-     *   tags={"products"},
-     *   path="/products/{product_id}",
-     *   operationId="getProducts",
-     *   @OA\PathParameter(
-     *     name="product_id",
-     *     description="The product id.",
-     *     @OA\Schema(type="int")
-     *   ),
-     *   @OA\Response(
-     *       response=200,
-     *       description="successful operation",
-     *       @OA\Header(
-     *           header="X-Rate-Limit",
-     *           description="calls per hour allowed by the user",
-     *           @OA\Schema(
-     *               type="integer",
-     *               format="int32"
-     *           )
-     *       ),
-     *       @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/Product"))
-     *   ),
-     *   @OA\Response(
-     *       response=401,
-     *       description="oops"
-     *   )
+     *     tags={"products"},
+     *     path="/products/{product_id}",
+     *     operationId="getProducts",
+     *     @OA\PathParameter(
+     *         name="product_id",
+     *         description="The product id.",
+     *         @OA\Schema(type="int")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\Header(
+     *             header="X-Rate-Limit",
+     *             description="calls per hour allowed by the user",
+     *             @OA\Schema(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
+     *         ),
+     *         @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/Product"))
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="oops"
+     *     )
      * )
      */
     public function getProduct(int $product_id)
@@ -177,26 +172,26 @@ class ProductController
 
     /**
      * @OA\Get(
-     *   tags={"products", "catalog"},
-     *   path="/products",
-     *   operationId="getAll",
-     *   @OA\Response(
-     *       response=200,
-     *       description="successful operation",
-     *       @OA\JsonContent(
-     *           type="object",
-     *           required={"data"},
-     *           @OA\Property(
-     *               property="data",
-     *               type="array",
-     *               @OA\Items(ref="#/components/schemas/Product")
-     *           )
-     *       )
-     *   ),
-     *   @OA\Response(
-     *       response=401,
-     *       description="oops"
-     *   )
+     *     tags={"products", "catalog"},
+     *     path="/products",
+     *     operationId="getAll",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"data"},
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Product")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="oops"
+     *     )
      * )
      */
     public function getAll()

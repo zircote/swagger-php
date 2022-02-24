@@ -6,8 +6,6 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Annotations\Info;
-
 /**
  * @OA\Info(title="Foobar", version="1.0")
  */
@@ -23,7 +21,8 @@ class AnonymousFunctions
     protected function query()
     {
         return new class() {
-            public function leftJoin(string $foo, callable $callback) {
+            public function leftJoin(string $foo, callable $callback)
+            {
                 return $this;
             }
         };
@@ -43,12 +42,12 @@ class AnonymousFunctions
 
     public function shortFn(): callable
     {
-        return fn() => strlen("3");
+        return fn () => strlen('3');
     }
 
     public function staticShortFn(): callable
     {
-        return static fn() => strlen("3");
+        return static fn () => strlen('3');
     }
 
     public function withUse($foo): callable

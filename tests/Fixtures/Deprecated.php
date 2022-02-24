@@ -6,10 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
-
 /**
- * @SWG\Definition()
+ * @SWG\Definition
  */
 class Deprecated
 {

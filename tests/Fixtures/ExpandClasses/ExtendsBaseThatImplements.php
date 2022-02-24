@@ -7,14 +7,15 @@
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class ExtendsBaseThatImplements extends BaseThatImplements
 {
     use TraitUsedByExtendsBaseThatImplements;
 
     /**
-     * @OA\Property();
+     * @OA\Property;
+     *
      * @var string
      */
     public $extendsProperty;

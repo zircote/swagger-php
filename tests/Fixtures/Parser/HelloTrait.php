@@ -16,7 +16,7 @@ trait HelloTrait
     use OtherTrait, Aliased;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public $greet = 'Hello!';
 }

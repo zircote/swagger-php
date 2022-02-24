@@ -9,14 +9,14 @@ namespace AnotherNamespace;
 use OpenApi\Tests\Fixtures\ExpandClasses\Ancestor;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Child extends Ancestor
 {
 
     /**
      * @var bool
-     * @OA\Property()
+     * @OA\Property
      */
     public $isBaby;
 }

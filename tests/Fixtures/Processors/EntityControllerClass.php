@@ -17,12 +17,12 @@ class EntityControllerClass implements EntityControllerInterface
 
     /**
      * @OA\Get(
-     *   tags={"EntityController"},
-     *   path="entity/{id}",
-     *   @OA\Response(
-     *       response="default",
-     *       description="successful operation"
-     *   )
+     *     tags={"EntityController"},
+     *     path="entity/{id}",
+     *     @OA\Response(
+     *         response="default",
+     *         description="successful operation"
+     *     )
      * )
      */
     public function getEntry($id)
@@ -30,7 +30,7 @@ class EntityControllerClass implements EntityControllerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function updateEntity($id)
     {

@@ -14,6 +14,5 @@ trait ExtendsTrait
 
     public function extendsTraitFunc()
     {
-
     }
 }

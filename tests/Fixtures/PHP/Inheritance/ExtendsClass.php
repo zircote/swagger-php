@@ -14,4 +14,3 @@ class ExtendsClass extends BaseClass
     {
     }
 }
-

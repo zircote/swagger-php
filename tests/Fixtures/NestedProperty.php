@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Fixtures;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class NestedProperty
 {

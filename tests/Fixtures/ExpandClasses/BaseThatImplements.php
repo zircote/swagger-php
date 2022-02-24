@@ -7,22 +7,23 @@
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class BaseThatImplements implements BaseInterface
 {
 
     /**
-     * @OA\Property();
+     * @OA\Property;
+     *
      * @var string
      */
     public $baseProperty;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getInterfaceProperty()
     {
-        return "foo";
+        return 'foo';
     }
 }

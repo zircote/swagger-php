@@ -11,16 +11,15 @@ namespace OpenApi\Tests\Fixtures;
  */
 class UsingRefs
 {
-
     /**
      * @OA\Get(
-     *   path="/pi/{item_name}",
-     *   summary="Get protected item",
-     *   @OA\Parameter(ref="#/components/parameters/ItemName"),
-     *   @OA\Response(
-     *     response="default",
-     *     ref="#/components/responses/Item"
-     *   )
+     *     path="/pi/{item_name}",
+     *     summary="Get protected item",
+     *     @OA\Parameter(ref="#/components/parameters/ItemName"),
+     *     @OA\Response(
+     *         response="default",
+     *         ref="#/components/responses/Item"
+     *     )
      * )
      */
     public function getProtectedItem()
@@ -30,18 +29,22 @@ class UsingRefs
 
 /**
  * @OA\Parameter(
- *   name="ItemName",
- *   in="path",
- *   required=true,
- *   description="protected item name",
+ *     name="ItemName",
+ *     in="path",
+ *     required=true,
+ *     description="protected item name",
  * )
  */
-class UsingRefsParameter {}
+class UsingRefsParameter
+{
+}
 
 /**
- * @OA\Response (
- *   response="Item",
- *   description="A protected item"
+ * @OA\Response(
+ *     response="Item",
+ *     description="A protected item"
  * )
  */
-class UsingRefsResponse {}
+class UsingRefsResponse
+{
+}

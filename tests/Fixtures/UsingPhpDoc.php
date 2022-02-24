@@ -12,7 +12,7 @@ namespace OpenApi\Tests\Fixtures;
 class UsingPhpDoc
 {
     /**
-     * Example summary
+     * Example summary.
      *
      * Example description...
      * More description...
@@ -24,7 +24,7 @@ class UsingPhpDoc
     }
 
     /**
-     * Example summary
+     * Example summary.
      *
      * @OA\Get(path="api/test2", @OA\Response(response="200", description="a response"))
      */

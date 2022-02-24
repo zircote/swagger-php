@@ -11,15 +11,14 @@ namespace OpenApi\Tests\Fixtures\Processors;
  */
 interface EntityControllerInterface
 {
-
     /**
      * @OA\Post(
-     *   tags={"EntityController"},
-     *   path="entity/{id}",
-     *   @OA\Response(
-     *       response="default",
-     *       description="successful operation"
-     *   )
+     *     tags={"EntityController"},
+     *     path="entity/{id}",
+     *     @OA\Response(
+     *         response="default",
+     *         description="successful operation"
+     *     )
      * )
      */
     public function updateEntity($id);

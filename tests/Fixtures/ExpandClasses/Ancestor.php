@@ -7,13 +7,13 @@
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
 /**
- * An intermediate class
+ * An intermediate class.
  */
 class Ancestor extends GrandAncestor
 {
 
     /**
-     * With docblock
+     * With docblock.
      */
     public $firstname;
 }

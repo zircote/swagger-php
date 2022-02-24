@@ -11,15 +11,14 @@ namespace OpenApi\Tests\Fixtures\Processors;
  */
 trait EntityControllerTrait
 {
-
     /**
      * @OA\Delete(
-     *   tags={"EntityController"},
-     *   path="entities/{id}",
-     *   @OA\Response(
-     *       response="default",
-     *       description="successful operation"
-     *   )
+     *     tags={"EntityController"},
+     *     path="entities/{id}",
+     *     @OA\Response(
+     *         response="default",
+     *         description="successful operation"
+     *     )
      * )
      */
     public function deleteEntity($id)

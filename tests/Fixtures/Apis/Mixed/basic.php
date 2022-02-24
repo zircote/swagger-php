@@ -21,7 +21,6 @@ use OpenApi\Attributes as OAT;
 #[OAT\Server(url: 'https://localhost/api', description: 'API server')]
 class OpenApiSpec
 {
-
 }
 
 #[OAT\Server(
@@ -46,7 +45,6 @@ enum Colour
 
 interface ProductInterface
 {
-
 }
 
 #[OAT\Schema()]
@@ -57,7 +55,6 @@ trait NameTrait
      */
     #[OAT\Property()]
     public $name;
-
 }
 
 #[OAT\Schema(title: 'Product', description: 'Product', attachables: [new OAT\Attachable()])]
@@ -68,7 +65,7 @@ class Product implements ProductInterface
     /**
      * The id.
      *
-     * @OA\Property(format="int64", example=1, @OA\Attachable())
+     * @OA\Property(format="int64", example=1, @OA\Attachable)
      */
     public $id;
 
@@ -81,13 +78,12 @@ class Product implements ProductInterface
     #[OAT\Property()]
     public string $brand;
 
-    /** @OA\Property() */
+    /** @OA\Property */
     public Colour $colour;
 }
 
 class ProductController
 {
-
     #[OAT\Get(
         path: '/products/{product_id}',
         tags: ['products'],
@@ -145,8 +141,10 @@ class ProductController
                 new OAT\Property(
                     property: 'data',
                     type: 'array',
-                    items: new OAT\Items(ref: '#/components/schemas/Product'))
-            ])
+                    items: new OAT\Items(ref: '#/components/schemas/Product')
+                ),
+            ]
+        )
     )]
     #[OAT\Response(response: 401, description: 'oops')]
     public function getAll()

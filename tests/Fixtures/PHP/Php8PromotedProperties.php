@@ -9,13 +9,13 @@ namespace OpenApi\Tests\Fixtures\PHP;
 use OpenApi\Attributes\Property;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Php8PromotedProperties
 {
     public function __construct(
         /**
-         * Label List
+         * Label List.
          *
          * @var Label[]|null $labels
          * @OA\Property()
@@ -23,7 +23,6 @@ class Php8PromotedProperties
         public ?array $labels,
         #[Property()]
         public int $id,
-    )
-    {
+    ) {
     }
 }
