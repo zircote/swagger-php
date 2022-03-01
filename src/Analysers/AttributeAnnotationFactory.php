@@ -74,6 +74,22 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                     }
                 }
             }
+
+            if ($reflector instanceof \ReflectionClass) {
+                foreach ($reflector->getReflectionConstants() as $rc) {
+                    foreach ($rc->getAttributes(Property::class) as $attribute) {
+                        $instance = $attribute->newInstance();
+                        if (Generator::isDefault($instance->property)) {
+                            $instance->property = $rc->getName();
+                        }
+                        if (Generator::isDefault($instance->type)) {
+                            $instance->type = 'const';
+                            $instance->const = [$rc->getValue()];
+                        }
+                        $annotations[] = $instance;
+                    }
+                }
+            }
         } finally {
             Generator::$context = null;
         }
