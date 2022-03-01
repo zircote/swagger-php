@@ -28,6 +28,7 @@ function getGuideSidebar() {
       text: 'Other',
       children: [
         { text: 'Cookbook', link: '/guide/cookbook' },
+        { text: 'FAQ', link: '/guide/faq' },
         { text: 'Under the hood', link: '/guide/under-the-hood' },
         { text: 'Related Projects', link: '/related-projects' },
       ]
