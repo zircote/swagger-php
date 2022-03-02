@@ -336,6 +336,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24.
+     *
+     * @var string
      */
     public $const = Generator::UNDEFINED;
 
@@ -362,6 +364,7 @@ class Schema extends AbstractAnnotation
         'allOf' => '[' . Schema::class . ']',
         'oneOf' => '[' . Schema::class . ']',
         'anyOf' => '[' . Schema::class . ']',
+        'const' => 'string',
     ];
 
     /**

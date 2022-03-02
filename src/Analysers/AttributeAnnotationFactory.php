@@ -84,7 +84,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         }
                         if (Generator::isDefault($instance->type)) {
                             $instance->type = 'const';
-                            $instance->const = [$rc->getValue()];
+                            $instance->const = $rc->getValue();
                         }
                         $annotations[] = $instance;
                     }
