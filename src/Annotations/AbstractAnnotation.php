@@ -376,10 +376,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Validate annotation tree, and log notices & warnings.
      *
-     * @param array $parents the path of annotations above this annotation in the tree
-     * @param array $skip    (prevent stack overflow, when traversing an infinite dependency graph)
+     * @param array  $stack   the path of annotations above this annotation in the tree
+     * @param array  $skip    (prevent stack overflow, when traversing an infinite dependency graph)
+     * @param string $ref     Current ref path?
+     * @param object $context a free-form context contains
      */
-    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
     {
         if (in_array($this, $skip, true)) {
             return true;
@@ -436,10 +438,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
         if (property_exists($this, 'ref') && !Generator::isDefault($this->ref) && $this->ref !== null) {
-            if (substr($this->ref, 0, 2) === '#/' && count($parents) > 0 && $parents[0] instanceof OpenApi) {
+            if (substr($this->ref, 0, 2) === '#/' && count($stack) > 0 && $stack[0] instanceof OpenApi) {
                 // Internal reference
                 try {
-                    $parents[0]->ref($this->ref);
+                    $stack[0]->ref($this->ref);
                 } catch (\Exception $e) {
                     $this->_context->logger->warning($e->getMessage() . ' for ' . $this->identity() . ' in ' . $this->_context, ['exception' => $e]);
                 }
@@ -486,19 +488,17 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 throw new \Exception('Invalid ' . get_class($this) . '::$_types[' . $property . ']');
             }
         }
-        $parents[] = $this;
+        $stack[] = $this;
 
-        return self::_validate($this, $parents, $skip, $ref) ? $valid : false;
+        return self::_validate($this, $stack, $skip, $ref, $context) ? $valid : false;
     }
 
     /**
      * Recursively validate all annotation properties.
      *
      * @param array|object $fields
-     * @param array        $parents the path of annotations above this annotation in the tree
-     * @param array        $skip    List of objects already validated
      */
-    private static function _validate($fields, array $parents, array $skip, string $baseRef): bool
+    private static function _validate($fields, array $stack, array $skip, string $baseRef, $context): bool
     {
         $valid = true;
         $blacklist = [];
@@ -517,13 +517,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $ref = $baseRef !== '' ? $baseRef . '/' . urlencode((string) $field) : urlencode((string) $field);
             if (is_object($value)) {
                 if (method_exists($value, 'validate')) {
-                    if (!$value->validate($parents, $skip, $ref)) {
+                    if (!$value->validate($stack, $skip, $ref, $context)) {
                         $valid = false;
                     }
-                } elseif (!self::_validate($value, $parents, $skip, $ref)) {
+                } elseif (!self::_validate($value, $stack, $skip, $ref, $context)) {
                     $valid = false;
                 }
-            } elseif (is_array($value) && !self::_validate($value, $parents, $skip, $ref)) {
+            } elseif (is_array($value) && !self::_validate($value, $stack, $skip, $ref, $context)) {
                 $valid = false;
             }
         }

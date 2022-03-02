@@ -388,7 +388,10 @@ class Schema extends AbstractAnnotation
         Header::class,
     ];
 
-    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    /**
+     * @inheritdoc
+     */
+    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
     {
         if ($this->type === 'array' && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
@@ -396,6 +399,6 @@ class Schema extends AbstractAnnotation
             return false;
         }
 
-        return parent::validate($parents, $skip, $ref);
+        return parent::validate($stack, $skip, $ref, $context);
     }
 }

@@ -104,9 +104,9 @@ class Response extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
     {
-        $valid = parent::validate($parents, $skip);
+        $valid = parent::validate($stack, $skip, $ref, $context);
 
         if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
             $this->_context->logger->warning($this->identity() . ' One of description or ref is required');

@@ -86,9 +86,9 @@ class License extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $parents = [], array $skip = [], string $ref = ''): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
     {
-        $valid = parent::validate($parents, $skip);
+        $valid = parent::validate($stack, $skip, $ref, $context);
 
         if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
             if (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
