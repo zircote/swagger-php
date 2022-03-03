@@ -37,3 +37,27 @@ class OpenApiSpec
 {
 }
 ```
+
+## Skipping unknown `\SomeClass`
+
+This message means that `swagger-php` has tried to use reflection to inspect `\SomeClass` and that PHP could not find/load
+that class. Effectively, this means that `class_exists("\SomeClass")` returns `false`.
+
+### Using the `-b` `--bootstrap` option
+
+There are a number of reasons why this could happen. If you are using the `openapi` command line tool from a global
+installation typically the application classloader (composer) is not active.
+With you application root being `myapp` you could try:
+
+```shell
+openapi -b myapp/vendor/autoload.php myapp/src
+```
+
+The `-b` allows to execute some extra PHP code to load whatever is needed to register your apps classloader with PHP.
+
+### Namespace mismatch
+
+Another reason for this error could be that your class actually has the wrong namespace (or no namespace at all!).
+
+Depending on your framework this might still work in the context of your app, but the composer autoloader 
+alone might not be able to load your class (assuming you are using composer).

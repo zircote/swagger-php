@@ -288,7 +288,7 @@ This is done on the `@OA\OpenApi` annotations:
  * @OA\SecurityScheme(
  *   securityScheme="bearerAuth",
  *   type="http",
- *   scheme="bearer",
+ *   scheme="bearer"
  * )
  */
 ```
