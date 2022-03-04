@@ -30,7 +30,7 @@ class UtilTest extends OpenApiTestCase
             'UsingRefs.php',
             'UsingPhpDoc.php',
             'UsingCustomAttachables',
-
+            'DuplicateOperationId',
         ];
         $openapi = (new Generator())
             ->setAnalyser(new TokenAnalyser())

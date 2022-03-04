@@ -9,6 +9,7 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AbstractAnnotationTest extends OpenApiTestCase
@@ -126,6 +127,15 @@ END;
     public function testMatchNested($class, $expected): void
     {
         $this->assertEquals($expected, Get::matchNested($class));
+    }
+
+    public function testDuplicateOperationIdValidation()
+    {
+        $analysis = $this->analysisFromFixtures(['DuplicateOperationId.php']);
+        $analysis->process((new Generator())->getProcessors());
+
+        $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
+        $this->assertFalse($analysis->validate());
     }
 }
 
