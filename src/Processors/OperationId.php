@@ -43,9 +43,14 @@ class OperationId
 
         /** @var Operation $operation */
         foreach ($allOperations as $operation) {
+            if (null === $operation->operationId) {
+                $operation->operationId = Generator::UNDEFINED;
+            }
+
             if (!Generator::isDefault($operation->operationId)) {
                 continue;
             }
+
             $context = $operation->_context;
             if ($context && $context->method) {
                 $source = $context->class ?? $context->interface ?? $context->trait;
