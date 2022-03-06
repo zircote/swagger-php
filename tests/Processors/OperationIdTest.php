@@ -15,7 +15,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class OperationIdTest extends OpenApiTestCase
 {
-    public function testOperationId(): void
+    public function testGeneratedOperationId(): void
     {
         $analysis = $this->analysisFromFixtures([
             'Processors/EntityControllerClass.php',
