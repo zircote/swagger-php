@@ -36,6 +36,17 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
     }
 
+    public function testScanInvalidSource(): void
+    {
+        $this->assertOpenApiLogEntryContains('Skipping invalid source: /tmp/__swagger_php_does_not_exist__');
+        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+
+        (new Generator($this->getTrackingLogger()))
+            ->setAnalyser(new TokenAnalyser())
+            ->generate(['/tmp/__swagger_php_does_not_exist__']);
+    }
+
     public function processorCases(): iterable
     {
         return [
@@ -96,5 +107,13 @@ class GeneratorTest extends OpenApiTestCase
         $generator->removeProcessor($processor);
 
         $this->assertEquals($processors, $generator->getProcessors());
+    }
+
+    public function testRemoveProcessorNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        (new Generator())->removeProcessor(function () {
+        });
     }
 }
