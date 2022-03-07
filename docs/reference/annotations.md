@@ -104,7 +104,7 @@ Configuration details for a supported OAuth Flow.
 ## [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
 
 ### References
-- [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject)
+- [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
 ### Properties
 - ref
 - header
@@ -366,7 +366,7 @@ On top of this subset, there are extensions provided by this specification to al
 ## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
 ### References
-- [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject)
+- [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
 ### Properties
 - ref
 - securityScheme
@@ -403,7 +403,7 @@ An object representing a Server Variable for server URL template substitution.
 ## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
 ### References
-- [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject)
+- [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
 ### Properties
 - name
 - description
@@ -415,7 +415,7 @@ An object representing a Server Variable for server URL template substitution.
 ## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
 
 ### References
-- [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject)
+- [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
 ### Properties
 - name
 - namespace
