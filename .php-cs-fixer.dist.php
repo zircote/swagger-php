@@ -3,8 +3,8 @@
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tests')->name('*.php')
-    //->path('Examples')->name('*.php')
-    ->exclude('tests/Fixtures')
+    ->path('Examples')->name('*.php')
+    //->exclude('tests/Fixtures')
     ->in(__DIR__)
 ;
 

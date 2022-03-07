@@ -8,7 +8,8 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Header Object" https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject.
+ * ### References
+ * - [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
  *
  * @Annotation
  */

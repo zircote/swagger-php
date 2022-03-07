@@ -9,7 +9,8 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "XML Object": https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject.
+ * ### References
+ * - [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
  *
  * @Annotation
  */

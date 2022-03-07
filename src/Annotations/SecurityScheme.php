@@ -9,9 +9,8 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Security Scheme Object".
- *
- * https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject
+ * ### References
+ * - [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
  *
  * @Annotation
  */

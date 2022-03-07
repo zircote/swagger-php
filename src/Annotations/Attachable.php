@@ -7,10 +7,11 @@
 namespace OpenApi\Annotations;
 
 /**
- * @Annotation
- *
  * A container for custom data to be attached to an annotation.
- * These will be ignored by swagger-php but can be used for custom processing.
+ *
+ * These will be ignored by `swagger-php` but can be used for custom processing.
+ *
+ * @Annotation
  */
 class Attachable extends AbstractAnnotation
 {

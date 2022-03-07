@@ -11,8 +11,10 @@ use OpenApi\Generator;
 /**
  * Base class for `@OA\Get`,  `@OA\Post`,  `@OA\Put`,  etc.
  *
- * An "Operation Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object
  * Describes a single API operation on a path.
+ *
+ * ### References
+ * - [OAI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object)
  *
  * @Annotation
  */

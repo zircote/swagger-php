@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use OpenApi\Analysers\TokenScanner;
+use OpenApi\Generator;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -21,8 +22,6 @@ class RefGenerator
      */
     public function preamble(string $type): string
     {
-        $lctype = strtolower($type);
-
         return <<< EOT
 # $type
 
@@ -92,7 +91,12 @@ EOT;
 
         ob_start();
 
-        echo '#### Properties'.PHP_EOL;
+        $rc = new ReflectionClass($fqdn);
+        if ($description = $this->extractDescription($rc->getDocComment())) {
+            echo $description.PHP_EOL;
+        }
+
+        echo '### Properties'.PHP_EOL;
         foreach ($rctor->getParameters() as $rp) {
             echo '- ' . $rp->getName().PHP_EOL;
         }
@@ -109,7 +113,12 @@ EOT;
 
         ob_start();
 
-        echo '#### Properties'.PHP_EOL;
+        $rc = new ReflectionClass($fqdn);
+        if ($description = $this->extractDescription($rc->getDocComment())) {
+            echo $description.PHP_EOL;
+        }
+
+        echo '### Properties'.PHP_EOL;
         foreach ($details[$fqdn]['properties'] as $property) {
             if (in_array($property, $fqdn::$_blacklist) || $property[0] == '_') {
                 continue;
@@ -119,6 +128,41 @@ EOT;
 
         return ob_get_clean();
     }
+
+    // from Context....
+    protected function extractDescription($docblock) : ?string
+    {
+        if (!$docblock) {
+            return null;
+        }
+
+        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
+        $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
+        $i = count($comment) - 1;
+        $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
+        $lines = [];
+        $append = false;
+        foreach ($comment as $line) {
+            $line = ltrim($line, "\t *");
+            if (substr($line, 0, 1) === '@') {
+                break;
+            }
+            if ($append) {
+                $i = count($lines) - 1;
+                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+            } else {
+                $lines[] = $line;
+            }
+            $append = (substr($line, -1) === '\\');
+        }
+        $description = trim(implode("\n", $lines));
+        if ($description === '') {
+            return null;
+        }
+
+        return $description;
+    }
+
 }
 
 
@@ -127,7 +171,6 @@ $refgen = new RefGenerator();
 
 foreach ($refgen->types() as $type) {
     ob_start();
-    $lctype = strtolower($type);
 
     echo $refgen->preamble($type);
     foreach ($refgen->classesForType($type) as $name => $details) {
@@ -135,5 +178,6 @@ foreach ($refgen->types() as $type) {
         $method = "format{$type}Details";
         echo $refgen->$method($name, $details['fqdn'], $details['filename']);
     }
+
     file_put_contents(__DIR__ . '/reference/' . strtolower($type) . '.md', ob_get_clean());
 }
