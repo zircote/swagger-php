@@ -9,9 +9,10 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A Server Variable Object https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object.
- *
  * An object representing a Server Variable for server URL template substitution.
+ *
+ * ### References
+ * - [OAI Server Variable Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object)
  *
  * @Annotation
  */

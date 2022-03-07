@@ -2,7 +2,6 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreWithExternalDocs\Models;
 
-
 /**
  * @OA\Schema(
  *     schema="Pet",

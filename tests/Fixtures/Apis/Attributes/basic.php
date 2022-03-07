@@ -85,8 +85,7 @@ class ProductController
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
         #[OAT\PathParameter(description: 'The product id.')] int $product_id
-    )
-    {
+    ) {
     }
 
     #[OAT\Post(path: '/products', tags: ['products'], operationId: 'addProducts', summary: 'Add products')]

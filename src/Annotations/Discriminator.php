@@ -15,8 +15,10 @@ use OpenApi\Generator;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A "Discriminator Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject
- * JSON Schema: http://json-schema.org/
+ * ### References
+ * - [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
+ * - [JSON Schema](http://json-schema.org/)
+ *
  *
  * @Annotation
  */

@@ -9,9 +9,10 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * A "Contact Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object.
- *
  * Contact information for the exposed API.
+ *
+ * ### References
+ * - [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
  *
  * @Annotation
  */

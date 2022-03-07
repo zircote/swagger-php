@@ -10,12 +10,15 @@ use OpenApi\Generator;
 
 /**
  * The definition of input and output data types.
+ *
  * These types can be objects, but also primitives and arrays.
+ *
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * A "Schema Object": https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject
- * JSON Schema: http://json-schema.org/
+ * ### References
+ * - [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
+ * - [JSON Schema](http://json-schema.org/)
  *
  * @Annotation
  */
