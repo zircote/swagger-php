@@ -253,7 +253,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-     * Generate the documentation in YAML format.
+     * Generate the documentation in JSON format.
      */
     public function toJson($flags = null): string
     {
