@@ -9,8 +9,8 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * Describes a single response from an API Operation, including design-time, static links to operations based on the
- * response.
+ * Describes a single response from an API Operation, including design-time,
+ * static links to operations based on the response.
  *
  * @see [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
  *

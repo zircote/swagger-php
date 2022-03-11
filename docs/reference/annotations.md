@@ -112,7 +112,7 @@ Configuration details for a supported OAuth Flow.
 
 The object provides metadata about the API.
 
-The metadata may be used by the clients if needed, and may be presented in editing or documentation generation tools for convenience.
+The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
 #### Properties
 - title
 - description
@@ -124,7 +124,7 @@ The metadata may be used by the clients if needed, and may be presented in editi
 - [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
 ## [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
-The description of an item in a Schema with type "array".
+The description of an item in a Schema with type `array`.
 #### Properties
 ## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
 
@@ -252,7 +252,7 @@ The path itself is still exposed to the documentation viewer but they will not k
 - [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
 ## [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
 
-A request path parameter.
+A `@OA\Request` path parameter.
 #### Properties
 - in
 - required
@@ -281,8 +281,8 @@ Describes a single request body.
 - [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
 ## [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
 
-Describes a single response from an API Operation, including design-time, static links to operations based on the
-response.
+Describes a single response from an API Operation, including design-time,
+static links to operations based on the response.
 #### Properties
 - ref
 - response
@@ -365,7 +365,7 @@ On top of this subset, there are extensions provided by this specification to al
 - [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
 ## [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
 
-An object representing a Server.
+An object representing a server.
 #### Properties
 - url
 - description
@@ -374,7 +374,7 @@ An object representing a Server.
 - [OAI Server Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object)
 ## [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
 
-An object representing a Server Variable for server URL template substitution.
+An object representing a server variable for server URL template substitution.
 #### Properties
 - serverVariable
 - enum
@@ -409,6 +409,6 @@ An object representing a Server Variable for server URL template substitution.
 
 Shorthand for a xml response.
 
-Use as an Schema inside a Response and the MediaType "application/xml" will be generated.
+Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/xml'` will be generated.
 #### Properties
 - examples
