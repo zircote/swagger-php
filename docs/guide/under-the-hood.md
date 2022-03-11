@@ -35,13 +35,16 @@ This documentation is generated with [VitePress](https://vitepress.vuejs.org/)
 ### Installation
 ```shell
 cd docs
-npm install vitepress git-directory-deploy
+npm install vitepress 
 ```
 
 ### Workflow
 
 * Edit `.md` files in the `docs` folder
-* Update `master`
-* `cd docs && npm run deploy`
+* Update annotation / attribute PHP docblocks.<br>These will be extracted during publishing intot the  [reference](../reference/) section.
+* Run 'composer docs:build' to check for any errors
+* Run 'composer docs:dev' to test the generated documentation locally (`localhost:3000`)
+* Create PR and update `master`
+* Manually trigger the `gh-pages` workflow to update the online docs.
 
 The last step requires commit rights on `zircote/swagger-php`.

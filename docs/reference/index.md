@@ -2,7 +2,7 @@
 
 In total there are a number of different aspects to using `swagger-php`. Depending on how custom your requirements are this might be limited to just annotating your code and using the command line tool.
 
-However, `swagger-php` offers a lot more.
+However, `swagger-php` offers more.
 
 * [Attributes](attributes.md)
 
