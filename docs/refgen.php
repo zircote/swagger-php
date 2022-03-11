@@ -93,27 +93,35 @@ EOT;
         ob_start();
 
         $rc = new ReflectionClass($fqdn);
-        $documentation = $this->extractDocumentation($rc->getDocComment());
-        echo $documentation['content'] . PHP_EOL;
+        $classDocumentation = $this->extractDocumentation($rc->getDocComment());
+        echo $classDocumentation['content'] . PHP_EOL;
+
+        $ctorDocumentation = $this->extractDocumentation($rc->getMethod('__construct')->getDocComment());
+        $params = $ctorDocumentation['params'];
 
         $parameters = $rctor->getParameters();
         if ($parameters) {
             echo PHP_EOL . '#### Parameters' . PHP_EOL;
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
-                if ($var = $this->getReflectionType($fqdn, $rp)) {
+                $parameter = $rp->getName();
+                $def = array_key_exists($parameter, $params)
+                    ? $params[$parameter]
+                    : '';
+
+                if ($var = $this->getReflectionType($fqdn, $rp, true, $def)) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
                 }
 
-                echo '  <dt><strong>' . $rp->getName() . '</strong>' . $var . '</dt>' . PHP_EOL;
+                echo '  <dt><strong>' . $parameter . '</strong>' . $var . '</dt>' . PHP_EOL;
                 echo '  <dd>' . self::NO_DETAILS_AVAILABLE . '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
         }
 
-        if ($documentation['see']) {
+        if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            foreach ($documentation['see'] as $link) {
+            foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
             }
         }
@@ -133,8 +141,8 @@ EOT;
         ob_start();
 
         $rc = new ReflectionClass($fqdn);
-        $documentation = $this->extractDocumentation($rc->getDocComment());
-        echo $documentation['content'] . PHP_EOL;
+        $classDocumentation = $this->extractDocumentation($rc->getDocComment());
+        echo $classDocumentation['content'] . PHP_EOL;
 
         // todo: anchestor properties
         $properties = array_filter($details[$fqdn]['properties'], function ($property) use ($fqdn) {
@@ -147,7 +155,7 @@ EOT;
             foreach ($properties as $property) {
                 $rp = new ReflectionProperty($fqdn, $property);
                 $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
-                if ($var = $this->getReflectionType($fqdn, $rp, $propertyDocumentation['var'])) {
+                if ($var = $this->getReflectionType($fqdn, $rp, false, $propertyDocumentation['var'])) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
                 }
 
@@ -157,9 +165,9 @@ EOT;
             echo '</dl>' . PHP_EOL;
         }
 
-        if ($documentation['see']) {
+        if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            foreach ($documentation['see'] as $link) {
+            foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
             }
         }
@@ -169,7 +177,7 @@ EOT;
         return ob_get_clean();
     }
 
-    protected function getReflectionType(string $fqdn, $rp, string $def = ''): string
+    protected function getReflectionType(string $fqdn, $rp, bool $preferDefault = false, string $def = ''): string
     {
         $var = [];
 
@@ -184,8 +192,12 @@ EOT;
             if ($type->allowsNull()) {
                 $var[] = 'null';
             }
-        } elseif ($def) {
-            $var[] = $def;
+        }
+        if ($def && (!$var || $preferDefault)) {
+            if ($preferDefault) {
+                $var = [];
+            }
+            $var = array_merge($var, explode('|', $def));
         }
 
         return implode('|', array_map(function ($item) { return htmlentities($item); }, array_unique($var)));
@@ -194,7 +206,7 @@ EOT;
     protected function extractDocumentation($docblock): array
     {
         if (!$docblock) {
-            return ['content' => '', 'see' => [], 'var' => ''];
+            return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
         }
 
         $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
@@ -205,6 +217,7 @@ EOT;
 
         $see = [];
         $var = '';
+        $params = [];
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
@@ -215,6 +228,12 @@ EOT;
                 }
                 if (substr($line, 0, 5) === '@var ') {
                     $var = trim(substr($line, 5));
+                }
+                if (substr($line, 0, 7) === '@param ') {
+                    preg_match('/^([^\$]+)\$(.+)$/', trim(substr($line, 7)), $match);
+                    if (3 == count($match)) {
+                        $params[trim($match[2])] = trim($match[1]);
+                    }
                 }
                 continue;
             }
@@ -229,7 +248,7 @@ EOT;
         }
         $content = trim(implode("\n", $contentLines));
 
-        return ['content' => $content, 'see' => $see, 'var' => $var];
+        return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }
 }
 

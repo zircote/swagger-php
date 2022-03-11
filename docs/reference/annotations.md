@@ -939,3 +939,4 @@ Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/xml'` wil
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>No details available.</dd>
 </dl>
+
