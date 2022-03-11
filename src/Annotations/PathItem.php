@@ -14,8 +14,7 @@ use OpenApi\Generator;
  * A Path Item may be empty, due to ACL constraints.
  * The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
  *
- * ### References
- * - [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
+ * @see [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
  *
  * @Annotation
  */

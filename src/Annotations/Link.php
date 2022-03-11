@@ -20,8 +20,7 @@ use OpenApi\Generator;
  * For computing links, and providing instructions to execute them, a runtime expression is used for
  * accessing values in an operation and using them as parameters while invoking the linked operation.
  *
- * ### References
- * - [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
+ * @see [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
  *
  * @Annotation
  */

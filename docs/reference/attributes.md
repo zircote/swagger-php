@@ -9,7 +9,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
 
-### Properties
+#### Properties
 - ref
 - schema
 - title
@@ -47,15 +47,15 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Attachable.php)
 
-### Properties
+#### Properties
 - properties
 ## [Components](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Components.php)
 
-### Properties
+#### Properties
 - properties
 ## [Contact](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Contact.php)
 
-### Properties
+#### Properties
 - name
 - url
 - email
@@ -63,7 +63,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -79,14 +79,14 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Discriminator.php)
 
-### Properties
+#### Properties
 - propertyName
 - mapping
 - x
 - attachables
 ## [Examples](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Examples.php)
 
-### Properties
+#### Properties
 - example
 - summary
 - description
@@ -97,14 +97,14 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ExternalDocumentation.php)
 
-### Properties
+#### Properties
 - description
 - url
 - x
 - attachables
 ## [Flow](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Flow.php)
 
-### Properties
+#### Properties
 - authorizationUrl
 - tokenUrl
 - refreshUrl
@@ -114,7 +114,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Get](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Get.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -130,7 +130,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Head](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Head.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -146,7 +146,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Header](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Header.php)
 
-### Properties
+#### Properties
 - ref
 - header
 - description
@@ -158,7 +158,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Info](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Info.php)
 
-### Properties
+#### Properties
 - version
 - description
 - title
@@ -169,7 +169,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Items](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Items.php)
 
-### Properties
+#### Properties
 - ref
 - schema
 - title
@@ -208,7 +208,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
 
-### Properties
+#### Properties
 - examples
 - ref
 - schema
@@ -248,7 +248,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [License](https://github.com/zircote/swagger-php/tree/master/src/Attributes/License.php)
 
-### Properties
+#### Properties
 - name
 - identifier
 - url
@@ -256,7 +256,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Link](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Link.php)
 
-### Properties
+#### Properties
 - link
 - ref
 - operationId
@@ -265,7 +265,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Attributes/MediaType.php)
 
-### Properties
+#### Properties
 - mediaType
 - schema
 - example
@@ -275,7 +275,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Attributes/OpenApi.php)
 
-### Properties
+#### Properties
 - openapi
 - info
 - servers
@@ -285,7 +285,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -301,7 +301,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Parameter.php)
 
-### Properties
+#### Properties
 - parameter
 - name
 - description
@@ -316,7 +316,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Patch](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Patch.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -332,12 +332,12 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathItem.php)
 
-### Properties
+#### Properties
 - x
 - attachables
 ## [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathParameter.php)
 
-### Properties
+#### Properties
 - parameter
 - name
 - description
@@ -352,7 +352,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Post](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Post.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -368,7 +368,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
 
-### Properties
+#### Properties
 - property
 - ref
 - schema
@@ -408,7 +408,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Put](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Put.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -424,7 +424,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Attributes/RequestBody.php)
 
-### Properties
+#### Properties
 - description
 - required
 - content
@@ -432,7 +432,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Response](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Response.php)
 
-### Properties
+#### Properties
 - ref
 - response
 - description
@@ -443,7 +443,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Schema](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Schema.php)
 
-### Properties
+#### Properties
 - ref
 - schema
 - title
@@ -482,7 +482,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Attributes/SecurityScheme.php)
 
-### Properties
+#### Properties
 - ref
 - securityScheme
 - type
@@ -497,7 +497,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Server](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Server.php)
 
-### Properties
+#### Properties
 - url
 - description
 - variables
@@ -505,7 +505,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ServerVariable.php)
 
-### Properties
+#### Properties
 - serverVariable
 - description
 - default
@@ -515,7 +515,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Tag.php)
 
-### Properties
+#### Properties
 - name
 - description
 - externalDocs
@@ -523,7 +523,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Trace](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Trace.php)
 
-### Properties
+#### Properties
 - path
 - operationId
 - description
@@ -539,7 +539,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Xml.php)
 
-### Properties
+#### Properties
 - name
 - namespace
 - prefix
@@ -549,7 +549,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 - attachables
 ## [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/XmlContent.php)
 
-### Properties
+#### Properties
 - examples
 - ref
 - schema

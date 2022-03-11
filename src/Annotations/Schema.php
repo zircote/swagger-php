@@ -16,9 +16,8 @@ use OpenApi\Generator;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * ### References
- * - [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
- * - [JSON Schema](http://json-schema.org/)
+ * @see [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
+ * @see [JSON Schema](http://json-schema.org/)
  *
  * @Annotation
  */

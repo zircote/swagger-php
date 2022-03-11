@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
 use OpenApi\Analysers\TokenScanner;
-use OpenApi\Generator;
+use OpenApi\Annotations\AbstractAnnotation;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class RefGenerator
 {
@@ -92,20 +92,19 @@ EOT;
         ob_start();
 
         $rc = new ReflectionClass($fqdn);
-        if ($description = $this->extractDescription($rc->getDocComment())) {
-            echo $description.PHP_EOL;
-        }
+        $documentation = $this->extractDocumentation($rc->getDocComment());
+        echo $documentation['content'] ? $documentation['content'] . PHP_EOL : '';
 
-        echo '### Properties'.PHP_EOL;
+        echo '#### Properties' . PHP_EOL;
         foreach ($rctor->getParameters() as $rp) {
-            echo '- ' . $rp->getName().PHP_EOL;
+            echo '- ' . $rp->getName() . PHP_EOL;
         }
 
         return ob_get_clean();
     }
 
     /**
-     *
+     * @param class-string<AbstractAnnotation> $fqdn
      */
     public function formatAnnotationsDetails(string $name, string $fqdn, string $filename): string
     {
@@ -114,55 +113,63 @@ EOT;
         ob_start();
 
         $rc = new ReflectionClass($fqdn);
-        if ($description = $this->extractDescription($rc->getDocComment())) {
-            echo $description.PHP_EOL;
-        }
+        $documentation = $this->extractDocumentation($rc->getDocComment());
+        echo $documentation['content'] ? $documentation['content'] . PHP_EOL : '';
 
-        echo '### Properties'.PHP_EOL;
+        echo '#### Properties' . PHP_EOL;
         foreach ($details[$fqdn]['properties'] as $property) {
             if (in_array($property, $fqdn::$_blacklist) || $property[0] == '_') {
                 continue;
             }
-            echo '- ' . $property.PHP_EOL;
+            echo '- ' . $property . PHP_EOL;
+        }
+
+        if ($documentation['see']) {
+            echo '#### Reference' . PHP_EOL;
+            foreach ($documentation['see'] as $link) {
+                echo '- ' . $link . PHP_EOL;
+            }
         }
 
         return ob_get_clean();
     }
 
-    // from Context....
-    protected function extractDescription($docblock) : ?string
+    protected function extractDocumentation($docblock): array
     {
         if (!$docblock) {
-            return null;
+            return ['content' => '', 'see' => []];
         }
 
-        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
+        $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
+
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
-        $lines = [];
+
+        $see = [];
+        $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
-                break;
+                if (substr($line, 0, 5) === '@see ') {
+                    $see[] = trim(substr($line, 4));
+                }
+                continue;
             }
+
             if ($append) {
-                $i = count($lines) - 1;
-                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+                $i = count($contentLines) - 1;
+                $contentLines[$i] = substr($contentLines[$i], 0, -1) . $line;
             } else {
-                $lines[] = $line;
+                $contentLines[] = $line;
             }
             $append = (substr($line, -1) === '\\');
         }
-        $description = trim(implode("\n", $lines));
-        if ($description === '') {
-            return null;
-        }
+        $content = trim(implode("\n", $contentLines));
 
-        return $description;
+        return ['content' => $content, 'see' => $see];
     }
-
 }
 
 

@@ -13,8 +13,7 @@ use OpenApi\Util;
 /**
  * This is the root document object for the API specification.
  *
- * ### References
- * - [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
+ * @see [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
  *
  * @Annotation
  */

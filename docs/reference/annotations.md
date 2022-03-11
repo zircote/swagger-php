@@ -9,23 +9,20 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
-### Properties
+#### Properties
 ## [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
 
 A container for custom data to be attached to an annotation.
 
 These will be ignored by `swagger-php` but can be used for custom processing.
-### Properties
+#### Properties
 ## [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
 Holds a set of reusable objects for different aspects of the OA.
 
 All objects defined within the components object will have no effect on the API unless they are explicitly
 referenced from properties outside the components object.
-
-### References
-- [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
-### Properties
+#### Properties
 - schemas
 - responses
 - parameters
@@ -35,19 +32,20 @@ referenced from properties outside the components object.
 - securitySchemes
 - links
 - callbacks
+#### Reference
+- [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
 ## [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
 
 Contact information for the exposed API.
-
-### References
-- [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
-### Properties
+#### Properties
 - name
 - url
 - email
+#### Reference
+- [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
-### Properties
+#### Properties
 - method
 ## [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
 
@@ -56,16 +54,15 @@ the specification of an alternative schema based on the value associated with it
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
-
-### References
-- [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
-- [JSON Schema](http://json-schema.org/)
-### Properties
+#### Properties
 - propertyName
 - mapping
+#### Reference
+- [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
+- [JSON Schema](http://json-schema.org/)
 ## [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
 
-### Properties
+#### Properties
 - ref
 - example
 - summary
@@ -75,37 +72,33 @@ On top of this subset, there are extensions provided by this specification to al
 ## [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ExternalDocumentation.php)
 
 Allows referencing an external resource for extended documentation.
-
-### References
-- [OAI External Documentation Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object)
-### Properties
+#### Properties
 - description
 - url
+#### Reference
+- [OAI External Documentation Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object)
 ## [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
 
 Configuration details for a supported OAuth Flow.
-
-### References
-- [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
-### Properties
+#### Properties
 - authorizationUrl
 - tokenUrl
 - refreshUrl
 - flow
 - scopes
+#### Reference
+- [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
 ## [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
-### Properties
+#### Properties
 - method
 ## [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
-### Properties
+#### Properties
 - method
 ## [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
 
-### References
-- [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
-### Properties
+#### Properties
 - ref
 - header
 - description
@@ -113,42 +106,42 @@ Configuration details for a supported OAuth Flow.
 - schema
 - deprecated
 - allowEmptyValue
+#### Reference
+- [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
 ## [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
 
 The object provides metadata about the API.
 
 The metadata may be used by the clients if needed, and may be presented in editing or documentation generation tools for convenience.
-
-### References
-- [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
-### Properties
+#### Properties
 - title
 - description
 - termsOfService
 - contact
 - license
 - version
+#### Reference
+- [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
 ## [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
 The description of an item in a Schema with type "array".
-### Properties
+#### Properties
 ## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
 
 Shorthand for a json response.
 
-Use as an Schema inside a Response and the MediaType "application/json" will be generated.
-### Properties
+Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` will be generated.
+#### Properties
 - examples
 ## [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
 
 License information for the exposed API.
-
-### References
-- [OAI License Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#license-object)
-### Properties
+#### Properties
 - name
 - identifier
 - url
+#### Reference
+- [OAI License Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#license-object)
 ## [Link](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Link.php)
 
 The Link object represents a possible design-time link for a response.
@@ -161,10 +154,7 @@ link information in the runtime response.
 
 For computing links, and providing instructions to execute them, a runtime expression is used for
 accessing values in an operation and using them as parameters while invoking the linked operation.
-
-### References
-- [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
-### Properties
+#### Properties
 - ref
 - link
 - operationRef
@@ -173,25 +163,23 @@ accessing values in an operation and using them as parameters while invoking the
 - requestBody
 - description
 - server
+#### Reference
+- [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
 ## [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Annotations/MediaType.php)
 
 Each Media Type Object provides schema and examples for the media type identified by its key.
-
-### References
-- [OAI Media Type Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#media-type-object)
-### Properties
+#### Properties
 - mediaType
 - schema
 - example
 - examples
 - encoding
+#### Reference
+- [OAI Media Type Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#media-type-object)
 ## [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Annotations/OpenApi.php)
 
 This is the root document object for the API specification.
-
-### References
-- [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
-### Properties
+#### Properties
 - openapi
 - info
 - servers
@@ -200,19 +188,18 @@ This is the root document object for the API specification.
 - security
 - tags
 - externalDocs
+#### Reference
+- [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
 ## [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
-### Properties
+#### Properties
 - method
 ## [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
 
 Describes a single operation parameter.
 
 A unique parameter is defined by a combination of a name and location.
-
-### References
-- [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
-### Properties
+#### Properties
 - ref
 - parameter
 - name
@@ -235,9 +222,11 @@ A unique parameter is defined by a combination of a name and location.
 - spaceDelimited
 - pipeDelimited
 - deepObject
+#### Reference
+- [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
 ## [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
-### Properties
+#### Properties
 - method
 ## [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
 
@@ -245,10 +234,7 @@ Describes the operations available on a single path.
 
 A Path Item may be empty, due to ACL constraints.
 The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
-
-### References
-- [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
-### Properties
+#### Properties
 - ref
 - path
 - summary
@@ -262,50 +248,50 @@ The path itself is still exposed to the documentation viewer but they will not k
 - trace
 - servers
 - parameters
+#### Reference
+- [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
 ## [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
 
 A request path parameter.
-### Properties
+#### Properties
 - in
 - required
 ## [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
-### Properties
+#### Properties
 - method
 ## [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
 
-### Properties
+#### Properties
 - property
 ## [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
 
-### Properties
+#### Properties
 - method
 ## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
 
 Describes a single request body.
-
-### References
-- [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
-### Properties
+#### Properties
 - ref
 - request
 - description
 - required
 - content
+#### Reference
+- [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
 ## [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
 
 Describes a single response from an API Operation, including design-time, static links to operations based on the
 response.
-
-### References
-- [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
-### Properties
+#### Properties
 - ref
 - response
 - description
 - headers
 - content
 - links
+#### Reference
+- [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
 ## [Schema](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Schema.php)
 
 The definition of input and output data types.
@@ -314,11 +300,7 @@ These types can be objects, but also primitives and arrays.
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
-
-### References
-- [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
-- [JSON Schema](http://json-schema.org/)
-### Properties
+#### Properties
 - ref
 - schema
 - title
@@ -363,11 +345,12 @@ On top of this subset, there are extensions provided by this specification to al
 - dependencies
 - propertyNames
 - const
+#### Reference
+- [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
+- [JSON Schema](http://json-schema.org/)
 ## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
-### References
-- [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
-### Properties
+#### Properties
 - ref
 - securityScheme
 - type
@@ -378,54 +361,54 @@ On top of this subset, there are extensions provided by this specification to al
 - bearerFormat
 - scheme
 - openIdConnectUrl
+#### Reference
+- [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
 ## [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
 
 An object representing a Server.
-
-### References
-- [OAI Server Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object)
-### Properties
+#### Properties
 - url
 - description
 - variables
+#### Reference
+- [OAI Server Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object)
 ## [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
 
 An object representing a Server Variable for server URL template substitution.
-
-### References
-- [OAI Server Variable Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object)
-### Properties
+#### Properties
 - serverVariable
 - enum
 - default
 - variables
 - description
+#### Reference
+- [OAI Server Variable Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object)
 ## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
-### References
-- [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
-### Properties
+#### Properties
 - name
 - description
 - externalDocs
+#### Reference
+- [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
 ## [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
-### Properties
+#### Properties
 - method
 ## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
 
-### References
-- [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
-### Properties
+#### Properties
 - name
 - namespace
 - prefix
 - attribute
 - wrapped
+#### Reference
+- [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
 ## [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/XmlContent.php)
 
 Shorthand for a xml response.
 
 Use as an Schema inside a Response and the MediaType "application/xml" will be generated.
-### Properties
+#### Properties
 - examples

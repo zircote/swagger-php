@@ -13,8 +13,7 @@ use OpenApi\Generator;
  *
  * Describes a single API operation on a path.
  *
- * ### References
- * - [OAI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object)
+ * @see [OAI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object)
  *
  * @Annotation
  */

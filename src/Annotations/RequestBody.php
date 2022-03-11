@@ -11,8 +11,7 @@ use OpenApi\Generator;
 /**
  * Describes a single request body.
  *
- * ### References
- * - [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
+ * @see [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
  *
  * @Annotation
  */

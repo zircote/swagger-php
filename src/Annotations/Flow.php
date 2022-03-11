@@ -11,8 +11,7 @@ use OpenApi\Generator;
 /**
  * Configuration details for a supported OAuth Flow.
  *
- * ### References
- * - [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
+ * @see [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
  *
  * @Annotation
  */

@@ -13,8 +13,7 @@ use OpenApi\Generator;
  *
  * A unique parameter is defined by a combination of a name and location.
  *
- * ### References
- * - [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
+ * @see [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
  *
  * @Annotation
  */
