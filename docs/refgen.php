@@ -9,6 +9,7 @@ class RefGenerator
 {
     const ATTRIBUTES = 'Attributes';
     const ANNOTATIONS = 'Annotations';
+    const NO_DETAILS_AVAILABLE = 'No details available.';
 
     protected $scanner;
 
@@ -97,11 +98,15 @@ EOT;
 
         $parameters = $rctor->getParameters();
         if ($parameters) {
-            echo PHP_EOL . '#### Properties' . PHP_EOL;
+            echo PHP_EOL . '#### Parameters' . PHP_EOL;
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
-                echo '  <dt><code>' . $rp->getName() . '</code></dt>' . PHP_EOL;
-                echo '  <dd>' . '&nbsp;' . '</dd>' . PHP_EOL;
+                if ($var = $this->getParameterType($fqdn, $rp)) {
+                    $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
+                }
+
+                echo '  <dt><strong>' . $rp->getName() . '</strong>' . $var . '</dt>' . PHP_EOL;
+                echo '  <dd>' . self::NO_DETAILS_AVAILABLE . '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
         }
@@ -142,9 +147,12 @@ EOT;
             foreach ($properties as $property) {
                 $rp = new ReflectionProperty($fqdn, $property);
                 $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
+                if ($var = $this->getPropertyType($fqdn, $property, $propertyDocumentation['var'])) {
+                    $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
+                }
 
-                echo '  <dt><strong>' . $property . '</strong></dt>' . PHP_EOL;
-                echo '  <dd>' . nl2br($propertyDocumentation['content'] ?: '&nbsp;') . '</dd>' . PHP_EOL;
+                echo '  <dt><strong>' . $property . '</strong>' . $var . '</dt>' . PHP_EOL;
+                echo '  <dd>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
         }
@@ -160,6 +168,50 @@ EOT;
 
         return ob_get_clean();
     }
+
+    protected function getParameterType(string $fqdn, ReflectionParameter $rp): string
+    {
+        $var = [];
+
+        if ($type = $rp->getType()) {
+            if ($type instanceof ReflectionUnionType) {
+                foreach ($type->getTypes() as $type) {
+                    $var[] = $type->getName();
+                }
+            } else {
+                $var[] = $type->getName();
+            }
+            if ($type->allowsNull()) {
+                $var[] = 'null';
+            }
+        }
+
+        return implode('|', array_unique($var));
+    }
+
+    protected function getPropertyType(string $fqdn, string $property, string $dockblockVar): string
+    {
+        $var = [];
+
+        $rp = new ReflectionProperty($fqdn, $property);
+        if ($type = $rp->getType()) {
+            if ($type instanceof ReflectionUnionType) {
+                foreach ($type->getTypes() as $type) {
+                    $var[] = $type->getName();
+                }
+            } else {
+                $var[] = $type->getName();
+            }
+            if ($type->allowsNull()) {
+                $var[] = 'null';
+            }
+        } elseif ($dockblockVar) {
+            $var[] = htmlentities($dockblockVar);
+        }
+
+        return implode('|', array_unique($var));
+    }
+    static $vars = [];
 
     protected function extractDocumentation($docblock): array
     {
