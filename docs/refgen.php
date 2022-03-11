@@ -101,7 +101,7 @@ EOT;
             echo PHP_EOL . '#### Parameters' . PHP_EOL;
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
-                if ($var = $this->getParameterType($fqdn, $rp)) {
+                if ($var = $this->getReflectionType($fqdn, $rp)) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
                 }
 
@@ -147,7 +147,7 @@ EOT;
             foreach ($properties as $property) {
                 $rp = new ReflectionProperty($fqdn, $property);
                 $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
-                if ($var = $this->getPropertyType($fqdn, $property, $propertyDocumentation['var'])) {
+                if ($var = $this->getReflectionType($fqdn, $rp, $propertyDocumentation['var'])) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
                 }
 
@@ -169,7 +169,7 @@ EOT;
         return ob_get_clean();
     }
 
-    protected function getParameterType(string $fqdn, ReflectionParameter $rp): string
+    protected function getReflectionType(string $fqdn, $rp, string $def = ''): string
     {
         $var = [];
 
@@ -184,34 +184,12 @@ EOT;
             if ($type->allowsNull()) {
                 $var[] = 'null';
             }
+        } elseif ($def) {
+            $var[] = $def;
         }
 
-        return implode('|', array_unique($var));
+        return implode('|', array_map(function ($item) { return htmlentities($item); }, array_unique($var)));
     }
-
-    protected function getPropertyType(string $fqdn, string $property, string $dockblockVar): string
-    {
-        $var = [];
-
-        $rp = new ReflectionProperty($fqdn, $property);
-        if ($type = $rp->getType()) {
-            if ($type instanceof ReflectionUnionType) {
-                foreach ($type->getTypes() as $type) {
-                    $var[] = $type->getName();
-                }
-            } else {
-                $var[] = $type->getName();
-            }
-            if ($type->allowsNull()) {
-                $var[] = 'null';
-            }
-        } elseif ($dockblockVar) {
-            $var[] = htmlentities($dockblockVar);
-        }
-
-        return implode('|', array_unique($var));
-    }
-    static $vars = [];
 
     protected function extractDocumentation($docblock): array
     {
