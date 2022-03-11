@@ -24,7 +24,7 @@ use OpenApi\Generator;
 class Schema extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -39,7 +39,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface.
-     * preferrably be short.
+     *
+     * Preferably short; use <code>description</code> for more details.
      *
      * @var string
      */

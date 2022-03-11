@@ -16,7 +16,7 @@ use OpenApi\Generator;
 class SecurityScheme extends AbstractAnnotation
 {
     /**
-     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */

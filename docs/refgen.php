@@ -97,11 +97,23 @@ EOT;
 
         $parameters = $rctor->getParameters();
         if ($parameters) {
-            echo '#### Properties' . PHP_EOL;
+            echo PHP_EOL . '#### Properties' . PHP_EOL;
+            echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
-                echo '- ' . $rp->getName() . PHP_EOL;
+                echo '  <dt><code>' . $rp->getName() . '</code></dt>' . PHP_EOL;
+                echo '  <dd>' . '&nbsp;' . '</dd>' . PHP_EOL;
+            }
+            echo '</dl>' . PHP_EOL;
+        }
+
+        if ($documentation['see']) {
+            echo PHP_EOL . '#### Reference' . PHP_EOL;
+            foreach ($documentation['see'] as $link) {
+                echo '- ' . $link . PHP_EOL;
             }
         }
+
+        echo PHP_EOL;
 
         return ob_get_clean();
     }
@@ -125,18 +137,26 @@ EOT;
         });
 
         if ($properties) {
-            echo '#### Properties' . PHP_EOL;
+            echo PHP_EOL . '#### Properties' . PHP_EOL;
+            echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
-                echo '- ' . $property . PHP_EOL;
+                $rp = new ReflectionProperty($fqdn, $property);
+                $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
+
+                echo '  <dt><strong>' . $property . '</strong></dt>' . PHP_EOL;
+                echo '  <dd>' . nl2br($propertyDocumentation['content'] ?: '&nbsp;') . '</dd>' . PHP_EOL;
             }
+            echo '</dl>' . PHP_EOL;
         }
 
         if ($documentation['see']) {
-            echo '#### Reference' . PHP_EOL;
+            echo PHP_EOL . '#### Reference' . PHP_EOL;
             foreach ($documentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
             }
         }
+
+        echo PHP_EOL;
 
         return ob_get_clean();
     }
@@ -144,7 +164,7 @@ EOT;
     protected function extractDocumentation($docblock): array
     {
         if (!$docblock) {
-            return ['content' => '', 'see' => []];
+            return ['content' => '', 'see' => [], 'var' => ''];
         }
 
         $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
@@ -154,13 +174,17 @@ EOT;
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
 
         $see = [];
+        $var = '';
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
                 if (substr($line, 0, 5) === '@see ') {
-                    $see[] = trim(substr($line, 4));
+                    $see[] = trim(substr($line, 5));
+                }
+                if (substr($line, 0, 5) === '@var ') {
+                    $var = trim(substr($line, 5));
                 }
                 continue;
             }
@@ -175,7 +199,7 @@ EOT;
         }
         $content = trim(implode("\n", $contentLines));
 
-        return ['content' => $content, 'see' => $see];
+        return ['content' => $content, 'see' => $see, 'var' => $var];
     }
 }
 

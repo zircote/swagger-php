@@ -28,7 +28,7 @@ class Link extends AbstractAnnotation
 {
 
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -43,16 +43,19 @@ class Link extends AbstractAnnotation
 
     /**
      * A relative or absolute reference to an OA operation.
-     * This field is mutually exclusive of the operationId field, and must point to an Operation Object.
-     * Relative operationRef values may be used to locate an existing Operation Object in the OpenAPI definition.
+     *
+     * This field is mutually exclusive of the <code>operationId</code> field, and must point to an Operation object.
+     *
+     * Relative values may be used to locate an existing Operation object in the OpenAPI definition.
      *
      * @var string
      */
     public $operationRef = Generator::UNDEFINED;
 
     /**
-     * The name of an existing, resolvable OA operation, as defined with a unique operationId.
-     * This field is mutually exclusive of the operationRef field.
+     * The name of an existing, resolvable OA operation, as defined with a unique <code>operationId</code>.
+     *
+     * This field is mutually exclusive of the <code>operationRef</code> field.
      *
      * @var string
      */

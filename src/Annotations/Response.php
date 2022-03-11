@@ -19,7 +19,7 @@ use OpenApi\Generator;
 class Response extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */

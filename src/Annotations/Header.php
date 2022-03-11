@@ -15,7 +15,7 @@ use OpenApi\Generator;
 class Header extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see https://swagger.io/docs/specification/using-ref/.
      *
      * @var string
      */

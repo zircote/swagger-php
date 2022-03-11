@@ -41,9 +41,9 @@ class OpenApi extends AbstractAnnotation
     public $info = Generator::UNDEFINED;
 
     /**
-     * An array of Server Objects, which provide connectivity information to a target server.
-     * If the servers property is not provided, or is an empty array, the default value would be a Server Object with a
-     * url value of /.
+     * An array of <code>@OA\Server</code> objects, which provide connectivity information to a target server.
+     *
+     * If not provided, or is an empty array, the default value would be a Server Object with a url value of <code>/</code>.
      *
      * @var Server[]
      */
