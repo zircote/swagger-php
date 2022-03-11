@@ -9,13 +9,12 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
-#### Properties
+
 ## [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
 
 A container for custom data to be attached to an annotation.
 
 These will be ignored by `swagger-php` but can be used for custom processing.
-#### Properties
 ## [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
 Holds a set of reusable objects for different aspects of the OA.
@@ -45,6 +44,7 @@ Contact information for the exposed API.
 - [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
+
 #### Properties
 - method
 ## [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
@@ -61,6 +61,7 @@ On top of this subset, there are extensions provided by this specification to al
 - [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
 - [JSON Schema](http://json-schema.org/)
 ## [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
+
 
 #### Properties
 - ref
@@ -90,13 +91,16 @@ Configuration details for a supported OAuth Flow.
 - [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
 ## [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
+
 #### Properties
 - method
 ## [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
+
 #### Properties
 - method
 ## [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
+
 
 #### Properties
 - ref
@@ -125,7 +129,6 @@ The metadata may be used by the clients if needed and may be presented in editin
 ## [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
 The description of an item in a Schema with type `array`.
-#### Properties
 ## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
 
 Shorthand for a json response.
@@ -192,6 +195,7 @@ This is the root document object for the API specification.
 - [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
 ## [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
+
 #### Properties
 - method
 ## [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
@@ -226,6 +230,7 @@ A unique parameter is defined by a combination of a name and location.
 - [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
 ## [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
+
 #### Properties
 - method
 ## [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
@@ -258,13 +263,16 @@ A `@OA\Request` path parameter.
 - required
 ## [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
+
 #### Properties
 - method
 ## [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
 
+
 #### Properties
 - property
 ## [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
+
 
 #### Properties
 - method
@@ -350,6 +358,7 @@ On top of this subset, there are extensions provided by this specification to al
 - [JSON Schema](http://json-schema.org/)
 ## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
+
 #### Properties
 - ref
 - securityScheme
@@ -385,6 +394,7 @@ An object representing a server variable for server URL template substitution.
 - [OAI Server Variable Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object)
 ## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
+
 #### Properties
 - name
 - description
@@ -393,9 +403,11 @@ An object representing a server variable for server URL template substitution.
 - [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
 ## [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
+
 #### Properties
 - method
 ## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
+
 
 #### Properties
 - name

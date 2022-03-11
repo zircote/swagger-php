@@ -73,7 +73,7 @@ EOT;
     /**
      *
      */
-    public function formatHeader(string $name, string $fqdn, string $type): string
+    public function formatHeader(string $name, string $type): string
     {
         return <<< EOT
 ## [$name](https://github.com/zircote/swagger-php/tree/master/src/$type/$name.php)
@@ -87,17 +87,20 @@ EOT;
      */
     public function formatAttributesDetails(string $name, string $fqdn, string $filename): string
     {
-        $rctor = (new \ReflectionClass($fqdn))->getMethod('__construct');
+        $rctor = (new ReflectionClass($fqdn))->getMethod('__construct');
 
         ob_start();
 
         $rc = new ReflectionClass($fqdn);
         $documentation = $this->extractDocumentation($rc->getDocComment());
-        echo $documentation['content'] ? $documentation['content'] . PHP_EOL : '';
+        echo $documentation['content'] . PHP_EOL;
 
-        echo '#### Properties' . PHP_EOL;
-        foreach ($rctor->getParameters() as $rp) {
-            echo '- ' . $rp->getName() . PHP_EOL;
+        $parameters = $rctor->getParameters();
+        if ($parameters) {
+            echo '#### Properties' . PHP_EOL;
+            foreach ($parameters as $rp) {
+                echo '- ' . $rp->getName() . PHP_EOL;
+            }
         }
 
         return ob_get_clean();
@@ -114,14 +117,18 @@ EOT;
 
         $rc = new ReflectionClass($fqdn);
         $documentation = $this->extractDocumentation($rc->getDocComment());
-        echo $documentation['content'] ? $documentation['content'] . PHP_EOL : '';
+        echo $documentation['content'] . PHP_EOL;
 
-        echo '#### Properties' . PHP_EOL;
-        foreach ($details[$fqdn]['properties'] as $property) {
-            if (in_array($property, $fqdn::$_blacklist) || $property[0] == '_') {
-                continue;
+        // todo: anchestor properties
+        $properties = array_filter($details[$fqdn]['properties'], function ($property) use ($fqdn) {
+            return !in_array($property, $fqdn::$_blacklist) && $property[0] != '_';
+        });
+
+        if ($properties) {
+            echo '#### Properties' . PHP_EOL;
+            foreach ($properties as $property) {
+                echo '- ' . $property . PHP_EOL;
             }
-            echo '- ' . $property . PHP_EOL;
         }
 
         if ($documentation['see']) {
@@ -181,7 +188,7 @@ foreach ($refgen->types() as $type) {
 
     echo $refgen->preamble($type);
     foreach ($refgen->classesForType($type) as $name => $details) {
-        echo $refgen->formatHeader($name, $details['fqdn'], $type);
+        echo $refgen->formatHeader($name, $type);
         $method = "format{$type}Details";
         echo $refgen->$method($name, $details['fqdn'], $details['filename']);
     }
