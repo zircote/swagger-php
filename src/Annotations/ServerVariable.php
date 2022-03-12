@@ -33,6 +33,7 @@ class ServerVariable extends AbstractAnnotation
 
     /**
      * The default value to use for substitution, and to send, if an alternate value is not supplied.
+     *
      * Unlike the Schema Object's default, this value must be provided by the consumer.
      *
      * @var string
@@ -41,6 +42,7 @@ class ServerVariable extends AbstractAnnotation
 
     /**
      * A map between a variable name and its value.
+     *
      * The value is used for substitution in the server's URL template.
      *
      * @var array
@@ -49,6 +51,7 @@ class ServerVariable extends AbstractAnnotation
 
     /**
      * An optional description for the server variable.
+     *
      * CommonMark syntax MAY be used for rich text representation.
      *
      * @var string

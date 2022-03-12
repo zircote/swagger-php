@@ -26,8 +26,9 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
+     *
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
-     * This is not related to the API info.version string.
+     * This is not related to the API info::version string.
      *
      * @var string
      */
@@ -65,6 +66,7 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Lists the required security schemes to execute this operation.
+     *
      * The name used for each property must correspond to a security scheme declared
      * in the Security Schemes under the Components Object.
      * Security Requirement Objects that contain multiple schemes require that
@@ -81,6 +83,7 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * A list of tags used by the specification with additional metadata.
+     *
      * The order of the tags can be used to reflect on their order by the parsing tools.
      * Not all tags that are used by the Operation Object must be declared.
      * The tags that are not declared may be organized randomly or based on the tools' logic.

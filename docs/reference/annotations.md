@@ -105,7 +105,7 @@ On top of this subset, there are extensions provided by this specification to al
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>No details available.</dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>The key into ``#/components/examples` array.</dd>
+  <dd>The key into `#/components/examples`.</dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>Short description for the example.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
@@ -154,12 +154,15 @@ Configuration details for a supported OAuth Flow.
 <dl>
   <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The authorization url to be used for this flow.<br />
+<br />
 This must be in the form of a url.</dd>
   <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The token URL to be used for this flow.<br />
+<br />
 This must be in the form of a url.</dd>
   <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The URL to be used for obtaining refresh tokens.<br />
+<br />
 This must be in the form of a url.</dd>
   <dt><strong>flow</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>Flow name. One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</dd>
@@ -203,17 +206,22 @@ This must be in the form of a url.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>No details available.</dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd>A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich<br />
-text representation.</dd>
+  <dd>A brief description of the parameter.<br />
+<br />
+This could contain examples of use.<br />
+CommonMark syntax MAY be used for rich text representation.</dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">\OpenApi\Annotations\Schema</span></dt>
   <dd>Schema object.</dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.</dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Sets the ability to pass empty-valued parameters.<br />
+<br />
 This is valid only for query parameters and allows sending a parameter with an empty value.<br />
-Default value is false. If style is used, and if behavior is n/a<br />
-(cannot be serialized), the value of allowEmptyValue SHALL be ignored.</dd>
+<br />
+Default value is false.<br />
+<br />
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored.</dd>
 </dl>
 
 #### Reference
@@ -230,9 +238,13 @@ The metadata may be used by the clients if needed and may be presented in editin
   <dt><strong>title</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The title of the application.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>A short description of the application. CommonMark syntax may be used for rich text representation.</dd>
+  <dd>A short description of the application.<br />
+<br />
+CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>termsOfService</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>A URL to the Terms of Service for the API. must be in the format of a url.</dd>
+  <dd>A URL to the Terms of Service for the API.<br />
+<br />
+Must be in the format of a url.</dd>
   <dt><strong>contact</strong> : <span style="font-family: monospace;">Contact</span></dt>
   <dd>The contact information for the exposed API.</dd>
   <dt><strong>license</strong> : <span style="font-family: monospace;">License</span></dt>
@@ -310,13 +322,17 @@ Relative values may be used to locate an existing Operation object in the OpenAP
 This field is mutually exclusive of the <code>operationRef</code> field.</dd>
   <dt><strong>parameters</strong></dt>
   <dd>A map representing parameters to pass to an operation as specified with operationId or identified via<br />
-operationRef. The key is the parameter name to be used, whereas the value can be a constant or an expression to<br />
-be evaluated and passed to the linked operation. The parameter name can be qualified using the parameter<br />
-location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id).</dd>
+operationRef.<br />
+<br />
+The key is the parameter name to be used, whereas the value can be a constant or an expression to<br />
+be evaluated and passed to the linked operation.<br />
+The parameter name can be qualified using the parameter location [{in}.]{name} for operations<br />
+that use the same parameter name in different locations (e.g. path.id).</dd>
   <dt><strong>requestBody</strong></dt>
   <dd>A literal value or {expression} to use as a request body when calling the target operation.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>A description of the link.<br />
+<br />
 CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>server</strong> : <span style="font-family: monospace;">Server</span></dt>
   <dd>A server object to be used by the target operation.</dd>
@@ -337,19 +353,25 @@ Each Media Type object provides schema and examples for the media type identifie
   <dd>The schema defining the type used for the request body.</dd>
   <dt><strong>example</strong></dt>
   <dd>Example of the media type.<br />
+<br />
 The example object should be in the correct format as specified by the media type.<br />
 The example object is mutually exclusive of the examples object.<br />
-Furthermore, if referencing a schema which contains an example, the example value shall override the example<br />
-provided by the schema.</dd>
+<br />
+Furthermore, if referencing a schema which contains an example,<br />
+the example value shall override the example provided by the schema.</dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Examples of the media type.<br />
+<br />
 Each example object should match the media type and specified schema if present.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example<br />
-provided by the schema.</dd>
+<br />
+Furthermore, if referencing a schema which contains an example,<br />
+the examples value shall override the example provided by the schema.</dd>
   <dt><strong>encoding</strong></dt>
   <dd>A map between a property name and its encoding information.<br />
+<br />
 The key, being the property name, must exist in the schema as a property.<br />
+<br />
 The encoding object shall only apply to requestBody objects when the media type is multipart or<br />
 application/x-www-form-urlencoded.</dd>
 </dl>
@@ -365,8 +387,9 @@ This is the root document object for the API specification.
 <dl>
   <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
+<br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
-This is not related to the API info.version string.</dd>
+This is not related to the API info::version string.</dd>
   <dt><strong>info</strong> : <span style="font-family: monospace;">Info</span></dt>
   <dd>Provides metadata about the API. The metadata may be used by tooling as required.</dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
@@ -379,6 +402,7 @@ If not provided, or is an empty array, the default value would be a Server Objec
   <dd>An element to hold various components for the specification.</dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Lists the required security schemes to execute this operation.<br />
+<br />
 The name used for each property must correspond to a security scheme declared<br />
 in the Security Schemes under the Components Object.<br />
 Security Requirement Objects that contain multiple schemes require that<br />
@@ -390,6 +414,7 @@ Operation Object, only one of Security Requirement Objects in the list needs to<
 be satisfied to authorize the request.</dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">Tag[]</span></dt>
   <dd>A list of tags used by the specification with additional metadata.<br />
+<br />
 The order of the tags can be used to reflect on their order by the parsing tools.<br />
 Not all tags that are used by the Operation Object must be declared.<br />
 The tags that are not declared may be organized randomly or based on the tools' logic.<br />
@@ -424,55 +449,72 @@ A unique parameter is defined by a combination of a name and location.
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The key into Components->parameters or PathItem->parameters array.</dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>The name of the parameter.<br />
-Parameter names are case sensitive.<br />
+  <dd>The (case sensitive) name of the parameter.<br />
+<br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
+<br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
 For all other cases, the name corresponds to the parameter name used by the in property.</dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The location of the parameter.<br />
+<br />
 Possible values are "query", "header", "path" or "cookie".</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>A brief description of the parameter.<br />
+<br />
 This could contain examples of use.<br />
+<br />
 CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Determines whether this parameter is mandatory.<br />
+<br />
 If the parameter location is "path", this property is required and its value must be true.<br />
 Otherwise, the property may be included and its default value is false.</dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Specifies that a parameter is deprecated and should be transitioned out of usage.</dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Sets the ability to pass empty-valued parameters.<br />
+<br />
 This is valid only for query parameters and allows sending a parameter with an empty value.<br />
-Default value is false. If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</dd>
+<br />
+Default value is false.<br />
+<br />
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
+<br />
 Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
+<br />
 For other types of parameters this property has no effect.<br />
+<br />
 When style is form, the default value is true.<br />
 For all other styles, the default value is false.</dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
+<br />
 This property only applies to parameters with an in value of query.<br />
+<br />
 The default value is false.</dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema</span></dt>
   <dd>The schema defining the type used for the parameter.</dd>
   <dt><strong>example</strong></dt>
   <dd>Example of the media type.<br />
+<br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Examples of the media type.<br />
+<br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType[]</span></dt>
   <dd>A map containing the representations for the parameter.<br />
+<br />
 The key is the media type and the value describes it.<br />
 The map must only contain one entry.</dd>
   <dt><strong>matrix</strong></dt>
@@ -481,15 +523,19 @@ The map must only contain one entry.</dd>
   <dd>Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5.</dd>
   <dt><strong>form</strong></dt>
   <dd>Form style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.8<br />
+<br />
 This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.</dd>
   <dt><strong>simple</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Simple style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.2<br />
+<br />
 This option replaces collectionFormat with a csv value from OpenAPI 2.0.</dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Space separated array values.<br />
+<br />
 This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>Pipe separated array values.<br />
+<br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</dd>
   <dt><strong>deepObject</strong></dt>
   <dd>Provides a simple way of rendering nested objects using form parameters.</dd>
@@ -543,6 +589,7 @@ The path itself is still exposed to the documentation viewer but they will not k
   <dd>An alternative server array to service all operations in this path.</dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd>A list of parameters that are applicable for all the operations described under this path.<br />
+<br />
 These parameters can be overridden at the operation level, but cannot be removed there.<br />
 The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
@@ -606,14 +653,18 @@ Describes a single request body.
   <dd>Request body model name.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>A brief description of the parameter.<br />
+<br />
 This could contain examples of use.<br />
+<br />
 CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd>Determines whether this parameter is mandatory.<br />
+<br />
 If the parameter location is "path", this property is required and its value must be true.<br />
 Otherwise, the property may be included and its default value is false.</dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent</span></dt>
   <dd>The content of the request body.<br />
+<br />
 The key is a media type or media type range and the value describes it. For requests that match multiple keys,<br />
 only the most specific key is applicable. e.g. text/plain overrides text/*.</dd>
 </dl>
@@ -630,22 +681,28 @@ static links to operations based on the response.
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>No details available.</dd>
-  <dt><strong>response</strong> : <span style="font-family: monospace;">string|int a HTTP Status Code or &quot;default&quot;</span></dt>
-  <dd>The key into Operations->responses array.</dd>
+  <dt><strong>response</strong> : <span style="font-family: monospace;">string|int</span></dt>
+  <dd>The key into Operations->responses array.<br />
+<br />
+A HTTP status code or <code>default</code>.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>A short description of the response.<br />
+<br />
 CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
   <dd>Maps a header name to its definition.<br />
+<br />
 RFC7230 states header names are case insensitive. https://tools.ietf.org/html/rfc7230#page-22<br />
 If a response header is defined with the name "Content-Type", it shall be ignored.</dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType[]</span></dt>
   <dd>A map containing descriptions of potential response payloads.<br />
+<br />
 The key is a media type or media type range and the value describes it.<br />
 For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides<br />
 text/*.</dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>A map of operations links that can be followed from the response.<br />
+<br />
 The key of the map is a short name for the link, following the naming constraints of the names for Component<br />
 Objects.</dd>
 </dl>
@@ -692,11 +749,16 @@ array value.</dd>
   <dd>The extending format for the previously mentioned type. See Data Type Formats for further details.</dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">Items</span></dt>
   <dd>Required if type is "array". Describes the type of items in the array.</dd>
-  <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string Determines the format of the array if type array is used. Possible values are: csv - comma separated</span></dt>
-  <dd>values foo,bar. ssv - space separated values foo bar. tsv - tab separated values foo\tbar. pipes - pipe<br />
-separated values foo|bar. multi - corresponds to multiple parameter instances instead of multiple values<br />
-for a single instance foo=bar&foo=baz. This is valid only for parameters in "query" or "formData". Default<br />
-value is csv.</dd>
+  <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd>Determines the format of the array if type array is used.<br />
+Possible values are:<br />
+- csv: comma separated values foo,bar.<br />
+- ssv: space separated values foo bar.<br />
+- tsv: tab separated values foo\tbar.<br />
+- pipes: pipe separated values foo|bar.<br />
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
+This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
+Default value is csv.</dd>
   <dt><strong>default</strong></dt>
   <dd>Sets a default value to the parameter. The type of the value depends on the defined type. See<br />
 http://json-schema.org/latest/json-schema-validation.html#anchor101.</dd>
@@ -727,24 +789,29 @@ http://json-schema.org/latest/json-schema-validation.html#anchor101.</dd>
 property's value is an integer.</dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">Discriminator</span></dt>
   <dd>Adds support for polymorphism.<br />
+<br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
 payload description. See Composition and Inheritance for more details.</dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd>Relevant only for Schema "properties" definitions.<br />
-Declares the property as "read only".<br />
+  <dd>Declares the property as "read only".<br />
+<br />
+Relevant only for Schema "properties" definitions.<br />
+<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
 false.</dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd>Relevant only for Schema "properties" definitions.<br />
-Declares the property as "write only".<br />
+  <dd>Declares the property as "write only".<br />
+<br />
+Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
 false.</dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml</span></dt>
   <dd>This may be used only on properties schemas.<br />
+<br />
 It has no effect on root schemas.<br />
 Adds additional metadata to describe the XML representation of this property.</dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation</span></dt>
@@ -811,8 +878,9 @@ defined by this property's value.</dd>
   <dt><strong>flows</strong> : <span style="font-family: monospace;">Flow[]</span></dt>
   <dd>The flow used by the OAuth2 security scheme.</dd>
   <dt><strong>bearerFormat</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>A hint to the client to identify how the bearer token is formatted. Bearer tokens are usually generated by an<br />
-authorization server, so this information is primarily for documentation purposes.</dd>
+  <dd>A hint to the client to identify how the bearer token is formatted.<br />
+<br />
+Bearer tokens are usually generated by an authorization server, so this information is primarily for documentation purposes.</dd>
   <dt><strong>scheme</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The name of the HTTP Authorization scheme.</dd>
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string</span></dt>
@@ -829,14 +897,18 @@ An object representing a server.
 #### Properties
 <dl>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd>A URL to the target host. This URL supports Server Variables and may be relative,<br />
+  <dd>A URL to the target host.<br />
+<br />
+This URL supports Server Variables and may be relative,<br />
 to indicate that the host location is relative to the location where the OpenAPI document is being served.<br />
 Variable substitutions will be made when a variable is named in {brackets}.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>An optional string describing the host designated by the URL.<br />
+<br />
 CommonMark syntax may be used for rich text representation.</dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>A map between a variable name and its value.<br />
+<br />
 The value is used for substitution in the server's URL template.</dd>
 </dl>
 
@@ -855,12 +927,15 @@ An object representing a server variable for server URL template substitution.
   <dd>An enumeration of string values to be used if the substitution options are from a limited set.</dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
+<br />
 Unlike the Schema Object's default, this value must be provided by the consumer.</dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd>A map between a variable name and its value.<br />
+<br />
 The value is used for substitution in the server's URL template.</dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd>An optional description for the server variable.<br />
+<br />
 CommonMark syntax MAY be used for rich text representation.</dd>
 </dl>
 

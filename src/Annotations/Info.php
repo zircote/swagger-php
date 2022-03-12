@@ -27,14 +27,18 @@ class Info extends AbstractAnnotation
     public $title = Generator::UNDEFINED;
 
     /**
-     * A short description of the application. CommonMark syntax may be used for rich text representation.
+     * A short description of the application.
+     *
+     * CommonMark syntax may be used for rich text representation.
      *
      * @var string
      */
     public $description = Generator::UNDEFINED;
 
     /**
-     * A URL to the Terms of Service for the API. must be in the format of a url.
+     * A URL to the Terms of Service for the API.
+     *
+     * Must be in the format of a url.
      *
      * @var string
      */

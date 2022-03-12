@@ -28,12 +28,15 @@ class Response extends AbstractAnnotation
     /**
      * The key into Operations->responses array.
      *
-     * @var string|int a HTTP Status Code or "default"
+     * A HTTP status code or <code>default</code>.
+     *
+     * @var string|int
      */
     public $response = Generator::UNDEFINED;
 
     /**
      * A short description of the response.
+     *
      * CommonMark syntax may be used for rich text representation.
      *
      * @var string
@@ -42,6 +45,7 @@ class Response extends AbstractAnnotation
 
     /**
      * Maps a header name to its definition.
+     *
      * RFC7230 states header names are case insensitive. https://tools.ietf.org/html/rfc7230#page-22
      * If a response header is defined with the name "Content-Type", it shall be ignored.
      *
@@ -51,6 +55,7 @@ class Response extends AbstractAnnotation
 
     /**
      * A map containing descriptions of potential response payloads.
+     *
      * The key is a media type or media type range and the value describes it.
      * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides
      * text/*.
@@ -61,6 +66,7 @@ class Response extends AbstractAnnotation
 
     /**
      * A map of operations links that can be followed from the response.
+     *
      * The key of the map is a short name for the link, following the naming constraints of the names for Component
      * Objects.
      *
