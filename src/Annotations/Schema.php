@@ -16,16 +16,15 @@ use OpenApi\Generator;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * ### References
- * - [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
- * - [JSON Schema](http://json-schema.org/)
+ * @see [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
+ * @see [JSON Schema](http://json-schema.org/)
  *
  * @Annotation
  */
 class Schema extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -40,7 +39,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * Can be used to decorate a user interface with information about the data produced by this user interface.
-     * preferrably be short.
+     *
+     * Preferably short; use <code>description</code> for more details.
      *
      * @var string
      */
@@ -105,11 +105,17 @@ class Schema extends AbstractAnnotation
     public $items = Generator::UNDEFINED;
 
     /**
-     * @var string Determines the format of the array if type array is used. Possible values are: csv - comma separated
-     *             values foo,bar. ssv - space separated values foo bar. tsv - tab separated values foo\tbar. pipes - pipe
-     *             separated values foo|bar. multi - corresponds to multiple parameter instances instead of multiple values
-     *             for a single instance foo=bar&foo=baz. This is valid only for parameters in "query" or "formData". Default
-     *             value is csv.
+     * Determines the format of the array if type array is used.
+     * Possible values are:
+     * - csv: comma separated values foo,bar.
+     * - ssv: space separated values foo bar.
+     * - tsv: tab separated values foo\tbar.
+     * - pipes: pipe separated values foo|bar.
+     * - multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.
+     *          This is valid only for parameters of type <code>query</code> or <code>formData</code>.
+     * Default value is csv.
+     *
+     * @var string
      */
     public $collectionFormat = Generator::UNDEFINED;
 
@@ -206,6 +212,7 @@ class Schema extends AbstractAnnotation
 
     /**
      * Adds support for polymorphism.
+     *
      * The discriminator is an object name that is used to differentiate between other schemas which may satisfy the
      * payload description. See Composition and Inheritance for more details.
      *
@@ -214,8 +221,10 @@ class Schema extends AbstractAnnotation
     public $discriminator = Generator::UNDEFINED;
 
     /**
-     * Relevant only for Schema "properties" definitions.
      * Declares the property as "read only".
+     *
+     * Relevant only for Schema "properties" definitions.
+     *
      * This means that it may be sent as part of a response but should not be sent as part of the request.
      * If the property is marked as readOnly being true and is in the required list, the required will take effect on
      * the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is
@@ -226,8 +235,9 @@ class Schema extends AbstractAnnotation
     public $readOnly = Generator::UNDEFINED;
 
     /**
-     * Relevant only for Schema "properties" definitions.
      * Declares the property as "write only".
+     *
+     * Relevant only for Schema "properties" definitions.
      * Therefore, it may be sent as part of a request but should not be sent as part of the response.
      * If the property is marked as writeOnly being true and is in the required list, the required will take effect on
      * the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is
@@ -239,6 +249,7 @@ class Schema extends AbstractAnnotation
 
     /**
      * This may be used only on properties schemas.
+     *
      * It has no effect on root schemas.
      * Adds additional metadata to describe the XML representation of this property.
      *

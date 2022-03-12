@@ -8,15 +8,14 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * ### References
- * - [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
+ * @see [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
  *
  * @Annotation
  */
 class Header extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -33,8 +32,10 @@ class Header extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * A brief description of the parameter. This could contain examples of use. CommonMark syntax MAY be used for rich
-     * text representation.
+     * A brief description of the parameter.
+     *
+     * This could contain examples of use.
+     * CommonMark syntax MAY be used for rich text representation.
      *
      * @var bool
      */
@@ -56,9 +57,12 @@ class Header extends AbstractAnnotation
 
     /**
      * Sets the ability to pass empty-valued parameters.
+     *
      * This is valid only for query parameters and allows sending a parameter with an empty value.
-     * Default value is false. If style is used, and if behavior is n/a
-     * (cannot be serialized), the value of allowEmptyValue SHALL be ignored.
+     *
+     * Default value is false.
+     *
+     * If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored.
      *
      * @var bool
      */

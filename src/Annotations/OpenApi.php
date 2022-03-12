@@ -13,8 +13,7 @@ use OpenApi\Util;
 /**
  * This is the root document object for the API specification.
  *
- * ### References
- * - [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
+ * @see [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
  *
  * @Annotation
  */
@@ -27,8 +26,9 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
+     *
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
-     * This is not related to the API info.version string.
+     * This is not related to the API info::version string.
      *
      * @var string
      */
@@ -42,9 +42,9 @@ class OpenApi extends AbstractAnnotation
     public $info = Generator::UNDEFINED;
 
     /**
-     * An array of Server Objects, which provide connectivity information to a target server.
-     * If the servers property is not provided, or is an empty array, the default value would be a Server Object with a
-     * url value of /.
+     * An array of <code>@OA\Server</code> objects, which provide connectivity information to a target server.
+     *
+     * If not provided, or is an empty array, the default value would be a Server Object with a url value of <code>/</code>.
      *
      * @var Server[]
      */
@@ -66,6 +66,7 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Lists the required security schemes to execute this operation.
+     *
      * The name used for each property must correspond to a security scheme declared
      * in the Security Schemes under the Components Object.
      * Security Requirement Objects that contain multiple schemes require that
@@ -82,6 +83,7 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * A list of tags used by the specification with additional metadata.
+     *
      * The order of the tags can be used to reflect on their order by the parsing tools.
      * Not all tags that are used by the Operation Object must be declared.
      * The tags that are not declared may be organized randomly or based on the tools' logic.

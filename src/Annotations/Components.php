@@ -15,8 +15,7 @@ use OpenApi\Util;
  * All objects defined within the components object will have no effect on the API unless they are explicitly
  * referenced from properties outside the components object.
  *
- * ### References
- * - [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
+ * @see [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
  *
  * @Annotation
  */
@@ -27,7 +26,7 @@ class Components extends AbstractAnnotation
      *
      * @var string
      */
-    const SCHEMA_REF = '#/components/schemas/';
+    public const SCHEMA_REF = '#/components/schemas/';
 
     /**
      * Reusable Schemas.

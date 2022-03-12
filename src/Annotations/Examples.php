@@ -14,14 +14,14 @@ use OpenApi\Generator;
 class Examples extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
     public $ref = Generator::UNDEFINED;
 
     /**
-     * The key into Components->examples array.
+     * The key into `#/components/examples`.
      *
      * @var string
      */
@@ -35,10 +35,12 @@ class Examples extends AbstractAnnotation
     public $summary = Generator::UNDEFINED;
 
     /**
-     * Embedded literal example. The value field and externalValue field are
-     * mutually exclusive. To represent examples of media types that cannot
-     * naturally represented in JSON or YAML, use a string value to contain
-     * the example, escaping where necessary.
+     * Embedded literal example.
+     *
+     * The value field and externalValue field are mutually exclusive.
+     *
+     * To represent examples of media types that cannot naturally represented
+     * in JSON or YAML, use a string value to contain the example, escaping where necessary.
      *
      * @var string
      */
@@ -46,19 +48,22 @@ class Examples extends AbstractAnnotation
 
     /**
      * Embedded literal example.
+     *
      * The value field and externalValue field are mutually exclusive.
+     *
      * To represent examples of media types that cannot naturally represented
-     * in JSON or YAML, use a string value to contain the example, escaping
-     * where necessary.
+     * in JSON or YAML, use a string value to contain the example, escaping where necessary.
      *
      * @var string
      */
     public $value = Generator::UNDEFINED;
 
     /**
-     * A URL that points to the literal example. This provides the
-     * capability to reference examples that cannot easily be included
+     * A URL that points to the literal example.
+     *
+     * This provides the capability to reference examples that cannot easily be included
      * in JSON or YAML documents.
+     *
      * The value field and externalValue field are mutually exclusive.
      *
      * @var string

@@ -20,8 +20,7 @@ use OpenApi\Generator;
  * For computing links, and providing instructions to execute them, a runtime expression is used for
  * accessing values in an operation and using them as parameters while invoking the linked operation.
  *
- * ### References
- * - [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
+ * @see [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
  *
  * @Annotation
  */
@@ -29,7 +28,7 @@ class Link extends AbstractAnnotation
 {
 
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -44,16 +43,19 @@ class Link extends AbstractAnnotation
 
     /**
      * A relative or absolute reference to an OA operation.
-     * This field is mutually exclusive of the operationId field, and must point to an Operation Object.
-     * Relative operationRef values may be used to locate an existing Operation Object in the OpenAPI definition.
+     *
+     * This field is mutually exclusive of the <code>operationId</code> field, and must point to an Operation object.
+     *
+     * Relative values may be used to locate an existing Operation object in the OpenAPI definition.
      *
      * @var string
      */
     public $operationRef = Generator::UNDEFINED;
 
     /**
-     * The name of an existing, resolvable OA operation, as defined with a unique operationId.
-     * This field is mutually exclusive of the operationRef field.
+     * The name of an existing, resolvable OA operation, as defined with a unique <code>operationId</code>.
+     *
+     * This field is mutually exclusive of the <code>operationRef</code> field.
      *
      * @var string
      */
@@ -61,9 +63,12 @@ class Link extends AbstractAnnotation
 
     /**
      * A map representing parameters to pass to an operation as specified with operationId or identified via
-     * operationRef. The key is the parameter name to be used, whereas the value can be a constant or an expression to
-     * be evaluated and passed to the linked operation. The parameter name can be qualified using the parameter
-     * location [{in}.]{name} for operations that use the same parameter name in different locations (e.g. path.id).
+     * operationRef.
+     *
+     * The key is the parameter name to be used, whereas the value can be a constant or an expression to
+     * be evaluated and passed to the linked operation.
+     * The parameter name can be qualified using the parameter location [{in}.]{name} for operations
+     * that use the same parameter name in different locations (e.g. path.id).
      */
     public $parameters = Generator::UNDEFINED;
 
@@ -74,6 +79,7 @@ class Link extends AbstractAnnotation
 
     /**
      * A description of the link.
+     *
      * CommonMark syntax may be used for rich text representation.
      *
      * @var string

@@ -11,8 +11,7 @@ use OpenApi\Generator;
 /**
  * Describes a single request body.
  *
- * ### References
- * - [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
+ * @see [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
  *
  * @Annotation
  */
@@ -29,7 +28,9 @@ class RequestBody extends AbstractAnnotation
 
     /**
      * A brief description of the parameter.
+     *
      * This could contain examples of use.
+     *
      * CommonMark syntax may be used for rich text representation.
      *
      * @var string
@@ -38,6 +39,7 @@ class RequestBody extends AbstractAnnotation
 
     /**
      * Determines whether this parameter is mandatory.
+     *
      * If the parameter location is "path", this property is required and its value must be true.
      * Otherwise, the property may be included and its default value is false.
      *
@@ -47,6 +49,7 @@ class RequestBody extends AbstractAnnotation
 
     /**
      * The content of the request body.
+     *
      * The key is a media type or media type range and the value describes it. For requests that match multiple keys,
      * only the most specific key is applicable. e.g. text/plain overrides text/*.
      *

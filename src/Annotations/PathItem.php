@@ -14,15 +14,14 @@ use OpenApi\Generator;
  * A Path Item may be empty, due to ACL constraints.
  * The path itself is still exposed to the documentation viewer but they will not know which operations and parameters are available.
  *
- * ### References
- * - [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
+ * @see [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
  *
  * @Annotation
  */
 class PathItem extends AbstractAnnotation
 {
     /**
-     * $ref See https://swagger.io/docs/specification/using-ref/.
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string
      */
@@ -107,6 +106,7 @@ class PathItem extends AbstractAnnotation
 
     /**
      * A list of parameters that are applicable for all the operations described under this path.
+     *
      * These parameters can be overridden at the operation level, but cannot be removed there.
      * The list must not include duplicated parameters.
      * A unique parameter is defined by a combination of a name and location.

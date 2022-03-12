@@ -11,10 +11,9 @@ use OpenApi\Generator;
 /**
  * The object provides metadata about the API.
  *
- * The metadata may be used by the clients if needed, and may be presented in editing or documentation generation tools for convenience.
+ * The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
  *
- * ### References
- * - [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
+ * @see [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
  *
  * @Annotation
  */
@@ -28,14 +27,18 @@ class Info extends AbstractAnnotation
     public $title = Generator::UNDEFINED;
 
     /**
-     * A short description of the application. CommonMark syntax may be used for rich text representation.
+     * A short description of the application.
+     *
+     * CommonMark syntax may be used for rich text representation.
      *
      * @var string
      */
     public $description = Generator::UNDEFINED;
 
     /**
-     * A URL to the Terms of Service for the API. must be in the format of a url.
+     * A URL to the Terms of Service for the API.
+     *
+     * Must be in the format of a url.
      *
      * @var string
      */

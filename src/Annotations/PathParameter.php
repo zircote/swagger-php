@@ -7,7 +7,7 @@
 namespace OpenApi\Annotations;
 
 /**
- * A request path parameter.
+ * A `@OA\Request` path parameter.
  *
  * @Annotation
  */
