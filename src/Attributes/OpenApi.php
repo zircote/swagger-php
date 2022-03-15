@@ -12,6 +12,8 @@ use OpenApi\Generator;
 class OpenApi extends \OpenApi\Annotations\OpenApi
 {
     /**
+     * @param Server[]|null             $servers
+     * @param Tag[]|null                $tags
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
