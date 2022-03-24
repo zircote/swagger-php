@@ -31,10 +31,10 @@ trait OperationTrait
         ?array $parameters = null,
         ?array $responses = null,
         ?ExternalDocumentation $externalDocs = null,
+        ?bool $deprecated = null,
         // annotation
         ?array $x = null,
-        ?array $attachables = null,
-        ?bool $deprecated = null
+        ?array $attachables = null
     ) {
         parent::__construct([
                 'path' => $path ?? Generator::UNDEFINED,
@@ -44,9 +44,9 @@ trait OperationTrait
                 'security' => $security ?? Generator::UNDEFINED,
                 'servers' => $servers ?? Generator::UNDEFINED,
                 'tags' => $tags ?? Generator::UNDEFINED,
+                'deprecated' => $deprecated ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs, $attachables),
-                'deprecated' => $deprecated ?? Generator::UNDEFINED,
             ]);
     }
 }
