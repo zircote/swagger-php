@@ -55,8 +55,17 @@ class Generator
     /** @var LoggerInterface|null PSR logger. */
     protected $logger = null;
 
-    /** @var string */
-    protected $version = OpenApi::DEFAULT_VERSION;
+    /**
+     * OpenApi version override.
+     *
+     * If set, it will override the version set in the `OpenApi` annotation.
+     *
+     * Due to the order of processing any conditional code using this (via `Context::$version`)
+     * must come only after the analysis is finished.
+     *
+     * @var string|null
+     */
+    protected $version = null;
 
     private $configStack;
 
@@ -259,12 +268,12 @@ class Generator
         return $this->logger ?: new DefaultLogger();
     }
 
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    public function setVersion(string $version): Generator
+    public function setVersion(?string $version): Generator
     {
         $this->version = $version;
 
@@ -282,7 +291,7 @@ class Generator
                 'processors' => null,
                 'logger' => null,
                 'validate' => true,
-                'version' => OpenApi::DEFAULT_VERSION,
+                'version' => null,
             ];
 
         return (new Generator($config['logger']))
@@ -345,7 +354,8 @@ class Generator
             $analysis->process($this->getProcessors());
 
             if ($analysis->openapi) {
-                $analysis->openapi->openapi = $this->version;
+                $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
+                $rootContext->version = $analysis->openapi->openapi;
             }
 
             // validation

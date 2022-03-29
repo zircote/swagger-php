@@ -9,6 +9,7 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Attributes as OAF;
 
+#[OAT\OpenApi(openapi: '3.1.0')]
 #[OAT\Info(
     version: '1.0.0',
     title: 'Basic single file API',

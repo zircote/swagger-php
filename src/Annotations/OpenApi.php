@@ -28,9 +28,12 @@ class OpenApi extends AbstractAnnotation
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
      *
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
+     *
+     * A version specified via `Generator::setVersion()` will overwrite this value.
+     *
      * This is not related to the API info::version string.
      *
-     * @var string
+     * @var string|null
      */
     public $openapi = self::DEFAULT_VERSION;
 

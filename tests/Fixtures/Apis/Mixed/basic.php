@@ -10,10 +10,13 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 /**
- * @OA\Info(
- *   version="1.0.0",
- *   title="Basic single file API",
- *   @OA\License(name="MIT", identifier="MIT")
+ * @OA\OpenApi(
+ *     openapi="3.1.0",
+ *     @OA\Info(
+ *         version="1.0.0",
+ *         title="Basic single file API",
+ *         @OA\License(name="MIT", identifier="MIT")
+ *     )
  * )
  */
 #[OAT\Tag(name: 'products', description: 'All about products')]

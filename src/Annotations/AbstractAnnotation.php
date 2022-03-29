@@ -105,9 +105,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
         } else {
             $this->_context = Context::detect(1);
         }
+
         if ($this->_context->is('annotations') === false) {
             $this->_context->annotations = [];
         }
+
         $this->_context->annotations[] = $this;
         $nestedContext = new Context(['nested' => $this], $this->_context);
         foreach ($properties as $property => $value) {
@@ -138,6 +140,15 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if ($value !== Generator::UNDEFINED) {
                     $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
                 }
+            }
+        }
+
+        if ($this instanceof OpenApi) {
+            if ($this->_context->root()->version) {
+                // override via `Generator::setVersion()`
+                $this->openapi = $this->_context->root()->version;
+            } else {
+                $this->_context->root()->version = $this->openapi;
             }
         }
     }
@@ -386,6 +397,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (in_array($this, $skip, true)) {
             return true;
         }
+
         $valid = true;
 
         // Report orphaned annotations
@@ -437,6 +449,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 }
             }
         }
+
         if (property_exists($this, 'ref') && !Generator::isDefault($this->ref) && $this->ref !== null) {
             if (substr($this->ref, 0, 2) === '#/' && count($stack) > 0 && $stack[0] instanceof OpenApi) {
                 // Internal reference
