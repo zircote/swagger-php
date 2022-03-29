@@ -37,7 +37,7 @@ class ExpandEnums
                     return $case->name;
                 }, $re->getCases());
                 $type = 'string';
-                if ($re->isBacked() && ($backingType = $re->getBackingType())) {
+                if ($re->isBacked() && ($backingType = $re->getBackingType()) && method_exists($backingType, 'getName')) {
                     $type = !Generator::isDefault($schema->type) ? $schema->type : $backingType->getName();
                 }
                 Util::mapNativeType($schema, $type);
