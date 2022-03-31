@@ -77,7 +77,7 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function getContext(array $properties = [], string $version = OpenApi::DEFAULT_VERSION): Context
+    public function getContext(array $properties = [], ?string $version = OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
             [
