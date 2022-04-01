@@ -57,7 +57,7 @@ class Components extends AbstractAnnotation
     public $examples = Generator::UNDEFINED;
 
     /**
-     * Reusable Request Bodys.
+     * Reusable Request Bodies.
      *
      * @var RequestBody[]
      */
@@ -87,7 +87,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Callbacks.
      *
-     * @var callable[]
+     * @var array
      */
     public $callbacks = Generator::UNDEFINED;
 
@@ -102,7 +102,6 @@ class Components extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
-        Schema::class => ['schemas', 'schema'],
         Response::class => ['responses', 'response'],
         Parameter::class => ['parameters', 'parameter'],
         PathParameter::class => ['parameters', 'parameter'],
@@ -111,13 +110,35 @@ class Components extends AbstractAnnotation
         Header::class => ['headers', 'header'],
         SecurityScheme::class => ['securitySchemes', 'securityScheme'],
         Link::class => ['links', 'link'],
+        Schema::class => ['schemas', 'schema'],
         Attachable::class => ['attachables'],
     ];
 
-    public static function ref($schema, bool $encode = true): string
+    /**
+     * Generate a `#/components/...` reference for the given annotation.
+     *
+     * A `string` component value always assumes type `Schema`.
+     *
+     * @param AbstractAnnotation|string $component
+     */
+    public static function ref($component, bool $encode = true): string
     {
-        $name = $schema instanceof Schema ? $schema->schema : $schema;
+        if ($component instanceof AbstractAnnotation) {
+            foreach (Components::$_nested as $type => $nested) {
+                // exclude attachables
+                if (2 == count($nested)) {
+                    if ($component instanceof $type) {
+                        $type = $nested[0];
+                        $name = $component->{$nested[1]};
+                        break;
+                    }
+                }
+            }
+        } else {
+            $type = 'schemas';
+            $name = $component;
+        }
 
-        return Components::SCHEMA_REF . ($encode ? Util::refEncode($name) : $name);
+        return '#/components/' . $type . '/' . ($encode ? Util::refEncode((string) $name) : $name);
     }
 }
