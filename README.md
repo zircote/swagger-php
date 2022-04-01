@@ -71,7 +71,7 @@ $openapi = \OpenApi\Generator::scan(['/path/to/project']);
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```
-Documentation of how to use the `Generator` class can be found in the [Generator Migration](https://zircote.github.io/swagger-php/Generator-migration.html) guide.
+Documentation of how to use the `Generator` class can be found in the [Generator reference](https://zircote.github.io/swagger-php/reference/generator).
 
 ### Usage from the Command Line Interface
 
