@@ -21,6 +21,7 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
         string $openapi = self::DEFAULT_VERSION,
         ?Info $info = null,
         ?array $servers = null,
+        ?array $security = null,
         ?array $tags = null,
         ?ExternalDocumentation $externalDocs = null,
         // annotation
@@ -29,6 +30,7 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
     ) {
         parent::__construct([
                 'openapi' => $openapi,
+                'security' => $security ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($info, $servers, $tags, $externalDocs, $attachables),
             ]);

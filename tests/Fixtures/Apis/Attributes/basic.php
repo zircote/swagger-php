@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Attributes as OAF;
 
-#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\OpenApi(openapi: '3.1.0', security: [['bearerAuth' => []]])]
 #[OAT\Info(
     version: '1.0.0',
     title: 'Basic single file API',
@@ -19,6 +19,7 @@ use OpenApi\Tests\Fixtures\Attributes as OAF;
 #[OAT\Server(url: 'https://localhost/api', description: 'API server')]
 #[OAT\Tag(name: 'products', description: 'All about products')]
 #[OAT\Tag(name: 'catalog', description: 'Catalog API')]
+#[OAT\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer')]
 class OpenApiSpec
 {
 }

@@ -121,6 +121,13 @@ components:
               example: 1
             releasedAt:
               type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  -
+    bearerAuth: []
 tags:
   -
     name: products
