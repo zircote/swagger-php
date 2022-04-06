@@ -1,6 +1,6 @@
 [![Build Status](https://img.shields.io/github/workflow/status/zircote/swagger-php/build?style=flat-square)](https://github.com/zircote/swagger-php/actions?query=workflow:build)
 [![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg?style=flat-square)](https://packagist.org/packages/zircote/swagger-php)
-[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square)](LICENSE-2.0.txt)
+[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square)](LICENSE)
 
 # swagger-php
 
