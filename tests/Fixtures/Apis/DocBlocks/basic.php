@@ -9,6 +9,10 @@ namespace OpenApi\Tests\Fixtures\Apis\DocBlocks;
 use OpenApi\Annotations as OA;
 
 /**
+ * @OA\OpenApi(
+ *     security={{"bearerAuth": {}}}
+ * )
+ *
  * @OA\Info(
  *     version="1.0.0",
  *     title="Basic single file API",
@@ -25,6 +29,11 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(
  *     name="catalog",
  *     description="Catalog API"
+ * )
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
  * )
  */
 class OpenApiSpec

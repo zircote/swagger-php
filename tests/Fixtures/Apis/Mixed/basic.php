@@ -16,7 +16,13 @@ use OpenApi\Attributes as OAT;
  *         version="1.0.0",
  *         title="Basic single file API",
  *         @OA\License(name="MIT", identifier="MIT")
- *     )
+ *     ),
+ *     security={{"bearerAuth": {}}}
+ * )
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
  * )
  */
 #[OAT\Tag(name: 'products', description: 'All about products')]
