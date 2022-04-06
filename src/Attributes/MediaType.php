@@ -19,7 +19,7 @@ class MediaType extends \OpenApi\Annotations\MediaType
     public function __construct(
         ?string $mediaType = null,
         ?Schema $schema = null,
-        $example = null,
+        $example = Generator::UNDEFINED,
         ?array $examples = null,
         ?string $encoding = null,
         // annotation
@@ -28,7 +28,7 @@ class MediaType extends \OpenApi\Annotations\MediaType
     ) {
         parent::__construct([
                 'mediaType' => $mediaType ?? Generator::UNDEFINED,
-                'example' => $example ?? Generator::UNDEFINED,
+                'example' => $example,
                 'encoding' => $encoding ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($schema, $examples, $attachables),

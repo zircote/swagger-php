@@ -64,7 +64,7 @@ class Product implements ProductInterface
 
     public function __construct(
         #[OAT\Property()] public int $quantity,
-        #[OAT\Property()] public string $brand,
+        #[OAT\Property(nullable: true, default: null, example: null)] public string $brand,
         #[OAT\Property()] public Colour $colour,
         #[OAT\Property(type: 'string')] public \DateTimeInterface $releasedAt,
     ) {
