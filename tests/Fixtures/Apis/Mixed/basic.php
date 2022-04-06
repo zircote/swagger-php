@@ -78,7 +78,7 @@ class Product implements ProductInterface
     #[OAT\Property()]
     public int $quantity;
 
-    #[OAT\Property()]
+    #[OAT\Property(nullable: true, default: null, example: null)]
     public string $brand;
 
     /** @OA\Property */

@@ -85,7 +85,7 @@ class Product implements ProductInterface
     /** @OA\Property */
     public int $quantity;
 
-    /** @OA\Property */
+    /** @OA\Property(nullable=true, default=null, example=null) */
     public string $brand;
 
     /** @OA\Property */

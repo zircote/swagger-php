@@ -108,7 +108,11 @@ components:
             quantity:
               type: integer
             brand:
-              type: string
+              type:
+                - string
+                - 'null'
+              default: null
+              example: null
             colour:
               $ref: '#/components/schemas/Colour'
             id:
