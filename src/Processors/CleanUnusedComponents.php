@@ -7,7 +7,7 @@ use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Components;
 use OpenApi\Generator;
 
-class StripUnusedComponents
+class CleanUnusedComponents
 {
     public function __invoke(Analysis $analysis)
     {
@@ -16,13 +16,13 @@ class StripUnusedComponents
         }
 
         for ($ii=0; $ii < 5; ++$ii) {
-            if (!$this->strip($analysis)) {
+            if (!$this->cleanup($analysis)) {
                 break;
             }
         }
     }
 
-    protected function strip(Analysis $analysis): bool
+    protected function cleanup(Analysis $analysis): bool
     {
         $usedRefs = [];
         foreach ($analysis->annotations as $annotation) {

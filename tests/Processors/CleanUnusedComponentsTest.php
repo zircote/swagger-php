@@ -3,10 +3,10 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Generator;
-use OpenApi\Processors\StripUnusedComponents;
+use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\OpenApiTestCase;
 
-class StripUnusedComponentsTest extends OpenApiTestCase
+class CleanUnusedComponentsTest extends OpenApiTestCase
 {
     public function processorCases()
     {
@@ -14,7 +14,7 @@ class StripUnusedComponentsTest extends OpenApiTestCase
 
         return [
             'default' => [$defaultProcessors, 2],
-            'stripped' => [array_merge($defaultProcessors, [new StripUnusedComponents()]), 0],
+            'stripped' => [array_merge($defaultProcessors, [new CleanUnusedComponents()]), 0],
         ];
     }
 
