@@ -53,6 +53,7 @@ class Schema extends \OpenApi\Annotations\Schema
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        $const = Generator::UNDEFINED,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -89,6 +90,7 @@ class Schema extends \OpenApi\Annotations\Schema
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'const' => $const,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),

@@ -78,6 +78,11 @@
       "phpunit",
       "@lint"
     ],
+    "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
+    "testall": [
+      "@test",
+      "@testlegacy"
+    ],
     "analyse": [
       "phpstan analyse --memory-limit=2G",
       "psalm --show-info=true"

@@ -71,6 +71,9 @@ class Product implements ProductInterface
 {
     use NameTrait;
 
+    #[OAT\Property(property: 'kind')]
+    public const KIND = 'Virtual';
+
     /**
      * The id.
      *

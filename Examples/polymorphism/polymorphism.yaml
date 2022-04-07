@@ -54,6 +54,10 @@ components:
             property2:
               type: string
               nullable: false
+            type:
+              type: string
+              enum:
+                - Virtual
     FlResponsible:
       allOf:
         -

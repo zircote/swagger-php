@@ -9,7 +9,10 @@ use OpenApi\Annotations as OA;
  */
 final class Employee extends AbstractResponsible
 {
-    protected const TYPE = 'employee';
+    /**
+     * @OA\Property(property="type")
+     */
+    protected const TYPE = 'Virtual';
 
     /**
      * @OA\Property(nullable=false)
