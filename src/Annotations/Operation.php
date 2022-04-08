@@ -20,7 +20,7 @@ use OpenApi\Generator;
 abstract class Operation extends AbstractAnnotation
 {
     /**
-     * key in the OpenApi "Paths Object" for this operation.
+     * Key in the OpenApi "Paths Object" for this operation.
      *
      * @var string
      */

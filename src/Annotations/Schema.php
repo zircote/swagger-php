@@ -120,48 +120,49 @@ class Schema extends AbstractAnnotation
     public $collectionFormat = Generator::UNDEFINED;
 
     /**
-     * Sets a default value to the parameter. The type of the value depends on the defined type. See
-     * http://json-schema.org/latest/json-schema-validation.html#anchor101.
+     * Sets a default value to the parameter. The type of the value depends on the defined type.
+     *
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor101)
      */
     public $default = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
      *
      * @var number
      */
     public $maximum = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor17.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
      *
      * @var bool
      */
     public $exclusiveMaximum = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
      *
      * @var number
      */
     public $minimum = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor21.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
      *
      * @var bool
      */
     public $exclusiveMinimum = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor26.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor26)
      *
      * @var int
      */
     public $maxLength = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor29.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor29)
      *
      * @var int
      */
@@ -175,28 +176,28 @@ class Schema extends AbstractAnnotation
     public $pattern = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor42.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor42)
      *
      * @var int
      */
     public $maxItems = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor45.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor45)
      *
      * @var int
      */
     public $minItems = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor49.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor49)
      *
      * @var bool
      */
     public $uniqueItems = Generator::UNDEFINED;
 
     /**
-     * See http://json-schema.org/latest/json-schema-validation.html#anchor76.
+     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
      * @var array
      */
@@ -267,7 +268,7 @@ class Schema extends AbstractAnnotation
     /**
      * A free-form property to include an example of an instance for this schema.
      *
-     * To represent examples that cannot be naturally represented in JSON or YAML, a string value can be used to
+     * To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to
      * contain the example with escaping where necessary.
      */
     public $example = Generator::UNDEFINED;
