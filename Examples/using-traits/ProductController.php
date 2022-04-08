@@ -2,6 +2,7 @@
 
 namespace OpenApi\Examples\UsingTraits;
 
+use OpenApi\Annotations as OA;
 /**
  * A controller.
  */
@@ -25,7 +26,13 @@ class ProductController
      *     @OA\Response(
      *         response="default",
      *         description="successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *         @OA\JsonContent(
+     *             oneOf={
+     *           	   @OA\Schema(ref="#/components/schemas/SimpleProduct"),
+     *           	   @OA\Schema(ref="#/components/schemas/Product"),
+     *           	   @OA\Schema(ref="#/components/schemas/TrickyProduct")
+     *             }
+     *         )
      *     )
      * )
      */

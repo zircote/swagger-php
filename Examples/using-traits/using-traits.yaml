@@ -38,7 +38,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                oneOf:
+                  - { $ref: '#/components/schemas/SimpleProduct' }
+                  - { $ref: '#/components/schemas/Product' }
+                  - { $ref: '#/components/schemas/TrickyProduct' }
 components:
   schemas:
     BellsAndWhistles:
