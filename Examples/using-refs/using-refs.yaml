@@ -61,6 +61,8 @@ components:
               example: 1
             status:
               $ref: '#/components/schemas/product_status'
+            stockLevel:
+              $ref: '#/components/schemas/StockLevel'
     StockLevel:
       type: integer
       enum:
@@ -74,8 +76,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Product'
-    todo:
-      description: 'This API call has no documentated response (yet)'
   parameters:
     product_id_in_path_required:
       name: product_id
