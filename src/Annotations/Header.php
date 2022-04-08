@@ -27,16 +27,16 @@ class Header extends AbstractAnnotation
     public $header = Generator::UNDEFINED;
 
     /**
-     * @var string
-     */
-    public $description = Generator::UNDEFINED;
-
-    /**
      * A brief description of the parameter.
      *
      * This could contain examples of use.
      * CommonMark syntax MAY be used for rich text representation.
      *
+     * @var string
+     */
+    public $description = Generator::UNDEFINED;
+
+    /**
      * @var bool
      */
     public $required = Generator::UNDEFINED;

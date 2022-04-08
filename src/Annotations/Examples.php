@@ -39,7 +39,7 @@ class Examples extends AbstractAnnotation
      *
      * The value field and externalValue field are mutually exclusive.
      *
-     * To represent examples of media types that cannot naturally represented
+     * To represent examples of media types that cannot naturally be represented
      * in JSON or YAML, use a string value to contain the example, escaping where necessary.
      *
      * @var string
@@ -51,7 +51,7 @@ class Examples extends AbstractAnnotation
      *
      * The value field and externalValue field are mutually exclusive.
      *
-     * To represent examples of media types that cannot naturally represented
+     * To represent examples of media types that cannot naturally be represented
      * in JSON or YAML, use a string value to contain the example, escaping where necessary.
      *
      * @var string

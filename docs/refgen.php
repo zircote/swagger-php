@@ -114,7 +114,9 @@ EOT;
                 }
 
                 echo '  <dt><strong>' . $parameter . '</strong>' . $var . '</dt>' . PHP_EOL;
-                echo '  <dd>' . self::NO_DETAILS_AVAILABLE . '</dd>' . PHP_EOL;
+                echo '  <dd>';
+                echo '<p>' . self::NO_DETAILS_AVAILABLE . '</p>';
+                echo '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
         }
@@ -160,7 +162,21 @@ EOT;
                 }
 
                 echo '  <dt><strong>' . $property . '</strong>' . $var . '</dt>' . PHP_EOL;
-                echo '  <dd>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</dd>' . PHP_EOL;
+                echo '  <dd>';
+                echo '<p>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</p>';
+                if ($propertyDocumentation['see']) {
+                    $links = [];
+                    foreach ($propertyDocumentation['see'] as $see) {
+                        if ($link = $this->linkFromMarkup($see)) {
+                            $links[] = $link;
+                        }
+                    }
+                    if ($links) {
+                        echo '<p><i>See</i>: ' . implode(', ', $links) . '</p>';
+                    }
+                }
+
+                echo '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
         }
@@ -175,6 +191,13 @@ EOT;
         echo PHP_EOL;
 
         return ob_get_clean();
+    }
+
+    protected function linkFromMarkup(string $see): ?string
+    {
+        preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
+
+        return 3 == count($matches) ? '<a href="'.$matches[2].'">'.$matches[1].'</a>' : null;
     }
 
     protected function getReflectionType(string $fqdn, $rp, bool $preferDefault = false, string $def = ''): string
@@ -200,7 +223,9 @@ EOT;
             $var = array_merge($var, explode('|', $def));
         }
 
-        return implode('|', array_map(function ($item) { return htmlentities($item); }, array_unique($var)));
+        return implode('|', array_map(function ($item) {
+            return htmlentities($item);
+        }, array_unique($var)));
     }
 
     protected function extractDocumentation($docblock): array

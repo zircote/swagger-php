@@ -76,7 +76,7 @@ class SecurityScheme extends AbstractAnnotation
     /**
      * The name of the HTTP Authorization scheme.
      *
-     * @see https://tools.ietf.org/html/rfc7235#section-5.1
+     * @see [RFC7235](https://tools.ietf.org/html/rfc7235#section-5.1)
      *
      * @var string
      */

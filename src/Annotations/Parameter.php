@@ -27,7 +27,7 @@ class Parameter extends AbstractAnnotation
     public $ref = Generator::UNDEFINED;
 
     /**
-     * The key into Components->parameters or PathItem->parameters array.
+     * The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.
      *
      * @var string
      */
@@ -166,26 +166,34 @@ class Parameter extends AbstractAnnotation
     public $content = Generator::UNDEFINED;
 
     /**
-     * Path-style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.7.
+     * Path-style parameters defined by RFC6570.
+     *
+     * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.7)
      */
     public $matrix = Generator::UNDEFINED;
 
     /**
-     * Label style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.5.
+     * Label style parameters defined by RFC6570.
+     *
+     * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.5)
      */
     public $label = Generator::UNDEFINED;
 
     /**
-     * Form style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.8.
+     * Form style parameters defined by RFC6570.
      *
      * This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.
+     *
+     * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.8)
      */
     public $form = Generator::UNDEFINED;
 
     /**
-     * Simple style parameters defined by https://tools.ietf.org/html/rfc6570#section-3.2.2.
+     * Simple style parameters defined by RFC6570.
      *
      * This option replaces collectionFormat with a csv value from OpenAPI 2.0.
+     *
+     * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.2)
      *
      * @var array
      */

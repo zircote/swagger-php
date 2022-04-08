@@ -46,8 +46,11 @@ class Response extends AbstractAnnotation
     /**
      * Maps a header name to its definition.
      *
-     * RFC7230 states header names are case insensitive. https://tools.ietf.org/html/rfc7230#page-22
+     * RFC7230 states header names are case insensitive.
+     *
      * If a response header is defined with the name "Content-Type", it shall be ignored.
+     *
+     * @see [RFC7230](https://tools.ietf.org/html/rfc7230#page-22)
      *
      * @var Header[]
      */
@@ -57,8 +60,9 @@ class Response extends AbstractAnnotation
      * A map containing descriptions of potential response payloads.
      *
      * The key is a media type or media type range and the value describes it.
-     * For responses that match multiple keys, only the most specific key is applicable. e.g. text/plain overrides
-     * text/*.
+     *
+     * For responses that match multiple keys, only the most specific key is applicable;
+     * e.g. <code>text/plain</code> overrides <code>text/*</code>.
      *
      * @var MediaType[]
      */
