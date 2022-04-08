@@ -24,7 +24,8 @@ class ProductController
      *     ),
      *     @OA\Response(
      *         response="default",
-     *         description="successful operation"
+     *         description="successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
      *     )
      * )
      */

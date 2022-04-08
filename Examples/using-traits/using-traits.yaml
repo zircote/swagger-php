@@ -35,6 +35,10 @@ paths:
       responses:
         default:
           description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
 components:
   schemas:
     BellsAndWhistles:
