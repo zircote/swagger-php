@@ -55,7 +55,6 @@ class CleanUnusedComponents
 
         // TODO: securitySchema refs  @OA\OpenApi::security, Operation::security
 
-
         $unusedRefs = [];
         foreach (Components::$_nested as $nested) {
             if (2 == count($nested)) {
@@ -74,7 +73,7 @@ class CleanUnusedComponents
 
         $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested) {
             foreach ($annotation::$_nested as $nested) {
-                $nestedKey = ((array)$nested)[0];
+                $nestedKey = ((array) $nested)[0];
                 if (!Generator::isDefault($annotation->{$nestedKey})) {
                     if (is_array($annotation->{$nestedKey})) {
                         foreach ($annotation->{$nestedKey} as $elem) {

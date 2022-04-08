@@ -30,7 +30,7 @@ class Product extends Model
     public $status;
 
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public StockLevel $stockLevel;
 }

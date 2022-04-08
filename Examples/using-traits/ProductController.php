@@ -3,6 +3,7 @@
 namespace OpenApi\Examples\UsingTraits;
 
 use OpenApi\Annotations as OA;
+
 /**
  * A controller.
  */
