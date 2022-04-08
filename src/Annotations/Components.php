@@ -21,6 +21,8 @@ use OpenApi\Util;
  */
 class Components extends AbstractAnnotation
 {
+    public const COMPONENTS_PREFIX = '#/components/';
+
     /**
      * Schema reference.
      *
@@ -139,6 +141,6 @@ class Components extends AbstractAnnotation
             $name = $component;
         }
 
-        return '#/components/' . $type . '/' . ($encode ? Util::refEncode((string) $name) : $name);
+        return self::COMPONENTS_PREFIX . $type . '/' . ($encode ? Util::refEncode((string) $name) : $name);
     }
 }
