@@ -5,6 +5,8 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Components;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Operation;
 use OpenApi\Generator;
 
 class CleanUnusedComponents
@@ -16,7 +18,7 @@ class CleanUnusedComponents
         }
 
         // allow multiple runs to catch nested dependencies
-        for ($ii=0; $ii < 10; ++$ii) {
+        for ($ii = 0; $ii < 10; ++$ii) {
             if (!$this->cleanup($analysis)) {
                 break;
             }
@@ -39,7 +41,20 @@ class CleanUnusedComponents
                     }
                 }
             }
+            if ($annotation instanceof OpenApi || $annotation instanceof Operation) {
+                if (!Generator::isDefault($annotation->security)) {
+                    foreach ($annotation->security as $security) {
+                        foreach (array_keys($security) as $securityName) {
+                            $ref = Components::COMPONENTS_PREFIX . 'securitySchemes/' . $securityName;
+                            $usedRefs[$ref] = $ref;
+                        }
+                    }
+                }
+            }
         }
+
+        // TODO: securitySchema refs  @OA\OpenApi::security, Operation::security
+
 
         $unusedRefs = [];
         foreach (Components::$_nested as $nested) {
@@ -59,7 +74,7 @@ class CleanUnusedComponents
 
         $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested) {
             foreach ($annotation::$_nested as $nested) {
-                $nestedKey = ((array) $nested)[0];
+                $nestedKey = ((array)$nested)[0];
                 if (!Generator::isDefault($annotation->{$nestedKey})) {
                     if (is_array($annotation->{$nestedKey})) {
                         foreach ($annotation->{$nestedKey} as $elem) {
