@@ -11,7 +11,7 @@ class PropertyRefController
      *     @OA\Parameter(ref="#/components/schemas/Product/properties/id"),
      *     @OA\Response(
      *         response="default",
-     *         ref="#/components/responses/product"
+     *         ref="#/components/responses/todo"
      *     )
      * )
      */
