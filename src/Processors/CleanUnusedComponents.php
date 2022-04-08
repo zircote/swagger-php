@@ -67,8 +67,8 @@ class CleanUnusedComponents
                                 $detachNested($analysis, $elem, $detachNested);
                             }
                         }
-                    } elseif ($annotation->{$componentType} instanceof AbstractAnnotation) {
-                        $analysis->annotations->detach($annotation->{$componentType});
+                    } elseif ($annotation->{$nestedKey} instanceof AbstractAnnotation) {
+                        $analysis->annotations->detach($annotation->{$nestedKey});
                     }
                 }
             }
