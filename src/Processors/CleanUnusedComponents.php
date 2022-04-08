@@ -15,7 +15,8 @@ class CleanUnusedComponents
             return;
         }
 
-        for ($ii=0; $ii < 5; ++$ii) {
+        // allow multiple runs to catch nested dependencies
+        for ($ii=0; $ii < 10; ++$ii) {
             if (!$this->cleanup($analysis)) {
                 break;
             }
@@ -43,42 +44,46 @@ class CleanUnusedComponents
         $unusedRefs = [];
         foreach (Components::$_nested as $nested) {
             if (2 == count($nested)) {
-                [$key, $nameKey] = $nested;
-                if (!Generator::isDefault($analysis->openapi->components->{$key})) {
-                    foreach ($analysis->openapi->components->{$key} as $component) {
+                // $nested[1] is the name of the property that holds the component name
+                [$componentType, $nameProperty] = $nested;
+                if (!Generator::isDefault($analysis->openapi->components->{$componentType})) {
+                    foreach ($analysis->openapi->components->{$componentType} as $component) {
                         $ref = Components::ref($component);
                         if (!in_array($ref, $usedRefs)) {
-                            $unusedRefs[$ref] = [$ref, $nameKey];
+                            $unusedRefs[$ref] = [$ref, $nameProperty];
                         }
                     }
                 }
             }
         }
 
-        // remove unused
-        foreach ($unusedRefs as $details) {
-            [$ref, $nameKey] = $details;
-            [$hash, $components, $key, $name] = explode('/', $ref);
-            foreach ($analysis->openapi->components->{$key} as $ii => $component) {
-                if ($component->{$nameKey} == $name) {
-                    $annotation = $analysis->openapi->components->{$key}[$ii];
-                    // recursive removal of nested annotations
-                    foreach ($annotation::$_nested as $nested) {
-                        $nestedKey = ((array) $nested)[0];
-                        if (!Generator::isDefault($annotation->{$nestedKey})) {
-                            if (is_array($annotation->{$nestedKey})) {
-                                foreach ($annotation->{$nestedKey} as $elem) {
-                                    if ($elem instanceof AbstractAnnotation) {
-                                        $analysis->annotations->detach($elem);
-                                    }
-                                }
-                            } elseif ($annotation->{$key} instanceof AbstractAnnotation) {
-                                $analysis->annotations->detach($annotation->{$key});
+        $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested) {
+            foreach ($annotation::$_nested as $nested) {
+                $nestedKey = ((array) $nested)[0];
+                if (!Generator::isDefault($annotation->{$nestedKey})) {
+                    if (is_array($annotation->{$nestedKey})) {
+                        foreach ($annotation->{$nestedKey} as $elem) {
+                            if ($elem instanceof AbstractAnnotation) {
+                                $detachNested($analysis, $elem, $detachNested);
                             }
                         }
+                    } elseif ($annotation->{$componentType} instanceof AbstractAnnotation) {
+                        $analysis->annotations->detach($annotation->{$componentType});
                     }
-                    $analysis->annotations->detach($annotation);
-                    unset($analysis->openapi->components->{$key}[$ii]);
+                }
+            }
+            $analysis->annotations->detach($annotation);
+        };
+
+        // remove unused
+        foreach ($unusedRefs as $refDetails) {
+            [$ref, $nameProperty] = $refDetails;
+            [$hash, $components, $componentType, $name] = explode('/', $ref);
+            foreach ($analysis->openapi->components->{$componentType} as $ii => $component) {
+                if ($component->{$nameProperty} == $name) {
+                    $annotation = $analysis->openapi->components->{$componentType}[$ii];
+                    $detachNested($analysis, $annotation, $detachNested);
+                    unset($analysis->openapi->components->{$componentType}[$ii]);
                 }
             }
         }

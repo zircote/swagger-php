@@ -14,7 +14,7 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
 
         return [
             'default' => [$defaultProcessors, 2],
-            'stripped' => [array_merge($defaultProcessors, [new CleanUnusedComponents()]), 0],
+            'clean' => [array_merge($defaultProcessors, [new CleanUnusedComponents()]), 0],
         ];
     }
 
