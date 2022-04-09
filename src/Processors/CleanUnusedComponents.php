@@ -5,8 +5,10 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Components;
+use OpenApi\Annotations\Items;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
+use OpenApi\Annotations\Property;
 use OpenApi\Generator;
 
 class CleanUnusedComponents
@@ -51,10 +53,14 @@ class CleanUnusedComponents
                     }
                 }
             }
+//            if ($annotation instanceof Property) {
+//                if ($annotation->type == 'array') {
+//                    var_dump($annotation->items->ref);
+//                }
+//
+//            }
         }
-
-        // TODO: securitySchema refs  @OA\OpenApi::security, Operation::security
-
+//var_dump($usedRefs);
         $unusedRefs = [];
         foreach (Components::$_nested as $nested) {
             if (2 == count($nested)) {
