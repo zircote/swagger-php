@@ -206,4 +206,51 @@ class ProductController
     public function getAll()
     {
     }
+
+    /**
+     * @OA\Post(
+     *     path="/subscribe",
+     *     tags={"products"},
+     *     operationId="subscribe",
+     *     summary="Subscribe to product webhook",
+     *     @OA\Parameter(
+     *         name="callbackUrl",
+     *         in="query"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="callbackUrl registered"
+     *     ),
+     *     callbacks={
+     *         "onChange": {
+     *             "{$request.query.callbackUrl}": {
+     *                 "post": {
+     *                     "requestBody": @OA\RequestBody(
+     *                         description="subscription payload",
+     *                         @OA\MediaType(
+     *                             mediaType="application/json",
+     *                             @OA\Schema(
+     *                                 @OA\Property(
+     *                                     property="timestamp",
+     *                                     description="time of change",
+     *                                     type="string",
+     *                                     format="date-time"
+     *                                 )
+     *                             )
+     *                         )
+     *                     )
+     *                 },
+     *                 "responses": {
+     *                     "200": {
+     *                         "description": "Your server implementation should return this HTTP status code if the data was received successfully"
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     }
+     * )
+     */
+    public function subscribe()
+    {
+    }
 }
