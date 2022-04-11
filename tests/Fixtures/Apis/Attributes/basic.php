@@ -131,4 +131,54 @@ class ProductController
     public function getAll()
     {
     }
+
+    #[OAT\Post(
+        path: '/subscribe',
+        operationId: 'subscribe',
+        summary: 'Subscribe to product webhook',
+        tags: ['products'],
+        callbacks: [
+            'onChange' => [
+                '{$request.query.callbackUrl}' => [
+                    'post' => [
+                        'requestBody' => new OAT\RequestBody(
+                            description: 'subscription payload',
+                            content: [
+                                new OAT\MediaType(
+                                    mediaType: 'application/json',
+                                    schema: new OAT\Schema(
+                                        properties: [
+                                            new OAT\Property(
+                                                property: 'timestamp',
+                                                description: 'time of change',
+                                                type: 'string',
+                                                format: 'date-time'
+                                            ),
+                                        ]
+                                    )
+                                ),
+                            ]
+                        ),
+                    ],
+                    'responses' => [
+                        '200' => [
+                            'description' => 'Your server implementation should return this HTTP status code if the data was received successfully',
+                        ],
+                    ],
+                ],
+
+            ],
+        ]
+    )]
+    #[OAT\Parameter(
+        name: 'callbackUrl',
+        in: 'query'
+    )]
+    #[OAT\Response(
+        response: 200,
+        description: 'callbackUrl registered'
+    )]
+    public function subscribe()
+    {
+    }
 }

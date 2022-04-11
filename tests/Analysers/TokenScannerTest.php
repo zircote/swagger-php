@@ -38,7 +38,7 @@ class TokenScannerTest extends OpenApiTestCase
                         'interfaces' => [],
                         'traits' => [],
                         'enums' => [],
-                        'methods' => ['getProduct', 'addProduct', 'getAll'],
+                        'methods' => ['getProduct', 'addProduct', 'getAll', 'subscribe'],
                         'properties' => [],
                     ],
                     'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductInterface' => [

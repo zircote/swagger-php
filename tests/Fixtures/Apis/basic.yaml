@@ -84,6 +84,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+  /subscribe:
+    post:
+      tags:
+        - products
+      summary: 'Subscribe to product webhook'
+      operationId: subscribe
+      parameters:
+        -
+          name: callbackUrl
+          in: query
+      responses:
+        '200':
+          description: 'callbackUrl registered'
+      callbacks:
+        onChange:
+          '{$request.query.callbackUrl}':
+            post:
+              requestBody:
+                description: 'subscription payload'
+                content:
+                  application/json: { schema: { properties: { timestamp: { description: 'time of change', type: string, format: date-time } } } }
+            responses:
+              '200':
+                description: 'Your server implementation should return this HTTP status code if the data was received successfully'
 components:
   schemas:
     Colour:
@@ -115,12 +139,12 @@ components:
               example: null
             colour:
               $ref: '#/components/schemas/Colour'
+            releasedAt:
+              type: string
             id:
               description: 'The id.'
               format: int64
               example: 1
-            releasedAt:
-              type: string
   securitySchemes:
     bearerAuth:
       type: http
