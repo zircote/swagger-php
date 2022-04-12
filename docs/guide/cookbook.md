@@ -655,3 +655,36 @@ If you are only interested in annotations you canleave out the attribute setup l
 
 Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace. 
 :::
+
+## Annotating class constants
+```php
+use OpenApi\Attributes as OA;
+
+#[OA\Schema()]
+class Airport
+{
+    #[OA\Property(property='kind')]
+    public const KIND = 'Airport';
+}
+```
+The `const` property is supported in OpenApi 3.1.0.
+```yaml
+components:
+  schemas:
+    Airport:
+        properties:
+          kind:
+            type: string
+            const: Airport
+```
+For 3.0.0 this is serialized into a single value `enum`.
+```yaml
+components:
+  schemas:
+    Airport:
+        properties:
+          kind:
+            type: string
+            enum: 
+              - Airport
+```
