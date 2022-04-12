@@ -55,7 +55,7 @@ paths:
 components:
   schemas:
     GreenProduct:
-      title: Pet
+      title: GreenProduct
       type: object
       allOf:
         -

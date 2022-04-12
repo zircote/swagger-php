@@ -3,7 +3,7 @@
 namespace OpenApi\Examples\UsingInterfaces;
 
 /**
- * @OA\Schema(title="Pet")
+ * @OA\Schema(title="GreenProduct")
  */
 class GreenProduct extends Product implements ColorInterface
 {
