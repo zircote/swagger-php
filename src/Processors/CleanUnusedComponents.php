@@ -53,14 +53,8 @@ class CleanUnusedComponents
                     }
                 }
             }
-//            if ($annotation instanceof Property) {
-//                if ($annotation->type == 'array') {
-//                    var_dump($annotation->items->ref);
-//                }
-//
-//            }
         }
-//var_dump($usedRefs);
+
         $unusedRefs = [];
         foreach (Components::$_nested as $nested) {
             if (2 == count($nested)) {
