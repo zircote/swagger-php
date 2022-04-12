@@ -27,7 +27,7 @@ class Pet
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"}
+     *     @OA\RequestBody(ref="#/components/requestBodies/Pet")
      * )
      */
     public function addPet()
@@ -56,7 +56,7 @@ class Pet
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"}
+     *     @OA\RequestBody(ref="#/components/requestBodies/Pet")
      * )
      */
     public function updatePet()
