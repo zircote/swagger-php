@@ -101,22 +101,24 @@ class AugmentProperties
             if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
-                    new Schema([
+                    $schema = new Schema([
                         'ref' => $refs[$refKey],
                         '_context' => $property->_context,
                         '_aux' => true,
                     ]),
                 ];
+                $analysis->addAnnotation($schema, $schema->_context);
                 $property->nullable = true;
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
-                    $property->items = new Items(
+                    $property->items = $items = new Items(
                         [
                             'type' => $property->type,
                             '_context' => new Context(['generated' => true], $context),
                             '_aux' => true,
                         ]
                     );
+                    $analysis->addAnnotation($items, $items->_context);
                     if (!Generator::isDefault($property->ref)) {
                         $property->items->ref = $property->ref;
                         $property->ref = Generator::UNDEFINED;
@@ -135,7 +137,7 @@ class AugmentProperties
             if (!Util::mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
-                    $this->applyRef($property, $refs[$refKey]);
+                    $this->applyRef($analysis, $property, $refs[$refKey]);
                 } else {
                     if ($typeSchema = $analysis->getSchemaForSource($context->type)) {
                         if (Generator::isDefault($property->format)) {
@@ -175,16 +177,17 @@ class AugmentProperties
         return implode('|', $types);
     }
 
-    protected function applyRef(Property $property, string $ref): void
+    protected function applyRef(Analysis $analysis, Property $property, string $ref): void
     {
         if ($property->nullable === true) {
             $property->oneOf = [
-                new Schema([
+                $schema = new Schema([
                     'ref' => $ref,
                     '_context' => $property->_context,
                     '_aux' => true,
                 ]),
             ];
+            $analysis->addAnnotation($schema, $schema->_context);
         } else {
             $property->ref = $ref;
         }

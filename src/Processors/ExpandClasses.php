@@ -33,7 +33,7 @@ class ExpandClasses
                     $anchestorSchema = $analysis->getSchemaForSource($anchestor['context']->fullyQualifiedName($anchestor['class']));
                     if ($anchestorSchema) {
                         $refPath = !Generator::isDefault($anchestorSchema->schema) ? $anchestorSchema->schema : $anchestor['class'];
-                        $this->inheritFrom($schema, $anchestorSchema, $refPath, $anchestor['context']);
+                        $this->inheritFrom($analysis, $schema, $anchestorSchema, $refPath, $anchestor['context']);
 
                         // one anchestor is enough
                         break;

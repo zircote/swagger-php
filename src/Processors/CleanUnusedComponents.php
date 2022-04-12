@@ -5,7 +5,6 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Items;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\Property;

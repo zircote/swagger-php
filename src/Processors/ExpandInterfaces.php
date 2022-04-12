@@ -45,7 +45,7 @@ class ExpandInterfaces
                     $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
                     if ($interfaceSchema) {
                         $refPath = !Generator::isDefault($interfaceSchema->schema) ? $interfaceSchema->schema : $interface['interface'];
-                        $this->inheritFrom($schema, $interfaceSchema, $refPath, $interface['context']);
+                        $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {
                         $this->mergeAnnotations($schema, $interface, $existing);
                         $this->mergeMethods($schema, $interface, $existing);

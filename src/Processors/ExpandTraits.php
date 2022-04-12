@@ -34,7 +34,7 @@ class ExpandTraits
                     $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
                         $refPath = !Generator::isDefault($traitSchema->schema) ? $traitSchema->schema : $trait['trait'];
-                        $this->inheritFrom($schema, $traitSchema, $refPath, $trait['context']);
+                        $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         if ($schema->_context->is('class')) {
                             $this->mergeAnnotations($schema, $trait, $existing);

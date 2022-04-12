@@ -41,14 +41,14 @@ class BuildPaths
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {
-                    $paths[$operation->path] = new PathItem(
+                    $paths[$operation->path] = $pathItem = new PathItem(
                         [
                             'path' => $operation->path,
                             '_context' => new Context(['generated' => true], $operation->_context),
                             '_aux' => true,
                         ]
                     );
-                    $analysis->annotations->attach($paths[$operation->path]);
+                    $analysis->addAnnotation($pathItem, $pathItem->_context);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
                     $operation->_context->logger->warning('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);

@@ -38,13 +38,14 @@ class MergeXmlContent
             if (Generator::isDefault($parent->content)) {
                 $parent->content = [];
             }
-            $parent->content['application/xml'] = new MediaType([
+            $parent->content['application/xml'] = $mediaType = new MediaType([
                 'schema' => $xmlContent,
                 'example' => $xmlContent->example,
                 'examples' => $xmlContent->examples,
                 '_context' => new Context(['generated' => true], $xmlContent->_context),
                 '_aux' => true,
             ]);
+            $analysis->addAnnotation($mediaType, $mediaType->_context);
             if (!$parent instanceof Parameter) {
                 $parent->content['application/xml']->mediaType = 'application/xml';
             }
