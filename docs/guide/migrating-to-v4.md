@@ -4,8 +4,7 @@
 * As of PHP 8.1 annotations may be used as
   [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) instead.
   That means all references to annotations in this document also apply to attributes.
-* Annotations now **must be** associated  with either a class/trait/interface,
-  method or property.
+* Annotations now **must be** associated  with a structural element (class, trait, interface), a method, property or const.
 * A new annotation `PathParameter` was added for improved framework support.
 * A new annotation `Attachable` was added to simplify custom processing.
   `Attachable` can be used to attach arbitrary data to any given annotation.

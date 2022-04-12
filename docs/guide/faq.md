@@ -10,7 +10,15 @@ These limits are dictated by the PHP reflection API, specifically where it provi
 
 This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot 'see' them any more.
 
-Most commonly this manifests with a warning about the required `@OA\Info` not being found. While most annotations have specifc
+Supported locations:
+* class
+* interface
+* trait
+* method
+* property
+* class/interface const
+
+Most commonly this manifests with a warning about the required `@OA\Info` not being found. While most annotations have specific
 related code, the info annotation (and a few more) is kind of global.
 
 The simplest solution to avoid this issue is to add a 'dummy' class to the docblock and add
