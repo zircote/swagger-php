@@ -35,7 +35,7 @@ trait MergeTrait
             '_context' => $context,
             '_aux' => true,
         ]);
-        //$analysis->addAnnotation($refSchema, $refSchema->_context);
+        $analysis->addAnnotation($refSchema, $refSchema->_context);
     }
 
     protected function mergeAnnotations(Schema $schema, array $from, array &$existing): void

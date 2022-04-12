@@ -60,11 +60,6 @@ components:
       allOf:
         -
           $ref: '#/components/schemas/Product'
-        -
-          properties:
-            color:
-              description: 'The product color.'
-              example: blue
     Product:
       title: 'Product model'
       allOf:

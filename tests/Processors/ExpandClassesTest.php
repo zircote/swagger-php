@@ -108,7 +108,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(4, $schemas);
+        $this->assertCount(5, $schemas);
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
@@ -136,7 +136,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(3, $schemas);
+        $this->assertCount(4, $schemas);
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithoutAllOf', $extendedSchema->schema);
@@ -163,7 +163,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(5, $schemas);
+        $this->assertCount(7, $schemas);
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithTwoSchemas', $extendedSchema->schema);
@@ -200,7 +200,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(6, $schemas);
+        $this->assertCount(10, $schemas);
 
         $baseInterface = $schemas[0];
         $this->assertSame('BaseInterface', $baseInterface->schema);

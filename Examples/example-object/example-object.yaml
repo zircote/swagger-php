@@ -52,6 +52,7 @@ paths:
                 name:
                   type: string
                 phone:
+                  type: object
                   oneOf: [{ type: string }, { type: integer }]
               type: object
               example:
@@ -64,6 +65,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 oneOf:
                   - { $ref: '#/components/schemas/Result' }
                   - { type: boolean }
