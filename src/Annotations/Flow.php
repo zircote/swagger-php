@@ -89,7 +89,9 @@ class Flow extends AbstractAnnotation
         Attachable::class => ['attachables'],
     ];
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {

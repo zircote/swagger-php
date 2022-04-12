@@ -107,6 +107,11 @@ class Product implements ProductInterface
      */
     public $id;
 
+    /**
+     * @OA\Property(property="kind")
+     */
+    public const KIND = 'Virtual';
+
     public function __construct(
         /**
          * @OA\Property(type="string")

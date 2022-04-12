@@ -145,6 +145,9 @@ components:
               description: 'The id.'
               format: int64
               example: 1
+            kind:
+              type: string
+              const: Virtual
   securitySchemes:
     bearerAuth:
       type: http

@@ -7,6 +7,7 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\Property;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -152,6 +153,27 @@ class ReflectionAnalyser implements AnalyserInterface
                 }
                 foreach ($this->annotationFactories as $annotationFactory) {
                     $analysis->addAnnotations($annotationFactory->build($property, $ctx), $ctx);
+                }
+            }
+        }
+
+        foreach ($rc->getReflectionConstants() as $constant) {
+            foreach ($this->annotationFactories as $annotationFactory) {
+                $definition['constants'][$constant->getName()] = $ctx = new Context([
+                    'constant' => $constant->getName(),
+                    'comment' => $constant->getDocComment() ?: Generator::UNDEFINED,
+                    'annotations' => [],
+                ], $context);
+                foreach ($annotationFactory->build($constant, $ctx) as $annotation) {
+                    if ($annotation instanceof Property) {
+                        if (Generator::isDefault($annotation->property)) {
+                            $annotation->property = $constant->getName();
+                        }
+                        if (Generator::isDefault($annotation->const)) {
+                            $annotation->const = $constant->getValue();
+                        }
+                        $analysis->addAnnotation($annotation, $ctx);
+                    }
                 }
             }
         }

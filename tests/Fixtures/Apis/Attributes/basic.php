@@ -60,6 +60,9 @@ class Product implements ProductInterface
 {
     use NameTrait;
 
+    #[OAT\Property(property: 'kind')]
+    public const KIND = 'Virtual';
+
     #[OAT\Property(description: 'The id.', format: 'int64', example: 1)]
     public $id;
 

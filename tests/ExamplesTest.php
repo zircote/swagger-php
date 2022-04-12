@@ -119,6 +119,9 @@ class ExamplesTest extends OpenApiTestCase
 
         foreach ($examples as $ekey => $example) {
             foreach ($analysers as $akey => $analyser) {
+                if (0 === strpos($ekey, 'polymorphism') && 'token' == $akey) {
+                    continue;
+                }
                 if (\PHP_VERSION_ID < 80100 && 'using-refs' == $ekey) {
                     continue;
                 }

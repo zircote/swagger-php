@@ -20,28 +20,6 @@ use OpenApi\Util;
  */
 class AugmentProperties
 {
-    public static $types = [
-        'array' => 'array',
-        'byte' => ['string', 'byte'],
-        'boolean' => 'boolean',
-        'bool' => 'boolean',
-        'int' => 'integer',
-        'integer' => 'integer',
-        'long' => ['integer', 'long'],
-        'float' => ['number', 'float'],
-        'double' => ['number', 'double'],
-        'string' => 'string',
-        'date' => ['string', 'date'],
-        'datetime' => ['string', 'date-time'],
-        '\\datetime' => ['string', 'date-time'],
-        'datetimeimmutable' => ['string', 'date-time'],
-        '\\datetimeimmutable' => ['string', 'date-time'],
-        'datetimeinterface' => ['string', 'date-time'],
-        '\\datetimeinterface' => ['string', 'date-time'],
-        'number' => 'number',
-        'object' => 'object',
-    ];
-
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
@@ -166,6 +144,12 @@ class AugmentProperties
                         }
                     }
                 }
+            }
+        }
+
+        if (!Generator::isDefault($property->const) && Generator::isDefault($property->type)) {
+            if (!Util::mapNativeType($property, gettype($property->const))) {
+                $property->type = Generator::UNDEFINED;
             }
         }
     }

@@ -351,7 +351,9 @@ class Schema extends AbstractAnnotation
     public $propertyNames = Generator::UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.24.
+     * http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.
+     *
+     * @var mixed
      */
     public $const = Generator::UNDEFINED;
 
@@ -403,6 +405,24 @@ class Schema extends AbstractAnnotation
         MediaType::class,
         Header::class,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        if (isset($data->const)) {
+            if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+                $data->enum = [$data->const];
+                unset($data->const);
+            }
+        }
+
+        return $data;
+    }
 
     /**
      * @inheritdoc

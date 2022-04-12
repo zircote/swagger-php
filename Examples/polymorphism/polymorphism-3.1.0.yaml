@@ -52,6 +52,9 @@ components:
           properties:
             property2:
               type: string
+            type:
+              type: string
+              const: 'Virtual'
     FlResponsible:
       allOf:
         -
