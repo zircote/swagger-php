@@ -73,7 +73,7 @@ class AugmentSchemas
                                     '_context' => $annotation->_context,
                                     '_aux' => true,
                                 ]);
-                                //$analysis->addAnnotation($schema, $schema->_context);
+                                $analysis->addAnnotation($schema, $schema->_context);
                                 $annotation->allOf[] = $schema;
                             }
 
@@ -126,7 +126,7 @@ class AugmentSchemas
                         '_context' => $schema->_context,
                         '_aux' => true,
                     ]);
-                    //$analysis->addAnnotation($allOfPropertiesSchema, $allOfPropertiesSchema->_context);
+                    $analysis->addAnnotation($allOfPropertiesSchema, $allOfPropertiesSchema->_context);
                     $schema->allOf[] = $allOfPropertiesSchema;
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);

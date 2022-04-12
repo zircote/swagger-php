@@ -25,7 +25,6 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures(['UsingVar.php'], $processors);
 
-        echo $analysis->openapi->toYaml();
         $this->assertCount($expectedCount, $analysis->openapi->components->schemas);
     }
 }
