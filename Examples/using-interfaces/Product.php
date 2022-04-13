@@ -5,7 +5,7 @@ namespace OpenApi\Examples\UsingInterfaces;
 /**
  * @OA\Schema(title="Product model")
  */
-class Product implements ProductInterface, ColorInterface
+class Product implements ProductInterface
 {
 
     /**
@@ -22,13 +22,5 @@ class Product implements ProductInterface, ColorInterface
     public function getName()
     {
         return 'kettle';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getColor()
-    {
-        return 'green';
     }
 }
