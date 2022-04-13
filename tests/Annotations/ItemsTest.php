@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\OpenApiTestCase;
 
 class ItemsTest extends OpenApiTestCase
@@ -33,7 +33,7 @@ class ItemsTest extends OpenApiTestCase
 
     public function testRefDefinitionInProperty(): void
     {
-        $analysis = $this->analysisFromFixtures(['UsingVar.php'], (new Generator())->getProcessors());
+        $analysis = $this->analysisFromFixtures(['UsingVar.php'], $this->processors([CleanUnusedComponents::class]));
 
         $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);

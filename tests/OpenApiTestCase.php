@@ -212,6 +212,17 @@ class OpenApiTestCase extends TestCase
         }, $files);
     }
 
+    public function processors(array $strip = [], array $add = []): array
+    {
+        $processors = (new Generator())->getProcessors();
+
+        $processors = array_filter($processors, function ($processor) use ($strip) {
+            return !is_object($processor) || !in_array(get_class($processor), $strip);
+        });
+
+        return $processors;
+    }
+
     public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null): Analysis
     {
         $analysis = new Analysis([], $this->getContext());

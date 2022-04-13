@@ -2,7 +2,6 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Generator;
 use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -10,7 +9,7 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
 {
     public function processorCases()
     {
-        $defaultProcessors = (new Generator())->getProcessors();
+        $defaultProcessors = $this->processors([CleanUnusedComponents::class]);
 
         return [
             'default' => [$defaultProcessors, 2],
