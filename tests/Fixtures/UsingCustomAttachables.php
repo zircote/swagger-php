@@ -2,7 +2,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Tests\Annotations as OAF;
+use OpenApi\Annotations as OA;
+use OpenApi\Tests\Fixtures\Annotations as OAF;
 
 /**
  * @OA\Info(title="Custom annotation attributes", version="1.0")

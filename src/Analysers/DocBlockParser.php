@@ -62,7 +62,10 @@ class DocBlockParser
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
                 $context->logger->error($errorMessage . ' in ' . $context, ['exception' => $e]);
             } else {
-                $context->logger->error($e->getMessage(), ['exception' => $e]);
+                $context->logger->error(
+                    $e->getMessage() . ($context->filename ? ('; file=' . $context->filename) : ''),
+                    ['exception' => $e]
+                );
             }
 
             return [];
