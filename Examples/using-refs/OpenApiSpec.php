@@ -12,11 +12,9 @@ class OpenApiSpec
 {
 }
 
-?>
-    You can define top-level parameters which can be references with $ref="#/components/parameters/$parameter"
-    <?php
-
 /**
+ * You can define top-level parameters which can be references with $ref="#/components/parameters/parameter".
+ *
  * @OA\Parameter(
  *     parameter="product_id_in_path_required",
  *     name="product_id",
@@ -45,16 +43,16 @@ class ProductRequestBody
 {
 }
 
-?>
-    You can define top-level responses which can be references with $ref="#/components/responses/$response"
-
-    I find it usefull to add @OA\Response(ref="#/components/responses/todo") to the operations when i'm starting out with writting the swagger documentation.
-    As it bypasses the "@OA\Get() requires at least one @OA\Response()" error and you'll get a nice list of the available api calls in swagger-ui.
-
-    Then later, a search for '#/components/responses/todo' will reveal the operations I haven't documented yet.
-    <?php
-
 /**
+ * You can define top-level responses which can be references with $ref="#/components/responses/response".
+ *
+ * I find it useful to add `@OA\Response(ref="#/components/responses/todo")` to the operations when i'm starting out with
+ * writing the swagger documentation.
+ * As it bypasses the `@OA\Get()` it requires at least one `@OA\Response()` error and you'll get
+ * a nice list of the available api calls in swagger-ui.
+ *
+ * Then later, a search for '#/components/responses/todo' will reveal the operations I haven't documented yet.
+ *
  * @OA\Response(
  *     response="product",
  *     description="All information about a product",
@@ -75,14 +73,11 @@ class TodoResponse
 {
 }
 
-?>
-
-    And although definitions are generally used for model-level schema's' they can be used for smaller things as well.
-    Like a @OA\Schema, @OA\Property or @OA\Items that is uses multiple times.
-
-    <?php
-
 /**
+ * And although definitions are generally used for model-level schema's' they can be used for smaller things as well.
+ *
+ * Like a `@OA\Schema`, `@OA\Property` or `@OA\Items` that is uses multiple times.
+ *
  * @OA\Schema(
  *     schema="product_status",
  *     type="string",
