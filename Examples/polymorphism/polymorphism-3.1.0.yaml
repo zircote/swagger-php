@@ -54,7 +54,7 @@ components:
               type: string
             type:
               type: string
-              const: 'Virtual'
+              const: Virtual
     FlResponsible:
       allOf:
         -
