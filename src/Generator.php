@@ -35,19 +35,22 @@ class Generator
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
 
-    /** @var string[] */
+    /** @var array<string,string> */
     public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
-    /** @var string[] */
+    /** @var array<string> */
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
-    /** @var array Map of namespace aliases to be supported by doctrine. */
+    /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
     protected $aliases;
 
-    /** @var array|null List of annotation namespaces to be autoloaded by doctrine. */
+    /** @var array<string>|null List of annotation namespaces to be autoloaded by doctrine. */
     protected $namespaces;
 
     /** @var AnalyserInterface|null The configured analyzer. */
     protected $analyser;
+
+    /** @var array<string,mixed> */
+    protected $config = [];
 
     /** @var callable[]|null List of configured processors. */
     protected $processors = null;
@@ -177,30 +180,66 @@ class Generator
         return $this;
     }
 
+    public function getConfig(): array
+    {
+        return $this->config + [
+                'operationId' => ['hash' => true],
+            ];
+    }
+
+    /**
+     * Set generator and/or processor config.
+     *
+     * @param array<string,mixed> $config
+     */
+    public function setConfig(array $config): Generator
+    {
+        $this->config = $config + $this->config;
+
+        return $this;
+    }
+
     /**
      * @return callable[]
      */
     public function getProcessors(): array
     {
         if (null === $this->processors) {
-            $this->processors = [
-                new Processors\DocBlockDescriptions(),
-                new Processors\MergeIntoOpenApi(),
-                new Processors\MergeIntoComponents(),
-                new Processors\ExpandClasses(),
-                new Processors\ExpandInterfaces(),
-                new Processors\ExpandTraits(),
-                new Processors\ExpandEnums(),
-                new Processors\AugmentSchemas(),
-                new Processors\AugmentProperties(),
-                new Processors\BuildPaths(),
-                new Processors\AugmentParameters(),
-                new Processors\AugmentRefs(),
-                new Processors\MergeJsonContent(),
-                new Processors\MergeXmlContent(),
-                new Processors\OperationId(),
-                new Processors\CleanUnmerged(),
+            $defaultProcessors = [
+                Processors\DocBlockDescriptions::class,
+                Processors\MergeIntoOpenApi::class,
+                Processors\MergeIntoComponents::class,
+                Processors\ExpandClasses::class,
+                Processors\ExpandInterfaces::class,
+                Processors\ExpandTraits::class,
+                Processors\ExpandEnums::class,
+                Processors\AugmentSchemas::class,
+                Processors\AugmentProperties::class,
+                Processors\BuildPaths::class,
+                Processors\AugmentParameters::class,
+                Processors\AugmentRefs::class,
+                Processors\MergeJsonContent::class,
+                Processors\MergeXmlContent::class,
+                Processors\OperationId::class,
+                Processors\CleanUnmerged::class,
             ];
+            $this->processors = [];
+            $config = $this->getConfig();
+            foreach ($defaultProcessors as $processor) {
+                $rc = new \ReflectionClass($processor);
+                $this->processors[] = $instance = new $processor();
+
+                // optional config
+                $processorKey = lcfirst($rc->getShortName());
+                if (array_key_exists($processorKey, $config)) {
+                    foreach ($config[$processorKey] as $name => $value) {
+                        $setter = 'set' . ucfirst($name);
+                        if (method_exists($instance, $setter)) {
+                            $instance->{$setter}($value);
+                        }
+                    }
+                }
+            }
         }
 
         return $this->processors;
