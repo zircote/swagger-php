@@ -31,7 +31,7 @@ class ExpandInterfaces
                 $interfaces = $analysis->getInterfacesOfClass($className, true);
 
                 if (class_exists($className) && ($parent = get_parent_class($className)) && ($inherited = array_keys(class_implements($parent)))) {
-                    // strip interfaces we inherit from anchestor
+                    // strip interfaces we inherit from ancestor
                     foreach (array_keys($interfaces) as $interface) {
                         if (in_array(ltrim($interface, '\\'), $inherited)) {
                             unset($interfaces[$interface]);
