@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Allows to serialize/de-serialize annotations from/to JSON.
@@ -84,13 +85,20 @@ class Serializer
     /**
      * Deserialize a file.
      */
-    public function deserializeFile(string $filename, string $className = OA\OpenApi::class): OA\AbstractAnnotation
+    public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class): OA\AbstractAnnotation
     {
         if (!$this->isValidAnnotationClass($className)) {
             throw new \Exception($className . ' is not defined in OpenApi PHP Annotations');
         }
 
-        return $this->doDeserialize(json_decode(file_get_contents($filename)), $className, new Context(['generated' => true]));
+        $contents = file_get_contents($filename);
+
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if ('yaml' == $format || in_array($ext, ['yml', 'yaml'])) {
+            $contents = json_encode(Yaml::parse($contents));
+        }
+
+        return $this->doDeserialize(json_decode($contents), $className, new Context(['generated' => true]));
     }
 
     /**
@@ -113,6 +121,10 @@ class Serializer
             } else {
                 $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value, $context);
             }
+        }
+
+        if ($annotation instanceof OA\OpenApi) {
+            $context->root()->version = $annotation->openapi;
         }
 
         return $annotation;
