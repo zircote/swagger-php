@@ -147,7 +147,7 @@ class ExamplesTest extends OpenApiTestCase
                 if (0 === strpos($eKey, 'polymorphism') && 'token' == $aKey) {
                     continue;
                 }
-                if (\PHP_VERSION_ID < 80100 && 'using-refs' == $eKey) {
+                if ((\PHP_VERSION_ID < 80100 || 'token' == $aKey) && 'using-refs' == $eKey) {
                     continue;
                 }
                 if ('using-links-php81' == $eKey && 'token' == $aKey) {
