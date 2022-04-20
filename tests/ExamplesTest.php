@@ -14,129 +14,147 @@ use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
+use OpenApi\Serializer;
 
 class ExamplesTest extends OpenApiTestCase
 {
-    public function exampleMappings()
+    public function exampleDetails()
     {
-        $analysers = [
-            'token' => new TokenAnalyser(),
-            'reflection/docblock' => new ReflectionAnalyser([new DocBlockAnnotationFactory()]),
+        yield 'example-object' => [
+            OpenApi::VERSION_3_0_0,
+            'example-object',
+            'example-object.yaml',
+            [],
         ];
 
-        $examples = [
-            'example-object' => [
-                OpenApi::VERSION_3_0_0,
-                'example-object',
-                'example-object.yaml',
-                [],
-            ],
-            'misc' => [
-                OpenApi::VERSION_3_0_0,
-                'misc',
-                'misc.yaml',
-                [],
-            ],
-            'nesting' => [
-                OpenApi::VERSION_3_0_0,
-                'nesting',
-                'nesting.yaml',
-                [],
-            ],
-            'petstore-3.0' => [
-                OpenApi::VERSION_3_0_0,
-                'petstore-3.0',
-                'petstore-3.0.yaml',
-                [],
-            ],
-            'petstore.swagger.io' => [
-                OpenApi::VERSION_3_0_0,
-                'petstore.swagger.io',
-                'petstore.swagger.io.yaml',
-                [],
-            ],
-            'swagger-spec/petstore' => [
-                OpenApi::VERSION_3_0_0,
-                'swagger-spec/petstore',
-                'petstore.yaml',
-                [],
-            ],
-            'swagger-spec/petstore-simple' => [
-                OpenApi::VERSION_3_0_0,
-                'swagger-spec/petstore-simple',
-                'petstore-simple.yaml',
-                [],
-            ],
-            'swagger-spec/petstore-simple-3.1.0' => [
-                OpenApi::VERSION_3_1_0,
-                'swagger-spec/petstore-simple',
-                'petstore-simple-3.1.0.yaml',
-                [],
-            ],
-            'swagger-spec/petstore-with-external-docs' => [
-                OpenApi::VERSION_3_0_0,
-                'swagger-spec/petstore-with-external-docs',
-                'petstore-with-external-docs.yaml',
-                [],
-            ],
-            'polymorphism' => [
-                OpenApi::VERSION_3_0_0,
-                'polymorphism',
-                'polymorphism.yaml',
-                [],
-            ],
-            'polymorphism-3.1.0' => [
-                OpenApi::VERSION_3_1_0,
-                'polymorphism',
-                'polymorphism-3.1.0.yaml',
-                [],
-            ],
-            'using-interfaces' => [
-                OpenApi::VERSION_3_0_0,
-                'using-interfaces',
-                'using-interfaces.yaml',
-                [],
-            ],
-            'using-refs' => [
-                OpenApi::VERSION_3_0_0,
-                'using-refs',
-                'using-refs.yaml',
-                [],
-            ],
-            'using-traits' => [
-                OpenApi::VERSION_3_0_0,
-                'using-traits',
-                'using-traits.yaml',
-                [],
-            ],
-            'using-links' => [
-                OpenApi::VERSION_3_0_0,
-                'using-links',
-                'using-links.yaml',
-                [],
-            ],
+        yield 'misc' => [
+            OpenApi::VERSION_3_0_0,
+            'misc',
+            'misc.yaml',
+            [],
         ];
 
-        foreach ($examples as $ekey => $example) {
-            foreach ($analysers as $akey => $analyser) {
-                if (0 === strpos($ekey, 'polymorphism') && 'token' == $akey) {
-                    continue;
-                }
-                if (\PHP_VERSION_ID < 80100 && 'using-refs' == $ekey) {
-                    continue;
-                }
-                yield $ekey . ':' . $akey => array_merge($example, [$analyser]);
-            }
-        }
+        yield 'nesting' => [
+            OpenApi::VERSION_3_0_0,
+            'nesting',
+            'nesting.yaml',
+            [],
+        ];
+
+        yield 'petstore-3.0' => [
+            OpenApi::VERSION_3_0_0,
+            'petstore-3.0',
+            'petstore-3.0.yaml',
+            [],
+        ];
+
+        yield 'petstore.swagger.io' => [
+            OpenApi::VERSION_3_0_0,
+            'petstore.swagger.io',
+            'petstore.swagger.io.yaml',
+            [],
+        ];
+
+        yield 'swagger-spec/petstore' => [
+            OpenApi::VERSION_3_0_0,
+            'swagger-spec/petstore',
+            'petstore.yaml',
+            [],
+        ];
+
+        yield 'swagger-spec/petstore-simple' => [
+            OpenApi::VERSION_3_0_0,
+            'swagger-spec/petstore-simple',
+            'petstore-simple.yaml',
+            [],
+        ];
+
+        yield 'swagger-spec/petstore-simple-3.1.0' => [
+            OpenApi::VERSION_3_1_0,
+            'swagger-spec/petstore-simple',
+            'petstore-simple-3.1.0.yaml',
+            [],
+        ];
+
+        yield 'swagger-spec/petstore-with-external-docs' => [
+            OpenApi::VERSION_3_0_0,
+            'swagger-spec/petstore-with-external-docs',
+            'petstore-with-external-docs.yaml',
+            [],
+        ];
+
+        yield 'polymorphism' => [
+            OpenApi::VERSION_3_0_0,
+            'polymorphism',
+            'polymorphism.yaml',
+            [],
+        ];
+
+        yield 'polymorphism-3.1.0' => [
+            OpenApi::VERSION_3_1_0,
+            'polymorphism',
+            'polymorphism-3.1.0.yaml',
+            [],
+        ];
+
+        yield 'using-interfaces' => [
+            OpenApi::VERSION_3_0_0,
+            'using-interfaces',
+            'using-interfaces.yaml',
+            [],
+        ];
+
+        yield 'using-refs' => [
+            OpenApi::VERSION_3_0_0,
+            'using-refs',
+            'using-refs.yaml',
+            [],
+        ];
+
+        yield 'using-traits' => [
+            OpenApi::VERSION_3_0_0,
+            'using-traits',
+            'using-traits.yaml',
+            [],
+        ];
+
+        yield 'using-links' => [
+            OpenApi::VERSION_3_0_0,
+            'using-links',
+            'using-links.yaml',
+            [],
+        ];
 
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'reflection/attribute:using-links-php81' => [
+            yield 'using-links-php81' => [
                 OpenApi::VERSION_3_0_0,
                 'using-links-php81',
                 'using-links-php81.yaml',
                 ['JetBrains\PhpStorm\ArrayShape'],
-                new ReflectionAnalyser([new AttributeAnnotationFactory()]),
             ];
+        }
+    }
+
+    public function exampleMappings()
+    {
+        $analysers = [
+            'token' => new TokenAnalyser(),
+            'reflection' => new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]),
+        ];
+
+        foreach ($this->exampleDetails() as $eKey => $example) {
+            foreach ($analysers as $aKey => $analyser) {
+                if (0 === strpos($eKey, 'polymorphism') && 'token' == $aKey) {
+                    continue;
+                }
+                if (\PHP_VERSION_ID < 80100 && 'using-refs' == $eKey) {
+                    continue;
+                }
+                if ('using-links-php81' == $eKey && 'token' == $aKey) {
+                    continue;
+                }
+                yield $eKey . ':' . $aKey => array_merge($example, [$analyser]);
+            }
         }
     }
 
@@ -170,5 +188,16 @@ class ExamplesTest extends OpenApiTestCase
             file_get_contents($path . '/' . $spec),
             get_class($analyser) . ': Examples/' . $example . '/' . $spec
         );
+    }
+
+    /**
+     * @dataProvider exampleDetails
+     */
+    public function testSerializer(string $version, string $example, string $spec, array $expectedLog): void
+    {
+        $filename = $this->example($example) . '/' . $spec;
+        $reserialized = (new Serializer())->deserializeFile($filename)->toYaml();
+
+        $this->assertEquals(file_get_contents($filename), $reserialized);
     }
 }

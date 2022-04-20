@@ -59,6 +59,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Specify the type of the property.
+     *
      * Examples:
      *   'name' => 'string' // a string
      *   'required' => 'boolean', // true or false
@@ -66,7 +67,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
      *   'oneOf' => [Schema::class] // array of schema objects.
      *
-     * @var array
+     * @var array<string,string|array<string>>
      */
     public static $_types = [];
 
@@ -77,21 +78,21 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *   Parameter::clas => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
      *   PathItem::clas => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
      *
-     * @var array<class-string<AbstractAnnotation>,string|string[]>
+     * @var array<class-string<AbstractAnnotation>,string|array<string>>
      */
     public static $_nested = [];
 
     /**
      * Reverse mapping of $_nested with the allowed parent annotations.
      *
-     * @var class-string<AbstractAnnotation>[]
+     * @var array<class-string<AbstractAnnotation>>
      */
     public static $_parents = [];
 
     /**
      * List of properties are blacklisted from the JSON output.
      *
-     * @var array
+     * @var array<string>
      */
     public static $_blacklist = ['_context', '_unmerged', '_analysis', '_aux', 'attachables'];
 
