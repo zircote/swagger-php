@@ -116,20 +116,34 @@ class GeneratorTest extends OpenApiTestCase
         });
     }
 
+    protected function assertOperationIdHash(Generator $generator, bool $expected)
+    {
+        foreach ($generator->getProcessors() as $processor) {
+            if ($processor instanceof OperationId) {
+                $this->assertEquals($expected, $processor->isHash());
+            }
+        }
+    }
+
     public function testConfig()
     {
-        $assertOperationId = function (Generator $generator, bool $expected) {
-            foreach ($generator->getProcessors() as $processor) {
-                if ($processor instanceof OperationId) {
-                    $this->assertEquals($expected, $processor->isHash());
-                }
-            }
-        };
-
         $generator = new Generator();
-        $assertOperationId($generator, true);
+        $this->assertOperationIdHash($generator, true);
 
         $generator->setConfig(['operationId' => ['hash' => false]]);
-        $assertOperationId($generator, false);
+        $this->assertOperationIdHash($generator, false);
+    }
+
+    public function testCallableProcessor()
+    {
+        $generator = new Generator();
+        // not the default
+        $operationId = new OperationId(false);
+        $generator->addProcessor(function (Analysis $analysis) use ($operationId) {
+            $operationId($analysis);
+        });
+
+        $this->assertOperationIdHash($generator, true);
+        $this->assertFalse($operationId->isHash());
     }
 }
