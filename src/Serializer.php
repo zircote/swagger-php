@@ -57,17 +57,9 @@ class Serializer
         OA\XmlContent::class,
     ];
 
-    public static function isValidAnnotationClass($className): bool
+    protected static function isValidAnnotationClass($className): bool
     {
         return in_array($className, self::$VALID_ANNOTATIONS);
-    }
-
-    /**
-     * Serialize.
-     */
-    public function serialize(OA\AbstractAnnotation $annotation): string
-    {
-        return json_encode($annotation);
     }
 
     /**
@@ -88,7 +80,7 @@ class Serializer
     public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class): OA\AbstractAnnotation
     {
         if (!$this->isValidAnnotationClass($className)) {
-            throw new \Exception($className . ' is not defined in OpenApi PHP Annotations');
+            throw new \Exception($className . ' is not a valid OpenApi PHP Annotations');
         }
 
         $contents = file_get_contents($filename);
