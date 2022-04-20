@@ -50,8 +50,7 @@ class GeneratorTest extends OpenApiTestCase
     public function processorCases(): iterable
     {
         return [
-            [new OperationId(false), false],
-            [new OperationId(true), true],
+            [new OperationId(), true],
             [new class(false) extends OperationId {
             }, false],
         ];
@@ -115,5 +114,22 @@ class GeneratorTest extends OpenApiTestCase
 
         (new Generator())->removeProcessor(function () {
         });
+    }
+
+    public function testConfig()
+    {
+        $assertOperationId = function (Generator $generator, bool $expected) {
+            foreach ($generator->getProcessors() as $processor) {
+                if ($processor instanceof OperationId) {
+                    $this->assertEquals($expected, $processor->isHash());
+                }
+            }
+        };
+
+        $generator = new Generator();
+        $assertOperationId($generator, true);
+
+        $generator->setConfig(['operationId' => ['hash' => false]]);
+        $assertOperationId($generator, false);
     }
 }
