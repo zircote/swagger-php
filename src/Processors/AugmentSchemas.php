@@ -46,7 +46,10 @@ class AugmentSchemas
                 continue;
             }
 
-            $schemaContext = $property->_context->with('class') ?: $property->_context->with('interface') ?: $property->_context->with('trait') ?: $property->_context->with('enum');
+            $schemaContext = $property->_context->with('class')
+                    ?: $property->_context->with('interface')
+                    ?: $property->_context->with('trait')
+                    ?: $property->_context->with('enum');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof Schema) {
@@ -70,6 +73,7 @@ class AugmentSchemas
                                     '_context' => $annotation->_context,
                                     '_aux' => true,
                                 ]);
+                                $analysis->addAnnotation($schema, $schema->_context);
                                 $annotation->allOf[] = $schema;
                             }
 
@@ -88,6 +92,12 @@ class AugmentSchemas
         foreach ($schemas as $schema) {
             if (Generator::isDefault($schema->type)) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->allOf) && count($schema->allOf) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->oneOf) && count($schema->oneOf) > 0) {
+                    $schema->type = 'object';
+                } elseif (is_array($schema->anyOf) && count($schema->anyOf) > 0) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
                     $schema->type = 'object';
@@ -122,6 +132,7 @@ class AugmentSchemas
                         '_context' => $schema->_context,
                         '_aux' => true,
                     ]);
+                    $analysis->addAnnotation($allOfPropertiesSchema, $allOfPropertiesSchema->_context);
                     $schema->allOf[] = $allOfPropertiesSchema;
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);

@@ -21,6 +21,7 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Attributes\Get;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsTrait;
 use OpenApi\Tests\OpenApiTestCase;
@@ -188,7 +189,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process((new Generator())->getProcessors());
+        $analysis->process($this->processors([CleanUnusedComponents::class]));
 
         /** @var Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(Property::class);

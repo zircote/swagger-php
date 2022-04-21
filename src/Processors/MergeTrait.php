@@ -6,6 +6,7 @@
 
 namespace OpenApi\Processors;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
@@ -23,17 +24,18 @@ use OpenApi\Generator;
  */
 trait MergeTrait
 {
-    protected function inheritFrom(Schema $schema, Schema $from, string $refPath, Context $context): void
+    protected function inheritFrom(Analysis $analysis, Schema $schema, Schema $from, string $refPath, Context $context): void
     {
         if (Generator::isDefault($schema->allOf)) {
             $schema->allOf = [];
         }
         // merging other properties into allOf is done in the AugmentSchemas processor
-        $schema->allOf[] = new Schema([
+        $schema->allOf[] = $refSchema = new Schema([
             'ref' => Components::ref($refPath),
             '_context' => $context,
             '_aux' => true,
         ]);
+        $analysis->addAnnotation($refSchema, $refSchema->_context);
     }
 
     protected function mergeAnnotations(Schema $schema, array $from, array &$existing): void

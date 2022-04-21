@@ -13,6 +13,7 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\Fixtures\Parser\User;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -250,7 +251,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process((new Generator())->getProcessors());
+        $analysis->process($this->processors([CleanUnusedComponents::class]));
 
         /** @var Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(Property::class, true);
@@ -268,7 +269,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process((new Generator())->getProcessors());
+        $analysis->process($this->processors([CleanUnusedComponents::class]));
 
         /** @var Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(Property::class);

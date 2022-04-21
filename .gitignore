@@ -3,6 +3,7 @@
 bin/
 !bin/openapi
 composer.lock
+coverage/
 docs/.vitepress/dist/
 docs/node_modules/
 docs/package-lock.json

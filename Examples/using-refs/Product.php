@@ -28,4 +28,9 @@ class Product extends Model
      * @OA\Property(ref="#/components/schemas/product_status")
      */
     public $status;
+
+    /**
+     * @OA\Property
+     */
+    public StockLevel $stockLevel;
 }

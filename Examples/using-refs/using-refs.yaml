@@ -33,7 +33,7 @@ paths:
           $ref: '#/components/schemas/Product/allOf/1/properties/id'
       responses:
         default:
-          $ref: '#/components/responses/product'
+          $ref: '#/components/responses/todo'
 components:
   schemas:
     Model:
@@ -61,6 +61,8 @@ components:
               example: 1
             status:
               $ref: '#/components/schemas/product_status'
+            stockLevel:
+              $ref: '#/components/schemas/StockLevel'
     StockLevel:
       type: integer
       enum:
