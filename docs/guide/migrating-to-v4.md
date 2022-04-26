@@ -86,8 +86,9 @@ class MyController
         #[OA\PathParameter] string $product_id)
     {
     }
+}
 ```
-Here it avoid having to duplicate details about the `$product_id` parameter and the simple use of the attribute
+Here it avoids having to duplicate details about the `$product_id` parameter and the simple use of the attribute
 will pick up typehints automatically.
 
 ## The `Attachable` annotation
@@ -134,5 +135,4 @@ $analysis = (new Generator())
 
         return $analysis;
     });
-
 ```
