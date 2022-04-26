@@ -4,7 +4,7 @@
 * As of PHP 8.1 annotations may be used as
   [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) instead.
   That means all references to annotations in this document also apply to attributes.
-* Annotations now **must be** associated  with a structural element (class, trait, interface), a method, property or const.
+* Annotations now **must be** associated with a structural element (class, trait, interface), a method, property or const.
 * A new annotation `PathParameter` was added for improved framework support.
 * A new annotation `Attachable` was added to simplify custom processing.
   `Attachable` can be used to attach arbitrary data to any given annotation.
@@ -105,7 +105,7 @@ as private and exclude them under certain conditions from the spec (via a custom
 
 ## Removed deprecated elements
 ### `\Openapi\Analysis::processors()`
-Processors have been moved into the `Generator` class incl. some new convenicen methods.
+Processors have been moved into the `Generator` class incl. some new convenience methods.
 ### `\Openapi\Analyser::$whitelist`
 This has been replaced with the `Generator` `namespaces` property.
 ### `\Openapi\Analyser::$defaultImports`
