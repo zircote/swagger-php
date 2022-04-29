@@ -12,16 +12,22 @@ use OpenApi\Generator;
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
     /**
-     * @param array<string,Examples>    $examples
      * @param string[]                  $required
      * @param Property[]                $properties
+     * @param int|float                 $maximum
+     * @param int|float                 $minimum
+     * @param string[]                  $enum
+     * @param Schema[]                  $allOf
+     * @param Schema[]                  $anyOf
+     * @param Schema[]                  $oneOf
+     * @param mixed                     $const
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
         ?array $examples = null,
         // schema
-        string|object|null $ref = null,
+        string|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,

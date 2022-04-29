@@ -54,7 +54,7 @@ class Examples extends AbstractAnnotation
      * To represent examples of media types that cannot naturally be represented
      * in JSON or YAML, use a string value to contain the example, escaping where necessary.
      *
-     * @var string
+     * @var int|string|array
      */
     public $value = Generator::UNDEFINED;
 

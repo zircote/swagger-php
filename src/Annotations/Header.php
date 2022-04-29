@@ -44,7 +44,7 @@ class Header extends AbstractAnnotation
     /**
      * Schema object.
      *
-     * @var \OpenApi\Annotations\Schema
+     * @var Schema
      */
     public $schema = Generator::UNDEFINED;
 

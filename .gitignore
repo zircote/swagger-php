@@ -7,4 +7,5 @@ coverage/
 docs/.vitepress/dist/
 docs/node_modules/
 docs/package-lock.json
+scratch/
 vendor/

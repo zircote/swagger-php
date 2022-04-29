@@ -6,23 +6,27 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations\JsonContent;
+use OpenApi\Annotations\MediaType;
+use OpenApi\Annotations\XmlContent;
 use OpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends \OpenApi\Annotations\Response
 {
     /**
-     * @param Header[]                  $headers
-     * @param Link[]                    $links
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param Header[]                                                                 $headers
+     * @param MediaType|JsonContent|XmlContent|array<MediaType|JsonContent|XmlContent> $content
+     * @param Link[]                                                                   $links
+     * @param array<string,string>|null                                                $x
+     * @param Attachable[]|null                                                        $attachables
      */
     public function __construct(
-        string|object|null $ref = null,
+        string|null $ref = null,
         int|string $response = null,
         ?string $description = null,
         ?array $headers = null,
-        $content = null,
+        MediaType|JsonContent|XmlContent|array|null $content = null,
         ?array $links = null,
         // annotation
         ?array $x = null,

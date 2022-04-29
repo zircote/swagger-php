@@ -15,7 +15,7 @@ class Header extends \OpenApi\Annotations\Header
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        string|object|null $ref = null,
+        string|null $ref = null,
         ?string $header = null,
         ?string $description = null,
         ?bool $required = null,

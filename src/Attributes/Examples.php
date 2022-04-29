@@ -19,9 +19,9 @@ class Examples extends \OpenApi\Annotations\Examples
         ?string $example = null,
         ?string $summary = null,
         ?string $description = null,
-        string|array|null $value = null,
+        int|string|array|null $value = null,
         ?string $externalValue = null,
-        string|object|null $ref = null,
+        string|null $ref = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null

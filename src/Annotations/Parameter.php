@@ -151,7 +151,7 @@ class Parameter extends AbstractAnnotation
      * The examples object is mutually exclusive of the example object.
      * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
-     * @var array
+     * @var array<string,Examples>
      */
     public $examples = Generator::UNDEFINED;
 

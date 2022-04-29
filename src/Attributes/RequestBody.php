@@ -17,7 +17,7 @@ class RequestBody extends \OpenApi\Annotations\RequestBody
      * @param Attachable[]|null                            $attachables
      */
     public function __construct(
-        string|object|null $ref = null,
+        string|null $ref = null,
         ?string $request = null,
         ?string $description = null,
         ?bool $required = null,

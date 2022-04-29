@@ -129,7 +129,7 @@ class Schema extends AbstractAnnotation
     /**
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
      *
-     * @var number
+     * @var int|float
      */
     public $maximum = Generator::UNDEFINED;
 
@@ -143,7 +143,7 @@ class Schema extends AbstractAnnotation
     /**
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
      *
-     * @var number
+     * @var int|float
      */
     public $minimum = Generator::UNDEFINED;
 
@@ -199,7 +199,7 @@ class Schema extends AbstractAnnotation
     /**
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
-     * @var array
+     * @var string[]
      */
     public $enum = Generator::UNDEFINED;
 

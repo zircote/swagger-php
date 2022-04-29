@@ -107,7 +107,7 @@ abstract class Operation extends AbstractAnnotation
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
-     * @var \OpenApi\Annotations\Response[]
+     * @var Response[]
      */
     public $responses = Generator::UNDEFINED;
 

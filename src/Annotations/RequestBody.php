@@ -17,6 +17,11 @@ use OpenApi\Generator;
  */
 class RequestBody extends AbstractAnnotation
 {
+    /**
+     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     *
+     * @var string
+     */
     public $ref = Generator::UNDEFINED;
 
     /**

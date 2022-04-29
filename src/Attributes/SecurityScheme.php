@@ -17,7 +17,7 @@ class SecurityScheme extends \OpenApi\Annotations\SecurityScheme
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        string|object|null $ref = null,
+        string|null $ref = null,
         ?string $securityScheme = null,
         ?string $type = null,
         ?string $description = null,
