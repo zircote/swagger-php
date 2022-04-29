@@ -57,5 +57,3 @@ trait ParameterTrait
             ]);
     }
 }
-
-// matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject
