@@ -69,6 +69,8 @@ class Link extends AbstractAnnotation
      * be evaluated and passed to the linked operation.
      * The parameter name can be qualified using the parameter location [{in}.]{name} for operations
      * that use the same parameter name in different locations (e.g. path.id).
+     *
+     * @var array<string,mixed>
      */
     public $parameters = Generator::UNDEFINED;
 

@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class ServerVariable extends \OpenApi\Annotations\ServerVariable
 {
     /**
+     * @param string[]|null             $enum
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

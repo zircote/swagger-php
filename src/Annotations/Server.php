@@ -42,7 +42,7 @@ class Server extends AbstractAnnotation
      *
      * The value is used for substitution in the server's URL template.
      *
-     * @var array
+     * @var ServerVariable[]
      */
     public $variables = Generator::UNDEFINED;
 

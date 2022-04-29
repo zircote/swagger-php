@@ -16,18 +16,18 @@ class Examples extends \OpenApi\Annotations\Examples
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        $example = Generator::UNDEFINED,
+        ?string $example = null,
         ?string $summary = null,
         ?string $description = null,
-        string|array|null $value = null,
+        int|string|array|null $value = null,
         ?string $externalValue = null,
-        string|object|null $ref = null,
+        string|null $ref = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-            'example' => $example,
+            'example' => $example ?? Generator::UNDEFINED,
             'summary' => $summary ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
             'value' => $value ?? Generator::UNDEFINED,

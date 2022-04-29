@@ -64,7 +64,7 @@ class Response extends AbstractAnnotation
      * For responses that match multiple keys, only the most specific key is applicable;
      * e.g. <code>text/plain</code> overrides <code>text/*</code>.
      *
-     * @var MediaType[]
+     * @var MediaType|JsonContent|XmlContent|array<MediaType|JsonContent|XmlContent>
      */
     public $content = Generator::UNDEFINED;
 
@@ -74,7 +74,7 @@ class Response extends AbstractAnnotation
      * The key of the map is a short name for the link, following the naming constraints of the names for Component
      * Objects.
      *
-     * @var array
+     * @var Link[]
      */
     public $links = Generator::UNDEFINED;
 

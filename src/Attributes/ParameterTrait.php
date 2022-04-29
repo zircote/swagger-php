@@ -24,7 +24,7 @@ trait ParameterTrait
         ?bool $required = null,
         ?bool $deprecated = null,
         ?bool $allowEmptyValue = null,
-        string|object|null $ref = null,
+        string|null $ref = null,
         ?Schema $schema = null,
         $example = Generator::UNDEFINED,
         ?array $examples = null,

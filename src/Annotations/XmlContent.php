@@ -18,7 +18,7 @@ use OpenApi\Generator;
 class XmlContent extends Schema
 {
     /**
-     * @var array
+     * @var array<string,Examples>
      */
     public $examples = Generator::UNDEFINED;
 
