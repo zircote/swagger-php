@@ -14,6 +14,7 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
     /**
      * @param Server[]|null             $servers
      * @param Tag[]|null                $tags
+     * @param PathItem[]|null           $paths
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
@@ -24,6 +25,8 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
         ?array $security = null,
         ?array $tags = null,
         ?ExternalDocumentation $externalDocs = null,
+        ?array $paths = null,
+        ?Components $components = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -32,7 +35,7 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
                 'openapi' => $openapi,
                 'security' => $security ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($info, $servers, $tags, $externalDocs, $attachables),
+                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $attachables),
             ]);
     }
 }

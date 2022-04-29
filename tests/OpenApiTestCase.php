@@ -268,4 +268,27 @@ class OpenApiTestCase extends TestCase
 
         return $classes;
     }
+
+    /**
+     * Collect list of all non-abstract attribute classes.
+     *
+     * @return array
+     */
+    public function allAttributeClasses(): array
+    {
+        $classes = [];
+        $dir = new DirectoryIterator(__DIR__ . '/../src/Attributes');
+        foreach ($dir as $entry) {
+            if (!$entry->isFile() || $entry->getExtension() != 'php') {
+                continue;
+            }
+            $class = $entry->getBasename('.php');
+            if (in_array($class, ['OperationTrait', 'ParameterTrait'])) {
+                continue;
+            }
+            $classes[$class] = ['OpenApi\\Attributes\\' . $class];
+        }
+
+        return $classes;
+    }
 }

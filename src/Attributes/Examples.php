@@ -16,7 +16,7 @@ class Examples extends \OpenApi\Annotations\Examples
      * @param Attachable[]|null         $attachables
      */
     public function __construct(
-        ?string $example = null,
+        $example = Generator::UNDEFINED,
         ?string $summary = null,
         ?string $description = null,
         string|array|null $value = null,
@@ -27,7 +27,7 @@ class Examples extends \OpenApi\Annotations\Examples
         ?array $attachables = null
     ) {
         parent::__construct([
-            'example' => $example ?? Generator::UNDEFINED,
+            'example' => $example,
             'summary' => $summary ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
             'value' => $value ?? Generator::UNDEFINED,
