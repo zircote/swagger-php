@@ -99,9 +99,13 @@ EOT;
         $ctorDocumentation = $this->extractDocumentation($rc->getMethod('__construct')->getDocComment());
         $params = $ctorDocumentation['params'];
 
+        $this->treeDetails($fqdn);
+
         $parameters = $rctor->getParameters();
         if ($parameters) {
             echo PHP_EOL . '#### Parameters' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
                 $parameter = $rp->getName();
@@ -123,6 +127,8 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
             }
@@ -146,13 +152,17 @@ EOT;
         $classDocumentation = $this->extractDocumentation($rc->getDocComment());
         echo $classDocumentation['content'] . PHP_EOL;
 
-        // todo: anchestor properties
-        $properties = array_filter($details[$fqdn]['properties'], function ($property) use ($fqdn) {
-            return !in_array($property, $fqdn::$_blacklist) && $property[0] != '_';
+        $this->treeDetails($fqdn);
+
+        $nestedProps = $this->getNestedProperties($fqdn);
+        $properties = array_filter($details[$fqdn]['properties'], function ($property) use ($fqdn, $nestedProps) {
+            return !in_array($property, $fqdn::$_blacklist) && $property[0] != '_' && !in_array($property, $nestedProps);
         });
 
         if ($properties) {
             echo PHP_EOL . '#### Properties' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
             echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
                 $rp = new ReflectionProperty($fqdn, $property);
@@ -183,6 +193,8 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
             }
@@ -193,11 +205,57 @@ EOT;
         return ob_get_clean();
     }
 
+    /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     */
+    protected function getNestedProperties($fqdn): array
+    {
+        $props = [];
+        foreach ($fqdn::$_nested as $details) {
+            $props[] = ((array)$details)[0];
+        }
+
+        return $props;
+    }
+
+    /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     */
+    protected function treeDetails($fqdn)
+    {
+        if ($fqdn::$_parents) {
+            echo PHP_EOL . '#### Allowed in' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
+            $parents = array_map(function (string $parent) {
+                $shortName = $this->shortName($parent);
+                return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
+            }, $fqdn::$_parents);
+            echo implode(', ', $parents) . PHP_EOL;
+        }
+
+        if ($fqdn::$_nested) {
+            echo PHP_EOL . '#### Nested elements' . PHP_EOL;
+            echo '---'.PHP_EOL;
+
+            $nested = array_map(function (string $nested) {
+                $shortName = $this->shortName($nested);
+                return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
+            }, array_keys($fqdn::$_nested));
+            echo implode(', ', $nested) . PHP_EOL;
+        }
+    }
+
+    protected function shortName(string $class): string
+    {
+        return str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], '', $class);
+    }
+
     protected function linkFromMarkup(string $see): ?string
     {
         preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
 
-        return 3 == count($matches) ? '<a href="'.$matches[2].'">'.$matches[1].'</a>' : null;
+        return 3 == count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
     }
 
     protected function getReflectionType(string $fqdn, $rp, bool $preferDefault = false, string $def = ''): string
