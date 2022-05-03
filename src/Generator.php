@@ -35,19 +35,22 @@ class Generator
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
 
-    /** @var string[] */
+    /** @var array<string,string> */
     public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
-    /** @var string[] */
+    /** @var array<string> */
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
-    /** @var array Map of namespace aliases to be supported by doctrine. */
+    /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
     protected $aliases;
 
-    /** @var array|null List of annotation namespaces to be autoloaded by doctrine. */
+    /** @var array<string>|null List of annotation namespaces to be autoloaded by doctrine. */
     protected $namespaces;
 
     /** @var AnalyserInterface|null The configured analyzer. */
     protected $analyser;
+
+    /** @var array<string,mixed> */
+    protected $config = [];
 
     /** @var callable[]|null List of configured processors. */
     protected $processors = null;
@@ -177,6 +180,32 @@ class Generator
         return $this;
     }
 
+    public function getDefaultConfig(): array
+    {
+        return [
+            'operationId' => [
+                'hash' => true,
+            ],
+        ];
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config + $this->getDefaultConfig();
+    }
+
+    /**
+     * Set generator and/or processor config.
+     *
+     * @param array<string,mixed> $config
+     */
+    public function setConfig(array $config): Generator
+    {
+        $this->config = $config + $this->config;
+
+        return $this;
+    }
+
     /**
      * @return callable[]
      */
@@ -201,6 +230,22 @@ class Generator
                 new Processors\OperationId(),
                 new Processors\CleanUnmerged(),
             ];
+        }
+
+        $config = $this->getConfig();
+        foreach ($this->processors as $processor) {
+            $rc = new \ReflectionClass($processor);
+
+            // apply config
+            $processorKey = lcfirst($rc->getShortName());
+            if (array_key_exists($processorKey, $config)) {
+                foreach ($config[$processorKey] as $name => $value) {
+                    $setter = 'set' . ucfirst($name);
+                    if (method_exists($processor, $setter)) {
+                        $processor->{$setter}($value);
+                    }
+                }
+            }
         }
 
         return $this->processors;
