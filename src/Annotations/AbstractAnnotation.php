@@ -267,7 +267,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Generate the documentation in JSON format.
      */
-    public function toJson($flags = null): string
+    public function toJson(?int $flags = null): string
     {
         if ($flags === null) {
             $flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE;
@@ -510,7 +510,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @param array|object $fields
      */
-    private static function _validate($fields, array $stack, array $skip, string $baseRef, $context): bool
+    private static function _validate($fields, array $stack, array $skip, string $baseRef, ?object $context): bool
     {
         $valid = true;
         $blacklist = [];

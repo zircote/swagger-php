@@ -37,7 +37,7 @@ class TokenScanner
         $lastToken = null;
         $stack = [];
 
-        $initUnit = function ($uses) {
+        $initUnit = function ($uses): array {
             return [
                 'uses' => $uses,
                 'interfaces' => [],
@@ -226,7 +226,7 @@ class TokenScanner
         return array_values(array_map($resolve, $names));
     }
 
-    protected function skipTo(array &$tokens, $char, bool $prev = false): void
+    protected function skipTo(array &$tokens, string $char, bool $prev = false): void
     {
         while (false !== ($token = next($tokens))) {
             if (is_string($token) && $token == $char) {
@@ -265,9 +265,9 @@ class TokenScanner
     /**
      * Parse a use statement.
      */
-    protected function parseFQNStatement(array &$tokens, &$token): array
+    protected function parseFQNStatement(array &$tokens, array &$token): array
     {
-        $normalizeAlias = function ($alias) {
+        $normalizeAlias = function ($alias): string {
             $alias = ltrim($alias, '\\');
             $elements = explode('\\', $alias);
 

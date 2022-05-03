@@ -37,7 +37,7 @@ class Util
         'object' => 'object',
     ];
 
-    public static function mapNativeType(Schema $schema, $type): bool
+    public static function mapNativeType(Schema $schema, string $type): bool
     {
         if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
             return false;
