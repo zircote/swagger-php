@@ -207,7 +207,7 @@ class Schema extends AbstractAnnotation
      * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this
      * property's value is an integer.
      *
-     * @var number
+     * @var int|float
      */
     public $multipleOf = Generator::UNDEFINED;
 
