@@ -25,4 +25,4 @@ jobs:
           dependency-versions: 'highest'
 
       - name: Static Code Analysis
-        uses: php-actions/phpstan@v2
+        uses: php-actions/phpstan@v3
