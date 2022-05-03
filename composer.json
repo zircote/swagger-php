@@ -59,6 +59,7 @@
   "require-dev": {
     "composer/package-versions-deprecated": "^1.11",
     "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
+    "phpstan/phpstan": "^1.6",
     "phpunit/phpunit": ">=8"
   },
   "autoload-dev": {
@@ -84,8 +85,7 @@
       "@testlegacy"
     ],
     "analyse": [
-      "phpstan analyse --memory-limit=2G",
-      "psalm --show-info=true"
+      "phpstan analyse --memory-limit=2G"
     ],
     "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
     "docs:dev": "cd docs && npm run dev",
