@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
     /**
+     * @param array<string,Examples>    $examples
      * @param string[]                  $required
      * @param Property[]                $properties
      * @param int|float                 $maximum
@@ -20,7 +21,6 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
      * @param Schema[]                  $allOf
      * @param Schema[]                  $anyOf
      * @param Schema[]                  $oneOf
-     * @param mixed                     $const
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

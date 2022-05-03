@@ -1,4 +1,4 @@
-name: code-style
+name: phpstan
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  php-cs:
+  phpstan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,5 +24,5 @@ jobs:
         with:
           dependency-versions: 'highest'
 
-      - name: Check Code Style
-        run: composer lint
+      - name: Static Code Analysis
+        run: composer analyse

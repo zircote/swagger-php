@@ -1,0 +1,102 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$description\\.$#"
+			count: 1
+			path: src/Annotations/AbstractAnnotation.php
+
+		-
+			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$summary\\.$#"
+			count: 1
+			path: src/Annotations/AbstractAnnotation.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 2
+			path: src/Annotations/Components.php
+
+		-
+			message: "#^Variable \\$type might not be defined\\.$#"
+			count: 1
+			path: src/Annotations/Components.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Flow\\:\\:\\$scopes \\(array\\) does not accept stdClass\\.$#"
+			count: 1
+			path: src/Annotations/Flow.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$enum\\.$#"
+			count: 1
+			path: src/Annotations/Schema.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: src/Context.php
+
+		-
+			message: "#^Ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/Context.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/Generator.php
+
+		-
+			message: "#^Instanceof between callable and class\\-string\\|false results in an error\\.$#"
+			count: 1
+			path: src/Generator.php
+
+		-
+			message: "#^Variable \\$logLine in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: src/Loggers/ConsoleLogger.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with bool\\|OpenApi\\\\Annotations\\\\AdditionalProperties will always evaluate to false\\.$#"
+			count: 1
+			path: src/Processors/AugmentSchemas.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$properties \\(array\\<OpenApi\\\\Annotations\\\\Property\\>\\) does not accept string\\.$#"
+			count: 1
+			path: src/Processors/AugmentSchemas.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Processors/AugmentSchemas.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\JsonContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
+			count: 1
+			path: src/Processors/MergeJsonContent.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\XmlContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
+			count: 1
+			path: src/Processors/MergeXmlContent.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function spl_autoload_register expects \\(callable\\(string\\)\\: void\\)\\|null, array\\{Composer\\\\Autoload\\\\ClassLoader, 'findFile'\\} given\\.$#"
+			count: 1
+			path: tests/Analysers/ComposerAutoloaderScannerTest.php
+
+		-
+			message: "#^Access to an undefined property OpenApi\\\\Analysers\\\\AnnotationFactoryInterface\\:\\:\\$reflectors\\.$#"
+			count: 2
+			path: tests/Analysers/ReflectionAnalyserTest.php
+
+		-
+			message: "#^Access to an undefined property Reflector\\:\\:\\$name\\.$#"
+			count: 1
+			path: tests/Analysers/ReflectionAnalyserTest.php
+
+		-
+			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
+			count: 1
+			path: tests/Annotations/AttributesSyncTest.php
+
