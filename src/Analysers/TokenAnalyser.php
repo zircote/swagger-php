@@ -516,13 +516,18 @@ class TokenAnalyser implements AnalyserInterface
         }
     }
 
-    private function php8NamespaceToken()
+    /**
+     * @return int[]
+     */
+    private function php8NamespaceToken(): array
     {
         return defined('T_NAME_QUALIFIED') ? [T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED] : [];
     }
 
     /**
      * Parse namespaced string.
+     *
+     * @param array|string $token
      */
     private function parseNamespace(array &$tokens, &$token, Context $parseContext): string
     {
@@ -541,6 +546,8 @@ class TokenAnalyser implements AnalyserInterface
 
     /**
      * Parse comma separated list of namespaced strings.
+     *
+     * @param array|string $token
      */
     private function parseNamespaceList(array &$tokens, &$token, Context $parseContext): array
     {
@@ -560,7 +567,7 @@ class TokenAnalyser implements AnalyserInterface
      */
     private function parseUseStatement(array &$tokens, &$token, Context $parseContext): array
     {
-        $normalizeAlias = function ($alias) {
+        $normalizeAlias = function ($alias): string {
             $alias = ltrim($alias, '\\');
             $elements = explode('\\', $alias);
 

@@ -70,7 +70,7 @@ class CleanUnusedComponents
             }
         }
 
-        $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested) {
+        $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested): void {
             foreach ($annotation::$_nested as $nested) {
                 $nestedKey = ((array) $nested)[0];
                 if (!Generator::isDefault($annotation->{$nestedKey})) {

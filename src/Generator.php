@@ -249,7 +249,7 @@ class Generator
      */
     public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
     {
-        $matcher = $matcher ?: function ($other) use ($processor) {
+        $matcher = $matcher ?: function ($other) use ($processor): bool {
             $otherClass = get_class($other);
 
             return $processor instanceof $otherClass;

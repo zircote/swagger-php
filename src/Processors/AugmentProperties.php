@@ -68,14 +68,14 @@ class AugmentProperties
         }
     }
 
-    protected function toRefKey(Context $context, $name)
+    protected function toRefKey(Context $context, ?string $name): string
     {
         $fqn = strtolower($context->fullyQualifiedName($name));
 
         return ltrim($fqn, '\\');
     }
 
-    protected function augmentType(Analysis $analysis, Property $property, Context $context, array $refs, array $varMatches)
+    protected function augmentType(Analysis $analysis, Property $property, Context $context, array $refs, array $varMatches): void
     {
         // docblock typehints
         if (isset($varMatches['type'])) {

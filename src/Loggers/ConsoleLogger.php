@@ -33,7 +33,7 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         $this->debug = $debug;
     }
 
-    public function loggedMessageAboveNotice()
+    public function loggedMessageAboveNotice(): bool
     {
         return $this->loggedMessageAboveNotice;
     }

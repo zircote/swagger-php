@@ -57,7 +57,7 @@ class Serializer
         OA\XmlContent::class,
     ];
 
-    protected static function isValidAnnotationClass($className): bool
+    protected static function isValidAnnotationClass(string $className): bool
     {
         return in_array($className, self::$VALID_ANNOTATIONS);
     }

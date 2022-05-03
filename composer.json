@@ -60,7 +60,8 @@
     "composer/package-versions-deprecated": "^1.11",
     "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
     "phpstan/phpstan": "^1.6",
-    "phpunit/phpunit": ">=8"
+    "phpunit/phpunit": ">=8",
+    "vimeo/psalm": "^4.23"
   },
   "autoload-dev": {
     "exclude-from-classmap": [
@@ -85,7 +86,8 @@
       "@testlegacy"
     ],
     "analyse": [
-      "phpstan analyse --memory-limit=2G"
+      "phpstan analyse --memory-limit=2G",
+      "psalm"
     ],
     "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
     "docs:dev": "cd docs && npm run dev",
