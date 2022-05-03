@@ -12,7 +12,6 @@ trait ParameterTrait
 {
     /**
      * @param array<string,Examples>    $examples
-     * @param MediaType[]               $content
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */

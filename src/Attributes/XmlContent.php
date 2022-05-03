@@ -21,7 +21,6 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
      * @param Schema[]                  $allOf
      * @param Schema[]                  $anyOf
      * @param Schema[]                  $oneOf
-     * @param mixed                     $const
      * @param array<string,string>|null $x
      * @param Attachable[]|null         $attachables
      */
