@@ -41,7 +41,7 @@ trait ParameterTrait
                 'name' => $name ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
                 'in' => Generator::isDefault($this->in) ? $in : $this->in,
-                'required' => !Generator::isDefault($this->required) ? $this->required : ($required ?? Generator::UNDEFINED),
+                'required' => $required ?? Generator::UNDEFINED,
                 'deprecated' => $deprecated ?? Generator::UNDEFINED,
                 'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
                 'ref' => $ref ?? Generator::UNDEFINED,
