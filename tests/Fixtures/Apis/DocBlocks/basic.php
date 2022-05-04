@@ -130,6 +130,7 @@ class ProductController
      *     operationId="getProducts",
      *     @OA\PathParameter(
      *         name="product_id",
+     *         required=false,
      *         description="The product id.",
      *         @OA\Schema(type="int")
      *     ),
@@ -152,7 +153,7 @@ class ProductController
      *     )
      * )
      */
-    public function getProduct(int $product_id)
+    public function getProduct(?int $product_id)
     {
     }
 

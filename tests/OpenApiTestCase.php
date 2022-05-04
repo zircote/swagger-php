@@ -166,7 +166,7 @@ class OpenApiTestCase extends TestCase
                 $this->assertSpecEquals(((array) $actual)[$key], $value, $message . ' > ' . $key, true);
             }
         } else {
-            $this->assertEquals($actual, $expected, $message);
+            $this->assertEquals($expected, $actual, $message);
         }
     }
 

@@ -60,6 +60,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         foreach ($rp->getAttributes($attributeName) as $attribute) {
                             $instance = $attribute->newInstance();
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
+                            $nullable = $rnt ? $rnt->allowsNull() : Generator::UNDEFINED;
                             if ($instance instanceof Property) {
                                 $instance->property = $rp->getName();
                                 if (Generator::isDefault($instance->type)) {
@@ -67,7 +68,10 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 }
                             } else {
                                 $instance->name = $rp->getName();
-                                $instance->merge([new Schema(['type' => $type, '_context' => new Context(['nested' => $this], $context)])]);
+                                $instance->required = !$nullable;
+                                $context = new Context(['nested' => $this], $context);
+                                $context->comment = null;
+                                $instance->merge([new Schema(['type' => $type, '_context' => $context])]);
                             }
                             $annotations[] = $instance;
                         }
