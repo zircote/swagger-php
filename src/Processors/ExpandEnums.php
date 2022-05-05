@@ -33,13 +33,13 @@ class ExpandEnums
                 $source = $schema->_context->enum;
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($source));
                 $schema->schema = !Generator::isDefault($schema->schema) ? $schema->schema : $re->getShortName();
-                $schema->enum = array_map(function ($case) {
-                    return $case->name;
-                }, $re->getCases());
                 $type = 'string';
                 if ($re->isBacked() && ($backingType = $re->getBackingType()) && method_exists($backingType, 'getName')) {
                     $type = !Generator::isDefault($schema->type) ? $schema->type : $backingType->getName();
                 }
+                $schema->enum = array_map(function ($case) use ($re, $type) {
+                    return $re->isBacked() && $type === 'string' ? $case->getBackingValue() : $case->name;
+                }, $re->getCases());
                 Util::mapNativeType($schema, $type);
             }
         }
