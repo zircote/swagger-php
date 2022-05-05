@@ -9,6 +9,9 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Attributes as OAF;
 
+/**
+ * The Spec.
+ */
 #[OAT\OpenApi(openapi: '3.1.0', security: [['bearerAuth' => []]])]
 #[OAT\Info(
     version: '1.0.0',
@@ -17,9 +20,9 @@ use OpenApi\Tests\Fixtures\Attributes as OAF;
 )]
 #[OAT\License(name: 'MIT', identifier: 'MIT')]
 #[OAT\Server(url: 'https://localhost/api', description: 'API server')]
+#[OAT\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer', description: 'Basic Auth')]
 #[OAT\Tag(name: 'products', description: 'All about products')]
 #[OAT\Tag(name: 'catalog', description: 'Catalog API')]
-#[OAT\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer')]
 class OpenApiSpec
 {
 }
@@ -32,10 +35,16 @@ class OpenApiSpec
     url: 'https://example.com',
     description: 'The production server.'
 )]
+/**
+ * A Server.
+ */
 class Server
 {
 }
 
+/**
+ * A Colour.
+ */
 #[OAT\Schema()]
 enum Colour
 {
@@ -48,6 +57,9 @@ interface ProductInterface
 {
 }
 
+/**
+ * A Name.
+ */
 #[OAT\Schema()]
 trait NameTrait
 {
@@ -55,15 +67,24 @@ trait NameTrait
     public $name;
 }
 
-#[OAT\Schema(title: 'Product', description: 'Product')]
+/**
+ * A Product description ignored.
+ */
+#[OAT\Schema(title: 'Product', description: 'A Product.')]
 class Product implements ProductInterface
 {
     use NameTrait;
 
+    /**
+     * The kind.
+     */
     #[OAT\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
     #[OAT\Property(description: 'The id.', format: 'int64', example: 1)]
+    /**
+     * The id.
+     */
     public $id;
 
     public function __construct(
@@ -75,8 +96,14 @@ class Product implements ProductInterface
     }
 }
 
+/**
+ * The Controller.
+ */
 class ProductController
 {
+    /**
+     * Get a product.
+     */
     #[OAT\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
     #[OAT\Response(
         response: 200,
@@ -110,6 +137,9 @@ class ProductController
             )
         )]
     )]
+    /**
+     * Add a product.
+     */
     public function addProduct()
     {
     }
@@ -130,6 +160,9 @@ class ProductController
             ]
         )
     )]
+    /**
+     * Get all.
+     */
     #[OAT\Response(response: 401, description: 'oops')]
     public function getAll()
     {

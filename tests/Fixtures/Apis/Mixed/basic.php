@@ -10,6 +10,8 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 /**
+ * The Spec.
+ *
  * @OA\OpenApi(
  *     openapi="3.1.0",
  *     @OA\Info(
@@ -23,11 +25,12 @@ use OpenApi\Attributes as OAT;
  *     securityScheme="bearerAuth",
  *     type="http",
  *     scheme="bearer",
+ *     description="Basic Auth"
  * )
  */
+#[OAT\Server(url: 'https://localhost/api', description: 'API server')]
 #[OAT\Tag(name: 'products', description: 'All about products')]
 #[OAT\Tag(name: 'catalog', description: 'Catalog API')]
-#[OAT\Server(url: 'https://localhost/api', description: 'API server')]
 class OpenApiSpec
 {
 }
@@ -36,6 +39,9 @@ class OpenApiSpec
     url: 'https://example.localhost',
     description: 'The local environment.'
 )]
+/**
+ * A Server.
+ */
 #[OAT\Server(
     url: 'https://example.com',
     description: 'The production server.'
@@ -44,6 +50,9 @@ class Server
 {
 }
 
+/**
+ * A Colour.
+ */
 #[OAT\Schema()]
 enum Colour
 {
@@ -56,6 +65,9 @@ interface ProductInterface
 {
 }
 
+/**
+ * A Name.
+ */
 #[OAT\Schema()]
 trait NameTrait
 {
@@ -66,11 +78,17 @@ trait NameTrait
     public $name;
 }
 
-#[OAT\Schema(title: 'Product', description: 'Product', attachables: [new OAT\Attachable()])]
+#[OAT\Schema(title: 'Product', attachables: [new OAT\Attachable()])]
+/**
+ * A Product.
+ */
 class Product implements ProductInterface
 {
     use NameTrait;
 
+    /**
+     * The kind.
+     */
     #[OAT\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
@@ -94,8 +112,14 @@ class Product implements ProductInterface
     public Colour $colour;
 }
 
+/**
+ * The Controller.
+ */
 class ProductController
 {
+    /**
+     * Get a product.
+     */
     #[OAT\Get(
         path: '/products/{product_id}',
         tags: ['products'],
@@ -118,6 +142,8 @@ class ProductController
     }
 
     /**
+     * Add a product.
+     *
      * @OA\Post(
      *     path="/products",
      *     tags={"products"},
@@ -142,6 +168,9 @@ class ProductController
     {
     }
 
+    /**
+     * Get all.
+     */
     #[OAT\Get(path: '/products', tags: ['products', 'catalog'], operationId: 'getAll')]
     #[OAT\Response(
         response: 200,

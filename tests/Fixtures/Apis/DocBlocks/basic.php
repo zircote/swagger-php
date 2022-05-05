@@ -9,6 +9,8 @@ namespace OpenApi\Tests\Fixtures\Apis\DocBlocks;
 use OpenApi\Annotations as OA;
 
 /**
+ * The Spec.
+ *
  * @OA\OpenApi(
  *     security={{"bearerAuth": {}}}
  * )
@@ -22,6 +24,12 @@ use OpenApi\Annotations as OA;
  *     url="https://localhost/api",
  *     description="API server"
  * )
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     description="Basic Auth"
+ * )
  * @OA\Tag(
  *     name="products",
  *     description="All about products"
@@ -30,17 +38,14 @@ use OpenApi\Annotations as OA;
  *     name="catalog",
  *     description="Catalog API"
  * )
- * @OA\SecurityScheme(
- *     securityScheme="bearerAuth",
- *     type="http",
- *     scheme="bearer",
- * )
  */
 class OpenApiSpec
 {
 }
 
 /**
+ * A Server.
+ *
  * @OA\Server(
  *     url="https://example.localhost",
  *     description="The local environment."
@@ -55,6 +60,8 @@ class Server
 }
 
 /**
+ * A Colour.
+ *
  * @OA\Schema()
  */
 enum Colour
@@ -69,6 +76,8 @@ interface ProductInterface
 }
 
 /**
+ * A Name.
+ *
  * @OA\Schema
  */
 trait NameTrait
@@ -82,8 +91,9 @@ trait NameTrait
 }
 
 /**
+ * A Product.
+ *
  * @OA\Schema(
- *     description="Product",
  *     title="Product"
  * )
  */
@@ -108,6 +118,8 @@ class Product implements ProductInterface
     public $id;
 
     /**
+     * The kind.
+     *
      * @OA\Property(property="kind")
      */
     public const KIND = 'Virtual';
@@ -121,9 +133,14 @@ class Product implements ProductInterface
     }
 }
 
+/**
+ * The Controller.
+ */
 class ProductController
 {
     /**
+     * Get a product.
+     *
      * @OA\Get(
      *     tags={"products"},
      *     path="/products/{product_id}",
@@ -158,6 +175,8 @@ class ProductController
     }
 
     /**
+     * Add a product.
+     *
      * @OA\Post(
      *     path="/products",
      *     tags={"products"},
@@ -186,6 +205,8 @@ class ProductController
     }
 
     /**
+     * Get all.
+     *
      * @OA\Get(
      *     tags={"products", "catalog"},
      *     path="/products",

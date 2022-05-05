@@ -49,7 +49,7 @@ class DocBlockDescriptions
         }
     }
 
-    private function description($annotation): void
+    protected function description($annotation): void
     {
         if (!Generator::isDefault($annotation->description)) {
             if ($annotation->description === null) {
@@ -61,7 +61,7 @@ class DocBlockDescriptions
         $annotation->description = $annotation->_context->phpdocContent();
     }
 
-    private function summaryAndDescription($annotation): void
+    protected function summaryAndDescription($annotation): void
     {
         $ignoreSummary = !Generator::isDefault($annotation->summary);
         $ignoreDescription = !Generator::isDefault($annotation->description);

@@ -9,6 +9,8 @@ namespace OpenApi\Annotations;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Util;
+use OpenApi\Annotations\Schema as AnnotationSchema;
+use OpenApi\Attributes\Schema as AttributeSchema;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -572,9 +574,33 @@ abstract class AbstractAnnotation implements \JsonSerializable
             return true;
         }
 
-        $count = count($this->_context->annotations);
+        if (1 == count($this->_context->annotations)) {
+            return true;
+        }
 
-        return $count && $this->_context->annotations[$count - 1] === $this;
+        // find best match
+        $matchPriorityMap = [
+            Operation::class => false,
+            Property::class => false,
+            Parameter::class => false,
+            AnnotationSchema::class => true,
+            AttributeSchema::class => true,
+        ];
+        foreach ($matchPriorityMap as $className => $strict) {
+            foreach ($this->_context->annotations as $annotation) {
+                if ($strict) {
+                    if ($className == get_class($annotation)) {
+                        return  $annotation === $this;
+                    }
+                } else {
+                    if ($annotation instanceof $className) {
+                        return  $annotation === $this;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
