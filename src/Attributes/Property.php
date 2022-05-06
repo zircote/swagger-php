@@ -26,7 +26,7 @@ class Property extends \OpenApi\Annotations\Property
     public function __construct(
         ?string $property = null,
         // schema
-        string|null $ref = null,
+        string|object|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,

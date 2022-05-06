@@ -22,7 +22,7 @@ class Response extends \OpenApi\Annotations\Response
      * @param Attachable[]|null                                                        $attachables
      */
     public function __construct(
-        string|null $ref = null,
+        string|object|null $ref = null,
         int|string $response = null,
         ?string $description = null,
         ?array $headers = null,
