@@ -25,7 +25,7 @@ class Items extends \OpenApi\Annotations\Items
      */
     public function __construct(
         // schema
-        string|null $ref = null,
+        string|object|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,

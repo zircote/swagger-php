@@ -26,7 +26,7 @@ class Schema extends \OpenApi\Annotations\Schema
      */
     public function __construct(
         // schema
-        string|null $ref = null,
+        string|object|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,

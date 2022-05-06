@@ -19,7 +19,7 @@ class Link extends \OpenApi\Annotations\Link
     public function __construct(
         ?string $link = null,
         ?string $operationRef = null,
-        string|null $ref = null,
+        string|object|null $ref = null,
         ?string $operationId = null,
         ?array $parameters = null,
         $requestBody = null,

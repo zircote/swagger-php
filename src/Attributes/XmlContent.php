@@ -27,7 +27,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
     public function __construct(
         ?array $examples = null,
         // schema
-        string|null $ref = null,
+        string|object|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,
