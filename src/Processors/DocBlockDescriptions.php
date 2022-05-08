@@ -18,6 +18,8 @@ use OpenApi\Generator;
  */
 class DocBlockDescriptions
 {
+    use DocblockTrait;
+
     /**
      * Checks if the annotation has a summary and/or description property
      * and uses the text in the comment block (above the annotations) as summary and/or description.
@@ -32,7 +34,7 @@ class DocBlockDescriptions
                 // only annotations with context
                 continue;
             }
-            if (!$annotation->isRoot()) {
+            if (!$this->isRoot($annotation)) {
                 // only top-level annotations
                 continue;
             }
@@ -49,7 +51,7 @@ class DocBlockDescriptions
         }
     }
 
-    private function description($annotation): void
+    protected function description($annotation): void
     {
         if (!Generator::isDefault($annotation->description)) {
             if ($annotation->description === null) {
@@ -61,7 +63,7 @@ class DocBlockDescriptions
         $annotation->description = $annotation->_context->phpdocContent();
     }
 
-    private function summaryAndDescription($annotation): void
+    protected function summaryAndDescription($annotation): void
     {
         $ignoreSummary = !Generator::isDefault($annotation->summary);
         $ignoreDescription = !Generator::isDefault($annotation->description);

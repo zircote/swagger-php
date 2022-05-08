@@ -55,6 +55,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        $this->assertCount(4, $schemas);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
