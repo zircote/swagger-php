@@ -20,6 +20,8 @@ use OpenApi\Util;
  */
 class AugmentProperties
 {
+    use DocblockTrait;
+
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
@@ -58,7 +60,7 @@ class AugmentProperties
             if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
                 $property->description = trim($varMatches['description']);
             }
-            if (Generator::isDefault($property->description) && $property->isRoot()) {
+            if (Generator::isDefault($property->description) && $this->isRoot($property)) {
                 $property->description = $context->phpdocContent();
             }
 

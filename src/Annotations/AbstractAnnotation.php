@@ -9,8 +9,6 @@ namespace OpenApi\Annotations;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Util;
-use OpenApi\Annotations\Schema as AnnotationSchema;
-use OpenApi\Attributes\Schema as AttributeSchema;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -563,44 +561,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return $this->_identity($properties);
-    }
-
-    /**
-     * An annotation is a root if it is the top-level / outermost annotation in a PHP docblock.
-     */
-    public function isRoot(): bool
-    {
-        if (!$this->_context) {
-            return true;
-        }
-
-        if (1 == count($this->_context->annotations)) {
-            return true;
-        }
-
-        // find best match
-        $matchPriorityMap = [
-            Operation::class => false,
-            Property::class => false,
-            Parameter::class => false,
-            AnnotationSchema::class => true,
-            AttributeSchema::class => true,
-        ];
-        foreach ($matchPriorityMap as $className => $strict) {
-            foreach ($this->_context->annotations as $annotation) {
-                if ($strict) {
-                    if ($className == get_class($annotation)) {
-                        return  $annotation === $this;
-                    }
-                } else {
-                    if ($annotation instanceof $className) {
-                        return  $annotation === $this;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
