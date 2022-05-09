@@ -69,3 +69,12 @@ Another reason for this error could be that your class actually has the wrong na
 
 Depending on your framework this might still work in the context of your app, but the composer autoloader 
 alone might not be able to load your class (assuming you are using composer).
+
+## No output from `openapi` command line tool
+
+Depending on your PHP configuration, running the `openapi` command line tool might result in no output at all.
+
+The reason for this is that `openapi` currently uses the [`error_log`](https://www.php.net/manual/en/function.error-log.php)
+function for all output.
+
+So if this is configured to write to a file, then it will seem like the command is broken. 
