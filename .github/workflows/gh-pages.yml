@@ -24,7 +24,7 @@ jobs:
           dependency-versions: 'highest'
 
       - name: Install vitepress
-        run: cd docs && npm install vitepress
+        run: cd docs && npm install
 
       - name: Build site
         run: cd docs && php refgen.php && npm run build

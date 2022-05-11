@@ -12,7 +12,7 @@ We recommend adding `swagger-php` to your project using [Composer](https://getco
 
 Alternatively, use the composer `global` argument to install `swagger-php` globally.
 
-```ell
+```shell
 > composer global require zircote/swagger-php
 ```
 ::: warning PATH variables

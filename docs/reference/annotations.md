@@ -581,7 +581,7 @@ A unique parameter is defined by a combination of a name and location.
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>The (case sensitive) name of the parameter.<br />
+  <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
@@ -1209,3 +1209,4 @@ Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/xml'` wil
 #### Nested elements
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
