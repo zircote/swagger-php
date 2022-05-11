@@ -1,0 +1,7 @@
+/* https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css */
+:root {
+    --c-brand: #74a535;
+    --c-brand-light: #94c73d;
+
+    --c-bg: #fefefe;
+}

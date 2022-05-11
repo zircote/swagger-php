@@ -275,7 +275,7 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
 ```
 
 ## Default security scheme for all endpoints
-Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way to
+Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way
 to also configure security schemes globally for the whole API.
 
 This is done on the `@OA\OpenApi` annotations:
@@ -409,7 +409,7 @@ There are two scenarios where this can happen
 2. There are multiple global response declared, again more than one with the same `response` value.
 
 ## Callbacks
-The API does incllude basic support for callbacks. However, this needs to be set up mostly manually.
+The API does include basic support for callbacks. However, this needs to be set up mostly manually.
 
 **Example**
 ```php
@@ -442,7 +442,7 @@ The API does incllude basic support for callbacks. However, this needs to be set
 ```
 
 ## (Mostly) virtual models
-Typically a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
+Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
 to the individually declared class properties.
 
 It is possible, however, to nest `O@\Property` annotations inside a schema even without properties. In fact, all that is needed
@@ -482,7 +482,7 @@ class Book
 
 This works, but is not very convenient. 
 
-First of all, when using custom schema names (`schema: 'user'`), this needs to be taken into account everywhere.
+First, when using custom schema names (`schema: 'user'`), this needs to be taken into account everywhere.
 Secondly, having to write `ref: '#/components/schemas/user'` is tedious and error-prone.
 
 Using attributes all this changes as we can take advantage of PHP itself by referring to a schema by its (fully qualified)

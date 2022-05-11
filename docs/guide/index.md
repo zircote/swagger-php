@@ -18,3 +18,21 @@ either adding [`Annotations`](annotations.md) or [`Attributes`](attributes.md).
 Using `swagger-php` requires a minimum of **PHP&nbsp;7.2** for using annotations and
 at least **PHP&nbsp;8.1** to use attributes.
 :::
+
+
+<codeblock>
+  <template v-slot:annotations>
+
+```php
+#[OA\Get(path: '/api/data.json')]
+#[OA\Response(response: '200', description: 'The data')]
+class MyController {}
+ ```
+
+</template>
+  <template v-slot:attributes>
+
+    <<< @/snippets/minimal_api_attributes.php
+
+  </template>
+</codeblock>

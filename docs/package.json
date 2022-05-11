@@ -10,5 +10,8 @@
   "devDependencies": {
     "git-directory-deploy": "^1.5.1",
     "vitepress": "^0.21.6"
+  },
+  "dependencies": {
+    "vue3-tabs-component": "^1.0.7"
   }
 }

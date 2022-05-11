@@ -61,12 +61,12 @@ One of the few differences between annotations and attributes visible in the abo
 is not nested within `OA\Info`. Nesting of attributes is possible and required in certain cases however, **in cases where there
 is no ambiguity attributes may be all written on the top level** and swagger-php will do the rest.
 
-## Annotations must be associated with code
+## Annotations must be associated with a structural element
 The (now legacy) way of parsing PHP files meant that docblocks could live in a file without a single line
 of actual PHP code.
 
 PHP Attributes cannot exist in isolation; they need code to be associated with and then are available 
-via reflection on the associated code.
+via reflection on the associated structural element.
 In order to allow to keep supporting annotations and the code simple it made sense to treat annotations and attributes
 the same in this respect.
 
@@ -100,7 +100,7 @@ The attachable annotation is similar to the OpenApi vendor extension `x=`. The m
 
 Their main purpose is to make customizing swagger-php easier by allowing to add arbitrary data to any annotation.
 
-One possible use case could be custom annotations. Classes extnding `Attachable` are allowed to limit 
+One possible use case could be custom annotations. Classes extending `Attachable` are allowed to limit 
 the allowed parent annotations. This means it would be easy to create a new attribute to flag certain endpoints
 as private and exclude them under certain conditions from the spec (via a custom processor).
 
