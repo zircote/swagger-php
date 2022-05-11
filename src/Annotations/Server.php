@@ -18,7 +18,7 @@ use OpenApi\Generator;
 class Server extends AbstractAnnotation
 {
     /**
-     * A URL to the target host.
+     * An URL to the target host.
      *
      * This URL supports Server Variables and may be relative,
      * to indicate that the host location is relative to the location where the OpenAPI document is being served.

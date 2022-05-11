@@ -29,7 +29,7 @@ class Xml extends AbstractAnnotation
     public $name = Generator::UNDEFINED;
 
     /**
-     * The URL of the namespace definition. Value SHOULD be in the form of a URL.
+     * The URL of the namespace definition. Value SHOULD be in the form of an URL.
      *
      * @var string
      */

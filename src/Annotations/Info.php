@@ -36,9 +36,9 @@ class Info extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * A URL to the Terms of Service for the API.
+     * An URL to the Terms of Service for the API.
      *
-     * Must be in the format of a url.
+     * Must be in the format of an url.
      *
      * @var string
      */

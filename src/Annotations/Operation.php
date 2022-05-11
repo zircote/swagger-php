@@ -118,7 +118,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * Each value in the map is a Callback Object that describes a request that may be initiated by the API provider
      * and the expected responses. The key value used to identify the callback object is an expression, evaluated at
-     * runtime, that identifies a URL to use for the callback operation.
+     * runtime, that identifies an URL to use for the callback operation.
      *
      * @var callable[]
      */
