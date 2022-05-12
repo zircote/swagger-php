@@ -17,7 +17,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
      * @param Property[]                $properties
      * @param int|float                 $maximum
      * @param int|float                 $minimum
-     * @param string[]                  $enum
+     * @param string[]|int[]|float[]    $enum
      * @param Schema[]                  $allOf
      * @param Schema[]                  $anyOf
      * @param Schema[]                  $oneOf

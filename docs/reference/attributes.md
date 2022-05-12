@@ -22,7 +22,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -64,7 +64,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -272,7 +272,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalValue</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -445,7 +445,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>header</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -513,7 +513,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -555,7 +555,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -598,9 +598,9 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -642,7 +642,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -720,7 +720,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>operationRef</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -878,7 +878,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1007,7 +1007,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1095,7 +1095,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 <dl>
   <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1137,7 +1137,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1231,7 +1231,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1262,7 +1262,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>response</strong> : <span style="font-family: monospace;">string|int|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1295,7 +1295,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1337,7 +1337,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1386,7 +1386,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1460,7 +1460,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1588,7 +1588,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 <dl>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1630,7 +1630,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>

@@ -146,7 +146,7 @@ On top of this subset, there are extensions provided by this specification to al
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into `#/components/examples`.</p></dd>
@@ -294,7 +294,7 @@ A map between the scope name and a short description for it.</p></dd>
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>header</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p></dd>
@@ -431,7 +431,7 @@ accessing values in an operation and using them as parameters while invoking the
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>link</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into MediaType->links array.</p></dd>
@@ -576,7 +576,7 @@ A unique parameter is defined by a combination of a name and location.
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
@@ -706,7 +706,7 @@ The path itself is still exposed to the documentation viewer but they will not k
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
@@ -811,7 +811,7 @@ Describes a single request body.
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Request body model name.</p></dd>
@@ -848,7 +848,7 @@ static links to operations based on the response.
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>response</strong> : <span style="font-family: monospace;">string|int</span></dt>
   <dd><p>The key into Operations->responses array.<br />
@@ -884,7 +884,7 @@ On top of this subset, there are extensions provided by this specification to al
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Components->schemas array.</p></dd>
@@ -940,9 +940,9 @@ Default value is csv.</p></dd>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
-  <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">number</span></dt>
+  <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
 property's value is an integer.</p></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool</span></dt>
@@ -1018,7 +1018,7 @@ defined by this property's value.</p></dd>
 #### Properties
 ---
 <dl>
-  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|object</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into OpenApi->security array.</p></dd>

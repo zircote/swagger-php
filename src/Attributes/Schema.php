@@ -16,7 +16,7 @@ class Schema extends \OpenApi\Annotations\Schema
      * @param Property[]                $properties
      * @param int|float                 $maximum
      * @param int|float                 $minimum
-     * @param string[]                  $enum
+     * @param string[]|int[]|float[]    $enum
      * @param Schema[]                  $allOf
      * @param Schema[]                  $anyOf
      * @param Schema[]                  $oneOf

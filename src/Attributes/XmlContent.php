@@ -17,7 +17,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
      * @param int|float                 $maximum
      * @param int|float                 $minimum
      * @param Property[]                $properties
-     * @param string[]                  $enum
+     * @param string[]|int[]|float[]    $enum
      * @param Schema[]                  $allOf
      * @param Schema[]                  $anyOf
      * @param Schema[]                  $oneOf
