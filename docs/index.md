@@ -23,12 +23,12 @@ features:
 Add `swagger-php` annotations or attributes to your source code.
 
 <codeblock id="minimal">
-  <template v-slot:ann>
+  <template v-slot:an>
 
 <<< @/snippets/minimal_api_annotations.php
 
 </template>
-  <template v-slot:att>
+  <template v-slot:at>
 
 <<< @/snippets/minimal_api_attributes.php
 

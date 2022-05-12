@@ -12,12 +12,12 @@ The endpoint, in turn, needs to have a path and at least one response.
 With the above in mind a minimal API with a single endpoint could look like this
 
 <codeblock id="minimal">
-  <template v-slot:ann>
+  <template v-slot:an>
 
 <<< @/snippets/minimal_api_annotations.php
 
 </template>
-  <template v-slot:att>
+  <template v-slot:at>
 
 <<< @/snippets/minimal_api_attributes.php
 

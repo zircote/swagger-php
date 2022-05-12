@@ -1,13 +1,15 @@
 <template>
   <div>
-    <tabs :options="{ useUrlFragment: false }">
-      <tab :id="anId" name="Annotations">
-        <slot name="ann"></slot>
-      </tab>
-      <tab :id="atId" name="Attributes">
-        <slot name="att"></slot>
-      </tab>
-    </tabs>
+    <client-only>
+      <tabs :options="{ useUrlFragment: false }">
+        <tab :id="anId" name="Annotations">
+          <slot name="an"></slot>
+        </tab>
+        <tab :id="atId" name="Attributes">
+          <slot name="at"></slot>
+        </tab>
+      </tabs>
+    </client-only>
   </div>
 </template>
 
@@ -21,10 +23,10 @@
     },
     computed: {
       anId() {
-        return 'ann-' + this.id
+        return 'an-' + this.id
       },
       atId() {
-        return 'att-' + this.id
+        return 'at-' + this.id
       }
     }
   }
