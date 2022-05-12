@@ -73,6 +73,18 @@
       "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
     }
   },
+  "scripts-descriptions": {
+    "cs": "Fix all codestyle issues",
+    "lint": "Test codestyle",
+    "test": "Run all non-legacy and codestyle tests",
+    "testlegacy": "Run tests using the legacy TokenAnalyser",
+    "testall": "Run all tests (test + testlegacy)",
+    "analyse": "Run static analysis (phpstan/psalm)",
+    "spectral": "Run spectral lint over all .yaml files in the Examples folder",
+    "docs:refgen": "Rebuild the annotations/attributes reference markup files",
+    "docs:dev": "Run dev server for local development of gh-pages",
+    "docs:build": "Re-build static gh-pages"
+  },
   "scripts": {
     "cs": "php-cs-fixer fix --allow-risky=yes",
     "lint": "@cs --dry-run",
@@ -95,7 +107,6 @@
     "docs:build": [
       "@docs:refgen",
       "cd docs && npm run build"
-    ],
-    "docs:deploy": "cd docs && npm run deploy"
+    ]
   }
 }

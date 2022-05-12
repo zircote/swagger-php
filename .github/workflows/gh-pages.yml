@@ -23,11 +23,11 @@ jobs:
         with:
           dependency-versions: 'highest'
 
-      - name: Install vitepress
+      - name: Install vitepress and deps
         run: cd docs && npm install
 
       - name: Build site
-        run: cd docs && php refgen.php && npm run build
+        run: composer docs:build
 
       - name: Deploy to GitHub Pages
         if: success()
