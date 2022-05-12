@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       dryrun:
-        type: boolean
         description: Dry run
+        type: boolean
+        required: false
 
 jobs:
   gh-pages:
