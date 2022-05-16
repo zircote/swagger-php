@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "vitepress": "^0.22",
-    "vue3-tabs-component": "^1.0.7"
+    "vue3-tabs-component": "^1.0.8"
   }
 }

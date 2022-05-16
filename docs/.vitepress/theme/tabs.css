@@ -60,21 +60,21 @@
     align-items: center;
     color: inherit;
     display: flex;
-    padding: 0.75em 1em;
+    padding: 0.5em 1.25em;
     text-decoration: none;
 }
 
 .tabs-component-panels {
-    padding: 0 0;
+    padding: 1em 0;
 }
 
 @media (min-width: 700px) {
     .tabs-component-panels {
         background-color: #fff;
         border: solid 1px #ddd;
-        border-radius: 0 6px 6px 6px;
+        border-radius: 6px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        padding: 0 1em;
+        padding: 1em 1em;
         position: relative;
     }
 }
