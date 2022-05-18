@@ -24,17 +24,11 @@ class RefGenerator
         $this->projectRoot = realpath($projectRoot);
     }
 
-    /**
-     *
-     */
-    public function docPath(string $relativeName) : string
+    public function docPath(string $relativeName): string
     {
         return $this->projectRoot . '/docs/' . $relativeName;
     }
 
-    /**
-     *
-     */
     public function preamble(string $type): string
     {
         return <<< EOT
@@ -51,9 +45,6 @@ In addition to this page, there are also a number of [examples](https://github.c
 EOT;
     }
 
-    /**
-     *
-     */
     public function classesForType(string $type): array
     {
         $classes = [];
@@ -77,17 +68,11 @@ EOT;
         return $classes;
     }
 
-    /**
-     *
-     */
     public function types(): array
     {
         return [self::ANNOTATIONS, self::ATTRIBUTES];
     }
 
-    /**
-     *
-     */
     public function formatHeader(string $name, string $type): string
     {
         return <<< EOT
@@ -97,9 +82,6 @@ EOT;
 EOT;
     }
 
-    /**
-     *
-     */
     public function formatAttributesDetails(string $name, string $fqdn, string $filename): string
     {
         $rctor = (new \ReflectionClass($fqdn))->getMethod('__construct');
@@ -118,7 +100,7 @@ EOT;
         $parameters = $rctor->getParameters();
         if ($parameters) {
             echo PHP_EOL . '#### Parameters' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
@@ -141,7 +123,7 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
@@ -175,7 +157,7 @@ EOT;
 
         if ($properties) {
             echo PHP_EOL . '#### Properties' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
@@ -207,7 +189,7 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
@@ -226,7 +208,7 @@ EOT;
     {
         $props = [];
         foreach ($fqdn::$_nested as $details) {
-            $props[] = ((array)$details)[0];
+            $props[] = ((array) $details)[0];
         }
 
         return $props;
@@ -239,10 +221,11 @@ EOT;
     {
         if ($fqdn::$_parents) {
             echo PHP_EOL . '#### Allowed in' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             $parents = array_map(function (string $parent) {
                 $shortName = $this->shortName($parent);
+
                 return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
             }, $fqdn::$_parents);
             echo implode(', ', $parents) . PHP_EOL;
@@ -250,10 +233,11 @@ EOT;
 
         if ($fqdn::$_nested) {
             echo PHP_EOL . '#### Nested elements' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             $nested = array_map(function (string $nested) {
                 $shortName = $this->shortName($nested);
+
                 return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
             }, array_keys($fqdn::$_nested));
             echo implode(', ', $nested) . PHP_EOL;
@@ -306,7 +290,7 @@ EOT;
             return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
         }
 
-        $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
+        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;
