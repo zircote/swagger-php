@@ -34,11 +34,21 @@ class ExpandEnums
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($source));
                 $schema->schema = !Generator::isDefault($schema->schema) ? $schema->schema : $re->getShortName();
                 $type = 'string';
+                $schemaType = 'string';
                 if ($re->isBacked() && ($backingType = $re->getBackingType()) && method_exists($backingType, 'getName')) {
-                    $type = !Generator::isDefault($schema->type) ? $schema->type : $backingType->getName();
+                    if (Generator::isDefault($schema->type)) {
+                        $type = $backingType->getName();
+                    } else {
+                        $type = $schema->type;
+                        $schemaType = $schema->type;
+                    }
                 }
-                $schema->enum = array_map(function ($case) use ($re, $type) {
-                    return $re->isBacked() && $type === 'string' ? $case->getBackingValue() : $case->name;
+                $schema->enum = array_map(function ($case) use ($re, $schemaType, $type) {
+                    if ($re->isBacked() && $type === $schemaType) {
+                        return $case->getBackingValue();
+                    }
+
+                    return $case->name;
                 }, $re->getCases());
                 Util::mapNativeType($schema, $type);
             }

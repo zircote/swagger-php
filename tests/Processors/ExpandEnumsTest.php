@@ -11,6 +11,7 @@ use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Processors\ExpandEnums;
 use OpenApi\Tests\Fixtures\PHP\StatusEnum;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
+use OpenApi\Tests\Fixtures\PHP\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -41,6 +42,15 @@ class ExpandEnumsTest extends OpenApiTestCase
         $schema = $analysis->getSchemaForSource(StatusEnumBacked::class);
 
         self::assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
+    }
+
+    public function testExpandBackedIntegerEnum(): void
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/StatusEnumIntegerBacked.php']);
+        $analysis->process([new ExpandEnums()]);
+        $schema = $analysis->getSchemaForSource(StatusEnumIntegerBacked::class);
+
+        self::assertEquals([1, 2, 3], $schema->enum);
     }
 
     public function testExpandBackedStringEnum(): void
