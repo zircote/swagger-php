@@ -50,11 +50,7 @@ class ExpandEnumsTest extends OpenApiTestCase
         $analysis->process([new ExpandEnums()]);
         $schema = $analysis->getSchemaForSource(StatusEnumIntegerBacked::class);
 
-        self::assertEquals([
-            StatusEnumIntegerBacked::DRAFT->value,
-            StatusEnumIntegerBacked::PUBLISHED->value,
-            StatusEnumIntegerBacked::ARCHIVED->value,
-        ], $schema->enum);
+        self::assertEquals([1, 2, 3], $schema->enum);
     }
 
     public function testExpandBackedStringEnum(): void
