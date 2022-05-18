@@ -8,6 +8,6 @@ end_of_line = LF
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{php,json,yml,yaml}]
+[*.{php,json,yaml}]
 indent_style = space
 indent_size = 4

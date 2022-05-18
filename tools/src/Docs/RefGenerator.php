@@ -1,9 +1,13 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tools\Docs;
+
 use OpenApi\Analysers\TokenScanner;
 use OpenApi\Annotations\AbstractAnnotation;
-
-require_once __DIR__ . '/../vendor/autoload.php';
 
 class RefGenerator
 {
@@ -12,10 +16,20 @@ class RefGenerator
     const NO_DETAILS_AVAILABLE = 'No details available.';
 
     protected $scanner;
+    protected $projectRoot;
 
-    public function __construct()
+    public function __construct($projectRoot)
     {
         $this->scanner = new TokenScanner();
+        $this->projectRoot = realpath($projectRoot);
+    }
+
+    /**
+     *
+     */
+    public function docPath(string $relativeName) : string
+    {
+        return $this->projectRoot . '/docs/' . $relativeName;
     }
 
     /**
@@ -43,7 +57,7 @@ EOT;
     public function classesForType(string $type): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/' . $type);
+        $dir = new \DirectoryIterator($this->projectRoot . '/src/' . $type);
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -88,11 +102,11 @@ EOT;
      */
     public function formatAttributesDetails(string $name, string $fqdn, string $filename): string
     {
-        $rctor = (new ReflectionClass($fqdn))->getMethod('__construct');
+        $rctor = (new \ReflectionClass($fqdn))->getMethod('__construct');
 
         ob_start();
 
-        $rc = new ReflectionClass($fqdn);
+        $rc = new \ReflectionClass($fqdn);
         $classDocumentation = $this->extractDocumentation($rc->getDocComment());
         echo $classDocumentation['content'] . PHP_EOL;
 
@@ -148,7 +162,7 @@ EOT;
 
         ob_start();
 
-        $rc = new ReflectionClass($fqdn);
+        $rc = new \ReflectionClass($fqdn);
         $classDocumentation = $this->extractDocumentation($rc->getDocComment());
         echo $classDocumentation['content'] . PHP_EOL;
 
@@ -165,7 +179,7 @@ EOT;
 
             echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
-                $rp = new ReflectionProperty($fqdn, $property);
+                $rp = new \ReflectionProperty($fqdn, $property);
                 $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
                 if ($var = $this->getReflectionType($fqdn, $rp, false, $propertyDocumentation['var'])) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
@@ -263,7 +277,7 @@ EOT;
         $var = [];
 
         if ($type = $rp->getType()) {
-            if ($type instanceof ReflectionUnionType) {
+            if ($type instanceof \ReflectionUnionType) {
                 foreach ($type->getTypes() as $type) {
                     $var[] = $type->getName();
                 }
@@ -333,21 +347,4 @@ EOT;
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }
-}
-
-
-// ================================================================================
-$refgen = new RefGenerator();
-
-foreach ($refgen->types() as $type) {
-    ob_start();
-
-    echo $refgen->preamble($type);
-    foreach ($refgen->classesForType($type) as $name => $details) {
-        echo $refgen->formatHeader($name, $type);
-        $method = "format{$type}Details";
-        echo $refgen->$method($name, $details['fqdn'], $details['filename']);
-    }
-
-    file_put_contents(__DIR__ . '/reference/' . strtolower($type) . '.md', ob_get_clean());
 }
