@@ -55,4 +55,9 @@ EOC;
     {
         return 5;
     }
+
+    public function supports(\SplFileInfo $file): bool
+    {
+        return parent::supports($file) && false !== strpos($file->getPath(), '/src/');
+    }
 }
