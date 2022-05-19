@@ -134,6 +134,11 @@ composer test
 ./bin/phpunit
 ```
 
+### Regenerate annotation/attribute reference markup docs
+```bash
+composer docs:refgen
+```
+
 ### Running linting only:
 ```bash
 composer lint

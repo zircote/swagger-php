@@ -34,7 +34,7 @@ class Parameter extends AbstractAnnotation
     public $parameter = Generator::UNDEFINED;
 
     /**
-     * The (case sensitive) name of the parameter.
+     * The (case-sensitive) name of the parameter.
      *
      * If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.
      *

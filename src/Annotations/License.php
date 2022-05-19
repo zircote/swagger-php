@@ -32,7 +32,7 @@ class License extends AbstractAnnotation
     public $identifier = Generator::UNDEFINED;
 
     /**
-     * A URL to the license used for the API. This MUST be in the form of a URL.
+     * An URL to the license used for the API. This MUST be in the form of an URL.
      *
      * The `url` field is mutually exclusive of the `identifier` field.
      *

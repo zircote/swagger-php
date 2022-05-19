@@ -59,7 +59,7 @@ class Examples extends AbstractAnnotation
     public $value = Generator::UNDEFINED;
 
     /**
-     * A URL that points to the literal example.
+     * An URL that points to the literal example.
      *
      * This provides the capability to reference examples that cannot easily be included
      * in JSON or YAML documents.

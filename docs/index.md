@@ -20,7 +20,20 @@ features:
 
 ### 2. Update your code
 
-<<< @/snippets/minimal_api.php
+Add `swagger-php` annotations or attributes to your source code.
+
+<codeblock id="minimal">
+  <template v-slot:an>
+
+<<< @/snippets/minimal_api_annotations.php
+
+</template>
+  <template v-slot:at>
+
+<<< @/snippets/minimal_api_attributes.php
+
+  </template>
+</codeblock>
 
 ### 3. Generate OpenAPI documentation
 

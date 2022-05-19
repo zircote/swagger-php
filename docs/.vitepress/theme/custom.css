@@ -1,0 +1,30 @@
+/* https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css */
+:root {
+    --c-brand: #74a535;
+    --c-brand-light: #94c73d;
+
+    --c-bg: #fefefe;
+}
+
+.tabs-component {
+    margin: 2em 0;
+}
+
+.tabs-component-panels {
+    padding: 0 0;
+    border: none;
+}
+
+.tabs-component-tab-a {
+    padding: 0.5em;
+}
+
+.tabs-component-tab {
+    transform: none;
+}
+
+@media (min-width: 700px) {
+    .tabs-component-tab.is-active {
+        border-bottom: solid 1px #ddd;
+    }
+}

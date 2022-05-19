@@ -35,9 +35,9 @@ The two configuration options for the underlying Doctrine doc-block parser `alia
 are not part of this function and need to be set separately. 
 
 Being static this means setting them back is the callers responsibility and there is also the fact that 
-some of the Doctrine configuration currently can not be reverted easily.
+some Doctrine configuration currently can not be reverted easily.
 
-Therefore, having a single side-effect free way of using swwagger-php seemed like a good idea...
+Therefore, having a single side effect free way of using swagger-php seemed like a good idea...
 
 ## The `\OpenApi\Generator` class
 
@@ -80,7 +80,7 @@ Defaults:
 
 Advantages:
 * The `Generator` code will handle configuring things as before in a single place
-* Static settings will be reverted to defaults once finished
+* Static settings will be reverted to the default once finished
 * The get/set methods allow for using type hints
 * Static configuration is deprecated and can be removed at some point without code changes
 * Build in support for PSR logger

@@ -12,7 +12,7 @@
 By default the output format is YAML. If a filename is given (via `--output` or `-o`) 
 the tool will use the file extension to determine the format.
 
-The `--format` option can be used to force a specifc format.
+The `--format` option can be used to force a specific format.
 :::
 
 For a list of all available options use the `-h` option 

@@ -6,6 +6,7 @@ use OpenApi\Attributes as OA;
 class OpenApi {}
 
 class MyController {
+
     #[OA\Get(path: '/api/data.json')]
     #[OA\Response(response: '200', description: 'The data')]
     public function getResource() {

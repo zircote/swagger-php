@@ -8,7 +8,8 @@ relevant source code as appropriate.
 `swagger-php` will scan your project and merge all meta-data into one` @OA\OpenApi` annotation.
 
 ::: warning
-As of `swagger-php` v4 all annotations or attributes must be associated with code (`class`, `method`, `parameter` or `enum`)
+As of `swagger-php` v4 all annotations or attributes must be associated with 
+a structural element (`class`, `method`, `parameter` or `enum`)
 :::
 
 ## Context awareness
