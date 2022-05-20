@@ -18,7 +18,7 @@ class Extended extends Base
 {
 
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */

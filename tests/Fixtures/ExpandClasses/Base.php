@@ -13,7 +13,7 @@ class Base
 {
 
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */

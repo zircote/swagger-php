@@ -13,7 +13,7 @@ class BaseThatImplements implements BaseInterface
 {
 
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */

@@ -14,7 +14,7 @@ class ExtendsBaseThatImplements extends BaseThatImplements
     use TraitUsedByExtendsBaseThatImplements;
 
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */
