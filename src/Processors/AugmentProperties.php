@@ -61,7 +61,7 @@ class AugmentProperties
                 $property->description = trim($varMatches['description']);
             }
             if (Generator::isDefault($property->description) && $this->isRoot($property)) {
-                $property->description = $context->phpdocContent();
+                $property->description = $this->extractContent($context->comment);
             }
 
             if (Generator::isDefault($property->example) && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {

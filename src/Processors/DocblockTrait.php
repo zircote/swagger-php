@@ -12,6 +12,7 @@ use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
+use OpenApi\Generator;
 
 trait DocblockTrait
 {
@@ -51,5 +52,89 @@ trait DocblockTrait
         }
 
         return false;
+    }
+
+    /**
+     * The text contents of the phpdoc comment (excl. tags).
+     */
+    public function extractContent(?string $docblock): string
+    {
+        if (Generator::isDefault($docblock)) {
+            return Generator::UNDEFINED;
+        }
+
+        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
+        $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
+        $i = count($comment) - 1;
+        $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
+        $lines = [];
+        $append = false;
+        foreach ($comment as $line) {
+            $line = ltrim($line, "\t *");
+            if (substr($line, 0, 1) === '@') {
+                break;
+            }
+            if ($append) {
+                $i = count($lines) - 1;
+                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+            } else {
+                $lines[] = $line;
+            }
+            $append = (substr($line, -1) === '\\');
+        }
+        $description = trim(implode("\n", $lines));
+        if ($description === '') {
+            return Generator::UNDEFINED;
+        }
+
+        return $description;
+    }
+
+    /**
+     * A short piece of text, usually one line, providing the basic function of the associated element.
+     */
+    public function extractSummary(?string $docblock): string
+    {
+        if (!$content = $this->extractContent($docblock)) {
+            return Generator::UNDEFINED;
+        }
+        $lines = preg_split('/(\n|\r\n)/', $content);
+        $summary = '';
+        foreach ($lines as $line) {
+            $summary .= $line . "\n";
+            if ($line === '' || substr($line, -1) === '.') {
+                return trim($summary);
+            }
+        }
+        $summary = trim($summary);
+        if ($summary === '') {
+            return Generator::UNDEFINED;
+        }
+
+        return $summary;
+    }
+
+    /**
+     * An optional longer piece of text providing more details on the associated element’s function.
+     *
+     * This is very useful when working with a complex element.
+     */
+    public function extractDescription(?string $docblock): string
+    {
+        $summary = $this->extractSummary($docblock);
+        if (!$summary) {
+            return Generator::UNDEFINED;
+        }
+
+        if (false !== ($substr = substr($this->extractContent($docblock), strlen($summary)))) {
+            $description = trim($substr);
+        } else {
+            $description = '';
+        }
+        if ($description === '') {
+            return Generator::UNDEFINED;
+        }
+
+        return $description;
     }
 }
