@@ -160,15 +160,11 @@ trait DocblockTrait
             return Generator::UNDEFINED;
         }
 
+        $description = '';
         if (false !== ($substr = substr($this->extractContent($docblock), strlen($summary)))) {
             $description = trim($substr);
-        } else {
-            $description = '';
-        }
-        if ($description === '') {
-            return Generator::UNDEFINED;
         }
 
-        return $description;
+        return $description ?: Generator::UNDEFINED;
     }
 }
