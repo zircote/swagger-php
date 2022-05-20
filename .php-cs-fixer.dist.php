@@ -1,17 +1,23 @@
 <?php
 
+use OpenApi\Tools\CSFixer\LicenseFixer;
+
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tests')->name('*.php')
     ->path('Examples')->name('*.php')
-    //->exclude('tests/Fixtures')
+    ->path('tools')->name('*.php')
     ->in(__DIR__)
 ;
 
 return (new PhpCsFixer\Config())
+    ->registerCustomFixers([
+        new LicenseFixer(),
+    ])
     ->setRules([
         '@PSR2' => true,
         '@DoctrineAnnotation' => true,
+        'OpenApi/license' => true,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],

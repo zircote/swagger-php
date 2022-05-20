@@ -1,9 +1,13 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tools\Docs;
+
 use OpenApi\Analysers\TokenScanner;
 use OpenApi\Annotations\AbstractAnnotation;
-
-require_once __DIR__ . '/../vendor/autoload.php';
 
 class RefGenerator
 {
@@ -12,15 +16,19 @@ class RefGenerator
     const NO_DETAILS_AVAILABLE = 'No details available.';
 
     protected $scanner;
+    protected $projectRoot;
 
-    public function __construct()
+    public function __construct($projectRoot)
     {
         $this->scanner = new TokenScanner();
+        $this->projectRoot = realpath($projectRoot);
     }
 
-    /**
-     *
-     */
+    public function docPath(string $relativeName): string
+    {
+        return $this->projectRoot . '/docs/' . $relativeName;
+    }
+
     public function preamble(string $type): string
     {
         return <<< EOT
@@ -37,13 +45,10 @@ In addition to this page, there are also a number of [examples](https://github.c
 EOT;
     }
 
-    /**
-     *
-     */
     public function classesForType(string $type): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/' . $type);
+        $dir = new \DirectoryIterator($this->projectRoot . '/src/' . $type);
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -63,17 +68,11 @@ EOT;
         return $classes;
     }
 
-    /**
-     *
-     */
     public function types(): array
     {
         return [self::ANNOTATIONS, self::ATTRIBUTES];
     }
 
-    /**
-     *
-     */
     public function formatHeader(string $name, string $type): string
     {
         return <<< EOT
@@ -83,16 +82,13 @@ EOT;
 EOT;
     }
 
-    /**
-     *
-     */
     public function formatAttributesDetails(string $name, string $fqdn, string $filename): string
     {
-        $rctor = (new ReflectionClass($fqdn))->getMethod('__construct');
+        $rctor = (new \ReflectionClass($fqdn))->getMethod('__construct');
 
         ob_start();
 
-        $rc = new ReflectionClass($fqdn);
+        $rc = new \ReflectionClass($fqdn);
         $classDocumentation = $this->extractDocumentation($rc->getDocComment());
         echo $classDocumentation['content'] . PHP_EOL;
 
@@ -104,7 +100,7 @@ EOT;
         $parameters = $rctor->getParameters();
         if ($parameters) {
             echo PHP_EOL . '#### Parameters' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
@@ -127,7 +123,7 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
@@ -148,7 +144,7 @@ EOT;
 
         ob_start();
 
-        $rc = new ReflectionClass($fqdn);
+        $rc = new \ReflectionClass($fqdn);
         $classDocumentation = $this->extractDocumentation($rc->getDocComment());
         echo $classDocumentation['content'] . PHP_EOL;
 
@@ -161,11 +157,11 @@ EOT;
 
         if ($properties) {
             echo PHP_EOL . '#### Properties' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
-                $rp = new ReflectionProperty($fqdn, $property);
+                $rp = new \ReflectionProperty($fqdn, $property);
                 $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
                 if ($var = $this->getReflectionType($fqdn, $rp, false, $propertyDocumentation['var'])) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
@@ -193,7 +189,7 @@ EOT;
 
         if ($classDocumentation['see']) {
             echo PHP_EOL . '#### Reference' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             foreach ($classDocumentation['see'] as $link) {
                 echo '- ' . $link . PHP_EOL;
@@ -212,7 +208,7 @@ EOT;
     {
         $props = [];
         foreach ($fqdn::$_nested as $details) {
-            $props[] = ((array)$details)[0];
+            $props[] = ((array) $details)[0];
         }
 
         return $props;
@@ -225,10 +221,11 @@ EOT;
     {
         if ($fqdn::$_parents) {
             echo PHP_EOL . '#### Allowed in' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             $parents = array_map(function (string $parent) {
                 $shortName = $this->shortName($parent);
+
                 return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
             }, $fqdn::$_parents);
             echo implode(', ', $parents) . PHP_EOL;
@@ -236,10 +233,11 @@ EOT;
 
         if ($fqdn::$_nested) {
             echo PHP_EOL . '#### Nested elements' . PHP_EOL;
-            echo '---'.PHP_EOL;
+            echo '---' . PHP_EOL;
 
             $nested = array_map(function (string $nested) {
                 $shortName = $this->shortName($nested);
+
                 return '<a href="#' . strtolower($shortName) . '">' . $shortName . '</a>';
             }, array_keys($fqdn::$_nested));
             echo implode(', ', $nested) . PHP_EOL;
@@ -263,7 +261,7 @@ EOT;
         $var = [];
 
         if ($type = $rp->getType()) {
-            if ($type instanceof ReflectionUnionType) {
+            if ($type instanceof \ReflectionUnionType) {
                 foreach ($type->getTypes() as $type) {
                     $var[] = $type->getName();
                 }
@@ -292,7 +290,7 @@ EOT;
             return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
         }
 
-        $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
+        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;
@@ -333,21 +331,4 @@ EOT;
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }
-}
-
-
-// ================================================================================
-$refgen = new RefGenerator();
-
-foreach ($refgen->types() as $type) {
-    ob_start();
-
-    echo $refgen->preamble($type);
-    foreach ($refgen->classesForType($type) as $name => $details) {
-        echo $refgen->formatHeader($name, $type);
-        $method = "format{$type}Details";
-        echo $refgen->$method($name, $details['fqdn'], $details['filename']);
-    }
-
-    file_put_contents(__DIR__ . '/reference/' . strtolower($type) . '.md', ob_get_clean());
 }

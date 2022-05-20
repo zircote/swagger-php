@@ -1,0 +1,12 @@
+/.* export-ignore
+/tools/ export-ignore
+/phpstan*.neon export-ignore
+/phpunit.xml.dist export-ignore
+/psalm*.xml export-ignore
+/tests/ export-ignore
+
+*       text=auto eol=lf
+*.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
+*.md    text whitespace=blank-at-eol,blank-at-eof
+*.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
+*.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4

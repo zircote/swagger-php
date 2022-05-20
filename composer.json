@@ -1,112 +1,113 @@
 {
-  "name": "zircote/swagger-php",
-  "type": "library",
-  "license": "Apache-2.0",
-  "bin": [
-    "bin/openapi"
-  ],
-  "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
-  "keywords": [
-    "json",
-    "rest",
-    "api",
-    "service discovery"
-  ],
-  "homepage": "https://github.com/zircote/swagger-php/",
-  "authors": [
-    {
-      "name": "Robert Allen",
-      "email": "zircote@gmail.com"
+    "name": "zircote/swagger-php",
+    "type": "library",
+    "license": "Apache-2.0",
+    "bin": [
+        "bin/openapi"
+    ],
+    "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
+    "keywords": [
+        "json",
+        "rest",
+        "api",
+        "service discovery"
+    ],
+    "homepage": "https://github.com/zircote/swagger-php/",
+    "authors": [
+        {
+            "name": "Robert Allen",
+            "email": "zircote@gmail.com"
+        },
+        {
+            "name": "Bob Fanger",
+            "email": "bfanger@gmail.com",
+            "homepage": "https://bfanger.nl"
+        },
+        {
+            "name": "Martin Rademacher",
+            "email": "mano@radebatz.net",
+            "homepage": "https://radebatz.net"
+        }
+    ],
+    "config": {
+        "bin-dir": "bin",
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
-    {
-      "name": "Bob Fanger",
-      "email": "bfanger@gmail.com",
-      "homepage": "https://bfanger.nl"
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.x-dev"
+        }
     },
-    {
-      "name": "Martin Rademacher",
-      "email": "mano@radebatz.net",
-      "homepage": "https://radebatz.net"
+    "require": {
+        "php": ">=7.2",
+        "ext-json": "*",
+        "doctrine/annotations": "^1.7",
+        "psr/log": "^1.1 || ^2.0 || 3.0",
+        "symfony/finder": ">=2.2",
+        "symfony/yaml": ">=3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenApi\\": "src"
+        }
+    },
+    "require-dev": {
+        "composer/package-versions-deprecated": "^1.11",
+        "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
+        "phpstan/phpstan": "^1.6",
+        "phpunit/phpunit": ">=8",
+        "vimeo/psalm": "^4.23"
+    },
+    "autoload-dev": {
+        "exclude-from-classmap": [
+            "/tests/Fixtures"
+        ],
+        "psr-4": {
+            "OpenApi\\Tools\\": "tools/src/",
+            "OpenApi\\Tests\\": "tests/",
+            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
+            "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
+        }
+    },
+    "scripts-descriptions": {
+        "cs": "Fix all codestyle issues",
+        "lint": "Test codestyle",
+        "test": "Run all non-legacy and codestyle tests",
+        "testlegacy": "Run tests using the legacy TokenAnalyser",
+        "testall": "Run all tests (test + testlegacy)",
+        "analyse": "Run static analysis (phpstan/psalm)",
+        "spectral": "Run spectral lint over all .yaml files in the Examples folder",
+        "docs:refgen": "Rebuild the annotations/attributes reference markup files",
+        "docs:dev": "Run dev server for local development of gh-pages",
+        "docs:build": "Re-build static gh-pages"
+    },
+    "scripts": {
+        "cs": "php-cs-fixer fix --allow-risky=yes",
+        "lint": "@cs --dry-run",
+        "test": [
+            "phpunit",
+            "@lint"
+        ],
+        "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
+        "testall": [
+            "@test",
+            "@testlegacy"
+        ],
+        "analyse": [
+            "phpstan analyse --memory-limit=2G",
+            "psalm"
+        ],
+        "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
+        "docs:refgen": "php tools/refgen.php",
+        "docs:dev": "cd docs && npm run dev",
+        "docs:build": [
+            "@docs:refgen",
+            "cd docs && npm run build"
+        ]
     }
-  ],
-  "config": {
-    "bin-dir": "bin",
-    "optimize-autoloader": true,
-    "sort-packages": true,
-    "allow-plugins": {
-      "composer/package-versions-deprecated": true
-    }
-  },
-  "minimum-stability": "stable",
-  "extra": {
-    "branch-alias": {
-      "dev-master": "4.x-dev"
-    }
-  },
-  "require": {
-    "php": ">=7.2",
-    "ext-json": "*",
-    "doctrine/annotations": "^1.7",
-    "psr/log": "^1.1 || ^2.0 || 3.0",
-    "symfony/finder": ">=2.2",
-    "symfony/yaml": ">=3.3"
-  },
-  "autoload": {
-    "psr-4": {
-      "OpenApi\\": "src"
-    }
-  },
-  "require-dev": {
-    "composer/package-versions-deprecated": "^1.11",
-    "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
-    "phpstan/phpstan": "^1.6",
-    "phpunit/phpunit": ">=8",
-    "vimeo/psalm": "^4.23"
-  },
-  "autoload-dev": {
-    "exclude-from-classmap": [
-      "/tests/Fixtures"
-    ],
-    "psr-4": {
-      "OpenApi\\Tests\\": "tests/",
-      "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
-      "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
-    }
-  },
-  "scripts-descriptions": {
-    "cs": "Fix all codestyle issues",
-    "lint": "Test codestyle",
-    "test": "Run all non-legacy and codestyle tests",
-    "testlegacy": "Run tests using the legacy TokenAnalyser",
-    "testall": "Run all tests (test + testlegacy)",
-    "analyse": "Run static analysis (phpstan/psalm)",
-    "spectral": "Run spectral lint over all .yaml files in the Examples folder",
-    "docs:refgen": "Rebuild the annotations/attributes reference markup files",
-    "docs:dev": "Run dev server for local development of gh-pages",
-    "docs:build": "Re-build static gh-pages"
-  },
-  "scripts": {
-    "cs": "php-cs-fixer fix --allow-risky=yes",
-    "lint": "@cs --dry-run",
-    "test": [
-      "phpunit",
-      "@lint"
-    ],
-    "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
-    "testall": [
-      "@test",
-      "@testlegacy"
-    ],
-    "analyse": [
-      "phpstan analyse --memory-limit=2G",
-      "psalm"
-    ],
-    "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
-    "docs:refgen": "php docs/refgen.php",
-    "docs:dev": "cd docs && npm run dev",
-    "docs:build": [
-      "@docs:refgen",
-      "cd docs && npm run build"
-    ]
-  }
 }
