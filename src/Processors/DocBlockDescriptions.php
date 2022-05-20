@@ -70,6 +70,7 @@ class DocBlockDescriptions
 
             return;
         }
+
         $annotation->description = $this->extractContent($annotation->_context->comment);
     }
 

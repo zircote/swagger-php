@@ -54,10 +54,39 @@ trait DocblockTrait
         return false;
     }
 
+    protected function handleTag(string $line, ?array &$tags = null): void
+    {
+        if (null === $tags) {
+            return;
+        }
+
+        // split of tag name
+        $token = preg_split("@[\s+　]@u", $line, 2);
+        if (2 == count($token)) {
+            $tag = substr($token[0], 1);
+            $tail = $token[1];
+            if (!array_key_exists($tag, $tags)) {
+                $tags[$tag] = [];
+            }
+
+            if (false !== ($dpos = strpos($tail, '$'))) {
+                $type = trim(substr($tail, 0, $dpos));
+                $token = preg_split("@[\s+　]@u", substr($tail, $dpos), 2);
+                $name = trim(substr($token[0], 1));
+                $description = trim($token[1]);
+
+                $tags[$tag][$name] = [
+                    'type' => $type,
+                    'description' => $description,
+                ];
+            }
+        }
+    }
+
     /**
      * The text contents of the phpdoc comment (excl. tags).
      */
-    public function extractContent(?string $docblock): string
+    public function extractContent(?string $docblock, ?array &$tags = null): string
     {
         if (Generator::isDefault($docblock)) {
             return Generator::UNDEFINED;
@@ -69,10 +98,15 @@ trait DocblockTrait
         $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
         $lines = [];
         $append = false;
+        $skip = false;
         foreach ($comment as $line) {
             $line = ltrim($line, "\t *");
             if (substr($line, 0, 1) === '@') {
-                break;
+                $this->handleTag($line, $tags);
+                $skip = true;
+            }
+            if ($skip) {
+                continue;
             }
             if ($append) {
                 $i = count($lines) - 1;

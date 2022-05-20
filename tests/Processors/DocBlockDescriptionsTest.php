@@ -105,5 +105,6 @@ END
      */
 END
         ]);
+        $this->assertEquals("This is a summary\nbut this is part of the summary", $this->extractSummary($multilineSummary->comment));
     }
 }
