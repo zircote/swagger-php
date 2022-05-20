@@ -167,6 +167,8 @@ abstract class Operation extends AbstractAnnotation
 
     /**
      * @inheritdoc
+     *
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
