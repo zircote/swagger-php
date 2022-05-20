@@ -73,7 +73,7 @@ trait DocblockTrait
                 $type = trim(substr($tail, 0, $dpos));
                 $token = preg_split("@[\s+　]@u", substr($tail, $dpos), 2);
                 $name = trim(substr($token[0], 1));
-                $description = trim($token[1]);
+                $description = 2 == count($token) ? trim($token[1]) : null;
 
                 $tags[$tag][$name] = [
                     'type' => $type,

@@ -119,6 +119,8 @@ class ProductController
 {
     /**
      * Get a product.
+     *
+     * @param string $product_id ignored product id docblock typehint
      */
     #[OAT\Get(
         path: '/products/{product_id}',
@@ -136,7 +138,7 @@ class ProductController
             new OAT\Response(response: 401, description: 'oops'),
         ],
     )]
-    #[OAT\PathParameter(name: 'product_id', required: false, description: 'The product id.', schema: new OAT\Schema(type: 'int'))]
+    #[OAT\PathParameter(name: 'product_id', required: false, description: 'the product id', schema: new OAT\Schema(type: 'int'))]
     public function getProduct(?int $product_id)
     {
     }
