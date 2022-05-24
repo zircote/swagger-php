@@ -51,7 +51,7 @@ class DocBlockParser
                 $context->annotations = [];
             }
 
-            return $this->docParser->parse($comment);
+            return $this->docParser->parse($comment, $context->getDebugLocation());
         } catch (\Exception $e) {
             if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string) $context, '/') . '\.$/', $e->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
