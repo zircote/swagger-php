@@ -31,11 +31,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: src/Context.php
-
-		-
 			message: "#^Ternary operator condition is always true\\.$#"
 			count: 1
 			path: src/Context.php
@@ -71,6 +66,16 @@ parameters:
 			path: src/Processors/AugmentSchemas.php
 
 		-
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:description\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: src/Processors/DocBlockDescriptions.php
+
+		-
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:summaryAndDescription\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: src/Processors/DocBlockDescriptions.php
+
+		-
 			message: "#^Property OpenApi\\\\Annotations\\\\JsonContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/MergeJsonContent.php
@@ -99,4 +104,3 @@ parameters:
 			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
 			count: 1
 			path: tests/Annotations/AttributesSyncTest.php
-

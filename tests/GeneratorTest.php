@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
@@ -30,7 +29,7 @@ class GeneratorTest extends OpenApiTestCase
     public function testScan(string $sourceDir, iterable $sources): void
     {
         $openapi = (new Generator())
-            ->setAnalyser(new TokenAnalyser())
+            ->setAnalyser($this->getAnalyzer())
             ->generate($sources);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
@@ -43,7 +42,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
 
         (new Generator($this->getTrackingLogger()))
-            ->setAnalyser(new TokenAnalyser())
+            ->setAnalyser($this->getAnalyzer())
             ->generate(['/tmp/__swagger_php_does_not_exist__']);
     }
 

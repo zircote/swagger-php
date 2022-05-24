@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 
 use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Attributes as OAF;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * The Spec.
@@ -103,6 +104,8 @@ class ProductController
 {
     /**
      * Get a product.
+     *
+     * @param $product_id the product id
      */
     #[OAT\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
     #[OAT\Response(
@@ -116,7 +119,7 @@ class ProductController
     #[OAT\Response(response: 401, description: 'oops')]
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
-        #[OAT\PathParameter(description: 'The product id.')] ?int $product_id
+        #[OAT\PathParameter] ?int $product_id
     ) {
     }
 

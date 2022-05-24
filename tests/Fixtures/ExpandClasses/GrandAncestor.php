@@ -10,7 +10,7 @@ class GrandAncestor
 {
 
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */

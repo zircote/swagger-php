@@ -148,7 +148,6 @@ class ProductController
      *     @OA\PathParameter(
      *         name="product_id",
      *         required=false,
-     *         description="The product id.",
      *         @OA\Schema(type="int")
      *     ),
      *     @OA\Response(
@@ -169,6 +168,8 @@ class ProductController
      *         description="oops"
      *     )
      * )
+     *
+     * @param int $product_id the product id
      */
     public function getProduct(?int $product_id)
     {

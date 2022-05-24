@@ -14,7 +14,7 @@ class ErrorModel extends \Exception
      */
     public $code;
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */
