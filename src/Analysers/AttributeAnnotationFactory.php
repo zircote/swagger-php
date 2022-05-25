@@ -60,12 +60,14 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         foreach ($rp->getAttributes($attributeName) as $attribute) {
                             $instance = $attribute->newInstance();
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
-                            $nullable = $rnt ? $rnt->allowsNull() : Generator::UNDEFINED;
+                            $nullable = $rnt ? $rnt->allowsNull() : true;
+
                             if ($instance instanceof Property) {
                                 $instance->property = $rp->getName();
                                 if (Generator::isDefault($instance->type)) {
                                     $instance->type = $type;
                                 }
+                                $instance->nullable = $nullable;
                             } else {
                                 $instance->name = $rp->getName();
                                 $instance->required = !$nullable;
