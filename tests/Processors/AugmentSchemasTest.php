@@ -31,6 +31,7 @@ class AugmentSchemasTest extends OpenApiTestCase
         $analysis->process([new AugmentSchemas()]);
 
         $this->assertSame('Customer', $customer->schema, '@OA\Schema()->schema based on classname');
+        $this->assertIsArray($customer->properties);
         $this->assertCount(10, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 
@@ -49,6 +50,7 @@ class AugmentSchemasTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
         $analysis->process([new AugmentSchemas()]);
 
+        $this->assertIsArray($customer->properties);
         $this->assertCount(9, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 }

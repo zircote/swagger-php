@@ -6,9 +6,12 @@ parameters:
     paths:
         - src
         - tests
+        - Examples
     parallel:
         processTimeout: 300.0
-    ignoreErrors:
-        - '#does not accept default value of type #'
     excludePaths:
         - 'tests/Fixtures/*'
+    ignoreErrors:
+        - '#does not accept default value of type #'
+        ## Examples
+        - '#^Property [a-zA-Z0-9\\]+::\$[a-zA-Z]+ is unused.$#'
