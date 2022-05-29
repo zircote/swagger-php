@@ -32,6 +32,7 @@ END;
         $this->assertCount(1, $response->_unmerged);
         $analysis->process([new MergeXmlContent()]);
 
+        $this->assertIsArray($response->content);
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
@@ -72,6 +73,7 @@ END;
         $this->assertCount(1, $parameter->_unmerged);
         $analysis->process([new MergeXmlContent()]);
 
+        $this->assertIsArray($parameter->content);
         $this->assertCount(1, $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
         $json = json_decode(json_encode($parameter), true);

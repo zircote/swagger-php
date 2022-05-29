@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: Examples/processors/sort-components/SortComponents.php
+
+		-
+			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
+			count: 1
+			path: Examples/using-links-php81/User.php
+
+		-
 			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$description\\.$#"
 			count: 1
 			path: src/Annotations/AbstractAnnotation.php

@@ -70,8 +70,7 @@
         "psr-4": {
             "OpenApi\\Tools\\": "tools/src/",
             "OpenApi\\Tests\\": "tests/",
-            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
-            "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
+            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
         }
     },
     "scripts-descriptions": {

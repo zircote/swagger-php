@@ -32,6 +32,7 @@ END;
         $this->assertCount(1, $response->_unmerged);
         $analysis->process([new MergeJsonContent()]);
 
+        $this->assertIsArray($response->content);
         $this->assertCount(1, $response->content);
         $this->assertCount(0, $response->_unmerged);
         $json = json_decode(json_encode($response), true);
@@ -70,9 +71,11 @@ END;
         /** @var Parameter $parameter */
         $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
+        $this->assertIsArray($parameter->_unmerged);
         $this->assertCount(1, $parameter->_unmerged);
         $analysis->process([new MergeJsonContent()]);
 
+        $this->assertIsArray($parameter->content);
         $this->assertCount(1, $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
         $json = json_decode(json_encode($parameter), true);

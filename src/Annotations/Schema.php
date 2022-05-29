@@ -293,7 +293,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against all schemas
      * defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $allOf = Generator::UNDEFINED;
 
@@ -301,7 +301,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against at least one
      * schema defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $anyOf = Generator::UNDEFINED;
 
@@ -309,7 +309,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against exactly one schema
      * defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $oneOf = Generator::UNDEFINED;
 

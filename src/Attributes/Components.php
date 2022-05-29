@@ -12,17 +12,17 @@ use OpenApi\Generator;
 class Components extends \OpenApi\Annotations\Components
 {
     /**
-     * @param Schema[]|null             $schemas
-     * @param Response[]|null           $responses
-     * @param Parameter[]|null          $parameters
-     * @param RequestBody[]|null        $requestBodies
-     * @param Examples[]|null           $examples
-     * @param Header[]|null             $headers
-     * @param SecurityScheme[]|null     $securitySchemes
-     * @param Link[]|null               $links
-     * @param callable[]|null           $callbacks
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<Schema|\OpenApi\Annotations\Schema>|null $schemas
+     * @param Response[]|null                                $responses
+     * @param Parameter[]|null                               $parameters
+     * @param RequestBody[]|null                             $requestBodies
+     * @param Examples[]|null                                $examples
+     * @param Header[]|null                                  $headers
+     * @param SecurityScheme[]|null                          $securitySchemes
+     * @param Link[]|null                                    $links
+     * @param callable[]|null                                $callbacks
+     * @param array<string,string>|null                      $x
+     * @param Attachable[]|null                              $attachables
      */
     public function __construct(
         ?array $schemas = null,

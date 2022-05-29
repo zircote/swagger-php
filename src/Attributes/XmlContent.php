@@ -12,17 +12,17 @@ use OpenApi\Generator;
 class XmlContent extends \OpenApi\Annotations\XmlContent
 {
     /**
-     * @param array<string,Examples>    $examples
-     * @param string[]                  $required
-     * @param int|float                 $maximum
-     * @param int|float                 $minimum
-     * @param Property[]                $properties
-     * @param string[]|int[]|float[]    $enum
-     * @param Schema[]                  $allOf
-     * @param Schema[]                  $anyOf
-     * @param Schema[]                  $oneOf
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<string,Examples>                    $examples
+     * @param string[]                                  $required
+     * @param int|float                                 $maximum
+     * @param int|float                                 $minimum
+     * @param Property[]                                $properties
+     * @param string[]|int[]|float[]                    $enum
+     * @param array<Schema|\OpenApi\Annotations\Schema> $allOf
+     * @param array<Schema|\OpenApi\Annotations\Schema> $anyOf
+     * @param array<Schema|\OpenApi\Annotations\Schema> $oneOf
+     * @param array<string,string>|null                 $x
+     * @param Attachable[]|null                         $attachables
      */
     public function __construct(
         ?array $examples = null,
