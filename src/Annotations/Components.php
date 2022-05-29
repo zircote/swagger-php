@@ -33,7 +33,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Schemas.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $schemas = Generator::UNDEFINED;
 
