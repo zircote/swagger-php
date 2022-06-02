@@ -12,8 +12,8 @@ use OpenApi\Generator;
 class ExternalDocumentation extends \OpenApi\Annotations\ExternalDocumentation
 {
     /**
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<string,mixed>|null $x
+     * @param Attachable[]|null        $attachables
      */
     public function __construct(
         ?string $description = null,

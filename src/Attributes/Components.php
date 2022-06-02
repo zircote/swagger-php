@@ -21,7 +21,7 @@ class Components extends \OpenApi\Annotations\Components
      * @param SecurityScheme[]|null                          $securitySchemes
      * @param Link[]|null                                    $links
      * @param callable[]|null                                $callbacks
-     * @param array<string,string>|null                      $x
+     * @param array<string,mixed>|null                       $x
      * @param Attachable[]|null                              $attachables
      */
     public function __construct(

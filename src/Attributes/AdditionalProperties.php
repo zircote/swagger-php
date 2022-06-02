@@ -20,7 +20,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
      * @param array<Schema|\OpenApi\Annotations\Schema> $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $oneOf
-     * @param array<string,string>|null                 $x
+     * @param array<string,mixed>|null                  $x
      * @param Attachable[]|null                         $attachables
      */
     public function __construct(
