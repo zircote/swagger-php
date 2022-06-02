@@ -45,7 +45,6 @@ components:
         -
           $ref: '#/components/schemas/EmployeeResponsible'
     EmployeeResponsible:
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Responsible'
@@ -57,7 +56,6 @@ components:
               type: string
               const: Virtual
     FlResponsible:
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Responsible'

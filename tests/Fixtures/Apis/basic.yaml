@@ -129,7 +129,6 @@ components:
     Product:
       title: Product
       description: 'A Product.'
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/NameTrait'
