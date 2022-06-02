@@ -12,9 +12,9 @@ use OpenApi\Generator;
 class Link extends \OpenApi\Annotations\Link
 {
     /**
-     * @param array<string,mixed>       $parameters
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<string,mixed>      $parameters
+     * @param array<string,mixed>|null $x
+     * @param Attachable[]|null        $attachables
      */
     public function __construct(
         ?string $link = null,

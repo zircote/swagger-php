@@ -11,9 +11,9 @@ use OpenApi\Generator;
 trait ParameterTrait
 {
     /**
-     * @param array<string,Examples>    $examples
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param array<string,Examples>   $examples
+     * @param array<string,mixed>|null $x
+     * @param Attachable[]|null        $attachables
      */
     public function __construct(
         ?string $parameter = null,

@@ -12,11 +12,11 @@ use OpenApi\Generator;
 class OpenApi extends \OpenApi\Annotations\OpenApi
 {
     /**
-     * @param Server[]|null             $servers
-     * @param Tag[]|null                $tags
-     * @param PathItem[]|null           $paths
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param Server[]|null            $servers
+     * @param Tag[]|null               $tags
+     * @param PathItem[]|null          $paths
+     * @param array<string,mixed>|null $x
+     * @param Attachable[]|null        $attachables
      */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,

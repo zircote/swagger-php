@@ -12,9 +12,9 @@ use OpenApi\Generator;
 class Discriminator extends \OpenApi\Annotations\Discriminator
 {
     /**
-     * @param string[]|null             $mapping
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param string[]|null            $mapping
+     * @param array<string,mixed>|null $x
+     * @param Attachable[]|null        $attachables
      */
     public function __construct(
         ?string $propertyName = null,

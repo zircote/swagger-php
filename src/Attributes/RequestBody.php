@@ -13,7 +13,7 @@ class RequestBody extends \OpenApi\Annotations\RequestBody
 {
     /**
      * @param array<MediaType>|JsonContent|XmlContent|null $content
-     * @param array<string,string>|null                    $x
+     * @param array<string,mixed>|null                     $x
      * @param Attachable[]|null                            $attachables
      */
     public function __construct(
