@@ -38,7 +38,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 oneOf:
                   - { $ref: '#/components/schemas/SimpleProduct' }
                   - { $ref: '#/components/schemas/Product' }
@@ -47,7 +46,6 @@ components:
   schemas:
     BellsAndWhistles:
       title: 'Bells and Whistles trait'
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Bells'
@@ -88,7 +86,6 @@ components:
       type: object
     Product:
       title: 'Product model'
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Colour'
@@ -106,7 +103,6 @@ components:
               example: gong
     SimpleProduct:
       title: 'SimpleProduct model'
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Bells'
@@ -119,7 +115,6 @@ components:
               example: 1
     TrickyProduct:
       title: 'TrickyProduct model'
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/SimpleProduct'

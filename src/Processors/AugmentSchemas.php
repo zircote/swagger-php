@@ -93,12 +93,6 @@ class AugmentSchemas
             if (Generator::isDefault($schema->type)) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
                     $schema->type = 'object';
-                } elseif (is_array($schema->allOf) && count($schema->allOf) > 0) {
-                    $schema->type = 'object';
-                } elseif (is_array($schema->oneOf) && count($schema->oneOf) > 0) {
-                    $schema->type = 'object';
-                } elseif (is_array($schema->anyOf) && count($schema->anyOf) > 0) {
-                    $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->patternProperties) && count($schema->patternProperties) > 0) {

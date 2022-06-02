@@ -46,7 +46,6 @@ components:
         -
           $ref: '#/components/schemas/EmployeeResponsible'
     EmployeeResponsible:
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Responsible'
@@ -60,7 +59,6 @@ components:
               enum:
                 - Virtual
     FlResponsible:
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/Responsible'
