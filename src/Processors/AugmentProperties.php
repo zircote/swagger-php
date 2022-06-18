@@ -58,7 +58,7 @@ class AugmentProperties
                 $property->property = $context->property;
             }
 
-            if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $context->comment, $varMatches)) {
+            if (preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', (string) $context->comment, $varMatches)) {
                 if ($property->description === null && isset($varMatches['description'])) {
                     $property->description = trim($varMatches['description']);
                 }
