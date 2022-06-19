@@ -22,6 +22,9 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
+    /**
+     * @requires PHP < 8.2
+     */
     public function testInvalidField(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');

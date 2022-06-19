@@ -18,5 +18,11 @@
     </projectFiles>
 
     <issueHandlers>
+        <UndefinedAttributeClass>
+            <errorLevel type="suppress">
+                <referencedClass name="AllowDynamicProperties" />
+                <file name="src/Context.php" />
+            </errorLevel>
+        </UndefinedAttributeClass>
     </issueHandlers>
 </psalm>

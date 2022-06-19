@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Context.
@@ -44,10 +45,11 @@ use OpenApi\Loggers\DefaultLogger;
  *                                                              the serializer
  * @property Annotations\AbstractAnnotation|null   $nested
  * @property Annotations\AbstractAnnotation[]|null $annotations
- * @property \Psr\Log\LoggerInterface|null         $logger      Guaranteed to be set when using the `Generator`
+ * @property LoggerInterface|null                  $logger      Guaranteed to be set when using the `Generator`
  * @property array|null                            $scanned     Details of file scanner when using ReflectionAnalyser
  * @property string|null                           $version     The OpenAPI version in use
  */
+#[\AllowDynamicProperties]
 class Context
 {
     /**
