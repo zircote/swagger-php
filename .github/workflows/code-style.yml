@@ -20,7 +20,7 @@ jobs:
         with:
           php-version: '8.1'
 
-      - uses: ramsey/composer-install@v1
+      - uses: ramsey/composer-install@v2
         with:
           dependency-versions: 'highest'
 
