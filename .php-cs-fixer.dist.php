@@ -13,8 +13,8 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        (new ScopedLicenseFixer())->scope(['/scr/']),
-        (new ScopedDeclareStrictTypesFixer())->scope(['/scr/']),
+        (new ScopedLicenseFixer())->scope(['/src/']),
+        (new ScopedDeclareStrictTypesFixer())->scope(['/src/']),
     ])
     ->setRules([
         '@PSR2' => true,
