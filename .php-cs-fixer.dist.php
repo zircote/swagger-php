@@ -1,6 +1,6 @@
 <?php
 
-use OpenApi\Tools\CSFixer\LicenseFixer;
+use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
 use OpenApi\Tools\CSFixer\ScopedDeclareStrictTypesFixer;
 
 $finder = PhpCsFixer\Finder::create()
@@ -13,8 +13,8 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        new LicenseFixer(),
-        new ScopedDeclareStrictTypesFixer(),
+        (new ScopedLicenseFixer())->scope(['/scr/']),
+        (new ScopedDeclareStrictTypesFixer())->scope(['/scr/']),
     ])
     ->setRules([
         '@PSR2' => true,

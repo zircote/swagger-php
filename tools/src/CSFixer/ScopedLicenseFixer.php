@@ -11,8 +11,10 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-class LicenseFixer extends AbstractFixer
+class ScopedLicenseFixer extends AbstractFixer
 {
+    use ScopedTrait;
+
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -54,10 +56,5 @@ EOC;
     public function getPriority(): int
     {
         return 5;
-    }
-
-    public function supports(\SplFileInfo $file): bool
-    {
-        return parent::supports($file) && false !== strpos($file->getPath(), '/src/');
     }
 }

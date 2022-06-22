@@ -12,6 +12,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 class ScopedDeclareStrictTypesFixer extends AbstractFixer
 {
+    use ScopedTrait;
+
     protected DeclareStrictTypesFixer $declareStrictTypesFixer;
 
     public function __construct()
@@ -37,10 +39,5 @@ class ScopedDeclareStrictTypesFixer extends AbstractFixer
     public function getPriority(): int
     {
         return 5;
-    }
-
-    public function supports(\SplFileInfo $file): bool
-    {
-        return parent::supports($file) && false !== strpos($file->getPath(), '/src/');
     }
 }
