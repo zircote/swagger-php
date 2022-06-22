@@ -18,7 +18,7 @@ use OpenApi\Generator;
  */
 class ExpandInterfaces
 {
-    use MergeTrait;
+    use Concerns\MergeTrait;
 
     public function __invoke(Analysis $analysis)
     {

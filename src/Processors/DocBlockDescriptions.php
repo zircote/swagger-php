@@ -22,7 +22,7 @@ use OpenApi\Generator;
  */
 class DocBlockDescriptions
 {
-    use DocblockTrait;
+    use Concerns\DocblockTrait;
 
     /**
      * Checks if the annotation has a summary and/or description property

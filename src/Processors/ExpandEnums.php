@@ -10,7 +10,6 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * Look at all enums with a schema and:
@@ -19,6 +18,8 @@ use OpenApi\Util;
  */
 class ExpandEnums
 {
+    use Concerns\TypesTrait;
+
     public function __invoke(Analysis $analysis)
     {
         if (!class_exists('\\ReflectionEnum')) {
@@ -50,7 +51,7 @@ class ExpandEnums
 
                     return $case->name;
                 }, $re->getCases());
-                Util::mapNativeType($schema, $type);
+                $this->mapNativeType($schema, $type);
             }
         }
     }

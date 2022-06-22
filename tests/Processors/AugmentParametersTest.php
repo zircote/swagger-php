@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Generator;
-use OpenApi\Processors\DocblockTrait;
+use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentParametersTest extends OpenApiTestCase

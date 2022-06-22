@@ -9,6 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 use OpenApi\Generator;
+use OpenApi\Processors\Concerns\DocblockTrait;
 
 class AugmentParameters
 {

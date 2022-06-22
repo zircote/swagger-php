@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Processors;
+namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Components;
