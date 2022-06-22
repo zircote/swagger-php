@@ -11,9 +11,9 @@ use OpenApi\Annotations\AbstractAnnotation;
 
 class RefGenerator
 {
-    const ATTRIBUTES = 'Attributes';
-    const ANNOTATIONS = 'Annotations';
-    const NO_DETAILS_AVAILABLE = 'No details available.';
+    public const ATTRIBUTES = 'Attributes';
+    public const ANNOTATIONS = 'Annotations';
+    public const NO_DETAILS_AVAILABLE = 'No details available.';
 
     protected $scanner;
     protected $projectRoot;

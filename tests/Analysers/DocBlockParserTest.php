@@ -10,7 +10,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class DocBlockParserTest extends OpenApiTestCase
 {
-    const SWG_ALIAS = ['swg' => 'OpenApi\Annotations'];
+    public const SWG_ALIAS = ['swg' => 'OpenApi\Annotations'];
 
     public function testParseContents(): void
     {

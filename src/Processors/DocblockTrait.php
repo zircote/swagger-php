@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -41,11 +41,11 @@ trait DocblockTrait
             foreach ($annotation->_context->annotations as $contextAnnotation) {
                 if ($strict) {
                     if ($className == get_class($contextAnnotation)) {
-                        return  $annotation === $contextAnnotation;
+                        return $annotation === $contextAnnotation;
                     }
                 } else {
                     if ($contextAnnotation instanceof $className) {
-                        return  $annotation === $contextAnnotation;
+                        return $annotation === $contextAnnotation;
                     }
                 }
             }
