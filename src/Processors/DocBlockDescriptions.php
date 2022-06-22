@@ -13,6 +13,7 @@ use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
+use OpenApi\Processors\Concerns\DocblockTrait;
 
 /**
  * This would be detected as summary.

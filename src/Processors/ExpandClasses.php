@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
+use OpenApi\Processors\Concerns\MergeTrait;
 
 /**
  * Iterate over the chain of ancestors of a schema and:
