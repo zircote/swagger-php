@@ -13,15 +13,14 @@ use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Processors\Concerns\DocblockTrait;
-use OpenApi\Util;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
 class AugmentProperties
 {
-    use DocblockTrait;
+    use Concerns\DocblockTrait;
+    use Concerns\TypesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -55,7 +54,7 @@ class AugmentProperties
             if (Generator::isDefault($property->type)) {
                 $this->augmentType($analysis, $property, $context, $refs, $varMatches);
             } else {
-                Util::mapNativeType($property, $property->type);
+                $this->mapNativeType($property, $property->type);
             }
 
             if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
@@ -93,7 +92,7 @@ class AugmentProperties
             $type = $typeMatches[1];
 
             // finalise property type/ref
-            if (!Util::mapNativeType($property, $type)) {
+            if (!$this->mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $property->ref = $refs[$refKey];
@@ -137,7 +136,7 @@ class AugmentProperties
                 $property->nullable = true;
             }
             $type = strtolower($context->type);
-            if (!Util::mapNativeType($property, $type)) {
+            if (!$this->mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($analysis, $property, $refs[$refKey]);
@@ -153,7 +152,7 @@ class AugmentProperties
         }
 
         if (!Generator::isDefault($property->const) && Generator::isDefault($property->type)) {
-            if (!Util::mapNativeType($property, gettype($property->const))) {
+            if (!$this->mapNativeType($property, gettype($property->const))) {
                 $property->type = Generator::UNDEFINED;
             }
         }

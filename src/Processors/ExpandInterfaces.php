@@ -10,7 +10,6 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
-use OpenApi\Processors\Concerns\MergeTrait;
 
 /**
  * Look at all (direct) interfaces for a schema and:
@@ -19,7 +18,7 @@ use OpenApi\Processors\Concerns\MergeTrait;
  */
 class ExpandInterfaces
 {
-    use MergeTrait;
+    use Concerns\MergeTrait;
 
     public function __invoke(Analysis $analysis)
     {

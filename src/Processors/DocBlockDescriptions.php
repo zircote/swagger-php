@@ -13,7 +13,6 @@ use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
-use OpenApi\Processors\Concerns\DocblockTrait;
 
 /**
  * This would be detected as summary.
@@ -23,7 +22,7 @@ use OpenApi\Processors\Concerns\DocblockTrait;
  */
 class DocBlockDescriptions
 {
-    use DocblockTrait;
+    use Concerns\DocblockTrait;
 
     /**
      * Checks if the annotation has a summary and/or description property

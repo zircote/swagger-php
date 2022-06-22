@@ -9,7 +9,6 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Annotations\Operation;
 use OpenApi\Generator;
 use OpenApi\Processors\DocBlockDescriptions;
-use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Tests\OpenApiTestCase;
 
 class DocBlockDescriptionsTest extends OpenApiTestCase
