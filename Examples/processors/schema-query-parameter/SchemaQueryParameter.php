@@ -16,7 +16,7 @@ use OpenApi\Generator;
  */
 class SchemaQueryParameter
 {
-    const X_QUERY_AGS_REF = 'query-args-$ref';
+    public const X_QUERY_AGS_REF = 'query-args-$ref';
 
     public function __invoke(Analysis $analysis)
     {

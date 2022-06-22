@@ -1,6 +1,7 @@
 <?php
 
-use OpenApi\Tools\CSFixer\LicenseFixer;
+use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
+use OpenApi\Tools\CSFixer\ScopedDeclareStrictTypesFixer;
 
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
@@ -12,15 +13,18 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        new LicenseFixer(),
+        (new ScopedLicenseFixer())->scope(['/src/']),
+        (new ScopedDeclareStrictTypesFixer())->scope(['/src/']),
     ])
     ->setRules([
         '@PSR2' => true,
         '@DoctrineAnnotation' => true,
         'OpenApi/license' => true,
+        'OpenApi/declare_strict_types' => true,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],
+        'visibility_required' => true,
         'cast_spaces' => ['space' => 'single'],
         'concat_space' => ['spacing' => 'one'],
         'function_typehint_space' => true,
@@ -46,6 +50,7 @@ return (new PhpCsFixer\Config())
         'ternary_operator_spaces' => true,
         'trailing_comma_in_multiline' => true,
         'trim_array_spaces' => true,
+        'single_space_after_construct' => true,
 
         'no_empty_phpdoc' => true,
         // 7.3 only 'no_superfluous_phpdoc_tags' => true,
