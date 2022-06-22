@@ -119,7 +119,7 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
 or pull requests.
 
-The documentation website is build from the [docs](docs/) folder with [vuepress](https://vuepress.vuejs.org).
+The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
 
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (PSR-2) tests.
