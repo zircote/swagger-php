@@ -18,6 +18,7 @@ sidebar: false
 | [openapi-filter][10]          | Filter internal paths, operations, parameters, etc        |
 | [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations       |
 | [Swag It PHP][12]             | Convert JSON to PHP Swagger annotations                   |
+| [Laravel Swagger][13]         | OpenApi or Swagger integration to Laravel                 |
 
 Is a related project missing? Create a pull request!
 
@@ -25,7 +26,7 @@ Is a related project missing? Create a pull request!
 [2]: https://bfanger.nl/swagger-explained/
 [3]: https://github.com/DerManoMann/silex2swagger
 [4]: https://github.com/lichunqiang/yii2-swagger
-[5]: https://github.com/DarkaOnLine/SwaggerLumen
+[5]: https://github.com/DarkaOnLine/SwaggerLume
 [6]: https://github.com/nelmio/NelmioApiDocBundle
 [7]: https://github.com/kevupton/auto-swagger-ui
 [8]: https://github.com/DerManoMann/openapi-router
@@ -33,3 +34,4 @@ Is a related project missing? Create a pull request!
 [10]: https://github.com/Mermade/openapi-filter
 [11]: https://github.com/Tobion/OpenAPI-Symfony-Routing
 [12]: https://kizu514.com/swagit.php
+[13]: https://github.com/DarkaOnLine/L5-Swagger
