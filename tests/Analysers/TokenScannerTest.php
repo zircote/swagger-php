@@ -77,6 +77,24 @@ class TokenScannerTest extends OpenApiTestCase
             ];
         }
 
+        yield 'references' => [
+            'PHP/References.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\References' => [
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [
+                        'return_ref',
+                    ],
+                    'properties' => [],
+                ],
+            ],
+        ];
+
         yield 'php7' => [
             'PHP/php7.php',
             [],

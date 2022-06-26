@@ -144,6 +144,10 @@ class TokenScanner
 
                 case T_FUNCTION:
                     $token = $this->nextToken($tokens);
+                    if ((!is_array($token) && '&' == $token)
+                        || (defined('T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG') && T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG == $token[0])) {
+                        $token = $this->nextToken($tokens);
+                    }
 
                     if (($unitLevel + 1) == count($stack) && $currentName) {
                         $units[$currentName]['methods'][] = $token[1];
