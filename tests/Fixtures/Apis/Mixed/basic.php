@@ -102,8 +102,11 @@ class Product implements ProductInterface
     #[OAT\Property(type: 'string')]
     public \DateTimeInterface $releasedAt;
 
-    #[OAT\Property()]
-    public int $quantity;
+    #[OAT\Property(property: 'quantity')]
+    public function getQuantity(): int
+    {
+        return 1;
+    }
 
     #[OAT\Property(nullable: true, default: null, example: null)]
     public string $brand;
