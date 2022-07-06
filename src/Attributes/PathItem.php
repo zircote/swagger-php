@@ -35,4 +35,4 @@ class PathItem extends \OpenApi\Annotations\PathItem
     }
 }
 
-//Missing parameters: get, put, post, delete, options, head, patch, trace, parameters
+// Missing parameters: get, put, post, delete, options, head, patch, trace, parameters

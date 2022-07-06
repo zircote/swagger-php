@@ -670,7 +670,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
         $count = 0;
         foreach ($value as $i => $item) {
-            //not a array, but a hash/map
+            // not a array, but a hash/map
             if ($count !== $i) {
                 return false;
             }

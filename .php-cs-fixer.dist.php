@@ -51,6 +51,7 @@ return (new PhpCsFixer\Config())
         'trailing_comma_in_multiline' => true,
         'trim_array_spaces' => true,
         'single_space_after_construct' => true,
+        'single_line_comment_spacing' => true,
 
         'no_empty_phpdoc' => true,
         // 7.3 only 'no_superfluous_phpdoc_tags' => true,
