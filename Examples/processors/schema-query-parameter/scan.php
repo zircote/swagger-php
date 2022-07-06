@@ -29,5 +29,5 @@ $options = [
 $openapi = $generator
     ->setProcessors($processors)
     ->generate([__DIR__ . '/app']);
-//file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
+// file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
 echo $openapi->toYaml();
