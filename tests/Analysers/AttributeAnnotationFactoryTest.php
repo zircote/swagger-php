@@ -6,6 +6,9 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Tests\Fixtures\UsingAttributes;
 use OpenApi\Tests\OpenApiTestCase;
 
+/**
+ * @requires PHP 8.1
+ */
 class AttributeAnnotationFactoryTest extends OpenApiTestCase
 {
     public function testReturnedAnnotationsCout()
