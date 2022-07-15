@@ -41,11 +41,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^Attribute class AllowDynamicProperties does not exist\\.$#"
-			count: 1
-			path: src/Context.php
-
-		-
 			message: "#^Ternary operator condition is always true\\.$#"
 			count: 1
 			path: src/Context.php

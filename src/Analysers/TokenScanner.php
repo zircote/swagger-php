@@ -134,7 +134,7 @@ class TokenScanner
                     if (!is_array($token) || T_IMPLEMENTS !== $token[0]) {
                         break;
                     }
-                // no break
+                    // no break
                 case T_IMPLEMENTS:
                     $fqns = $this->parseFQNStatement($tokens, $token);
                     if ($currentName) {
