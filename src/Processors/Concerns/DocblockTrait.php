@@ -27,7 +27,7 @@ trait DocblockTrait
             return true;
         }
 
-        // find best match
+        /** @var array<class-string,bool> $matchPriorityMap */
         $matchPriorityMap = [
             OA\OpenApi::class,
 
@@ -39,10 +39,11 @@ trait DocblockTrait
             AnnotationSchema::class => true,
             AttributeSchema::class => true,
         ];
+        // try to find best root match
         foreach ($matchPriorityMap as $className => $strict) {
             foreach ($annotation->_context->annotations as $contextAnnotation) {
                 if ($strict) {
-                    if ($className == get_class($contextAnnotation)) {
+                    if ($className === get_class($contextAnnotation)) {
                         return $annotation === $contextAnnotation;
                     }
                 } else {
