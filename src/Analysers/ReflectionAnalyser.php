@@ -87,6 +87,7 @@ class ReflectionAnalyser implements AnalyserInterface
         $context = new Context([
             $contextType => $rc->getShortName(),
             'namespace' => $rc->getNamespaceName() ?: null,
+            'uses' => $details['uses'],
             'comment' => $rc->getDocComment() ?: null,
             'filename' => $rc->getFileName() ?: null,
             'line' => $rc->getStartLine(),
