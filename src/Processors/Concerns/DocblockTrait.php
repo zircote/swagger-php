@@ -7,9 +7,7 @@
 namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\Operation;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Property;
+use OpenApi\Annotations as OA;
 use OpenApi\Annotations\Schema as AnnotationSchema;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Generator;
@@ -29,18 +27,23 @@ trait DocblockTrait
             return true;
         }
 
-        // find best match
+        /** @var array<class-string,bool> $matchPriorityMap */
         $matchPriorityMap = [
-            Operation::class => false,
-            Property::class => false,
-            Parameter::class => false,
+            OA\OpenApi::class,
+
+            OA\Operation::class => false,
+            OA\Property::class => false,
+            OA\Parameter::class => false,
+            OA\Response::class => false,
+
             AnnotationSchema::class => true,
             AttributeSchema::class => true,
         ];
+        // try to find best root match
         foreach ($matchPriorityMap as $className => $strict) {
             foreach ($annotation->_context->annotations as $contextAnnotation) {
                 if ($strict) {
-                    if ($className == get_class($contextAnnotation)) {
+                    if ($className === get_class($contextAnnotation)) {
                         return $annotation === $contextAnnotation;
                     }
                 } else {
