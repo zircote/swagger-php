@@ -20,7 +20,7 @@ class MediaType extends \OpenApi\Annotations\MediaType
     public function __construct(
         ?string $mediaType = null,
         ?Schema $schema = null,
-        $example = Generator::UNDEFINED,
+        mixed $example = Generator::UNDEFINED,
         ?array $examples = null,
         ?array $encoding = null,
         // annotation

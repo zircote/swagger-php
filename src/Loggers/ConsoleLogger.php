@@ -39,6 +39,8 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     }
 
     /**
+     * @param string $level
+     * @param string|\Exception$message
      * @param array $context additional details; supports custom `prefix` and `exception`
      */
     public function log($level, $message, array $context = []): void

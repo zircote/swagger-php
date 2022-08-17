@@ -44,7 +44,7 @@ class AttributesSyncTest extends OpenApiTestCase
                     $attributeType = $this->parameterType($propertyName, $attributeParameter);
 
                     if ($annotationType != $attributeType) {
-                        $typeMismatch[$propertyName] = [$annotationType, $attributeType];
+                        $typeMismatch[$propertyName] = [$annotationRC->getName(), $annotationType, $attributeType];
                     }
 
                     $found = true;

@@ -22,7 +22,7 @@ class Link extends \OpenApi\Annotations\Link
         string|object|null $ref = null,
         ?string $operationId = null,
         ?array $parameters = null,
-        $requestBody = null,
+        mixed $requestBody = null,
         ?string $description = null,
         ?Server $server = null,
         // annotation

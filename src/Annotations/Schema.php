@@ -123,6 +123,8 @@ class Schema extends AbstractAnnotation
      * Sets a default value to the parameter. The type of the value depends on the defined type.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor101)
+     *
+     * @var mixed
      */
     public $default = Generator::UNDEFINED;
 
@@ -270,6 +272,8 @@ class Schema extends AbstractAnnotation
      *
      * To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to
      * contain the example with escaping where necessary.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 

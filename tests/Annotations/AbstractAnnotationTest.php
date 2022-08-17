@@ -127,7 +127,7 @@ END;
     /**
      * @dataProvider nestedMatches
      */
-    public function testMatchNested($class, $expected): void
+    public function testMatchNested(string $class, $expected): void
     {
         $this->assertEquals($expected, Get::matchNested($class));
     }

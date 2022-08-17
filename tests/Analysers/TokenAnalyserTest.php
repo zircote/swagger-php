@@ -43,7 +43,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider singleDefinitionCases
      */
-    public function testSingleDefinition($code, $fqdn, $name, $type, $typeKey): void
+    public function testSingleDefinition(string $code, string $fqdn, string $name, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -80,8 +80,10 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider extendsDefinitionCases
+     *
+     * @param string|array $extends
      */
-    public function testExtendsDefinition($code, $fqdn, $name, $extends, $type, $typeKey): void
+    public function testExtendsDefinition(string $code, string $fqdn, string $name, $extends, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -111,7 +113,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider usesDefinitionCases
      */
-    public function testUsesDefinition($code, $fqdn, $name, $traits, $type, $typeKey): void
+    public function testUsesDefinition(string $code, string $fqdn, string $name, array $traits, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
@@ -208,8 +210,10 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider descriptions
+     *
+     * @param string|array $extends
      */
-    public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits): void
+    public function testDescription(array $type, string $name, string $fixture, string $fqdn, $extends, ?array $methods, ?array $interfaces, ?array $traits): void
     {
         $analysis = $this->analysisFromFixtures([$fixture]);
 
