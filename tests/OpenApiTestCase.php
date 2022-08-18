@@ -58,9 +58,10 @@ class OpenApiTestCase extends TestCase
     public function getTrackingLogger(): ?LoggerInterface
     {
         return new class($this) extends AbstractLogger {
-            protected TestCase $testCase;
+            /** @var OpenApiTestCase */
+            protected $testCase;
 
-            public function __construct(TestCase $testCase)
+            public function __construct(OpenApiTestCase $testCase)
             {
                 $this->testCase = $testCase;
             }

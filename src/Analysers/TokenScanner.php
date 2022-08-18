@@ -190,6 +190,7 @@ class TokenScanner
             $lastToken = $token;
         }
 
+        /* @phpstan-ignore-next-line */
         return $units;
     }
 
@@ -357,6 +358,7 @@ class TokenScanner
             }
         }
 
+        /* @phpstan-ignore-next-line */
         return $properties;
     }
 }
