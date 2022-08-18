@@ -18,7 +18,7 @@ use OpenApi\Serializer;
 
 class ExamplesTest extends OpenApiTestCase
 {
-    public function exampleDetails()
+    public function exampleDetails(): iterable
     {
         yield 'example-object' => [
             OpenApi::VERSION_3_0_0,
@@ -135,7 +135,7 @@ class ExamplesTest extends OpenApiTestCase
         }
     }
 
-    public function exampleMappings()
+    public function exampleMappings(): iterable
     {
         $analysers = [
             'token' => new TokenAnalyser(),

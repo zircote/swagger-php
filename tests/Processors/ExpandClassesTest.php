@@ -26,7 +26,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class ExpandClassesTest extends OpenApiTestCase
 {
-    protected function validate(Analysis $analysis)
+    protected function validate(Analysis $analysis): void
     {
         $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
         $analysis->openapi->paths = [new PathItem(['path' => '/test', '_context' => $this->getContext()])];

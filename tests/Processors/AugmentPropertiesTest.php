@@ -334,7 +334,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         );
     }
 
-    protected function assertName(Property $property, array $expectedValues)
+    protected function assertName(Property $property, array $expectedValues): void
     {
         foreach ($expectedValues as $key => $val) {
             $this->assertSame($val, $property->$key, '@OA\Property()->property based on propertyname');

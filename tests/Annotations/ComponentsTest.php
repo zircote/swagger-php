@@ -9,7 +9,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class ComponentsTest extends OpenApiTestCase
 {
-    public function testRef()
+    public function testRef(): void
     {
         $this->assertEquals('#/components/schemas/foo', Components::ref('foo'));
         $this->assertEquals('#/components/schemas/bar', Components::ref(new Schema(['ref' => null, 'schema' => 'bar'])));

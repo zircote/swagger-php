@@ -110,7 +110,7 @@ END;
         $parameter->validate();
     }
 
-    public function nestedMatches()
+    public function nestedMatches(): iterable
     {
         $parameterMatch = (object) ['key' => Parameter::class, 'value' => ['parameters']];
 
@@ -132,7 +132,7 @@ END;
         $this->assertEquals($expected, Get::matchNested($class));
     }
 
-    public function testDuplicateOperationIdValidation()
+    public function testDuplicateOperationIdValidation(): void
     {
         $analysis = $this->analysisFromFixtures(['DuplicateOperationId.php']);
         $analysis->process((new Generator())->getProcessors());

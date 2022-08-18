@@ -14,7 +14,7 @@ class AttributesSyncTest extends OpenApiTestCase
     public static $PATHITEM_EXCLUSIONS = ['ref', 'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
     public static $PARAMETER_EXCLUSIONS = ['content', 'matrix', 'label', 'form', 'simple', 'deepObject'];
 
-    public function testCounts()
+    public function testCounts(): void
     {
         $this->assertSameSize($this->allAnnotationClasses(), $this->allAttributeClasses());
     }
@@ -182,7 +182,7 @@ class AttributesSyncTest extends OpenApiTestCase
     /**
      * @dataProvider allAttributeClasses
      */
-    public function testPropertyCompleteness(string $attribute)
+    public function testPropertyCompleteness(string $attribute): void
     {
         $attributeRC = new \ReflectionClass($attribute);
         $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());

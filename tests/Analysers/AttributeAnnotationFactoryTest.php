@@ -11,7 +11,7 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class AttributeAnnotationFactoryTest extends OpenApiTestCase
 {
-    public function testReturnedAnnotationsCout()
+    public function testReturnedAnnotationsCout(): void
     {
         $rc = new \ReflectionClass(UsingAttributes::class);
 

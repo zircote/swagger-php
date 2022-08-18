@@ -13,7 +13,7 @@ use OpenApi\Serializer;
 
 class SerializerTest extends OpenApiTestCase
 {
-    private function getExpected()
+    private function getExpected(): OpenApi
     {
         $path = new Annotations\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';

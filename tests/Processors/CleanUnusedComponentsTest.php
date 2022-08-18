@@ -7,7 +7,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class CleanUnusedComponentsTest extends OpenApiTestCase
 {
-    public function processorCases()
+    public function processorCases(): iterable
     {
         $defaultProcessors = $this->processors([CleanUnusedComponents::class]);
 

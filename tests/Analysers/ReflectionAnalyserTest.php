@@ -73,7 +73,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
     }
 
-    public function analysers()
+    public function analysers(): iterable
     {
         return [
             'docblocks-attributes' => [new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()])],

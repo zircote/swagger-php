@@ -48,7 +48,7 @@ class AugmentParameters
      * Use the parameter->name as key field (parameter->parameter) when used as reusable component
      * (openapi->components->parameters).
      */
-    protected function augmentSharedParameters(Analysis $analysis)
+    protected function augmentSharedParameters(Analysis $analysis): void
     {
         if (!Generator::isDefault($analysis->openapi->components) && !Generator::isDefault($analysis->openapi->components->parameters)) {
             $keys = [];
@@ -69,7 +69,7 @@ class AugmentParameters
         }
     }
 
-    protected function augmentOperationParameters(Analysis $analysis)
+    protected function augmentOperationParameters(Analysis $analysis): void
     {
         /** @var Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(Operation::class);
