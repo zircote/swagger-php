@@ -15,7 +15,7 @@ class AnnotationPropertiesDefinedTest extends OpenApiTestCase
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testPropertiesAreNotUndefined($annotation): void
+    public function testPropertiesAreNotUndefined(string $annotation): void
     {
         $properties = get_class_vars($annotation);
         $skip = AbstractAnnotation::$_blacklist;

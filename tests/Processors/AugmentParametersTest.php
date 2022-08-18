@@ -49,7 +49,7 @@ class AugmentParametersTest extends OpenApiTestCase
     /**
      * @dataProvider tagCases
      */
-    public function testExtractTags(string $params, $expected)
+    public function testExtractTags(string $params, array $expected)
     {
         $mixed = $this->getContext(['comment' => "/**\n$params\n  *"]);
         $tags = [];

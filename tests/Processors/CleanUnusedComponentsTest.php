@@ -20,7 +20,7 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
     /**
      * @dataProvider processorCases
      */
-    public function testRefDefinitionInProperty(array $processors, $expectedCount): void
+    public function testRefDefinitionInProperty(array $processors, int $expectedCount): void
     {
         $analysis = $this->analysisFromFixtures(['UsingVar.php'], $processors);
 

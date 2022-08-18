@@ -22,7 +22,7 @@ class AttributesSyncTest extends OpenApiTestCase
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testParameterCompleteness($annotation): void
+    public function testParameterCompleteness(string $annotation): void
     {
         $annotationRC = new \ReflectionClass($annotation);
         $attributeRC = new \ReflectionClass('OpenApi\\Attributes\\' . $annotationRC->getShortName());
@@ -92,7 +92,7 @@ class AttributesSyncTest extends OpenApiTestCase
         }
     }
 
-    protected function prepDocComment($docComment): array
+    protected function prepDocComment(string $docComment): array
     {
         if (!$docComment) {
             return [];
@@ -182,7 +182,7 @@ class AttributesSyncTest extends OpenApiTestCase
     /**
      * @dataProvider allAttributeClasses
      */
-    public function testPropertyCompleteness($attribute)
+    public function testPropertyCompleteness(string $attribute)
     {
         $attributeRC = new \ReflectionClass($attribute);
         $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());

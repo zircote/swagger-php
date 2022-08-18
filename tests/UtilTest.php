@@ -67,7 +67,7 @@ class UtilTest extends OpenApiTestCase
     public function shortenFixtures()
     {
         return [
-            [Get::class, '@OA\Get'],
+            [[Get::class], ['@OA\Get']],
             [[Get::class, Post::class], ['@OA\Get', '@OA\Post']],
         ];
     }
@@ -75,7 +75,7 @@ class UtilTest extends OpenApiTestCase
     /**
      * @dataProvider shortenFixtures
      */
-    public function testShorten($classes, $expected): void
+    public function testShorten(array $classes, array $expected): void
     {
         $this->assertEquals($expected, Util::shorten($classes));
     }

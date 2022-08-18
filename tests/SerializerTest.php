@@ -205,7 +205,7 @@ JSON;
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testValidAnnotationsListComplete($annotation): void
+    public function testValidAnnotationsListComplete(string $annotation): void
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
         $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));

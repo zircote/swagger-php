@@ -58,7 +58,7 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider processorCases
      */
-    public function testUpdateProcessor($p, $expected): void
+    public function testUpdateProcessor($p, bool $expected): void
     {
         $generator = (new Generator())
             ->updateProcessor($p);

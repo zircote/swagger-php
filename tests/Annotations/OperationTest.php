@@ -40,7 +40,7 @@ class OperationTest extends OpenApiTestCase
     /**
      * @dataProvider securityData
      */
-    public function testSecuritySerialization($security, $dockBlock, $expected): void
+    public function testSecuritySerialization(array $security, string $dockBlock, string $expected): void
     {
         // test with Get implementation...
         $operation = new OA\Get([
