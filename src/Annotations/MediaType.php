@@ -17,7 +17,6 @@ use OpenApi\Generator;
  */
 class MediaType extends AbstractAnnotation
 {
-
     /**
      * The key into Operation->content array.
      *

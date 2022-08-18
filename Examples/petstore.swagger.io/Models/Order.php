@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(@OA\Xml(name="Order"))
  */
 class Order
 {
-
     /**
      * @OA\Property(format="int64")
      *

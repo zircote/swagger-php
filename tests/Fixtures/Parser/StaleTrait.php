@@ -6,12 +6,13 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(schema="stale")
  */
 trait StaleTrait
 {
-
     /**
      * @OA\Property
      */

@@ -11,7 +11,6 @@ namespace OpenApi\Tests\Fixtures\ExpandClasses;
  */
 class Ancestor extends GrandAncestor
 {
-
     /**
      * With docblock.
      */

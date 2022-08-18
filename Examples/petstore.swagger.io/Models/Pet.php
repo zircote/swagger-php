@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(required={"name", "photoUrls"}, @OA\Xml(name="Pet"))
  */
 class Pet
 {
-
     /**
      * @OA\Property(format="int64")
      *

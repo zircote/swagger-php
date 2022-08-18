@@ -185,7 +185,6 @@ class TokenScanner
                         $units[$currentName] = $initUnit($uses);
                     }
                     break;
-
             }
             $lastToken = $token;
         }
