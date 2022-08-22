@@ -70,7 +70,7 @@ class Context
      */
     public function is(string $property): bool
     {
-        return property_exists($this, $property) && null !== $this->{$property};
+        return property_exists($this, $property);
     }
 
     /**
