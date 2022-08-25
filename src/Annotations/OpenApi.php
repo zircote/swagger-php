@@ -45,7 +45,7 @@ class OpenApi extends AbstractAnnotation
     public $info = Generator::UNDEFINED;
 
     /**
-     * An array of <code>@OA\Server</code> objects, which provide connectivity information to a target server.
+     * An array of <code>@Server</code> objects, which provide connectivity information to a target server.
      *
      * If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.
      *
@@ -188,6 +188,8 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Recursive helper for ref().
+     *
+     * @param array|AbstractAnnotation $container
      */
     private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
     {
@@ -206,7 +208,7 @@ class OpenApi extends AbstractAnnotation
                 throw new \Exception('$ref "' . $ref . '" not found');
             }
             if ($slash === false) {
-                return $container->$property;
+                return $container->{$property};
             }
             $mapping = [];
             if ($container instanceof AbstractAnnotation) {
@@ -217,7 +219,7 @@ class OpenApi extends AbstractAnnotation
                 }
             }
 
-            return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
+            return self::resolveRef($ref, $unresolved, $container->{$property}, $mapping);
         } elseif (is_array($container)) {
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);

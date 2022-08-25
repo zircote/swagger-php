@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(
  *     @OA\Xml(name="Tag")
@@ -9,7 +11,6 @@ namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
  */
 class Tag
 {
-
     /**
      * @OA\Property(format="int64")
      *

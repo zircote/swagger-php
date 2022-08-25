@@ -27,7 +27,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         return $analyser->fromCode('<?php ' . $code, $this->getContext());
     }
 
-    public function singleDefinitionCases()
+    public function singleDefinitionCases(): iterable
     {
         return [
             'global-class' => ['class AClass {}', '\AClass', 'AClass', 'classes', 'class'],
@@ -43,19 +43,19 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider singleDefinitionCases
      */
-    public function testSingleDefinition($code, $fqdn, $name, $type, $typeKey): void
+    public function testSingleDefinition(string $code, string $fqdn, string $name, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
         $this->assertSame([$fqdn], array_keys($analysis->$type));
-        $definition = $analysis->$type[$fqdn];
+        $definition = $analysis->{$type}[$fqdn];
         $this->assertSame($name, $definition[$typeKey]);
         $this->assertTrue(!array_key_exists('extends', $definition) || !$definition['extends']);
         $this->assertSame([], $definition['properties']);
         $this->assertSame([], $definition['methods']);
     }
 
-    public function extendsDefinitionCases()
+    public function extendsDefinitionCases(): iterable
     {
         return [
             'global-class' => ['class BClass extends Other {}', '\BClass', 'BClass', '\Other', 'classes', 'class'],
@@ -80,18 +80,20 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider extendsDefinitionCases
+     *
+     * @param string|array $extends
      */
-    public function testExtendsDefinition($code, $fqdn, $name, $extends, $type, $typeKey): void
+    public function testExtendsDefinition(string $code, string $fqdn, string $name, $extends, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
         $this->assertSame([$fqdn], array_keys($analysis->$type));
-        $definition = $analysis->$type[$fqdn];
+        $definition = $analysis->{$type}[$fqdn];
         $this->assertSame($name, $definition[$typeKey]);
         $this->assertSame($extends, $definition['extends']);
     }
 
-    public function usesDefinitionCases()
+    public function usesDefinitionCases(): iterable
     {
         return [
             'global-class-use' => ['class YClass { use Other; }', '\YClass', 'YClass', ['\Other'], 'classes', 'class'],
@@ -111,12 +113,12 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * @dataProvider usesDefinitionCases
      */
-    public function testUsesDefinition($code, $fqdn, $name, $traits, $type, $typeKey): void
+    public function testUsesDefinition(string $code, string $fqdn, string $name, array $traits, string $type, string $typeKey): void
     {
         $analysis = $this->analysisFromCode($code);
 
         $this->assertSame([$fqdn], array_keys($analysis->$type));
-        $definition = $analysis->$type[$fqdn];
+        $definition = $analysis->{$type}[$fqdn];
         $this->assertSame($name, $definition[$typeKey]);
         $this->assertSame($traits, $definition['traits']);
     }
@@ -131,7 +133,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testThirdPartyAnnotations(): void
     {
         $generator = (new Generator())
-            ->setAnalyser($analyser = new TokenAnalyser());
+            ->setAnalyser(new TokenAnalyser());
         $generator
             ->withContext(function (Generator $generator, Analysis $analysis, Context $context) {
                 $defaultAnalysis = $generator->getAnalyser()->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
@@ -170,7 +172,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     /**
      * dataprovider.
      */
-    public function descriptions()
+    public function descriptions(): iterable
     {
         return [
             'class' => [
@@ -208,8 +210,10 @@ class TokenAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider descriptions
+     *
+     * @param string|array $extends
      */
-    public function testDescription($type, $name, $fixture, $fqdn, $extends, $methods, $interfaces, $traits): void
+    public function testDescription(array $type, string $name, string $fixture, string $fqdn, $extends, ?array $methods, ?array $interfaces, ?array $traits): void
     {
         $analysis = $this->analysisFromFixtures([$fixture]);
 

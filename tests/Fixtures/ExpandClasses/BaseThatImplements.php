@@ -6,12 +6,13 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema
  */
 class BaseThatImplements implements BaseInterface
 {
-
     /**
      * @OA\Property
      *

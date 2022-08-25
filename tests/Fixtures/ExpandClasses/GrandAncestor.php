@@ -6,9 +6,10 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
+use OpenApi\Annotations as OA;
+
 class GrandAncestor
 {
-
     /**
      * @OA\Property
      *

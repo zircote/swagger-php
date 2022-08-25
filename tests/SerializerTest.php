@@ -13,7 +13,7 @@ use OpenApi\Serializer;
 
 class SerializerTest extends OpenApiTestCase
 {
-    private function getExpected()
+    private function getExpected(): OpenApi
     {
         $path = new Annotations\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';
@@ -205,7 +205,7 @@ JSON;
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testValidAnnotationsListComplete($annotation): void
+    public function testValidAnnotationsListComplete(string $annotation): void
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
         $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));

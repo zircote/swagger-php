@@ -185,16 +185,18 @@ class TokenScanner
                         $units[$currentName] = $initUnit($uses);
                     }
                     break;
-
             }
             $lastToken = $token;
         }
 
+        /* @phpstan-ignore-next-line */
         return $units;
     }
 
     /**
      * Get the next token that is not whitespace or comment.
+     *
+     * @return string|array
      */
     protected function nextToken(array &$tokens)
     {
@@ -355,6 +357,7 @@ class TokenScanner
             }
         }
 
+        /* @phpstan-ignore-next-line */
         return $properties;
     }
 }

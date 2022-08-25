@@ -11,7 +11,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class TokenScannerTest extends OpenApiTestCase
 {
-    public function scanCases()
+    public function scanCases(): iterable
     {
         if (\PHP_VERSION_ID >= 80100) {
             yield 'basic' => [
@@ -333,7 +333,7 @@ class TokenScannerTest extends OpenApiTestCase
     /**
      * @dataProvider scanCases
      */
-    public function testScanFile($fixture, $expected): void
+    public function testScanFile(string $fixture, array $expected): void
     {
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));
         $this->assertEquals($expected, $result);

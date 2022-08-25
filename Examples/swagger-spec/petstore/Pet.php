@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\SwaggerSpec\Petstore;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(required={"id", "name"})
  */
 class Pet
 {
-
     /**
      * @OA\Property(type="integer", format="int64")
      */

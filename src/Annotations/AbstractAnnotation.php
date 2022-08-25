@@ -154,13 +154,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
     }
 
-    public function __get($property)
+    public function __get(string $property)
     {
         $properties = get_object_vars($this);
         $this->_context->logger->warning('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
-    public function __set($property, $value)
+    /**
+     * @param mixed $value
+     */
+    public function __set(string $property, $value): void
     {
         $fields = get_object_vars($this);
         foreach (static::$_blacklist as $_property) {
@@ -255,7 +258,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Generate the documentation in YAML format.
      */
-    public function toYaml($flags = null): string
+    public function toYaml(?int $flags = null): string
     {
         if ($flags === null) {
             $flags = Yaml::DUMP_OBJECT_AS_MAP ^ Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
@@ -662,6 +665,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Validate array type.
+     *
+     * @param mixed $value
      */
     private function validateArrayType($value): bool
     {

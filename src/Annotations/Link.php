@@ -26,7 +26,6 @@ use OpenApi\Generator;
  */
 class Link extends AbstractAnnotation
 {
-
     /**
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
@@ -76,6 +75,8 @@ class Link extends AbstractAnnotation
 
     /**
      * A literal value or {expression} to use as a request body when calling the target operation.
+     *
+     * @var mixed
      */
     public $requestBody = Generator::UNDEFINED;
 

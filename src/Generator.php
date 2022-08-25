@@ -121,6 +121,9 @@ class Generator
         };
     }
 
+    /**
+     * @param mixed $value
+     */
     public static function isDefault($value): bool
     {
         return $value === Generator::UNDEFINED;

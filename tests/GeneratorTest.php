@@ -58,7 +58,7 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider processorCases
      */
-    public function testUpdateProcessor($p, $expected): void
+    public function testUpdateProcessor($p, bool $expected): void
     {
         $generator = (new Generator())
             ->updateProcessor($p);
@@ -115,7 +115,7 @@ class GeneratorTest extends OpenApiTestCase
         });
     }
 
-    protected function assertOperationIdHash(Generator $generator, bool $expected)
+    protected function assertOperationIdHash(Generator $generator, bool $expected): void
     {
         foreach ($generator->getProcessors() as $processor) {
             if ($processor instanceof OperationId) {
@@ -124,7 +124,7 @@ class GeneratorTest extends OpenApiTestCase
         }
     }
 
-    public function testConfig()
+    public function testConfig(): void
     {
         $generator = new Generator();
         $this->assertOperationIdHash($generator, true);
@@ -133,7 +133,7 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertOperationIdHash($generator, false);
     }
 
-    public function testCallableProcessor()
+    public function testCallableProcessor(): void
     {
         $generator = new Generator();
         // not the default

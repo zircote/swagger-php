@@ -9,7 +9,6 @@ use OpenApi\Annotations as OA;
  */
 class PullRequest
 {
-
     /**
      * @OA\Property
      *

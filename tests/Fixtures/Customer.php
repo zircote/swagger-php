@@ -21,7 +21,6 @@ use OpenApi\Generator as OpenApiGenerator;
  */
 class Customer
 {
-
     /**
      * The first name of the customer.
      *

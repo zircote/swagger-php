@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(
  *     schema="ExtendedModel",
@@ -16,7 +18,6 @@ namespace OpenApi\Tests\Fixtures\ExpandClasses;
  */
 class Extended extends Base
 {
-
     /**
      * @OA\Property
      *

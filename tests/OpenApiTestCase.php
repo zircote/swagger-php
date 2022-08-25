@@ -58,9 +58,10 @@ class OpenApiTestCase extends TestCase
     public function getTrackingLogger(): ?LoggerInterface
     {
         return new class($this) extends AbstractLogger {
+            /** @var OpenApiTestCase */
             protected $testCase;
 
-            public function __construct($testCase)
+            public function __construct(OpenApiTestCase $testCase)
             {
                 $this->testCase = $testCase;
             }
@@ -96,7 +97,7 @@ class OpenApiTestCase extends TestCase
             : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
-    public function assertOpenApiLogEntryContains($needle, $message = ''): void
+    public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
             if ($entry instanceof Exception) {

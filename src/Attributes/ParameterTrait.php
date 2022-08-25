@@ -25,7 +25,7 @@ trait ParameterTrait
         ?bool $allowEmptyValue = null,
         string|object|null $ref = null,
         ?Schema $schema = null,
-        $example = Generator::UNDEFINED,
+        mixed $example = Generator::UNDEFINED,
         ?array $examples = null,
         ?string $style = null,
         ?bool $explode = null,

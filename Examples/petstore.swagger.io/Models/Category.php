@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(
  *     @OA\Xml(name="Category")
@@ -9,7 +11,6 @@ namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
  */
 class Category
 {
-
     /**
      * @OA\Property(format="int64")
      *
