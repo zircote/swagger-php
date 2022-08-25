@@ -422,6 +422,7 @@ class Analysis
         if (is_array($processors) === false && is_callable($processors)) {
             $processors = [$processors];
         }
+
         foreach ($processors as $processor) {
             $processor($this);
         }

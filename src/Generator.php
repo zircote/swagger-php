@@ -197,6 +197,34 @@ class Generator
         return $this->config + $this->getDefaultConfig();
     }
 
+    protected function normaliseConfig(array $config): array
+    {
+        $normalised = [];
+        foreach ($config as $key => $value) {
+            if (is_numeric($key)) {
+                $token = explode('=', $value);
+                if (2 == count($token)) {
+                    // 'operationId.hash=false'
+                    [$key, $value] = $token;
+                }
+            }
+
+            if (in_array($value, ['true', 'false'])) {
+                $value = 'true' == $value;
+            }
+
+            $token = explode('.', $key);
+            if (2 == count($token)) {
+                // 'operationId.hash' => false
+                $normalised[$token[0]][$token[1]] = $value;
+            } else {
+                $normalised[$key] = $value;
+            }
+        }
+
+        return $normalised;
+    }
+
     /**
      * Set generator and/or processor config.
      *
@@ -204,7 +232,7 @@ class Generator
      */
     public function setConfig(array $config): Generator
     {
-        $this->config = $config + $this->config;
+        $this->config = $this->normaliseConfig($config) + $this->config;
 
         return $this;
     }

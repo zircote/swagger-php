@@ -22,6 +22,7 @@ error_reporting(E_ALL);
 
 // Possible options and their default values.
 $options = [
+    'config' => [],
     'legacy' => false,
     'output' => false,
     'format' => 'auto',
@@ -34,6 +35,7 @@ $options = [
     'version' => null,
 ];
 $aliases = [
+    'c' => 'config',
     'l' => 'legacy',
     'o' => 'output',
     'e' => 'exclude',
@@ -45,6 +47,7 @@ $aliases = [
     'f' => 'format'
 ];
 $needsArgument = [
+    'config',
     'output',
     'format',
     'exclude',
@@ -119,6 +122,8 @@ if ($options['help']) {
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
+  --config (-c)     Generator config
+                    ex: -c operationId.hash=false
   --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
@@ -128,9 +133,9 @@ Options:
                     ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
                     ex: --bootstrap config/constants.php
-  --processor       Register an additional processor.
-  --format          Force yaml or json.
-  --debug           Show additional error information.
+  --processor (-p)  Register an additional processor.
+  --format (-f)     Force yaml or json.
+  --debug (-d)      Show additional error information.
   --version         The OpenAPI version; defaults to {$defaultVersion}.
   --help (-h)       Display this help message.
 
@@ -215,6 +220,7 @@ $analyser = $options['legacy']
 
 $openapi = $generator
     ->setVersion($options['version'])
+    ->setConfig($options['config'])
     ->setAnalyser($analyser)
     ->generate(Util::finder($paths, $exclude, $pattern));
 
