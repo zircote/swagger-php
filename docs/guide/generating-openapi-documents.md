@@ -9,13 +9,13 @@
 ```
 
 ::: tip Output Format
-By default the output format is YAML. If a filename is given (via `--output` or `-o`) 
+By default the output format is YAML. If a filename is given (via `--output` or `-o`)
 the tool will use the file extension to determine the format.
 
 The `--format` option can be used to force a specific format.
 :::
 
-For a list of all available options use the `-h` option 
+For a list of all available options use the `-h` option
 
 ```shell
 > ./bin/openapi -h
@@ -23,6 +23,8 @@ For a list of all available options use the `-h` option
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
+  --config (-c)     Generator config
+                    ex: -c operationId.hash=false
   --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
@@ -32,9 +34,9 @@ Options:
                     ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
   --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
                     ex: --bootstrap config/constants.php
-  --processor       Register an additional processor.
-  --format          Force yaml or json.
-  --debug           Show additional error information.
+  --processor (-p)  Register an additional processor.
+  --format (-f)     Force yaml or json.
+  --debug (-d)      Show additional error information.
   --version         The OpenAPI version; defaults to 3.0.0.
   --help (-h)       Display this help message.
 ```

@@ -124,13 +124,26 @@ class GeneratorTest extends OpenApiTestCase
         }
     }
 
-    public function testConfig(): void
+    public function configCases(): iterable
+    {
+        return [
+            'default' => [[], true],
+            'nested' => [['operationId' => ['hash' => false]], false],
+            'dots-kv' => [['operationId.hash' => false], false],
+            'dots-string' => [['operationId.hash=false'], false],
+        ];
+    }
+
+    /**
+     * @dataProvider configCases
+     */
+    public function testConfig(array $config, bool $expected)
     {
         $generator = new Generator();
         $this->assertOperationIdHash($generator, true);
 
-        $generator->setConfig(['operationId' => ['hash' => false]]);
-        $this->assertOperationIdHash($generator, false);
+        $generator->setConfig($config);
+        $this->assertOperationIdHash($generator, $expected);
     }
 
     public function testCallableProcessor(): void
