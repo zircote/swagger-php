@@ -7,20 +7,21 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class ServerVariable extends \OpenApi\Annotations\ServerVariable
 {
     /**
-     * @param string[]|int[]|float[]|null $enum
-     * @param array<string,mixed>|null    $x
-     * @param Attachable[]|null           $attachables
+     * @param string[]|int[]|float[]|class-string|null $enum
+     * @param array<string,mixed>|null                 $x
+     * @param Attachable[]|null                        $attachables
      */
     public function __construct(
         ?string $serverVariable = null,
         ?string $description = null,
         ?string $default = null,
-        ?array $enum = null,
+        array|string|null $enum = null,
         ?array $variables = null,
         // annotation
         ?array $x = null,
@@ -30,7 +31,7 @@ class ServerVariable extends \OpenApi\Annotations\ServerVariable
                 'serverVariable' => $serverVariable ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
                 'default' => $default ?? Generator::UNDEFINED,
-                'enum' => $enum ?? Generator::UNDEFINED,
+                'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
                 'variables' => $variables ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($attachables),

@@ -7,6 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends \OpenApi\Annotations\JsonContent
@@ -17,7 +18,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
      * @param Property[]                                $properties
      * @param int|float                                 $maximum
      * @param int|float                                 $minimum
-     * @param string[]|int[]|float[]                    $enum
+     * @param string[]|int[]|float[]|class-string       $enum
      * @param array<Schema|\OpenApi\Annotations\Schema> $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $oneOf
@@ -48,7 +49,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
         ?int $minItems = null,
         ?bool $uniqueItems = null,
         ?string $pattern = null,
-        ?array $enum = null,
+        array|string|null $enum = null,
         ?Discriminator $discriminator = null,
         ?bool $readOnly = null,
         ?bool $writeOnly = null,
@@ -88,7 +89,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
             'pattern' => $pattern ?? Generator::UNDEFINED,
-            'enum' => $enum ?? Generator::UNDEFINED,
+            'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
             'readOnly' => $readOnly ?? Generator::UNDEFINED,
             'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
             'xml' => $xml ?? Generator::UNDEFINED,
