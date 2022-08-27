@@ -94,7 +94,7 @@ class UtilTest extends OpenApiTestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      * @dataProvider convertEnumsFixtures
      */
     public function testConvertEnums($enum, ?array $expected): void
@@ -111,7 +111,7 @@ class UtilTest extends OpenApiTestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      * @dataProvider convertEnumsUnexpectedValueFixtures
      */
     public function testConvertEnumsUnexpectedValue($enum): void
