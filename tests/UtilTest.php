@@ -10,9 +10,6 @@ use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
 use OpenApi\Generator;
-use OpenApi\Tests\Fixtures\PHP\StatusEnum;
-use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
-use OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
 
@@ -86,9 +83,9 @@ class UtilTest extends OpenApiTestCase
     public function convertEnumsFixtures(): iterable
     {
         return [
-            [StatusEnumBacked::class, [1, 2, 3]],
-            [StatusEnumStringBacked::class, ['draft', 'published', 'archived']],
-            [StatusEnum::class, ['DRAFT', 'PUBLISHED', 'ARCHIVED']],
+            [\OpenApi\Tests\Fixtures\PHP\StatusEnumBacked::class, [1, 2, 3]],
+            [\OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked::class, ['draft', 'published', 'archived']],
+            [\OpenApi\Tests\Fixtures\PHP\StatusEnum::class, ['DRAFT', 'PUBLISHED', 'ARCHIVED']],
             [[1, 2, 3], [1, 2, 3]],
             [['draft', 'published', 'archived'], ['draft', 'published', 'archived']],
             [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0]],
@@ -97,6 +94,7 @@ class UtilTest extends OpenApiTestCase
     }
 
     /**
+     * @requires PHP 8
      * @dataProvider convertEnumsFixtures
      */
     public function testConvertEnums($enum, ?array $expected): void
@@ -113,6 +111,7 @@ class UtilTest extends OpenApiTestCase
     }
 
     /**
+     * @requires PHP 8
      * @dataProvider convertEnumsUnexpectedValueFixtures
      */
     public function testConvertEnumsUnexpectedValue($enum): void
