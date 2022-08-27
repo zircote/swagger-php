@@ -153,8 +153,8 @@ class Util
     }
 
     /**
-     * Convert to Enum value if it is an Enum class string
-     * 
+     * Convert to Enum value if it is an Enum class string.
+     *
      * @param string[]|int[]|float[]|class-string|null $enum
      *
      * @return string[]|int[]|float[]|null
