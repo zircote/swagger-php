@@ -27,7 +27,7 @@ class ServerVariable extends AbstractAnnotation
     /**
      * An enumeration of values to be used if the substitution options are from a limited set.
      *
-     * @var string[]|int[]|float[]
+     * @var string[]|int[]|float[]|class-string
      */
     public $enum = Generator::UNDEFINED;
 
