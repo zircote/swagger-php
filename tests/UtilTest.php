@@ -10,6 +10,9 @@ use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
 use OpenApi\Generator;
+use OpenApi\Tests\Fixtures\PHP\StatusEnum;
+use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
+use OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
 
@@ -78,5 +81,43 @@ class UtilTest extends OpenApiTestCase
     public function testShorten(array $classes, array $expected): void
     {
         $this->assertEquals($expected, Util::shorten($classes));
+    }
+
+    public function convertEnumsFixtures(): iterable
+    {
+        return [
+            [StatusEnumBacked::class, [1, 2, 3]],
+            [StatusEnumStringBacked::class, ['draft', 'published', 'archived']],
+            [StatusEnum::class, ['DRAFT', 'PUBLISHED', 'ARCHIVED']],
+            [[1, 2, 3], [1, 2, 3]],
+            [['draft', 'published', 'archived'], ['draft', 'published', 'archived']],
+            [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0]],
+            [null, null],
+        ];
+    }
+
+    /**
+     * @dataProvider convertEnumsFixtures
+     */
+    public function testConvertEnums($enum, ?array $expected): void
+    {
+        $this->assertEquals($expected, Util::convertEnums($enum));
+    }
+
+    public function convertEnumsUnexpectedValueFixtures(): iterable
+    {
+        return [
+            [\InvalidArgumentException::class],
+            ['Not class-string'],
+        ];
+    }
+
+    /**
+     * @dataProvider convertEnumsUnexpectedValueFixtures
+     */
+    public function testConvertEnumsUnexpectedValue($enum): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Util::convertEnums($enum);
     }
 }

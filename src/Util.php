@@ -151,4 +151,29 @@ class Util
 
         return is_array($classes) ? $short : array_pop($short);
     }
+
+    /**
+     * Convert to Enum value if it is an Enum class string
+     * 
+     * @param string[]|int[]|float[]|class-string|null $enum
+     *
+     * @return string[]|int[]|float[]|null
+     */
+    public static function convertEnums($enum): ?array
+    {
+        if (!is_string($enum)) {
+            return $enum;
+        }
+
+        if (is_a($enum, 'UnitEnum', true)) {
+            $enums = [];
+            foreach ($enum::cases() as $case) {
+                $enums[] = $case->value ?? $case->name;
+            }
+
+            return $enums;
+        }
+
+        throw new InvalidArgumentException('Unexpected $enum value, requires specifying the Enum class string:' . $enum);
+    }
 }
