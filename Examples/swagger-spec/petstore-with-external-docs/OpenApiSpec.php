@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreWithExternalDocs;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(
  *     title="Swagger Petstore",

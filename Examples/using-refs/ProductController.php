@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingRefs;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\PathItem(
  *     path="/products/{product_id}",

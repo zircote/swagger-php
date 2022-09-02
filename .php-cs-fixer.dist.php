@@ -7,15 +7,21 @@ $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tests')->name('*.php')
         // ContextTest::testFullyQualifiedName relies on the 'use Exception' statement...
-        ->filter(function (\SplFileInfo $file) { return !strpos($file->getPathname(), 'tests/Fixtures/Customer.php'); })
+        ->filter(function (\SplFileInfo $file) {
+            return !strpos($file->getPathname(), 'tests/Fixtures/Customer.php');
+        })
     ->path('Examples')->name('*.php')
+        ->filter(function (\SplFileInfo $file) {
+            return !strpos($file->getPathname(), 'Examples/petstore-3.0/Petstore.php')
+                && !strpos($file->getPathname(), 'Examples/misc/OpenApiSpec.php');
+        })
     ->path('tools')->name('*.php')
     ->in(__DIR__)
 ;
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/Examples/']),
+        (new ScopedLicenseFixer())->scope(['/src/', '/tests/']), //, '/Examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
     ])
     ->setRules([

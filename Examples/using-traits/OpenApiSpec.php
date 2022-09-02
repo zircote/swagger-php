@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingTraits;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Merging of traits got a bit of an overhaul in 3.0.4/5.
  *

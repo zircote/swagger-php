@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingInterfaces;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Merging of interfaces got a bit of an overhaul in 3.0.4/5.
  *

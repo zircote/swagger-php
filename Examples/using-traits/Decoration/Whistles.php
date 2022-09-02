@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingTraits\Decoration;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(title="Whistles trait")
  */

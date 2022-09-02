@@ -3,6 +3,7 @@
 namespace OpenApi\Examples\UsingTraits;
 
 use OpenApi\Examples\UsingTraits\Blink as TheBlink;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(title="TrickyProduct model")

@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\SecurityScheme(
  *     securityScheme="api_key",
