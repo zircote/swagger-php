@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\Nesting;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema
  */

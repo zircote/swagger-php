@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(schema="NewPet", required={"name"})
  */
@@ -18,6 +20,7 @@ class SimplePet
 
     /**
      * @var string
+     *
      * @OA\Property
      */
     public $tag;

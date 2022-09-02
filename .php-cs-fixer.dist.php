@@ -15,7 +15,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        (new ScopedLicenseFixer())->scope(['/src/', '/tests/']),
+        (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/Examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
     ])
     ->setRules([

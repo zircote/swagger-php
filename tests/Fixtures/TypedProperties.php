@@ -30,6 +30,7 @@ class TypedProperties
 
     /**
      * @var \OpenApi\Tests\Fixtures\TypedProperties[]
+     *
      * @OA\Property()
      */
     public array $arrayType;
@@ -56,12 +57,14 @@ class TypedProperties
 
     /**
      * @var int
+     *
      * @OA\Property
      */
     public string $nativeTrumpsVar;
 
     /**
      * @var int
+     *
      * @OA\Property(
      *     type="integer",
      * )
@@ -70,6 +73,7 @@ class TypedProperties
 
     /**
      * @var string
+     *
      * @OA\Property(
      *     type="integer",
      * )
@@ -90,6 +94,7 @@ class TypedProperties
 
     /**
      * @var int
+     *
      * @OA\Property
      */
     public $onlyVar;
@@ -111,6 +116,7 @@ class TypedProperties
 
     /**
      * @var string[]
+     *
      * @OA\Property()
      */
     public array $nativeArray;

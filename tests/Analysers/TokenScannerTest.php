@@ -209,6 +209,7 @@ class TokenScannerTest extends OpenApiTestCase
                 'OpenApi\\Tests\\Fixtures\\PHP\\Php8PromotedProperties' => [
                     'uses' => [
                         'Property' => 'OpenApi\\Attributes\\Property',
+                        'OA' => 'OpenApi\Annotations',
                     ],
                     'interfaces' => [],
                     'traits' => [],

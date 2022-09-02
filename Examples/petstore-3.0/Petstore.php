@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Petstore30;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(
  *     description="This is a sample Petstore server.  You can find

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Tests\Fixtures;
 
 use OpenApi\Annotations as OA;
@@ -7,9 +11,7 @@ use OpenApi\Tests\Fixtures\Annotations as OAF;
 
 /**
  * @OA\Info(title="Custom annotation attributes", version="1.0")
- *
  * @OA\PathItem(path="/")
- *
  * @OA\Schema(
  *     schema="UsingCustomAttachables",
  *     required={"name"},

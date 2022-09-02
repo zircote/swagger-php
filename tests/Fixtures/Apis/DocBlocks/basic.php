@@ -14,7 +14,6 @@ use OpenApi\Annotations as OA;
  * @OA\OpenApi(
  *     security={{"bearerAuth": {}}}
  * )
- *
  * @OA\Info(
  *     version="1.0.0",
  *     title="Basic single file API",

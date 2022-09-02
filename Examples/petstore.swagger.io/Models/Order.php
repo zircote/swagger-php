@@ -39,6 +39,7 @@ class Order
 
     /**
      * @var \DateTime
+     *
      * @OA\Property
      */
     public $shipDate;
@@ -47,6 +48,7 @@ class Order
      * Order Status.
      *
      * @var string
+     *
      * @OA\Property(enum={"placed", "approved", "delivered"})
      */
     public $status;

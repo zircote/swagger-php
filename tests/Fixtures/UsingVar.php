@@ -20,12 +20,14 @@ class UsingVar
 {
     /**
      * @var string
+     *
      * @OA\Property
      */
     private $name;
 
     /**
      * @var \DateTimeInterface
+     *
      * @OA\Property(ref="#/components/schemas/date")
      */
     private $createdAt;
