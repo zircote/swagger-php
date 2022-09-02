@@ -6,7 +6,6 @@
 
 namespace OpenApi;
 
-use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -63,7 +62,7 @@ class Util
      * @param null|array|string   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
      * @param null|string         $pattern   The pattern of the files to scan
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public static function finder($directory, $exclude = null, $pattern = null): Finder
     {
@@ -94,7 +93,7 @@ class Util
                 }
             }
         } else {
-            throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
+            throw new \InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
         }
         if ($exclude !== null) {
             if (is_string($exclude)) {
@@ -104,7 +103,7 @@ class Util
                     $finder->notPath(Util::getRelativePath($path, $directory));
                 }
             } else {
-                throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+                throw new \InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
             }
         }
 

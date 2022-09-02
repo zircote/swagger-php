@@ -6,8 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use DirectoryIterator;
-use Exception;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
@@ -100,7 +98,7 @@ class OpenApiTestCase extends TestCase
     public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
-            if ($entry instanceof Exception) {
+            if ($entry instanceof \Exception) {
                 $entry = $entry->getMessage();
             }
             $this->assertStringContainsString($needle, $entry, $message);
@@ -255,7 +253,7 @@ class OpenApiTestCase extends TestCase
     public function allAnnotationClasses(): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');
+        $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -278,7 +276,7 @@ class OpenApiTestCase extends TestCase
     public function allAttributeClasses(): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/Attributes');
+        $dir = new \DirectoryIterator(__DIR__ . '/../src/Attributes');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;

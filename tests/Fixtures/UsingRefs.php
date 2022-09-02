@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="Using a parameter definition", version="unittest")
  */

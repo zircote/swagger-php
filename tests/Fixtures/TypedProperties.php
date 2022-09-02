@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use DateTime;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema
@@ -37,7 +37,7 @@ class TypedProperties
     /**
      * @OA\Property
      */
-    public DateTime $dateTime;
+    public \DateTime $dateTime;
 
     /**
      * @OA\Property
