@@ -15,6 +15,7 @@ class NestedProperty
 {
     /**
      * @var bool
+     *
      * @OA\Property(
      *     @OA\Property(
      *         property="babyProperty",

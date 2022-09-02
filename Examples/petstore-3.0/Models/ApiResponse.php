@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Petstore30\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Class ApiResponse.
  *

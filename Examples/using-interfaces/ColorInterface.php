@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingInterfaces;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Not a schema.
  */

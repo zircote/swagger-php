@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Petstore30;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\SecurityScheme(
  *     type="oauth2",

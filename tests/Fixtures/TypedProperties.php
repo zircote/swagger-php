@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use DateTime;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema
@@ -30,6 +30,7 @@ class TypedProperties
 
     /**
      * @var \OpenApi\Tests\Fixtures\TypedProperties[]
+     *
      * @OA\Property()
      */
     public array $arrayType;
@@ -37,7 +38,7 @@ class TypedProperties
     /**
      * @OA\Property
      */
-    public DateTime $dateTime;
+    public \DateTime $dateTime;
 
     /**
      * @OA\Property
@@ -56,12 +57,14 @@ class TypedProperties
 
     /**
      * @var int
+     *
      * @OA\Property
      */
     public string $nativeTrumpsVar;
 
     /**
      * @var int
+     *
      * @OA\Property(
      *     type="integer",
      * )
@@ -70,6 +73,7 @@ class TypedProperties
 
     /**
      * @var string
+     *
      * @OA\Property(
      *     type="integer",
      * )
@@ -90,6 +94,7 @@ class TypedProperties
 
     /**
      * @var int
+     *
      * @OA\Property
      */
     public $onlyVar;
@@ -111,6 +116,7 @@ class TypedProperties
 
     /**
      * @var string[]
+     *
      * @OA\Property()
      */
     public array $nativeArray;

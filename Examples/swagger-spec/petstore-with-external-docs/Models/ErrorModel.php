@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreWithExternalDocs\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(required={"code", "message"})
  */

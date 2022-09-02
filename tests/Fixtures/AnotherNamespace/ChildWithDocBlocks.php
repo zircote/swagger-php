@@ -16,6 +16,7 @@ class ChildWithDocBlocks extends AncestorWithoutDocBlocks
 {
     /**
      * @var bool
+     *
      * @OA\Property
      */
     public $isBaby;

@@ -1,6 +1,12 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Examples\Misc;
+
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\OpenApi(
@@ -9,7 +15,6 @@ namespace OpenApi\Examples\Misc;
  *         name="endpoints"
  *     )
  * )
- *
  * @OA\Info(
  *     title="Testing annotations from bugreports",
  *     version="1.0.0",
@@ -17,7 +22,6 @@ namespace OpenApi\Examples\Misc;
 This sentence is on a new line",
  *     @OA\Contact(name="Swagger API Team")
  * )
- *
  * @OA\Components(
  *     @OA\SecurityScheme(
  *         securityScheme="bearerAuth",
@@ -26,7 +30,6 @@ This sentence is on a new line",
  *     ),
  *     @OA\Attachable
  * )
- *
  * @OA\Server(
  *     url="{schema}://host.dev",
  *     description="OpenApi parameters",

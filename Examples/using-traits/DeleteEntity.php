@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingTraits;
 
+use OpenApi\Annotations as OA;
+
 trait DeleteEntity
 {
     /**

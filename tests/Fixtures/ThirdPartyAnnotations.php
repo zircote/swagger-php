@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Fixtures;
 
 use AnotherNamespace\Annotations as Annotation;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(title="Fixture for ParserTest", version="test")

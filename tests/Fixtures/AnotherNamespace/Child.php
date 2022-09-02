@@ -17,6 +17,7 @@ class Child extends Ancestor
 {
     /**
      * @var bool
+     *
      * @OA\Property
      */
     public $isBaby;

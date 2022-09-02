@@ -25,18 +25,21 @@ class Pet
 
     /**
      * @var Category
+     *
      * @OA\Property
      */
     public $category;
 
     /**
      * @var string[]
+     *
      * @OA\Property(@OA\Xml(name="photoUrl", wrapped=true))
      */
     public $photoUrls;
 
     /**
      * @var Tag[]
+     *
      * @OA\Property(@OA\Xml(name="tag", wrapped=true))
      */
     public $tags;
@@ -45,6 +48,7 @@ class Pet
      * pet status in the store.
      *
      * @var string
+     *
      * @OA\Property(enum={"available", "pending", "sold"})
      */
     public $status;

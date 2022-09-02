@@ -83,6 +83,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiDocBlockBasic(AnalyserInterface $analyser): void
@@ -110,6 +111,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiAttributesBasic(AnalyserInterface $analyser): void
@@ -152,6 +154,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiMixedBasic(AnalyserInterface $analyser): void

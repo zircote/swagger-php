@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(
  *     schema="UsingVar",
@@ -18,12 +20,14 @@ class UsingVar
 {
     /**
      * @var string
+     *
      * @OA\Property
      */
     private $name;
 
     /**
      * @var \DateTimeInterface
+     *
      * @OA\Property(ref="#/components/schemas/date")
      */
     private $createdAt;

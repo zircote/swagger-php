@@ -16,6 +16,7 @@ interface UserInterface extends OtherInterface
      * @return string
      *
      * @example John
+     *
      * @OA\Property
      */
     public function getFirstName();
