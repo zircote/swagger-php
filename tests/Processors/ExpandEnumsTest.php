@@ -17,6 +17,7 @@ use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
+use UnitEnum;
 
 class ExpandEnumsTest extends OpenApiTestCase
 {
@@ -75,16 +76,42 @@ class ExpandEnumsTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType([AnnotationsProperty::class, AttributesProperty::class, Items::class], true);
 
         $expected = [
-            'statusEnum' => array_map(fn ($c) => $c->name, StatusEnum::cases()),
-            'statusEnumBacked' => array_map(fn ($c) => $c->value, StatusEnumBacked::cases()),
-            'statusEnumIntegerBacked' => array_map(fn ($c) => $c->value, StatusEnumIntegerBacked::cases()),
-            'statusEnumStringBacked' => array_map(fn ($c) => $c->value, StatusEnumStringBacked::cases()),
+            'statusEnum' => $this->convertEnumNames(StatusEnum::cases()),
+            'statusEnumBacked' => $this->convertEnumValues(StatusEnumBacked::cases()),
+            'statusEnumIntegerBacked' => $this->convertEnumValues(StatusEnumIntegerBacked::cases()),
+            'statusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
             'statusEnums' => Generator::UNDEFINED,
-            'itemsStatusEnumStringBacked' => array_map(fn ($c) => $c->value, StatusEnumStringBacked::cases()),
+            'itemsStatusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
         ];
 
         foreach ($schemas as $schema) {
-            self::assertEquals($expected[$schema->title], $schema->enum);
+            if ($schema instanceof AnnotationsProperty || $schema instanceof Items) {
+                self::assertEquals($expected[$schema->title], $schema->enum);
+            }
         }
+    }
+
+    /**
+     * @param list<UnitEnum> $enums
+     *
+     * @return list<string>
+     */
+    private function convertEnumNames(array $enums): array
+    {
+        return array_map(function ($c) {
+            return $c->name;
+        }, $enums);
+    }
+
+    /**
+     * @param list<StatusEnumBacked|StatusEnumIntegerBacked|StatusEnumStringBacked> $enums
+     *
+     * @return list<string|int>
+     */
+    private function convertEnumValues(array $enums): array
+    {
+        return array_map(function ($c) {
+            return $c->value;
+        }, $enums);
     }
 }
