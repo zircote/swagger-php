@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Items extends \OpenApi\Annotations\Items
@@ -86,7 +85,7 @@ class Items extends \OpenApi\Annotations\Items
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
             'pattern' => $pattern ?? Generator::UNDEFINED,
-            'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
+            'enum' => $enum ?? Generator::UNDEFINED,
             'readOnly' => $readOnly ?? Generator::UNDEFINED,
             'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
             'xml' => $xml ?? Generator::UNDEFINED,

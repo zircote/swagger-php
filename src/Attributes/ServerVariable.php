@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class ServerVariable extends \OpenApi\Annotations\ServerVariable
@@ -31,7 +30,7 @@ class ServerVariable extends \OpenApi\Annotations\ServerVariable
                 'serverVariable' => $serverVariable ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
                 'default' => $default ?? Generator::UNDEFINED,
-                'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
+                'enum' => $enum ?? Generator::UNDEFINED,
                 'variables' => $variables ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'value' => $this->combine($attachables),

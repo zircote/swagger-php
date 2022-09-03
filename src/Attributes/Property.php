@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
 class Property extends \OpenApi\Annotations\Property
@@ -88,7 +87,7 @@ class Property extends \OpenApi\Annotations\Property
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
             'pattern' => $pattern ?? Generator::UNDEFINED,
-            'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
+            'enum' => $enum ?? Generator::UNDEFINED,
             'readOnly' => $readOnly ?? Generator::UNDEFINED,
             'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
             'xml' => $xml ?? Generator::UNDEFINED,

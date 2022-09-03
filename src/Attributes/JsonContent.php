@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends \OpenApi\Annotations\JsonContent
@@ -89,7 +88,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
             'pattern' => $pattern ?? Generator::UNDEFINED,
-            'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
+            'enum' => $enum ?? Generator::UNDEFINED,
             'readOnly' => $readOnly ?? Generator::UNDEFINED,
             'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
             'xml' => $xml ?? Generator::UNDEFINED,

@@ -7,7 +7,6 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
-use OpenApi\Util;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class XmlContent extends \OpenApi\Annotations\XmlContent
@@ -89,7 +88,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
             'pattern' => $pattern ?? Generator::UNDEFINED,
-            'enum' => Util::convertEnums($enum) ?? Generator::UNDEFINED,
+            'enum' => $enum ?? Generator::UNDEFINED,
             'readOnly' => $readOnly ?? Generator::UNDEFINED,
             'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
             'xml' => $xml ?? Generator::UNDEFINED,
