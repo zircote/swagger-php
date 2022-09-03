@@ -36,7 +36,7 @@ class ExpandEnums
 
     /**
      * @param Analysis $analysis
-     * @return void
+     *
      * @throws \ReflectionException
      */
     public function __invoke(Analysis $analysis)
@@ -51,10 +51,11 @@ class ExpandEnums
 
     /**
      * @param Analysis $analysis
-     * @return void
+     *
      * @throws \ReflectionException
      */
-    private function expandContextEnum(Analysis $analysis): void {
+    private function expandContextEnum(Analysis $analysis): void
+    {
         /** @var AnnotationSchema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([AnnotationSchema::class, AttributeSchema::class], true);
 
@@ -87,9 +88,9 @@ class ExpandEnums
 
     /**
      * @param Analysis $analysis
-     * @return void
      */
-    private function expandSchemaEnum(Analysis $analysis): void {
+    private function expandSchemaEnum(Analysis $analysis): void
+    {
         /** @var AnnotationSchema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([
             AnnotationsAdditionalProperties::class,
@@ -105,7 +106,7 @@ class ExpandEnums
             AttributesServerVariable::class,
             AnnotationsServerVariable::class,
             AnnotationsXmlContent::class,
-            AttributesXmlContent::class
+            AttributesXmlContent::class,
         ], true);
 
         foreach ($schemas as $schema) {
