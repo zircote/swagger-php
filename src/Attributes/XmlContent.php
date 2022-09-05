@@ -17,7 +17,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
      * @param int|float                                 $maximum
      * @param int|float                                 $minimum
      * @param Property[]                                $properties
-     * @param string[]|int[]|float[]                    $enum
+     * @param string[]|int[]|float[]|class-string       $enum
      * @param array<Schema|\OpenApi\Annotations\Schema> $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema> $oneOf
@@ -48,7 +48,7 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
         ?int $minItems = null,
         ?bool $uniqueItems = null,
         ?string $pattern = null,
-        ?array $enum = null,
+        array|string|null $enum = null,
         ?Discriminator $discriminator = null,
         ?bool $readOnly = null,
         ?bool $writeOnly = null,

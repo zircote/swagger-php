@@ -7,6 +7,10 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysers\TokenAnalyser;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property as AnnotationsProperty;
+use OpenApi\Attributes\Property as AttributesProperty;
+use OpenApi\Generator;
 use OpenApi\Processors\ExpandEnums;
 use OpenApi\Tests\Fixtures\PHP\StatusEnum;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
@@ -59,5 +63,68 @@ class ExpandEnumsTest extends OpenApiTestCase
         $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
 
         self::assertEquals(['draft', 'published', 'archived'], $schema->enum);
+    }
+
+    public function expandEnumClassStringFixtures(): iterable
+    {
+        if (!class_exists('\\ReflectionEnum')) {
+            return [];
+        }
+
+        return [
+            [
+                ['PHP/ReferencesEnum.php'],
+                [
+                    'statusEnum' => $this->convertEnumNames(StatusEnum::cases()),
+                    'statusEnumBacked' => $this->convertEnumValues(StatusEnumBacked::cases()),
+                    'statusEnumIntegerBacked' => $this->convertEnumValues(StatusEnumIntegerBacked::cases()),
+                    'statusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
+                    'statusEnums' => Generator::UNDEFINED,
+                    'itemsStatusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     *
+     * @dataProvider expandEnumClassStringFixtures
+     */
+    public function testExpandEnumClassString(array $files, array $expected): void
+    {
+        $analysis = $this->analysisFromFixtures($files);
+        $analysis->process([new ExpandEnums()]);
+        $schemas = $analysis->getAnnotationsOfType([AnnotationsProperty::class, AttributesProperty::class, Items::class], true);
+
+        foreach ($schemas as $schema) {
+            if ($schema instanceof AnnotationsProperty || $schema instanceof Items) {
+                self::assertEquals($expected[$schema->title], $schema->enum);
+            }
+        }
+    }
+
+    /**
+     * @param list<StatusEnum> $enums
+     *
+     * @return list<string>
+     */
+    private function convertEnumNames(array $enums): array
+    {
+        return array_map(function ($c) {
+            return $c->name;
+        }, $enums);
+    }
+
+    /**
+     * @param list<StatusEnumBacked|StatusEnumIntegerBacked|StatusEnumStringBacked> $enums
+     *
+     * @return list<string|int>
+     */
+    private function convertEnumValues(array $enums): array
+    {
+        return array_map(function ($c) {
+            return $c->value;
+        }, $enums);
     }
 }
