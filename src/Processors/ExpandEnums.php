@@ -7,20 +7,10 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Items as AnnotationsItems;
-use OpenApi\Annotations\JsonContent as AnnotationsJsonContent;
-use OpenApi\Annotations\Property as AnnotationsProperty;
 use OpenApi\Annotations\Schema as AnnotationSchema;
-use OpenApi\Annotations\XmlContent as AnnotationsXmlContent;
-use OpenApi\Attributes\AdditionalProperties as AttributesAdditionalProperties;
-use OpenApi\Annotations\AdditionalProperties as AnnotationsAdditionalProperties;
-use OpenApi\Attributes\Items as AttributesItems;
-use OpenApi\Attributes\JsonContent as AttributesJsonContent;
-use OpenApi\Attributes\Property as AttributesProperty;
+use OpenApi\Annotations\ServerVariable as AnnotationsServerVariable;
 use OpenApi\Attributes\Schema as AttributeSchema;
 use OpenApi\Attributes\ServerVariable as AttributesServerVariable;
-use OpenApi\Annotations\ServerVariable as AnnotationsServerVariable;
-use OpenApi\Attributes\XmlContent as AttributesXmlContent;
 use OpenApi\Generator;
 
 /**
@@ -78,21 +68,11 @@ class ExpandEnums
     {
         /** @var AnnotationSchema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([
-            AnnotationsAdditionalProperties::class,
-            AttributesAdditionalProperties::class,
-            AnnotationsItems::class,
-            AttributesItems::class,
-            AnnotationsJsonContent::class,
-            AttributesJsonContent::class,
-            AnnotationsProperty::class,
-            AttributesProperty::class,
             AnnotationSchema::class,
             AttributeSchema::class,
             AttributesServerVariable::class,
             AnnotationsServerVariable::class,
-            AnnotationsXmlContent::class,
-            AttributesXmlContent::class,
-        ], true);
+        ]);
 
         foreach ($schemas as $schema) {
             if ($schema->enum !== Generator::UNDEFINED && is_string($schema->enum)) {
