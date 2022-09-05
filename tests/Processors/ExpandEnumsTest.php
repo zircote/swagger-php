@@ -65,11 +65,12 @@ class ExpandEnumsTest extends OpenApiTestCase
         self::assertEquals(['draft', 'published', 'archived'], $schema->enum);
     }
 
-    /**
-     * @requires PHP >= 8.1
-     */
     public function expandEnumClassStringFixtures(): iterable
     {
+        if (!class_exists('\\ReflectionEnum')) {
+            return [];
+        }
+
         return [
             [
                 ['PHP/ReferencesEnum.php'],
