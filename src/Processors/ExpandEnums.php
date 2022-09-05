@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -33,11 +32,6 @@ class ExpandEnums
 {
     use Concerns\TypesTrait;
 
-    /**
-     * @param Analysis $analysis
-     *
-     * @throws \ReflectionException
-     */
     public function __invoke(Analysis $analysis)
     {
         if (!class_exists('\\ReflectionEnum')) {
@@ -48,11 +42,6 @@ class ExpandEnums
         $this->expandSchemaEnum($analysis);
     }
 
-    /**
-     * @param Analysis $analysis
-     *
-     * @throws \ReflectionException
-     */
     private function expandContextEnum(Analysis $analysis): void
     {
         /** @var AnnotationSchema[] $schemas */
@@ -85,9 +74,6 @@ class ExpandEnums
         }
     }
 
-    /**
-     * @param Analysis $analysis
-     */
     private function expandSchemaEnum(Analysis $analysis): void
     {
         /** @var AnnotationSchema[] $schemas */
