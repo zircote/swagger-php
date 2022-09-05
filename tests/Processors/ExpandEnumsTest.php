@@ -65,23 +65,32 @@ class ExpandEnumsTest extends OpenApiTestCase
         self::assertEquals(['draft', 'published', 'archived'], $schema->enum);
     }
 
+    public function expandEnumClassStringFixtures(): iterable
+    {
+        return [
+            [
+                ['PHP/ReferencesEnum.php'],
+                [
+                    'statusEnum' => $this->convertEnumNames(StatusEnum::cases()),
+                    'statusEnumBacked' => $this->convertEnumValues(StatusEnumBacked::cases()),
+                    'statusEnumIntegerBacked' => $this->convertEnumValues(StatusEnumIntegerBacked::cases()),
+                    'statusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
+                    'statusEnums' => Generator::UNDEFINED,
+                    'itemsStatusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
+                ],
+            ],
+        ];
+    }
+
     /**
      * @requires PHP >= 8.1
+     * @dataProvider expandEnumClassStringFixtures
      */
-    public function testExpandEnumClassString(): void
+    public function testExpandEnumClassString(array $files, array $expected): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/ReferencesEnum.php']);
+        $analysis = $this->analysisFromFixtures($files);
         $analysis->process([new ExpandEnums()]);
         $schemas = $analysis->getAnnotationsOfType([AnnotationsProperty::class, AttributesProperty::class, Items::class], true);
-
-        $expected = [
-            'statusEnum' => $this->convertEnumNames(StatusEnum::cases()),
-            'statusEnumBacked' => $this->convertEnumValues(StatusEnumBacked::cases()),
-            'statusEnumIntegerBacked' => $this->convertEnumValues(StatusEnumIntegerBacked::cases()),
-            'statusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
-            'statusEnums' => Generator::UNDEFINED,
-            'itemsStatusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
-        ];
 
         foreach ($schemas as $schema) {
             if ($schema instanceof AnnotationsProperty || $schema instanceof Items) {
