@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace OpenApi\Processors;
 
-use InvalidArgumentException;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Items as AnnotationsItems;
 use OpenApi\Annotations\JsonContent as AnnotationsJsonContent;
@@ -121,7 +120,7 @@ class ExpandEnums
 
                     $schema->enum = $enums;
                 } else {
-                    throw new InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $source");
+                    throw new \InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $source");
                 }
             }
         }

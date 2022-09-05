@@ -17,7 +17,6 @@ use OpenApi\Tests\Fixtures\PHP\StatusEnumBacked;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
-use UnitEnum;
 
 class ExpandEnumsTest extends OpenApiTestCase
 {
@@ -92,7 +91,7 @@ class ExpandEnumsTest extends OpenApiTestCase
     }
 
     /**
-     * @param list<UnitEnum> $enums
+     * @param list<\UnitEnum> $enums
      *
      * @return list<string>
      */
