@@ -98,7 +98,7 @@ class ExpandEnums
             if ($schema->enum !== Generator::UNDEFINED && is_string($schema->enum)) {
                 $source = $schema->enum;
                 // Convert to Enum value if it is an Enum class string
-                if (is_a($schema->enum, 'UnitEnum', true)) {
+                if (is_a($schema->enum, '\UnitEnum', true)) {
                     $enums = [];
                     foreach ($source::cases() as $case) {
                         $enums[] = $case->value ?? $case->name;
