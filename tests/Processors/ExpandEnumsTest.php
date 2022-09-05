@@ -100,7 +100,7 @@ class ExpandEnumsTest extends OpenApiTestCase
     }
 
     /**
-     * @param list<\UnitEnum> $enums
+     * @param list<StatusEnum> $enums
      *
      * @return list<string>
      */
