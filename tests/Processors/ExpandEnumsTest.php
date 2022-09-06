@@ -68,30 +68,58 @@ class ExpandEnumsTest extends OpenApiTestCase
     public function expandEnumClassStringFixtures(): iterable
     {
         if (!class_exists('\\ReflectionEnum')) {
+            // otherwise PHPUnit will run this for all PHP versions
             return [];
         }
 
+        $mapNames = function (array $enums): array {
+            return array_map(function ($c) {
+                return $c->name;
+            }, $enums);
+        };
+
+        $mapValues = function (array $enums): array {
+            return array_map(function ($c) {
+                return $c->value;
+            }, $enums);
+        };
+
         return [
-            [
+            'statusEnum' => [
                 ['PHP/ReferencesEnum.php'],
-                [
-                    'statusEnum' => $this->convertEnumNames(StatusEnum::cases()),
-                    'statusEnumBacked' => $this->convertEnumValues(StatusEnumBacked::cases()),
-                    'statusEnumIntegerBacked' => $this->convertEnumValues(StatusEnumIntegerBacked::cases()),
-                    'statusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
-                    'statusEnums' => Generator::UNDEFINED,
-                    'itemsStatusEnumStringBacked' => $this->convertEnumValues(StatusEnumStringBacked::cases()),
-                ],
+                'statusEnum',
+                $mapNames(StatusEnum::cases()),
+            ],
+            'statusEnumBacked' => [
+                ['PHP/ReferencesEnum.php'],
+                'statusEnumBacked',
+                $mapValues(StatusEnumBacked::cases()),
+            ],
+            'statusEnumIntegerBacked' => [
+                ['PHP/ReferencesEnum.php'],
+                'statusEnumIntegerBacked',
+                $mapValues(StatusEnumIntegerBacked::cases()),
+            ],
+            'statusEnumStringBacked' => [['PHP/ReferencesEnum.php'], 'statusEnumStringBacked', $mapValues(StatusEnumStringBacked::cases())],
+            'statusEnums' => [
+                ['PHP/ReferencesEnum.php'],
+                'statusEnums',
+                Generator::UNDEFINED,
+            ],
+            'itemsStatusEnumStringBacked' => [
+                ['PHP/ReferencesEnum.php'],
+                'itemsStatusEnumStringBacked',
+                $mapValues(StatusEnumStringBacked::cases()),
             ],
         ];
     }
 
     /**
-     * @requires PHP >= 8.1
+     * @requires     PHP >= 8.1
      *
      * @dataProvider expandEnumClassStringFixtures
      */
-    public function testExpandEnumClassString(array $files, array $expected): void
+    public function testExpandEnumClassString(array $files, string $title, mixed $expected): void
     {
         $analysis = $this->analysisFromFixtures($files);
         $analysis->process([new ExpandEnums()]);
@@ -99,32 +127,10 @@ class ExpandEnumsTest extends OpenApiTestCase
 
         foreach ($schemas as $schema) {
             if ($schema instanceof AnnotationsProperty || $schema instanceof Items) {
-                self::assertEquals($expected[$schema->title], $schema->enum);
+                if ($schema->title == $title) {
+                    self::assertEquals($expected, $schema->enum);
+                }
             }
         }
-    }
-
-    /**
-     * @param list<StatusEnum> $enums
-     *
-     * @return list<string>
-     */
-    private function convertEnumNames(array $enums): array
-    {
-        return array_map(function ($c) {
-            return $c->name;
-        }, $enums);
-    }
-
-    /**
-     * @param list<StatusEnumBacked|StatusEnumIntegerBacked|StatusEnumStringBacked> $enums
-     *
-     * @return list<string|int>
-     */
-    private function convertEnumValues(array $enums): array
-    {
-        return array_map(function ($c) {
-            return $c->value;
-        }, $enums);
     }
 }

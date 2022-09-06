@@ -6,9 +6,10 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
+use OpenApi\Annotations as OA;
+use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
-use OpenApi\Attributes\Items;
 
 #[Schema()]
 class ReferencesEnum
