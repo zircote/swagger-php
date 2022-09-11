@@ -15,18 +15,18 @@ use OpenApi\Generator;
 class Response extends \OpenApi\Annotations\Response
 {
     /**
-     * @param Header[]                                                                 $headers
-     * @param MediaType|JsonContent|XmlContent|array<MediaType|JsonContent|XmlContent> $content
-     * @param Link[]                                                                   $links
-     * @param array<string,mixed>|null                                                 $x
-     * @param Attachable[]|null                                                        $attachables
+     * @param Header[]                                                                                       $headers
+     * @param MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable> $content
+     * @param Link[]                                                                                         $links
+     * @param array<string,mixed>|null                                                                       $x
+     * @param Attachable[]|null                                                                              $attachables
      */
     public function __construct(
         string|object|null $ref = null,
         int|string $response = null,
         ?string $description = null,
         ?array $headers = null,
-        MediaType|JsonContent|XmlContent|array|null $content = null,
+        MediaType|JsonContent|XmlContent|Attachable|array|null $content = null,
         ?array $links = null,
         // annotation
         ?array $x = null,

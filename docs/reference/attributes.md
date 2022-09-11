@@ -1239,7 +1239,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|null</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1270,7 +1270,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|array&lt;MediaType|XmlContent&gt;</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|array&lt;MediaType|XmlContent|Attachable&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]</span></dt>
   <dd><p>No details available.</p></dd>
