@@ -453,7 +453,7 @@ The key is the parameter name to be used, whereas the value can be a constant or
 be evaluated and passed to the linked operation.<br />
 The parameter name can be qualified using the parameter location [{in}.]{name} for operations<br />
 that use the same parameter name in different locations (e.g. path.id).</p></dd>
-  <dt><strong>requestBody</strong></dt>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A literal value or {expression} to use as a request body when calling the target operation.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A description of the link.<br />
@@ -482,7 +482,7 @@ Each Media Type object provides schema and examples for the media type identifie
 <dl>
   <dt><strong>mediaType</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Operation->content array.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example object should be in the correct format as specified by the media type.<br />
@@ -629,7 +629,7 @@ For all other styles, the default value is false.</p></dd>
 This property only applies to parameters with an in value of query.<br />
 <br />
 The default value is false.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
@@ -918,7 +918,7 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
 This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
 Default value is csv.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
@@ -940,7 +940,7 @@ Default value is csv.</p></dd>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
@@ -962,7 +962,7 @@ Therefore, it may be sent as part of a request but should not be sent as part of
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
 false.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
@@ -973,13 +973,13 @@ Default value is false.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p></dd>
   <dt><strong>not</strong></dt>
@@ -1092,7 +1092,7 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
