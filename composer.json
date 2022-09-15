@@ -86,10 +86,10 @@
         "docs:build": "Re-build static gh-pages"
     },
     "scripts": {
-        "cs": "php-cs-fixer fix --allow-risky=yes",
+        "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
         "lint": "@cs --dry-run",
         "test": [
-            "phpunit",
+            "export XDEBUG_MODE=off && phpunit",
             "@lint"
         ],
         "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
@@ -98,8 +98,8 @@
             "@testlegacy"
         ],
         "analyse": [
-            "phpstan analyse --memory-limit=2G",
-            "psalm"
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
+            "export XDEBUG_MODE=off && psalm"
         ],
         "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
         "docs:refgen": "php tools/refgen.php",
