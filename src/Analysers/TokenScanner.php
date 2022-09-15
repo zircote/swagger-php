@@ -215,6 +215,9 @@ class TokenScanner
         return $token;
     }
 
+    /**
+     * @return array<string>
+     */
     protected function resolveFQN(array $names, string $namespace, array $uses): array
     {
         $resolve = function ($name) use ($namespace, $uses) {

@@ -129,6 +129,9 @@ class Generator
         return $value === Generator::UNDEFINED;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAliases(): array
     {
         return $this->aliases;
@@ -148,6 +151,9 @@ class Generator
         return $this;
     }
 
+    /**
+     * @return array<string>|null
+     */
     public function getNamespaces(): ?array
     {
         return $this->namespaces;

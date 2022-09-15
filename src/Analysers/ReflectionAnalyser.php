@@ -27,6 +27,9 @@ class ReflectionAnalyser implements AnalyserInterface
     /** @var Generator|null */
     protected $generator;
 
+    /**
+     * @param array<AnnotationFactoryInterface> $annotationFactories
+     */
     public function __construct(array $annotationFactories = [])
     {
         $this->annotationFactories = $annotationFactories;

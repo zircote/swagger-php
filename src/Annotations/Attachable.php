@@ -64,7 +64,7 @@ class Attachable extends AbstractAnnotation
      * Container to allow custom annotations that are limited to a subset of potential parent
      * annotation classes.
      *
-     * @return array List of valid parent annotation classes. If `null`` the default nesting rules apply.
+     * @return array<class-string>|null List of valid parent annotation classes. If `null`, the default nesting rules apply.
      */
     public function allowedParents(): ?array
     {
