@@ -7,6 +7,7 @@
 namespace OpenApi\Analysers;
 
 use Doctrine\Common\Annotations\DocParser;
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -20,6 +21,9 @@ class DocBlockParser
      */
     protected $docParser;
 
+    /**
+     * @param array<string, class-string> $aliases
+     */
     public function __construct(array $aliases = [])
     {
         $docParser = new DocParser();
@@ -28,6 +32,9 @@ class DocBlockParser
         $this->docParser = $docParser;
     }
 
+    /**
+     * @param array<string, class-string> $aliases
+     */
     public function setAliases(array $aliases): void
     {
         $this->docParser->setImports($aliases);
@@ -39,7 +46,7 @@ class DocBlockParser
      * @param string  $comment a T_DOC_COMMENT
      * @param Context $context
      *
-     * @return array Annotations
+     * @return array<AbstractAnnotation>
      */
     public function fromComment(string $comment, Context $context): array
     {

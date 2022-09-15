@@ -17,7 +17,11 @@ use Composer\Autoload\ClassLoader;
 class ComposerAutoloaderScanner
 {
     /**
-     * Collect all classes/interfaces/traits known by autoloaders.
+     * Collect all classes/interfaces/traits known by composer.
+     *
+     * @param array<string> $namespaces
+     *
+     * @return array<string>
      */
     public function scan(array $namespaces): array
     {
