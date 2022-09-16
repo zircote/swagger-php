@@ -7,7 +7,7 @@
 namespace OpenApi\Analysers;
 
 use Doctrine\Common\Annotations\DocParser;
-use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -46,7 +46,7 @@ class DocBlockParser
      * @param string  $comment a T_DOC_COMMENT
      * @param Context $context
      *
-     * @return array<AbstractAnnotation>
+     * @return array<OA\AbstractAnnotation>
      */
     public function fromComment(string $comment, Context $context): array
     {

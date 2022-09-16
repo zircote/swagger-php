@@ -92,7 +92,7 @@
             "export XDEBUG_MODE=off && phpunit",
             "@lint"
         ],
-        "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
+        "testlegacy": "export XDEBUG_MODE=off && export PHPUNIT_ANALYSER=legacy && phpunit",
         "testall": [
             "@test",
             "@testlegacy"

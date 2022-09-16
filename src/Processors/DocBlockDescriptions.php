@@ -7,11 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\Operation;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
@@ -32,7 +28,7 @@ class DocBlockDescriptions
      */
     public function __invoke(Analysis $analysis)
     {
-        /** @var AbstractAnnotation $annotation */
+        /** @var OA\AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_context') === false) {
                 // only annotations with context
@@ -59,9 +55,9 @@ class DocBlockDescriptions
     }
 
     /**
-     * @param Operation|Property|Parameter|Schema $annotation
+     * @param OA\Operation|OA\Property|OA\Parameter|OA\Schema $annotation
      */
-    protected function description(AbstractAnnotation $annotation): void
+    protected function description(OA\AbstractAnnotation $annotation): void
     {
         if (!Generator::isDefault($annotation->description)) {
             if ($annotation->description === null) {
@@ -75,9 +71,9 @@ class DocBlockDescriptions
     }
 
     /**
-     * @param Operation|Property|Parameter|Schema $annotation
+     * @param OA\Operation|OA\Property|OA\Parameter|OA\Schema $annotation
      */
-    protected function summaryAndDescription(AbstractAnnotation $annotation): void
+    protected function summaryAndDescription(OA\AbstractAnnotation $annotation): void
     {
         $ignoreSummary = !Generator::isDefault($annotation->summary);
         $ignoreDescription = !Generator::isDefault($annotation->description);

@@ -7,10 +7,8 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Schema as AnnotationSchema;
-use OpenApi\Annotations\ServerVariable as AnnotationsServerVariable;
-use OpenApi\Attributes\Schema as AttributeSchema;
-use OpenApi\Attributes\ServerVariable as AttributesServerVariable;
+use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 
 /**
@@ -34,8 +32,8 @@ class ExpandEnums
 
     private function expandContextEnum(Analysis $analysis): void
     {
-        /** @var AnnotationSchema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType([AnnotationSchema::class, AttributeSchema::class], true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType([OA\Schema::class, OAT\Schema::class], true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('enum')) {
@@ -66,12 +64,12 @@ class ExpandEnums
 
     private function expandSchemaEnum(Analysis $analysis): void
     {
-        /** @var AnnotationSchema[] $schemas */
+        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([
-            AnnotationSchema::class,
-            AttributeSchema::class,
-            AttributesServerVariable::class,
-            AnnotationsServerVariable::class,
+            OA\Schema::class,
+            OAT\Schema::class,
+            OA\ServerVariable::class,
+            OAT\ServerVariable::class,
         ]);
 
         foreach ($schemas as $schema) {

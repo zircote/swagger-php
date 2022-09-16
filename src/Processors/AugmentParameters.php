@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Operation;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\Concerns\DocblockTrait;
 
@@ -71,8 +71,8 @@ class AugmentParameters
 
     protected function augmentOperationParameters(Analysis $analysis): void
     {
-        /** @var Operation[] $operations */
-        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        /** @var OA\Operation[] $operations */
+        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         foreach ($operations as $operation) {
             if (!Generator::isDefault($operation->parameters)) {

@@ -6,7 +6,7 @@
 
 namespace OpenApi\Processors\Concerns;
 
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 trait TypesTrait
@@ -33,7 +33,7 @@ trait TypesTrait
         'object' => 'object',
     ];
 
-    public function mapNativeType(Schema $schema, string $type): bool
+    public function mapNativeType(OA\Schema $schema, string $type): bool
     {
         if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
             return false;

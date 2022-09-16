@@ -11,7 +11,7 @@ use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
 use Psr\Log\LoggerInterface;
 
@@ -362,7 +362,7 @@ class Generator
         return $this;
     }
 
-    public static function scan(iterable $sources, array $options = []): ?OpenApi
+    public static function scan(iterable $sources, array $options = []): ?OA\OpenApi
     {
         // merge with defaults
         $config = $options + [
@@ -420,7 +420,7 @@ class Generator
      * @param null|Analysis $analysis custom analysis instance
      * @param bool          $validate flag to enable/disable validation of the returned spec
      */
-    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
+    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OA\OpenApi
     {
         $rootContext = new Context([
             'version' => $this->getVersion(),

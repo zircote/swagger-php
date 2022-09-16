@@ -7,11 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\MediaType;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\RequestBody;
-use OpenApi\Annotations\Response;
-use OpenApi\Annotations\XmlContent;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -22,12 +18,12 @@ class MergeXmlContent
 {
     public function __invoke(Analysis $analysis)
     {
-        /** @var XmlContent[] $annotations */
-        $annotations = $analysis->getAnnotationsOfType(XmlContent::class);
+        /** @var OA\XmlContent[] $annotations */
+        $annotations = $analysis->getAnnotationsOfType(OA\XmlContent::class);
 
         foreach ($annotations as $xmlContent) {
             $parent = $xmlContent->_context->nested;
-            if (!($parent instanceof Response) && !($parent instanceof RequestBody) && !($parent instanceof Parameter)) {
+            if (!($parent instanceof OA\Response) && !($parent instanceof OA\RequestBody) && !($parent instanceof OA\Parameter)) {
                 if ($parent) {
                     $xmlContent->_context->logger->warning('Unexpected ' . $xmlContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {
@@ -38,7 +34,7 @@ class MergeXmlContent
             if (Generator::isDefault($parent->content)) {
                 $parent->content = [];
             }
-            $parent->content['application/xml'] = $mediaType = new MediaType([
+            $parent->content['application/xml'] = $mediaType = new OA\MediaType([
                 'schema' => $xmlContent,
                 'example' => $xmlContent->example,
                 'examples' => $xmlContent->examples,
@@ -46,7 +42,7 @@ class MergeXmlContent
                 '_aux' => true,
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
-            if (!$parent instanceof Parameter) {
+            if (!$parent instanceof OA\Parameter) {
                 $parent->content['application/xml']->mediaType = 'application/xml';
             }
             $xmlContent->example = Generator::UNDEFINED;

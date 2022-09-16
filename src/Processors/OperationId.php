@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Operation;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
@@ -39,9 +39,9 @@ class OperationId
 
     public function __invoke(Analysis $analysis)
     {
-        $allOperations = $analysis->getAnnotationsOfType(Operation::class);
+        $allOperations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
-        /** @var Operation $operation */
+        /** @var OA\Operation $operation */
         foreach ($allOperations as $operation) {
             if (null === $operation->operationId) {
                 $operation->operationId = Generator::UNDEFINED;

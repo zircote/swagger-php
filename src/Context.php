@@ -6,7 +6,7 @@
 
 namespace OpenApi;
 
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
 use Psr\Log\LoggerInterface;
 
@@ -44,8 +44,6 @@ use Psr\Log\LoggerInterface;
 #[\AllowDynamicProperties]
 class Context
 {
-    public $classs = null;
-
     /**
      * Prototypical inheritance for properties.
      *
@@ -74,7 +72,7 @@ class Context
     }
 
     /**
-     * Check if a property is NOT set directly on this context and but its parent context.
+     * Check if a property is NOT set directly on this context and its parent context.
      *
      * Example: $c->not('method') or $c->not('class')
      */
@@ -122,7 +120,7 @@ class Context
         }
 
         $versions = (array) $versions;
-        $currentVersion = $this->version ?: OpenApi::DEFAULT_VERSION;
+        $currentVersion = $this->version ?: OA\OpenApi::DEFAULT_VERSION;
 
         return in_array($currentVersion, $versions);
     }
@@ -200,7 +198,7 @@ class Context
         if (isset($position['line'])) {
             $context->line = $position['line'];
         }
-        $caller = isset($backtrace[$index + 1]) ? $backtrace[$index + 1] : null;
+        $caller = $backtrace[$index + 1] ?? null;
         if (isset($caller['function'])) {
             $context->method = $caller['function'];
             if (isset($caller['type']) && $caller['type'] === '::') {

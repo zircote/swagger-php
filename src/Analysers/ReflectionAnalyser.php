@@ -7,7 +7,7 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Property;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -169,7 +169,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     'annotations' => [],
                 ], $context);
                 foreach ($annotationFactory->build($constant, $ctx) as $annotation) {
-                    if ($annotation instanceof Property) {
+                    if ($annotation instanceof OA\Property) {
                         if (Generator::isDefault($annotation->property)) {
                             $annotation->property = $constant->getName();
                         }

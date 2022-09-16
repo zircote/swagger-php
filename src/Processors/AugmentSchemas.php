@@ -7,9 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
@@ -21,8 +19,8 @@ class AugmentSchemas
 {
     public function __invoke(Analysis $analysis)
     {
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // Use the class names for @OA\Schema()
         foreach ($schemas as $schema) {
@@ -40,7 +38,7 @@ class AugmentSchemas
         }
 
         // Merge unmerged @OA\Property annotations into the @OA\Schema of the class
-        $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType(Property::class);
+        $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType(OA\Property::class);
         foreach ($unmergedProperties as $property) {
             if ($property->_context->nested) {
                 continue;
@@ -52,7 +50,7 @@ class AugmentSchemas
                     ?: $property->_context->with('enum');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
-                    if ($annotation instanceof Schema) {
+                    if ($annotation instanceof OA\Schema) {
                         if ($annotation->_context->nested) {
                             // we shouldn't merge property into nested schemas
                             continue;
@@ -69,7 +67,7 @@ class AugmentSchemas
                             }
 
                             if ($schema === null) {
-                                $schema = new Schema([
+                                $schema = new OA\Schema([
                                     '_context' => $annotation->_context,
                                     '_aux' => true,
                                 ]);
@@ -103,7 +101,7 @@ class AugmentSchemas
             } else {
                 if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
                     if (Generator::isDefault($schema->format)) {
-                        $schema->ref = Components::ref($typeSchema);
+                        $schema->ref = OA\Components::ref($typeSchema);
                         $schema->type = Generator::UNDEFINED;
                     }
                 }
@@ -121,7 +119,7 @@ class AugmentSchemas
                     }
                 }
                 if (!$allOfPropertiesSchema) {
-                    $allOfPropertiesSchema = new Schema([
+                    $allOfPropertiesSchema = new OA\Schema([
                         'properties' => [],
                         '_context' => $schema->_context,
                         '_aux' => true,
