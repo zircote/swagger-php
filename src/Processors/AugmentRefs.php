@@ -7,8 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
@@ -18,8 +17,8 @@ class AugmentRefs
 {
     public function __invoke(Analysis $analysis)
     {
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // ref rewriting
         $updatedRefs = [];
@@ -28,7 +27,7 @@ class AugmentRefs
                 // do we have to keep track of properties refs that need updating?
                 foreach ($schema->allOf as $ii => $allOfSchema) {
                     if ($allOfSchema->properties!== Generator::UNDEFINED) {
-                        $updatedRefs[Components::ref($schema->schema . '/properties', false)] = Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
+                        $updatedRefs[OA\Components::ref($schema->schema . '/properties', false)] = OA\Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
                         break;
                     }
                 }

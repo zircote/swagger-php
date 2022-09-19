@@ -6,10 +6,8 @@
 
 namespace OpenApi\Processors\Concerns;
 
-use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Schema as AnnotationSchema;
-use OpenApi\Attributes\Schema as AttributeSchema;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 
 trait DocblockTrait
@@ -17,7 +15,7 @@ trait DocblockTrait
     /**
      * An annotation is a root if it is the top-level / outermost annotation in a PHP docblock.
      */
-    public function isRoot(AbstractAnnotation $annotation): bool
+    public function isRoot(OA\AbstractAnnotation $annotation): bool
     {
         if (!$annotation->_context) {
             return true;
@@ -36,8 +34,8 @@ trait DocblockTrait
             OA\Parameter::class => false,
             OA\Response::class => false,
 
-            AnnotationSchema::class => true,
-            AttributeSchema::class => true,
+            OA\Schema::class => true,
+            OAT\Schema::class => true,
         ];
         // try to find best root match
         foreach ($matchPriorityMap as $className => $strict) {

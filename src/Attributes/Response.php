@@ -6,13 +6,11 @@
 
 namespace OpenApi\Attributes;
 
-use OpenApi\Annotations\JsonContent;
-use OpenApi\Annotations\MediaType;
-use OpenApi\Annotations\XmlContent;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Response extends \OpenApi\Annotations\Response
+class Response extends OA\Response
 {
     /**
      * @param Header[]                                                                                       $headers

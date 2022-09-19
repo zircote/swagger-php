@@ -7,11 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\AbstractAnnotation;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Operation;
-use OpenApi\Annotations\Property;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 class CleanUnusedComponents
@@ -46,11 +42,11 @@ class CleanUnusedComponents
                     }
                 }
             }
-            if ($annotation instanceof OpenApi || $annotation instanceof Operation) {
+            if ($annotation instanceof OA\OpenApi || $annotation instanceof OA\Operation) {
                 if (!Generator::isDefault($annotation->security)) {
                     foreach ($annotation->security as $security) {
                         foreach (array_keys($security) as $securityName) {
-                            $ref = Components::COMPONENTS_PREFIX . 'securitySchemes/' . $securityName;
+                            $ref = OA\Components::COMPONENTS_PREFIX . 'securitySchemes/' . $securityName;
                             $usedRefs[$ref] = $ref;
                         }
                     }
@@ -59,13 +55,13 @@ class CleanUnusedComponents
         }
 
         $unusedRefs = [];
-        foreach (Components::$_nested as $nested) {
+        foreach (OA\Components::$_nested as $nested) {
             if (2 == count($nested)) {
                 // $nested[1] is the name of the property that holds the component name
                 [$componentType, $nameProperty] = $nested;
                 if (!Generator::isDefault($analysis->openapi->components->{$componentType})) {
                     foreach ($analysis->openapi->components->{$componentType} as $component) {
-                        $ref = Components::ref($component);
+                        $ref = OA\Components::ref($component);
                         if (!in_array($ref, $usedRefs)) {
                             $unusedRefs[$ref] = [$ref, $nameProperty];
                         }
@@ -74,17 +70,17 @@ class CleanUnusedComponents
             }
         }
 
-        $detachNested = function (Analysis $analysis, AbstractAnnotation $annotation, callable $detachNested): void {
+        $detachNested = function (Analysis $analysis, OA\AbstractAnnotation $annotation, callable $detachNested): void {
             foreach ($annotation::$_nested as $nested) {
                 $nestedKey = ((array) $nested)[0];
                 if (!Generator::isDefault($annotation->{$nestedKey})) {
                     if (is_array($annotation->{$nestedKey})) {
                         foreach ($annotation->{$nestedKey} as $elem) {
-                            if ($elem instanceof AbstractAnnotation) {
+                            if ($elem instanceof OA\AbstractAnnotation) {
                                 $detachNested($analysis, $elem, $detachNested);
                             }
                         }
-                    } elseif ($annotation->{$nestedKey} instanceof AbstractAnnotation) {
+                    } elseif ($annotation->{$nestedKey} instanceof OA\AbstractAnnotation) {
                         $analysis->annotations->detach($annotation->{$nestedKey});
                     }
                 }
