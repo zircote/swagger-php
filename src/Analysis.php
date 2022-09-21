@@ -7,7 +7,6 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
 
 /**
  * Result of the analyser.
@@ -338,7 +337,7 @@ class Analysis
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if (in_array(get_class($annotation), [OA\Schema::class, OAT\Schema::class]) && !$annotation->_aux) {
+                        if (($annotation instanceof OA\Schema) && !$annotation->_aux) {
                             return $annotation;
                         }
                     }
