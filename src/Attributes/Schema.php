@@ -12,17 +12,17 @@ use OpenApi\Generator;
 class Schema extends \OpenApi\Annotations\Schema
 {
     /**
-     * @param string[]                                  $required
-     * @param Property[]                                $properties
-     * @param int|float                                 $maximum
-     * @param int|float                                 $minimum
-     * @param string[]|int[]|float[]|class-string       $enum
-     * @param array<Schema|\OpenApi\Annotations\Schema> $allOf
-     * @param array<Schema|\OpenApi\Annotations\Schema> $anyOf
-     * @param array<Schema|\OpenApi\Annotations\Schema> $oneOf
-     * @param mixed                                     $const
-     * @param array<string,mixed>|null                  $x
-     * @param Attachable[]|null                         $attachables
+     * @param string[]                                        $required
+     * @param Property[]                                      $properties
+     * @param int|float                                       $maximum
+     * @param int|float                                       $minimum
+     * @param string[]|int[]|float[]|\UnitEnum[]|class-string $enum
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $allOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $anyOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $oneOf
+     * @param mixed                                           $const
+     * @param array<string,mixed>|null                        $x
+     * @param Attachable[]|null                               $attachables
      */
     public function __construct(
         // schema

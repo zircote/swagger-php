@@ -940,7 +940,7 @@ Default value is csv.</p></dd>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
@@ -1092,7 +1092,7 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
