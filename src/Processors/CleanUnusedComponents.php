@@ -8,6 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Collector;
 use OpenApi\Generator;
 
 class CleanUnusedComponents
@@ -17,6 +18,8 @@ class CleanUnusedComponents
         if (Generator::isDefault($analysis->openapi->components)) {
             return;
         }
+
+        $analysis->annotations = (new Collector())->collect($analysis->annotations);
 
         // allow multiple runs to catch nested dependencies
         for ($ii = 0; $ii < 10; ++$ii) {
