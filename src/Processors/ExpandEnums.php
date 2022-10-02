@@ -73,20 +73,34 @@ class ExpandEnums
         ]);
 
         foreach ($schemas as $schema) {
-            if ($schema->enum !== Generator::UNDEFINED && is_string($schema->enum)) {
-                $source = $schema->enum;
-                // Convert to Enum value if it is an Enum class string
-                if (is_a($schema->enum, '\UnitEnum', true)) {
-                    $enums = [];
-                    foreach ($source::cases() as $case) {
-                        $enums[] = $case->value ?? $case->name;
-                    }
+            if (Generator::isDefault($schema->enum)) {
+                continue;
+            }
 
-                    $schema->enum = $enums;
+            if (is_string($schema->enum)) {
+                // might be enum class
+                if (is_a($schema->enum, \UnitEnum::class, true)) {
+                    $source = $schema->enum::cases();
                 } else {
-                    throw new \InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $source");
+                    throw new \InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $schema->enum");
+                }
+            } elseif (is_array($schema->enum)) {
+                // might be array of enum, string, int, etc...
+                $source = $schema->enum;
+            } else {
+                throw new \InvalidArgumentException('Unexpected enum value, requires Enum class string or array');
+            }
+
+            $enums = [];
+            foreach ($source as $enum) {
+                if (is_a($enum, \UnitEnum::class)) {
+                    $enums[] = $enum->value ?? $enum->name;
+                } else {
+                    $enums[] = $enum;
                 }
             }
+
+            $schema->enum = $enums;
         }
     }
 }

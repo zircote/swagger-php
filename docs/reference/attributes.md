@@ -64,7 +64,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -555,7 +555,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -642,7 +642,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1137,7 +1137,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1337,7 +1337,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1460,7 +1460,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1630,7 +1630,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>

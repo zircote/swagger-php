@@ -129,6 +129,11 @@ and [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (PSR-2) tests.
 composer test
 ```
 
+### To run static-analysis execute:
+```bash
+composer analyse
+```
+
 ### Running unit tests only:
 ```bash
 ./bin/phpunit
