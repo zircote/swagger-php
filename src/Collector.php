@@ -30,15 +30,11 @@ class Collector
 
         $storage->attach($annotation);
 
-        foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOff']) as $nested) {
-            if (is_array($nested)) {
-                foreach ($nested as $nestedProperty) {
-                    if (isset($annotation->{$nestedProperty})) {
-                        $this->traverseNested($annotation->{$nestedProperty}, $storage);
-                    }
+        foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOff', 'callbacks']) as $properties) {
+            foreach ((array)$properties as $property) {
+                if (isset($annotation->{$property})) {
+                    $this->traverseNested($annotation->{$property}, $storage);
                 }
-            } elseif (isset($annotation->{$nested})) {
-                $this->traverseNested($annotation->{$nested}, $storage);
             }
         }
     }
