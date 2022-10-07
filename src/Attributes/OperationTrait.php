@@ -16,7 +16,6 @@ trait OperationTrait
      * @param string[]                 $tags
      * @param Parameter[]              $parameters
      * @param Response[]               $responses
-     * @param callable[]               $callbacks
      * @param array<string,mixed>|null $x
      * @param Attachable[]|null        $attachables
      */

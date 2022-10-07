@@ -20,7 +20,6 @@ class Components extends \OpenApi\Annotations\Components
      * @param Header[]|null                                  $headers
      * @param SecurityScheme[]|null                          $securitySchemes
      * @param Link[]|null                                    $links
-     * @param callable[]|null                                $callbacks
      * @param array<string,mixed>|null                       $x
      * @param Attachable[]|null                              $attachables
      */
