@@ -28,6 +28,7 @@ class UtilTest extends OpenApiTestCase
             'Analysers',
             'Processors',
             'TypedProperties.php',
+            'Unreferenced.php',
             'UsingRefs.php',
             'UsingPhpDoc.php',
             'UsingCustomAttachables',

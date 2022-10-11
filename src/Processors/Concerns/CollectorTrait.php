@@ -1,31 +1,37 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi;
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations as OA;
 
-/**
- * Collects a complete list of all nested/referenced annotations.
- */
-class Collector
+trait CollectorTrait
 {
-    public function collect(\SplObjectStorage $annotations): \SplObjectStorage
+    /**
+     * Collects a complete list of all nested/referenced annotations.
+     */
+    public function collect(iterable $annotations): \SplObjectStorage
     {
         $storage = new \SplObjectStorage();
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof OA\AbstractAnnotation) {
-                $this->traverse($annotation, $storage);
+                $storage->addAll($this->traverse($annotation));
             }
         }
 
         return $storage;
     }
 
-    protected function traverse(OA\AbstractAnnotation $annotation, \SplObjectStorage $storage): void
+    public function traverse(OA\AbstractAnnotation $annotation): \SplObjectStorage
     {
+        $storage = new \SplObjectStorage();
+
         if ($storage->contains($annotation)) {
-            return;
+            return $storage;
         }
 
         $storage->attach($annotation);
@@ -33,23 +39,29 @@ class Collector
         foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOff', 'callbacks']) as $properties) {
             foreach ((array) $properties as $property) {
                 if (isset($annotation->{$property})) {
-                    $this->traverseNested($annotation->{$property}, $storage);
+                    $storage->addAll($this->traverseNested($annotation->{$property}));
                 }
             }
         }
+
+        return $storage;
     }
 
     /**
      * @param string|array|OA\AbstractAnnotation $nested
      */
-    protected function traverseNested($nested, \SplObjectStorage $storage): void
+    protected function traverseNested($nested): \SplObjectStorage
     {
+        $storage = new \SplObjectStorage();
+
         if (is_array($nested)) {
             foreach ($nested as $value) {
-                $this->traverseNested($value, $storage);
+                $storage->addAll($this->traverseNested($value));
             }
         } elseif ($nested instanceof OA\AbstractAnnotation) {
-            $this->traverse($nested, $storage);
+            $storage->addAll($this->traverse($nested));
         }
+
+        return $storage;
     }
 }
