@@ -361,6 +361,7 @@ class Analysis
         if ($context instanceof Context) {
             return $context;
         }
+
         // Weird, did you use the addAnnotation/addAnnotations methods?
         throw new \Exception('Annotation has no context');
     }

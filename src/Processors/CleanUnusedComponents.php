@@ -12,11 +12,15 @@ use OpenApi\Generator;
 
 class CleanUnusedComponents
 {
+    use Concerns\CollectorTrait;
+
     public function __invoke(Analysis $analysis)
     {
         if (Generator::isDefault($analysis->openapi->components)) {
             return;
         }
+
+        $analysis->annotations = $this->collect($analysis->annotations);
 
         // allow multiple runs to catch nested dependencies
         for ($ii = 0; $ii < 10; ++$ii) {
@@ -33,6 +37,7 @@ class CleanUnusedComponents
             if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && $annotation->ref !== null) {
                 $usedRefs[$annotation->ref] = $annotation->ref;
             }
+
             foreach (['allOf', 'anyOf', 'oneOff'] as $sub) {
                 if (property_exists($annotation, $sub) && !Generator::isDefault($annotation->{$sub})) {
                     foreach ($annotation->{$sub} as $subElem) {
@@ -42,6 +47,7 @@ class CleanUnusedComponents
                     }
                 }
             }
+
             if ($annotation instanceof OA\OpenApi || $annotation instanceof OA\Operation) {
                 if (!Generator::isDefault($annotation->security)) {
                     foreach ($annotation->security as $security) {
@@ -70,24 +76,6 @@ class CleanUnusedComponents
             }
         }
 
-        $detachNested = function (Analysis $analysis, OA\AbstractAnnotation $annotation, callable $detachNested): void {
-            foreach ($annotation::$_nested as $nested) {
-                $nestedKey = ((array) $nested)[0];
-                if (!Generator::isDefault($annotation->{$nestedKey})) {
-                    if (is_array($annotation->{$nestedKey})) {
-                        foreach ($annotation->{$nestedKey} as $elem) {
-                            if ($elem instanceof OA\AbstractAnnotation) {
-                                $detachNested($analysis, $elem, $detachNested);
-                            }
-                        }
-                    } elseif ($annotation->{$nestedKey} instanceof OA\AbstractAnnotation) {
-                        $analysis->annotations->detach($annotation->{$nestedKey});
-                    }
-                }
-            }
-            $analysis->annotations->detach($annotation);
-        };
-
         // remove unused
         foreach ($unusedRefs as $refDetails) {
             [$ref, $nameProperty] = $refDetails;
@@ -95,7 +83,9 @@ class CleanUnusedComponents
             foreach ($analysis->openapi->components->{$componentType} as $ii => $component) {
                 if ($component->{$nameProperty} == $name) {
                     $annotation = $analysis->openapi->components->{$componentType}[$ii];
-                    $detachNested($analysis, $annotation, $detachNested);
+                    foreach ($this->collect([$annotation]) as $unused) {
+                        $analysis->annotations->detach($unused);
+                    }
                     unset($analysis->openapi->components->{$componentType}[$ii]);
                 }
             }

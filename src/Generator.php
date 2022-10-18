@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
  *
- * This is an object oriented alternative to using the now deprecated `\OpenApi\scan()` function and
+ * This is an object-oriented alternative to using the now deprecated `\OpenApi\scan()` function and
  * static class properties of the `Analyzer` and `Analysis` classes.
  */
 class Generator
@@ -432,7 +432,7 @@ class Generator
         try {
             $this->scanSources($sources, $analysis, $rootContext);
 
-            // post processing
+            // post-processing
             $analysis->process($this->getProcessors());
 
             if ($analysis->openapi) {

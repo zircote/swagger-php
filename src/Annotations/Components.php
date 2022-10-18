@@ -89,7 +89,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Callbacks.
      *
-     * @var callable[]
+     * @var array
      */
     public $callbacks = Generator::UNDEFINED;
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="Duplicate operationId", version="unittest")
  */
