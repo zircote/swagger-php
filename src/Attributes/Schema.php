@@ -8,7 +8,7 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Schema extends \OpenApi\Annotations\Schema
 {
     /**
