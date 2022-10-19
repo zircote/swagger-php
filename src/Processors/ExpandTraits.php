@@ -18,7 +18,7 @@ use OpenApi\Generator;
  */
 class ExpandTraits
 {
-    use Concerns\MergeTrait;
+    use Concerns\MergePropertiesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -37,7 +37,6 @@ class ExpandTraits
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         if ($schema->_context->is('class')) {
-                            $this->mergeAnnotations($schema, $trait, $existing);
                             $this->mergeMethods($schema, $trait, $existing);
                             $this->mergeProperties($schema, $trait, $existing);
                         }

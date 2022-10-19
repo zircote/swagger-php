@@ -18,7 +18,7 @@ use OpenApi\Generator;
  */
 class ExpandInterfaces
 {
-    use Concerns\MergeTrait;
+    use Concerns\MergePropertiesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -47,7 +47,6 @@ class ExpandInterfaces
                         $refPath = !Generator::isDefault($interfaceSchema->schema) ? $interfaceSchema->schema : $interface['interface'];
                         $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {
-                        $this->mergeAnnotations($schema, $interface, $existing);
                         $this->mergeMethods($schema, $interface, $existing);
                     }
                 }

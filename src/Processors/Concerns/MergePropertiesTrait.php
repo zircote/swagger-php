@@ -20,7 +20,7 @@ use OpenApi\Generator;
  *      - merge from all without schema
  *        => update all $ref that might reference a property merged.
  */
-trait MergeTrait
+trait MergePropertiesTrait
 {
     protected function inheritFrom(Analysis $analysis, OA\Schema $schema, OA\Schema $from, string $refPath, Context $context): void
     {
@@ -33,18 +33,6 @@ trait MergeTrait
             '_context' => new Context(['generated' => true], $context),
         ]);
         $analysis->addAnnotation($refSchema, $refSchema->_context);
-    }
-
-    protected function mergeAnnotations(OA\Schema $schema, array $from, array &$existing): void
-    {
-        if (is_iterable($from['context']->annotations)) {
-            foreach ($from['context']->annotations as $annotation) {
-                if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
-                    $existing[] = $annotation->_context->property;
-                    $schema->merge([$annotation], true);
-                }
-            }
-        }
     }
 
     protected function mergeProperties(OA\Schema $schema, array $from, array &$existing): void

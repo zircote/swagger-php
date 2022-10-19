@@ -18,7 +18,7 @@ use OpenApi\Generator;
  */
 class ExpandClasses
 {
-    use Concerns\MergeTrait;
+    use Concerns\MergePropertiesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -38,7 +38,6 @@ class ExpandClasses
                         // one ancestor is enough
                         break;
                     } else {
-                        $this->mergeAnnotations($schema, $ancestor, $existing);
                         $this->mergeMethods($schema, $ancestor, $existing);
                         $this->mergeProperties($schema, $ancestor, $existing);
                     }
