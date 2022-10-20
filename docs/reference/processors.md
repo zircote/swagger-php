@@ -53,7 +53,7 @@ Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (
 ### Config settings
 <dl>
   <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p> if `true` try to find operation parameter descriptions in the operation</p>  </dd>
+  <dd><p>If set to <code>true</code>, try to find operation parameter descriptions in the operation docblock.</p>  </dd>
 </dl>
 
 
@@ -72,7 +72,7 @@ Generate the OperationId based on the context of the OpenApi annotation.
 ### Config settings
 <dl>
   <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p> if `true` hash generated ids instead of clear text</p>  </dd>
+  <dd><p>If set to <code>true</code>, generate ids (md5) instead of clear text operation ids.</p>  </dd>
 </dl>
 
 
