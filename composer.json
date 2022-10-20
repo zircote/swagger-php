@@ -103,9 +103,14 @@
         ],
         "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
         "docs:refgen": "php tools/refgen.php",
+        "docs:procgen": "php tools/procgen.php",
+        "docs:gen": [
+            "@docs:refgen",
+            "@docs:procgen"
+        ],
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
-            "@docs:refgen",
+            "@docs:gen",
             "cd docs && npm run build"
         ]
     }
