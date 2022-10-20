@@ -6,7 +6,6 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
 
-
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
 
 
@@ -140,7 +139,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]|null</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -210,7 +209,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -371,7 +370,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -418,7 +417,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -837,7 +836,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -937,7 +936,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1066,7 +1065,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1204,7 +1203,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1532,7 +1531,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>

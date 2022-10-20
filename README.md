@@ -139,9 +139,9 @@ composer analyse
 ./bin/phpunit
 ```
 
-### Regenerate annotation/attribute reference markup docs
+### Regenerate reference markup docs
 ```bash
-composer docs:refgen
+composer docs:gen
 ```
 
 ### Running linting only:

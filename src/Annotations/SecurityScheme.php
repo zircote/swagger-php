@@ -83,7 +83,7 @@ class SecurityScheme extends AbstractAnnotation
     public $scheme = Generator::UNDEFINED;
 
     /**
-     * OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of an URL.
+     * OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.
      *
      * @var string
      */

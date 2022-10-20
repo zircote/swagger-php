@@ -17,10 +17,6 @@ class AugmentParameters
 
     protected $augmentOperationParameters;
 
-    /**
-     * @param bool $augmentOperationParameters if `true` try to find operation parameter descriptions in the operation
-     *                                         docblock
-     */
     public function __construct(bool $augmentOperationParameters = true)
     {
         $this->augmentOperationParameters = $augmentOperationParameters;
@@ -31,6 +27,11 @@ class AugmentParameters
         return $this->augmentOperationParameters;
     }
 
+    /**
+     * If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.
+     *
+     * @param bool $augmentOperationParameters
+     */
     public function setAugmentOperationParameters(bool $augmentOperationParameters): void
     {
         $this->augmentOperationParameters = $augmentOperationParameters;
