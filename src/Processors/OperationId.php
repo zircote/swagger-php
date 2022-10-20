@@ -17,9 +17,6 @@ class OperationId
 {
     protected $hash;
 
-    /**
-     * @param bool $hash if `true` hash generated ids instead of clear text
-     */
     public function __construct(bool $hash = true)
     {
         $this->hash = $hash;
@@ -30,6 +27,9 @@ class OperationId
         return $this->hash;
     }
 
+    /**
+     * @param bool $hash if `true` hash generated ids instead of clear text
+     */
     public function setHash(bool $hash): OperationId
     {
         $this->hash = $hash;

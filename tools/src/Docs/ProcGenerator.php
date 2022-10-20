@@ -16,7 +16,33 @@ class ProcGenerator extends DocGenerator
         return $this->projectRoot . '/docs/' . $relativeName;
     }
 
-    public function getProcessorDetails(): array
+    protected function getOptionsDetails(\ReflectionClass $rc): array
+    {
+        $options = [];
+        foreach ($rc->getMethods() as $method) {
+            if (0 === strpos($method->getName(), 'set')) {
+                $pname = lcfirst(substr($method->getName(), 3));
+                $type = 'n/a';
+                if (1 == count($method->getParameters())) {
+                    if ($rt = $method->getParameters()[0]->getType()) {
+                        $type = $rt->getName();
+                    }
+                }
+
+                $phpdoc = $this->extractDocumentation($method->getDocComment());
+                // todo: use method content rather than param if exists
+
+                $options[$pname] = [
+                    'type' => $type,
+                    'phpdoc' => array_key_exists($pname, $phpdoc['params']) ? $phpdoc['params'][$pname] : null,
+                ];
+            }
+        }
+
+        return $options;
+    }
+
+    public function getProcessorsDetails(): array
     {
         $processors = [];
 
@@ -24,26 +50,14 @@ class ProcGenerator extends DocGenerator
         foreach ((new Generator())->getProcessors() as $processor) {
             $rc = new \ReflectionClass($processor);
             $class = $rc->getName();
-            $properties = [];
-            foreach ($rc->getMethods() as $method) {
-                if (0 === strpos($method->getName(), 'set')) {
-                    $pname = lcfirst(substr($method->getName(), 3));
-                    $type = 'n/a';
-                    if (1 == count($method->getParameters())) {
-                        if ($rt = $method->getParameters()[0]->getType()) {
-                            $type = $rt->getName();
-                        }
-                    }
-                    $properties[$pname] = $type;
-                }
-            }
 
             $defaultProcessors[] = $class;
             $processors[] = [
                 'class' => $class,
                 'name' => $rc->getShortName(),
                 'default' => true,
-                'properties' => $properties,
+                'options' => $this->getOptionsDetails($rc),
+                'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
             ];
         }
 
@@ -52,13 +66,13 @@ class ProcGenerator extends DocGenerator
             $class = 'OpenApi\\Processors\\' . pathinfo($processor, PATHINFO_FILENAME);
             if (!in_array($class, $defaultProcessors)) {
                 $rc = new \ReflectionClass($class);
-                $properties = [];
 
                 $processors[] = [
                     'class' => $rc->getName(),
                     'name' => $rc->getShortName(),
                     'default' => false,
-                    'properties' => $properties,
+                    'options' => $this->getOptionsDetails($rc),
+                    'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
                 ];
             }
         }

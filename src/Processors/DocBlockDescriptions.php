@@ -11,21 +11,15 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
- * This would be detected as summary.
+ * Checks if the annotation has a summary and/or description property
+ * and uses the text in the comment block (above the annotations) as summary and/or description.
  *
- * And this would be detected
- * as the description.
+ * Use `null`, for example: `@Annotation(description=null)`, if you don't want the annotation to have a description.
  */
 class DocBlockDescriptions
 {
     use Concerns\DocblockTrait;
 
-    /**
-     * Checks if the annotation has a summary and/or description property
-     * and uses the text in the comment block (above the annotations) as summary and/or description.
-     *
-     * Use null `@Annotation(description=null)` if you don't want the annotation to have a description.
-     */
     public function __invoke(Analysis $analysis)
     {
         /** @var OA\AbstractAnnotation $annotation */

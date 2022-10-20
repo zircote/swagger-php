@@ -10,21 +10,36 @@ ob_start();
 
 echo $procgen->preamble('Processors');
 
-foreach ($procgen->getProcessorDetails() as $ii => $details) {
+foreach ($procgen->getProcessorsDetails() as $ii => $details) {
     $off = $ii + 1;
     echo $procgen->formatClassHeader($details['name'], 'Processors');
-    if ($details['properties']) {
-        $configPrefix = lcfirst($details['name']).'.';
+    echo $details['phpdoc']['content'] . PHP_EOL;
+
+    if ($details['options']) {
+        $configPrefix = lcfirst($details['name']) . '.';
         echo '### Config settings' . PHP_EOL;
-        foreach ($details['properties'] as $name => $type) {
-            $var = ' : <span style="font-family: monospace;">' . $type . '</span>';
-            echo '<dl>' . PHP_EOL;
-            echo '  <dt><strong>' . $configPrefix.$name . '</strong>' . $var . '</dt>' . PHP_EOL;
-            echo '  <dd>';
-            echo '<p>' . nl2br(ProcGenerator::NO_DETAILS_AVAILABLE) . '</p>' . PHP_EOL;
-            echo '  </dd>' . PHP_EOL;
-            echo '</dl>' . PHP_EOL;
+        foreach ($details['options'] as $name => $odetails) {
+            if ($odetails) {
+                $var = ' : <span style="font-family: monospace;">' . $odetails['type'] . '</span>';
+                echo '<dl>' . PHP_EOL;
+                echo '  <dt><strong>' . $configPrefix . $name . '</strong>' . $var . '</dt>' . PHP_EOL;
+                echo '  <dd>';
+                echo '<p>' . nl2br($odetails['phpdoc'] ? $odetails['phpdoc']['content'] : ProcGenerator::NO_DETAILS_AVAILABLE) . '</p>';
+                echo '  </dd>' . PHP_EOL;
+                echo '</dl>' . PHP_EOL;
+            }
         }
+        echo PHP_EOL;
+
+        if ($details['phpdoc']['see']) {
+            echo PHP_EOL . '#### Reference' . PHP_EOL;
+            echo '---' . PHP_EOL;
+
+            foreach ($details['phpdoc']['see'] as $link) {
+                echo '- ' . $link . PHP_EOL;
+            }
+        }
+
         echo PHP_EOL;
     }
 }

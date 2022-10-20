@@ -75,7 +75,7 @@ class RefGenerator extends DocGenerator
             foreach ($parameters as $rp) {
                 $parameter = $rp->getName();
                 $def = array_key_exists($parameter, $params)
-                    ? $params[$parameter]
+                    ? $params[$parameter]['type']
                     : '';
 
                 if ($var = $this->getReflectionType($fqdn, $rp, true, $def)) {
@@ -218,13 +218,6 @@ class RefGenerator extends DocGenerator
         return str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], '', $class);
     }
 
-    protected function linkFromMarkup(string $see): ?string
-    {
-        preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
-
-        return 3 == count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
-    }
-
     protected function getReflectionType(string $fqdn, $rp, bool $preferDefault = false, string $def = ''): string
     {
         $var = [];
@@ -251,53 +244,5 @@ class RefGenerator extends DocGenerator
         return implode('|', array_map(function ($item) {
             return htmlentities($item);
         }, array_unique($var)));
-    }
-
-    protected function extractDocumentation($docblock): array
-    {
-        if (!$docblock) {
-            return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
-        }
-
-        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
-
-        $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
-        $i = count($comment) - 1;
-        $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
-
-        $see = [];
-        $var = '';
-        $params = [];
-        $contentLines = [];
-        $append = false;
-        foreach ($comment as $line) {
-            $line = ltrim($line, "\t *");
-            if (substr($line, 0, 1) === '@') {
-                if (substr($line, 0, 5) === '@see ') {
-                    $see[] = trim(substr($line, 5));
-                }
-                if (substr($line, 0, 5) === '@var ') {
-                    $var = trim(substr($line, 5));
-                }
-                if (substr($line, 0, 7) === '@param ') {
-                    preg_match('/^([^\$]+)\$(.+)$/', trim(substr($line, 7)), $match);
-                    if (3 == count($match)) {
-                        $params[trim($match[2])] = trim($match[1]);
-                    }
-                }
-                continue;
-            }
-
-            if ($append) {
-                $i = count($contentLines) - 1;
-                $contentLines[$i] = substr($contentLines[$i], 0, -1) . $line;
-            } else {
-                $contentLines[] = $line;
-            }
-            $append = (substr($line, -1) === '\\');
-        }
-        $content = trim(implode("\n", $contentLines));
-
-        return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }
 }
