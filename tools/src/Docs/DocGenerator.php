@@ -57,7 +57,7 @@ EOT;
             return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
         }
 
-        $comment = preg_split('/(\n|\r\n)/', (string)$docblock);
+        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $i = count($comment) - 1;
