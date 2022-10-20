@@ -9,39 +9,18 @@ namespace OpenApi\Tools\Docs;
 use OpenApi\Analysers\TokenScanner;
 use OpenApi\Annotations\AbstractAnnotation;
 
-class RefGenerator
+class RefGenerator extends DocGenerator
 {
     public const ATTRIBUTES = 'Attributes';
     public const ANNOTATIONS = 'Annotations';
-    public const NO_DETAILS_AVAILABLE = 'No details available.';
 
     protected $scanner;
-    protected $projectRoot;
 
     public function __construct($projectRoot)
     {
+        parent::__construct($projectRoot);
+
         $this->scanner = new TokenScanner();
-        $this->projectRoot = realpath($projectRoot);
-    }
-
-    public function docPath(string $relativeName): string
-    {
-        return $this->projectRoot . '/docs/' . $relativeName;
-    }
-
-    public function preamble(string $type): string
-    {
-        return <<< EOT
-# $type
-
-This page is generated automatically from the `swagger-php` sources.
-
-For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
-
-In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
-
-
-EOT;
     }
 
     public function classesForType(string $type): array
@@ -70,15 +49,6 @@ EOT;
     public function types(): array
     {
         return [self::ANNOTATIONS, self::ATTRIBUTES];
-    }
-
-    public function formatHeader(string $name, string $type): string
-    {
-        return <<< EOT
-## [$name](https://github.com/zircote/swagger-php/tree/master/src/$type/$name.php)
-
-
-EOT;
     }
 
     public function formatAttributesDetails(string $name, string $fqdn, string $filename): string

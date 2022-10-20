@@ -1,37 +1,19 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Tools\Docs;
 
 use OpenApi\Generator;
 use OpenApi\Processors\MergeIntoOpenApi;
 
-class ProcGenerator
+class ProcGenerator extends DocGenerator
 {
-    public const NO_DETAILS_AVAILABLE = 'No details available.';
-
-    protected $projectRoot;
-
-    public function __construct($projectRoot)
-    {
-        $this->projectRoot = realpath($projectRoot);
-    }
-
     public function docPath(string $relativeName): string
     {
         return $this->projectRoot . '/docs/' . $relativeName;
-    }
-
-    public function preamble(): string
-    {
-        return <<< EOT
-# Processors
-
-This page is generated automatically from the `swagger-php` sources.
-
-For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
-
-
-EOT;
     }
 
     public function getProcessorDetails(): array
@@ -51,7 +33,6 @@ EOT;
                         if ($rt = $method->getParameters()[0]->getType()) {
                             $type = $rt->getName();
                         }
-
                     }
                     $properties[$pname] = $type;
                 }

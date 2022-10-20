@@ -4,66 +4,51 @@ This page is generated automatically from the `swagger-php` sources.
 
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
+## [DocBlockDescriptions](https://github.com/zircote/swagger-php/tree/master/src/Processors/DocBlockDescriptions.php)
 
-## DocBlockDescriptions
-Default: yes(# 0)
+## [MergeIntoOpenApi](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoOpenApi.php)
 
-## MergeIntoOpenApi
-Default: yes(# 1)
+## [MergeIntoComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoComponents.php)
 
-## MergeIntoComponents
-Default: yes(# 2)
+## [ExpandClasses](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandClasses.php)
 
-## ExpandClasses
-Default: yes(# 3)
+## [ExpandInterfaces](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandInterfaces.php)
 
-## ExpandInterfaces
-Default: yes(# 4)
+## [ExpandTraits](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandTraits.php)
 
-## ExpandTraits
-Default: yes(# 5)
+## [ExpandEnums](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandEnums.php)
 
-## ExpandEnums
-Default: yes(# 6)
+## [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
 
-## AugmentSchemas
-Default: yes(# 7)
+## [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 
-## AugmentProperties
-Default: yes(# 8)
+## [BuildPaths](https://github.com/zircote/swagger-php/tree/master/src/Processors/BuildPaths.php)
 
-## BuildPaths
-Default: yes(# 9)
+## [AugmentParameters](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentParameters.php)
 
-## AugmentParameters
-Default: yes(# 10)
-### Properties
+### Config settings
 <dl>
-  <dt><strong>augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p>
   </dd>
 </dl>
 
-## AugmentRefs
-Default: yes(# 11)
+## [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
 
-## MergeJsonContent
-Default: yes(# 12)
+## [MergeJsonContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeJsonContent.php)
 
-## MergeXmlContent
-Default: yes(# 13)
+## [MergeXmlContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeXmlContent.php)
 
-## OperationId
-Default: yes(# 14)
-### Properties
+## [OperationId](https://github.com/zircote/swagger-php/tree/master/src/Processors/OperationId.php)
+
+### Config settings
 <dl>
-  <dt><strong>hash</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p>
   </dd>
 </dl>
 
-## CleanUnmerged
-Default: yes(# 15)
+## [CleanUnmerged](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnmerged.php)
 
-## CleanUnusedComponents
-Default: no
+## [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)
+
