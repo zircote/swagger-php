@@ -28,6 +28,8 @@ class ScratchTest extends OpenApiTestCase
      * Test scratch fixtures.
      *
      * @dataProvider scratchTests
+     *
+     * @requires     PHP 7.4
      */
     public function testScratch(string $version, string $scratch, string $spec, array $expectedLog): void
     {
