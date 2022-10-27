@@ -39,7 +39,6 @@ class MergeXmlContent
                 'example' => $xmlContent->example,
                 'examples' => $xmlContent->examples,
                 '_context' => new Context(['generated' => true], $xmlContent->_context),
-                '_aux' => true,
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
             if (!$parent instanceof OA\Parameter) {

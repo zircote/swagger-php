@@ -44,7 +44,6 @@ class BuildPaths
                         [
                             'path' => $operation->path,
                             '_context' => new Context(['generated' => true], $operation->_context),
-                            '_aux' => true,
                         ]
                     );
                     $analysis->addAnnotation($pathItem, $pathItem->_context);

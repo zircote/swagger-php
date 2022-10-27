@@ -111,7 +111,7 @@ class Serializer
                 $custom = substr($property, 2);
                 $annotation->x[$custom] = $value;
             } else {
-                $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value, $context);
+                $annotation->{$property} = $this->doDeserializeProperty($annotation, $property, $value, $context);
             }
         }
 
@@ -164,7 +164,7 @@ class Serializer
                 $annotationHash = [];
                 foreach ($value as $k => $v) {
                     $annotation = $this->doDeserialize($v, $nestedClass, $context);
-                    $annotation->$key = $k;
+                    $annotation->{$key} = $k;
                     $annotationHash[$k] = $annotation;
                 }
 

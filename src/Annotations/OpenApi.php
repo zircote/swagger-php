@@ -221,7 +221,7 @@ class OpenApi extends AbstractAnnotation
             }
             foreach ($mapping as $nestedClass => $keyField) {
                 foreach ($container as $key => $item) {
-                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->$keyField === $property) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->{$keyField} === $property) {
                         return self::resolveRef($ref, $unresolved, $item, []);
                     }
                 }

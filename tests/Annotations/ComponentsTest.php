@@ -16,7 +16,7 @@ class ComponentsTest extends OpenApiTestCase
     public function testRef(): void
     {
         $this->assertEquals('#/components/schemas/foo', Components::ref('foo'));
-        $this->assertEquals('#/components/schemas/bar', Components::ref(new Schema(['ref' => null, 'schema' => 'bar'])));
-        $this->assertEquals('#/components/examples/xx', Components::ref(new Examples(['example' => 'xx'])));
+        $this->assertEquals('#/components/schemas/bar', Components::ref(new Schema(['ref' => null, 'schema' => 'bar', '_context' => $this->getContext()])));
+        $this->assertEquals('#/components/examples/xx', Components::ref(new Examples(['example' => 'xx', '_context' => $this->getContext()])));
     }
 }

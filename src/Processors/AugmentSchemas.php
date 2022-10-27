@@ -8,6 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
@@ -68,8 +69,7 @@ class AugmentSchemas
 
                             if ($schema === null) {
                                 $schema = new OA\Schema([
-                                    '_context' => $annotation->_context,
-                                    '_aux' => true,
+                                    '_context' => new Context(['generated' => true], $annotation->_context),
                                 ]);
                                 $analysis->addAnnotation($schema, $schema->_context);
                                 $annotation->allOf[] = $schema;
@@ -121,8 +121,7 @@ class AugmentSchemas
                 if (!$allOfPropertiesSchema) {
                     $allOfPropertiesSchema = new OA\Schema([
                         'properties' => [],
-                        '_context' => $schema->_context,
-                        '_aux' => true,
+                        '_context' => new Context(['generated' => true], $schema->_context),
                     ]);
                     $analysis->addAnnotation($allOfPropertiesSchema, $allOfPropertiesSchema->_context);
                     $schema->allOf[] = $allOfPropertiesSchema;

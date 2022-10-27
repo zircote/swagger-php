@@ -39,7 +39,6 @@ class MergeJsonContent
                 'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
                 '_context' => new Context(['generated' => true], $jsonContent->_context),
-                '_aux' => true,
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
             if (!$parent instanceof OA\Parameter) {
