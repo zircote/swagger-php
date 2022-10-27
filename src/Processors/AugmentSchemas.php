@@ -57,28 +57,6 @@ class AugmentSchemas
                             continue;
                         }
 
-                        if (!Generator::isDefault($annotation->allOf)) {
-                            $schema = null;
-                            foreach ($annotation->allOf as $nestedSchema) {
-                                if (!Generator::isDefault($nestedSchema->ref)) {
-                                    continue;
-                                }
-
-                                $schema = $nestedSchema;
-                            }
-
-                            if ($schema === null) {
-                                $schema = new OA\Schema([
-                                    '_context' => new Context(['generated' => true], $annotation->_context),
-                                ]);
-                                $analysis->addAnnotation($schema, $schema->_context);
-                                $annotation->allOf[] = $schema;
-                            }
-
-                            $schema->merge([$property], true);
-                            break;
-                        }
-
                         $annotation->merge([$property], true);
                         break;
                     }

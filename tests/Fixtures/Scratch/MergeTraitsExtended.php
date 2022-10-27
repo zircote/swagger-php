@@ -4,8 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\Scratch;
+namespace App\Models;
 
+use App\Models\Product as ProductModel;
 use OpenApi\Annotations as OA;
 
 trait HasId
@@ -13,10 +14,8 @@ trait HasId
     /**
      * @OA\Property(
      *     format="int64",
-     *     readOnly=true,
+     *     readOnly=true
      * )
-     *
-     * @var int
      */
     public int $id;
 }
@@ -27,7 +26,7 @@ trait HasTimestamps
      * @OA\Property(
      *     format="date-time",
      *     type="string",
-     *     readOnly=true,
+     *     readOnly=true
      * )
      */
     public \DateTime $created_at;
@@ -36,31 +35,60 @@ trait HasTimestamps
      * @OA\Property(
      *     format="date-time",
      *     type="string",
-     *     readOnly=true,
+     *     readOnly=true
      * )
      */
     public \DateTime $updated_at;
 }
 
-abstract class Model
+trait HasSoftDelete
 {
-    use HasId;
+    /**
+     * @OA\Property(
+     *     format="date-time",
+     *     type="string",
+     *     readOnly=true
+     * )
+     */
+    public ?\DateTime $deleted_at;
 }
 
 /**
  * @OA\Schema(
- *     required={"street"},
+ *     description="This model can be ignored, it is just used for inheritance."
+ * )
+ *
+ * @see BaseModel
+ */
+abstract class Model
+{
+    use HasId;
+    use HasTimestamps;
+}
+
+/**
+ * @OA\Schema(
+ *     description="Product",
+ *     required={
+ *         "number",
+ *         "name"
+ *     },
  *     @OA\Xml(
- *         name="Address"
+ *         name="Product"
  *     )
  * )
+ *
+ * @see ProductModel
  */
-class Address extends Model
+class Product extends Model
 {
-    use HasTimestamps;
+    use HasSoftDelete;
 
     /** @OA\Property */
-    public string $street;
+    public string $number;
+
+    /** @OA\Property */
+    public string $name;
 }
 
 /**
@@ -70,7 +98,7 @@ class Address extends Model
  *     @OA\Response(
  *         response=200,
  *         description="successful operation",
- *         @OA\JsonContent(ref="#/components/schemas/Address")
+ *         @OA\JsonContent(ref="#/components/schemas/Product")
  *     )
  * )
  */

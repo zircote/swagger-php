@@ -67,6 +67,7 @@ components:
               example: blue
     Product:
       title: 'Product model'
+      type: object
       allOf:
         -
           $ref: '#/components/schemas/ProductInterface'

@@ -9,7 +9,6 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
-use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
@@ -17,8 +16,7 @@ use OpenApi\Generator;
  * - if the ancestor has a schema
  *   => inherit from the ancestor if it has a schema (allOf) and stop.
  * - else
- *   => merge ancestor properties into the schema
- *   => merge ancestor trait properties into the schema (recursively).
+ *   => merge ancestor properties into the schema.
  */
 class ExpandClasses
 {
@@ -44,14 +42,6 @@ class ExpandClasses
                     } else {
                         $this->mergeMethods($schema, $ancestor, $existing);
                         $this->mergeProperties($schema, $ancestor, $existing);
-
-                        $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($ancestor['class']), true);
-                        foreach ($traits as $definition) {
-                            /** @var Context $context */
-                            foreach ($definition['properties'] as $context) {
-                                $this->mergeAnnotations($schema, $context->annotations, $existing);
-                            }
-                        }
                     }
                 }
             }

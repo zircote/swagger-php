@@ -35,21 +35,11 @@ trait MergePropertiesTrait
         $analysis->addAnnotation($refSchema, $refSchema->_context);
     }
 
-    protected function mergeAnnotations(OA\Schema $schema, array $annotations, array &$existing): void
-    {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
-                $existing[] = $annotation->_context->property;
-                $schema->merge([$annotation], true);
-            }
-        }
-    }
-
     protected function mergeProperties(OA\Schema $schema, array $from, array &$existing): void
     {
-        foreach ($from['properties'] as $method) {
-            if (is_iterable($method->annotations)) {
-                foreach ($method->annotations as $annotation) {
+        foreach ($from['properties'] as $context) {
+            if (is_iterable($context->annotations)) {
+                foreach ($context->annotations as $annotation) {
                     if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
                         $existing[] = $annotation->_context->property;
                         $schema->merge([$annotation], true);
@@ -61,9 +51,9 @@ trait MergePropertiesTrait
 
     protected function mergeMethods(OA\Schema $schema, array $from, array &$existing): void
     {
-        foreach ($from['methods'] as $method) {
-            if (is_iterable($method->annotations)) {
-                foreach ($method->annotations as $annotation) {
+        foreach ($from['methods'] as $context) {
+            if (is_iterable($context->annotations)) {
+                foreach ($context->annotations as $annotation) {
                     if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
                         $existing[] = $annotation->_context->property;
                         $schema->merge([$annotation], true);

@@ -129,6 +129,7 @@ components:
     Product:
       title: Product
       description: 'A Product.'
+      type: object
       allOf:
         -
           $ref: '#/components/schemas/NameTrait'
@@ -144,12 +145,12 @@ components:
               example: null
             colour:
               $ref: '#/components/schemas/Colour'
+            releasedAt:
+              type: string
             id:
               description: 'The id.'
               format: int64
               example: 1
-            releasedAt:
-              type: string
             kind:
               description: 'The kind.'
               type: string
