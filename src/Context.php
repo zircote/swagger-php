@@ -54,7 +54,7 @@ class Context
     public function __construct(array $properties = [], ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
-            $this->$property = $value;
+            $this->{$property} = $value;
         }
         $this->parent = $parent;
 
@@ -166,7 +166,7 @@ class Context
     public function __get(string $property)
     {
         if ($this->parent !== null) {
-            return $this->parent->$property;
+            return $this->parent->{$property};
         }
 
         return null;

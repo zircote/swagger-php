@@ -102,8 +102,7 @@ class AugmentProperties
                 $property->oneOf = [
                     $schema = new OA\Schema([
                         'ref' => $refs[$refKey],
-                        '_context' => $property->_context,
-                        '_aux' => true,
+                        '_context' => new Context(['generated' => true], $property->_context),
                     ]),
                 ];
                 $analysis->addAnnotation($schema, $schema->_context);
@@ -114,7 +113,6 @@ class AugmentProperties
                         [
                             'type' => $property->type,
                             '_context' => new Context(['generated' => true], $context),
-                            '_aux' => true,
                         ]
                     );
                     $analysis->addAnnotation($items, $items->_context);
@@ -182,8 +180,7 @@ class AugmentProperties
             $property->oneOf = [
                 $schema = new OA\Schema([
                     'ref' => $ref,
-                    '_context' => $property->_context,
-                    '_aux' => true,
+                    '_context' => new Context(['generated' => true], $property->_context),
                 ]),
             ];
             $analysis->addAnnotation($schema, $schema->_context);

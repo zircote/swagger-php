@@ -203,7 +203,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(10, $schemas);
+        $this->assertCount(9, $schemas);
 
         $baseInterface = $schemas[0];
         $this->assertSame('BaseInterface', $baseInterface->schema);

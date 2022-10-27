@@ -338,7 +338,7 @@ class Analysis
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if (in_array(get_class($annotation), [OA\Schema::class, OAT\Schema::class]) && !$annotation->_aux) {
+                        if (in_array(get_class($annotation), [OA\Schema::class, OAT\Schema::class]) && !$annotation->_context->is('generated')) {
                             return $annotation;
                         }
                     }

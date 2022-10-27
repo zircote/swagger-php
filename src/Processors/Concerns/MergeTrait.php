@@ -30,8 +30,7 @@ trait MergeTrait
         // merging other properties into allOf is done in the AugmentSchemas processor
         $schema->allOf[] = $refSchema = new OA\Schema([
             'ref' => OA\Components::ref($refPath),
-            '_context' => $context,
-            '_aux' => true,
+            '_context' => new Context(['generated' => true], $context),
         ]);
         $analysis->addAnnotation($refSchema, $refSchema->_context);
     }
