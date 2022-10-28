@@ -48,6 +48,7 @@
         "ext-json": "*",
         "doctrine/annotations": "^1.7",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
+        "symfony/deprecation-contracts": "^2 || ^3",
         "symfony/finder": ">=2.2",
         "symfony/yaml": ">=3.3"
     },
