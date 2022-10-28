@@ -51,6 +51,11 @@ class Context
      */
     private $parent;
 
+    public function clone()
+    {
+        return new Context(get_object_vars($this), $this->parent);
+    }
+
     public function __construct(array $properties = [], ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
@@ -189,6 +194,8 @@ class Context
      */
     public static function detect(int $index = 0): Context
     {
+        trigger_deprecation('zircote/swagger-php', '4.0', 'Context detecting is deprecated');
+
         $context = new Context();
         $backtrace = debug_backtrace();
         $position = $backtrace[$index];
