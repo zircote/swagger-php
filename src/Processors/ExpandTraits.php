@@ -44,7 +44,7 @@ class ExpandTraits
         }
 
         foreach ($schemas as $schema) {
-            if ($schema->_context->is('class') && !$schema->_aux) {
+            if ($schema->_context->is('class') && !$schema->_context->is('generated')) {
                 // look at class traits
                 $traits = $analysis->getTraitsOfClass($schema->_context->fullyQualifiedName($schema->_context->class), true);
                 $existing = [];
