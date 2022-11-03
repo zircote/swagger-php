@@ -13,12 +13,14 @@ use OpenApi\Generator;
 
 /**
  * Iterate over the chain of ancestors of a schema and:
- * - merge ancestor annotations/methods/properties into the schema if the ancestor doesn't have a schema itself
- * - inherit from the ancestor if it has a schema (allOf) and stop.
+ * - if the ancestor has a schema
+ *   => inherit from the ancestor if it has a schema (allOf) and stop.
+ * - else
+ *   => merge ancestor properties into the schema.
  */
 class ExpandClasses
 {
-    use Concerns\MergeTrait;
+    use Concerns\MergePropertiesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -38,7 +40,6 @@ class ExpandClasses
                         // one ancestor is enough
                         break;
                     } else {
-                        $this->mergeAnnotations($schema, $ancestor, $existing);
                         $this->mergeMethods($schema, $ancestor, $existing);
                         $this->mergeProperties($schema, $ancestor, $existing);
                     }

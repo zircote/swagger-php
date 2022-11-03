@@ -138,7 +138,7 @@ class ExpandEnumsTest extends OpenApiTestCase
     }
 
     /**
-     * @requires     PHP >= 8.1
+     * @requires     PHP 8.1
      *
      * @dataProvider expandEnumClassStringFixtures
      */
