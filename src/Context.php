@@ -194,7 +194,7 @@ class Context
      */
     public static function detect(int $index = 0): Context
     {
-        trigger_deprecation('zircote/swagger-php', '4.0', 'Context detecting is deprecated');
+        // trigger_deprecation('zircote/swagger-php', '4.0', 'Context detecting is deprecated');
 
         $context = new Context();
         $backtrace = debug_backtrace();
