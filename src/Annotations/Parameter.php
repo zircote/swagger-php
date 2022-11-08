@@ -163,7 +163,7 @@ class Parameter extends AbstractAnnotation
      * The key is the media type and the value describes it.
      * The map must only contain one entry.
      *
-     * @var MediaType[]
+     * @var array<MediaType>|JsonContent|XmlContent|Attachable
      */
     public $content = Generator::UNDEFINED;
 
