@@ -16,7 +16,7 @@ class AttributesSyncTest extends OpenApiTestCase
 {
     public static $SCHEMA_EXCLUSIONS = ['const', 'maxProperties', 'minProperties', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];
     public static $PATHITEM_EXCLUSIONS = ['ref', 'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-    public static $PARAMETER_EXCLUSIONS = ['content', 'matrix', 'label', 'form', 'simple', 'deepObject'];
+    public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple', 'deepObject'];
 
     public function testCounts(): void
     {
