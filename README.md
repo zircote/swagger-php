@@ -58,7 +58,7 @@ Add annotations to your php files.
  */
 ```
 
-Visit the [Documentation website](https://zircote.github.io/swagger-php/) for the [Getting started guide](https://zircote.github.io/swagger-php/Getting-started.html) or look at the [Examples directory](Examples/) for more examples.
+Visit the [Documentation website](https://zircote.github.io/swagger-php/) for the [Getting started guide](https://zircote.github.io/swagger-php/guide) or look at the [Examples directory](Examples/) for more examples.
 
 ### Usage from php
 
