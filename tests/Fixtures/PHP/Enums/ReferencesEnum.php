@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\PHP;
+namespace OpenApi\Tests\Fixtures\PHP\Enums;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes\Items;
@@ -24,7 +24,7 @@ class ReferencesEnum
      * @OA\Property(title="statusEnumBacked",
      *     description="Status enum backed",
      *     type="int",
-     *     enum="\OpenApi\Tests\Fixtures\PHP\StatusEnumBacked",
+     *     enum="\OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumBacked",
      *     nullable="false"
      * )
      */
@@ -40,7 +40,7 @@ class ReferencesEnum
      * @OA\Property(title="statusEnumStringBacked",
      *     description="Status enum string backed",
      *     type="string",
-     *     enum="\OpenApi\Tests\Fixtures\PHP\StatusEnumStringBacked",
+     *     enum="\OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked",
      *     nullable="true"
      * )
      */
