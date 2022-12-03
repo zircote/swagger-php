@@ -4,12 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace App\Models;
+namespace OpenApi\Tests\Fixtures\Scratch;
 
-use App\Models\Product as ProductModel;
 use OpenApi\Annotations as OA;
 
-trait HasId
+trait HasIdExtended
 {
     /**
      * @OA\Property(
@@ -20,7 +19,7 @@ trait HasId
     public int $id;
 }
 
-trait HasTimestamps
+trait HasTimestampsExtended
 {
     /**
      * @OA\Property(
@@ -41,7 +40,7 @@ trait HasTimestamps
     public \DateTime $updated_at;
 }
 
-trait HasSoftDelete
+trait HasSoftDeleteExtended
 {
     /**
      * @OA\Property(
@@ -60,10 +59,10 @@ trait HasSoftDelete
  *
  * @see BaseModel
  */
-abstract class Model
+abstract class ModelExtended
 {
-    use HasId;
-    use HasTimestamps;
+    use HasIdExtended;
+    use HasTimestampsExtended;
 }
 
 /**
@@ -80,9 +79,9 @@ abstract class Model
  *
  * @see ProductModel
  */
-class Product extends Model
+class Product extends ModelExtended
 {
-    use HasSoftDelete;
+    use HasSoftDeleteExtended;
 
     /** @OA\Property */
     public string $number;
@@ -102,6 +101,6 @@ class Product extends Model
  *     )
  * )
  */
-class Endpoint
+class EndpointExtended
 {
 }

@@ -14,7 +14,7 @@ paths:
                 $ref: '#/components/schemas/Product'
 components:
   schemas:
-    Model:
+    ModelExtended:
       description: 'This model can be ignored, it is just used for inheritance.'
       properties:
         id:
@@ -40,7 +40,7 @@ components:
         name: Product
       allOf:
         -
-          $ref: '#/components/schemas/Model'
+          $ref: '#/components/schemas/ModelExtended'
         -
           properties:
             deleted_at:

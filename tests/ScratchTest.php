@@ -15,6 +15,11 @@ class ScratchTest extends OpenApiTestCase
     {
         foreach (glob($this->fixture('Scratch/*.php')) as $fixture) {
             $name = pathinfo($fixture, PATHINFO_FILENAME);
+
+            if (0 === strpos($name, 'Abstract')) {
+                continue;
+            }
+
             yield $name => [
                 OpenApi::VERSION_3_0_0,
                 $this->fixture("Scratch/$name.php"),
