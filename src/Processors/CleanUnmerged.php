@@ -9,6 +9,9 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
+/**
+ * Clean up any remaining unmerged annotations.
+ */
 class CleanUnmerged
 {
     public function __invoke(Analysis $analysis)
@@ -21,15 +24,17 @@ class CleanUnmerged
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_unmerged')) {
                 foreach ($annotation->_unmerged as $i => $item) {
-                    if ($merged->contains($item)) {
-                        unset($annotation->_unmerged[$i]); // Property was merged
+                    if ($merged->contains($item) || $item instanceof OA\Attachable) {
+                        unset($annotation->_unmerged[$i]);
                     }
                 }
             }
         }
         $analysis->openapi->_unmerged = [];
         foreach ($unmerged as $annotation) {
-            $analysis->openapi->_unmerged[] = $annotation;
+            if (!$annotation instanceof OA\Attachable) {
+                $analysis->openapi->_unmerged[] = $annotation;
+            }
         }
     }
 }
