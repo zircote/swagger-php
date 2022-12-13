@@ -18,10 +18,6 @@ components:
       required:
         - street
       properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -29,6 +25,10 @@ components:
         updated_at:
           type: string
           format: date-time
+          readOnly: true
+        id:
+          type: integer
+          format: int64
           readOnly: true
         street:
           type: string
