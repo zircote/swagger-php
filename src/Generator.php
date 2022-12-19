@@ -298,10 +298,25 @@ class Generator
         return $this;
     }
 
-    public function addProcessor(callable $processor): Generator
+    /**
+     * @param class-string|null $before
+     */
+    public function addProcessor(callable $processor, ?string $before = null): Generator
     {
         $processors = $this->getProcessors();
-        $processors[] = $processor;
+        if (!$before) {
+            $processors[] = $processor;
+        } else {
+            $tmp = [];
+            foreach ($processors as $current) {
+                if ($current instanceof $before) {
+                    $tmp[] = $processor;
+                }
+                $tmp[] = $current;
+            }
+            $processors = $tmp;
+        }
+
         $this->setProcessors($processors);
 
         return $this;
