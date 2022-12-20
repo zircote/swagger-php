@@ -31,6 +31,7 @@ class TokenScanner
         $units = [];
         $uses = [];
         $isInterface = false;
+        $isAbstractFunction = false;
         $namespace = '';
         $currentName = null;
         $unitLevel = 0;
@@ -65,6 +66,12 @@ class TokenScanner
             }
 
             switch ($token[0]) {
+                case T_ABSTRACT:
+                    if (count($stack)) {
+                        $isAbstractFunction = true;
+                    }
+                    break;
+
                 case T_CURLY_OPEN:
                 case T_DOLLAR_OPEN_CURLY_BRACES:
                     $stack[] = $token[1];
@@ -151,7 +158,7 @@ class TokenScanner
 
                     if (($unitLevel + 1) == count($stack) && $currentName) {
                         $units[$currentName]['methods'][] = $token[1];
-                        if (!$isInterface) {
+                        if (!$isInterface && !$isAbstractFunction) {
                             // more nesting
                             $units[$currentName]['properties'] = array_merge(
                                 $units[$currentName]['properties'],
@@ -161,6 +168,7 @@ class TokenScanner
                         } else {
                             // no function body
                             $this->skipTo($tokens, ';');
+                            $isAbstractFunction = false;
                         }
                     }
                     break;

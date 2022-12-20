@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema
  */
