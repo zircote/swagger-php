@@ -14,6 +14,23 @@ class TokenScannerTest extends OpenApiTestCase
     public function scanCases(): iterable
     {
         if (\PHP_VERSION_ID >= 80100) {
+            yield 'abstract' => [
+                'PHP/AbstractKeyword.php',
+                [
+                    'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
+                        'uses' => [
+                            'Property' => 'OpenApi\Attributes\Property',
+                        ],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'enums' => [],
+                        'methods' => ['stuff', 'other', 'another'],
+                        'properties' => [],
+                    ],
+                ],
+            ];
+        }
+        if (\PHP_VERSION_ID >= 80100) {
             yield 'basic' => [
                 'Apis/DocBlocks/basic.php',
                 [
@@ -224,7 +241,9 @@ class TokenScannerTest extends OpenApiTestCase
             'PHP/Php8NamedArguments.php',
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedArguments' => [
-                    'uses' => [],
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
                     'interfaces' => [],
                     'traits' => [],
                     'enums' => [],
@@ -238,7 +257,9 @@ class TokenScannerTest extends OpenApiTestCase
             'PHP/AnonymousFunctions.php',
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
-                    'uses' => [],
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
                     'interfaces' => [],
                     'traits' => [],
                     'enums' => [],

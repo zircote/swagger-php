@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="Foobar", version="1.0")
  */
@@ -61,7 +63,7 @@ class AnonymousFunctions
     {
         preg_replace("/:{$key}/", 'y', 'abx');
 
-        $this->shortFn();
+        return $this->shortFn();
     }
 
     public function dollarCurly2(string $key = 'xx')
