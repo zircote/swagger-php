@@ -73,6 +73,12 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/State'
+        -
+          name: label
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: 'An array of pull request objects'
@@ -134,6 +140,18 @@ paths:
           name: pid
           in: path
           required: true
+          schema:
+            type: string
+        -
+          name: X-NONCE-ID
+          in: header
+          required: true
+          schema:
+            type: string
+        -
+          name: User-Bind-Session
+          in: cookie
+          required: false
           schema:
             type: string
       responses:
