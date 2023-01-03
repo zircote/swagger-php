@@ -2,11 +2,7 @@ name: code-style
 
 on:
   push:
-    branches:
-      - master
   pull_request:
-    branches:
-      - master
 
 jobs:
   php-cs:

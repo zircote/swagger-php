@@ -2,11 +2,7 @@ name: security-checks
 
 on:
   push:
-    branches:
-      - master
   pull_request:
-    branches:
-      - master
 
 jobs:
   security-checker:
