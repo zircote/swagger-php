@@ -16,7 +16,6 @@ use OpenApi\Generator;
  */
 class JsonContent extends Schema
 {
-
     /**
      * @var object
      */

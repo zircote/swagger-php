@@ -19,7 +19,6 @@ use OpenApi\Generator;
  */
 class Link extends AbstractAnnotation
 {
-
     /**
      * $ref See https://swagger.io/docs/specification/using-ref/.
      *
