@@ -8,6 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -20,11 +21,8 @@ class AugmentSchemas
 {
     public function __invoke(Analysis $analysis)
     {
-        /** @var OA\Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
-
-        // Use the class names for @OA\Schema()
-        foreach ($schemas as $schema) {
+        /** @var OA\Schema $schema */
+        foreach ($analysis->getAnnotationsOfType([OA\Schema::class, OAT\Schema::class], true) as $schema) {
             if (Generator::isDefault($schema->schema)) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
@@ -37,6 +35,9 @@ class AugmentSchemas
                 }
             }
         }
+
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // Merge unmerged @OA\Property annotations into the @OA\Schema of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType(OA\Property::class);
