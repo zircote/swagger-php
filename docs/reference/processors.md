@@ -19,8 +19,10 @@ Merge reusable annotation into @OA\Schemas.
 ## [ExpandClasses](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandClasses.php)
 
 Iterate over the chain of ancestors of a schema and:
-- merge ancestor annotations/methods/properties into the schema if the ancestor doesn't have a schema itself
-- inherit from the ancestor if it has a schema (allOf) and stop.
+- if the ancestor has a schema
+=> inherit from the ancestor if it has a schema (allOf) and stop.
+- else
+=> merge ancestor properties into the schema.
 ## [ExpandInterfaces](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandInterfaces.php)
 
 Look at all (direct) interfaces for a schema and:
@@ -53,7 +55,7 @@ Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (
 ### Config settings
 <dl>
   <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>If set to <code>true</code>, try to find operation parameter descriptions in the operation docblock.</p>  </dd>
+  <dd><p>If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.</p>  </dd>
 </dl>
 
 
@@ -72,7 +74,7 @@ Generate the OperationId based on the context of the OpenApi annotation.
 ### Config settings
 <dl>
   <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>If set to <code>true</code>, generate ids (md5) instead of clear text operation ids.</p>  </dd>
+  <dd><p>If set to <code>true</code> generate ids (md5) instead of clear text operation ids.</p>  </dd>
 </dl>
 
 

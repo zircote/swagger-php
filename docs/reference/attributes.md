@@ -29,6 +29,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -520,6 +524,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -606,6 +614,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
@@ -885,6 +897,8 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -1014,6 +1028,8 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -1101,6 +1117,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1301,6 +1321,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1594,6 +1618,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>

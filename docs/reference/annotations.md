@@ -630,7 +630,7 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType[]</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
