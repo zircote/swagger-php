@@ -43,6 +43,7 @@ use OpenApi\Logger\DefaultLogger;
  * @property Annotations\AbstractAnnotation[] $annotations
  * @property \Psr\Log\LoggerInterface         $logger      Guaranteed to be set when using the `Generator`
  */
+#[\AllowDynamicProperties]
 class Context
 {
     /**
