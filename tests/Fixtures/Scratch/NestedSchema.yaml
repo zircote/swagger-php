@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: 'Parameter Content Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    NestedSchema:
+      required:
+        - errors
+      properties:
+        errors:
+          description: 'Validation errors'
+          type: object
+          minItems: 1
+          uniqueItems: true
+          additionalProperties:
+            description: 'Array of error messages for property'
+            type: array
+            items:
+              type: string
+            minItems: 1
+            uniqueItems: true
+      type: object
