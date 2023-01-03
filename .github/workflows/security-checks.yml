@@ -2,7 +2,11 @@ name: security-checks
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
 
 jobs:
   security-checker:
@@ -26,7 +30,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Composer install
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }} --no-dev
@@ -37,4 +41,4 @@ jobs:
           path: ~/.symfony/cache
           key: security-checker-db
 
-      - uses: symfonycorp/security-checker-action@v2
+      - uses: symfonycorp/security-checker-action@v3
