@@ -80,13 +80,14 @@ class Generator
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
 
         // kinda config stack to stay BC...
+        // @deprecated Can be removed once doctrine/annotations 2.0 becomes mandatory
         $this->configStack = new class() {
             protected $generator;
 
             public function push(Generator $generator): void
             {
                 $this->generator = $generator;
-                if (class_exists(AnnotationRegistry::class, true)) {
+                if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
                     // keeping track of &this->generator allows to 'disable' the loader after we are done;
                     // no unload, unfortunately :/
                     $gref = &$this->generator;
