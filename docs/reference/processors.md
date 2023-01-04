@@ -35,9 +35,9 @@ Look at all (direct) traits for a schema and:
 - inherit from the trait if it has a schema (allOf).
 ## [ExpandEnums](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandEnums.php)
 
-Look at all enums with a schema and:
-- set the name `schema`
-- set `enum` values.
+Expands PHP enums.
+
+Determines `schema`, `enum` and `type`.
 ## [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
 
 Use the Schema context to extract useful information and inject that into the annotation.
