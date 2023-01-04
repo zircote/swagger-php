@@ -83,57 +83,57 @@ class ExpandEnumsTest extends OpenApiTestCase
 
         return [
             'statusEnum' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnum',
                 $mapValues(StatusEnum::cases()),
             ],
             'statusEnumMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumMixed',
                 $mapValues([StatusEnum::DRAFT, StatusEnum::ARCHIVED, 'OTHER']),
             ],
             'statusEnumBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumBacked',
                 $mapValues(StatusEnumBacked::cases()),
             ],
             'statusEnumBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumBackedMixed',
                 $mapValues([StatusEnumBacked::DRAFT, StatusEnumBacked::ARCHIVED, 9]),
             ],
             'statusEnumIntegerBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumIntegerBacked',
                 $mapValues(StatusEnumIntegerBacked::cases()),
             ],
             'statusEnumStringBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumStringBacked',
                 $mapValues(StatusEnumStringBacked::cases()),
             ],
             'statusEnumStringBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumStringBackedMixed',
                 $mapValues([StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other']),
             ],
             'statusEnums' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnums',
                 Generator::UNDEFINED,
             ],
             'itemsStatusEnumStringBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'itemsStatusEnumStringBacked',
                 $mapValues(StatusEnumStringBacked::cases()),
             ],
             'statusEnumsMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumsMixed',
                 Generator::UNDEFINED,
             ],
             'itemsStatusEnumStringBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'itemsStatusEnumStringBackedMixed',
                 $mapValues([StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other']),
             ],
