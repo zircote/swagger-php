@@ -56,7 +56,7 @@ class AttributesSyncTest extends OpenApiTestCase
                 }
             }
             // oh, well...
-            if ($attributeRC->isSubclassOf(OA\PathParameter::class)) {
+            if ($attributeRC->isSubclassOf(OA\Parameter::class)) {
                 // not relevant
                 unset($typeMismatch['in']);
                 // uses inheritdoc

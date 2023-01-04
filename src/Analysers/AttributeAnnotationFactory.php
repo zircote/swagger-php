@@ -7,7 +7,6 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -52,20 +51,24 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
-                    foreach ([OAT\Property::class, OAT\Parameter::class, OAT\PathParameter::class] as $attributeName) {
-                        foreach ($rp->getAttributes($attributeName) as $attribute) {
+                    foreach ([OA\Property::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
+                        foreach ($rp->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                             $instance = $attribute->newInstance();
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             $nullable = $rnt ? $rnt->allowsNull() : true;
 
-                            if ($instance instanceof OAT\Property) {
+                            if ($instance instanceof OA\RequestBody) {
+                                $instance->required = !$nullable;
+                            } elseif ($instance instanceof OA\Property) {
                                 $instance->property = $rp->getName();
                                 if (Generator::isDefault($instance->type)) {
                                     $instance->type = $type;
                                 }
                                 $instance->nullable = $nullable;
                             } else {
-                                $instance->name = $rp->getName();
+                                if (!$instance->name || Generator::isDefault($instance->name)) {
+                                    $instance->name = $rp->getName();
+                                }
                                 $instance->required = !$nullable;
                                 $context = new Context(['nested' => $this], $context);
                                 $context->comment = null;
@@ -78,7 +81,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                 if (($rrt = $reflector->getReturnType()) && $rrt instanceof \ReflectionNamedType) {
                     foreach ($annotations as $annotation) {
-                        if ($annotation instanceof OAT\Property && Generator::isDefault($annotation->type)) {
+                        if ($annotation instanceof OA\Property && Generator::isDefault($annotation->type)) {
                             // pick up simple return types
                             $annotation->type = $rrt->getName();
                         }
