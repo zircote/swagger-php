@@ -8,7 +8,6 @@ namespace OpenApi\Tests\Fixtures\Apis\Attributes;
 
 use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Attributes as OAF;
-use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * The Spec.

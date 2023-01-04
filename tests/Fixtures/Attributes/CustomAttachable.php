@@ -6,12 +6,11 @@
 
 namespace OpenApi\Tests\Fixtures\Attributes;
 
-use OpenApi\Attributes\Attachable;
-use OpenApi\Attributes\Get;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
-class CustomAttachable extends Attachable
+class CustomAttachable extends OAT\Attachable
 {
     /**
      * The attribute value.
@@ -34,6 +33,6 @@ class CustomAttachable extends Attachable
 
     public function allowedParents(): ?array
     {
-        return [Get::class];
+        return [OAT\Get::class];
     }
 }

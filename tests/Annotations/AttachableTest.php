@@ -7,8 +7,7 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Attachable;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\Fixtures\Annotations\CustomAttachable;
@@ -20,10 +19,10 @@ class AttachableTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures(['UsingVar.php']);
 
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(2, $schemas[0]->attachables);
-        $this->assertInstanceOf(Attachable::class, $schemas[0]->attachables[0]);
+        $this->assertInstanceOf(OA\Attachable::class, $schemas[0]->attachables[0]);
     }
 
     public function testCustomAttachableImplementationsAreAttached(): void
@@ -35,7 +34,7 @@ class AttachableTest extends OpenApiTestCase
             ->setProcessors($this->processors([CleanUnusedComponents::class]))
             ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(2, $schemas[0]->attachables);
         $this->assertInstanceOf(CustomAttachable::class, $schemas[0]->attachables[0]);

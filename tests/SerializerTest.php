@@ -6,25 +6,24 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Annotations;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 
 class SerializerTest extends OpenApiTestCase
 {
-    private function getExpected(): OpenApi
+    private function getExpected(): OA\OpenApi
     {
-        $path = new Annotations\PathItem(['_context' => $this->getContext()]);
+        $path = new OA\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';
-        $path->post = new Annotations\Post(['_context' => $this->getContext()]);
+        $path->post = new OA\Post(['_context' => $this->getContext()]);
         $path->post->tags = ['products'];
         $path->post->summary = 's1';
         $path->post->description = 'd1';
-        $path->post->requestBody = new Annotations\RequestBody(['_context' => $this->getContext()]);
-        $mediaType = new Annotations\MediaType(['_context' => $this->getContext()]);
+        $path->post->requestBody = new OA\RequestBody(['_context' => $this->getContext()]);
+        $mediaType = new OA\MediaType(['_context' => $this->getContext()]);
         $mediaType->mediaType = 'application/json';
-        $mediaType->schema = new Annotations\Schema(['_context' => $this->getContext()]);
+        $mediaType->schema = new OA\Schema(['_context' => $this->getContext()]);
         $mediaType->schema->type = 'object';
         $mediaType->schema->additionalProperties = true;
         $path->post->requestBody->content = [$mediaType];
@@ -32,39 +31,39 @@ class SerializerTest extends OpenApiTestCase
         $path->post->requestBody->x = [];
         $path->post->requestBody->x['repository'] = 'def';
 
-        $resp = new Annotations\Response(['_context' => $this->getContext()]);
+        $resp = new OA\Response(['_context' => $this->getContext()]);
         $resp->response = '200';
         $resp->description = 'Success';
-        $content = new Annotations\MediaType(['_context' => $this->getContext()]);
+        $content = new OA\MediaType(['_context' => $this->getContext()]);
         $content->mediaType = 'application/json';
-        $content->schema = new Annotations\Schema(['_context' => $this->getContext()]);
+        $content->schema = new OA\Schema(['_context' => $this->getContext()]);
         $content->schema->ref = '#/components/schemas/Pet';
         $resp->content = [$content];
         $resp->x = [];
         $resp->x['repository'] = 'def';
 
-        $respRange = new Annotations\Response(['_context' => $this->getContext()]);
+        $respRange = new OA\Response(['_context' => $this->getContext()]);
         $respRange->response = '4XX';
         $respRange->description = 'Client error response';
 
         $path->post->responses = [$resp, $respRange];
 
-        $expected = new Annotations\OpenApi(['_context' => $this->getContext()]);
+        $expected = new OA\OpenApi(['_context' => $this->getContext()]);
         $expected->openapi = '3.0.0';
         $expected->paths = [
             $path,
         ];
 
-        $info = new Annotations\Info(['_context' => $this->getContext()]);
+        $info = new OA\Info(['_context' => $this->getContext()]);
         $info->title = 'Pet store';
         $info->version = '1.0';
         $expected->info = $info;
 
-        $schema = new Annotations\Schema(['_context' => $this->getContext()]);
+        $schema = new OA\Schema(['_context' => $this->getContext()]);
         $schema->schema = 'Pet';
         $schema->required = ['name', 'photoUrls'];
 
-        $expected->components = new Annotations\Components(['_context' => $this->getContext()]);
+        $expected->components = new OA\Components(['_context' => $this->getContext()]);
         $expected->components->schemas = [$schema];
 
         return $expected;
@@ -133,10 +132,10 @@ class SerializerTest extends OpenApiTestCase
 }
 JSON;
 
-        /** @var Annotations\OpenApi $annotation */
-        $annotation = $serializer->deserialize($json, 'OpenApi\Annotations\OpenApi');
+        /** @var OA\OpenApi $annotation */
+        $annotation = $serializer->deserialize($json, 'OpenApi\\Annotations\\OpenApi');
 
-        $this->assertInstanceOf('OpenApi\Annotations\OpenApi', $annotation);
+        $this->assertInstanceOf('OpenApi\\Annotations\\OpenApi', $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->toJson(),
             $this->getExpected()->toJson()
@@ -151,7 +150,7 @@ JSON;
         $serializer = new Serializer();
         $spec = $this->example('petstore.swagger.io/petstore.swagger.io.json');
         $openapi = $serializer->deserializeFile($spec);
-        $this->assertInstanceOf(OpenApi::class, $openapi);
+        $this->assertInstanceOf(OA\OpenApi::class, $openapi);
         $this->assertJsonStringEqualsJsonString(file_get_contents($spec), $openapi->toJson());
     }
 
@@ -186,8 +185,8 @@ JSON;
             	}
             }
 JSON;
-        /** @var Annotations\OpenApi $annotation */
-        $annotation = $serializer->deserialize($json, Annotations\OpenApi::class);
+        /** @var OA\OpenApi $annotation */
+        $annotation = $serializer->deserialize($json, OA\OpenApi::class);
 
         foreach ($annotation->components->schemas as $schemaObject) {
             $this->assertObjectHasAttribute('allOf', $schemaObject);
@@ -195,7 +194,7 @@ JSON;
             $this->assertIsArray($schemaObject->allOf);
             $allOfItem = current($schemaObject->allOf);
             $this->assertIsObject($allOfItem);
-            $this->assertInstanceOf(Annotations\Schema::class, $allOfItem);
+            $this->assertInstanceOf(OA\Schema::class, $allOfItem);
             $this->assertObjectHasAttribute('ref', $allOfItem);
             $this->assertNotSame($allOfItem->ref, Generator::UNDEFINED);
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);

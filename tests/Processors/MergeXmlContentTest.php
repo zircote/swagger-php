@@ -7,8 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Response;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Tests\OpenApiTestCase;
@@ -26,8 +25,8 @@ class MergeXmlContentTest extends OpenApiTestCase
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(3, $analysis->annotations);
-        /** @var Response $response */
-        $response = $analysis->getAnnotationsOfType(Response::class)[0];
+        /** @var OA\Response $response */
+        $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
         $this->assertSame(Generator::UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
         $analysis->process([new MergeXmlContent()]);
@@ -50,8 +49,8 @@ END;
             )
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
-        /** @var Response $response */
-        $response = $analysis->getAnnotationsOfType(Response::class)[0];
+        /** @var OA\Response $response */
+        $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
         $this->assertCount(1, $response->content);
         $analysis->process([new MergeXmlContent()]);
         $this->assertCount(2, $response->content);
@@ -67,8 +66,8 @@ END;
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
-        /** @var Parameter $parameter */
-        $parameter = $analysis->getAnnotationsOfType(Parameter::class)[0];
+        /** @var OA\Parameter $parameter */
+        $parameter = $analysis->getAnnotationsOfType(OA\Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
         $this->assertCount(1, $parameter->_unmerged);
         $analysis->process([new MergeXmlContent()]);

@@ -6,9 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\Get;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -112,12 +110,12 @@ END;
 
     public function nestedMatches(): iterable
     {
-        $parameterMatch = (object) ['key' => Parameter::class, 'value' => ['parameters']];
+        $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
 
         return [
             'unknown' => [self::class, null],
-            'simple-match' => [Parameter::class, $parameterMatch],
-            'invalid-annotation' => [Schema::class, null],
+            'simple-match' => [OA\Parameter::class, $parameterMatch],
+            'invalid-annotation' => [OA\Schema::class, null],
             'sub-annotation' => [SubParameter::class, $parameterMatch],
             'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch],
             'sub-invalid' => [SubSchema::class, null],
@@ -129,7 +127,7 @@ END;
      */
     public function testMatchNested(string $class, $expected): void
     {
-        $this->assertEquals($expected, Get::matchNested($class));
+        $this->assertEquals($expected, OA\Get::matchNested($class));
     }
 
     public function testDuplicateOperationIdValidation(): void
@@ -142,11 +140,11 @@ END;
     }
 }
 
-class SubSchema extends Schema
+class SubSchema extends OA\Schema
 {
 }
 
-class SubParameter extends Parameter
+class SubParameter extends OA\Parameter
 {
 }
 

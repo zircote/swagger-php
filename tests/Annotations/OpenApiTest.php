@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
 class OpenApiTest extends OpenApiTestCase
@@ -16,7 +16,7 @@ class OpenApiTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
 
-        $openapi = new OpenApi(['_context' => $this->getContext()]);
+        $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.0';
         $openapi->validate();
     }
@@ -25,7 +25,7 @@ class OpenApiTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.0.0, 3.1.0');
 
-        $openapi = new OpenApi(['_context' => $this->getContext()]);
+        $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '2';
         $openapi->validate();
     }

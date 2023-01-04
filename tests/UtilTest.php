@@ -7,8 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Annotations\Get;
-use OpenApi\Annotations\Post;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
@@ -69,8 +68,8 @@ class UtilTest extends OpenApiTestCase
     public function shortenFixtures(): iterable
     {
         return [
-            [[Get::class], ['@OA\Get']],
-            [[Get::class, Post::class], ['@OA\Get', '@OA\Post']],
+            [[OA\Get::class], ['@OA\Get']],
+            [[OA\Get::class, OA\Post::class], ['@OA\Get', '@OA\Post']],
         ];
     }
 

@@ -64,7 +64,7 @@ components:
             stockLevel:
               $ref: '#/components/schemas/StockLevel'
     StockLevel:
-      type: integer
+      type: string
       enum:
         - AVAILABLE
         - SOLD_OUT
