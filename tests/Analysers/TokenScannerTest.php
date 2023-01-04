@@ -323,9 +323,9 @@ class TokenScannerTest extends OpenApiTestCase
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'enum' => [
-                'PHP/StatusEnum.php',
+                'PHP/Enums/StatusEnum.php',
                 [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\StatusEnum' => [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
                         'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
                         'interfaces' => [],
                         'enums' => [],
@@ -337,9 +337,9 @@ class TokenScannerTest extends OpenApiTestCase
             ];
 
             yield 'enum-backed' => [
-                'PHP/StatusEnumBacked.php',
+                'PHP/Enums/StatusEnumBacked.php',
                 [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\StatusEnumBacked' => [
+                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
                         'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
                         'interfaces' => [],
                         'enums' => [],

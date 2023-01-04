@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\PHP;
+namespace OpenApi\Tests\Fixtures\PHP\Enums;
 
 use OpenApi\Attributes\Schema;
 
