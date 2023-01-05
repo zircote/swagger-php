@@ -5,11 +5,11 @@ sidebar: false
 # Related projects
 
 | Project                       | Description                                               |
-| ----------------------------- | --------------------------------------------------------- |
+|-------------------------------|-----------------------------------------------------------|
 | [Swagger UI][1]               | The webinterface for reading the generated documentation  |
 | [Swagger Explained][2]        | Browse the spec by using an swagger.json.                 |
 | [silex2swagger][3]            | Generate swagger documentation from Silex Annotations     |
-| [yii2-swagger][4]             | swagger-php intergation with yii2                         |
+| [yii2-swagger][4]             | swagger-php integration with yii2                         |
 | [Lumen swagger][5]            | swagger-php integration with lumen/laravel                |
 | [NelmioApiDocBundle][6]       | Symfony bundle on top of swagger-php                      |
 | [auto-swagger-ui][7]          | Automatically add swagger ui and json to your application |
@@ -19,6 +19,7 @@ sidebar: false
 | [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations       |
 | [Swag It PHP][12]             | Convert JSON to PHP Swagger annotations                   |
 | [Laravel Swagger][13]         | OpenApi or Swagger integration to Laravel                 |
+| [openapi-extras][14]          | Extra annotations for php-swagger                         |
 
 Is a related project missing? Create a pull request!
 
@@ -35,3 +36,4 @@ Is a related project missing? Create a pull request!
 [11]: https://github.com/Tobion/OpenAPI-Symfony-Routing
 [12]: https://kizu514.com/swagit.php
 [13]: https://github.com/DarkaOnLine/L5-Swagger
+[14]: https://github.com/DerManoMann/openapi-extras
