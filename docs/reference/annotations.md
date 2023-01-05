@@ -81,6 +81,25 @@ Contact information for the exposed API.
 ---
 - [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
 
+## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
+
+A `@OA\Request` cookie parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
 
@@ -319,6 +338,25 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 #### Reference
 ---
 - [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
+
+## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
+
+A `@OA\Request` header parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 ## [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
 
@@ -787,6 +825,25 @@ A `@OA\Request` path parameter.
 ---
 <dl>
   <dt><strong>method</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
+
+A `@OA\Request` query parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
