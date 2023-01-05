@@ -178,6 +178,61 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
 </dl>
 
+## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
 
 
@@ -461,6 +516,61 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1228,6 +1338,61 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
