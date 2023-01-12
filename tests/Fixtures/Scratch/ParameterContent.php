@@ -32,6 +32,6 @@ use OpenApi\Attributes as OAT;
     ],
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
-class Endpoint
+class ParameterContentEndpoint
 {
 }
