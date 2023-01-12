@@ -74,6 +74,6 @@ class Address extends Model
  *     )
  * )
  */
-class Endpoint
+class MergeTraitsEndpoint
 {
 }

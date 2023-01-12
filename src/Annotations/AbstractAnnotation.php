@@ -8,6 +8,7 @@ namespace OpenApi\Annotations;
 
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 use OpenApi\Util;
 use Symfony\Component\Yaml\Yaml;
 
@@ -566,7 +567,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Find matching nested details.
      *
-     * @param string $class the class to match
+     * @param class-string $class the class to match
      *
      * @return null|object key/value object or `null`
      */
@@ -585,6 +586,25 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return null;
+    }
+
+    /**
+     * Match the annotation root.
+     *
+     * @param class-string $rootClass the root class to match
+     */
+    public function isRoot(string $rootClass): bool
+    {
+        $parent = get_class($this);
+
+        // only consider the immediate OpenApi parent
+        do {
+            if ($parent == $rootClass) {
+                return true;
+            }
+        } while (0 !== strpos($parent, 'OpenApi\\Annotations\\')  && $parent = get_parent_class($parent));
+
+        return false;
     }
 
     /**
