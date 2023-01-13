@@ -7,9 +7,8 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Annotations\Items;
-use OpenApi\Annotations\Property as AnnotationsProperty;
-use OpenApi\Attributes\Property as AttributesProperty;
+use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 use OpenApi\Processors\ExpandEnums;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum;
@@ -35,7 +34,8 @@ class ExpandEnumsTest extends OpenApiTestCase
         $analysis->process([new ExpandEnums()]);
         $schema = $analysis->getSchemaForSource(StatusEnum::class);
 
-        self::assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
+        $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
+        $this->assertEquals('string', $schema->type);
     }
 
     public function testExpandBackedEnum(): void
@@ -44,7 +44,8 @@ class ExpandEnumsTest extends OpenApiTestCase
         $analysis->process([new ExpandEnums()]);
         $schema = $analysis->getSchemaForSource(StatusEnumBacked::class);
 
-        self::assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
+        $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
+        $this->assertEquals('string', $schema->type);
     }
 
     public function testExpandBackedIntegerEnum(): void
@@ -53,7 +54,8 @@ class ExpandEnumsTest extends OpenApiTestCase
         $analysis->process([new ExpandEnums()]);
         $schema = $analysis->getSchemaForSource(StatusEnumIntegerBacked::class);
 
-        self::assertEquals([1, 2, 3], $schema->enum);
+        $this->assertEquals([1, 2, 3], $schema->enum);
+        $this->assertEquals('integer', $schema->type);
     }
 
     public function testExpandBackedStringEnum(): void
@@ -62,7 +64,8 @@ class ExpandEnumsTest extends OpenApiTestCase
         $analysis->process([new ExpandEnums()]);
         $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
 
-        self::assertEquals(['draft', 'published', 'archived'], $schema->enum);
+        $this->assertEquals(['draft', 'published', 'archived'], $schema->enum);
+        $this->assertEquals('string', $schema->type);
     }
 
     public function expandEnumClassStringFixtures(): iterable
@@ -80,57 +83,57 @@ class ExpandEnumsTest extends OpenApiTestCase
 
         return [
             'statusEnum' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnum',
                 $mapValues(StatusEnum::cases()),
             ],
             'statusEnumMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumMixed',
                 $mapValues([StatusEnum::DRAFT, StatusEnum::ARCHIVED, 'OTHER']),
             ],
             'statusEnumBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumBacked',
                 $mapValues(StatusEnumBacked::cases()),
             ],
             'statusEnumBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumBackedMixed',
                 $mapValues([StatusEnumBacked::DRAFT, StatusEnumBacked::ARCHIVED, 9]),
             ],
             'statusEnumIntegerBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumIntegerBacked',
                 $mapValues(StatusEnumIntegerBacked::cases()),
             ],
             'statusEnumStringBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumStringBacked',
                 $mapValues(StatusEnumStringBacked::cases()),
             ],
             'statusEnumStringBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumStringBackedMixed',
                 $mapValues([StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other']),
             ],
             'statusEnums' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnums',
                 Generator::UNDEFINED,
             ],
             'itemsStatusEnumStringBacked' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'itemsStatusEnumStringBacked',
                 $mapValues(StatusEnumStringBacked::cases()),
             ],
             'statusEnumsMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'statusEnumsMixed',
                 Generator::UNDEFINED,
             ],
             'itemsStatusEnumStringBackedMixed' => [
-                ['PHP/Enums/ReferencesEnum.php'],
+                ['PHP/ReferencesEnum.php'],
                 'itemsStatusEnumStringBackedMixed',
                 $mapValues([StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other']),
             ],
@@ -146,12 +149,12 @@ class ExpandEnumsTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures($files);
         $analysis->process([new ExpandEnums()]);
-        $schemas = $analysis->getAnnotationsOfType([AnnotationsProperty::class, AttributesProperty::class, Items::class], true);
+        $schemas = $analysis->getAnnotationsOfType([OA\Property::class, OAT\Property::class, OA\Items::class], true);
 
         foreach ($schemas as $schema) {
-            if ($schema instanceof AnnotationsProperty || $schema instanceof Items) {
+            if ($schema instanceof OA\Property || $schema instanceof OA\Items) {
                 if ($schema->title == $title) {
-                    self::assertEquals($expected, $schema->enum);
+                    $this->assertEquals($expected, $schema->enum);
                 }
             }
         }

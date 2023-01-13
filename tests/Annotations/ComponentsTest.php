@@ -6,17 +6,15 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\Examples;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
 class ComponentsTest extends OpenApiTestCase
 {
     public function testRef(): void
     {
-        $this->assertEquals('#/components/schemas/foo', Components::ref('foo'));
-        $this->assertEquals('#/components/schemas/bar', Components::ref(new Schema(['ref' => null, 'schema' => 'bar', '_context' => $this->getContext()])));
-        $this->assertEquals('#/components/examples/xx', Components::ref(new Examples(['example' => 'xx', '_context' => $this->getContext()])));
+        $this->assertEquals('#/components/schemas/foo', OA\Components::ref('foo'));
+        $this->assertEquals('#/components/schemas/bar', OA\Components::ref(new OA\Schema(['ref' => null, 'schema' => 'bar', '_context' => $this->getContext()])));
+        $this->assertEquals('#/components/examples/xx', OA\Components::ref(new OA\Examples(['example' => 'xx', '_context' => $this->getContext()])));
     }
 }

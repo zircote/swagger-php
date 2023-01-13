@@ -51,4 +51,11 @@ trait TypesTrait
 
         return true;
     }
+
+    public function native2spec(string $type): string
+    {
+        $mapped = array_key_exists($type, self::$NATIVE_TYPE_MAP) ? self::$NATIVE_TYPE_MAP[$type] : $type;
+
+        return is_array($mapped) ? $mapped[0] : $mapped;
+    }
 }

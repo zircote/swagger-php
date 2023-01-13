@@ -6,14 +6,13 @@
 
 namespace OpenApi\Tests\Fixtures\Annotations;
 
-use OpenApi\Annotations\Attachable;
-use OpenApi\Annotations\Operation;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
  * @Annotation
  */
-class CustomAttachable extends Attachable
+class CustomAttachable extends OA\Attachable
 {
     /**
      * The attribute value.
@@ -29,6 +28,6 @@ class CustomAttachable extends Attachable
 
     public function allowedParents(): ?array
     {
-        return [Operation::class];
+        return [OA\Operation::class];
     }
 }

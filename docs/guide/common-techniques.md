@@ -8,7 +8,7 @@ relevant source code as appropriate.
 `swagger-php` will scan your project and merge all meta-data into one` @OA\OpenApi` annotation.
 
 ::: warning
-As of `swagger-php` v4 all annotations or attributes must be associated with 
+As of `swagger-php` v4 all annotations or attributes must be associated with
 a structural element (`class`, `method`, `parameter` or `enum`)
 :::
 
@@ -187,4 +187,181 @@ info:
         level: baseapi
       - version: "2.1"
         level: fullapi
+```
+
+## Enums
+
+[PHP 8.1 enums](https://www.php.net/manual/en/language.enumerations.basics.php) are supported in two main use cases.
+
+### Enum cases as value
+
+Enum cases can be used as value in an `enum` list just like a `string`, `integer` or any other primitive type.
+
+**Basic enum:**
+
+```php
+use OpenApi\Attributes as OAT;
+
+enum Suit
+{
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+    case Spades;
+}
+
+class Model
+{
+    #[OAT\Property(enum: [Suit::Hearts, Suit::Diamonds])]
+    protected array $someSuits;
+}
+```
+
+**Results in:**
+
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    Model:
+      properties:
+        someSuits:
+          type: array
+          enum:
+            - Hearts
+            - Diamonds
+      type: object
+
+```
+
+**Backed enums**
+
+If the enum is a backed enum, the case backing value is used instead of the name.
+
+## Enum schemas
+
+The simples way of using enums is to annotate them as `Schema`. This allows you to reference them like any other schema in your spec.
+
+```php
+use OpenApi\Attributes as OAT;
+
+#[OAT\Schema()]
+enum Colour
+{
+    case GREEN;
+    case BLUE;
+    case RED;
+}
+
+#[OAT\Schema()]
+class Product
+{
+    #[OAT\Property()]
+    public Colour $colour;
+}
+```
+
+**Results in:**
+
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    Colour:
+      type: string
+      enum:
+        - GREEN
+        - BLUE
+        - RED
+    Product:
+      properties:
+        colour:
+          $ref: '#/components/schemas/Colour'
+      type: object
+```
+
+**Backed enums**
+
+For backed enums there exist two rules that determine whether the name or backing value is used:
+1. If no schema type is given, the enum name is used.
+2. If a schema type is given, and it matches the backing type, the enum backing value is used.
+
+**Using the name of a backed enum:**
+
+```php
+use OpenApi\Attributes as OAT;
+
+#[OAT\Schema()]
+enum Colour: int
+{
+    case GREEN = 1;
+    case BLUE = 2;
+    case RED = 3;
+}
+
+#[OAT\Schema()]
+class Product
+{
+    #[OAT\Property()]
+    public Colour $colour;
+}
+```
+
+**Results in:**
+
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    Colour:
+      type: string
+      enum:
+        - GREEN
+        - BLUE
+        - RED
+    Product:
+      properties:
+        colour:
+          $ref: '#/components/schemas/Colour'
+      type: object
+```
+
+**Using the backing value:**
+
+```php
+use OpenApi\Attributes as OAT;
+
+#[OAT\Schema(type: 'integer')]
+enum Colour: int
+{
+    case GREEN = 1;
+    case BLUE = 2;
+    case RED = 3;
+}
+
+#[OAT\Schema()]
+class Product
+{
+    #[OAT\Property()]
+    public Colour $colour;
+}
+```
+
+**Results in:**
+
+```yaml
+openapi: 3.0.0
+components:
+  schemas:
+    Colour:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+    Product:
+      properties:
+        colour:
+          $ref: '#/components/schemas/Colour'
+      type: object
 ```

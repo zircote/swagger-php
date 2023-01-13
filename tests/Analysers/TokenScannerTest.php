@@ -19,7 +19,7 @@ class TokenScannerTest extends OpenApiTestCase
                 [
                     'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
                         'uses' => [
-                            'Property' => 'OpenApi\Attributes\Property',
+                            'OAT' => 'OpenApi\Attributes',
                         ],
                         'interfaces' => [],
                         'traits' => [],
@@ -225,7 +225,7 @@ class TokenScannerTest extends OpenApiTestCase
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\Php8PromotedProperties' => [
                     'uses' => [
-                        'Property' => 'OpenApi\\Attributes\\Property',
+                        'OAT' => 'OpenApi\\Attributes',
                         'OA' => 'OpenApi\Annotations',
                     ],
                     'interfaces' => [],
@@ -326,7 +326,9 @@ class TokenScannerTest extends OpenApiTestCase
                 'PHP/Enums/StatusEnum.php',
                 [
                     'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
-                        'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
+                        'uses' => [
+                            'OAT' => 'OpenApi\\Attributes',
+                        ],
                         'interfaces' => [],
                         'enums' => [],
                         'traits' => [],
@@ -340,7 +342,9 @@ class TokenScannerTest extends OpenApiTestCase
                 'PHP/Enums/StatusEnumBacked.php',
                 [
                     'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
-                        'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
+                        'uses' => [
+                            'OAT' => 'OpenApi\\Attributes',
+                        ],
                         'interfaces' => [],
                         'enums' => [],
                         'traits' => [],

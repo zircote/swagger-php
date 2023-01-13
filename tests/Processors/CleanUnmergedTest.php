@@ -7,8 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Contact;
-use OpenApi\Annotations\License;
+use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
@@ -54,9 +53,9 @@ END;
         $analysis->validate();
 
         // When a processor places a previously unmerged annotation into the swagger obect.
-        $license = $analysis->getAnnotationsOfType(License::class)[0];
-        /** @var Contact $contact */
-        $contact = $analysis->getAnnotationsOfType(Contact::class)[0];
+        $license = $analysis->getAnnotationsOfType(OA\License::class)[0];
+        /** @var OA\Contact $contact */
+        $contact = $analysis->getAnnotationsOfType(OA\Contact::class)[0];
         $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);
         $analysis->process([new CleanUnmerged()]);

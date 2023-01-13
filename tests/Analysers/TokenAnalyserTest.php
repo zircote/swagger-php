@@ -7,9 +7,7 @@
 namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Analysers\TokenAnalyser;
@@ -238,8 +236,8 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testNamespacedConstAccess(): void
     {
         $analysis = $this->analysisFromFixtures(['Parser/User.php']);
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $this->assertEquals(User::CONSTANT, $schemas[0]->example);
@@ -251,14 +249,14 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testPhp8AttributeMix(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Label.php', 'PHP/Php8AttrMix.php']);
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process($this->processors([CleanUnusedComponents::class]));
 
-        /** @var Property[] $properties */
-        $properties = $analysis->getAnnotationsOfType(Property::class, true);
+        /** @var OA\Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(OA\Property::class, true);
         $this->assertCount(2, $properties);
         $this->assertEquals('id', $properties[0]->property);
         $this->assertEquals('otherId', $properties[1]->property);
@@ -270,13 +268,13 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testPhp8PromotedProperties(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php'], [], new TokenAnalyser());
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process($this->processors([CleanUnusedComponents::class]));
 
-        /** @var Property[] $properties */
-        $properties = $analysis->getAnnotationsOfType(Property::class);
+        /** @var OA\Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(OA\Property::class);
         // ignores the attribute on $id
         $this->assertCount(1, $properties);
         $this->assertEquals('labels', $properties[0]->property);
@@ -287,7 +285,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunctions.php'], [], new TokenAnalyser());
         $analysis->process((new Generator())->getProcessors());
 
-        $infos = $analysis->getAnnotationsOfType(Info::class, true);
+        $infos = $analysis->getAnnotationsOfType(OA\Info::class, true);
         $this->assertCount(1, $infos);
     }
 
@@ -297,7 +295,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testPhp8NamedArguments(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8NamedArguments.php'], [], new TokenAnalyser());
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process((new Generator())->getProcessors());

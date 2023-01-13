@@ -6,20 +6,20 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Attributes\Property;
+use OpenApi\Attributes as OAT;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 abstract class AbstractKeyword
 {
-    #[Property(property: 'stuff')]
+    #[OAT\Property(property: 'stuff')]
     abstract public function stuff(string $name, array $numbers): bool;
 
-    #[Property(property: 'other')]
+    #[OAT\Property(property: 'other')]
     public function other(): string
     {
         return 'other';
     }
 
-    #[Property(property: 'another')]
+    #[OAT\Property(property: 'another')]
     abstract public function another(): void;
 }

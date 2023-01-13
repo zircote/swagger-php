@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Annotations\Operation;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Tests\OpenApiTestCase;
@@ -21,8 +21,8 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
         $analysis->process([
             new DocBlockDescriptions(),
         ]);
-        /** @var Operation[] $operations */
-        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        /** @var OA\Operation[] $operations */
+        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         $this->assertSame('api/test1', $operations[0]->path);
         $this->assertSame('Example summary.', $operations[0]->summary, 'Operation summary should be taken from phpDoc');

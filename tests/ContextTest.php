@@ -32,15 +32,15 @@ class ContextTest extends OpenApiTestCase
             ->generate([$this->fixture('Customer.php')]);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
-        $this->assertSame('\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
-        $this->assertSame('\OpenApi\Tests\Fixtures\Unqualified', $context->fullyQualifiedName('Unqualified'));
-        $this->assertSame('\OpenApi\Tests\Fixtures\Namespace\Qualified', $context->fullyQualifiedName('Namespace\Qualified'));
+        $this->assertSame('\\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
+        $this->assertSame('\\OpenApi\\Tests\\Fixtures\\Unqualified', $context->fullyQualifiedName('Unqualified'));
+        $this->assertSame('\\OpenApi\\Tests\\Fixtures\\Namespace\Qualified', $context->fullyQualifiedName('Namespace\\Qualified'));
         // respect use statements
-        $this->assertSame('\Exception', $context->fullyQualifiedName('Exception'));
-        $this->assertSame('\OpenApi\Tests\Fixtures\Customer', $context->fullyQualifiedName('Customer'));
-        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('Generator'));
-        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('gEnerator')); // php has case-insensitive class names :-(
-        $this->assertSame('\OpenApi\Generator', $context->fullyQualifiedName('OpenApiGenerator'));
-        $this->assertSame('\OpenApi\Annotations\QualifiedAlias', $context->fullyQualifiedName('OA\QualifiedAlias'));
+        $this->assertSame('\\Exception', $context->fullyQualifiedName('Exception'));
+        $this->assertSame('\\OpenApi\\Tests\\Fixtures\\Customer', $context->fullyQualifiedName('Customer'));
+        $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('Generator'));
+        $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('gEnerator')); // php has case-insensitive class names :-(
+        $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('OpenApiGenerator'));
+        $this->assertSame('\\OpenApi\\Annotations\\QualifiedAlias', $context->fullyQualifiedName('OA\\QualifiedAlias'));
     }
 }

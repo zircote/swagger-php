@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 class ScratchTest extends OpenApiTestCase
@@ -21,7 +21,7 @@ class ScratchTest extends OpenApiTestCase
             }
 
             yield $name => [
-                OpenApi::VERSION_3_0_0,
+                OA\OpenApi::VERSION_3_0_0,
                 $this->fixture("Scratch/$name.php"),
                 $this->fixture("Scratch/$name.yaml"),
                 [],

@@ -6,9 +6,9 @@
 
 namespace OpenApi\Tests\Fixtures\PHP\Enums;
 
-use OpenApi\Attributes\Schema;
+use OpenApi\Attributes as OAT;
 
-#[Schema(type: 'integer')]
+#[OAT\Schema(type: 'integer')]
 enum StatusEnumIntegerBacked: int
 {
     case DRAFT = 1;
