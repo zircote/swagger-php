@@ -301,9 +301,10 @@ class Generator
     }
 
     /**
+     * @param callable|ProcessorInterface $processor
      * @param class-string|null $before
      */
-    public function addProcessor(callable $processor, ?string $before = null): Generator
+    public function addProcessor($processor, ?string $before = null): Generator
     {
         $processors = $this->getProcessors();
         if (!$before) {
@@ -324,7 +325,10 @@ class Generator
         return $this;
     }
 
-    public function removeProcessor(callable $processor, bool $silent = false): Generator
+    /**
+     * @param callable|ProcessorInterface $processor
+     */
+    public function removeProcessor($processor, bool $silent = false): Generator
     {
         $processors = $this->getProcessors();
         if (false === ($key = array_search($processor, $processors, true))) {
@@ -342,11 +346,11 @@ class Generator
     /**
      * Update/replace an existing processor with a new one.
      *
-     * @param ProcessorInterface|callable $processor The new processor
+     * @param ProcessorInterface|callable $processor The new processor.
      * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
      *                                               If none given, matching is based on the processors class.
      */
-    public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
+    public function updateProcessor($processor, ?callable $matcher = null): Generator
     {
         $matcher = $matcher ?: function ($other) use ($processor): bool {
             $otherClass = get_class($other);
