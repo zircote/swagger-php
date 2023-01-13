@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * Merges properties.
  */
-class AugmentSchemas
+class AugmentSchemas implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

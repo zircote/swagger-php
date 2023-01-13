@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Split XmlContent into Schema and MediaType.
  */
-class MergeXmlContent
+class MergeXmlContent implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

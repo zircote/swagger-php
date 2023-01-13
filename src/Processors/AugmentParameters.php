@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\Concerns\DocblockTrait;
 
-class AugmentParameters
+class AugmentParameters implements ProcessorInterface
 {
     use DocblockTrait;
 

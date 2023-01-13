@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class CleanUnusedComponents
+class CleanUnusedComponents implements ProcessorInterface
 {
     use Concerns\CollectorTrait;
 
