@@ -366,6 +366,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
+            $defaultValues = get_class_vars(get_class($this));
+            if (property_exists($this, 'nullable') && $this->nullable === true) {
+                if ($this->nullable !== $defaultValues['nullable']) {
+                    $ref['nullable'] = $data->nullable;
+                    $ref['oneOf'] = [
+                        ['$ref' => $data->ref],
+                    ];
+                    unset($ref['$ref']);
+                }
+            }
             $data = (object) $ref;
         }
 
