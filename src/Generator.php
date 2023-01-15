@@ -302,7 +302,7 @@ class Generator
 
     /**
      * @param callable|ProcessorInterface $processor
-     * @param class-string|null $before
+     * @param class-string|null           $before
      */
     public function addProcessor($processor, ?string $before = null): Generator
     {
@@ -346,7 +346,7 @@ class Generator
     /**
      * Update/replace an existing processor with a new one.
      *
-     * @param ProcessorInterface|callable $processor The new processor.
+     * @param ProcessorInterface|callable $processor the new processor
      * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
      *                                               If none given, matching is based on the processors class.
      */
