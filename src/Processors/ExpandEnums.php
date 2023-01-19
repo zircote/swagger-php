@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * Determines `schema`, `enum` and `type`.
  */
-class ExpandEnums
+class ExpandEnums implements ProcessorInterface
 {
     use Concerns\TypesTrait;
 

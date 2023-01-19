@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
-class CleanUnmerged
+class CleanUnmerged implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

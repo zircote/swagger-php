@@ -13,7 +13,7 @@ use OpenApi\Generator;
 /**
  * Generate the OperationId based on the context of the OpenApi annotation.
  */
-class OperationId
+class OperationId implements ProcessorInterface
 {
     protected $hash;
 

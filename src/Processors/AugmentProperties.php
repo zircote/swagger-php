@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties implements ProcessorInterface
 {
     use Concerns\DocblockTrait;
     use Concerns\TypesTrait;
