@@ -144,22 +144,6 @@ class TokenScannerTest extends OpenApiTestCase
                     'methods' => ['foo', 'bar'],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\ReservedWordsAttr' => [
-                    'uses' => [],
-                    'interfaces' => [],
-                    'traits' => [],
-                    'enums' => [],
-                    'methods' => ['__construct'],
-                    'properties' => [],
-                ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\UserlandClass' => [
-                    'uses' => [],
-                    'interfaces' => [],
-                    'traits' => [],
-                    'enums' => [],
-                    'methods' => [],
-                    'properties' => [],
-                ],
             ],
         ];
 
@@ -264,6 +248,26 @@ class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'enums' => [],
                     'methods' => ['useFoo', 'foo'],
+                    'properties' => [],
+                ],
+                'OpenApi\\Tests\\Fixtures\\PHP\\ReservedWordsAttr' => [
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => ['__construct'],
+                    'properties' => [],
+                ],
+                'OpenApi\\Tests\\Fixtures\\PHP\\UserlandClass' => [
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [],
                     'properties' => [],
                 ],
             ],
