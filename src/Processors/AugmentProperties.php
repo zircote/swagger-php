@@ -97,7 +97,7 @@ class AugmentProperties implements ProcessorInterface
             }
 
             // ok, so we possibly have a type or ref
-            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable)) {
+            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
                     $schema = new OA\Schema([
