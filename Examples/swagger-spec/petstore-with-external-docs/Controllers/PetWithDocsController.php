@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreWithExternalDocs\Controllers;
 
+use OpenApi\Annotations as OA;
+
 class PetWithDocsController
 {
     /**

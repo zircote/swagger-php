@@ -6,7 +6,6 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
 
-
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
 
@@ -47,7 +46,7 @@ referenced from properties outside the components object.
 #### Properties
 ---
 <dl>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd><p>Reusable Callbacks.</p></dd>
 </dl>
 
@@ -81,6 +80,25 @@ Contact information for the exposed API.
 #### Reference
 ---
 - [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
+
+## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
+
+A `@OA\Request` cookie parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
@@ -321,6 +339,25 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 ---
 - [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
 
+## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
+
+A `@OA\Request` header parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
 ## [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
 
 The object provides metadata about the API.
@@ -398,7 +435,7 @@ License information for the exposed API.
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.</p></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>An URL to the license used for the API. This MUST be in the form of an URL.<br />
+  <dd><p>An URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
 The `url` field is mutually exclusive of the `identifier` field.</p></dd>
 </dl>
@@ -453,7 +490,7 @@ The key is the parameter name to be used, whereas the value can be a constant or
 be evaluated and passed to the linked operation.<br />
 The parameter name can be qualified using the parameter location [{in}.]{name} for operations<br />
 that use the same parameter name in different locations (e.g. path.id).</p></dd>
-  <dt><strong>requestBody</strong></dt>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A literal value or {expression} to use as a request body when calling the target operation.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A description of the link.<br />
@@ -482,7 +519,7 @@ Each Media Type object provides schema and examples for the media type identifie
 <dl>
   <dt><strong>mediaType</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Operation->content array.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example object should be in the correct format as specified by the media type.<br />
@@ -523,17 +560,12 @@ A version specified via `Generator::setVersion()` will overwrite this value.<br 
 <br />
 This is not related to the API info::version string.</p></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dd><p>Lists the required security schemes to execute this operation.<br />
+  <dd><p>A declaration of which security mechanisms can be used across the API.<br />
 <br />
-The name used for each property must correspond to a security scheme declared<br />
-in the Security Schemes under the Components Object.<br />
-Security Requirement Objects that contain multiple schemes require that<br />
-all schemes must be satisfied for a request to be authorized.<br />
-This enables support for scenarios where multiple query parameters or<br />
-HTTP headers are required to convey security information.<br />
-When a list of Security Requirement Objects is defined on the Open API object or<br />
-Operation Object, only one of Security Requirement Objects in the list needs to<br />
-be satisfied to authorize the request.</p></dd>
+The list of values includes alternative security requirement objects that can be used.<br />
+Only one of the security requirement objects need to be satisfied to authorize a request.<br />
+Individual operations can override this definition.<br />
+To make security optional, an empty security requirement `({})` can be included in the array.</p></dd>
 </dl>
 
 #### Reference
@@ -629,14 +661,14 @@ For all other styles, the default value is false.</p></dd>
 This property only applies to parameters with an in value of query.<br />
 <br />
 The default value is false.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType[]</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
@@ -796,6 +828,25 @@ A `@OA\Request` path parameter.
   <dd><p>No details available.</p></dd>
 </dl>
 
+## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
+
+A `@OA\Request` query parameter.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>in</strong></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
 ## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
 
 Describes a single request body.
@@ -918,7 +969,7 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
 This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
 Default value is csv.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
@@ -940,7 +991,7 @@ Default value is csv.</p></dd>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
@@ -962,7 +1013,7 @@ Therefore, it may be sent as part of a request but should not be sent as part of
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
 false.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
@@ -973,13 +1024,13 @@ Default value is false.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p></dd>
   <dt><strong>not</strong></dt>
@@ -1037,7 +1088,7 @@ Bearer tokens are usually generated by an authorization server, so this informat
   <dt><strong>scheme</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The name of the HTTP Authorization scheme.</p><p><i>See</i>: <a href="https://tools.ietf.org/html/rfc7235#section-5.1">RFC7235</a></p></dd>
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of an URL.</p></dd>
+  <dd><p>OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.</p></dd>
 </dl>
 
 #### Reference
@@ -1092,7 +1143,7 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
@@ -1180,7 +1231,7 @@ and only if wrapped is <code>true</code>.<br />
 <br />
 If wrapped is <code>false</code>, it will be ignored.</p></dd>
   <dt><strong>namespace</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>The URL of the namespace definition. Value SHOULD be in the form of an URL.</p></dd>
+  <dd><p>The URL of the namespace definition. Value SHOULD be in the form of a URL.</p></dd>
   <dt><strong>prefix</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The prefix to be used for the name.</p></dd>
   <dt><strong>attribute</strong> : <span style="font-family: monospace;">bool</span></dt>

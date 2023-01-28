@@ -7,20 +7,17 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Items;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Util;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties implements ProcessorInterface
 {
-    use DocblockTrait;
+    use Concerns\DocblockTrait;
+    use Concerns\TypesTrait;
 
     public function __invoke(Analysis $analysis)
     {
@@ -29,13 +26,13 @@ class AugmentProperties
             foreach ($analysis->openapi->components->schemas as $schema) {
                 if (!Generator::isDefault($schema->schema)) {
                     $refKey = $this->toRefKey($schema->_context, $schema->_context->class);
-                    $refs[$refKey] = Components::ref($schema);
+                    $refs[$refKey] = OA\Components::ref($schema);
                 }
             }
         }
 
-        /** @var Property[] $properties */
-        $properties = $analysis->getAnnotationsOfType(Property::class);
+        /** @var OA\Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(OA\Property::class);
 
         foreach ($properties as $property) {
             $context = $property->_context;
@@ -54,14 +51,14 @@ class AugmentProperties
             if (Generator::isDefault($property->type)) {
                 $this->augmentType($analysis, $property, $context, $refs, $varMatches);
             } else {
-                Util::mapNativeType($property, $property->type);
+                $this->mapNativeType($property, $property->type);
             }
 
             if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
                 $property->description = trim($varMatches['description']);
             }
             if (Generator::isDefault($property->description) && $this->isRoot($property)) {
-                $property->description = $context->phpdocContent();
+                $property->description = $this->extractContent($context->comment);
             }
 
             if (Generator::isDefault($property->example) && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
@@ -77,7 +74,7 @@ class AugmentProperties
         return ltrim($fqn, '\\');
     }
 
-    protected function augmentType(Analysis $analysis, Property $property, Context $context, array $refs, array $varMatches): void
+    protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, array $refs, array $varMatches): void
     {
         // docblock typehints
         if (isset($varMatches['type'])) {
@@ -92,7 +89,7 @@ class AugmentProperties
             $type = $typeMatches[1];
 
             // finalise property type/ref
-            if (!Util::mapNativeType($property, $type)) {
+            if (!$this->mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $property->ref = $refs[$refKey];
@@ -103,21 +100,19 @@ class AugmentProperties
             if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
-                    $schema = new Schema([
+                    $schema = new OA\Schema([
                         'ref' => $refs[$refKey],
-                        '_context' => $property->_context,
-                        '_aux' => true,
+                        '_context' => new Context(['generated' => true], $property->_context),
                     ]),
                 ];
                 $analysis->addAnnotation($schema, $schema->_context);
                 $property->nullable = true;
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
-                    $property->items = $items = new Items(
+                    $property->items = $items = new OA\Items(
                         [
                             'type' => $property->type,
                             '_context' => new Context(['generated' => true], $context),
-                            '_aux' => true,
                         ]
                     );
                     $analysis->addAnnotation($items, $items->_context);
@@ -136,14 +131,14 @@ class AugmentProperties
                 $property->nullable = true;
             }
             $type = strtolower($context->type);
-            if (!Util::mapNativeType($property, $type)) {
+            if (!$this->mapNativeType($property, $type)) {
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($analysis, $property, $refs[$refKey]);
                 } else {
                     if ($typeSchema = $analysis->getSchemaForSource($context->type)) {
                         if (Generator::isDefault($property->format)) {
-                            $property->ref = Components::ref($typeSchema);
+                            $property->ref = OA\Components::ref($typeSchema);
                             $property->type = Generator::UNDEFINED;
                         }
                     }
@@ -152,7 +147,7 @@ class AugmentProperties
         }
 
         if (!Generator::isDefault($property->const) && Generator::isDefault($property->type)) {
-            if (!Util::mapNativeType($property, gettype($property->const))) {
+            if (!$this->mapNativeType($property, gettype($property->const))) {
                 $property->type = Generator::UNDEFINED;
             }
         }
@@ -179,14 +174,13 @@ class AugmentProperties
         return implode('|', $types);
     }
 
-    protected function applyRef(Analysis $analysis, Property $property, string $ref): void
+    protected function applyRef(Analysis $analysis, OA\Property $property, string $ref): void
     {
         if ($property->nullable === true) {
             $property->oneOf = [
-                $schema = new Schema([
+                $schema = new OA\Schema([
                     'ref' => $ref,
-                    '_context' => $property->_context,
-                    '_aux' => true,
+                    '_context' => new Context(['generated' => true], $property->_context),
                 ]),
             ];
             $analysis->addAnnotation($schema, $schema->_context);

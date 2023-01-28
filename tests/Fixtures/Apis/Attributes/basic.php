@@ -89,7 +89,7 @@ class Product implements ProductInterface
 
     public function __construct(
         #[OAT\Property()] public int $quantity,
-        #[OAT\Property(nullable: true, default: null, example: null)] public string $brand,
+        #[OAT\Property(default: null, example: null)] public ?string $brand,
         #[OAT\Property()] public Colour $colour,
         #[OAT\Property(type: 'string')] public \DateTimeInterface $releasedAt,
     ) {
@@ -103,6 +103,8 @@ class ProductController
 {
     /**
      * Get a product.
+     *
+     * @param $product_id the product id
      */
     #[OAT\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
     #[OAT\Response(
@@ -116,7 +118,7 @@ class ProductController
     #[OAT\Response(response: 401, description: 'oops')]
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
-        #[OAT\PathParameter(description: 'The product id.')] ?int $product_id
+        #[OAT\PathParameter] ?int $product_id
     ) {
     }
 

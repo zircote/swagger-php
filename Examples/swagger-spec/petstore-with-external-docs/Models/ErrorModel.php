@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\SwaggerSpec\PetstoreWithExternalDocs\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(required={"code", "message"})
  */
@@ -14,7 +16,7 @@ class ErrorModel extends \Exception
      */
     public $code;
     /**
-     * @OA\Property;
+     * @OA\Property
      *
      * @var string
      */

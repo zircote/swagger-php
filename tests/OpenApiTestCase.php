@@ -6,17 +6,13 @@
 
 namespace OpenApi\Tests;
 
-use DirectoryIterator;
-use Exception;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\DocBlockParser;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
@@ -58,9 +54,10 @@ class OpenApiTestCase extends TestCase
     public function getTrackingLogger(): ?LoggerInterface
     {
         return new class($this) extends AbstractLogger {
+            /** @var OpenApiTestCase */
             protected $testCase;
 
-            public function __construct($testCase)
+            public function __construct(OpenApiTestCase $testCase)
             {
                 $this->testCase = $testCase;
             }
@@ -77,7 +74,7 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function getContext(array $properties = [], ?string $version = OpenApi::DEFAULT_VERSION): Context
+    public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
             [
@@ -96,10 +93,10 @@ class OpenApiTestCase extends TestCase
             : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
-    public function assertOpenApiLogEntryContains($needle, $message = ''): void
+    public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
-            if ($entry instanceof Exception) {
+            if ($entry instanceof \Exception) {
                 $entry = $entry->getMessage();
             }
             $this->assertStringContainsString($needle, $entry, $message);
@@ -109,11 +106,11 @@ class OpenApiTestCase extends TestCase
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
-     * @param array|OpenApi|\stdClass|string $actual     The generated output
-     * @param array|OpenApi|\stdClass|string $expected   The specification
-     * @param string                         $message
-     * @param bool                           $normalized flag indicating whether the inputs are already normalized or
-     *                                                   not
+     * @param array|OA\OpenApi|\stdClass|string $actual     The generated output
+     * @param array|OA\OpenApi|\stdClass|string $expected   The specification
+     * @param string                            $message
+     * @param bool                              $normalized flag indicating whether the inputs are already normalized or
+     *                                                      not
      */
     protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
@@ -135,7 +132,7 @@ class OpenApiTestCase extends TestCase
         };
 
         $normalizeIn = function ($in) {
-            if ($in instanceof OpenApi) {
+            if ($in instanceof OA\OpenApi) {
                 $in = $in->toYaml();
             }
 
@@ -173,16 +170,16 @@ class OpenApiTestCase extends TestCase
     /**
      * Create a valid OpenApi object with Info.
      */
-    protected function createOpenApiWithInfo(): OpenApi
+    protected function createOpenApiWithInfo(): OA\OpenApi
     {
-        return new OpenApi([
-            'info' => new Info([
+        return new OA\OpenApi([
+            'info' => new OA\Info([
                 'title' => 'swagger-php Test-API',
                 'version' => 'test',
                 '_context' => $this->getContext(),
             ]),
             'paths' => [
-                new PathItem(['path' => '/test', '_context' => $this->getContext()]),
+                new OA\PathItem(['path' => '/test', '_context' => $this->getContext()]),
             ],
             '_context' => $this->getContext(),
         ]);
@@ -235,7 +232,7 @@ class OpenApiTestCase extends TestCase
         return $analysis;
     }
 
-    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OpenApi::DEFAULT_VERSION): array
+    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
     {
         return (new Generator())
             ->setVersion($version)
@@ -254,7 +251,7 @@ class OpenApiTestCase extends TestCase
     public function allAnnotationClasses(): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/Annotations');
+        $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;
@@ -277,7 +274,7 @@ class OpenApiTestCase extends TestCase
     public function allAttributeClasses(): array
     {
         $classes = [];
-        $dir = new DirectoryIterator(__DIR__ . '/../src/Attributes');
+        $dir = new \DirectoryIterator(__DIR__ . '/../src/Attributes');
         foreach ($dir as $entry) {
             if (!$entry->isFile() || $entry->getExtension() != 'php') {
                 continue;

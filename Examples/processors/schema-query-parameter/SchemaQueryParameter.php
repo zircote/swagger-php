@@ -16,11 +16,13 @@ use OpenApi\Generator;
  */
 class SchemaQueryParameter
 {
-    const X_QUERY_AGS_REF = 'query-args-$ref';
+    public const X_QUERY_AGS_REF = 'query-args-$ref';
 
     public function __invoke(Analysis $analysis)
     {
+        /** @var Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(Operation::class);
 
         foreach ($operations as $operation) {
@@ -52,11 +54,11 @@ class SchemaQueryParameter
      */
     protected function expandQueryArgs(Operation $operation, Schema $schema)
     {
-        if ($schema->properties === Generator::UNDEFINED || !$schema->properties) {
+        if ($schema->properties == Generator::UNDEFINED || !$schema->properties) {
             return;
         }
 
-        $operation->parameters = $operation->parameters === Generator::UNDEFINED ? [] : $operation->parameters;
+        $operation->parameters = $operation->parameters == Generator::UNDEFINED ? [] : $operation->parameters;
         foreach ($schema->properties as $property) {
             $parameter = new Parameter([
                 'name' => $property->property,

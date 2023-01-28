@@ -6,7 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Attributes\Property;
+use OpenApi\Attributes as OAT;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema
@@ -18,10 +19,11 @@ class Php8PromotedProperties
          * Label List.
          *
          * @var Label[]|null $labels
+         *
          * @OA\Property()
          */
         public ?array $labels,
-        #[Property()]
+        #[OAT\Property()]
         public int $id,
     ) {
     }

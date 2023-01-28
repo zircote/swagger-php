@@ -6,8 +6,6 @@
 
 namespace OpenApi;
 
-use InvalidArgumentException;
-use OpenApi\Annotations\Schema;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -15,47 +13,6 @@ use Symfony\Component\Finder\Finder;
  */
 class Util
 {
-    public static $NATIVE_TYPE_MAP = [
-        'array' => 'array',
-        'byte' => ['string', 'byte'],
-        'boolean' => 'boolean',
-        'bool' => 'boolean',
-        'int' => 'integer',
-        'integer' => 'integer',
-        'long' => ['integer', 'long'],
-        'float' => ['number', 'float'],
-        'double' => ['number', 'double'],
-        'string' => 'string',
-        'date' => ['string', 'date'],
-        'datetime' => ['string', 'date-time'],
-        '\\datetime' => ['string', 'date-time'],
-        'datetimeimmutable' => ['string', 'date-time'],
-        '\\datetimeimmutable' => ['string', 'date-time'],
-        'datetimeinterface' => ['string', 'date-time'],
-        '\\datetimeinterface' => ['string', 'date-time'],
-        'number' => 'number',
-        'object' => 'object',
-    ];
-
-    public static function mapNativeType(Schema $schema, string $type): bool
-    {
-        if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
-            return false;
-        }
-
-        $type = self::$NATIVE_TYPE_MAP[$type];
-        if (is_array($type)) {
-            if (Generator::isDefault($schema->format)) {
-                $schema->format = $type[1];
-            }
-            $type = $type[0];
-        }
-
-        $schema->type = $type;
-
-        return true;
-    }
-
     /**
      * Turns the given $fullPath into a relative path based on $basePaths, which can either
      * be a single string path, or a list of possible paths. If a list is given, the first
@@ -105,7 +62,7 @@ class Util
      * @param null|array|string   $exclude   The directory(s) or filename(s) to exclude (as absolute or relative paths)
      * @param null|string         $pattern   The pattern of the files to scan
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public static function finder($directory, $exclude = null, $pattern = null): Finder
     {
@@ -136,7 +93,7 @@ class Util
                 }
             }
         } else {
-            throw new InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
+            throw new \InvalidArgumentException('Unexpected $directory value:' . gettype($directory));
         }
         if ($exclude !== null) {
             if (is_string($exclude)) {
@@ -146,7 +103,7 @@ class Util
                     $finder->notPath(Util::getRelativePath($path, $directory));
                 }
             } else {
-                throw new InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
+                throw new \InvalidArgumentException('Unexpected $exclude value:' . gettype($exclude));
             }
         }
 

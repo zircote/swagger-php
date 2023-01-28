@@ -7,15 +7,14 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Operation;
-use OpenApi\Annotations\PathItem;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
  * Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (`@OA\Get`, `@OA\Post`, etc).
  */
-class BuildPaths
+class BuildPaths implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {
@@ -34,18 +33,17 @@ class BuildPaths
             }
         }
 
-        /** @var Operation[] $operations */
-        $operations = $analysis->unmerged()->getAnnotationsOfType(Operation::class);
+        /** @var OA\Operation[] $operations */
+        $operations = $analysis->unmerged()->getAnnotationsOfType(OA\Operation::class);
 
         // Merge @OA\Operations into existing @OA\PathItems or create a new one.
         foreach ($operations as $operation) {
             if ($operation->path) {
                 if (empty($paths[$operation->path])) {
-                    $paths[$operation->path] = $pathItem = new PathItem(
+                    $paths[$operation->path] = $pathItem = new OA\PathItem(
                         [
                             'path' => $operation->path,
                             '_context' => new Context(['generated' => true], $operation->_context),
-                            '_aux' => true,
                         ]
                     );
                     $analysis->addAnnotation($pathItem, $pathItem->_context);

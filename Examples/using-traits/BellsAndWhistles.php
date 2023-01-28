@@ -3,6 +3,7 @@
 namespace OpenApi\Examples\UsingTraits;
 
 use OpenApi\Examples\UsingTraits\Decoration\Bells;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(title="Bells and Whistles trait")

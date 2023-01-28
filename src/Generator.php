@@ -11,8 +11,9 @@ use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
+use OpenApi\Processors\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Psr\Log\LoggerInterface;
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
  *
- * This is an object oriented alternative to using the now deprecated `\OpenApi\scan()` function and
+ * This is an object-oriented alternative to using the now deprecated `\OpenApi\scan()` function and
  * static class properties of the `Analyzer` and `Analysis` classes.
  */
 class Generator
@@ -52,7 +53,7 @@ class Generator
     /** @var array<string,mixed> */
     protected $config = [];
 
-    /** @var callable[]|null List of configured processors. */
+    /** @var array<ProcessorInterface|callable>|null List of configured processors. */
     protected $processors = null;
 
     /** @var LoggerInterface|null PSR logger. */
@@ -80,13 +81,14 @@ class Generator
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
 
         // kinda config stack to stay BC...
+        // @deprecated Can be removed once doctrine/annotations 2.0 becomes mandatory
         $this->configStack = new class() {
             protected $generator;
 
             public function push(Generator $generator): void
             {
                 $this->generator = $generator;
-                if (class_exists(AnnotationRegistry::class, true)) {
+                if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
                     // keeping track of &this->generator allows to 'disable' the loader after we are done;
                     // no unload, unfortunately :/
                     $gref = &$this->generator;
@@ -121,11 +123,17 @@ class Generator
         };
     }
 
+    /**
+     * @param mixed $value
+     */
     public static function isDefault($value): bool
     {
         return $value === Generator::UNDEFINED;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAliases(): array
     {
         return $this->aliases;
@@ -145,6 +153,9 @@ class Generator
         return $this;
     }
 
+    /**
+     * @return array<string>|null
+     */
     public function getNamespaces(): ?array
     {
         return $this->namespaces;
@@ -194,6 +205,34 @@ class Generator
         return $this->config + $this->getDefaultConfig();
     }
 
+    protected function normaliseConfig(array $config): array
+    {
+        $normalised = [];
+        foreach ($config as $key => $value) {
+            if (is_numeric($key)) {
+                $token = explode('=', $value);
+                if (2 == count($token)) {
+                    // 'operationId.hash=false'
+                    [$key, $value] = $token;
+                }
+            }
+
+            if (in_array($value, ['true', 'false'])) {
+                $value = 'true' == $value;
+            }
+
+            $token = explode('.', $key);
+            if (2 == count($token)) {
+                // 'operationId.hash' => false
+                $normalised[$token[0]][$token[1]] = $value;
+            } else {
+                $normalised[$key] = $value;
+            }
+        }
+
+        return $normalised;
+    }
+
     /**
      * Set generator and/or processor config.
      *
@@ -201,13 +240,13 @@ class Generator
      */
     public function setConfig(array $config): Generator
     {
-        $this->config = $config + $this->config;
+        $this->config = $this->normaliseConfig($config) + $this->config;
 
         return $this;
     }
 
     /**
-     * @return callable[]
+     * @return array<ProcessorInterface|callable>
      */
     public function getProcessors(): array
     {
@@ -252,7 +291,7 @@ class Generator
     }
 
     /**
-     * @param null|callable[] $processors
+     * @param array<ProcessorInterface|callable>|null $processors
      */
     public function setProcessors(?array $processors): Generator
     {
@@ -261,16 +300,35 @@ class Generator
         return $this;
     }
 
-    public function addProcessor(callable $processor): Generator
+    /**
+     * @param callable|ProcessorInterface $processor
+     * @param class-string|null           $before
+     */
+    public function addProcessor($processor, ?string $before = null): Generator
     {
         $processors = $this->getProcessors();
-        $processors[] = $processor;
+        if (!$before) {
+            $processors[] = $processor;
+        } else {
+            $tmp = [];
+            foreach ($processors as $current) {
+                if ($current instanceof $before) {
+                    $tmp[] = $processor;
+                }
+                $tmp[] = $current;
+            }
+            $processors = $tmp;
+        }
+
         $this->setProcessors($processors);
 
         return $this;
     }
 
-    public function removeProcessor(callable $processor, bool $silent = false): Generator
+    /**
+     * @param callable|ProcessorInterface $processor
+     */
+    public function removeProcessor($processor, bool $silent = false): Generator
     {
         $processors = $this->getProcessors();
         if (false === ($key = array_search($processor, $processors, true))) {
@@ -288,11 +346,11 @@ class Generator
     /**
      * Update/replace an existing processor with a new one.
      *
-     * @param callable      $processor The new processor
-     * @param null|callable $matcher   Optional matcher callable to identify the processor to replace.
-     *                                 If none given, matching is based on the processors class.
+     * @param ProcessorInterface|callable $processor the new processor
+     * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
+     *                                               If none given, matching is based on the processors class.
      */
-    public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
+    public function updateProcessor($processor, ?callable $matcher = null): Generator
     {
         $matcher = $matcher ?: function ($other) use ($processor): bool {
             $otherClass = get_class($other);
@@ -325,7 +383,7 @@ class Generator
         return $this;
     }
 
-    public static function scan(iterable $sources, array $options = []): ?OpenApi
+    public static function scan(iterable $sources, array $options = []): ?OA\OpenApi
     {
         // merge with defaults
         $config = $options + [
@@ -383,7 +441,7 @@ class Generator
      * @param null|Analysis $analysis custom analysis instance
      * @param bool          $validate flag to enable/disable validation of the returned spec
      */
-    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
+    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OA\OpenApi
     {
         $rootContext = new Context([
             'version' => $this->getVersion(),
@@ -395,7 +453,7 @@ class Generator
         try {
             $this->scanSources($sources, $analysis, $rootContext);
 
-            // post processing
+            // post-processing
             $analysis->process($this->getProcessors());
 
             if ($analysis->openapi) {

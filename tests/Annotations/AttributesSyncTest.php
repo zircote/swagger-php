@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
@@ -10,11 +14,11 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class AttributesSyncTest extends OpenApiTestCase
 {
-    public static $SCHEMA_EXCLUSIONS = ['const', 'maxProperties', 'minProperties', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];
+    public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];
     public static $PATHITEM_EXCLUSIONS = ['ref', 'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-    public static $PARAMETER_EXCLUSIONS = ['content', 'matrix', 'label', 'form', 'simple', 'deepObject'];
+    public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple', 'deepObject'];
 
-    public function testCounts()
+    public function testCounts(): void
     {
         $this->assertSameSize($this->allAnnotationClasses(), $this->allAttributeClasses());
     }
@@ -22,7 +26,7 @@ class AttributesSyncTest extends OpenApiTestCase
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testParameterCompleteness($annotation): void
+    public function testParameterCompleteness(string $annotation): void
     {
         $annotationRC = new \ReflectionClass($annotation);
         $attributeRC = new \ReflectionClass('OpenApi\\Attributes\\' . $annotationRC->getShortName());
@@ -44,7 +48,7 @@ class AttributesSyncTest extends OpenApiTestCase
                     $attributeType = $this->parameterType($propertyName, $attributeParameter);
 
                     if ($annotationType != $attributeType) {
-                        $typeMismatch[$propertyName] = [$annotationType, $attributeType];
+                        $typeMismatch[$propertyName] = [$annotationRC->getName(), $annotationType, $attributeType];
                     }
 
                     $found = true;
@@ -52,7 +56,7 @@ class AttributesSyncTest extends OpenApiTestCase
                 }
             }
             // oh, well...
-            if ($attributeRC->isSubclassOf(OA\PathParameter::class)) {
+            if ($attributeRC->isSubclassOf(OA\Parameter::class)) {
                 // not relevant
                 unset($typeMismatch['in']);
                 // uses inheritdoc
@@ -92,7 +96,7 @@ class AttributesSyncTest extends OpenApiTestCase
         }
     }
 
-    protected function prepDocComment($docComment): array
+    protected function prepDocComment(string $docComment): array
     {
         if (!$docComment) {
             return [];
@@ -182,7 +186,7 @@ class AttributesSyncTest extends OpenApiTestCase
     /**
      * @dataProvider allAttributeClasses
      */
-    public function testPropertyCompleteness($attribute)
+    public function testPropertyCompleteness(string $attribute): void
     {
         $attributeRC = new \ReflectionClass($attribute);
         $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());

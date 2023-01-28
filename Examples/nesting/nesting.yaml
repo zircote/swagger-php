@@ -40,9 +40,9 @@ components:
           $ref: '#/components/schemas/AlmostModel'
         -
           properties:
-            actual:
-              type: string
             soClose:
+              type: string
+            actual:
               type: string
     AlmostModel:
       type: object
@@ -51,9 +51,9 @@ components:
           $ref: '#/components/schemas/BaseModel'
         -
           properties:
-            almost:
-              type: string
             intermediate:
+              type: string
+            almost:
               type: string
     BaseModel:
       properties:

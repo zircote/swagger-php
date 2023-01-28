@@ -44,6 +44,24 @@ class MyController {
 }
 ```
 
+## Escaping
+
+::: tip Escaping double quotes
+Double quotes can be escaped by doubling them rather than using ```\```
+
+For example:
+```php
+    @OA\Schema(
+       title="Request",
+       schema="Request",
+       example={
+          "configuration":"{""formConfig"":123}"
+       }
+     )
+```
+:::
+
+
 ## Arrays and Objects
 
 Doctrine annotations support arrays, but use `{` and `}` instead of `[` and `]`.

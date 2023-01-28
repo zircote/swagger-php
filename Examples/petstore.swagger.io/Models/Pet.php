@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(required={"name", "photoUrls"}, @OA\Xml(name="Pet"))
  */
 class Pet
 {
-
     /**
      * @OA\Property(format="int64")
      *
@@ -24,18 +25,21 @@ class Pet
 
     /**
      * @var Category
+     *
      * @OA\Property
      */
     public $category;
 
     /**
      * @var string[]
+     *
      * @OA\Property(@OA\Xml(name="photoUrl", wrapped=true))
      */
     public $photoUrls;
 
     /**
      * @var Tag[]
+     *
      * @OA\Property(@OA\Xml(name="tag", wrapped=true))
      */
     public $tags;
@@ -44,6 +48,7 @@ class Pet
      * pet status in the store.
      *
      * @var string
+     *
      * @OA\Property(enum={"available", "pending", "sold"})
      */
     public $status;

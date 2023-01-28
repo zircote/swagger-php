@@ -45,7 +45,7 @@ class OpenApi extends AbstractAnnotation
     public $info = Generator::UNDEFINED;
 
     /**
-     * An array of <code>@OA\Server</code> objects, which provide connectivity information to a target server.
+     * An array of <code>@Server</code> objects, which provide connectivity information to a target server.
      *
      * If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.
      *
@@ -68,17 +68,12 @@ class OpenApi extends AbstractAnnotation
     public $components = Generator::UNDEFINED;
 
     /**
-     * Lists the required security schemes to execute this operation.
+     * A declaration of which security mechanisms can be used across the API.
      *
-     * The name used for each property must correspond to a security scheme declared
-     * in the Security Schemes under the Components Object.
-     * Security Requirement Objects that contain multiple schemes require that
-     * all schemes must be satisfied for a request to be authorized.
-     * This enables support for scenarios where multiple query parameters or
-     * HTTP headers are required to convey security information.
-     * When a list of Security Requirement Objects is defined on the Open API object or
-     * Operation Object, only one of Security Requirement Objects in the list needs to
-     * be satisfied to authorize the request.
+     * The list of values includes alternative security requirement objects that can be used.
+     * Only one of the security requirement objects need to be satisfied to authorize a request.
+     * Individual operations can override this definition.
+     * To make security optional, an empty security requirement `({})` can be included in the array.
      *
      * @var array
      */
@@ -188,6 +183,8 @@ class OpenApi extends AbstractAnnotation
 
     /**
      * Recursive helper for ref().
+     *
+     * @param array|AbstractAnnotation $container
      */
     private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
     {
@@ -206,7 +203,7 @@ class OpenApi extends AbstractAnnotation
                 throw new \Exception('$ref "' . $ref . '" not found');
             }
             if ($slash === false) {
-                return $container->$property;
+                return $container->{$property};
             }
             $mapping = [];
             if ($container instanceof AbstractAnnotation) {
@@ -217,14 +214,14 @@ class OpenApi extends AbstractAnnotation
                 }
             }
 
-            return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
+            return self::resolveRef($ref, $unresolved, $container->{$property}, $mapping);
         } elseif (is_array($container)) {
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);
             }
             foreach ($mapping as $nestedClass => $keyField) {
                 foreach ($container as $key => $item) {
-                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->$keyField === $property) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $nestedClass && (string) $item->{$keyField} === $property) {
                         return self::resolveRef($ref, $unresolved, $item, []);
                     }
                 }

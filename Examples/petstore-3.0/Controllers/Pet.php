@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Petstore30\Controllers;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Class Pet.
  *

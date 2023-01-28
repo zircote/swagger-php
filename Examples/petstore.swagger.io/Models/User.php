@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(@OA\Xml(name="User"))
  */
 class User
 {
-
     /**
      * @OA\Property(format="int64")
      *
@@ -38,18 +39,21 @@ class User
 
     /**
      * @var string
+     *
      * @OA\Property
      */
     public $email;
 
     /**
      * @var string
+     *
      * @OA\Property
      */
     public $password;
 
     /**
      * @var string
+     *
      * @OA\Property
      */
     public $phone;
@@ -58,6 +62,7 @@ class User
      * User Status.
      *
      * @var int
+     *
      * @OA\Property(format="int32")
      */
     public $userStatus;

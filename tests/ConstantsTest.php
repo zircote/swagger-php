@@ -11,7 +11,7 @@ use OpenApi\Generator;
 
 class ConstantsTest extends OpenApiTestCase
 {
-    const URL = 'http://example.com';
+    public const URL = 'http://example.com';
 
     private static $counter = 0;
 

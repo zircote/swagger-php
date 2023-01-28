@@ -7,8 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Annotations\Get;
-use OpenApi\Annotations\Post;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
@@ -27,7 +26,9 @@ class UtilTest extends OpenApiTestCase
             'Parser',
             'Analysers',
             'Processors',
+            'Scratch',
             'TypedProperties.php',
+            'Unreferenced.php',
             'UsingRefs.php',
             'UsingPhpDoc.php',
             'UsingCustomAttachables',
@@ -64,18 +65,18 @@ class UtilTest extends OpenApiTestCase
         $this->assertArrayNotHasKey($directory_path, $finder_result_array, 'The directory should not be a path in the finder.');
     }
 
-    public function shortenFixtures()
+    public function shortenFixtures(): iterable
     {
         return [
-            [Get::class, '@OA\Get'],
-            [[Get::class, Post::class], ['@OA\Get', '@OA\Post']],
+            [[OA\Get::class], ['@OA\Get']],
+            [[OA\Get::class, OA\Post::class], ['@OA\Get', '@OA\Post']],
         ];
     }
 
     /**
      * @dataProvider shortenFixtures
      */
-    public function testShorten($classes, $expected): void
+    public function testShorten(array $classes, array $expected): void
     {
         $this->assertEquals($expected, Util::shorten($classes));
     }

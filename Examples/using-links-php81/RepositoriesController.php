@@ -68,7 +68,8 @@ class RepositoriesController
     public function getPullRequestsByRepository(
         #[OAT\PathParameter()] string $username,
         #[OAT\PathParameter()] string $slug,
-        #[OAT\PathParameter()] State $state
+        #[OAT\PathParameter()] State $state,
+        #[OAT\QueryParameter()] ?string $label
     ) {
     }
 
@@ -102,7 +103,7 @@ class RepositoriesController
     )
     ]
     #[OAT\Link(link: 'PullRequestMerge', operationId: 'mergePullRequest', parameters: ['username' => '$response.body#/author/username', 'slug' => '$response.body#/repository/slug', 'pid' => '$response.body#/id'])]
-    public function mergePullRequest()
+    public function mergePullRequest(#[OAT\HeaderParameter(name: 'X-NONCE-ID')] string $nonceId, #[OAT\CookieParameter(name: 'User-Bind-Session')] ?string $bindCookie)
     {
     }
 }

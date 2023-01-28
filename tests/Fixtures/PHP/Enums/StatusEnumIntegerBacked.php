@@ -1,10 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace OpenApi\Tests\Fixtures\PHP;
+/**
+ * @license Apache 2.0
+ */
 
-use OpenApi\Attributes\Schema;
+namespace OpenApi\Tests\Fixtures\PHP\Enums;
 
-#[Schema(type: 'integer')]
+use OpenApi\Attributes as OAT;
+
+#[OAT\Schema(type: 'integer')]
 enum StatusEnumIntegerBacked: int
 {
     case DRAFT = 1;

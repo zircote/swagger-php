@@ -8,21 +8,21 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Schema extends \OpenApi\Annotations\Schema
 {
     /**
-     * @param string[]                  $required
-     * @param Property[]                $properties
-     * @param int|float                 $maximum
-     * @param int|float                 $minimum
-     * @param string[]|int[]|float[]    $enum
-     * @param Schema[]                  $allOf
-     * @param Schema[]                  $anyOf
-     * @param Schema[]                  $oneOf
-     * @param mixed                     $const
-     * @param array<string,string>|null $x
-     * @param Attachable[]|null         $attachables
+     * @param string[]                                        $required
+     * @param Property[]                                      $properties
+     * @param int|float                                       $maximum
+     * @param int|float                                       $minimum
+     * @param string[]|int[]|float[]|\UnitEnum[]|class-string $enum
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $allOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $anyOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>       $oneOf
+     * @param mixed                                           $const
+     * @param array<string,mixed>|null                        $x
+     * @param Attachable[]|null                               $attachables
      */
     public function __construct(
         // schema
@@ -30,13 +30,15 @@ class Schema extends \OpenApi\Annotations\Schema
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,
+        ?int $maxProperties = null,
+        ?int $minProperties = null,
         ?array $required = null,
         ?array $properties = null,
         ?string $type = null,
         ?string $format = null,
         ?Items $items = null,
         ?string $collectionFormat = null,
-        $default = Generator::UNDEFINED,
+        mixed $default = Generator::UNDEFINED,
         $maximum = null,
         ?bool $exclusiveMaximum = null,
         $minimum = null,
@@ -47,13 +49,13 @@ class Schema extends \OpenApi\Annotations\Schema
         ?int $minItems = null,
         ?bool $uniqueItems = null,
         ?string $pattern = null,
-        ?array $enum = null,
+        array|string|null $enum = null,
         ?Discriminator $discriminator = null,
         ?bool $readOnly = null,
         ?bool $writeOnly = null,
         ?Xml $xml = null,
         ?ExternalDocumentation $externalDocs = null,
-        $example = Generator::UNDEFINED,
+        mixed $example = Generator::UNDEFINED,
         ?bool $nullable = null,
         ?bool $deprecated = null,
         ?array $allOf = null,
@@ -70,6 +72,8 @@ class Schema extends \OpenApi\Annotations\Schema
             'schema' => $schema ?? Generator::UNDEFINED,
             'title' => $title ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
+            'maxProperties' => $maxProperties ?? Generator::UNDEFINED,
+            'minProperties' => $minProperties ?? Generator::UNDEFINED,
             'required' => $required ?? Generator::UNDEFINED,
             'properties' => $properties ?? Generator::UNDEFINED,
             'type' => $type ?? Generator::UNDEFINED,

@@ -33,7 +33,7 @@ class RepositoriesController
     }
 
     /**
-     ** @OA\Get(path="/2.0/repositories/{username}/{slug}",
+     * @OA\Get(path="/2.0/repositories/{username}/{slug}",
      *     operationId="getRepository",
      *     @OA\Parameter(name="username",
      *         in="path",

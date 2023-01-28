@@ -123,6 +123,8 @@ class Schema extends AbstractAnnotation
      * Sets a default value to the parameter. The type of the value depends on the defined type.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor101)
+     *
+     * @var mixed
      */
     public $default = Generator::UNDEFINED;
 
@@ -199,7 +201,7 @@ class Schema extends AbstractAnnotation
     /**
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
-     * @var string[]|int[]|float[]
+     * @var string[]|int[]|float[]|\UnitEnum[]|class-string
      */
     public $enum = Generator::UNDEFINED;
 
@@ -270,6 +272,8 @@ class Schema extends AbstractAnnotation
      *
      * To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to
      * contain the example with escaping where necessary.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 
@@ -293,7 +297,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against all schemas
      * defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $allOf = Generator::UNDEFINED;
 
@@ -301,7 +305,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against at least one
      * schema defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $anyOf = Generator::UNDEFINED;
 
@@ -309,7 +313,7 @@ class Schema extends AbstractAnnotation
      * An instance validates successfully against this property if it validates successfully against exactly one schema
      * defined by this property's value.
      *
-     * @var Schema[]
+     * @var array<Schema|\OpenApi\Attributes\Schema>
      */
     public $oneOf = Generator::UNDEFINED;
 

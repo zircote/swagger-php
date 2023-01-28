@@ -50,7 +50,7 @@ OpenApi allows a single reference to external documentation. This is a part of t
 ```
 
 ::: tip
-If no `@OA\OpenApi` is configured, `swagger-ph` will create one automatically.
+If no `@OA\OpenApi` is configured, `swagger-php` will create one automatically.
 
 That means the above example would also work with just the `OA\ExternalDocumentation` annotation.
 ```php

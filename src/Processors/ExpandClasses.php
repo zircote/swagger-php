@@ -7,23 +7,25 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Schema as AnnotationSchema;
-use OpenApi\Attributes\Schema as AttributeSchema;
+use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 
 /**
  * Iterate over the chain of ancestors of a schema and:
- * - merge ancestor annotations/methods/properties into the schema if the ancestor doesn't have a schema itself
- * - inherit from the ancestor if it has a schema (allOf) and stop.
+ * - if the ancestor has a schema
+ *   => inherit from the ancestor if it has a schema (allOf) and stop.
+ * - else
+ *   => merge ancestor properties into the schema.
  */
-class ExpandClasses
+class ExpandClasses implements ProcessorInterface
 {
-    use MergeTrait;
+    use Concerns\MergePropertiesTrait;
 
     public function __invoke(Analysis $analysis)
     {
-        /** @var AnnotationSchema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType([AnnotationSchema::class, AttributeSchema::class], true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType([OA\Schema::class, OAT\Schema::class], true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
@@ -38,7 +40,6 @@ class ExpandClasses
                         // one ancestor is enough
                         break;
                     } else {
-                        $this->mergeAnnotations($schema, $ancestor, $existing);
                         $this->mergeMethods($schema, $ancestor, $existing);
                         $this->mergeProperties($schema, $ancestor, $existing);
                     }

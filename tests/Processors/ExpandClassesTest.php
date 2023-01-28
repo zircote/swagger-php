@@ -7,10 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Components;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\PathItem;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
@@ -26,10 +23,10 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class ExpandClassesTest extends OpenApiTestCase
 {
-    protected function validate(Analysis $analysis)
+    protected function validate(Analysis $analysis): void
     {
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test', '_context' => $this->getContext()])];
+        $analysis->openapi->info = new OA\Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
+        $analysis->openapi->paths = [new OA\PathItem(['path' => '/test', '_context' => $this->getContext()])];
         $analysis->validate();
     }
 
@@ -53,8 +50,8 @@ class ExpandClassesTest extends OpenApiTestCase
         ]);
         $this->validate($analysis);
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
         $this->assertCount(4, $schemas);
         $childSchema = $schemas[0];
         $this->assertSame('Child', $childSchema->schema);
@@ -84,8 +81,8 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->process($this->processors([CleanUnusedComponents::class]));
         $this->validate($analysis);
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
         $this->assertCount(2, $schemas);
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
@@ -109,8 +106,8 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->process($this->processors([CleanUnusedComponents::class]));
         $this->validate($analysis);
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(5, $schemas);
 
         $extendedSchema = $schemas[0];
@@ -137,8 +134,8 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->process($this->processors([CleanUnusedComponents::class]));
         $this->validate($analysis);
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(4, $schemas);
 
         $extendedSchema = $schemas[0];
@@ -147,7 +144,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         $this->assertCount(2, $extendedSchema->allOf);
 
-        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[0]->ref);
+        $this->assertEquals(OA\Components::ref('Base'), $extendedSchema->allOf[0]->ref);
         $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
     }
 
@@ -164,8 +161,8 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->process($this->processors([CleanUnusedComponents::class]));
         $this->validate($analysis);
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(7, $schemas);
 
         $extendedSchema = $schemas[0];
@@ -173,9 +170,9 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
-        $this->assertEquals(Components::ref('Base'), $extendedSchema->allOf[0]->ref);
-        $this->assertEquals('nested', $extendedSchema->allOf[1]->properties[1]->property);
-        $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
+        $this->assertEquals(OA\Components::ref('Base'), $extendedSchema->allOf[0]->ref);
+        $this->assertEquals('nested', $extendedSchema->allOf[1]->properties[0]->property);
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[1]->property);
 
         $nestedSchema = $schemas[1];
         $this->assertCount(2, $nestedSchema->allOf);
@@ -197,13 +194,13 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->process($this->processors([CleanUnusedComponents::class]));
         $this->validate($analysis);
 
-        $analysis->openapi->info = new Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
-        $analysis->openapi->paths = [new PathItem(['path' => '/test', '_context' => $this->getContext()])];
+        $analysis->openapi->info = new OA\Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
+        $analysis->openapi->paths = [new OA\PathItem(['path' => '/test', '_context' => $this->getContext()])];
         $analysis->validate();
 
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
-        $this->assertCount(10, $schemas);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
+        $this->assertCount(9, $schemas);
 
         $baseInterface = $schemas[0];
         $this->assertSame('BaseInterface', $baseInterface->schema);

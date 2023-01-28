@@ -7,7 +7,15 @@
 namespace OpenApi\Attributes;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class PathParameter extends \OpenApi\Annotations\PathParameter
+class PathParameter extends Parameter
 {
-    use ParameterTrait;
+    /**
+     * @inheritdoc
+     */
+    public $in = 'path';
+
+    /**
+     * @inheritdoc
+     */
+    public $required = true;
 }

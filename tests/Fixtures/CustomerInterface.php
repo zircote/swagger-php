@@ -19,6 +19,7 @@ interface CustomerInterface
      * @var string
      *
      * @example John
+     *
      * @OA\Property
      */
     public function firstname();
@@ -27,6 +28,7 @@ interface CustomerInterface
      * @var null|string the second name of the customer
      *
      * @example Allan
+     *
      * @OA\Property
      */
     public function secondname();
@@ -37,6 +39,7 @@ interface CustomerInterface
      * @var string|null
      *
      * @example Peter
+     *
      * @OA\Property
      */
     public function thirdname();
@@ -47,12 +50,14 @@ interface CustomerInterface
      * @var unknown|null
      *
      * @example Unknown
+     *
      * @OA\Property
      */
     public function fourthname();
 
     /**
      * @var string the lastname of the customer
+     *
      * @OA\Property
      */
     public function lastname();

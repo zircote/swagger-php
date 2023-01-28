@@ -7,7 +7,7 @@
 namespace OpenApi\Analysers;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Property;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -27,6 +27,9 @@ class ReflectionAnalyser implements AnalyserInterface
     /** @var Generator|null */
     protected $generator;
 
+    /**
+     * @param array<AnnotationFactoryInterface> $annotationFactories
+     */
     public function __construct(array $annotationFactories = [])
     {
         $this->annotationFactories = $annotationFactories;
@@ -87,6 +90,7 @@ class ReflectionAnalyser implements AnalyserInterface
         $context = new Context([
             $contextType => $rc->getShortName(),
             'namespace' => $rc->getNamespaceName() ?: null,
+            'uses' => $details['uses'],
             'comment' => $rc->getDocComment() ?: null,
             'filename' => $rc->getFileName() ?: null,
             'line' => $rc->getStartLine(),
@@ -104,7 +108,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'context' => $context,
         ];
         $normaliseClass = function (string $name): string {
-            return '\\' . $name;
+            return '\\' . ltrim($name, '\\');
         };
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
@@ -165,7 +169,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     'annotations' => [],
                 ], $context);
                 foreach ($annotationFactory->build($constant, $ctx) as $annotation) {
-                    if ($annotation instanceof Property) {
+                    if ($annotation instanceof OA\Property) {
                         if (Generator::isDefault($annotation->property)) {
                             $annotation->property = $constant->getName();
                         }

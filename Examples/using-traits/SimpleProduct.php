@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingTraits;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(title="SimpleProduct model")
  * )
@@ -15,6 +17,7 @@ class SimpleProduct
      * The unique identifier of a simple product in our catalog.
      *
      * @var int
+     *
      * @OA\Property(format="int64", example=1)
      */
     public $id;

@@ -13,12 +13,8 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Operation;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Response;
-use OpenApi\Annotations\Schema;
-use OpenApi\Attributes\Get;
+use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\CleanUnusedComponents;
@@ -73,7 +69,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
     }
 
-    public function analysers()
+    public function analysers(): iterable
     {
         return [
             'docblocks-attributes' => [new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()])],
@@ -83,6 +79,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiDocBlockBasic(AnalyserInterface $analyser): void
@@ -90,7 +87,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         require_once $this->fixture('Apis/DocBlocks/basic.php');
 
         $analysis = (new Generator())
-            ->setVersion(OpenApi::VERSION_3_1_0)
+            ->setVersion(OA\OpenApi::VERSION_3_1_0)
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/DocBlocks/basic.php'), $this->getContext([], $generator->getVersion()));
@@ -99,17 +96,18 @@ class ReflectionAnalyserTest extends OpenApiTestCase
                 return $analysis;
             });
 
-        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/basic.yaml');
-        //file_put_contents($spec, $analysis->openapi->toYaml());
+        // file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
     }
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiAttributesBasic(AnalyserInterface $analyser): void
@@ -123,28 +121,28 @@ class ReflectionAnalyserTest extends OpenApiTestCase
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext([], $generator->getVersion()));
-                $analysis->process((new Generator())->getProcessors());
+                $analysis->process(($generator)->getProcessors());
 
                 return $analysis;
             });
 
-        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/basic.yaml');
-        //file_put_contents($spec, $analysis->openapi->toYaml());
+        // file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
 
         // check CustomAttachable is only attached to @OA\Get
-        /** @var Get[] $gets */
-        $gets = $analysis->getAnnotationsOfType(Get::class, true);
+        /** @var OA\Get[] $gets */
+        $gets = $analysis->getAnnotationsOfType(OAT\Get::class, true);
         $this->assertCount(2, $gets);
         $this->assertTrue(is_array($gets[0]->attachables), 'Attachables not set');
         $this->assertCount(1, $gets[0]->attachables);
 
-        /** @var Response[] $responses */
-        $responses = $analysis->getAnnotationsOfType(Response::class, true);
+        /** @var OA\Response[] $responses */
+        $responses = $analysis->getAnnotationsOfType(OA\Response::class, true);
         foreach ($responses as $response) {
             $this->assertEquals(Generator::UNDEFINED, $response->attachables);
         }
@@ -152,6 +150,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
     /**
      * @dataProvider analysers
+     *
      * @requires     PHP 8.1
      */
     public function testApiMixedBasic(AnalyserInterface $analyser): void
@@ -162,16 +161,16 @@ class ReflectionAnalyserTest extends OpenApiTestCase
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/Mixed/basic.php'), $this->getContext([], $generator->getVersion()));
-                $analysis->process((new Generator())->getProcessors());
+                $analysis->process(($generator)->getProcessors());
 
                 return $analysis;
             });
 
-        $operations = $analysis->getAnnotationsOfType(Operation::class);
+        $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
         $this->assertIsArray($operations);
 
         $spec = $this->fixture('Apis/basic.yaml');
-        //file_put_contents($spec, $analysis->openapi->toYaml());
+        // file_put_contents($spec, $analysis->openapi->toYaml());
         $this->assertTrue($analysis->validate());
         $this->assertSpecEquals($analysis->openapi, file_get_contents($spec));
     }
@@ -186,13 +185,13 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         }
 
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
-        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
         $analysis->process($this->processors([CleanUnusedComponents::class]));
 
-        /** @var Property[] $properties */
-        $properties = $analysis->getAnnotationsOfType(Property::class);
+        /** @var OA\Property[] $properties */
+        $properties = $analysis->getAnnotationsOfType(OA\Property::class);
         $this->assertCount(2, $properties);
         $this->assertEquals('id', $properties[0]->property);
         $this->assertEquals('labels', $properties[1]->property);

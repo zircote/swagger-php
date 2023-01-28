@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: Examples/processors/sort-components/SortComponents.php
+
+		-
+			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
+			count: 1
+			path: Examples/using-links-php81/User.php
+
+		-
 			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$description\\.$#"
 			count: 1
 			path: src/Annotations/AbstractAnnotation.php
@@ -31,11 +41,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: src/Context.php
-
-		-
 			message: "#^Ternary operator condition is always true\\.$#"
 			count: 1
 			path: src/Context.php
@@ -46,7 +51,7 @@ parameters:
 			path: src/Generator.php
 
 		-
-			message: "#^Instanceof between callable and class\\-string\\|false results in an error\\.$#"
+			message: "#^Instanceof between \\(callable\\)\\|OpenApi\\\\Processors\\\\ProcessorInterface and class\\-string\\|false results in an error\\.$#"
 			count: 1
 			path: src/Generator.php
 
@@ -69,6 +74,16 @@ parameters:
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: src/Processors/AugmentSchemas.php
+
+		-
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:description\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: src/Processors/DocBlockDescriptions.php
+
+		-
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:summaryAndDescription\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: src/Processors/DocBlockDescriptions.php
 
 		-
 			message: "#^Property OpenApi\\\\Annotations\\\\JsonContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
@@ -99,4 +114,3 @@ parameters:
 			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
 			count: 1
 			path: tests/Annotations/AttributesSyncTest.php
-

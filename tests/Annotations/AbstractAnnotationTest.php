@@ -6,9 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\Get;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -22,6 +20,9 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
+    /**
+     * @requires PHP < 8.2
+     */
     public function testInvalidField(): void
     {
         $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');
@@ -107,14 +108,14 @@ END;
         $parameter->validate();
     }
 
-    public function nestedMatches()
+    public function nestedMatches(): iterable
     {
-        $parameterMatch = (object) ['key' => Parameter::class, 'value' => ['parameters']];
+        $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
 
         return [
             'unknown' => [self::class, null],
-            'simple-match' => [Parameter::class, $parameterMatch],
-            'invalid-annotation' => [Schema::class, null],
+            'simple-match' => [OA\Parameter::class, $parameterMatch],
+            'invalid-annotation' => [OA\Schema::class, null],
             'sub-annotation' => [SubParameter::class, $parameterMatch],
             'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch],
             'sub-invalid' => [SubSchema::class, null],
@@ -124,12 +125,12 @@ END;
     /**
      * @dataProvider nestedMatches
      */
-    public function testMatchNested($class, $expected): void
+    public function testMatchNested(string $class, $expected): void
     {
-        $this->assertEquals($expected, Get::matchNested($class));
+        $this->assertEquals($expected, OA\Get::matchNested($class));
     }
 
-    public function testDuplicateOperationIdValidation()
+    public function testDuplicateOperationIdValidation(): void
     {
         $analysis = $this->analysisFromFixtures(['DuplicateOperationId.php']);
         $analysis->process((new Generator())->getProcessors());
@@ -137,13 +138,20 @@ END;
         $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
         $this->assertFalse($analysis->validate());
     }
+
+    public function testIsRoot(): void
+    {
+        $this->assertTrue((new OA\AdditionalProperties([]))->isRoot(OA\AdditionalProperties::class));
+        $this->assertFalse((new OA\AdditionalProperties([]))->isRoot(OA\Schema::class));
+        $this->assertTrue((new SubSchema([]))->isRoot(OA\Schema::class));
+    }
 }
 
-class SubSchema extends Schema
+class SubSchema extends OA\Schema
 {
 }
 
-class SubParameter extends Parameter
+class SubParameter extends OA\Parameter
 {
 }
 

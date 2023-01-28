@@ -12,114 +12,114 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 
 class ExamplesTest extends OpenApiTestCase
 {
-    public function exampleDetails()
+    public function exampleDetails(): iterable
     {
         yield 'example-object' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'example-object',
             'example-object.yaml',
             [],
         ];
 
         yield 'misc' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'misc',
             'misc.yaml',
             [],
         ];
 
         yield 'nesting' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'nesting',
             'nesting.yaml',
             [],
         ];
 
         yield 'petstore-3.0' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'petstore-3.0',
             'petstore-3.0.yaml',
             [],
         ];
 
         yield 'petstore.swagger.io' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'petstore.swagger.io',
             'petstore.swagger.io.yaml',
             [],
         ];
 
         yield 'swagger-spec/petstore' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore',
             'petstore.yaml',
             [],
         ];
 
         yield 'swagger-spec/petstore-simple' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore-simple',
             'petstore-simple.yaml',
             [],
         ];
 
         yield 'swagger-spec/petstore-simple-3.1.0' => [
-            OpenApi::VERSION_3_1_0,
+            OA\OpenApi::VERSION_3_1_0,
             'swagger-spec/petstore-simple',
             'petstore-simple-3.1.0.yaml',
             [],
         ];
 
         yield 'swagger-spec/petstore-with-external-docs' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore-with-external-docs',
             'petstore-with-external-docs.yaml',
             [],
         ];
 
         yield 'polymorphism' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'polymorphism',
             'polymorphism.yaml',
             [],
         ];
 
         yield 'polymorphism-3.1.0' => [
-            OpenApi::VERSION_3_1_0,
+            OA\OpenApi::VERSION_3_1_0,
             'polymorphism',
             'polymorphism-3.1.0.yaml',
             [],
         ];
 
         yield 'using-interfaces' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'using-interfaces',
             'using-interfaces.yaml',
             [],
         ];
 
         yield 'using-refs' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'using-refs',
             'using-refs.yaml',
             [],
         ];
 
         yield 'using-traits' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'using-traits',
             'using-traits.yaml',
             [],
         ];
 
         yield 'using-links' => [
-            OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_0_0,
             'using-links',
             'using-links.yaml',
             [],
@@ -127,7 +127,7 @@ class ExamplesTest extends OpenApiTestCase
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'using-links-php81' => [
-                OpenApi::VERSION_3_0_0,
+                OA\OpenApi::VERSION_3_0_0,
                 'using-links-php81',
                 'using-links-php81.yaml',
                 ['JetBrains\PhpStorm\ArrayShape'],
@@ -135,7 +135,7 @@ class ExamplesTest extends OpenApiTestCase
         }
     }
 
-    public function exampleMappings()
+    public function exampleMappings(): iterable
     {
         $analysers = [
             'token' => new TokenAnalyser(),
@@ -182,7 +182,7 @@ class ExamplesTest extends OpenApiTestCase
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
-        //file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        // file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($path . '/' . $spec),

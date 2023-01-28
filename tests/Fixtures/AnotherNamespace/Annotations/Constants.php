@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @license Apache 2.0
@@ -11,5 +11,5 @@ namespace AnotherNamespace\Annotations;
  */
 class Constants
 {
-    const INVALID_TIMEZONE_LOCATION = 'invalidTimezoneLocation';
+    public const INVALID_TIMEZONE_LOCATION = 'invalidTimezoneLocation';
 }

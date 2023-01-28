@@ -1,6 +1,6 @@
-[![Build Status](https://img.shields.io/github/workflow/status/zircote/swagger-php/build?style=flat-square)](https://github.com/zircote/swagger-php/actions?query=workflow:build)
-[![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg?style=flat-square)](https://packagist.org/packages/zircote/swagger-php)
-[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square)](LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/zircote/swagger-php/build.yml?branch=master)](https://github.com/zircote/swagger-php/actions?query=workflow:build)
+[![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg)](https://packagist.org/packages/zircote/swagger-php)
+[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](LICENSE)
 
 # swagger-php
 
@@ -58,7 +58,7 @@ Add annotations to your php files.
  */
 ```
 
-Visit the [Documentation website](https://zircote.github.io/swagger-php/) for the [Getting started guide](https://zircote.github.io/swagger-php/Getting-started.html) or look at the [Examples directory](Examples/) for more examples.
+Visit the [Documentation website](https://zircote.github.io/swagger-php/) for the [Getting started guide](https://zircote.github.io/swagger-php/guide) or look at the [Examples directory](Examples/) for more examples.
 
 ### Usage from php
 
@@ -119,7 +119,7 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
 or pull requests.
 
-The documentation website is build from the [docs](docs/) folder with [vuepress](https://vuepress.vuejs.org).
+The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
 
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (PSR-2) tests.
@@ -129,14 +129,19 @@ and [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (PSR-2) tests.
 composer test
 ```
 
+### To run static-analysis execute:
+```bash
+composer analyse
+```
+
 ### Running unit tests only:
 ```bash
 ./bin/phpunit
 ```
 
-### Regenerate annotation/attribute reference markup docs
+### Regenerate reference markup docs
 ```bash
-composer docs:refgen
+composer docs:gen
 ```
 
 ### Running linting only:

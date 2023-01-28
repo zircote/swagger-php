@@ -26,7 +26,7 @@ paths:
         -
           name: product_id
           in: path
-          description: 'The product id.'
+          description: 'the product id'
           required: false
           schema:
             type: int
@@ -145,12 +145,12 @@ components:
               example: null
             colour:
               $ref: '#/components/schemas/Colour'
+            releasedAt:
+              type: string
             id:
               description: 'The id.'
               format: int64
               example: 1
-            releasedAt:
-              type: string
             kind:
               description: 'The kind.'
               type: string

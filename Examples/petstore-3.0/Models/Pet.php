@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Petstore30\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Class Pet.
  *
@@ -22,7 +24,6 @@ namespace OpenApi\Examples\Petstore30\Models;
  */
 class Pet
 {
-
     /**
      * @OA\Property(
      *     format="int64",

@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\UsingRefs;
 
+use OpenApi\Annotations as OA;
+
 /**
  * A common scenario is to let swagger-php generate a definition based on your model class.
  * These definitions can then be referenced with `ref="#/components/schemas/$classname".
@@ -20,6 +22,7 @@ class Product extends Model
      * The unique identifier of a product in our catalog.
      *
      * @var int
+     *
      * @OA\Property(format="int64", example=1)
      */
     public $id;

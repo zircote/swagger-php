@@ -1,9 +1,12 @@
 /.* export-ignore
+/docs/ export-ignore
+/Examples/ export-ignore
 /tools/ export-ignore
+/tests/ export-ignore
+/Changelog.md export-ignore
 /phpstan*.neon export-ignore
 /phpunit.xml.dist export-ignore
 /psalm*.xml export-ignore
-/tests/ export-ignore
 
 *       text=auto eol=lf
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4

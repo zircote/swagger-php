@@ -2,12 +2,13 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema
  */
 class ApiResponse
 {
-
     /**
      * @OA\Property(format="int32")
      *

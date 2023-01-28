@@ -141,6 +141,8 @@ class Parameter extends AbstractAnnotation
      * The example object is mutually exclusive of the examples object.
      * Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.
      * To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 
@@ -161,7 +163,7 @@ class Parameter extends AbstractAnnotation
      * The key is the media type and the value describes it.
      * The map must only contain one entry.
      *
-     * @var MediaType[]
+     * @var array<MediaType>|JsonContent|XmlContent|Attachable
      */
     public $content = Generator::UNDEFINED;
 

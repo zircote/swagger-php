@@ -11,8 +11,25 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class TokenScannerTest extends OpenApiTestCase
 {
-    public function scanCases()
+    public function scanCases(): iterable
     {
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'abstract' => [
+                'PHP/AbstractKeyword.php',
+                [
+                    'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
+                        'uses' => [
+                            'OAT' => 'OpenApi\Attributes',
+                        ],
+                        'interfaces' => [],
+                        'traits' => [],
+                        'enums' => [],
+                        'methods' => ['stuff', 'other', 'another'],
+                        'properties' => [],
+                    ],
+                ],
+            ];
+        }
         if (\PHP_VERSION_ID >= 80100) {
             yield 'basic' => [
                 'Apis/DocBlocks/basic.php',
@@ -76,6 +93,24 @@ class TokenScannerTest extends OpenApiTestCase
                 ],
             ];
         }
+
+        yield 'references' => [
+            'PHP/References.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\References' => [
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [
+                        'return_ref',
+                    ],
+                    'properties' => [],
+                ],
+            ],
+        ];
 
         yield 'php7' => [
             'PHP/php7.php',
@@ -190,7 +225,8 @@ class TokenScannerTest extends OpenApiTestCase
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\Php8PromotedProperties' => [
                     'uses' => [
-                        'Property' => 'OpenApi\\Attributes\\Property',
+                        'OAT' => 'OpenApi\\Attributes',
+                        'OA' => 'OpenApi\Annotations',
                     ],
                     'interfaces' => [],
                     'traits' => [],
@@ -205,7 +241,9 @@ class TokenScannerTest extends OpenApiTestCase
             'PHP/Php8NamedArguments.php',
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedArguments' => [
-                    'uses' => [],
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
                     'interfaces' => [],
                     'traits' => [],
                     'enums' => [],
@@ -219,7 +257,9 @@ class TokenScannerTest extends OpenApiTestCase
             'PHP/AnonymousFunctions.php',
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
-                    'uses' => [],
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
                     'interfaces' => [],
                     'traits' => [],
                     'enums' => [],
@@ -283,10 +323,12 @@ class TokenScannerTest extends OpenApiTestCase
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'enum' => [
-                'PHP/StatusEnum.php',
+                'PHP/Enums/StatusEnum.php',
                 [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\StatusEnum' => [
-                        'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
+                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
+                        'uses' => [
+                            'OAT' => 'OpenApi\\Attributes',
+                        ],
                         'interfaces' => [],
                         'enums' => [],
                         'traits' => [],
@@ -297,10 +339,12 @@ class TokenScannerTest extends OpenApiTestCase
             ];
 
             yield 'enum-backed' => [
-                'PHP/StatusEnumBacked.php',
+                'PHP/Enums/StatusEnumBacked.php',
                 [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\StatusEnumBacked' => [
-                        'uses' => ['Schema' => 'OpenApi\\Attributes\\Schema'],
+                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
+                        'uses' => [
+                            'OAT' => 'OpenApi\\Attributes',
+                        ],
                         'interfaces' => [],
                         'enums' => [],
                         'traits' => [],
@@ -315,7 +359,7 @@ class TokenScannerTest extends OpenApiTestCase
     /**
      * @dataProvider scanCases
      */
-    public function testScanFile($fixture, $expected): void
+    public function testScanFile(string $fixture, array $expected): void
     {
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));
         $this->assertEquals($expected, $result);

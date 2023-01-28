@@ -6,7 +6,6 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
 
-
 ## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
 
 
@@ -30,6 +29,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -42,7 +45,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -64,7 +67,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -76,19 +79,19 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -124,7 +127,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 #### Parameters
 ---
 <dl>
-  <dt><strong>schemas</strong> : <span style="font-family: monospace;">Schema[]|null</span></dt>
+  <dt><strong>schemas</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -140,9 +143,9 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]|null</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -169,7 +172,62 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>email</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -210,13 +268,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -241,7 +299,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>mapping</strong> : <span style="font-family: monospace;">string[]|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -274,7 +332,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -299,7 +357,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -330,7 +388,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -371,13 +429,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -418,13 +476,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -459,7 +517,62 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -492,7 +605,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>license</strong> : <span style="font-family: monospace;">OpenApi\Attributes\License|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -521,6 +634,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -533,7 +650,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -555,7 +672,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -567,21 +684,21 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -608,6 +725,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -620,7 +741,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -642,7 +763,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -654,21 +775,21 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -695,7 +816,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -726,13 +847,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>requestBody</strong></dt>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>server</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Server|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -757,13 +878,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -796,7 +917,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>components</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Components|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -837,13 +958,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -882,9 +1003,11 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -896,7 +1019,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -937,13 +1060,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -972,7 +1095,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1011,9 +1134,11 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1025,7 +1150,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1066,13 +1191,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1103,6 +1228,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -1115,7 +1244,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1137,7 +1266,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1149,21 +1278,21 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1204,13 +1333,68 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
+
+
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
+
+#### Nested elements
+---
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">object|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1239,9 +1423,9 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|null</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1270,11 +1454,11 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|array&lt;MediaType|XmlContent&gt;</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|Attachable|array&lt;MediaType|Attachable&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1303,6 +1487,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -1315,7 +1503,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1337,7 +1525,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1349,23 +1537,23 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>const</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1406,7 +1594,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>flows</strong> : <span style="font-family: monospace;">Flow[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1433,7 +1621,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">ServerVariable[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1460,11 +1648,11 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1491,7 +1679,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1532,13 +1720,13 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">callable[]</span></dt>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1569,7 +1757,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>wrapped</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1596,6 +1784,10 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>No details available.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
@@ -1608,7 +1800,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>default</strong></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1630,7 +1822,7 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>No details available.</p></dd>
@@ -1642,21 +1834,21 @@ In addition to this page, there are also a number of [examples](https://github.c
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">Schema[]</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>No details available.</p></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>No details available.</p></dd>

@@ -6,9 +6,7 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\SecurityScheme;
-use OpenApi\Annotations\Server;
+use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
 /**
@@ -43,9 +41,9 @@ INFO;
         $annotations = $this->annotationsFromDocBlockParser($comment);
 
         $this->assertCount(3, $annotations);
-        $this->assertInstanceOf(Info::class, $annotations[0]);
-        $this->assertInstanceOf(Server::class, $annotations[1]);
-        $this->assertInstanceOf(Server::class, $annotations[2]);
+        $this->assertInstanceOf(OA\Info::class, $annotations[0]);
+        $this->assertInstanceOf(OA\Server::class, $annotations[1]);
+        $this->assertInstanceOf(OA\Server::class, $annotations[2]);
 
         $this->assertEquals('http://example.com', $annotations[1]->url);
         $this->assertEquals('First host', $annotations[1]->description);
@@ -83,7 +81,7 @@ SCHEME;
         $this->assertCount(1, $annotations);
         /** @var \OpenApi\Annotations\SecurityScheme $security */
         $security = $annotations[0];
-        $this->assertInstanceOf(SecurityScheme::class, $security);
+        $this->assertInstanceOf(OA\SecurityScheme::class, $security);
 
         $this->assertCount(1, $security->flows);
         $this->assertEquals('implicit', $security->flows[0]->flow);

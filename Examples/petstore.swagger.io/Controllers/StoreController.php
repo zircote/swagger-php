@@ -2,6 +2,8 @@
 
 namespace OpenApi\Examples\PetstoreSwaggerIo\Controllers;
 
+use OpenApi\Annotations as OA;
+
 abstract class StoreController
 {
     /**

@@ -46,8 +46,9 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "doctrine/annotations": "^1.7",
-        "psr/log": "^1.1 || ^2.0 || 3.0",
+        "doctrine/annotations": "^1.7 || ^2.0",
+        "psr/log": "^1.1 || ^2.0 || ^3.0",
+        "symfony/deprecation-contracts": "^2 || ^3",
         "symfony/finder": ">=2.2",
         "symfony/yaml": ">=3.3"
     },
@@ -70,8 +71,7 @@
         "psr-4": {
             "OpenApi\\Tools\\": "tools/src/",
             "OpenApi\\Tests\\": "tests/",
-            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace",
-            "OpenApi\\Tests\\Fixtures\\Annotations\\": "tests/Fixtures/Annotations"
+            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
         }
     },
     "scripts-descriptions": {
@@ -87,26 +87,31 @@
         "docs:build": "Re-build static gh-pages"
     },
     "scripts": {
-        "cs": "php-cs-fixer fix --allow-risky=yes",
+        "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
         "lint": "@cs --dry-run",
         "test": [
-            "phpunit",
+            "export XDEBUG_MODE=off && phpunit",
             "@lint"
         ],
-        "testlegacy": "export PHPUNIT_ANALYSER=legacy && phpunit",
+        "testlegacy": "export XDEBUG_MODE=off && export PHPUNIT_ANALYSER=legacy && phpunit",
         "testall": [
             "@test",
             "@testlegacy"
         ],
         "analyse": [
-            "phpstan analyse --memory-limit=2G",
-            "psalm"
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
+            "export XDEBUG_MODE=off && psalm"
         ],
         "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
         "docs:refgen": "php tools/refgen.php",
+        "docs:procgen": "php tools/procgen.php",
+        "docs:gen": [
+            "@docs:refgen",
+            "@docs:procgen"
+        ],
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
-            "@docs:refgen",
+            "@docs:gen",
             "cd docs && npm run build"
         ]
     }

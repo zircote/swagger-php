@@ -7,8 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
@@ -17,8 +16,8 @@ class MergeIntoOpenApiTest extends OpenApiTestCase
 {
     public function testProcessor(): void
     {
-        $openapi = new OpenApi(['_context' => $this->getContext()]);
-        $info = new Info(['_context' => $this->getContext()]);
+        $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
+        $info = new OA\Info(['_context' => $this->getContext()]);
         $analysis = new Analysis(
             [
                 $openapi,

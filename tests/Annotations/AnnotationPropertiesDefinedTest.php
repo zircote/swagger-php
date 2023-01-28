@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Annotations;
 
 use function \get_class_vars;
-use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AnnotationPropertiesDefinedTest extends OpenApiTestCase
@@ -15,10 +15,10 @@ class AnnotationPropertiesDefinedTest extends OpenApiTestCase
     /**
      * @dataProvider allAnnotationClasses
      */
-    public function testPropertiesAreNotUndefined($annotation): void
+    public function testPropertiesAreNotUndefined(string $annotation): void
     {
         $properties = get_class_vars($annotation);
-        $skip = AbstractAnnotation::$_blacklist;
+        $skip = OA\AbstractAnnotation::$_blacklist;
         foreach ($properties as $property => $value) {
             if (in_array($property, $skip)) {
                 continue;

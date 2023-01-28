@@ -6,14 +6,16 @@
 
 namespace OpenApi\Tests\Fixtures;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema
  */
 class NestedProperty
 {
-
     /**
      * @var bool
+     *
      * @OA\Property(
      *     @OA\Property(
      *         property="babyProperty",

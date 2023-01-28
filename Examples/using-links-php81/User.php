@@ -8,7 +8,6 @@ use OpenApi\Attributes as OAT;
 #[OAT\Schema(schema: 'user')]
 class User
 {
-
     /**
      * @var string
      */

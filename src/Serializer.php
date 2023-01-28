@@ -40,6 +40,9 @@ class Serializer
         OA\Options::class,
         OA\Parameter::class,
         OA\PathParameter::class,
+        OA\QueryParameter::class,
+        OA\CookieParameter::class,
+        OA\HeaderParameter::class,
         OA\Patch::class,
         OA\PathItem::class,
         OA\Post::class,
@@ -111,7 +114,7 @@ class Serializer
                 $custom = substr($property, 2);
                 $annotation->x[$custom] = $value;
             } else {
-                $annotation->$property = $this->doDeserializeProperty($annotation, $property, $value, $context);
+                $annotation->{$property} = $this->doDeserializeProperty($annotation, $property, $value, $context);
             }
         }
 
@@ -124,6 +127,10 @@ class Serializer
 
     /**
      * Deserialize the annotation's property.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
      */
     protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value, Context $context)
     {
@@ -160,7 +167,7 @@ class Serializer
                 $annotationHash = [];
                 foreach ($value as $k => $v) {
                     $annotation = $this->doDeserialize($v, $nestedClass, $context);
-                    $annotation->$key = $k;
+                    $annotation->{$key} = $k;
                     $annotationHash[$k] = $annotation;
                 }
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\Processors;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Entity controller trait.
  */

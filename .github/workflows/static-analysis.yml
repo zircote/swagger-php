@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  phpstan:
+  static-analysis:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
         with:
           php-version: '8.1'
 
-      - uses: ramsey/composer-install@v1
+      - uses: ramsey/composer-install@v2
         with:
           dependency-versions: 'highest'
 

@@ -25,7 +25,7 @@ class ResponseTest extends OpenApiTestCase
         $this->validateMisspelledAnnotation('6XX');
     }
 
-    protected function validateMisspelledAnnotation(string $response = '')
+    protected function validateMisspelledAnnotation(string $response = ''): void
     {
         $annotations = $this->annotationsFromDocBlockParser(
             '@OA\Get(@OA\Response(response="' . $response . '", description="description"))'

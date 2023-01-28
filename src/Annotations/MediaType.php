@@ -17,7 +17,6 @@ use OpenApi\Generator;
  */
 class MediaType extends AbstractAnnotation
 {
-
     /**
      * The key into Operation->content array.
      *
@@ -40,6 +39,8 @@ class MediaType extends AbstractAnnotation
      *
      * Furthermore, if referencing a schema which contains an example,
      * the example value shall override the example provided by the schema.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 
