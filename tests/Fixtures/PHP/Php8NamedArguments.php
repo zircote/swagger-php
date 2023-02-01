@@ -22,3 +22,33 @@ class Php8NamedArguments
     {
     }
 }
+
+#[\Attribute]
+class ReservedWordsAttr
+{
+    public function __construct(
+        $abstract = null,
+        $namespace = null,
+        $use = null,
+        $class = null,
+        $interface = null,
+        $extends = null,
+        $implements = null,
+        $function = null
+    ) {
+    }
+}
+
+#[ReservedWordsAttr(
+    abstract: 'example',            // No space
+    namespace : 'example',          // One space
+    use /* comment */ : 'example',  // Comment
+    class : 'example',
+    interface : 'example',
+    extends : 'example',
+    implements : 'example',
+    function : 'example'
+)]
+class UserlandClass
+{
+}
