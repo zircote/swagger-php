@@ -64,7 +64,7 @@ class DocBlockParser
                 $errorMessage = $matches[1];
                 $errorPos = (int) $matches[2];
                 $atPos = strpos($comment, '@');
-                $context->line += substr_count($comment, "\n", 0, $atPos + $errorPos);
+                $context->line -= substr_count($comment, "\n", $atPos + $errorPos) + 1;
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
                 $context->logger->error($errorMessage . ' in ' . $context, ['exception' => $e]);

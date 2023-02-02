@@ -564,6 +564,8 @@ class TokenAnalyser implements AnalyserInterface
 
     /**
      * Parse a use statement.
+     *
+     * @param (int|mixed)[]|string $token
      */
     private function parseUseStatement(array &$tokens, &$token, Context $parseContext): array
     {
