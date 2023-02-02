@@ -7,7 +7,6 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
 use OpenApi\Processors\ProcessorInterface;
 
 /**
@@ -338,8 +337,9 @@ class Analysis
             if (array_key_exists($fqdn, $definitions)) {
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
+                    /** @var OA\AbstractAnnotation $annotation */
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if (in_array(get_class($annotation), [OA\Schema::class, OAT\Schema::class]) && !$annotation->_context->is('generated')) {
+                        if ($annotation->isRoot(OA\Schema::class) && !$annotation->_context->is('generated')) {
                             return $annotation;
                         }
                     }
