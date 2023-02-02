@@ -497,7 +497,7 @@ class TokenAnalyser implements AnalyserInterface
         }
     }
 
-    private function parseAttribute(array &$tokens, array &$token, Context $parseContext): void
+    private function parseAttribute(array &$tokens, &$token, Context $parseContext): void
     {
         $nesting = 1;
         while ($token !== false) {
