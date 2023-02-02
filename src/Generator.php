@@ -13,6 +13,7 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
+use OpenApi\Processors\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -52,7 +53,7 @@ class Generator
     /** @var array<string,mixed> */
     protected $config = [];
 
-    /** @var callable[]|null List of configured processors. */
+    /** @var array<ProcessorInterface|callable>|null List of configured processors. */
     protected $processors = null;
 
     /** @var LoggerInterface|null PSR logger. */
@@ -245,7 +246,7 @@ class Generator
     }
 
     /**
-     * @return callable[]
+     * @return array<ProcessorInterface|callable>
      */
     public function getProcessors(): array
     {
@@ -290,7 +291,7 @@ class Generator
     }
 
     /**
-     * @param null|callable[] $processors
+     * @param array<ProcessorInterface|callable>|null $processors
      */
     public function setProcessors(?array $processors): Generator
     {
@@ -300,9 +301,10 @@ class Generator
     }
 
     /**
-     * @param class-string|null $before
+     * @param callable|ProcessorInterface $processor
+     * @param class-string|null           $before
      */
-    public function addProcessor(callable $processor, ?string $before = null): Generator
+    public function addProcessor($processor, ?string $before = null): Generator
     {
         $processors = $this->getProcessors();
         if (!$before) {
@@ -323,7 +325,10 @@ class Generator
         return $this;
     }
 
-    public function removeProcessor(callable $processor, bool $silent = false): Generator
+    /**
+     * @param callable|ProcessorInterface $processor
+     */
+    public function removeProcessor($processor, bool $silent = false): Generator
     {
         $processors = $this->getProcessors();
         if (false === ($key = array_search($processor, $processors, true))) {
@@ -341,11 +346,11 @@ class Generator
     /**
      * Update/replace an existing processor with a new one.
      *
-     * @param callable      $processor The new processor
-     * @param null|callable $matcher   Optional matcher callable to identify the processor to replace.
-     *                                 If none given, matching is based on the processors class.
+     * @param ProcessorInterface|callable $processor the new processor
+     * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
+     *                                               If none given, matching is based on the processors class.
      */
-    public function updateProcessor(callable $processor, ?callable $matcher = null): Generator
+    public function updateProcessor($processor, ?callable $matcher = null): Generator
     {
         $matcher = $matcher ?: function ($other) use ($processor): bool {
             $otherClass = get_class($other);

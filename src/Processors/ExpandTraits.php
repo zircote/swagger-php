@@ -16,7 +16,7 @@ use OpenApi\Generator;
  * - merge trait annotations/methods/properties into the schema if the trait does not have a schema itself
  * - inherit from the trait if it has a schema (allOf).
  */
-class ExpandTraits
+class ExpandTraits implements ProcessorInterface
 {
     use Concerns\MergePropertiesTrait;
 

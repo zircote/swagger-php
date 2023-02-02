@@ -50,6 +50,15 @@ class TokenScanner
         };
 
         while (false !== ($token = $this->nextToken($tokens))) {
+            // named arguments
+            $nextToken = $this->nextToken($tokens);
+            if ($nextToken === ':' || $nextToken === false) {
+                continue;
+            }
+            do {
+                $prevToken = prev($tokens);
+            } while ($token !== $prevToken);
+
             if (!is_array($token)) {
                 switch ($token) {
                     case '{':
@@ -197,14 +206,13 @@ class TokenScanner
             $lastToken = $token;
         }
 
-        /* @phpstan-ignore-next-line */
         return $units;
     }
 
     /**
      * Get the next token that is not whitespace or comment.
      *
-     * @return string|array
+     * @return string|array|false
      */
     protected function nextToken(array &$tokens)
     {
@@ -368,7 +376,6 @@ class TokenScanner
             }
         }
 
-        /* @phpstan-ignore-next-line */
         return $properties;
     }
 }

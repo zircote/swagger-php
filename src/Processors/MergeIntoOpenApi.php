@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Merge all @OA\OpenApi annotations into one.
  */
-class MergeIntoOpenApi
+class MergeIntoOpenApi implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

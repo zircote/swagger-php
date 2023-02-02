@@ -13,7 +13,7 @@ use OpenApi\Generator;
 /**
  * Update refs broken due to `allOf` augmenting.
  */
-class AugmentRefs
+class AugmentRefs implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Merge reusable annotation into @OA\Schemas.
  */
-class MergeIntoComponents
+class MergeIntoComponents implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {

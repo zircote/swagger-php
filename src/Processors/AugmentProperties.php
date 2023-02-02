@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties implements ProcessorInterface
 {
     use Concerns\DocblockTrait;
     use Concerns\TypesTrait;
@@ -97,7 +97,7 @@ class AugmentProperties
             }
 
             // ok, so we possibly have a type or ref
-            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && $property->nullable) {
+            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
                     $schema = new OA\Schema([
