@@ -497,7 +497,7 @@ class TokenAnalyser implements AnalyserInterface
         }
     }
 
-    private function parseAttribute(array &$tokens, &$token, Context $parseContext): void
+    private function parseAttribute(array &$tokens, array &$token, Context $parseContext): void
     {
         $nesting = 1;
         while ($token !== false) {
@@ -564,6 +564,8 @@ class TokenAnalyser implements AnalyserInterface
 
     /**
      * Parse a use statement.
+     *
+     * @param (int|mixed)[]|string $token
      */
     private function parseUseStatement(array &$tokens, &$token, Context $parseContext): array
     {
