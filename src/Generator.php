@@ -87,6 +87,7 @@ class Generator
             public function push(Generator $generator): void
             {
                 $this->generator = $generator;
+                /* @phpstan-ignore-next-line */
                 if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
                     // keeping track of &this->generator allows to 'disable' the loader after we are done;
                     // no unload, unfortunately :/
