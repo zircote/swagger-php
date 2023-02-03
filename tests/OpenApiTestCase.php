@@ -95,7 +95,7 @@ class OpenApiTestCase extends TestCase
 
     public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
     {
-        $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message) {
+        $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message): void {
             if ($entry instanceof \Exception) {
                 $entry = $entry->getMessage();
             }
@@ -114,7 +114,7 @@ class OpenApiTestCase extends TestCase
      */
     protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
-        $formattedValue = function ($value) {
+        $formattedValue = function ($value): string {
             if (is_bool($value)) {
                 return $value ? 'true' : 'false';
             }

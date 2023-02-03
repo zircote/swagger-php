@@ -24,6 +24,7 @@ class DocBlockParserTest extends OpenApiTestCase
 
     public function testDeprecatedAnnotationWarning(): void
     {
+        /* @phpstan-ignore-next-line */
         if (!class_exists(AnnotationRegistry::class, true) || !method_exists(AnnotationRegistry::class, 'registerLoader')) {
             $this->markTestSkipped('Not supported in doctrine/annotations v2');
         }

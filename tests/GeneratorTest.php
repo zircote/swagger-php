@@ -99,7 +99,7 @@ class GeneratorTest extends OpenApiTestCase
     {
         $generator = new Generator();
         $processors = $generator->getProcessors();
-        $processor = function (Analysis $analysis) {
+        $processor = function (Analysis $analysis): void {
         };
         $generator->addProcessor($processor);
         $generator->removeProcessor($processor);
@@ -137,7 +137,7 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider configCases
      */
-    public function testConfig(array $config, bool $expected)
+    public function testConfig(array $config, bool $expected): void
     {
         $generator = new Generator();
         $this->assertOperationIdHash($generator, true);
