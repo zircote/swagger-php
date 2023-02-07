@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 class ScratchTest extends OpenApiTestCase
@@ -21,7 +20,6 @@ class ScratchTest extends OpenApiTestCase
             }
 
             yield $name => [
-                OA\OpenApi::VERSION_3_0_0,
                 $this->fixture("Scratch/$name.php"),
                 $this->fixture("Scratch/$name.yaml"),
                 [],
@@ -36,7 +34,7 @@ class ScratchTest extends OpenApiTestCase
      *
      * @requires     PHP 8.1
      */
-    public function testScratch(string $version, string $scratch, string $spec, array $expectedLog): void
+    public function testScratch(string $scratch, string $spec, array $expectedLog): void
     {
         foreach ($expectedLog as $logLine) {
             $this->assertOpenApiLogEntryContains($logLine);
@@ -45,8 +43,8 @@ class ScratchTest extends OpenApiTestCase
         require_once $scratch;
 
         $openapi = (new Generator($this->getTrackingLogger()))
-            ->setVersion($version)
             ->generate([$scratch]);
+
         // file_put_contents($spec, $openapi->toYaml());
         $this->assertSpecEquals($openapi, file_get_contents($spec));
     }
