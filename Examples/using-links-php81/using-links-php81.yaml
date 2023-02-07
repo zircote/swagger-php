@@ -160,6 +160,9 @@ paths:
   '/2.0/users/{username}':
     get:
       operationId: getUserByName
+      summary: 'Get user details by username'
+      tags:
+        - Users
       parameters:
         -
           name: username
