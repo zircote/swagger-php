@@ -36,7 +36,7 @@ trait CollectorTrait
 
         $storage->attach($annotation);
 
-        foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOff', 'callbacks']) as $properties) {
+        foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOf', 'callbacks']) as $properties) {
             foreach ((array) $properties as $property) {
                 if (isset($annotation->{$property})) {
                     $storage->addAll($this->traverseNested($annotation->{$property}));

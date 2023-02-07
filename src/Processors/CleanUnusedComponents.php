@@ -38,7 +38,7 @@ class CleanUnusedComponents implements ProcessorInterface
                 $usedRefs[$annotation->ref] = $annotation->ref;
             }
 
-            foreach (['allOf', 'anyOf', 'oneOff'] as $sub) {
+            foreach (['allOf', 'anyOf', 'oneOf'] as $sub) {
                 if (property_exists($annotation, $sub) && !Generator::isDefault($annotation->{$sub})) {
                     foreach ($annotation->{$sub} as $subElem) {
                         if (is_object($subElem) && property_exists($subElem, 'ref') && !Generator::isDefault($subElem->ref) && $subElem->ref !== null) {
