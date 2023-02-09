@@ -22,7 +22,7 @@ class RequestBody extends OA\RequestBody
         ?string $request = null,
         ?string $description = null,
         ?bool $required = null,
-        array|JsonContent|XmlContent|Attachable|null $content = null,
+        array|JsonContent|XmlContent|Attachable|MediaType|null $content = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
