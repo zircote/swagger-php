@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 class RequestBody extends OA\RequestBody
 {
     /**
-     * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
+     * @param array<MediaType>|MediaType|JsonContent|XmlContent|Attachable|null $content
      * @param array<string,mixed>|null                                $x
      * @param Attachable[]|null                                       $attachables
      */
@@ -22,7 +22,7 @@ class RequestBody extends OA\RequestBody
         ?string $request = null,
         ?string $description = null,
         ?bool $required = null,
-        array|JsonContent|XmlContent|Attachable|MediaType|null $content = null,
+        array|MediaType|JsonContent|XmlContent|Attachable|null $content = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
