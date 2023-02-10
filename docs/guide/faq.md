@@ -8,7 +8,7 @@ architectural changes had to be made.
 One of those changes is that placing annotations in your source files is now subject to the same limitations as attributes.
 These limits are dictated by the PHP reflection API, specifically where it provides access to attributes and doc comments.
 
-This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot 'see' them any more.
+This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot _"see"_ them any more.
 
 Supported locations:
 * class
@@ -46,6 +46,90 @@ class OpenApiSpec
 }
 ```
 
+## Annotations missing
+
+Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks any more as the PHP reflection API only provides access to the docblock closest to a given structural element.
+
+```php
+class Controller
+{
+    /**
+     * @OA\Delete(
+     *      path="/api/v0.0.2/notifications/{id}",
+     *      operationId="deleteNotificationById",
+     *      summary="Delete notification by ID",
+     *      @OA\Parameter(name="id", in="path", @OA\Schema(type="integer")),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=400, description="Bad Request")
+     * )
+     */
+    /**
+     * Delete notification by ID.
+     *
+     * @param Request $request
+     * @param AppNotification $notification
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function destroy(Request $request, AppNotification $notification) {
+        //
+    }
+}
+```
+
+In this case the simplest solution is to merge both docblocks. As an additional benefit the duplication of the summary can be avoided.
+
+In this improved version `swagger-php` will automatically use the docblock summary just as explicitly done above.
+
+```php
+class Controller
+{
+    /**
+     * Delete notification by ID.
+     *
+     * @OA\Delete(
+     *      path="/api/v0.0.2/notifications/{id}",
+     *      operationId="deleteNotificationById",
+     *      @OA\Parameter(name="id", in="path", @OA\Schema(type="integer")),
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=400, description="Bad Request")
+     * )
+     *
+     * @param Request $request
+     * @param AppNotification $notification
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function destroy(Request $request, AppNotification $notification) {
+        //
+    }
+}
+```
+
+**Resulting spec:**
+```yaml
+openapi: 3.0.0
+paths:
+  '/api/v0.0.2/notifications/{id}':
+    delete:
+      summary: 'XDelete notification by ID.'
+      operationId: deleteNotificationById
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad Request'
+
+```
+
 ## Skipping unknown `\SomeClass`
 
 This message means that `swagger-php` has tried to use reflection to inspect `\SomeClass` and that PHP could not find/load
@@ -67,7 +151,7 @@ The `-b` allows to execute some extra PHP code to load whatever is needed to reg
 
 Another reason for this error could be that your class actually has the wrong namespace (or no namespace at all!).
 
-Depending on your framework this might still work in the context of your app, but the composer autoloader 
+Depending on your framework this might still work in the context of your app, but the composer autoloader
 alone might not be able to load your class (assuming you are using composer).
 
 ## No output from `openapi` command line tool
@@ -77,4 +161,4 @@ Depending on your PHP configuration, running the `openapi` command line tool mig
 The reason for this is that `openapi` currently uses the [`error_log`](https://www.php.net/manual/en/function.error-log.php)
 function for all output.
 
-So if this is configured to write to a file, then it will seem like the command is broken. 
+So if this is configured to write to a file, then it will seem like the command is broken.
