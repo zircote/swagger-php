@@ -370,11 +370,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if ($this->nullable !== $defaultValues['nullable']) {
                     $ref2 = $ref;
                     $ref['oneOf'] = [
-                        $ref2
+                        $ref2,
                     ];
                     if ($this->_context->version == OpenApi::VERSION_3_1_0) {
                         $ref['oneOf'][] = ['type' => 'null'];
-                    } else {  
+                    } else {
                         $ref['nullable'] = $data->nullable;
                     }
                     unset($ref['$ref']);
