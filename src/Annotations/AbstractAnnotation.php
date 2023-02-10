@@ -356,8 +356,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            if ($this->_context->version == OpenApi::VERSION_3_1_0) {
-                $defaultValues = get_class_vars(get_class($this));
+            $defaultValues = get_class_vars(get_class($this));
+            if ($this->_context->version === OpenApi::VERSION_3_1_0) {
                 foreach (['summary', 'description'] as $prop) {
                     if (property_exists($this, $prop)) {
                         if ($this->{$prop} !== $defaultValues[$prop]) {
@@ -366,20 +366,25 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
-            $defaultValues = get_class_vars(get_class($this));
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 if ($this->nullable !== $defaultValues['nullable']) {
-                    $ref['nullable'] = $data->nullable;
+                    $ref2 = $ref;
                     $ref['oneOf'] = [
-                        ['$ref' => $data->ref],
+                        $ref2
                     ];
+                    if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+                        $ref['oneOf'][] = ['type' => 'null'];
+                    } else {  
+                        $ref['nullable'] = $data->nullable;
+                    }
                     unset($ref['$ref']);
+                    unset($data->nullable);
                 }
             }
             $data = (object) $ref;
         }
 
-        if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+        if ($this->_context->version === OpenApi::VERSION_3_1_0) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
                     $data->type = (array) $data->type;
