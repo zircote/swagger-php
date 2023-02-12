@@ -489,6 +489,7 @@ class Generator
                 if (is_dir($resolvedSource)) {
                     $this->scanSources(Util::finder($resolvedSource), $analysis, $rootContext);
                 } else {
+                    $rootContext->logger->debug(sprintf('Analysing source: %s', $resolvedSource));
                     $analysis->addAnalysis($analyser->fromFile($resolvedSource, $rootContext));
                 }
             }

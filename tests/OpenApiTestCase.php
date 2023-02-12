@@ -19,6 +19,7 @@ use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,19 +52,28 @@ class OpenApiTestCase extends TestCase
         parent::tearDown();
     }
 
-    public function getTrackingLogger(): ?LoggerInterface
+    public function getTrackingLogger(bool $debug = false): ?LoggerInterface
     {
-        return new class($this) extends AbstractLogger {
+        return new class($this, $debug) extends AbstractLogger {
             /** @var OpenApiTestCase */
             protected $testCase;
 
-            public function __construct(OpenApiTestCase $testCase)
+            protected $debug;
+
+            public function __construct(OpenApiTestCase $testCase, bool $debug = false)
             {
                 $this->testCase = $testCase;
+                $this->debug = $debug;
             }
 
             public function log($level, $message, array $context = []): void
             {
+                if (LogLevel::DEBUG == $level) {
+                    if (!$this->debug || 0 === strpos($message, 'Analysing source:')) {
+                        return;
+                    }
+                }
+
                 if (count($this->testCase->expectedLogMessages)) {
                     list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
                     $assertion($message, $level);

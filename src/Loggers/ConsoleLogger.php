@@ -53,9 +53,10 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
                 if (!$this->debug) {
                     return;
                 }
+                $prefix = 'Debug: ';
                 // no break
             case LogLevel::WARNING:
-                $prefix = $context['prefix'] ?? 'Warning: ';
+                $prefix = $prefix ?: ($context['prefix'] ?? 'Warning: ');
                 $color = static::COLOR_WARNING;
                 break;
             case LogLevel::ERROR:
