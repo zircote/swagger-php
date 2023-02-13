@@ -82,7 +82,7 @@
         "testall": "Run all tests (test + testlegacy)",
         "analyse": "Run static analysis (phpstan/psalm)",
         "spectral": "Run spectral lint over all .yaml files in the Examples folder",
-        "docs:refgen": "Rebuild the annotations/attributes reference markup files",
+        "docs:gen": "Rebuild reference documentation",
         "docs:dev": "Run dev server for local development of gh-pages",
         "docs:build": "Re-build static gh-pages"
     },
@@ -103,11 +103,9 @@
             "export XDEBUG_MODE=off && psalm"
         ],
         "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
-        "docs:refgen": "php tools/refgen.php",
-        "docs:procgen": "php tools/procgen.php",
         "docs:gen": [
-            "@docs:refgen",
-            "@docs:procgen"
+            "@php tools/refgen.php",
+            "@php tools/procgen.php"
         ],
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
