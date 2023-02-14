@@ -24,6 +24,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'example-object',
             'example-object.yaml',
+            false,
             [],
         ];
 
@@ -31,6 +32,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'misc',
             'misc.yaml',
+            false,
             [],
         ];
 
@@ -38,6 +40,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'nesting',
             'nesting.yaml',
+            false,
             [],
         ];
 
@@ -45,6 +48,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'petstore-3.0',
             'petstore-3.0.yaml',
+            false,
             [],
         ];
 
@@ -52,6 +56,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'petstore.swagger.io',
             'petstore.swagger.io.yaml',
+            false,
             [],
         ];
 
@@ -59,6 +64,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore',
             'petstore.yaml',
+            false,
             [],
         ];
 
@@ -66,6 +72,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore-simple',
             'petstore-simple.yaml',
+            false,
             [],
         ];
 
@@ -73,6 +80,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_1_0,
             'swagger-spec/petstore-simple',
             'petstore-simple-3.1.0.yaml',
+            false,
             [],
         ];
 
@@ -80,6 +88,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'swagger-spec/petstore-with-external-docs',
             'petstore-with-external-docs.yaml',
+            false,
             [],
         ];
 
@@ -87,6 +96,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'polymorphism',
             'polymorphism.yaml',
+            false,
             [],
         ];
 
@@ -94,6 +104,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_1_0,
             'polymorphism',
             'polymorphism-3.1.0.yaml',
+            false,
             [],
         ];
 
@@ -101,6 +112,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'using-interfaces',
             'using-interfaces.yaml',
+            false,
             [],
         ];
 
@@ -108,6 +120,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'using-refs',
             'using-refs.yaml',
+            false,
             [],
         ];
 
@@ -115,6 +128,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'using-traits',
             'using-traits.yaml',
+            false,
             [],
         ];
 
@@ -122,6 +136,7 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_0_0,
             'using-links',
             'using-links.yaml',
+            false,
             [],
         ];
 
@@ -130,6 +145,7 @@ class ExamplesTest extends OpenApiTestCase
                 OA\OpenApi::VERSION_3_0_0,
                 'using-links-php81',
                 'using-links-php81.yaml',
+                true,
                 ['JetBrains\PhpStorm\ArrayShape'],
             ];
         }
@@ -163,7 +179,7 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleMappings
      */
-    public function testExamples(string $version, string $example, string $spec, array $expectedLog, AnalyserInterface $analyser): void
+    public function testExamples(string $version, string $example, string $spec, bool $debug, array $expectedLog, AnalyserInterface $analyser): void
     {
         // register autoloader for examples that require autoloading due to inheritance, etc.
         $path = $this->example($example);
@@ -178,7 +194,7 @@ class ExamplesTest extends OpenApiTestCase
         }
 
         $path = $this->example($example);
-        $openapi = (new Generator($this->getTrackingLogger()))
+        $openapi = (new Generator($this->getTrackingLogger($debug)))
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
@@ -193,7 +209,7 @@ class ExamplesTest extends OpenApiTestCase
     /**
      * @dataProvider exampleDetails
      */
-    public function testSerializer(string $version, string $example, string $spec, array $expectedLog): void
+    public function testSerializer(string $version, string $example, string $spec, bool $debug, array $expectedLog): void
     {
         $filename = $this->example($example) . '/' . $spec;
         $reserialized = (new Serializer())->deserializeFile($filename)->toYaml();
