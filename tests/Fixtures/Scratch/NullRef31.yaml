@@ -24,7 +24,6 @@ paths:
           content:
             application/json:
               schema:
-                description: 'The repository'
                 oneOf:
                   - { $ref: '#/components/schemas/repository', description: 'The repository' }
                   - { type: 'null' }
