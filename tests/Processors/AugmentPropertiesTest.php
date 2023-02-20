@@ -258,10 +258,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'arrayType',
             'type' => 'array',
         ]);
-        $this->assertObjectHasAttribute(
-            'ref',
-            $arrayType->items
-        );
+        $this->assertIsObject($arrayType->items);
+        $this->assertTrue(property_exists($arrayType->items, 'ref'));
         $this->assertEquals(
             '#/components/schemas/TypedProperties',
             $arrayType->items->ref
@@ -324,10 +322,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'nativeArray',
             'type' => 'array',
         ]);
-        $this->assertObjectHasAttribute(
-            'ref',
-            $nativeArray->items
-        );
+        $this->assertIsObject($nativeArray->items);
+        $this->assertTrue(property_exists($nativeArray->items, 'ref'));
         $this->assertEquals(
             'string',
             $nativeArray->items->type

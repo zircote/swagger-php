@@ -189,13 +189,14 @@ JSON;
         $annotation = $serializer->deserialize($json, OA\OpenApi::class);
 
         foreach ($annotation->components->schemas as $schemaObject) {
-            $this->assertObjectHasAttribute('allOf', $schemaObject);
+            $this->assertIsObject($schemaObject);
+            $this->assertTrue(property_exists($schemaObject, 'allOf'));
             $this->assertNotSame($schemaObject->allOf, Generator::UNDEFINED);
             $this->assertIsArray($schemaObject->allOf);
             $allOfItem = current($schemaObject->allOf);
             $this->assertIsObject($allOfItem);
             $this->assertInstanceOf(OA\Schema::class, $allOfItem);
-            $this->assertObjectHasAttribute('ref', $allOfItem);
+            $this->assertTrue(property_exists($allOfItem, 'ref'));
             $this->assertNotSame($allOfItem->ref, Generator::UNDEFINED);
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
         }
