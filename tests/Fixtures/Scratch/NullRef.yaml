@@ -12,7 +12,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/repository'
+                oneOf:
+                  - { $ref: '#/components/schemas/repository' }
+                nullable: true
   /api/refplus:
     get:
       operationId: refplus
@@ -22,7 +24,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/repository'
+                oneOf:
+                  - { $ref: '#/components/schemas/repository' }
+                nullable: true
 components:
   schemas:
     repository: {  }
