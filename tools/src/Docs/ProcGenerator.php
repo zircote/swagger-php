@@ -71,13 +71,15 @@ class ProcGenerator extends DocGenerator
             if (!in_array($class, $defaultProcessors)) {
                 $rc = new \ReflectionClass($class);
 
-                $processors[] = [
-                    'class' => $rc->getName(),
-                    'name' => $rc->getShortName(),
-                    'default' => false,
-                    'options' => $this->getOptionsDetails($rc),
-                    'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
-                ];
+                if (!$rc->isInterface()) {
+                    $processors[] = [
+                        'class' => $rc->getName(),
+                        'name' => $rc->getShortName(),
+                        'default' => false,
+                        'options' => $this->getOptionsDetails($rc),
+                        'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
+                    ];
+                }
             }
         }
 

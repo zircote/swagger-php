@@ -31,13 +31,13 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 
 ## Installation (with [Composer](https://getcomposer.org))
 
-```bash
+```shell
 composer require zircote/swagger-php
 ```
 
 For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `openapi` executable can be located by your system.
 
-```bash
+```shell
 composer global require zircote/swagger-php
 ```
 
@@ -77,7 +77,7 @@ Documentation of how to use the `Generator` class can be found in the [Generator
 
 The `openapi` command line interface can be used to generate the documentation to a static yaml/json file.
 
-```bash
+```shell
 ./vendor/bin/openapi --help
 ```
 Starting with version 4 the default analyser used on the command line is the new `ReflectionAnalyser`.
@@ -98,13 +98,7 @@ $openapi = $serializer->deserialize($jsonString, 'OpenApi\Annotations\OpenApi');
 echo $openapi->toJson();
 ```
 
-### Usage from [docker](https://docker.com)
-
-Generate the swagger documentation to a static json file.
-
-```
-docker run -v "$PWD":/app -it tico/swagger-php --help
-```
+## [Contributing](CONTRIBUTING.md)
 
 ## More on OpenApi & Swagger
 
@@ -113,43 +107,3 @@ docker run -v "$PWD":/app -it tico/swagger-php --help
 - [OpenApi Documentation](https://swagger.io/docs/)
 - [OpenApi Specification](http://swagger.io/specification/)
 - [Related projects](docs/related-projects.md)
-
-## Contributing
-
-Feel free to submit [Github Issues](https://github.com/zircote/swagger-php/issues)
-or pull requests.
-
-The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
-
-Make sure pull requests pass [PHPUnit](https://phpunit.de/)
-and [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (PSR-2) tests.
-
-### To run both unit tests and linting execute:
-```bash
-composer test
-```
-
-### To run static-analysis execute:
-```bash
-composer analyse
-```
-
-### Running unit tests only:
-```bash
-./bin/phpunit
-```
-
-### Regenerate reference markup docs
-```bash
-composer docs:gen
-```
-
-### Running linting only:
-```bash
-composer lint
-```
-
-### To make `php-cs-fixer` fix linting errors:
-```bash
-composer cs
-```
