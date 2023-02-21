@@ -1,10 +1,11 @@
 openapi: 3.0.0
 info:
   title: 'Link Example'
-  version: 1.0.0
+  description: ''
   contact:
-    name: Contact Name
+    name: 'Contact Name'
     email: support@example.com
+  version: 1.0.0
 paths:
   '/2.0/repositories/{username}':
     get:
@@ -162,10 +163,10 @@ paths:
           description: 'The PR was successfully merged'
   '/2.0/users/{username}':
     get:
-      operationId: getUserByName
-      summary: 'Get user details by username'
       tags:
         - Users
+      summary: 'Get user details by username'
+      operationId: getUserByName
       parameters:
         -
           name: username
