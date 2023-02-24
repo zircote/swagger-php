@@ -51,11 +51,6 @@ parameters:
 			path: src/Generator.php
 
 		-
-			message: "#^Instanceof between \\(callable\\)\\|OpenApi\\\\Processors\\\\ProcessorInterface and class\\-string\\|false results in an error\\.$#"
-			count: 1
-			path: src/Generator.php
-
-		-
 			message: "#^Variable \\$logLine in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: src/Loggers/ConsoleLogger.php

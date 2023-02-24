@@ -93,7 +93,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         }
 
         $annotations = array_values(array_filter($annotations, function ($a) {
-            return $a !== null && $a instanceof OA\AbstractAnnotation;
+            return $a instanceof OA\AbstractAnnotation;
         }));
 
         // merge backwards into parents...
