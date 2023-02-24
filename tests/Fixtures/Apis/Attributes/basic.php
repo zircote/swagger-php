@@ -110,7 +110,7 @@ class ProductController
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
-        content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: '#/components/schemas/Product'))],
+        content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: Product::class))],
         headers: [
             new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
         ]
@@ -126,7 +126,7 @@ class ProductController
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
-        content: new OAT\JsonContent(ref: '#/components/schemas/Product')
+        content: new OAT\JsonContent(ref: Product::class)
     )]
     #[OAT\RequestBody(
         required: true,
@@ -157,7 +157,7 @@ class ProductController
                 new OAT\Property(
                     property: 'data',
                     type: 'array',
-                    items: new OAT\Items(ref: '#/components/schemas/Product')
+                    items: new OAT\Items(ref: Product::class)
                 ),
             ]
         )

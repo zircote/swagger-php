@@ -13,6 +13,7 @@ use OpenApi\Annotations as OA;
 class RequestBody extends OA\RequestBody
 {
     /**
+     * @param string|class-string|object|null                         $ref
      * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
      * @param array<string,mixed>|null                                $x
      * @param Attachable[]|null                                       $attachables

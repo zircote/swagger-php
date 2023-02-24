@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class XmlContent extends \OpenApi\Annotations\XmlContent
 {
     /**
+     * @param string|class-string|object|null                 $ref
      * @param array<string,Examples>                          $examples
      * @param string[]                                        $required
      * @param int|float                                       $maximum

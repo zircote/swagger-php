@@ -13,6 +13,7 @@ use OpenApi\Generator;
 class Response extends OA\Response
 {
     /**
+     * @param string|class-string|object|null                                                                $ref
      * @param Header[]                                                                                       $headers
      * @param MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable> $content
      * @param Link[]                                                                                         $links

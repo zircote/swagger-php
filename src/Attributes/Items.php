@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class Items extends \OpenApi\Annotations\Items
 {
     /**
+     * @param string|class-string|object|null                 $ref
      * @param string[]                                        $required
      * @param Property[]                                      $properties
      * @param int|float                                       $maximum

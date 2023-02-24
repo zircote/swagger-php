@@ -12,8 +12,9 @@ use OpenApi\Generator;
 class Examples extends \OpenApi\Annotations\Examples
 {
     /**
-     * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param string|class-string|object|null $ref
+     * @param array<string,mixed>|null        $x
+     * @param Attachable[]|null               $attachables
      */
     public function __construct(
         ?string $example = null,

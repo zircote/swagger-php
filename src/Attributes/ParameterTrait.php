@@ -11,6 +11,7 @@ use OpenApi\Generator;
 trait ParameterTrait
 {
     /**
+     * @param string|class-string|object|null                         $ref
      * @param array<string,Examples>                                  $examples
      * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
      * @param array<string,mixed>|null                                $x
