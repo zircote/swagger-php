@@ -17,6 +17,7 @@ use OpenApi\Generator;
 class AugmentProperties implements ProcessorInterface
 {
     use Concerns\DocblockTrait;
+    use Concerns\RefTrait;
     use Concerns\TypesTrait;
 
     public function __invoke(Analysis $analysis)
@@ -65,13 +66,6 @@ class AugmentProperties implements ProcessorInterface
                 $property->example = $varMatches['example'];
             }
         }
-    }
-
-    protected function toRefKey(Context $context, ?string $name): string
-    {
-        $fqn = strtolower($context->fullyQualifiedName($name));
-
-        return ltrim($fqn, '\\');
     }
 
     protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, array $refs, array $varMatches): void

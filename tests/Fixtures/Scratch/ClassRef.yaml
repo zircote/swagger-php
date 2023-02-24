@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: ClassRef
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YoYo'
+components:
+  schemas:
+    YoYo: {  }
