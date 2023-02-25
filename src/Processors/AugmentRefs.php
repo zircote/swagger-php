@@ -10,12 +10,20 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-/**
- * Update refs broken due to `allOf` augmenting.
- */
 class AugmentRefs implements ProcessorInterface
 {
+    use Concerns\RefTrait;
+
     public function __invoke(Analysis $analysis)
+    {
+        $this->resolveAllOfRefs($analysis);
+        $this->resolveFQCNRefs($analysis);
+    }
+
+    /**
+     * Update refs broken due to `allOf` augmenting.
+     */
+    protected function resolveAllOfRefs(Analysis $analysis)
     {
         /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
@@ -42,6 +50,21 @@ class AugmentRefs implements ProcessorInterface
                             $annotation->ref = str_replace($origRef, $updatedRef, $annotation->ref);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    protected function resolveFQCNRefs(Analysis $analysis)
+    {
+        /** @var OA\AbstractAnnotation[] $annotations */
+        $annotations = $analysis->getAnnotationsOfType([OA\Examples::class, OA\Header::class, OA\Link::class, OA\Parameter::class, OA\PathItem::class, OA\RequestBody::class, OA\Response::class, OA\Schema::class, OA\SecurityScheme::class]);
+
+        foreach ($annotations as $annotation) {
+            if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
+                // check if we have a schema for this
+                if ($refSchema = $analysis->getSchemaForSource($annotation->ref)) {
+                    $annotation->ref = OA\Components::ref($refSchema);
                 }
             }
         }

@@ -27,12 +27,12 @@ class PullRequest
     /**
      * @var Repository
      */
-    #[OAT\Property(ref: '#/components/schemas/repository')]
+    #[OAT\Property(ref: Repository::class)]
     public $repository;
 
     /**
      * @var User
      */
-    #[OAT\Property(ref: '#/components/schemas/user')]
+    #[OAT\Property(ref: User::class)]
     public $author;
 }

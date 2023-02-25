@@ -82,11 +82,10 @@ class ExpandEnums implements ProcessorInterface
                 } else {
                     throw new \InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $schema->enum");
                 }
-            } elseif (is_array($schema->enum)) {
-                // might be an array of \UnitEnum::class, string, int, etc...
-                $cases = $schema->enum;
             } else {
-                throw new \InvalidArgumentException('Unexpected enum value, requires Enum class string or array');
+                // might be an array of \UnitEnum::class, string, int, etc...
+                assert(is_array($schema->enum));
+                $cases = $schema->enum;
             }
 
             $enums = [];

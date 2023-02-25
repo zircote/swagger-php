@@ -26,7 +26,7 @@ class Schema extends AbstractAnnotation
     /**
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
-     * @var string|object
+     * @var string|class-string|object
      */
     public $ref = Generator::UNDEFINED;
 
