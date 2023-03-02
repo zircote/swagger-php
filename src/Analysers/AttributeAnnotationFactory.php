@@ -53,6 +53,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                 foreach ($reflector->getParameters() as $rp) {
                     foreach ([OA\Property::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
                         foreach ($rp->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+                            /** @var OA\Property|OA\Parameter|OA\RequestBody $instance */
                             $instance = $attribute->newInstance();
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             $nullable = $rnt ? $rnt->allowsNull() : true;
@@ -60,11 +61,20 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                             if ($instance instanceof OA\RequestBody) {
                                 $instance->required = !$nullable;
                             } elseif ($instance instanceof OA\Property) {
-                                $instance->property = $rp->getName();
+                                if (Generator::isDefault($instance->property)) {
+                                    $instance->property = $rp->getName();
+                                }
                                 if (Generator::isDefault($instance->type)) {
                                     $instance->type = $type;
                                 }
-                                $instance->nullable = $nullable;
+                                $instance->nullable = $nullable ?: Generator::UNDEFINED;
+
+                                if ($rp->isPromoted()) {
+                                    // promoted parameter - docblock is available via class/property
+                                    if ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment()) {
+                                        $instance->_context->comment = $comment;
+                                    }
+                                }
                             } else {
                                 if (!$instance->name || Generator::isDefault($instance->name)) {
                                     $instance->name = $rp->getName();
