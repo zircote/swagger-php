@@ -134,7 +134,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             } elseif (is_object($value)) {
                 $this->merge([$value]);
             } else {
-                if ($value !== Generator::UNDEFINED) {
+                if (!Generator::isDefault($value)) {
                     $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
                 }
             }
