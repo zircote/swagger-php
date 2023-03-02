@@ -23,6 +23,17 @@ class AugmentSchemas implements ProcessorInterface
         /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
+        $this->augmentSchema($schemas);
+        $this->mergeUnmergedProperties($analysis);
+        $this->augmentType($analysis, $schemas);
+        $this->mergeAllOf($analysis, $schemas);
+    }
+
+    /**
+     * @param array<OA\Schema> $schemas
+     */
+    protected function augmentSchema(array $schemas): void
+    {
         foreach ($schemas as $schema) {
             if (!$schema->isRoot(OA\Schema::class)) {
                 continue;
@@ -39,7 +50,13 @@ class AugmentSchemas implements ProcessorInterface
                 }
             }
         }
+    }
 
+    /**
+     * Merge unmerged @OA\Property annotations into the @OA\Schema of the class.
+     */
+    protected function mergeUnmergedProperties(Analysis $analysis): void
+    {
         // Merge unmerged @OA\Property annotations into the @OA\Schema of the class
         $unmergedProperties = $analysis->unmerged()->getAnnotationsOfType(OA\Property::class);
         foreach ($unmergedProperties as $property) {
@@ -48,9 +65,9 @@ class AugmentSchemas implements ProcessorInterface
             }
 
             $schemaContext = $property->_context->with('class')
-                    ?: $property->_context->with('interface')
+                ?: $property->_context->with('interface')
                     ?: $property->_context->with('trait')
-                    ?: $property->_context->with('enum');
+                        ?: $property->_context->with('enum');
             if ($schemaContext->annotations) {
                 foreach ($schemaContext->annotations as $annotation) {
                     if ($annotation instanceof OA\Schema) {
@@ -65,8 +82,15 @@ class AugmentSchemas implements ProcessorInterface
                 }
             }
         }
+    }
 
-        // set schema type based on various properties
+    /**
+     * Set schema type based on various properties.
+     *
+     * @param array<OA\Schema> $schemas
+     */
+    protected function augmentType(Analysis $analysis, array $schemas): void
+    {
         foreach ($schemas as $schema) {
             if (Generator::isDefault($schema->type)) {
                 if (is_array($schema->properties) && count($schema->properties) > 0) {
@@ -87,8 +111,15 @@ class AugmentSchemas implements ProcessorInterface
                 }
             }
         }
+    }
 
-        // move schema properties into allOf if both exist
+    /**
+     * Merge schema properties into `allOf` if both exist.
+     *
+     * @param array<OA\Schema> $schemas
+     */
+    protected function mergeAllOf(Analysis $analysis, array $schemas): void
+    {
         foreach ($schemas as $schema) {
             if (!Generator::isDefault($schema->properties) && !Generator::isDefault($schema->allOf)) {
                 $allOfPropertiesSchema = null;
