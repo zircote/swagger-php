@@ -16,16 +16,19 @@ class UsersController
         tags: ['Users'],
         parameters: [
             new OAT\Parameter(
-                name: 'username', in: 'path', required: true, schema: new OAT\Schema(type: 'string')
+                name: 'username',
+                in: 'path',
+                required: true,
+                schema: new OAT\Schema(type: 'string')
             )],
-            responses: [
-                new OAT\Response(
-                    response: 200,
-                    description: 'The User',
-                    content: new OAT\JsonContent(ref: '#/components/schemas/user'),
-                    links: [new OAT\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')]
-                )
-            ]
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'The User',
+                content: new OAT\JsonContent(ref: '#/components/schemas/user'),
+                links: [new OAT\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')]
+            ),
+        ]
     )]
     public function getUserByName(string $username)
     {
