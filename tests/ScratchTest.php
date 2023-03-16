@@ -45,7 +45,10 @@ class ScratchTest extends OpenApiTestCase
         $openapi = (new Generator($this->getTrackingLogger()))
             ->generate([$scratch]);
 
-        // file_put_contents($spec, $openapi->toYaml());
+        if (!file_exists($spec)) {
+            file_put_contents($spec, $openapi->toYaml());
+        }
+
         $this->assertSpecEquals($openapi, file_get_contents($spec));
     }
 }
