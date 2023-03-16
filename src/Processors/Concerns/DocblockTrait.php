@@ -168,4 +168,35 @@ trait DocblockTrait
 
         return $description ?: Generator::UNDEFINED;
     }
+
+    /**
+     * Extract property type and description from a `@var` dockblock line.
+     *
+     * @return array<string, string> extracted `type` and `description`; values default to `null`
+     */
+    public function extractVarTypeAndDescription(?string $docblock): array
+    {
+        $comment = str_replace("\r\n", "\n", (string) $docblock);
+        $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
+        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $matches);
+
+        return array_merge(
+            ['type' => null, 'description' => null],
+            array_filter($matches, function ($key) {
+                return in_array($key, ['type', 'description']);
+            }, ARRAY_FILTER_USE_KEY)
+        );
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Extract example text from a `@example` dockblock line.
+     */
+    public function extractExampleDescription(?string $docblock): ?string
+    {
+        preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $docblock, $matches);
+
+        return isset($matches['example']) ? $matches['example'] : null;
+    }
 }
