@@ -186,7 +186,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         foreach ($annotations as $annotation) {
             $mapped = false;
-            if ($details = static::matchNested(get_class($annotation))) {
+            if ($details = $this->matchNested($annotation)) {
                 $property = $details->value;
                 if (is_array($property)) {
                     $property = $property[0];
@@ -416,7 +416,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
             /** @var class-string<AbstractAnnotation> $class */
             $class = get_class($annotation);
-            if ($details = static::matchNested($class)) {
+            if ($details = $this->matchNested($annotation)) {
                 $property = $details->value;
                 if (is_array($property)) {
                     $this->_context->logger->warning('Only one ' . Util::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
@@ -574,24 +574,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-     * Find matching nested details.
+     * Check if `$other` can be nested and if so return details about where/how.
      *
-     * @param class-string $class the class to match
+     * @param AbstractAnnotation $other the other annotation
      *
      * @return null|object key/value object or `null`
      */
-    public static function matchNested($class)
+    public function matchNested($other)
     {
-        if (array_key_exists($class, static::$_nested)) {
-            return (object) ['key' => $class, 'value' => static::$_nested[$class]];
-        }
-
-        $parent = $class;
-        // only consider the immediate OpenApi parent
-        while (0 !== strpos($parent, 'OpenApi\\Annotations\\') && $parent = get_parent_class($parent)) {
-            if ($kvp = static::matchNested($parent)) {
-                return $kvp;
-            }
+        if ($other instanceof AbstractAnnotation && array_key_exists($root = $other->getRoot(), static::$_nested)) {
+            return (object) ['key' => $root, 'value' => static::$_nested[$root]];
         }
 
         return null;

@@ -113,7 +113,6 @@ END;
         $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
 
         return [
-            'unknown' => [self::class, null],
             'simple-match' => [OA\Parameter::class, $parameterMatch],
             'invalid-annotation' => [OA\Schema::class, null],
             'sub-annotation' => [SubParameter::class, $parameterMatch],
@@ -127,7 +126,7 @@ END;
      */
     public function testMatchNested(string $class, $expected): void
     {
-        $this->assertEquals($expected, OA\Get::matchNested($class));
+        $this->assertEquals($expected, (new OA\Get([]))->matchNested(new $class([])));
     }
 
     public function testDuplicateOperationIdValidation(): void

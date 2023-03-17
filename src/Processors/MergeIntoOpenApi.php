@@ -45,7 +45,11 @@ class MergeIntoOpenApi implements ProcessorInterface
                         $openapi->paths[] = $path;
                     }
                 }
-            } elseif (OA\OpenApi::matchNested(get_class($annotation)) && property_exists($annotation, '_context') && $annotation->_context->is('nested') === false) {
+            } elseif (
+                $annotation instanceof OA\AbstractAnnotation
+                && in_array(OA\OpenApi::class, $annotation::$_parents)
+                && property_exists($annotation, '_context')
+                && false === $annotation->_context->is('nested')) {
                 // A top level annotation.
                 $merge[] = $annotation;
             }
