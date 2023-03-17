@@ -23,8 +23,11 @@ class MergeIntoComponents implements ProcessorInterface
             $components = new OA\Components(['_context' => new Context(['generated' => true], $analysis->context)]);
         }
 
+        /** @var OA\AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
-            if (OA\Components::matchNested(get_class($annotation)) && $annotation->_context->is('nested') === false) {
+            if ($annotation instanceof OA\AbstractAnnotation
+                && in_array(OA\Components::class, $annotation::$_parents)
+                && false === $annotation->_context->is('nested')) {
                 // A top level annotation.
                 $components->merge([$annotation], true);
                 $analysis->openapi->components = $components;

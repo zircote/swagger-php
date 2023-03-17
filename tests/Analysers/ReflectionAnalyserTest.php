@@ -14,7 +14,6 @@ use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\CleanUnusedComponents;
@@ -136,7 +135,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
         // check CustomAttachable is only attached to @OA\Get
         /** @var OA\Get[] $gets */
-        $gets = $analysis->getAnnotationsOfType(OAT\Get::class, true);
+        $gets = $analysis->getAnnotationsOfType(OA\Get::class, true);
         $this->assertCount(2, $gets);
         $this->assertTrue(is_array($gets[0]->attachables), 'Attachables not set');
         $this->assertCount(1, $gets[0]->attachables);

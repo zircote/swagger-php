@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: API
+  version: 1.0.0
+paths:
+  /target_groups:
+    get:
+      tags:
+        - 'Target groups'
+      summary: 'List target groups'
+      operationId: groups
+      responses:
+        '200':
+          description: 'Successful response of [TargetGroupListDto]'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetGroupListDto'
+components:
+  schemas:
+    TargetGroupListDto:
+      title: TargetGroupListDto
+      required:
+        - targetGroups
+      properties:
+        targetGroups:
+          title: TargetGroupDto
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetGroupDto'
+      type: object
+    TargetGroupDto:
+      title: TargetGroupDto
+      required:
+        - groupId
+        - groupName
+        - targets
+      properties:
+        groupId:
+          type: string
+        groupName:
+          type: string
+        targets:
+          title: TargetDto
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetDto'
+      type: object
+    TargetDto:
+      title: TargetDto
+      required:
+        - targetId
+        - targetType
+      properties:
+        targetId:
+          $ref: '#/components/schemas/TargetId'
+        targetType:
+          $ref: '#/components/schemas/TargetType'
+      type: object
+    TargetId:
+      title: TargetId
+    TargetType:
+      title: TargetType

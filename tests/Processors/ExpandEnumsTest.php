@@ -8,7 +8,6 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 use OpenApi\Processors\ExpandEnums;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum;
@@ -149,7 +148,7 @@ class ExpandEnumsTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures($files);
         $analysis->process([new ExpandEnums()]);
-        $schemas = $analysis->getAnnotationsOfType([OA\Property::class, OAT\Property::class, OA\Items::class], true);
+        $schemas = $analysis->getAnnotationsOfType([OA\Property::class, OA\Items::class], true);
 
         foreach ($schemas as $schema) {
             if ($schema instanceof OA\Property || $schema instanceof OA\Items) {
