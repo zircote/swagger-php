@@ -580,7 +580,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @return null|object key/value object or `null`
      */
-    public static function matchNested(string $class)
+    public static function matchNested($class)
     {
         if (array_key_exists($class, static::$_nested)) {
             return (object) ['key' => $class, 'value' => static::$_nested[$class]];
@@ -598,22 +598,34 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
+     * Get the root annotation.
+     *
+     * This is used for resolving type equality and nesting rules to allow those rules to also work for custom,
+     * derived annotation classes.
+     *
+     * @return class-string the root annotation class in the `OpenApi\\Annotations` namespace
+     */
+    public function getRoot(): string
+    {
+        $class = get_class($this);
+
+        do {
+            if (0 === strpos($class, 'OpenApi\\Annotations\\')) {
+                break;
+            }
+        } while ($class = get_parent_class($class));
+
+        return $class;
+    }
+
+    /**
      * Match the annotation root.
      *
      * @param class-string $rootClass the root class to match
      */
     public function isRoot(string $rootClass): bool
     {
-        $parent = get_class($this);
-
-        // only consider the immediate OpenApi parent
-        do {
-            if ($parent == $rootClass) {
-                return true;
-            }
-        } while (0 !== strpos($parent, 'OpenApi\\Annotations\\')  && $parent = get_parent_class($parent));
-
-        return false;
+        return $this->getRoot() == $rootClass;
     }
 
     /**
