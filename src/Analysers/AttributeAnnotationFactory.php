@@ -38,13 +38,13 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         $annotations = [];
         try {
             foreach ($reflector->getAttributes() as $attribute) {
-                try {
+                if (class_exists($attribute->getName())) {
                     $instance = $attribute->newInstance();
                     if ($instance instanceof OA\AbstractAnnotation) {
                         $annotations[] = $instance;
                     }
-                } catch (\Error $e) {
-                    $context->logger->debug('Could not instantiate attribute: ' . $e->getMessage(), ['exception' => $e]);
+                } else {
+                    $context->logger->debug(sprintf('Could not instantiate attribute "%s", because class not found.', $attribute->getName()));
                 }
             }
 
