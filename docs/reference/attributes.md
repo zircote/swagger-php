@@ -1172,35 +1172,35 @@ In addition to this page, there are also a number of [examples](https://github.c
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>A unique identifier for the operation. This can be used to link this operation to other parts of the documentation.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>A brief description of the operation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>A short summary of the operation.</p></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of security requirements for the operation.</p></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of server objects that can be used for this operation.</p></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>The request body of the operation.</p></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of tags for the operation.</p></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of parameters for the operation.</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of possible responses for the operation.</p></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of possible callbacks for the operation.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>Additional external documentation for the operation.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>Indicates whether the operation is deprecated or not.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>A map of custom extension fields.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>An array of attachable objects that can be used to add metadata to the operation.</p></dd>
 </dl>
 
 ## [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
