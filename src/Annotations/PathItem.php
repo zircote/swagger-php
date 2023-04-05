@@ -28,18 +28,25 @@ class PathItem extends AbstractAnnotation
     public $ref = Generator::UNDEFINED;
 
     /**
-     * Key for the Path Object (OpenApi->paths array).
-     *
-     * @var string
-     */
-    public $path = Generator::UNDEFINED;
-
-    /**
      * An optional, string summary, intended to apply to all operations in this path.
      *
      * @var string
      */
     public $summary = Generator::UNDEFINED;
+
+    /**
+     * An optional, string description, intended to apply to all operations in this path.
+     *
+     * @var string
+     */
+    public $description = Generator::UNDEFINED;
+
+    /**
+     * Key for the Path Object (OpenApi->paths array).
+     *
+     * @var string
+     */
+    public $path = Generator::UNDEFINED;
 
     /**
      * A definition of a GET operation on this path.
