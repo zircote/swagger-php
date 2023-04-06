@@ -61,7 +61,7 @@ Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (
 
 ## [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
 
-Update refs broken due to `allOf` augmenting.
+
 ## [MergeJsonContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeJsonContent.php)
 
 Split JsonContent into Schema and MediaType.
