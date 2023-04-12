@@ -74,6 +74,7 @@ class RefGenerator extends DocGenerator
             echo '<dl>' . PHP_EOL;
             foreach ($parameters as $rp) {
                 $parameter = $rp->getName();
+                $propertyDocumentation = $this->getPropertyDocumentation($fqdn, $parameter);
                 $def = array_key_exists($parameter, $params)
                     ? $params[$parameter]['type']
                     : '';
@@ -84,7 +85,7 @@ class RefGenerator extends DocGenerator
 
                 echo '  <dt><strong>' . $parameter . '</strong>' . $var . '</dt>' . PHP_EOL;
                 echo '  <dd>';
-                echo '<p>' . self::NO_DETAILS_AVAILABLE . '</p>';
+                $this->propertyDetails($propertyDocumentation);
                 echo '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
@@ -131,26 +132,14 @@ class RefGenerator extends DocGenerator
             echo '<dl>' . PHP_EOL;
             foreach ($properties as $property) {
                 $rp = new \ReflectionProperty($fqdn, $property);
-                $propertyDocumentation = $this->extractDocumentation($rp->getDocComment());
+                $propertyDocumentation = $this->getPropertyDocumentation($fqdn, $property);
                 if ($var = $this->getReflectionType($fqdn, $rp, false, $propertyDocumentation['var'])) {
                     $var = ' : <span style="font-family: monospace;">' . $var . '</span>';
                 }
 
                 echo '  <dt><strong>' . $property . '</strong>' . $var . '</dt>' . PHP_EOL;
                 echo '  <dd>';
-                echo '<p>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</p>';
-                if ($propertyDocumentation['see']) {
-                    $links = [];
-                    foreach ($propertyDocumentation['see'] as $see) {
-                        if ($link = $this->linkFromMarkup($see)) {
-                            $links[] = $link;
-                        }
-                    }
-                    if ($links) {
-                        echo '<p><i>See</i>: ' . implode(', ', $links) . '</p>';
-                    }
-                }
-
+                $this->propertyDetails($propertyDocumentation);
                 echo '</dd>' . PHP_EOL;
             }
             echo '</dl>' . PHP_EOL;
@@ -168,6 +157,36 @@ class RefGenerator extends DocGenerator
         echo PHP_EOL;
 
         return ob_get_clean();
+    }
+
+    // ------------------------------------------------------------------------
+
+    protected function getPropertyDocumentation(string $fqdn, string $name): array
+    {
+        try {
+            $rp = new \ReflectionProperty(str_replace('Attributes', 'Annotations', $fqdn), $name);
+        } catch (\ReflectionException $re) {
+            $rp = null;
+        }
+
+        return $this->extractDocumentation($rp ? $rp->getDocComment() : null);
+    }
+
+    protected function propertyDetails(array $propertyDocumentation): void
+    {
+        echo '<p>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</p>';
+        if ($propertyDocumentation['see']) {
+            $links = [];
+            foreach ($propertyDocumentation['see'] as $see) {
+                if ($link = $this->linkFromMarkup($see)) {
+                    $links[] = $link;
+                }
+            }
+            if ($links) {
+                echo '<p><i>See</i>: ' . implode(', ', $links) . '</p>';
+            }
+        }
+
     }
 
     /**
