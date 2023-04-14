@@ -265,7 +265,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'cookie' as the default location.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
@@ -836,7 +836,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'header' as the default location.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
@@ -1779,7 +1779,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'path' as the default location.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -2204,7 +2204,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'query' as the default location.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />

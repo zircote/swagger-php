@@ -97,7 +97,7 @@ A `@OA\Request` cookie parameter.
 ---
 <dl>
   <dt><strong>in</strong></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'cookie' as the default location.</p></dd>
 </dl>
 
 ## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
@@ -355,7 +355,7 @@ A `@OA\Request` header parameter.
 ---
 <dl>
   <dt><strong>in</strong></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'header' as the default location.</p></dd>
 </dl>
 
 ## [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
@@ -768,7 +768,7 @@ A `@OA\Request` path parameter.
 ---
 <dl>
   <dt><strong>in</strong></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'path' as the default location.</p></dd>
   <dt><strong>required</strong></dt>
   <dd><p>No details available.</p></dd>
 </dl>
@@ -846,7 +846,7 @@ A `@OA\Request` query parameter.
 ---
 <dl>
   <dt><strong>in</strong></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>This takes 'query' as the default location.</p></dd>
 </dl>
 
 ## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)

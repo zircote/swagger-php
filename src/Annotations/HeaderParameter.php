@@ -15,6 +15,7 @@ class HeaderParameter extends Parameter
 {
     /**
      * @inheritdoc
+     * This takes 'header' as the default location.
      */
     public $in = 'header';
 }

@@ -15,6 +15,7 @@ class PathParameter extends Parameter
 {
     /**
      * @inheritdoc
+     * This takes 'path' as the default location.
      */
     public $in = 'path';
 
