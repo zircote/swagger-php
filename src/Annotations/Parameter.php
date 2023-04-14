@@ -21,6 +21,7 @@ class Parameter extends AbstractAnnotation
 {
     /**
      * The relative or absolute path to the endpoint.
+     *
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string|class-string|object

@@ -17,6 +17,7 @@ class SecurityScheme extends AbstractAnnotation
 {
     /**
      * The relative or absolute path to a security scheme.
+     *
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string|class-string|object
