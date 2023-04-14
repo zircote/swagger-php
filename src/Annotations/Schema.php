@@ -24,6 +24,7 @@ use OpenApi\Generator;
 class Schema extends AbstractAnnotation
 {
     /**
+     * The relative or absolute path to the endpoint.
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string|class-string|object
@@ -54,16 +55,16 @@ class Schema extends AbstractAnnotation
     public $description = Generator::UNDEFINED;
 
     /**
-     * An object instance is valid against "maxProperties" if its number of properties is less than, or equal to, the
-     * value of this property.
+     * The maximum number of properties allowed in an object instance.
+     * An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.
      *
      * @var int
      */
     public $maxProperties = Generator::UNDEFINED;
 
     /**
-     * An object instance is valid against "minProperties" if its number of properties is greater than, or equal to,
-     * the value of this property.
+     * The minimum number of properties allowed in an object instance.
+     * An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.
      *
      * @var int
      */
@@ -78,6 +79,7 @@ class Schema extends AbstractAnnotation
     public $required = Generator::UNDEFINED;
 
     /**
+     * A collection of properties to define for an object. Each property is represented as an instance of the <a href="#property">Property</a> class.
      * @var Property[]
      */
     public $properties = Generator::UNDEFINED;
@@ -129,6 +131,7 @@ class Schema extends AbstractAnnotation
     public $default = Generator::UNDEFINED;
 
     /**
+     * The maximum value allowed for a numeric property. This value must be a number.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
      *
      * @var int|float
@@ -136,6 +139,8 @@ class Schema extends AbstractAnnotation
     public $maximum = Generator::UNDEFINED;
 
     /**
+     * A boolean value indicating whether the maximum value specified in the maximum attribute is excluded from the set of valid values.
+     * If this attribute is set to true, then the maximum value is not included in the set of valid values.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
      *
      * @var bool
@@ -143,6 +148,7 @@ class Schema extends AbstractAnnotation
     public $exclusiveMaximum = Generator::UNDEFINED;
 
     /**
+     * The minimum value allowed for a numeric property. This value must be a number.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
      *
      * @var int|float
@@ -150,6 +156,8 @@ class Schema extends AbstractAnnotation
     public $minimum = Generator::UNDEFINED;
 
     /**
+     * A boolean value indicating whether the minimum value specified in the minimum attribute is excluded from the set of valid values.
+     * If this attribute is set to true, then the minimum value is not included in the set of valid values.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
      *
      * @var bool
@@ -157,6 +165,7 @@ class Schema extends AbstractAnnotation
     public $exclusiveMinimum = Generator::UNDEFINED;
 
     /**
+     * The maximum length of a string property. A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor26)
      *
      * @var int
@@ -164,6 +173,7 @@ class Schema extends AbstractAnnotation
     public $maxLength = Generator::UNDEFINED;
 
     /**
+     * The minimum length of a string property. A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor29)
      *
      * @var int
@@ -178,6 +188,8 @@ class Schema extends AbstractAnnotation
     public $pattern = Generator::UNDEFINED;
 
     /**
+     * The maximum number of items allowed in an array property.
+     * An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor42)
      *
      * @var int
@@ -185,6 +197,8 @@ class Schema extends AbstractAnnotation
     public $maxItems = Generator::UNDEFINED;
 
     /**
+     * The minimum number of items allowed in an array property.
+     * An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor45)
      *
      * @var int
@@ -192,6 +206,8 @@ class Schema extends AbstractAnnotation
     public $minItems = Generator::UNDEFINED;
 
     /**
+     * A boolean value indicating whether all items in an array property must be unique.
+     * If this attribute is set to true, then all items in the array must be unique.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor49)
      *
      * @var bool
@@ -199,6 +215,8 @@ class Schema extends AbstractAnnotation
     public $uniqueItems = Generator::UNDEFINED;
 
     /**
+     * A collection of allowable values for a property.
+     * A property instance is valid against this attribute if its value is one of the values specified in this collection.
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
      * @var string[]|int[]|float[]|\UnitEnum[]|class-string
