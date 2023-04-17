@@ -957,12 +957,14 @@ An object instance is valid against this property if its number of properties is
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or<br />
-"object".</p></dd>
+  <dd><p>The type of the schema/property.<br />
+<br />
+The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
+<br />
 Possible values are:<br />
 - csv: comma separated values foo,bar.<br />
 - ssv: space separated values foo bar.<br />
@@ -976,30 +978,40 @@ Default value is csv.</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>A boolean value indicating whether the maximum value specified in the maximum attribute is excluded from the set of valid values.<br />
-If this attribute is set to true, then the maximum value is not included in the set of valid values.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>A boolean value indicating whether the minimum value specified in the minimum attribute is excluded from the set of valid values.<br />
-If this attribute is set to true, then the minimum value is not included in the set of valid values.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The maximum length of a string property. A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The minimum length of a string property. A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
+<br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
