@@ -15,6 +15,7 @@ class QueryParameter extends Parameter
 {
     /**
      * @inheritdoc
+     * This takes 'query' as the default location.
      */
     public $in = 'query';
 }

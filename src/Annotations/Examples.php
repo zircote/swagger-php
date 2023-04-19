@@ -14,6 +14,8 @@ use OpenApi\Generator;
 class Examples extends AbstractAnnotation
 {
     /**
+     * The relative or absolute path to an example.
+     *
      * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
      *
      * @var string|class-string|object
