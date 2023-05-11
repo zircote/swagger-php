@@ -3,6 +3,7 @@
 namespace OpenApi\Examples\UsingRefs;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * @OA\Info(
@@ -15,22 +16,38 @@ class OpenApiSpec
 }
 
 /**
- * You can define top-level parameters which can be references with $ref="#/components/parameters/parameter".
+ * You can define top-level parameters which can be references with $ref="#/components/parameters/[parameter-name]".
  *
- * @OA\Parameter(
- *     parameter="product_id_in_path_required",
- *     name="product_id",
- *     description="The ID of the product",
- *     @OA\Schema(
- *         type="integer",
- *         format="int64",
- *     ),
- *     in="path",
- *     required=true
- * )
+ * The `ProductParameter` class is just used as a container to have some structural elements
+ * to associate the annotations with.
  */
-class ProductIdParamerter
+abstract class ProductParameter
 {
+    /**
+     * @OA\Parameter(
+     *     parameter="product_id_in_path_required",
+     *     name="product_id",
+     *     description="The ID of the product",
+     *     @OA\Schema(
+     *         type="integer",
+     *         format="int64",
+     *     ),
+     *     in="path",
+     *     required=true
+     * )
+     */
+
+    /*
+     * Same using PHP attribute(s):
+    #[OAT\PathParameter(
+        parameter: 'product_id_in_path_required',
+        name: 'product_id',
+        description: 'The ID of the product',
+        schema: new OAT\Schema(type: 'integer', format: 'int64'),
+        required: true
+    )]
+    */
+    public $product_id;
 }
 
 /**
