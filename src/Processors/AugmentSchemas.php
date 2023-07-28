@@ -131,6 +131,7 @@ class AugmentSchemas implements ProcessorInterface
                 }
                 if (!$allOfPropertiesSchema) {
                     $allOfPropertiesSchema = new OA\Schema([
+                        'type'       => 'object',                                   
                         'properties' => [],
                         '_context' => new Context(['generated' => true], $schema->_context),
                     ]);
