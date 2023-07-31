@@ -282,7 +282,7 @@ class Context
         } else {
             $namespace = '\\'; // global namespace
         }
-        if (strcasecmp($class, $this->class) === 0) {
+        if (strcasecmp($class ?? '', $this->class ?? '') === 0) {
             return $namespace . $this->class;
         }
         $pos = strpos($class, '\\');

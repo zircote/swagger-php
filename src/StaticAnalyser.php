@@ -34,7 +34,7 @@ class StaticAnalyser
                 $GLOBALS['swagger_opcache_warning'] = true;
                 $status = opcache_get_status();
                 $config = opcache_get_configuration();
-                if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
+                if (is_array($status) && (isset($status['opcache_enabled']) ?? null) && !$config['directives']['opcache.save_comments']) {
                     Logger::warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] http://php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
                 }
             }
@@ -278,17 +278,20 @@ class StaticAnalyser
             if (false === $token) {
                 return false;
             }
-            if ($token[0] === T_WHITESPACE) {
-                continue;
-            }
-            if ($token[0] === T_COMMENT) {
-                $pos = strpos($token[1], '@SWG\\');
-                if ($pos) {
-                    $line = $context->line ? $context->line + $token[2] : $token[2];
-                    $commentContext = new Context(['line' => $line], $context);
-                    Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+            if (is_array($token)) {
+                if ($token[0] === T_WHITESPACE) {
+                    continue;
                 }
-                continue;
+                if ($token[0] === T_COMMENT) {
+                    $pos = strpos($token[1], '@SWG\\');
+                    if ($pos) {
+                        $line = $context->line ? $context->line + $token[2] : $token[2];
+                        $commentContext = new Context(['line' => $line], $context);
+                        Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                    }
+                    continue;
+            }
+
             }
             return $token;
         }
