@@ -1,31 +1,27 @@
 <?php
 
-namespace OpenApi\Examples\PetstoreSwaggerIo;
-
-use OpenApi\Annotations as OA;
+namespace PetstoreIO;
 
 /**
- * @OA\Schema
+ * @SWG\Definition(type="object")
  */
 class ApiResponse
 {
+
     /**
-     * @OA\Property(format="int32")
-     *
+     * @SWG\Property(format="int32")
      * @var int
      */
     public $code;
 
     /**
-     * @OA\Property
-     *
+     * @SWG\Property
      * @var string
      */
     public $type;
 
     /**
-     * @OA\Property
-     *
+     * @SWG\Property
      * @var string
      */
     public $message;

@@ -1,23 +1,16 @@
-<?php declare(strict_types=1);
-
-/**
- * @license Apache 2.0
- */
+<?php
 
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
-use OpenApi\Annotations as OA;
-
 /**
- * @OA\Schema
+ * @SWG\Definition()
  */
-class ChildWithDocBlocks extends AncestorWithoutDocBlocks
+class ChildWithDocBlocks extends \SwaggerFixtures\AncestorWithoutDocBlocks
 {
+
     /**
      * @var bool
-     *
-     * @OA\Property
+     * @SWG\Property()
      */
     public $isBaby;
 }

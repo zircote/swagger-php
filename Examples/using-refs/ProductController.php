@@ -1,43 +1,48 @@
 <?php
-
-namespace OpenApi\Examples\UsingRefs;
-
-use OpenApi\Annotations as OA;
+namespace UsingRefs;
 
 /**
- * @OA\PathItem(
- *     path="/products/{product_id}",
- *     @OA\Parameter(ref="#/components/parameters/product_id_in_path_required")
+ * @SWG\Path(
+ *   path="/products/{product_id}",
+ *   @SWG\Parameter(ref="#/parameters/product_id_in_path_required")
  * )
  */
-class ProductController
-{
+
+class ProductController {
+
     /**
-     * @OA\Get(
-     *     tags={"Products"},
-     *     path="/products/{product_id}",
-     *     @OA\Response(
-     *         response="default",
-     *         ref="#/components/responses/product"
-     *     )
+     * @SWG\Get(
+     *   tags={"Products"},
+     *   path="/products/{product_id}",
+     *   @SWG\Response(response="default", ref="#/responses/product")
      * )
      */
-    public function getProduct($id)
-    {
+    public function getProduct($id) {
+
     }
 
     /**
-     * @OA\Patch(
-     *     tags={"Products"},
-     *     path="/products/{product_id}",
-     *     @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
-     *     @OA\Response(
-     *         response="default",
-     *         ref="#/components/responses/product"
-     *     )
+     * @SWG\Patch(
+     *   tags={"Products"},
+     *   path="/products/{product_id}",
+     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
+     *   @SWG\Response(response="default", ref="#/responses/product")
      * )
      */
-    public function updateProduct($id)
-    {
+    public function updateProduct($id) {
+
     }
+
+    /**
+     * @SWG\Post(
+     *   tags={"Products"},
+     *   path="/products",
+     *   @SWG\Parameter(ref="#/parameters/product_in_body"),
+     *   @SWG\Response(response="default", ref="#/responses/product")
+     * )
+     */
+    public function addProduct($id) {
+
+    }
+
 }

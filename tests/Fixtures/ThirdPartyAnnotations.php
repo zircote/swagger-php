@@ -1,22 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+namespace SwaggerFixtures;
 
 /**
- * @license Apache 2.0
+ * @SWG\Info(title="Fixture for ParserTest", version="test")
  */
-
-namespace OpenApi\Tests\Fixtures;
-
 use AnotherNamespace\Annotations as Annotation;
-use OpenApi\Annotations as OA;
-
-/**
- * @OA\Info(title="Fixture for ParserTest", version="test")
- *
- * Based on the example http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
- */
-class Fixture
-{
-}
 
 /**
  * @Annotation\Unrelated("user")
@@ -24,7 +12,7 @@ class Fixture
 class ThirdPartyAnnotations
 {
     /**
-     * @Annotation\Unrelated
+     * @Annotation\Unrelated()
      */
     public $id;
 
@@ -39,9 +27,9 @@ class ThirdPartyAnnotations
     public $email;
 
     /**
-     * @OA\Get(path="api/3rd-party", @OA\Response(response="200", description="a response"))
+     * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
      */
-    public function methodWithOpenApiAnnotation()
+    public function methodWithSwaggerAnnotation()
     {
     }
 }

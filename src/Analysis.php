@@ -1,88 +1,85 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi;
+namespace Swagger;
 
-use OpenApi\Annotations as OA;
-use OpenApi\Processors\ProcessorInterface;
+use Closure;
+use Exception;
+use SplObjectStorage;
+use stdClass;
+use Swagger\Annotations\AbstractAnnotation;
+use Swagger\Annotations\Swagger;
+use Swagger\Processors\AugmentDefinitions;
+use Swagger\Processors\AugmentOperations;
+use Swagger\Processors\AugmentParameters;
+use Swagger\Processors\AugmentProperties;
+use Swagger\Processors\BuildPaths;
+use Swagger\Processors\CleanUnmerged;
+use Swagger\Processors\HandleReferences;
+use Swagger\Processors\InheritProperties;
+use Swagger\Processors\MergeIntoSwagger;
 
 /**
- * Result of the analyser.
- *
- * Pretends to be an array of annotations, but also contains detected classes
- * and helper functions for the processors.
+ * Result of the analyser which pretends to be an array of annotations, but also contains detected classes and helper functions for the processors.
  */
 class Analysis
 {
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     public $annotations;
 
     /**
-     * Class definitions.
-     *
+     * Class definitions
      * @var array
      */
     public $classes = [];
 
     /**
-     * Interface definitions.
-     *
-     * @var array
+     * The target Swagger annotation.
+     * @var Swagger
      */
-    public $interfaces = [];
+    public $swagger;
 
     /**
-     * Trait definitions.
-     *
-     * @var array
+     * Registry for the post-processing operations.
+     * @var Closure[]
      */
-    public $traits = [];
+    private static $processors;
 
     /**
-     * Enum definitions.
-     *
-     * @var array
+     * @param array $annotations
+     * @param null  $context
      */
-    public $enums = [];
-
-    /**
-     * The target OpenApi annotation.
-     *
-     * @var OA\OpenApi|null
-     */
-    public $openapi = null;
-
-    /**
-     * @var Context|null
-     */
-    public $context = null;
-
-    public function __construct(array $annotations = [], Context $context = null)
+    public function __construct($annotations = [], $context = null)
     {
-        $this->annotations = new \SplObjectStorage();
-        $this->context = $context;
-
-        $this->addAnnotations($annotations, $context);
+        $this->annotations = new SplObjectStorage();
+        if (count($annotations) !== 0) {
+            if ($context === null) {
+                $context = Context::detect(1);
+            }
+            $this->addAnnotations($annotations, $context);
+        }
     }
 
-    public function addAnnotation(object $annotation, Context $context): void
+    /**
+     * @param AbstractAnnotation $annotation
+     * @param Context $context
+     */
+    public function addAnnotation($annotation, $context)
     {
         if ($this->annotations->contains($annotation)) {
             return;
         }
-
-        if ($annotation instanceof OA\OpenApi) {
-            $this->openapi = $this->openapi ?: $annotation;
+        if ($annotation instanceof AbstractAnnotation) {
+            $context = $annotation->_context;
         } else {
             if ($context->is('annotations') === false) {
                 $context->annotations = [];
             }
-
             if (in_array($annotation, $context->annotations, true) === false) {
                 $context->annotations[] = $annotation;
             }
@@ -96,290 +93,152 @@ class Analysis
                         $this->addAnnotation($item, $context);
                     }
                 }
+                continue;
             } elseif (is_array($value)) {
                 foreach ($value as $item) {
-                    if ($item instanceof OA\AbstractAnnotation) {
+                    if ($item instanceof AbstractAnnotation) {
                         $this->addAnnotation($item, $context);
                     }
                 }
-            } elseif ($value instanceof OA\AbstractAnnotation) {
+            } elseif ($value instanceof AbstractAnnotation) {
                 $this->addAnnotation($value, $context);
             }
         }
     }
 
-    public function addAnnotations(array $annotations, Context $context): void
+    /**
+     * @param array $annotations
+     * @param Context $context
+     */
+    public function addAnnotations($annotations, $context)
     {
         foreach ($annotations as $annotation) {
             $this->addAnnotation($annotation, $context);
         }
     }
 
-    public function addClassDefinition(array $definition): void
+    /**
+     * @param array $definition
+     */
+    public function addClassDefinition($definition)
     {
         $class = $definition['context']->fullyQualifiedName($definition['class']);
         $this->classes[$class] = $definition;
     }
 
-    public function addInterfaceDefinition(array $definition): void
-    {
-        $interface = $definition['context']->fullyQualifiedName($definition['interface']);
-        $this->interfaces[$interface] = $definition;
-    }
-
-    public function addTraitDefinition(array $definition): void
-    {
-        $trait = $definition['context']->fullyQualifiedName($definition['trait']);
-        $this->traits[$trait] = $definition;
-    }
-
-    public function addEnumDefinition(array $definition): void
-    {
-        $enum = $definition['context']->fullyQualifiedName($definition['enum']);
-        $this->enums[$enum] = $definition;
-    }
-
-    public function addAnalysis(Analysis $analysis): void
+    /**
+     * @param Analysis $analysis
+     */
+    public function addAnalysis($analysis)
     {
         foreach ($analysis->annotations as $annotation) {
             $this->addAnnotation($annotation, $analysis->annotations[$annotation]);
         }
         $this->classes = array_merge($this->classes, $analysis->classes);
-        $this->interfaces = array_merge($this->interfaces, $analysis->interfaces);
-        $this->traits = array_merge($this->traits, $analysis->traits);
-        $this->enums = array_merge($this->enums, $analysis->enums);
-        if ($this->openapi === null && $analysis->openapi !== null) {
-            $this->openapi = $analysis->openapi;
+        if ($this->swagger === null && $analysis->swagger) {
+            $this->swagger = $analysis->swagger;
+            $analysis->target->_context->analysis = $this;
         }
     }
 
-    /**
-     * Get all subclasses of the given parent class.
-     *
-     * @param string $parent the parent class
-     *
-     * @return array map of class => definition pairs of sub-classes
-     */
-    public function getSubClasses(string $parent): array
+    public function getSubClasses($class)
     {
         $definitions = [];
-        foreach ($this->classes as $class => $classDefinition) {
-            if ($classDefinition['extends'] === $parent) {
-                $definitions[$class] = $classDefinition;
-                $definitions = array_merge($definitions, $this->getSubClasses($class));
+        foreach ($this->classes as $subclass => $definition) {
+            if ($definition['extends'] === $class) {
+                $definitions[$subclass] = $definition;
+                $definitions = array_merge($definitions, $this->getSubClasses($subclass));
             }
         }
-
         return $definitions;
     }
 
-    /**
-     * Get a list of all super classes for the given class.
-     *
-     * @param string $class  the class name
-     * @param bool   $direct flag to find only the actual class parents
-     *
-     * @return array map of class => definition pairs of parent classes
-     */
-    public function getSuperClasses(string $class, bool $direct = false): array
+    public function getSuperClasses($class)
     {
-        $classDefinition = $this->classes[$class] ?? null;
-        if (!$classDefinition || empty($classDefinition['extends'])) {
-            // unknown class, or no inheritance
+        $classDefinition = isset($this->classes[$class]) ? $this->classes[$class] : null;
+        if (!$classDefinition || empty($classDefinition['extends'])) { // unknown class, or no inheritance?
             return [];
         }
-
         $extends = $classDefinition['extends'];
-        $extendsDefinition = $this->classes[$extends] ?? null;
+        $extendsDefinition = isset($this->classes[$extends]) ? $this->classes[$extends] : null;
         if (!$extendsDefinition) {
             return [];
         }
-
-        $parentDetails = [$extends => $extendsDefinition];
-
-        if ($direct) {
-            return $parentDetails;
-        }
-
-        return array_merge($parentDetails, $this->getSuperClasses($extends));
-    }
-
-    /**
-     * Get the list of interfaces used by the given class or by classes which it extends.
-     *
-     * @param string $class  the class name
-     * @param bool   $direct flag to find only the actual class interfaces
-     *
-     * @return array map of class => definition pairs of interfaces
-     */
-    public function getInterfacesOfClass(string $class, bool $direct = false): array
-    {
-        $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
-        // add self
-        $classes[] = $class;
-
-        $definitions = [];
-        foreach ($classes as $clazz) {
-            if (isset($this->classes[$clazz])) {
-                $definition = $this->classes[$clazz];
-                if (isset($definition['implements'])) {
-                    foreach ($definition['implements'] as $interface) {
-                        if (array_key_exists($interface, $this->interfaces)) {
-                            $definitions[$interface] = $this->interfaces[$interface];
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!$direct) {
-            // expand recursively for interfaces extending other interfaces
-            $collect = function ($interfaces, $cb) use (&$definitions): void {
-                foreach ($interfaces as $interface) {
-                    if (isset($this->interfaces[$interface]['extends'])) {
-                        $cb($this->interfaces[$interface]['extends'], $cb);
-                        foreach ($this->interfaces[$interface]['extends'] as $fqdn) {
-                            $definitions[$fqdn] = $this->interfaces[$fqdn];
-                        }
-                    }
-                }
-            };
-            $collect(array_keys($definitions), $collect);
-        }
-
+        $definitions = array_merge([$extends => $extendsDefinition], $this->getSuperClasses($extends));
         return $definitions;
     }
 
     /**
-     * Get the list of traits used by the given class/trait or by classes which it extends.
      *
-     * @param string $source the source name
-     * @param bool   $direct flag to find only the actual class traits
-     *
-     * @return array map of class => definition pairs of traits
+     * @param string $class
+     * @param boolean $strict Innon-strict mode childclasses are also detected.
+     * @return array
      */
-    public function getTraitsOfClass(string $source, bool $direct = false): array
+    public function getAnnotationsOfType($class, $strict = false)
     {
-        $sources = $direct ? [] : array_keys($this->getSuperClasses($source));
-        // add self
-        $sources[] = $source;
-
-        $definitions = [];
-        foreach ($sources as $sourze) {
-            if (isset($this->classes[$sourze]) || isset($this->traits[$sourze])) {
-                $definition = $this->classes[$sourze] ?? $this->traits[$sourze];
-                if (isset($definition['traits'])) {
-                    foreach ($definition['traits'] as $trait) {
-                        if (array_key_exists($trait, $this->traits)) {
-                            $definitions[$trait] = $this->traits[$trait];
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!$direct) {
-            // expand recursively for traits using other traits
-            $collect = function ($traits, $cb) use (&$definitions): void {
-                foreach ($traits as $trait) {
-                    if (isset($this->traits[$trait]['traits'])) {
-                        $cb($this->traits[$trait]['traits'], $cb);
-                        foreach ($this->traits[$trait]['traits'] as $fqdn) {
-                            $definitions[$fqdn] = $this->traits[$fqdn];
-                        }
-                    }
-                }
-            };
-            $collect(array_keys($definitions), $collect);
-        }
-
-        return $definitions;
-    }
-
-    /**
-     * @param class-string|array<class-string> $classes one or more class names
-     * @param bool                             $strict  in non-strict mode child classes are also detected
-     *
-     * @return OA\AbstractAnnotation[]
-     */
-    public function getAnnotationsOfType($classes, bool $strict = false): array
-    {
-        $unique = new \SplObjectStorage();
         $annotations = [];
-
-        foreach ((array) $classes as $class) {
-            /** @var OA\AbstractAnnotation $annotation */
+        if ($strict) {
             foreach ($this->annotations as $annotation) {
-                if ($annotation instanceof $class && (!$strict || ($annotation->isRoot($class) && !$unique->contains($annotation)))) {
-                    $unique->attach($annotation);
+                if (get_class($annotation) === $class) {
+                    $annotations[] = $annotation;
+                }
+            }
+        } else {
+            foreach ($this->annotations as $annotation) {
+                if ($annotation instanceof $class) {
                     $annotations[] = $annotation;
                 }
             }
         }
-
         return $annotations;
     }
 
     /**
-     * @param string $fqdn the source class/interface/trait
+     *
+     * @param object $annotation
+     * @return \Swagger\Context
      */
-    public function getSchemaForSource(string $fqdn): ?OA\Schema
+    public function getContext($annotation)
     {
-        $fqdn = '\\' . ltrim($fqdn, '\\');
-
-        foreach ([$this->classes, $this->interfaces, $this->traits, $this->enums] as $definitions) {
-            if (array_key_exists($fqdn, $definitions)) {
-                $definition = $definitions[$fqdn];
-                if (is_iterable($definition['context']->annotations)) {
-                    foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if ($annotation instanceof OA\Schema && $annotation->isRoot(OA\Schema::class) && !$annotation->_context->is('generated')) {
-                            return $annotation;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public function getContext(object $annotation): ?Context
-    {
-        if ($annotation instanceof OA\AbstractAnnotation) {
+        if ($annotation instanceof AbstractAnnotation) {
             return $annotation->_context;
         }
         if ($this->annotations->contains($annotation) === false) {
-            throw new \Exception('Annotation not found');
+            throw new Exception('Annotation not found');
         }
         $context = $this->annotations[$annotation];
         if ($context instanceof Context) {
             return $context;
         }
-
-        // Weird, did you use the addAnnotation/addAnnotations methods?
-        throw new \Exception('Annotation has no context');
+        var_dump($context);
+        ob_flush();
+        die;
+        throw new Exception('Annotation has no context'); // Weird, did you use the addAnnotation/addAnnotations methods?
     }
 
     /**
-     * Build an analysis with only the annotations that are merged into the OpenAPI annotation.
+     * Build an analysis with only the annotations that are merged into the swagger annotation.
+     *
+     * @return Analysis
      */
-    public function merged(): Analysis
+    public function merged()
     {
-        if ($this->openapi === null) {
-            throw new \Exception('No openapi target set. Run the MergeIntoOpenApi processor');
+        if (!$this->swagger) {
+            throw new Exception('No swagger target set. Run the MergeIntoSwagger processor');
         }
-        $unmerged = $this->openapi->_unmerged;
-        $this->openapi->_unmerged = [];
-        $analysis = new Analysis([$this->openapi], $this->context);
-        $this->openapi->_unmerged = $unmerged;
-
+        $unmerged = $this->swagger->_unmerged;
+        $this->swagger->_unmerged = [];
+        $analysis = new Analysis([$this->swagger]);
+        $this->swagger->_unmerged = $unmerged;
         return $analysis;
     }
 
     /**
      * Analysis with only the annotations that not merged.
+     *
+     * @return Analysis
      */
-    public function unmerged(): Analysis
+    public function unmerged()
     {
         return $this->split()->unmerged;
     }
@@ -392,42 +251,86 @@ class Analysis
      */
     public function split()
     {
-        $result = new \stdClass();
+        $result = new stdClass();
         $result->merged = $this->merged();
-        $result->unmerged = new Analysis([], $this->context);
+        $result->unmerged = new Analysis();
         foreach ($this->annotations as $annotation) {
             if ($result->merged->annotations->contains($annotation) === false) {
                 $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
             }
         }
-
         return $result;
     }
 
     /**
-     * Apply the processor(s).
-     *
-     * @param callable|ProcessorInterface|array<ProcessorInterface|callable> $processors One or more processors
+     * Apply the processor(s)
+     * @param Closure|Closure[] $processors One or more processors
      */
-    public function process($processors = null): void
+    public function process($processors = null)
     {
-        if (is_array($processors) === false && is_callable($processors) || $processors instanceof ProcessorInterface) {
+        if ($processors === null) { // Use the default and registered processors.
+            $processors = self::processors();
+        }
+        if (is_array($processors) === false && is_callable($processors)) {
             $processors = [$processors];
         }
-
         foreach ($processors as $processor) {
             $processor($this);
         }
     }
 
-    public function validate(): bool
+    /**
+     * Get direct access to the processors array.
+     * @return array reference
+     */
+    public static function &processors()
     {
-        if ($this->openapi !== null) {
-            return $this->openapi->validate();
+        if (!self::$processors) {
+            // Add default processors.
+            self::$processors = [
+                new MergeIntoSwagger(),
+                new BuildPaths(),
+                new HandleReferences(),
+                new AugmentDefinitions(),
+                new AugmentProperties(),
+                new InheritProperties(),
+                new AugmentOperations(),
+                new AugmentParameters(),
+                new CleanUnmerged(),
+            ];
         }
+        return self::$processors;
+    }
 
-        $this->context->logger->warning('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+    /**
+     * Register a processor
+     * @param Closure $processor
+     */
+    public static function registerProcessor($processor)
+    {
+        array_push(self::processors(), $processor);
+    }
 
+    /**
+     * Unregister a processor
+     * @param Closure $processor
+     */
+    public static function unregisterProcessor($processor)
+    {
+        $processors = &self::processors();
+        $key = array_search($processor, $processors, true);
+        if ($key === false) {
+            throw new Exception('Given processor was not registered');
+        }
+        unset($processors[$key]);
+    }
+
+    public function validate()
+    {
+        if ($this->swagger) {
+            return $this->swagger->validate();
+        }
+        Logger::notice('No swagger target set. Run the MergeIntoSwagger processor before validate()');
         return false;
     }
 }

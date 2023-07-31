@@ -1,62 +1,80 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests;
+namespace SwaggerTests;
 
-use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Generator;
+use Swagger\Analyser;
+use Swagger\StaticAnalyser;
 
-class ConstantsTest extends OpenApiTestCase
+class ConstantsTest extends SwaggerTestCase
 {
-    public const URL = 'http://example.com';
+    const URL = 'http://example.com';
 
     private static $counter = 0;
 
-    public function testConstant(): void
+    public function testConstant()
     {
         self::$counter++;
-        $const = 'OPENAPI_TEST_' . self::$counter;
+        $const = 'SWAGGER_TEST_'.self::$counter;
         $this->assertFalse(defined($const));
-        $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant " . $const);
-        $this->annotationsFromDocBlockParser('@OA\Contact(email=' . $const . ')');
+        $this->assertSwaggerLogEntryStartsWith("[Semantical Error] Couldn't find constant ".$const);
+        $this->parseComment('@SWG\Contact(email='.$const.')');
 
         define($const, 'me@domain.org');
-        $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(email=' . $const . ')');
+        $annotations = $this->parseComment('@SWG\Contact(email='.$const.')');
         $this->assertSame('me@domain.org', $annotations[0]->email);
     }
 
-    public function testFQCNConstant(): void
+    public function testFQCNConstant()
     {
-        $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(url=OpenApi\Tests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@SWG\Contact(url=SwaggerTests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
 
-        $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(url=\OpenApi\Tests\ConstantsTest::URL)');
+        $annotations = $this->parseComment('@SWG\Contact(url=\SwaggerTests\ConstantsTest::URL)');
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 
-    public function testInvalidClass(): void
+    public function testInvalidClass()
     {
-        $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant ConstantsTest::URL");
-        $this->annotationsFromDocBlockParser('@OA\Contact(url=ConstantsTest::URL)');
+        $this->assertSwaggerLogEntryStartsWith("[Semantical Error] Couldn't find constant ConstantsTest::URL");
+        $this->parseComment('@SWG\Contact(url=ConstantsTest::URL)');
     }
 
-    public function testAutoloadConstant(): void
+    public function testAutoloadConstant()
     {
         if (class_exists('AnotherNamespace\Annotations\Constants', false)) {
             $this->markTestSkipped();
+            $annotations = $this->parseComment('@SWG\Contact(name=AnotherNamespace\Annotations\Constants::INVALID_TIMEZONE_LOCATION)');
+            $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
         }
-        $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(name=AnotherNamespace\Annotations\Constants::INVALID_TIMEZONE_LOCATION)');
-        $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 
-    public function testDynamicImports(): void
+    public function testDynamicImports()
     {
-        $analyser = new TokenAnalyser();
-        $analyser->setGenerator((new Generator())->setNamespaces(null));
-        $analyser->fromFile($this->fixture('Customer.php'), $this->getContext());
-        $analyser->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
+        $backup = Analyser::$whitelist;
+        Analyser::$whitelist = false;
+        $analyser = new StaticAnalyser();
+        $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Customer.php');
+        // @todo Only tests that $whitelist=false doesn't trigger errors,
+        // No constants are used, because by default only class constants in the whitelisted namespace are allowed and no class in Swagger\Annotation namespace has a constant.
+
+        // Scanning without whitelisting causes issues, to check uncomment next.
+        // $analyser->fromFile(__DIR__ . '/Fixtures/ThirdPartyAnnotations.php');
+        Analyser::$whitelist = $backup;
+    }
+
+    public function testDefaultImports()
+    {
+        $backup = Analyser::$defaultImports;
+        Analyser::$defaultImports = [
+            'contact' => 'Swagger\Annotations\Contact', // use Swagger\Annotations\Contact;
+            'ctest' => 'sWaGGerTests\ConstantsTesT' // use sWaGGerTests\ConstantsTesT as CTest;
+        ];
+        $annotations = $this->parseComment('@Contact(url=CTest::URL)');
+        $this->assertSame('http://example.com', $annotations[0]->url);
+        Analyser::$defaultImports = $backup;
     }
 }

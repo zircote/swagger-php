@@ -1,15 +1,18 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Processors;
+namespace Swagger\Processors;
 
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
+use Swagger\Analysis;
+use SplObjectStorage;
 
-class CleanUnmerged implements ProcessorInterface
+/**
+ *
+ */
+class CleanUnmerged
 {
     public function __invoke(Analysis $analysis)
     {
@@ -17,7 +20,6 @@ class CleanUnmerged implements ProcessorInterface
         $merged = $split->merged->annotations;
         $unmerged = $split->unmerged->annotations;
 
-        /** @var OA\AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_unmerged')) {
                 foreach ($annotation->_unmerged as $i => $item) {
@@ -27,9 +29,9 @@ class CleanUnmerged implements ProcessorInterface
                 }
             }
         }
-        $analysis->openapi->_unmerged = [];
+        $analysis->swagger->_unmerged = [];
         foreach ($unmerged as $annotation) {
-            $analysis->openapi->_unmerged[] = $annotation;
+            $analysis->swagger->_unmerged[] = $annotation;
         }
     }
 }

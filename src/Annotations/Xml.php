@@ -1,95 +1,62 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
+namespace Swagger\Annotations;
 
 /**
- * @see [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
- *
  * @Annotation
+ *
+ * A Swagger "XML Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#xmlObject
  */
 class Xml extends AbstractAnnotation
 {
     /**
-     * Replaces the name of the element/attribute used for the described schema property.
-     *
-     * When defined within the Items Object (items), it will affect the name of the individual XML elements within the list.
-     * When defined alongside type being array (outside the items), it will affect the wrapping element
-     * and only if wrapped is <code>true</code>.
-     *
-     * If wrapped is <code>false</code>, it will be ignored.
-     *
+     * Replaces the name of the element/attribute used for the described schema property. When defined within the Items Object (items), it will affect the name of the individual XML elements within the list. When defined alongside type being array (outside the items), it will affect the wrapping element and only if wrapped is true. If wrapped is false, it will be ignored.
      * @var string
      */
-    public $name = Generator::UNDEFINED;
+    public $name;
 
     /**
      * The URL of the namespace definition. Value SHOULD be in the form of a URL.
-     *
      * @var string
      */
-    public $namespace = Generator::UNDEFINED;
+    public $namespace;
 
     /**
      * The prefix to be used for the name.
-     *
      * @var string
      */
-    public $prefix = Generator::UNDEFINED;
+    public $prefix;
 
     /**
-     * Declares whether the property definition translates to an attribute instead of an element.
-     *
-     * Default value is <code>false</code>.
-     *
-     * @var bool
+     * Declares whether the property definition translates to an attribute instead of an element. Default value is false.
+     * @var boolean
      */
-    public $attribute = Generator::UNDEFINED;
+    public $attribute;
 
     /**
-     * MAY be used only for an array definition.
-     *
-     * Signifies whether the array is wrapped (for example  <code>&lt;books>&lt;book/>&lt;book/>&lt;/books></code>)
-     * or unwrapped (<code>&lt;book/>&lt;book/></code>).
-     *
-     * Default value is false. The definition takes effect only when defined alongside type being array (outside the items).
-     *
-     * @var bool
+     * MAY be used only for an array definition. Signifies whether the array is wrapped (for example, <books><book/><book/></books>) or unwrapped (<book/><book/>). Default value is false. The definition takes effect only when defined alongside type being array (outside the items).
+     * @var boolean
      */
-    public $wrapped = Generator::UNDEFINED;
+    public $wrapped;
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_types = [
         'name' => 'string',
         'namespace' => 'string',
         'prefix' => 'string',
         'attribute' => 'boolean',
-        'wrapped' => 'boolean',
+        'wrapped' => 'boolean'
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_parents = [
-        AdditionalProperties::class,
-        Schema::class,
-        Property::class,
-        Schema::class,
-        Items::class,
-        XmlContent::class,
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public static $_nested = [
-        Attachable::class => ['attachables'],
+        'Swagger\Annotations\Schema',
+        'Swagger\Annotations\Property',
+        'Swagger\Annotations\Definition',
+        'Swagger\Annotations\Items',
     ];
 }
