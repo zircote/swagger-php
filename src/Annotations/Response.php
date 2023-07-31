@@ -1,130 +1,79 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Annotations;
-
-use OpenApi\Generator;
+namespace Swagger\Annotations;
 
 /**
- * Describes a single response from an API Operation, including design-time,
- * static links to operations based on the response.
- *
- * @see [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
- *
  * @Annotation
+ *
+ * A Swagger "Response Object": https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#responseObject
  */
 class Response extends AbstractAnnotation
 {
     /**
-     * The relative or absolute path to a response.
-     *
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
-     *
-     * @var string|class-string|object
+     * $ref See http://json-schema.org/latest/json-schema-core.html#rfc.section.7
+     * @var string
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref;
 
     /**
      * The key into Operations->responses array.
      *
-     * A HTTP status code or <code>default</code>.
-     *
-     * @var string|int
+     * @var string a HTTP Status Code or "default"
      */
-    public $response = Generator::UNDEFINED;
+    public $response;
 
     /**
-     * A short description of the response.
-     *
-     * CommonMark syntax may be used for rich text representation.
-     *
+     * A short description of the response. GFM syntax can be used for rich text representation.
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description;
 
     /**
-     * Maps a header name to its definition.
-     *
-     * RFC7230 states header names are case insensitive.
-     *
-     * If a response header is defined with the name "Content-Type", it shall be ignored.
-     *
-     * @see [RFC7230](https://tools.ietf.org/html/rfc7230#page-22)
-     *
+     * A definition of the response structure. It can be a primitive, an array or an object. If this field does not exist, it means no content is returned as part of the response. As an extension to the Schema Object, its root type value may also be "file". This SHOULD be accompanied by a relevant produces mime-type.
+     * @var Schema
+     */
+    public $schema;
+
+    /**
+     * A list of headers that are sent with the response.
      * @var Header[]
      */
-    public $headers = Generator::UNDEFINED;
+    public $headers;
 
     /**
-     * A map containing descriptions of potential response payloads.
-     *
-     * The key is a media type or media type range and the value describes it.
-     *
-     * For responses that match multiple keys, only the most specific key is applicable;
-     * e.g. <code>text/plain</code> overrides <code>text/*</code>.
-     *
-     * @var MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable>
+     * An example of the response message.
+     * @var array
      */
-    public $content = Generator::UNDEFINED;
+    public $examples;
 
-    /**
-     * A map of operations links that can be followed from the response.
-     *
-     * The key of the map is a short name for the link, following the naming constraints of the names for Component
-     * Objects.
-     *
-     * @var Link[]
-     */
-    public $links = Generator::UNDEFINED;
+    /** @inheritdoc */
+    public static $_required = ['description'];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_types = [
         'description' => 'string',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_nested = [
-        MediaType::class => ['content', 'mediaType'],
-        Header::class => ['headers', 'header'],
-        Link::class => ['links', 'link'],
-        Attachable::class => ['attachables'],
+        'Swagger\Annotations\Schema' => 'schema',
+        'Swagger\Annotations\Header' => ['headers', 'header']
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_parents = [
-        Components::class,
-        Operation::class,
-        Get::class,
-        Post::class,
-        Put::class,
-        Patch::class,
-        Delete::class,
-        Head::class,
-        Options::class,
-        Trace::class,
+        'Swagger\Annotations\Operation',
+        'Swagger\Annotations\Get',
+        'Swagger\Annotations\Post',
+        'Swagger\Annotations\Put',
+        'Swagger\Annotations\Patch',
+        'Swagger\Annotations\Delete',
+        'Swagger\Annotations\Head',
+        'Swagger\Annotations\Options',
+        'Swagger\Annotations\Swagger'
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
-    {
-        $valid = parent::validate($stack, $skip, $ref, $context);
-
-        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
-            $this->_context->logger->warning($this->identity() . ' One of description or ref is required');
-            $valid = false;
-        }
-
-        return $valid;
-    }
 }

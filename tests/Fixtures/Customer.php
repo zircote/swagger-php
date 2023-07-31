@@ -1,41 +1,29 @@
-<?php declare(strict_types=1);
-
-/**
- * @license Apache 2.0
- */
-
-// NOTE: this file uses "\r\n" linebreaks on purpose
-
-namespace OpenApi\Tests\Fixtures;
+<?php
+namespace SwaggerFixures;
 
 use Exception;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-use OpenApi\Generator as OpenApiGenerator;
+use Swagger\Logger as SwgLogger;
+use \Swagger\Logger;
+use Swagger\Annotations as SWG;
 
 /**
- * A customer.
- *
- * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @OA\Schema
+ * @SWG\Info(title="Fixture for ClassPropertiesTest", version="test")
+ * @SWG\Definition()
  */
 class Customer
 {
+    
     /**
      * The first name of the customer.
      *
      * @var string
-     *
-     * @example John
-     * @OA\Property
+     * @SWG\Property()
      */
     public $firstname;
 
     /**
-     * @var null|string the second name of the customer
-     *
-     * @example Allan
-     * @OA\Property
+     * @var null|string The second name of the customer.
+     * @SWG\Property()
      */
     public $secondname;
 
@@ -43,9 +31,8 @@ class Customer
      * The third name of the customer.
      *
      * @var string|null
-     *
      * @example Peter
-     * @OA\Property
+     * @SWG\Property()
      */
     public $thirdname;
 
@@ -53,61 +40,42 @@ class Customer
      * The unknown name of the customer.
      *
      * @var unknown|null
-     *
-     * @example Unknown
-     * @OA\Property
+     * @SWG\Property()
      */
     public $fourthname;
 
     /**
-     * @var string the lastname of the customer
-     * @OA\Property
+     * @var string The lastname of the customer.
+     * @SWG\Property()
      */
     public $lastname;
-
+    
     /**
-     * @OA\Property
-     *
+     * @SWG\Property()
      * @var string[]
      */
     public $tags;
-
+    
     /**
-     * @OA\Property
-     *
+     * @SWG\Property()
      * @var Customer
      */
     public $submittedBy;
-
+    
     /**
-     * @OA\Property
-     *
-     * @var Customer[]
+     * @SWG\Property()
+     * @var Customer[]|null
      */
     public $friends;
 
     /**
-     * @OA\Property
-     *
-     * @var Customer|null
+     * for ContextTest
      */
-    public $bestFriend;
-
-    /**
-     * @OA\Property
-     *
-     * @var Customer[]|null
-     */
-    public $endorsedFriends;
-
-    /**
-     * for ContextTest.
-     */
-    public function testResolvingFullyQualifiedNames(): void
+    public function testResolvingFullyQualifiedNames()
     {
-        (new OpenApiGenerator())->getLogger();
-        (new Generator())->getLogger();
-        new OA\Contact([]);
+        $test = new SwgLogger();
+        $test2 = new Logger();
+        $test3 = new SWG\Contact();
         throw new Exception();
     }
 }

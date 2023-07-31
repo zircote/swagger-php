@@ -2,115 +2,47 @@
     "name": "zircote/swagger-php",
     "type": "library",
     "license": "Apache-2.0",
-    "bin": [
-        "bin/openapi"
-    ],
-    "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
-    "keywords": [
-        "json",
-        "rest",
-        "api",
-        "service discovery"
-    ],
+    "bin": ["bin/swagger"],
+    "description": "Swagger-PHP - Generate interactive documentation for your RESTful API using phpdoc annotations",
+    "keywords": ["json", "rest", "api", "service discovery"],
     "homepage": "https://github.com/zircote/swagger-php/",
     "authors": [
         {
             "name": "Robert Allen",
-            "email": "zircote@gmail.com"
+            "email": "zircote@gmail.com",
+            "homepage": "http://www.zircote.com"
         },
         {
             "name": "Bob Fanger",
             "email": "bfanger@gmail.com",
-            "homepage": "https://bfanger.nl"
-        },
-        {
-            "name": "Martin Rademacher",
-            "email": "mano@radebatz.net",
-            "homepage": "https://radebatz.net"
+            "homepage": "http://bfanger.nl"
         }
     ],
     "config": {
-        "bin-dir": "bin",
-        "optimize-autoloader": true,
-        "sort-packages": true,
-        "allow-plugins": {
-            "composer/package-versions-deprecated": true
-        }
-    },
-    "minimum-stability": "stable",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "4.x-dev"
-        }
+        "bin-dir": "bin"
     },
     "require": {
         "php": ">=7.2",
-        "ext-json": "*",
-        "doctrine/annotations": "^1.7 || ^2.0",
-        "psr/log": "^1.1 || ^2.0 || ^3.0",
-        "symfony/deprecation-contracts": "^2 || ^3",
-        "symfony/finder": ">=2.2",
-        "symfony/yaml": ">=3.3"
+        "doctrine/annotations": "^1.7",
+        "symfony/finder": ">=3.4"
     },
     "autoload": {
         "psr-4": {
-            "OpenApi\\": "src"
-        }
+            "Swagger\\": "src"
+        },
+        "files": ["src/functions.php"]
     },
     "require-dev": {
-        "composer/package-versions-deprecated": "^1.11",
-        "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
-        "phpstan/phpstan": "^1.6",
-        "phpunit/phpunit": ">=8",
-        "vimeo/psalm": "^4.23"
+        "squizlabs/php_codesniffer": ">=2.7",
+        "phpunit/phpunit": "^8 || ^9"
     },
     "autoload-dev": {
-        "exclude-from-classmap": [
-            "/tests/Fixtures"
-        ],
         "psr-4": {
-            "OpenApi\\Tools\\": "tools/src/",
-            "OpenApi\\Tests\\": "tests/",
+            "SwaggerTests\\": "tests/",
             "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
         }
     },
-    "scripts-descriptions": {
-        "cs": "Fix all codestyle issues",
-        "lint": "Test codestyle",
-        "test": "Run all non-legacy and codestyle tests",
-        "testlegacy": "Run tests using the legacy TokenAnalyser",
-        "testall": "Run all tests (test + testlegacy)",
-        "analyse": "Run static analysis (phpstan/psalm)",
-        "spectral": "Run spectral lint over all .yaml files in the Examples folder",
-        "docs:gen": "Rebuild reference documentation",
-        "docs:dev": "Run dev server for local development of gh-pages",
-        "docs:build": "Re-build static gh-pages"
-    },
     "scripts": {
-        "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
-        "lint": "@cs --dry-run",
-        "test": [
-            "export XDEBUG_MODE=off && phpunit",
-            "@lint"
-        ],
-        "testlegacy": "export XDEBUG_MODE=off && export PHPUNIT_ANALYSER=legacy && phpunit",
-        "testall": [
-            "@test",
-            "@testlegacy"
-        ],
-        "analyse": [
-            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
-            "export XDEBUG_MODE=off && psalm"
-        ],
-        "spectral": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
-        "docs:gen": [
-            "@php tools/refgen.php",
-            "@php tools/procgen.php"
-        ],
-        "docs:dev": "cd docs && npm run dev",
-        "docs:build": [
-            "@docs:gen",
-            "cd docs && npm run build"
-        ]
+        "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests"
     }
 }

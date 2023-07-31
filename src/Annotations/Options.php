@@ -1,25 +1,21 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Annotations;
+namespace Swagger\Annotations;
 
 /**
  * @Annotation
  */
 class Options extends Operation
 {
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public $method = 'options';
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public static $_parents = [
-        PathItem::class,
+        'Swagger\Annotations\Path'
     ];
 }

@@ -1,27 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+namespace SwaggerFixures;
 
 /**
- * @license Apache 2.0
- */
-
-namespace OpenApi\Tests\Fixtures;
-
-use OpenApi\Annotations as OA;
-
-/**
- * @OA\Schema
+ * @SWG\Definition()
  */
 class NestedProperty
 {
+
     /**
      * @var bool
-     *
-     * @OA\Property(
-     *     @OA\Property(
+     * @SWG\Property(
+     *     @SWG\Property(
      *         property="babyProperty",
-     *         @OA\Property(
+     *         @SWG\Property(
      *             property="theBabyOfBaby",
-     *             properties={@OpenApi\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
+     *             properties={@Swagger\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
      *         )
      *     ),
      * )

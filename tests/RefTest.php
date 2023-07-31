@@ -1,39 +1,40 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests;
+namespace SwaggerTests;
 
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use Swagger\Analysis;
+use Swagger\Annotations\Info;
+use Swagger\Annotations\Response;
+use Swagger\Context;
 
-class RefTest extends OpenApiTestCase
+class RefTest extends SwaggerTestCase
 {
-    public function testRef(): void
+    public function testRef()
     {
-        $openapi = $this->createOpenApiWithInfo();
-        $info = $openapi->ref('#/info');
-        $this->assertInstanceOf(OA\Info::class, $info);
+        $swagger = $this->createSwaggerWithInfo();
+        $info = $swagger->ref('#/info');
+        $this->assertInstanceOf(Info::class, $info);
 
         $comment = <<<END
-@OA\Get(
+@SWG\Get(
     path="/api/~/endpoint",
-    @OA\Response(response="default", description="A response")
+    @SWG\Response(response="default", description="A response")
 )
 END;
-        $openapi->merge($this->annotationsFromDocBlockParser($comment));
-        $analysis = new Analysis([], $this->getContext());
-        $analysis->addAnnotation($openapi, $this->getContext());
-        $analysis->process((new Generator())->getProcessors());
-
+        $swagger->merge($this->parseComment($comment));
+        $analysis = new Analysis();
+        $analysis->addAnnotation($swagger, Context::detect());
+        $analysis->process();
+        
         $analysis->validate();
         // escape / as ~1
         // escape ~ as ~0
-        $response = $openapi->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
-        $this->assertInstanceOf(OA\Response::class, $response);
+        $response = $swagger->ref('#/paths/~1api~1~0~1endpoint/get/responses/default');
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('A response', $response->description);
     }
 }

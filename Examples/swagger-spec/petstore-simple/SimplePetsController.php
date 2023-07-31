@@ -1,76 +1,46 @@
 <?php
 
-namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
-
-use OpenApi\Annotations as OA;
+namespace Petstore;
 
 class SimplePetsController
 {
+
     /**
-     * @OA\Get(
+     * @SWG\Get(
      *     path="/pets",
      *     description="Returns all pets from the system that the user has access to",
      *     operationId="findPets",
-     *     tags={"store"},
-     *     @OA\Parameter(
+     *     produces={"application/json", "application/xml", "text/xml", "text/html"},
+     *     @SWG\Parameter(
      *         name="tags",
      *         in="query",
      *         description="tags to filter by",
      *         required=false,
-     *         @OA\Schema(
-     *             type="array",
-     *             @OA\Items(type="string"),
-     *         ),
-     *         style="form"
+     *         type="array",
+     *         @SWG\Items(type="string"),
+     *         collectionFormat="csv"
      *     ),
-     *     @OA\Parameter(
+     *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
      *         description="maximum number of results to return",
      *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int32"
-     *         )
+     *         type="integer",
+     *         format="int32"
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\JsonContent(
+     *         @SWG\Schema(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Pet")
-     *         ),
-     *         @OA\XmlContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Pet")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/xml",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             ),
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/html",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Pet")
-     *             ),
+     *             @SWG\Items(ref="#/definitions/Pet")
      *         ),
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
-     *         @OA\XmlContent(ref="#/components/schemas/ErrorModel"),
-     *         @OA\MediaType(
-     *             mediaType="text/xml",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/html",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
+     *         @SWG\Schema(
+     *             ref="#/definitions/ErrorModel"
      *         )
      *     )
      * )
@@ -80,54 +50,33 @@ class SimplePetsController
     }
 
     /**
-     * @OA\Get(
+     * @SWG\Get(
      *     path="/pets/{id}",
      *     description="Returns a user based on a single ID, if the user does not have access to the pet",
      *     operationId="findPetById",
-     *     tags={"store"},
-     *     @OA\Parameter(
+     *     @SWG\Parameter(
      *         description="ID of pet to fetch",
+     *         format="int64",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64",
-     *         )
+     *         type="integer"
      *     ),
-     *     @OA\Response(
+     *     produces={
+     *         "application/json",
+     *         "application/xml",
+     *         "text/html",
+     *         "text/xml"
+     *     },
+     *     @SWG\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\JsonContent(ref="#/components/schemas/Pet"),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/xml",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/html",
-     *             @OA\Schema(ref="#/components/schemas/Pet")
-     *         ),
+     *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel"),
-     *         @OA\MediaType(
-     *             mediaType="application/xml",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/xml",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
-     *         @OA\MediaType(
-     *             mediaType="text/html",
-     *             @OA\Schema(ref="#/components/schemas/ErrorModel")
-     *         ),
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */
@@ -136,28 +85,27 @@ class SimplePetsController
     }
 
     /**
-     * @OA\Post(
+     * @SWG\Post(
      *     path="/pets",
      *     operationId="addPet",
      *     description="Creates a new pet in the store.  Duplicates are allowed",
-     *     tags={"store"},
-     *     @OA\RequestBody(
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *         name="pet",
+     *         in="body",
      *         description="Pet to add to the store",
      *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(ref="#/components/schemas/NewPet")
-     *         )
+     *         @SWG\Schema(ref="#/definitions/NewPet")
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response=200,
      *         description="pet response",
-     *         @OA\JsonContent(ref="#/components/schemas/Pet")
+     *         @SWG\Schema(ref="#/definitions/Pet")
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorModel")
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */
@@ -166,29 +114,26 @@ class SimplePetsController
     }
 
     /**
-     * @OA\Delete(
+     * @SWG\Delete(
      *     path="/pets/{id}",
      *     description="deletes a single pet based on the ID supplied",
      *     operationId="deletePet",
-     *     tags={"store"},
-     *     @OA\Parameter(
+     *     @SWG\Parameter(
      *         description="ID of pet to delete",
+     *         format="int64",
      *         in="path",
      *         name="id",
      *         required=true,
-     *         @OA\Schema(
-     *             format="int64",
-     *             type="integer"
-     *         )
+     *         type="integer"
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response=204,
      *         description="pet deleted"
      *     ),
-     *     @OA\Response(
+     *     @SWG\Response(
      *         response="default",
      *         description="unexpected error",
-     *         @OA\Schema(ref="#/components/schemas/ErrorModel")
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      */

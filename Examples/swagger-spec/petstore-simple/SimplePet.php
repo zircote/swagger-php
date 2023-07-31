@@ -1,44 +1,38 @@
 <?php
 
-namespace OpenApi\Examples\SwaggerSpec\PetstoreSimple;
-
-use OpenApi\Annotations as OA;
+namespace Petstore;
 
 /**
- * @OA\Schema(schema="NewPet", required={"name"})
+ * @SWG\Definition(definition="NewPet", type="object", required={"name"})
  */
 class SimplePet
 {
+
     public $id;
 
     /**
-     * @OA\Property
-     *
+     * @SWG\Property()
      * @var string
      */
     public $name;
 
     /**
      * @var string
-     *
-     * @OA\Property
+     * @SWG\Property()
      */
     public $tag;
 }
 
 /**
- * @OA\Schema(
- *     schema="Pet",
- *     type="object",
- *     allOf={
- *         @OA\Schema(ref="#/components/schemas/NewPet"),
- *         @OA\Schema(
- *             required={"id"},
- *             @OA\Property(property="id", format="int64", type="integer")
- *         )
- *     }
+ *  @SWG\Definition(
+ *   definition="Pet",
+ *   type="object",
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/NewPet"),
+ *       @SWG\Schema(
+ *           required={"id"},
+ *           @SWG\Property(property="id", format="int64", type="integer")
+ *       )
+ *   }
  * )
  */
-class Pet
-{
-}
