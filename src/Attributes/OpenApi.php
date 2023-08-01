@@ -12,11 +12,12 @@ use OpenApi\Generator;
 class OpenApi extends \OpenApi\Annotations\OpenApi
 {
     /**
-     * @param Server[]|null            $servers
-     * @param Tag[]|null               $tags
-     * @param PathItem[]|null          $paths
-     * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param Server[]|null               $servers
+     * @param Tag[]|null                  $tags
+     * @param PathItem[]|null             $paths
+     * @param array<string,mixed>|null    $x
+     * @param Attachable[]|null           $attachables
+     * @param array<string,PathItem>|null $webhooks
      */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,
@@ -29,13 +30,14 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
         ?Components $components = null,
         // annotation
         ?array $x = null,
-        ?array $attachables = null
+        ?array $attachables = null,
+        ?array $webhooks = null,
     ) {
         parent::__construct([
                 'openapi' => $openapi,
                 'security' => $security ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $attachables),
+                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $attachables, $webhooks),
             ]);
     }
 }

@@ -99,6 +99,13 @@ class OpenApi extends AbstractAnnotation
     public $externalDocs = Generator::UNDEFINED;
 
     /**
+     * The available webhooks for the API.
+     *
+     * @var array<string,PathItem>
+     */
+    public $webhooks = Generator::UNDEFINED;
+
+    /**
      * @var Analysis
      */
     public $_analysis = Generator::UNDEFINED;

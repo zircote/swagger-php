@@ -1466,6 +1466,8 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p></dd>
+  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">array&lt;string,PathItem&gt;|null</span></dt>
+  <dd><p>The available webhooks for the API.</p></dd>
 </dl>
 
 ## [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
