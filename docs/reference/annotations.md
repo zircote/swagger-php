@@ -566,7 +566,7 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 Individual operations can override this definition.<br />
 To make security optional, an empty security requirement `({})` can be included in the array.</p></dd>
-  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">array&lt;string,PathItem&gt;</span></dt>
+  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">array&lt;string,PathItem|string|class-string|object&gt;</span></dt>
   <dd><p>The available webhooks for the API.</p></dd>
 </dl>
 
