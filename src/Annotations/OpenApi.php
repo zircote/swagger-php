@@ -101,7 +101,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available webhooks for the API.
      *
-     * @var array<string,PathItem>
+     * @var array<string,PathItem|(string|class-string|object)> Array of PathItem object or Reference object
      */
     public $webhooks = Generator::UNDEFINED;
 
