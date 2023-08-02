@@ -140,6 +140,14 @@ class ExamplesTest extends OpenApiTestCase
             [],
         ];
 
+        yield 'webhook-example' => [
+            OA\OpenApi::VERSION_3_1_0,
+            'webhook-example',
+            'webhook-example.yaml',
+            false,
+            [],
+        ];
+
         if (\PHP_VERSION_ID >= 80100) {
             yield 'using-links-php81' => [
                 OA\OpenApi::VERSION_3_0_0,

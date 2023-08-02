@@ -6,18 +6,19 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations\PathItem;
 use OpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class OpenApi extends \OpenApi\Annotations\OpenApi
 {
     /**
-     * @param Server[]|null                                          $servers
-     * @param Tag[]|null                                             $tags
-     * @param PathItem[]|null                                        $paths
-     * @param array<string,mixed>|null                               $x
-     * @param Attachable[]|null                                      $attachables
-     * @param array<string,PathItem|string|class-string|object>|null $webhooks
+     * @param Server[]|null               $servers
+     * @param Tag[]|null                  $tags
+     * @param PathItem[]|null             $paths
+     * @param array<string,mixed>|null    $x
+     * @param Attachable[]|null           $attachables
+     * @param array<string,PathItem>|null $webhooks
      */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,
@@ -28,10 +29,10 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
         ?ExternalDocumentation $externalDocs = null,
         ?array $paths = null,
         ?Components $components = null,
+        ?array $webhooks = null,
         // annotation
         ?array $x = null,
-        ?array $attachables = null,
-        ?array $webhooks = null,
+        ?array $attachables = null
     ) {
         parent::__construct([
                 'openapi' => $openapi,

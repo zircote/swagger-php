@@ -101,7 +101,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available webhooks for the API.
      *
-     * @var array<string,PathItem|string|class-string|object>
+     * @var array<string,PathItem>
      */
     public $webhooks = Generator::UNDEFINED;
 
@@ -113,7 +113,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public static $_required = ['openapi', 'info', 'paths'];
+    public static $_required = ['openapi', 'info'];
 
     /**
      * @inheritdoc
