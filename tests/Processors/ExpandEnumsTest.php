@@ -14,6 +14,7 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
+use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
 
 class ExpandEnumsTest extends OpenApiTestCase
@@ -135,6 +136,16 @@ class ExpandEnumsTest extends OpenApiTestCase
                 ['PHP/ReferencesEnum.php'],
                 'itemsStatusEnumStringBackedMixed',
                 $mapValues([StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other']),
+            ],
+            'multipleEnumsClassNames' => [
+                ['PHP/ReferencesEnum.php'],
+                'multipleEnumsClassNames',
+                array_merge([StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases()]),
+            ],
+            'mixedMultipleEnumsClassNames' => [
+                ['PHP/ReferencesEnum.php'],
+                'mixedMultipleEnumsClassNames',
+                array_merge([StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases(), 'OTHER']),
             ],
         ];
     }

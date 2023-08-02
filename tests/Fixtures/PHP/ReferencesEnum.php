@@ -12,6 +12,7 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
+use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 
 #[OAT\Schema()]
 class ReferencesEnum
@@ -50,6 +51,23 @@ class ReferencesEnum
 
     #[OAT\Property(title: 'statusEnumStringBackedMixed', description: 'Status enum string backed mixed', type: 'string', enum: [StatusEnumStringBacked::DRAFT, StatusEnumStringBacked::ARCHIVED, 'other'], nullable: true)]
     public ?string $statusEnumStringBackedMixed;
+
+    #[OAT\Property(
+        title: 'multipleEnumsClassNames',
+        description: 'MultipleEnumsClassNames array',
+        type: 'string',
+        enum: [StatusEnumIntegerBacked::class, TypeEnumStringBacked::class],
+    )]
+    public array $multipleEnumsClassNames;
+
+    #[OAT\Property(
+        title: 'mixedMultipleEnumsClassNames',
+        description: 'MultipleEnumsClassNames array',
+        type: 'string',
+        enum: [StatusEnumIntegerBacked::class, TypeEnumStringBacked::class, 'OTHER'],
+    )]
+    public array $mixedMultipleEnumsClassNames;
+
 
     /** @var list<string> StatusEnumStringBacked array */
     #[OAT\Property(
