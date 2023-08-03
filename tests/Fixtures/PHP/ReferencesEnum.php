@@ -56,17 +56,17 @@ class ReferencesEnum
         title: 'multipleEnumsClassNames',
         description: 'MultipleEnumsClassNames array',
         type: 'string',
-        enum: [StatusEnumIntegerBacked::class, TypeEnumStringBacked::class],
+        enum: [StatusEnumStringBacked::class, TypeEnumStringBacked::class],
     )]
-    public array $multipleEnumsClassNames;
+    public string $multipleEnumsClassNames;
 
     #[OAT\Property(
         title: 'mixedMultipleEnumsClassNames',
         description: 'MultipleEnumsClassNames array',
         type: 'string',
-        enum: [StatusEnumIntegerBacked::class, TypeEnumStringBacked::class, 'OTHER'],
+        enum: [StatusEnumStringBacked::class, TypeEnumStringBacked::class, 'OTHER'],
     )]
-    public array $mixedMultipleEnumsClassNames;
+    public string $mixedMultipleEnumsClassNames;
 
     /** @var list<string> StatusEnumStringBacked array */
     #[OAT\Property(
