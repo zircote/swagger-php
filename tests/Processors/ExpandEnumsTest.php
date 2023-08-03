@@ -140,12 +140,12 @@ class ExpandEnumsTest extends OpenApiTestCase
             'multipleEnumsClassNames' => [
                 ['PHP/ReferencesEnum.php'],
                 'multipleEnumsClassNames',
-                array_merge([StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases()]),
+                $mapValues(array_merge(StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases())),
             ],
             'mixedMultipleEnumsClassNames' => [
                 ['PHP/ReferencesEnum.php'],
                 'mixedMultipleEnumsClassNames',
-                array_merge([StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases(), 'OTHER']),
+                $mapValues(array_merge(StatusEnumStringBacked::cases(), TypeEnumStringBacked::cases(), ['OTHER'])),
             ],
         ];
     }

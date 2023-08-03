@@ -68,7 +68,6 @@ class ReferencesEnum
     )]
     public array $mixedMultipleEnumsClassNames;
 
-
     /** @var list<string> StatusEnumStringBacked array */
     #[OAT\Property(
         title: 'statusEnums',
