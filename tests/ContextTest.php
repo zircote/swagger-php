@@ -26,7 +26,7 @@ class ContextTest extends OpenApiTestCase
 
     public function testFullyQualifiedName(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->assertOpenApiLogEntryContains('The OpenAPI document must contain paths field');
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setAnalyser(new TokenAnalyser())
             ->generate([$this->fixture('Customer.php')]);

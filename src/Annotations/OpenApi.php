@@ -150,6 +150,18 @@ class OpenApi extends AbstractAnnotation
             return false;
         }
 
+        if ($this->openapi === self::VERSION_3_0_0 && Generator::isDefault($this->paths)) {
+            $this->_context->logger->warning('The OpenAPI document must contain paths field');
+
+            return false;
+        }
+
+        if ($this->openapi === self::VERSION_3_1_0 && Generator::isDefault($this->paths) && Generator::isDefault($this->webhooks) && Generator::isDefault($this->components)) {
+            $this->_context->logger->warning('The OpenAPI document must contain at least one paths field, a components field or a webhooks field');
+
+            return false;
+        }
+
         return parent::validate([], [], '#', new \stdClass());
     }
 
@@ -236,5 +248,20 @@ class OpenApi extends AbstractAnnotation
         }
 
         throw new \Exception('$ref "' . $unresolved . '" not found');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        if (false === $this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+            unset($data->webhooks);
+        }
+
+        return $data;
     }
 }

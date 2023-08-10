@@ -11,10 +11,18 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class OpenApiTest extends OpenApiTestCase
 {
-    public function testValidVersion(): void
+    public function testValidVersion310(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->assertOpenApiLogEntryContains('The OpenAPI document must contain at least one paths field, a components field or a webhooks field');
+
+        $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
+        $openapi->openapi = '3.1.0';
+        $openapi->validate();
+    }
+
+    public function testValidVersion300(): void
+    {
+        $this->assertOpenApiLogEntryContains('The OpenAPI document must contain paths field');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.0';

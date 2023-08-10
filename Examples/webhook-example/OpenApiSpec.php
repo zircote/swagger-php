@@ -11,23 +11,21 @@ use OpenApi\Annotations as OA;
  *         title="Webhook Example",
  *     ),
  *     webhooks={
- *         {
- *             "newPet": @OA\PathItem(
- *                 @OA\Post(
- *                     @OA\RequestBody(
- *                         description="Information about a new pet in the system",
- *                         @OA\MediaType(
- *                             mediaType="application/xml",
- *                             @OA\Schema(ref="#/components/schemas/Pet")
- *                         ),
+ *         "newPet": @OA\PathItem(
+ *             @OA\Post(
+ *                 @OA\RequestBody(
+ *                     description="Information about a new pet in the system",
+ *                     @OA\MediaType(
+ *                         mediaType="application/json",
+ *                         @OA\Schema(ref="#/components/schemas/Pet")
  *                     ),
- *                     @OA\Response(
- *                         response=200,
- *                         description="Return a 200 status to indicate that the data was received successfully"
- *                     )
+ *                 ),
+ *                 @OA\Response(
+ *                     response=200,
+ *                     description="Return a 200 status to indicate that the data was received successfully"
  *                 )
  *             )
- *         }
+ *         )
  *     }
  * )
  */

@@ -16,6 +16,7 @@ components:
           type: string
         tag:
           type: string
+      type: object
 webhooks:
   newPet:
     post:

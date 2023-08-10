@@ -16,9 +16,9 @@ class OpenApi extends \OpenApi\Annotations\OpenApi
      * @param Server[]|null               $servers
      * @param Tag[]|null                  $tags
      * @param PathItem[]|null             $paths
+     * @param array<string,PathItem>|null $webhooks
      * @param array<string,mixed>|null    $x
      * @param Attachable[]|null           $attachables
-     * @param array<string,PathItem>|null $webhooks
      */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,
