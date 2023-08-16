@@ -18,7 +18,6 @@ final class CustomOpenApiProperty extends OAT\Property
 #[OAT\Response(response: 200, description: 'All good')]
 class Controller
 {
-
 }
 
 #[OAT\Schema]
