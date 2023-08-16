@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
 final class CustomOpenApiProperty extends OAT\Property
 {
 }
@@ -24,7 +25,7 @@ class Controller
 class CustomPropertyAttribute
 {
     public function __construct(
-        #[OAT\Property()]
+        #[CustomOpenApiProperty()]
         public ?int $number,
     ) {
     }
