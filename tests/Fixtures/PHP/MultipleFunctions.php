@@ -19,11 +19,10 @@ class MultipleFunctions
         $prefix = '1';
         $category->name = '1';
 
-        return isset($category->{'name'.$prefix}) && $category->{'name'.$prefix}
-            ? $category->{'name'.$prefix}
+        return isset($category->{'name' . $prefix}) && $category->{'name' . $prefix}
+            ? $category->{'name' . $prefix}
             : $category->name;
     }
-
 
     public function second()
     {
