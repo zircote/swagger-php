@@ -8,10 +8,8 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Info(
-    title: 'Nullable',
-    version: '1.0'
-)]
+#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\Info(title: 'Nullable', version: '1.0')]
 class Api
 {
 }
