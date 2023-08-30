@@ -388,7 +388,7 @@ class Analysis
      * Split the annotation into two analysis.
      * One with annotations that are merged and one with annotations that are not merged.
      *
-     * @return object {merged: Analysis, unmerged: Analysis}
+     * @return \stdClass {merged: Analysis, unmerged: Analysis}
      */
     public function split()
     {
