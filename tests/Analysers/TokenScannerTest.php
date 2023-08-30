@@ -297,6 +297,25 @@ class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
+        yield 'CurlyBrace' => [
+            'PHP/MultipleFunctions.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\MultipleFunctions' => [
+                    'uses' => [
+                        'OA' => 'OpenApi\Annotations',
+                    ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [
+                        'first',
+                        'second',
+                    ],
+                    'properties' => [],
+                ],
+            ],
+        ];
+
         yield 'namespaces1' => [
             'PHP/namespaces1.php',
             [
