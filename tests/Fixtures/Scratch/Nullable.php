@@ -1,0 +1,56 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests\Fixtures\Scratch;
+
+use OpenApi\Attributes as OAT;
+
+#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\Info(title: 'Nullable', version: '1.0')]
+class Api
+{
+}
+
+#[OAT\Schema(
+    type: 'string',
+    format: 'rfc3339-timestamp',
+    externalDocs: new OAT\ExternalDocumentation(
+        description: '**RFC3339** IETF',
+        url: 'https://tools.ietf.org/html/rfc3339'
+    ),
+    example: '2023-08-02T07:06:46+03:30'
+)]
+class MyDateTime
+{
+}
+
+#[OAT\Schema]
+class Nullable
+{
+    #[OAT\Property]
+    public ?string $firstname;
+
+    #[OAT\Property(nullable: true)]
+    public ?string $lastname;
+
+    #[OAT\Property]
+    public ?MyDateTime $birthdate;
+
+    #[OAT\Property(nullable: true)]
+    public MyDateTime $otherdate;
+
+    #[OAT\Property]
+    public MyDateTime|null $anotherdate;
+}
+
+#[OAT\Get(
+    path: '/api/endpoint',
+    description: 'An endpoint',
+    responses: [new OAT\Response(response: 200, description: 'OK')]
+)]
+class NullableEndpoint
+{
+}

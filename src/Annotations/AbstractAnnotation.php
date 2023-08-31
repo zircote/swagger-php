@@ -381,8 +381,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if ($this->_context->version === OpenApi::VERSION_3_1_0) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
-                    $data->type = (array) $data->type;
-                    $data->type[] = 'null';
+                    if (isset($data->oneOf)) {
+                        $data->oneOf[] = ['type' => 'null'];
+                    } else {
+                        $data->type = (array) $data->type;
+                        $data->type[] = 'null';
+                    }
                 }
                 unset($data->nullable);
             }

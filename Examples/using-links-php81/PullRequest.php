@@ -8,7 +8,8 @@ use OpenApi\Attributes as OAT;
 class PullRequest
 {
     public function __construct(
-        #[OAT\Property()] public State $state
+        #[OAT\Property()]
+        public State $state
     ) {
     }
 
