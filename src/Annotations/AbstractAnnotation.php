@@ -373,6 +373,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 } else {
                     $ref['nullable'] = $data->nullable;
                 }
+                if (isset($data->title) && $data->title !== $defaultValues['title']) {
+                    $ref['title'] = $data->title;
+                }
                 unset($data->nullable);
             }
             $data = (object) $ref;
