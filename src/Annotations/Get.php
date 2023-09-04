@@ -9,6 +9,7 @@ namespace Swagger\Annotations;
 /**
  * @Annotation
  */
+#[\AllowDynamicProperties]
 class Get extends Operation
 {
     /** @inheritdoc */

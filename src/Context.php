@@ -33,6 +33,7 @@ namespace Swagger;
  * @property string $property
  * @property Annotations\AbstractAnnotation[] $annotations
  */
+#[\AllowDynamicProperties]
 class Context
 {
     /**
