@@ -137,7 +137,6 @@ abstract class AbstractAnnotation implements JsonSerializable
             unset($fields[$_property]);
         }
         Logger::notice('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
-        $this->$property = $value;
     }
 
     /**
