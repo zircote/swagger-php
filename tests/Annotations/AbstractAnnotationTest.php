@@ -25,7 +25,7 @@ class AbstractAnnotationTest extends OpenApiTestCase
      */
     public function testInvalidField(): void
     {
-        $this->assertOpenApiLogEntryContains('Unexpected field "doesnot" for @OA\Get(), expecting');
+        $this->assertOpenApiLogEntryContains('Ignoring unexpected property "doesnot" for @OA\Get(), expecting');
         $this->annotationsFromDocBlockParser('@OA\Get(doesnot="exist")');
     }
 
