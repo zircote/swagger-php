@@ -122,6 +122,7 @@ class OpenApi extends AbstractAnnotation
         Info::class => 'info',
         Server::class => ['servers'],
         PathItem::class => ['paths', 'path'],
+        Webhook::class => ['webhooks'],
         Components::class => 'components',
         Tag::class => ['tags'],
         ExternalDocumentation::class => 'externalDocs',
