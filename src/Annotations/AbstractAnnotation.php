@@ -136,7 +136,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         foreach (static::$_blacklist as $_property) {
             unset($fields[$_property]);
         }
-        Logger::notice('Ignoring unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
+        Logger::notice('Ignoring unexpected property "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
     }
 
     /**
