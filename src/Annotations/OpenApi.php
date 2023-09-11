@@ -101,7 +101,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available webhooks for the API.
      *
-     * @var array<string,PathItem>
+     * @var Webhook[]
      */
     public $webhooks = Generator::UNDEFINED;
 
@@ -151,13 +151,13 @@ class OpenApi extends AbstractAnnotation
         }
 
         if ($this->openapi === self::VERSION_3_0_0 && Generator::isDefault($this->paths)) {
-            $this->_context->logger->warning('The OpenAPI document must contain paths field');
+            $this->_context->logger->warning('Required @OA\PathItem() not found');
 
             return false;
         }
 
         if ($this->openapi === self::VERSION_3_1_0 && Generator::isDefault($this->paths) && Generator::isDefault($this->webhooks) && Generator::isDefault($this->components)) {
-            $this->_context->logger->warning('The OpenAPI document must contain at least one paths field, a components field or a webhooks field');
+            $this->_context->logger->warning("At least one of 'Required @OA\Info(), @OA\Components() or @OA\Webhook() not found'");
 
             return false;
         }

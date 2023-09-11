@@ -13,7 +13,7 @@ class OpenApiTest extends OpenApiTestCase
 {
     public function testValidVersion310(): void
     {
-        $this->assertOpenApiLogEntryContains('The OpenAPI document must contain at least one paths field, a components field or a webhooks field');
+        $this->assertOpenApiLogEntryContains("At least one of 'Required @OA\Info(), @OA\Components() or @OA\Webhook() not found'");
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.1.0';
@@ -22,7 +22,7 @@ class OpenApiTest extends OpenApiTestCase
 
     public function testValidVersion300(): void
     {
-        $this->assertOpenApiLogEntryContains('The OpenAPI document must contain paths field');
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.0';
