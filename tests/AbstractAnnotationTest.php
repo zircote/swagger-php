@@ -18,7 +18,7 @@ class AbstractAnnotationTest extends SwaggerTestCase
 
     public function testInvalidField()
     {
-        $this->assertSwaggerLogEntryStartsWith('Unexpected field "doesnot" for @SWG\Get(), expecting');
+        $this->assertSwaggerLogEntryStartsWith('Ignoring unexpected property "doesnot" for @SWG\Get(), expecting');
         $this->parseComment('@SWG\Get(doesnot="exist")');
     }
 
