@@ -16,13 +16,13 @@ Generate interactive [Swagger](http://swagger.io) documentation for your RESTful
 ## Installation (with [Composer](https://getcomposer.org))
 
 ```sh
-composer require zircote/swagger-php
+composer require zircote/swagger-php ^2
 ```
 
 For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `swagger` executable can be located by your system.
 
 ```sh
-composer global require zircote/swagger-php
+composer global require zircote/swagger-php ^2
 ```
 
 ## Usage
