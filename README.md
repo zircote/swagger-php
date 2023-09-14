@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/zircote/swagger-php/master.svg?style=flat-square)](https://travis-ci.org/zircote/swagger-php)
+[![build](https://github.com/zircote/swagger-php/actions/workflows/build.yml/badge.svg?branch=2.x)](https://github.com/zircote/swagger-php/actions/workflows/build.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/zircote/swagger-php.svg?style=flat-square)](https://packagist.org/packages/zircote/swagger-php)
 [![License](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](LICENSE-2.0.txt)
 
@@ -16,13 +16,13 @@ Generate interactive [Swagger](http://swagger.io) documentation for your RESTful
 ## Installation (with [Composer](https://getcomposer.org))
 
 ```sh
-composer require zircote/swagger-php
+composer require zircote/swagger-php ^2
 ```
 
 For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `swagger` executable can be located by your system.
 
 ```sh
-composer global require zircote/swagger-php
+composer global require zircote/swagger-php ^2
 ```
 
 ## Usage
@@ -119,5 +119,3 @@ To run both unittests and linting execute:
 ```bash
 composer test
 ```
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
