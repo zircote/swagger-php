@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: DuplicateRef
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    abstract-user:
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      type: object
+    create-user:
+      allOf:
+        -
+          $ref: '#/components/schemas/abstract-user'
+        -
+          required:
+            - name
+            - email

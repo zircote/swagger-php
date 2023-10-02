@@ -108,14 +108,14 @@ class ExpandClassesTest extends OpenApiTestCase
 
         /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
-        $this->assertCount(5, $schemas);
+        $this->assertCount(4, $schemas);
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertArrayHasKey(0, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[2]->properties[0]->property, 'extendedProperty');
+        $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
 
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(Generator::UNDEFINED, $includeSchemaWithRef->properties);
