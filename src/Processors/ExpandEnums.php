@@ -84,7 +84,7 @@ class ExpandEnums implements ProcessorInterface
 
                 // transform each Enum cases into UnitEnum
                 foreach ($schema->enum as $enum) {
-                    if (is_string($enum) && enum_exists($enum)) {
+                    if (is_a($enum, \UnitEnum::class, true)) {
                         foreach ($enum::cases() as $case) {
                             $cases[] = $case;
                         }
