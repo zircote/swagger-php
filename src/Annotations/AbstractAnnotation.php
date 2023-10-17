@@ -221,13 +221,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function mergeProperties($object): void
     {
-        $defaultValues = get_class_vars(get_class($this));
         $currentValues = get_object_vars($this);
         foreach ($object as $property => $value) {
             if ($property === '_context') {
                 continue;
             }
-            if ($currentValues[$property] === $defaultValues[$property]) { // Overwrite default values
+            if (Generator::isDefault($currentValues[$property])) {
+                // Overwrite default values
                 $this->{$property} = $value;
                 continue;
             }
@@ -235,9 +235,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 $this->_unmerged = array_merge($this->_unmerged, $value);
                 continue;
             }
-            if ($currentValues[$property] !== $value) { // New value is not the same?
-                if ($defaultValues[$property] === $value) { // but is the same as the default?
-                    continue; // Keep current, no notice
+            if ($currentValues[$property] !== $value) {
+                // New value is not the same?
+                if (Generator::isDefault($value)) {
+                    continue;
                 }
                 $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
                 $context1 = $this->_context;
@@ -355,11 +356,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            $defaultValues = get_class_vars(get_class($this));
             if ($this->_context->version === OpenApi::VERSION_3_1_0) {
                 foreach (['summary', 'description'] as $prop) {
                     if (property_exists($this, $prop)) {
-                        if ($this->{$prop} !== $defaultValues[$prop]) {
+                        if (!Generator::isDefault($this->{$prop})) {
                             $ref[$prop] = $data->{$prop};
                         }
                     }
@@ -373,6 +373,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     $ref['nullable'] = $data->nullable;
                 }
                 unset($data->nullable);
+
+                // preserve other properties
+                foreach (get_object_vars($this) as $property => $value) {
+                    if ('_' == $property[0] || in_array($property, ['ref', 'nullable'])) {
+                        continue;
+                    }
+                    if (!Generator::isDefault($value)) {
+                        $ref[$property] = $value;
+                    }
+                }
             }
             $data = (object) $ref;
         }
