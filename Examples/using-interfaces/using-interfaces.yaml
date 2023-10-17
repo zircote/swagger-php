@@ -65,6 +65,7 @@ components:
             color:
               description: 'The product color.'
               example: blue
+          type: object
     Product:
       title: 'Product model'
       type: object
@@ -78,6 +79,7 @@ components:
               type: integer
               format: int64
               example: 1
+          type: object
     ProductInterface:
       properties:
         name:

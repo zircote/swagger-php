@@ -57,6 +57,7 @@ components:
             plating:
               description: 'The plating.'
               example: gold
+          type: object
     CustomName/Blink:
       title: 'Blink trait'
       properties:
@@ -103,6 +104,7 @@ components:
             bell:
               description: 'The product bell.'
               example: gong
+          type: object
     SimpleProduct:
       title: 'SimpleProduct model'
       type: object
@@ -116,6 +118,7 @@ components:
               type: integer
               format: int64
               example: 1
+          type: object
     TrickyProduct:
       title: 'TrickyProduct model'
       type: object
@@ -129,3 +132,4 @@ components:
             trick:
               description: 'The trick.'
               example: 'recite poem'
+          type: object

@@ -63,6 +63,7 @@ components:
               $ref: '#/components/schemas/product_status'
             stockLevel:
               $ref: '#/components/schemas/StockLevel'
+          type: object
     StockLevel:
       type: string
       enum:

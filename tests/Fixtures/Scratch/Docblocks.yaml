@@ -26,3 +26,4 @@ components:
             id:
               description: 'The id'
               type: integer
+          type: object

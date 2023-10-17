@@ -132,6 +132,7 @@ class AugmentSchemas implements ProcessorInterface
                 if (!$allOfPropertiesSchema) {
                     $allOfPropertiesSchema = new OA\Schema([
                         'properties' => [],
+                        'type' => 'object',
                         '_context' => new Context(['generated' => true], $schema->_context),
                     ]);
                     $analysis->addAnnotation($allOfPropertiesSchema, $allOfPropertiesSchema->_context);

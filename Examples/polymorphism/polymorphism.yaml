@@ -59,6 +59,7 @@ components:
               type: string
               enum:
                 - Virtual
+          type: object
     FlResponsible:
       type: object
       allOf:
@@ -69,6 +70,7 @@ components:
             property3:
               type: string
               nullable: true
+          type: object
     Request:
       properties:
         payload:
