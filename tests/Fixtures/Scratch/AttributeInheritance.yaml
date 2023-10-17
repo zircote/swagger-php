@@ -25,6 +25,7 @@ components:
           properties:
             name:
               type: string
+          type: object
     Child2:
       type: object
       allOf:
@@ -34,3 +35,4 @@ components:
           properties:
             title:
               type: string
+          type: object

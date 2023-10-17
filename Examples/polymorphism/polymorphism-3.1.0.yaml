@@ -56,6 +56,7 @@ components:
             type:
               type: string
               const: Virtual
+          type: object
     FlResponsible:
       type: object
       allOf:
@@ -67,6 +68,7 @@ components:
               type:
                 - string
                 - 'null'
+          type: object
     Request:
       properties:
         payload:

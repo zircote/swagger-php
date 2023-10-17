@@ -137,6 +137,12 @@ components:
           properties:
             quantity:
               type: integer
+            id:
+              description: 'The id.'
+              format: int64
+              example: 1
+            releasedAt:
+              type: string
             brand:
               type:
                 - string
@@ -145,16 +151,11 @@ components:
               example: null
             colour:
               $ref: '#/components/schemas/Colour'
-            releasedAt:
-              type: string
-            id:
-              description: 'The id.'
-              format: int64
-              example: 1
             kind:
               description: 'The kind.'
               type: string
               const: Virtual
+          type: object
   securitySchemes:
     bearerAuth:
       type: http
