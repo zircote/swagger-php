@@ -27,6 +27,7 @@ paths:
                 oneOf:
                   - { $ref: '#/components/schemas/repository', description: 'The repository' }
                   - { type: 'null' }
+                description: 'The repository'
 components:
   schemas:
     repository: {  }
