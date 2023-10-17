@@ -165,8 +165,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         foreach (static::$_blacklist as $_property) {
             unset($fields[$_property]);
         }
-        $this->_context->logger->warning('Unexpected field "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
-        $this->{$property} = $value;
+        $this->_context->logger->warning('Ignoring unexpected property "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
     }
 
     /**
