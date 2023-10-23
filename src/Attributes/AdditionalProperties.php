@@ -21,6 +21,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
      * @param array<Schema|\OpenApi\Annotations\Schema>              $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema>              $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema>              $oneOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>              $oneOf
      * @param array<string,mixed>|null                               $x
      * @param Attachable[]|null                                      $attachables
      */
@@ -61,6 +62,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
         ?array $allOf = null,
         ?array $anyOf = null,
         ?array $oneOf = null,
+        AdditionalProperties|bool|null $additionalProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -98,6 +100,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
