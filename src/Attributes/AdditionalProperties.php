@@ -99,10 +99,9 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
-            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties, $attachables),
         ]);
     }
 }
