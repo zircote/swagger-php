@@ -8,7 +8,6 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
-
 #[OAT\Info(
     title: 'Nested Additional Properties',
     version: '1.0'
