@@ -18,11 +18,11 @@ use OpenApi\Attributes as OAT;
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 #[OAT\Schema(
-	additionalProperties: new OAT\AdditionalProperties(
-		additionalProperties: new OAT\AdditionalProperties(
-			type: "string",
-		)
-	),
+    additionalProperties: new OAT\AdditionalProperties(
+        additionalProperties: new OAT\AdditionalProperties(
+            type: 'string',
+        )
+    ),
     type: 'object'
 )]
 class NestedAdditionalAttributes
