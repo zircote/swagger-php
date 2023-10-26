@@ -61,6 +61,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
         ?array $allOf = null,
         ?array $anyOf = null,
         ?array $oneOf = null,
+        AdditionalProperties|bool|null $additionalProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -100,7 +101,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties, $attachables),
         ]);
     }
 }

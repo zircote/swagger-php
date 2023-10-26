@@ -152,6 +152,8 @@ schema defined by this property's value.</p></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
