@@ -6,6 +6,7 @@ paths:
   /api/endpoint:
     get:
       description: 'An endpoint'
+      operationId: 6e8c7c1a5488a11e2b1bf5f3b726c29c
       responses:
         '200':
           description: OK
