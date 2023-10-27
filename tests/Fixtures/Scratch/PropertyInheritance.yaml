@@ -5,6 +5,7 @@ info:
 paths:
   /api/endpoint:
     get:
+      operationId: 6e9f788346a2235f83520975c9ba68c8
       responses:
         '200':
           description: 'successful operation'

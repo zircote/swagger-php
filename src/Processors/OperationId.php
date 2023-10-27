@@ -54,20 +54,24 @@ class OperationId implements ProcessorInterface
             }
 
             $context = $operation->_context;
-            if ($context && $context->method) {
+            if ($context) {
                 $source = $context->class ?? $context->interface ?? $context->trait;
                 $operationId = null;
                 if ($source) {
+                    $method = $context->method ? ('::' . $context->method) : '';
                     if ($context->namespace) {
-                        $operationId = $context->namespace . '\\' . $source . '::' . $context->method;
+                        $operationId = $context->namespace . '\\' . $source . $method;
                     } else {
-                        $operationId = $source . '::' . $context->method;
+                        $operationId = $source . $method;
                     }
-                } else {
+                } elseif ($context->method) {
                     $operationId = $context->method;
                 }
-                $operationId = strtoupper($operation->method) . '::' . $operation->path . '::' . $operationId;
-                $operation->operationId = $this->hash ? md5($operationId) : $operationId;
+
+                if ($operationId) {
+                    $operationId = strtoupper($operation->method) . '::' . $operation->path . '::' . $operationId;
+                    $operation->operationId = $this->hash ? md5($operationId) : $operationId;
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ info:
 paths:
   /endpoint:
     get:
+      operationId: f835f4c3d03452d2e5d2f48b7c314e2f
       responses:
         '200':
           description: 'All good'
