@@ -44,10 +44,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -99,7 +101,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -139,7 +141,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -1002,10 +1007,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -1057,7 +1064,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1097,7 +1104,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -1160,10 +1170,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -1215,7 +1227,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1255,7 +1267,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -2024,10 +2039,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -2079,7 +2096,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -2119,7 +2136,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -2470,10 +2490,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -2525,7 +2547,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -2565,7 +2587,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -2610,7 +2635,7 @@ These will be ignored but can be used for custom processing.</p></dd>
   <dd><p>The relative or absolute path to a security scheme.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key into OpenApi->security array.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the security scheme.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short description for security scheme.</p></dd>
@@ -2700,7 +2725,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />
 Unlike the Schema Object's default, this value must be provided by the consumer.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string|null</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map between a variable name and its value.<br />
@@ -2918,10 +2943,12 @@ array value.</p></dd>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
@@ -2973,7 +3000,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -3013,7 +3040,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>

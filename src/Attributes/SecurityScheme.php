@@ -12,15 +12,16 @@ use OpenApi\Generator;
 class SecurityScheme extends \OpenApi\Annotations\SecurityScheme
 {
     /**
-     * @param string|class-string|object|null $ref
-     * @param Flow[]                          $flows
-     * @param array<string,mixed>|null        $x
-     * @param Attachable[]|null               $attachables
+     * @param string|non-empty-array<string>|null $type
+     * @param string|class-string|object|null     $ref
+     * @param Flow[]                              $flows
+     * @param array<string,mixed>|null            $x
+     * @param Attachable[]|null                   $attachables
      */
     public function __construct(
         string|object|null $ref = null,
         ?string $securityScheme = null,
-        ?string $type = null,
+        string|array|null $type = null,
         ?string $description = null,
         ?string $name = null,
         ?string $in = null,

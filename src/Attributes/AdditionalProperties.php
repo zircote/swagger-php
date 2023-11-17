@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
 {
     /**
+     * @param string|non-empty-array<string>|null                    $type
      * @param string|class-string|object|null                        $ref
      * @param string[]                                               $required
      * @param Property[]                                             $properties
@@ -34,7 +35,7 @@ class AdditionalProperties extends \OpenApi\Annotations\AdditionalProperties
         ?int $minProperties = null,
         ?array $required = null,
         ?array $properties = null,
-        ?string $type = null,
+        string|array|null $type = null,
         ?string $format = null,
         ?Items $items = null,
         ?string $collectionFormat = null,
