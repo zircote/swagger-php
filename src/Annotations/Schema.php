@@ -490,18 +490,6 @@ class Schema extends AbstractAnnotation
             return false;
         }
 
-        if ($this->nullable !== Generator::UNDEFINED && $this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
-            $this->_context->logger->error($this->identity() . ' must not have the "nullable" property when using OpenApi version ' . OpenApi::VERSION_3_1_0 . ' in ' . $this->_context);
-
-            return false;
-        }
-
-        if (is_array($this->type) && $this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
-            $this->_context->logger->error($this->identity() . ' "type" must be of type string in OpenApi version ' . OpenApi::VERSION_3_0_0 . ', array given in ' . $this->_context);
-
-            return false;
-        }
-
         return parent::validate($stack, $skip, $ref, $context);
     }
 }
