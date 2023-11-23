@@ -399,6 +399,24 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 }
                 unset($data->nullable);
             }
+
+            if (isset($data->minimum) && isset($data->exclusiveMinimum)) {
+                if (true === $data->exclusiveMinimum) {
+                    $data->exclusiveMinimum = $data->minimum;
+                    unset($data->minimum);
+                } elseif (false === $data->exclusiveMinimum) {
+                    unset($data->exclusiveMinimum);
+                }
+            }
+
+            if (isset($data->maximum) && isset($data->exclusiveMaximum)) {
+                if (true === $data->exclusiveMaximum) {
+                    $data->exclusiveMaximum = $data->maximum;
+                    unset($data->maximum);
+                } elseif (false === $data->exclusiveMaximum) {
+                    unset($data->exclusiveMaximum);
+                }
+            }
         }
 
         return $data;
