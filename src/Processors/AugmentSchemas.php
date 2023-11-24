@@ -103,7 +103,7 @@ class AugmentSchemas implements ProcessorInterface
                     $schema->type = 'object';
                 }
             } else {
-                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
+                if (is_string($schema->type) && $typeSchema = $analysis->getSchemaForSource($schema->type)) {
                     if (Generator::isDefault($schema->format)) {
                         $schema->ref = OA\Components::ref($typeSchema);
                         $schema->type = Generator::UNDEFINED;
