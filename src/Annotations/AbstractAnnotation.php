@@ -704,6 +704,17 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     private function validateDefaultTypes(string $type, $value): bool
     {
+        if (str_contains($type, '|')) {
+            $types = explode('|', $type);
+            foreach ($types as $type) {
+                if ($this->validateDefaultTypes($type, $value)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         switch ($type) {
             case 'string':
                 return is_string($value);
