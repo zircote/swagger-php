@@ -47,4 +47,8 @@ components:
               $ref: '#/components/schemas/MyDateTime'
             -
               type: 'null'
+        description:
+          type:
+              - string
+              - 'null'
       type: object
