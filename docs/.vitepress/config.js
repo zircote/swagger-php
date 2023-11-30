@@ -70,7 +70,7 @@ module.exports = {
     nav: [
       { text: "User Guide", link: "/guide/" },
       { text: "Reference", link: "/reference/" },
-      { text: "OpenApi", link: "https://oai.github.io/Documentation/" },
+      { text: "OpenApi", link: "https://learn.openapis.org/" },
       { text: "Releases", link: "https://github.com/zircote/swagger-php/releases" },
     ],
 
