@@ -91,9 +91,11 @@ class Schema extends AbstractAnnotation
     /**
      * The type of the schema/property.
      *
-     * The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
+     * OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
      *
-     * @var string
+     * Since OpenApi v3.1 an array of types may be used.
+     *
+     * @var string|non-empty-array<string>
      */
     public $type = Generator::UNDEFINED;
 
@@ -325,7 +327,12 @@ class Schema extends AbstractAnnotation
      * Allows sending a null value for the defined schema.
      * Default value is false.
      *
+     * This must not be used when using OpenApi version 3.1,
+     * instead make the "type" property an array and add "null" as a possible type.
+     *
      * @var bool
+     *
+     * @see https://www.openapis.org/blog/2021/02/16/migrating-from-openapi-3-0-to-3-1-0
      */
     public $nullable = Generator::UNDEFINED;
 

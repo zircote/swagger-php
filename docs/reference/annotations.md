@@ -956,10 +956,12 @@ An object instance is valid against this property if its number of properties is
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
-The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".</p></dd>
+OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
+<br />
+Since OpenApi v3.1 an array of types may be used.</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string</span></dt>
@@ -1040,7 +1042,10 @@ To represent examples that cannot naturally be represented in JSON or YAML, a st
 contain the example with escaping where necessary.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
-Default value is false.</p></dd>
+Default value is false.<br />
+<br />
+This must not be used when using OpenApi version 3.1,<br />
+instead make the "type" property an array and add "null" as a possible type.</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p></dd>
@@ -1093,7 +1098,7 @@ defined by this property's value.</p></dd>
   <dd><p>The relative or absolute path to a security scheme.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into OpenApi->security array.</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;</span></dt>
   <dd><p>The type of the security scheme.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A short description for security scheme.</p></dd>

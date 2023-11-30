@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class JsonContent extends \OpenApi\Annotations\JsonContent
 {
     /**
+     * @param string|non-empty-array<string>|null                    $type
      * @param string|class-string|object|null                        $ref
      * @param array<string,Examples>                                 $examples
      * @param string[]                                               $required
@@ -36,7 +37,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
         ?int $minProperties = null,
         ?array $required = null,
         ?array $properties = null,
-        ?string $type = null,
+        string|array|null $type = null,
         ?string $format = null,
         ?Items $items = null,
         ?string $collectionFormat = null,
