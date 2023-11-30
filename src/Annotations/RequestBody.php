@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\XmlContent;
 use OpenApi\Generator;
 
 /**
@@ -60,7 +62,7 @@ class RequestBody extends AbstractAnnotation
      * The key is a media type or media type range and the value describes it. For requests that match multiple keys,
      * only the most specific key is applicable. e.g. text/plain overrides text/*.
      *
-     * @var array<MediaType>|MediaType|JsonContent|XmlContent|Attachable
+     * @var array<MediaType|JsonContent|XmlContent>|MediaType|JsonContent|XmlContent|Attachable
      */
     public $content = Generator::UNDEFINED;
 
