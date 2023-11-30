@@ -977,13 +977,13 @@ Default value is csv.</p></dd>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">bool|int|float</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
 When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">bool|int|float</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
 When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
