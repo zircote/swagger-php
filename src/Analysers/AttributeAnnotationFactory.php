@@ -15,6 +15,11 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
     /** @var Generator|null */
     protected $generator;
 
+    public function isSupported(): bool
+    {
+        return \PHP_VERSION_ID >= 80100;
+    }
+
     public function setGenerator(Generator $generator): void
     {
         $this->generator = $generator;
@@ -22,7 +27,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
     public function build(\Reflector $reflector, Context $context): array
     {
-        if (\PHP_VERSION_ID < 80100 || !method_exists($reflector, 'getAttributes')) {
+        if (!$this->isSupported() || !method_exists($reflector, 'getAttributes')) {
             return [];
         }
 

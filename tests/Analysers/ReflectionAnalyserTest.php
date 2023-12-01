@@ -35,6 +35,11 @@ class ReflectionAnalyserTest extends OpenApiTestCase
                 return [];
             }
 
+            public function isSupported(): bool
+            {
+                return true;
+            }
+
             public function setGenerator(Generator $generator): void
             {
                 // noop
