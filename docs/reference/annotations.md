@@ -1009,7 +1009,7 @@ An array instance is valid against this property if its number of items is great
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1163,7 +1163,7 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />

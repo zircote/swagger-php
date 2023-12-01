@@ -5,7 +5,7 @@
 # swagger-php
 
 Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using
-[doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html) (optional as of version 4.8)
+[doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) (optional as of version 4.8)
 or [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php).
 
 For a full list of supported annotations, please have look at the [`OpenApi\Annotations` namespace](src/Annotations) or the [documentation website](https://zircote.github.io/swagger-php/guide/annotations.html).
@@ -44,7 +44,7 @@ composer global require zircote/swagger-php
 ```
 
 ### doctrine/annotations
-As of version `4.8` the [doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html) library **is optional** and **no longer installed by default**.
+As of version `4.8` the [doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) library **is optional** and **no longer installed by default**.
 
 If your code uses PHPDoc annotations you will need to install this as well:
 
