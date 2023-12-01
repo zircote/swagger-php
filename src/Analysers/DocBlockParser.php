@@ -26,10 +26,20 @@ class DocBlockParser
      */
     public function __construct(array $aliases = [])
     {
-        $docParser = new DocParser();
-        $docParser->setIgnoreNotImportedAnnotations(true);
-        $docParser->setImports($aliases);
-        $this->docParser = $docParser;
+        if (DocBlockParser::isEnabled()) {
+            $docParser = new DocParser();
+            $docParser->setIgnoreNotImportedAnnotations(true);
+            $docParser->setImports($aliases);
+            $this->docParser = $docParser;
+        }
+    }
+
+    /**
+     * Check if we can process annotations.
+     */
+    public static function isEnabled(): bool
+    {
+        return class_exists('Doctrine\\Common\\Annotations\\DocParser');
     }
 
     /**
