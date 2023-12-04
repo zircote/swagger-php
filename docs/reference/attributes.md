@@ -99,7 +99,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1057,7 +1057,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1215,7 +1215,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -1772,10 +1772,28 @@ These will be ignored but can be used for custom processing.</p></dd>
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
+  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional, string summary, intended to apply to all operations in this path.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional, string description, intended to apply to all operations in this path.</p></dd>
+  <dt><strong>get</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Get|null</span></dt>
+  <dd><p>A definition of a GET operation on this path.</p></dd>
+  <dt><strong>put</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Put|null</span></dt>
+  <dd><p>A definition of a PUT operation on this path.</p></dd>
+  <dt><strong>post</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Post|null</span></dt>
+  <dd><p>A definition of a POST operation on this path.</p></dd>
+  <dt><strong>delete</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Delete|null</span></dt>
+  <dd><p>A definition of a DELETE operation on this path.</p></dd>
+  <dt><strong>options</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Options|null</span></dt>
+  <dd><p>A definition of a OPTIONS operation on this path.</p></dd>
+  <dt><strong>head</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Head|null</span></dt>
+  <dd><p>A definition of a HEAD operation on this path.</p></dd>
+  <dt><strong>patch</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Patch|null</span></dt>
+  <dd><p>A definition of a PATCH operation on this path.</p></dd>
+  <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
+  <dd><p>A definition of a TRACE operation on this path.</p></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
   <dd><p>An alternative server array to service all operations in this path.</p></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
@@ -2079,7 +2097,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -2525,7 +2543,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
@@ -2700,7 +2718,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />
 Unlike the Schema Object's default, this value must be provided by the consumer.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string|null</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map between a variable name and its value.<br />
@@ -2973,7 +2991,7 @@ An array instance is valid against this property if its number of items is great
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
