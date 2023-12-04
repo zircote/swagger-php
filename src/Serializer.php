@@ -49,6 +49,7 @@ class Serializer
         OA\Property::class,
         OA\Put::class,
         OA\RequestBody::class,
+        OA\Reference::class,
         OA\Response::class,
         OA\Schema::class,
         OA\SecurityScheme::class,
@@ -56,6 +57,7 @@ class Serializer
         OA\ServerVariable::class,
         OA\Tag::class,
         OA\Trace::class,
+        OA\Webhook::class,
         OA\Xml::class,
         OA\XmlContent::class,
     ];

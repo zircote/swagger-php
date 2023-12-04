@@ -141,6 +141,14 @@ class ExamplesTest extends OpenApiTestCase
         ];
 
         if (\PHP_VERSION_ID >= 80100) {
+            yield 'webhooks' => [
+                OA\OpenApi::VERSION_3_1_0,
+                'webhooks',
+                'webhooks.yaml',
+                false,
+                [],
+            ];
+
             yield 'using-links-php81' => [
                 OA\OpenApi::VERSION_3_0_0,
                 'using-links-php81',
@@ -198,7 +206,7 @@ class ExamplesTest extends OpenApiTestCase
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
-        // file_put_contents($path . '/' . $spec, $openapi->toYaml());
+         file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($path . '/' . $spec),

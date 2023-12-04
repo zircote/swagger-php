@@ -46,6 +46,7 @@ class Attachable extends AbstractAnnotation
         Post::class,
         Property::class,
         Put::class,
+        Reference::class,
         RequestBody::class,
         Response::class,
         Schema::class,
@@ -54,6 +55,7 @@ class Attachable extends AbstractAnnotation
         ServerVariable::class,
         Tag::class,
         Trace::class,
+        Webhook::class,
         Xml::class,
         XmlContent::class,
     ];

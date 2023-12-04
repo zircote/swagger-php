@@ -154,5 +154,6 @@ class PathItem extends AbstractAnnotation
      */
     public static $_parents = [
         OpenApi::class,
+        Webhook::class,
     ];
 }
