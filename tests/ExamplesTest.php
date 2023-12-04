@@ -21,140 +21,166 @@ class ExamplesTest extends OpenApiTestCase
     public function exampleDetails(): iterable
     {
         yield 'example-object' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'example-object',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'example-object',
             'example-object.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'misc' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'misc',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'misc',
             'misc.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'nesting' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'nesting',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'nesting',
             'nesting.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'petstore-3.0' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'petstore-3.0',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'petstore-3.0',
             'petstore-3.0.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'petstore.swagger.io' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'petstore.swagger.io',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'petstore.swagger.io',
             'petstore.swagger.io.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'swagger-spec/petstore' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'swagger-spec/petstore',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'swagger-spec/petstore',
             'petstore.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'swagger-spec/petstore-simple' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'swagger-spec/petstore-simple',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'swagger-spec/petstore-simple',
             'petstore-simple.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'swagger-spec/petstore-simple-3.1.0' => [
-            OA\OpenApi::VERSION_3_1_0,
-            'swagger-spec/petstore-simple',
+            'version' => OA\OpenApi::VERSION_3_1_0,
+            'example' => 'swagger-spec/petstore-simple',
             'petstore-simple-3.1.0.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'swagger-spec/petstore-with-external-docs' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'swagger-spec/petstore-with-external-docs',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'swagger-spec/petstore-with-external-docs',
             'petstore-with-external-docs.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'polymorphism' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'polymorphism',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'polymorphism',
             'polymorphism.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['reflection'],
         ];
 
         yield 'polymorphism-3.1.0' => [
-            OA\OpenApi::VERSION_3_1_0,
-            'polymorphism',
+            'version' => OA\OpenApi::VERSION_3_1_0,
+            'example' => 'polymorphism',
             'polymorphism-3.1.0.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['reflection'],
         ];
 
         yield 'using-interfaces' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'using-interfaces',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'using-interfaces',
             'using-interfaces.yaml',
-            false,
-            [],
-        ];
-
-        yield 'using-refs' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'using-refs',
-            'using-refs.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'using-traits' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'using-traits',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'using-traits',
             'using-traits.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         yield 'using-links' => [
-            OA\OpenApi::VERSION_3_0_0,
-            'using-links',
+            'version' => OA\OpenApi::VERSION_3_0_0,
+            'example' => 'using-links',
             'using-links.yaml',
-            false,
-            [],
+            'debug' => false,
+            'expectedLog' => [],
+            'analysers' => ['token', 'reflection'],
         ];
 
         if (\PHP_VERSION_ID >= 80100) {
+            yield 'using-refs' => [
+                'version' => OA\OpenApi::VERSION_3_0_0,
+                'example' => 'using-refs',
+                'using-refs.yaml',
+                'debug' => false,
+                'expectedLog' => [],
+                'analysers' => ['token', 'reflection'],
+            ];
+
             yield 'webhooks' => [
-                OA\OpenApi::VERSION_3_1_0,
-                'webhooks',
+                'version' => OA\OpenApi::VERSION_3_1_0,
+                'example' => 'webhooks',
                 'webhooks.yaml',
-                false,
-                [],
+                'debug' => false,
+                'expectedLog' => [],
+                'analysers' => ['token' ,'reflection'],
+            ];
+
+            yield 'webhooks81' => [
+                'version' => OA\OpenApi::VERSION_3_1_0,
+                'example' => 'webhooks81',
+                'webhooks.yaml',
+                'debug' => false,
+                'expectedLog' => [],
+                'analysers' => ['reflection'],
             ];
 
             yield 'using-links-php81' => [
-                OA\OpenApi::VERSION_3_0_0,
-                'using-links-php81',
+                'version' => OA\OpenApi::VERSION_3_0_0,
+                'example' => 'using-links-php81',
                 'using-links-php81.yaml',
-                true,
-                ['JetBrains\PhpStorm\ArrayShape'],
+                'debug' => true,
+                'expectedLog' => ['JetBrains\PhpStorm\ArrayShape'],
+                'analysers' => ['reflection'],
             ];
         }
     }
@@ -166,18 +192,11 @@ class ExamplesTest extends OpenApiTestCase
             'reflection' => new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]),
         ];
 
-        foreach ($this->exampleDetails() as $eKey => $example) {
-            foreach ($analysers as $aKey => $analyser) {
-                if (0 === strpos($eKey, 'polymorphism') && 'token' == $aKey) {
-                    continue;
-                }
-                if ((\PHP_VERSION_ID < 80100 || 'token' == $aKey) && 'using-refs' == $eKey) {
-                    continue;
-                }
-                if ('using-links-php81' == $eKey && 'token' == $aKey) {
-                    continue;
-                }
-                yield $eKey . ':' . $aKey => array_merge($example, [$analyser]);
+        foreach ($this->exampleDetails() as $exampleKey => $example) {
+            $exampleAnalysers = $example['analysers'];
+            unset($example['analysers']);
+            foreach ($exampleAnalysers as $analyserKey) {
+                yield $exampleKey . ':' . $analyserKey => array_merge($example, [$analysers[$analyserKey]]);
             }
         }
     }
@@ -206,7 +225,7 @@ class ExamplesTest extends OpenApiTestCase
             ->setVersion($version)
             ->setAnalyser($analyser)
             ->generate([$path]);
-         file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        file_put_contents($path . '/' . $spec, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($path . '/' . $spec),

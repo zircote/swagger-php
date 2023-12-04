@@ -8,6 +8,9 @@ namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
 
+/**
+ * @Annotation
+ */
 class Webhook extends AbstractAnnotation
 {
     /**
@@ -27,15 +30,6 @@ class Webhook extends AbstractAnnotation
     public $path = Generator::UNDEFINED;
 
     /**
-     * The reference.
-     *
-     * Required unless `path` is set.
-     *
-     * @var Reference
-     */
-    public $reference = Generator::UNDEFINED;
-
-    /**
      * @inheritdoc
      */
     public static $_parents = [
@@ -47,7 +41,6 @@ class Webhook extends AbstractAnnotation
      */
     public static $_nested = [
         PathItem::class => 'path',
-        Reference::class => 'reference',
         Attachable::class => ['attachables'],
     ];
 
@@ -57,4 +50,24 @@ class Webhook extends AbstractAnnotation
     public static $_types = [
         'webhook' => 'string',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        if (isset($data->path)) {
+            foreach (get_object_vars($data->path) as $property => $value) {
+                if ('_' != $property[0] && !Generator::isDefault($value)) {
+                    $data->{$property} = $value;
+                }
+            }
+            unset($data->path);
+        }
+
+        return $data;
+    }
 }

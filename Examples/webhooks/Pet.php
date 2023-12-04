@@ -1,20 +1,32 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace OpenApi\Examples\Webhooks;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Annotations as OA;
 
-#[OAT\Schema(required: ['id', 'name'])]
+/**
+ * @OA\Schema(required={"id", "name"})
+ */
 final class Pet
 {
-    #[OAT\Property(format: 'int64')]
-    public int $id;
+    /**
+     * @OA\Property(format="int64")
+     *
+     * @var int
+     */
+    public $id;
 
-    #[OAT\Property]
-    public string $name;
+    /**
+     * @OA\Property
+     *
+     * @var string
+     */
+    public $name;
 
-    #[OAT\Property]
-    public string $tag;
+    /**
+     * @OA\Property
+     *
+     * @var string
+     */
+    public $tag;
 }

@@ -38,8 +38,8 @@ class GeneratorTest extends OpenApiTestCase
     public function testScanInvalidSource(): void
     {
         $this->assertOpenApiLogEntryContains('Skipping invalid source: /tmp/__swagger_php_does_not_exist__');
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
 
         (new Generator($this->getTrackingLogger()))
             ->setAnalyser($this->getAnalyzer())

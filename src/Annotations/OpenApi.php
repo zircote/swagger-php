@@ -154,8 +154,6 @@ class OpenApi extends AbstractAnnotation
         /* paths is optional in 3.1.0 */
         if ($this->openapi === self::VERSION_3_0_0 && Generator::isDefault($this->paths)) {
             $this->_context->logger->warning('Required @OA\PathItem() not found');
-
-            return false;
         }
 
         if ($this->openapi === self::VERSION_3_1_0

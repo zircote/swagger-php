@@ -18,7 +18,6 @@ class Webhook extends \OpenApi\Annotations\Webhook
     public function __construct(
         ?string $webhook = null,
         ?PathItem $path = null,
-        ?Reference $reference = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -26,7 +25,7 @@ class Webhook extends \OpenApi\Annotations\Webhook
         parent::__construct([
             'webhook' => $webhook ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($attachables, $path, $reference),
+            'value' => $this->combine($attachables, $path),
         ]);
     }
 }

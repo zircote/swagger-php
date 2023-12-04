@@ -20,7 +20,7 @@ components:
 webhooks:
   newPet:
     post:
-      operationId: 072580cbd56e3fef2b4c81536d3fd1c6
+      operationId: bbbe318bf00166ae6ba3552197e5f089
       requestBody:
         description: 'Information about a new pet in the system'
         content:
