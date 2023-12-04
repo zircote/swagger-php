@@ -1787,10 +1787,28 @@ These will be ignored but can be used for custom processing.</p></dd>
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
+  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional, string summary, intended to apply to all operations in this path.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional, string description, intended to apply to all operations in this path.</p></dd>
+  <dt><strong>get</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Get|null</span></dt>
+  <dd><p>A definition of a GET operation on this path.</p></dd>
+  <dt><strong>put</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Put|null</span></dt>
+  <dd><p>A definition of a PUT operation on this path.</p></dd>
+  <dt><strong>post</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Post|null</span></dt>
+  <dd><p>A definition of a POST operation on this path.</p></dd>
+  <dt><strong>delete</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Delete|null</span></dt>
+  <dd><p>A definition of a DELETE operation on this path.</p></dd>
+  <dt><strong>options</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Options|null</span></dt>
+  <dd><p>A definition of a OPTIONS operation on this path.</p></dd>
+  <dt><strong>head</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Head|null</span></dt>
+  <dd><p>A definition of a HEAD operation on this path.</p></dd>
+  <dt><strong>patch</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Patch|null</span></dt>
+  <dd><p>A definition of a PATCH operation on this path.</p></dd>
+  <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
+  <dd><p>A definition of a TRACE operation on this path.</p></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
   <dd><p>An alternative server array to service all operations in this path.</p></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
