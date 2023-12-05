@@ -23,11 +23,14 @@ class Webhook extends AbstractAnnotation
     /**
      * The path item.
      *
-     * Required unless `reference` is set.
-     *
      * @var PathItem
      */
     public $path = Generator::UNDEFINED;
+
+    /**
+     * @inheritdoc
+     */
+    public static $_required = ['path'];
 
     /**
      * @inheritdoc
