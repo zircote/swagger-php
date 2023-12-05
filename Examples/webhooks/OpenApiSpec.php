@@ -16,19 +16,19 @@ use OpenApi\Annotations as OA;
  *             @OA\Post(
  *                 @OA\RequestBody(
  *                     description="Information about a new pet in the system",
- *                         @OA\MediaType(
- *                             mediaType="application/json",
- *                             @OA\Schema(ref="#/components/schemas/Pet")
- *                         ),
+ *                     @OA\MediaType(
+ *                         mediaType="application/json",
+ *                         @OA\Schema(ref="#/components/schemas/Pet")
  *                     ),
- *                     @OA\Response(
- *                         response=200,
- *                         description="Return a 200 status to indicate that the data was received successfully"
- *                     )
+ *                 ),
+ *                 @OA\Response(
+ *                     response=200,
+ *                     description="Return a 200 status to indicate that the data was received successfully"
  *                 )
  *             )
  *         )
  *     )
+ * )
  * )
  */
 class OpenApiSpec

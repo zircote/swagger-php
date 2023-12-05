@@ -162,7 +162,7 @@ class ExamplesTest extends OpenApiTestCase
                 'webhooks.yaml',
                 'debug' => false,
                 'expectedLog' => [],
-                'analysers' => ['token' ,'reflection'],
+                'analysers' => ['token','reflection'],
             ];
 
             yield 'webhooks81' => [
