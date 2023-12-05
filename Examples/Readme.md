@@ -29,10 +29,12 @@ Collection of code/annotation examples and their corresponding OpenAPI specs gen
   * misc: [source](misc) / [spec](misc/misc.yaml)
   * using interfaces: [source](using-interfaces) / [spec](using-interfaces/using-interfaces.yaml)
   * using traits: [source](using-traits) / [spec](using-traits/using-traits.yaml)
-  * using refs: [source](using-refs) / [spec](using-refs/using-refs.yaml) 
+  * using refs: [source](using-refs) / [spec](using-refs/using-refs.yaml)
   * nested schemas and class hierachies: [source](nesting) / [spec](nesting/nesting.yaml)
   * polymorphism using `@OA\Discriminator`: [source](polymorphism) / [spec](polymorphism/polymorphism.yaml)
-  
+  * webhooks using `@OA\Webhooks`: [source](webhooks) / [spec](webhooks/webhooks.yaml)
+  * webhooks81 using `@OAT\Webhooks`: [source](webhooks81) / [spec](webhooks81/webhooks.yaml)
+
 
 ## Custom processors
 
@@ -52,10 +54,10 @@ class MyCustomProcessor
 {
     public function __invoke(Analysis $analysis)
     {
-        // custom processing    
+        // custom processing
     }
 }
-``` 
+```
 
 * **schema-query-parameter processor**
 
@@ -66,6 +68,6 @@ class MyCustomProcessor
 
 * **sort-components processor**
 
-  A processor that sorts components so they appear in alphabetical order. 
+  A processor that sorts components so they appear in alphabetical order.
 
   [source](processors/sort-components)
