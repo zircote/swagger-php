@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 
@@ -209,5 +210,55 @@ JSON;
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
         $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));
+    }
+
+    public function testBasicSerialization(): void
+    {
+        $sample = new class() {
+            #[Attributes\Property(property: 'greeting')]
+            public function getGreeting(): string
+            {
+                return 'hello world';
+            }
+        };
+
+        $serialized = Serializer::openapiSerialize($sample);
+
+        $this->assertEquals(['greeting' => 'hello world'], $serialized);
+    }
+
+    public function testSnakeCasePropertyNamesAreOk(): void
+    {
+        $sample = new class() {
+            #[Attributes\Property(property: 'another_greeting')]
+            public function getAnotherGreeting(): string
+            {
+                return 'hola mundo';
+            }
+        };
+
+        $serialized = Serializer::openapiSerialize($sample);
+
+        $this->assertEquals(['another_greeting' => 'hola mundo'], $serialized);
+    }
+
+    public function testClassProperiesAreAbleToBeSerialized(): void
+    {
+        $sample = new class() {
+            public function __construct(
+                #[Attributes\Property]
+                public readonly string $greeting = 'hello world',
+                #[Attributes\Property(
+                    property: 'another_greeting',
+                )]
+                public readonly string $_greeting = 'hello world',
+                public readonly bool $not_serialized = true,
+            ) {
+            }
+        };
+
+        $serialized = Serializer::openapiSerialize($sample);
+
+        $this->assertEquals(['greeting' => 'hello world', 'another_greeting' => 'hello world'], $serialized);
     }
 }
