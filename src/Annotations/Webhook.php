@@ -9,9 +9,11 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
+ * Acts like a `PathItem` with the main difference being that it requires `webhook` instead of `path`.
+ *
  * @Annotation
  */
-class Webhook extends AbstractAnnotation
+class Webhook extends PathItem
 {
     /**
      * Key for the webhooks map.
@@ -21,16 +23,9 @@ class Webhook extends AbstractAnnotation
     public $webhook = Generator::UNDEFINED;
 
     /**
-     * The path item.
-     *
-     * @var PathItem
-     */
-    public $path = Generator::UNDEFINED;
-
-    /**
      * @inheritdoc
      */
-    public static $_required = ['path'];
+    public static $_required = ['webhook'];
 
     /**
      * @inheritdoc
@@ -42,35 +37,7 @@ class Webhook extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        PathItem::class => 'path',
-        Attachable::class => ['attachables'],
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public static $_types = [
         'webhook' => 'string',
     ];
-
-    /**
-     * @inheritdoc
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
-    {
-        $data = parent::jsonSerialize();
-
-        if (isset($data->path)) {
-            foreach (get_object_vars($data->path) as $property => $value) {
-                if ('_' != $property[0] && !Generator::isDefault($value)) {
-                    $data->{$property} = $value;
-                }
-            }
-            unset($data->path);
-        }
-
-        return $data;
-    }
 }

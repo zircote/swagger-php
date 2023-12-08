@@ -9,22 +9,20 @@ use OpenApi\Attributes as OAT;
     webhooks: [
         new OAT\Webhook(
             webhook: 'newPet',
-            path: new OAT\PathItem(
-                post: new OAT\Post(
-                    requestBody: new OAT\RequestBody(
-                        description: 'Information about a new pet in the system',
-                        content: new OAT\MediaType(
-                            mediaType: 'application/json',
-                            schema: new OAT\Schema(ref: Pet::class)
-                        )
+            post: new OAT\Post(
+                requestBody: new OAT\RequestBody(
+                    description: 'Information about a new pet in the system',
+                    content: new OAT\MediaType(
+                        mediaType: 'application/json',
+                        schema: new OAT\Schema(ref: Pet::class)
+                    )
+                ),
+                responses: [
+                    new OAT\Response(
+                        response: 200,
+                        description: 'Return a 200 status to indicate that the data was received successfully'
                     ),
-                    responses: [
-                        new OAT\Response(
-                            response: 200,
-                            description: 'Return a 200 status to indicate that the data was received successfully'
-                        ),
-                    ]
-                )
+                ]
             )
         ),
     ],

@@ -12,20 +12,40 @@ use OpenApi\Generator;
 class Webhook extends \OpenApi\Annotations\Webhook
 {
     /**
-     * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param string|class-string|object|null $ref
+     * @param Server[]|null                   $servers
+     * @param Parameter[]|null                $parameters
+     * @param array<string,mixed>|null        $x
+     * @param Attachable[]|null               $attachables
      */
     public function __construct(
         ?string $webhook = null,
-        ?PathItem $path = null,
+        ?string $path = null,
+        mixed $ref = null,
+        ?string $summary = null,
+        ?string $description = null,
+        ?Get $get = null,
+        ?Put $put = null,
+        ?Post $post = null,
+        ?Delete $delete = null,
+        ?Options $options = null,
+        ?Head $head = null,
+        ?Patch $patch = null,
+        ?Trace $trace = null,
+        ?array $servers = null,
+        ?array $parameters = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
             'webhook' => $webhook ?? Generator::UNDEFINED,
+            'path' => $path ?? Generator::UNDEFINED,
+            'ref' => $ref ?? Generator::UNDEFINED,
+            'summary' => $summary ?? Generator::UNDEFINED,
+            'description' => $description ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($attachables, $path),
+            'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $servers, $parameters, $attachables),
         ]);
     }
 }
