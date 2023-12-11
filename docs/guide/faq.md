@@ -46,6 +46,13 @@ class OpenApiSpec
 }
 ```
 
+**As of version 4.8 the `doctrine/annotations` library is optional and might cause the same message.**
+
+If this is the case, `doctrine annotations` must be installed separately:
+```shell
+composer require doctrine/annotations
+```
+
 ## Annotations missing
 
 Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks any more as the PHP reflection API only provides access to the docblock closest to a given structural element.
