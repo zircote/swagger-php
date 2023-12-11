@@ -56,6 +56,7 @@ class Serializer
         OA\ServerVariable::class,
         OA\Tag::class,
         OA\Trace::class,
+        OA\Webhook::class,
         OA\Xml::class,
         OA\XmlContent::class,
     ];
