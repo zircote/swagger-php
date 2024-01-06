@@ -44,6 +44,9 @@ class Nullable
 
     #[OAT\Property]
     public MyDateTime|null $anotherdate;
+
+    #[OAT\Property(type: ['string', 'null'])]
+    public ?string $description;
 }
 
 #[OAT\Get(

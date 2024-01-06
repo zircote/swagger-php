@@ -51,7 +51,9 @@ class AugmentProperties implements ProcessorInterface
             if (Generator::isDefault($property->type)) {
                 $this->augmentType($analysis, $property, $context, $refs, $typeAndDescription['type']);
             } else {
-                $this->mapNativeType($property, $property->type);
+                if (!is_array($property->type)) {
+                    $this->mapNativeType($property, $property->type);
+                }
             }
 
             if (Generator::isDefault($property->description) && $typeAndDescription['description']) {
@@ -129,7 +131,7 @@ class AugmentProperties implements ProcessorInterface
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($analysis, $property, $refs[$refKey]);
                 } else {
-                    if ($typeSchema = $analysis->getSchemaForSource($context->type)) {
+                    if (is_string($context->type) && $typeSchema = $analysis->getSchemaForSource($context->type)) {
                         if (Generator::isDefault($property->format)) {
                             $property->ref = OA\Components::ref($typeSchema);
                             $property->type = Generator::UNDEFINED;

@@ -9,7 +9,7 @@ namespace OpenApi\Attributes;
 use OpenApi\Generator;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class PathItem extends \OpenApi\Annotations\PathItem
+class Webhook extends \OpenApi\Annotations\Webhook
 {
     /**
      * @param string|class-string|object|null $ref
@@ -19,6 +19,7 @@ class PathItem extends \OpenApi\Annotations\PathItem
      * @param Attachable[]|null               $attachables
      */
     public function __construct(
+        ?string $webhook = null,
         ?string $path = null,
         mixed $ref = null,
         ?string $summary = null,
@@ -38,6 +39,7 @@ class PathItem extends \OpenApi\Annotations\PathItem
         ?array $attachables = null
     ) {
         parent::__construct([
+            'webhook' => $webhook ?? Generator::UNDEFINED,
             'path' => $path ?? Generator::UNDEFINED,
             'ref' => $ref ?? Generator::UNDEFINED,
             'summary' => $summary ?? Generator::UNDEFINED,

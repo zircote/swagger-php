@@ -13,11 +13,20 @@ class OpenApiTest extends OpenApiTestCase
 {
     public function testValidVersion(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.0';
+        $openapi->validate();
+    }
+
+    public function testValidVersion310(): void
+    {
+        $this->assertOpenApiLogEntryContains("At least one of 'Required @OA\PathItem(), @OA\Components() or @OA\Webhook() not found'");
+
+        $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
+        $openapi->openapi = '3.1.0';
         $openapi->validate();
     }
 

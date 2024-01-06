@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class Property extends \OpenApi\Annotations\Property
 {
     /**
+     * @param string|non-empty-array<string>|null                    $type
      * @param string|class-string|object|null                        $ref
      * @param string[]                                               $required
      * @param Property[]                                             $properties
@@ -35,15 +36,15 @@ class Property extends \OpenApi\Annotations\Property
         ?int $minProperties = null,
         ?array $required = null,
         ?array $properties = null,
-        ?string $type = null,
+        string|array|null $type = null,
         ?string $format = null,
         ?Items $items = null,
         ?string $collectionFormat = null,
         mixed $default = Generator::UNDEFINED,
         $maximum = null,
-        ?bool $exclusiveMaximum = null,
+        bool|int|float|null $exclusiveMaximum = null,
         $minimum = null,
-        ?bool $exclusiveMinimum = null,
+        bool|int|float|null $exclusiveMinimum = null,
         ?int $maxLength = null,
         ?int $minLength = null,
         ?int $maxItems = null,

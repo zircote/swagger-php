@@ -21,7 +21,7 @@ jobs:
     name: PHP ${{ matrix.php }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
       - name: Setup PHP
@@ -36,9 +36,9 @@ jobs:
           composer-options: ${{ matrix.composer-options }} --no-dev
 
       - name: Cache security checker dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.symfony/cache
           key: security-checker-db
 
-      - uses: symfonycorp/security-checker-action@v3
+      - uses: symfonycorp/security-checker-action@v5

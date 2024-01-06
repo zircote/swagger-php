@@ -22,6 +22,11 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         $this->docBlockParser = $docBlockParser ?: new DocBlockParser();
     }
 
+    public function isSupported(): bool
+    {
+        return DocBlockParser::isEnabled();
+    }
+
     public function setGenerator(Generator $generator): void
     {
         $this->generator = $generator;

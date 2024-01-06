@@ -13,7 +13,7 @@ However, doctrine will be quite specific about whether an alias is valid or not.
 any additional work.
 
 ## Doctrine
-Annotations are PHP comments (docblocks) containing [doctrine style annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html).
+Annotations are PHP comments (docblocks) containing [doctrine style annotations](https://www.doctrine-project.org/projects/annotations.html).
 
 ::: info
 All documentation related to doctrine applies to annotations only.
