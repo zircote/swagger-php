@@ -9,7 +9,7 @@ use OpenApi\Annotations as OA;
  */
 class Product
 {
-    use \OpenApi\Examples\UsingTraits\Colour;
+    use Colour;
     use BellsAndWhistles;
 
     /**

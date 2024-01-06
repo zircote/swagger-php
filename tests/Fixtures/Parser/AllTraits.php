@@ -9,5 +9,5 @@ namespace OpenApi\Tests\Fixtures\Parser;
 trait AllTraits
 {
     use AsTrait;
-    use \OpenApi\Tests\Fixtures\Parser\HelloTrait;
+    use HelloTrait;
 }

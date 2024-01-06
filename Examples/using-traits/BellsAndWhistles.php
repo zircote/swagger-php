@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 trait BellsAndWhistles
 {
     use Bells;
-    use \OpenApi\Examples\UsingTraits\Decoration\Whistles;
+    use Decoration\Whistles;
 
     /**
      * The plating.
