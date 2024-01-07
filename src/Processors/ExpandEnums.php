@@ -41,8 +41,11 @@ class ExpandEnums implements ProcessorInterface
 
                 $schemaType = $schema->type;
                 $enumType = null;
-                if ($re->isBacked() && ($backingType = $re->getBackingType()) && $backingType instanceof \ReflectionNamedType) {
-                    $enumType = $backingType->getName();
+                if ($re->isBacked()) {
+                    $backingType = $re->getBackingType();
+                    if ($backingType instanceof \ReflectionNamedType) {
+                        $enumType = $backingType->getName();
+                    }
                 }
 
                 // no (or invalid) schema type means name
