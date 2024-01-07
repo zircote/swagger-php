@@ -14,7 +14,7 @@ use OpenApi\Tests\Fixtures\Parser\Sub\SubClass as ParentClass;
  *     example=User::CONSTANT,
  * )
  */
-class User extends ParentClass implements \OpenApi\Tests\Fixtures\Parser\UserInterface
+class User extends ParentClass implements UserInterface
 {
     use Hello;
 
