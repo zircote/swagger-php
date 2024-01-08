@@ -367,11 +367,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 $ref = ['oneOf' => [$ref]];
-                if ($this->_context->version == OpenApi::VERSION_3_1_0) {
-                    $ref['oneOf'][] = ['type' => 'null'];
-                } else {
-                    $ref['nullable'] = $data->nullable;
-                }
+                $ref['nullable'] = $data->nullable;
+
                 unset($data->nullable);
 
                 // preserve other properties
