@@ -24,10 +24,20 @@ final class OpenApi31Processor implements ProcessorInterface
         $annotations = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($annotations as $annotation) {
+            $this->processReference($annotation);
             $this->processNullable($annotation);
             $this->processExclusiveMinimum($annotation);
             $this->processExclusiveMaximum($annotation);
         }
+    }
+
+    private function processReference(OA\Schema $annotation): void
+    {
+        if (Generator::isDefault($annotation->ref)) {
+            return;
+        }
+
+
     }
 
     private function processNullable(OA\Schema $annotation): void
@@ -40,7 +50,7 @@ final class OpenApi31Processor implements ProcessorInterface
         }
 
         if (!Generator::isDefault($annotation->ref)) {
-            if (!property_exists($annotation, 'oneOf')) {
+            if (!Generator::isDefault($annotation->oneOf)) {
                 return;
             }
 
