@@ -388,15 +388,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         if ($this->_context->version === OpenApi::VERSION_3_1_0) {
-            if (isset($data->minimum) && isset($data->exclusiveMinimum)) {
-                if (true === $data->exclusiveMinimum) {
-                    $data->exclusiveMinimum = $data->minimum;
-                    unset($data->minimum);
-                } elseif (false === $data->exclusiveMinimum) {
-                    unset($data->exclusiveMinimum);
-                }
-            }
-
             if (isset($data->maximum) && isset($data->exclusiveMaximum)) {
                 if (true === $data->exclusiveMaximum) {
                     $data->exclusiveMaximum = $data->maximum;

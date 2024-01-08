@@ -25,6 +25,7 @@ final class OpenApi31Processor implements ProcessorInterface
 
         foreach ($annotations as $annotation) {
             $this->processNullable($annotation);
+            $this->processExclusiveMinimum($annotation);
         }
     }
 
@@ -57,6 +58,20 @@ final class OpenApi31Processor implements ProcessorInterface
         } elseif (!Generator::isDefault($annotation->type)) {
             $annotation->type = (array) $annotation->type;
             $annotation->type[] = 'null';
+        }
+    }
+
+    private function processExclusiveMinimum(OA\Schema $annotation): void
+    {
+        if (Generator::UNDEFINED === $annotation->minimum || Generator::UNDEFINED === $annotation->exclusiveMinimum) {
+            return;
+        }
+
+        if (true === $annotation->exclusiveMinimum) {
+            $annotation->exclusiveMinimum = $annotation->minimum;
+            $annotation->minimum = Generator::UNDEFINED;
+        } elseif (false === $annotation->exclusiveMinimum) {
+            $annotation->exclusiveMinimum = Generator::UNDEFINED;
         }
     }
 }
