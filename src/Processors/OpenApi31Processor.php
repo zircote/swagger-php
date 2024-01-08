@@ -20,19 +20,16 @@ final class OpenApi31Processor implements ProcessorInterface
             return;
         }
 
-        $annotations = $analysis->getAnnotationsOfType(OA\AbstractAnnotation::class);
+        /** @var OA\Schema[] $annotations */
+        $annotations = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($annotations as $annotation) {
-            $this->convertNullable($annotation);
+            $this->processNullable($annotation);
         }
     }
 
-    private function convertNullable(OA\AbstractAnnotation $annotation): void
+    private function processNullable(OA\Schema $annotation): void
     {
-        if (!property_exists($annotation, 'nullable')) {
-            return;
-        }
-
         $nullable = $annotation->nullable;
         $annotation->nullable = Generator::UNDEFINED; // Unregister nullable property
 
@@ -40,7 +37,7 @@ final class OpenApi31Processor implements ProcessorInterface
             return;
         }
 
-        if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref)) {
+        if (!Generator::isDefault($annotation->ref)) {
             if (!property_exists($annotation, 'oneOf')) {
                 return;
             }
@@ -51,13 +48,13 @@ final class OpenApi31Processor implements ProcessorInterface
             return;
         }
 
-        if (property_exists($annotation, 'oneOf') && is_array($annotation->oneOf)) {
+        if (is_array($annotation->oneOf)) {
             $annotation->oneOf[] = new OA\Schema(['type' => 'null']);
-        } elseif (property_exists($annotation, 'anyOf') && is_array($annotation->anyOf)) {
+        } elseif (is_array($annotation->anyOf)) {
             $annotation->anyOf[] = new OA\Schema(['type' => 'null']);
-        } elseif (property_exists($annotation, 'allOf') && is_array($annotation->allOf)) {
+        } elseif (is_array($annotation->allOf)) {
             $annotation->allOf[] = new OA\Schema(['type' => 'null']);
-        } elseif (property_exists($annotation, 'type') && !Generator::isDefault($annotation->type)) {
+        } elseif (!Generator::isDefault($annotation->type)) {
             $annotation->type = (array) $annotation->type;
             $annotation->type[] = 'null';
         }
