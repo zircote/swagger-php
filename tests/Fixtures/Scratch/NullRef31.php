@@ -45,7 +45,8 @@ class NullRef31
                 description: 'Ref plus response',
                 content: new OAT\JsonContent(
                     ref: '#/components/schemas/repository',
-                    description: 'The repository',
+                    description: 'Will either respond with something or null',
+                    example: 'Some example about the content',
                     nullable: true
                 )
             ),

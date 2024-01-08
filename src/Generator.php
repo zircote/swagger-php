@@ -269,6 +269,7 @@ class Generator
                 new Processors\MergeXmlContent(),
                 new Processors\OperationId(),
                 new Processors\CleanUnmerged(),
+                new Processors\OpenApi31Processor(),
             ];
         }
 

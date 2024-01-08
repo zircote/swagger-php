@@ -388,22 +388,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         if ($this->_context->version === OpenApi::VERSION_3_1_0) {
-            if (isset($data->nullable)) {
-                if (true === $data->nullable) {
-                    if (isset($data->oneOf)) {
-                        $data->oneOf[] = ['type' => 'null'];
-                    } elseif (isset($data->anyOf)) {
-                        $data->anyOf[] = ['type' => 'null'];
-                    } elseif (isset($data->allOf)) {
-                        $data->allOf[] = ['type' => 'null'];
-                    } else {
-                        $data->type = (array) $data->type;
-                        $data->type[] = 'null';
-                    }
-                }
-                unset($data->nullable);
-            }
-
             if (isset($data->minimum) && isset($data->exclusiveMinimum)) {
                 if (true === $data->exclusiveMinimum) {
                     $data->exclusiveMinimum = $data->minimum;

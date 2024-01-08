@@ -23,11 +23,12 @@ paths:
           description: 'Ref plus response'
           content:
             application/json:
+              example: 'Some example about the content'
               schema:
                 oneOf:
-                  - { $ref: '#/components/schemas/repository', description: 'The repository' }
+                  - { $ref: '#/components/schemas/repository' }
                   - { type: 'null' }
-                description: 'The repository'
+                description: 'Will either respond with something or null'
 components:
   schemas:
     repository: {  }
