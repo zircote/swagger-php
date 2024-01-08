@@ -64,7 +64,7 @@ final class OpenApi31Processor implements ProcessorInterface
 
     private function processExclusiveMinimum(OA\Schema $annotation): void
     {
-        if (Generator::UNDEFINED === $annotation->minimum || Generator::UNDEFINED === $annotation->exclusiveMinimum) {
+        if (Generator::isDefault($annotation->minimum) || Generator::isDefault($annotation->exclusiveMinimum)) {
             return;
         }
 
@@ -78,7 +78,7 @@ final class OpenApi31Processor implements ProcessorInterface
 
     private function processExclusiveMaximum(OA\Schema $annotation): void
     {
-        if (Generator::UNDEFINED === $annotation->maximum || Generator::UNDEFINED === $annotation->exclusiveMaximum) {
+        if (Generator::isDefault($annotation->maximum) || Generator::isDefault($annotation->exclusiveMaximum)) {
             return;
         }
 
