@@ -26,6 +26,7 @@ final class OpenApi31Processor implements ProcessorInterface
         foreach ($annotations as $annotation) {
             $this->processNullable($annotation);
             $this->processExclusiveMinimum($annotation);
+            $this->processExclusiveMaximum($annotation);
         }
     }
 
@@ -72,6 +73,20 @@ final class OpenApi31Processor implements ProcessorInterface
             $annotation->minimum = Generator::UNDEFINED;
         } elseif (false === $annotation->exclusiveMinimum) {
             $annotation->exclusiveMinimum = Generator::UNDEFINED;
+        }
+    }
+
+    private function processExclusiveMaximum(OA\Schema $annotation): void
+    {
+        if (Generator::UNDEFINED === $annotation->maximum || Generator::UNDEFINED === $annotation->exclusiveMaximum) {
+            return;
+        }
+
+        if (true === $annotation->exclusiveMaximum) {
+            $annotation->exclusiveMaximum = $annotation->maximum;
+            $annotation->maximum = Generator::UNDEFINED;
+        } elseif (false === $annotation->exclusiveMaximum) {
+            $annotation->exclusiveMaximum = Generator::UNDEFINED;
         }
     }
 }
