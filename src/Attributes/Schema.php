@@ -64,7 +64,7 @@ class Schema extends \OpenApi\Annotations\Schema
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
-        $const = Generator::UNDEFINED,
+        mixed $const = Generator::UNDEFINED,
         // annotation
         ?array $x = null,
         ?array $attachables = null
