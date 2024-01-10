@@ -21,7 +21,7 @@ class Webhook extends \OpenApi\Annotations\Webhook
     public function __construct(
         ?string $webhook = null,
         ?string $path = null,
-        mixed $ref = null,
+        string|object|null $ref = null,
         ?string $summary = null,
         ?string $description = null,
         ?Get $get = null,

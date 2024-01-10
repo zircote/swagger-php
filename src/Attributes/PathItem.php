@@ -20,7 +20,7 @@ class PathItem extends \OpenApi\Annotations\PathItem
      */
     public function __construct(
         ?string $path = null,
-        mixed $ref = null,
+        string|object|null $ref = null,
         ?string $summary = null,
         ?string $description = null,
         ?Get $get = null,
