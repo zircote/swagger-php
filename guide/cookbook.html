@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cookbook | Swagger-PHP</title>
+    <meta name="description" content="Generate OpenAPI documentation for your RESTful API.">
+    <link rel="stylesheet" href="/swagger-php/assets/style.29d805fc.css">
+    <link rel="modulepreload" href="/swagger-php/assets/app.cfc21d1f.js">
+    <link rel="modulepreload" href="/swagger-php/assets/guide_cookbook.md.708ef177.lean.js">
+    
+    <meta name="twitter:title" content="Cookbook | Swagger-PHP">
+  <meta property="og:title" content="Cookbook | Swagger-PHP">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme"><header class="nav-bar" data-v-40587210><div class="sidebar-button" data-v-40587210><svg class="icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z" class></path></svg></div><a class="nav-bar-title" href="/swagger-php/" aria-label="Swagger-PHP, back to home" data-v-40587210 data-v-016a8bd8><!----> Swagger-PHP</a><div class="flex-grow" data-v-40587210></div><div class="nav" data-v-40587210><nav class="nav-links" data-v-40587210 data-v-35b91e7e><!--[--><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item active" href="/swagger-php/guide/" data-v-49fe041d>User Guide <!----></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item" href="/swagger-php/reference/" data-v-49fe041d>Reference <!----></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://learn.openapis.org/" target="_blank" rel="noopener noreferrer" data-v-49fe041d>OpenApi <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://github.com/zircote/swagger-php/releases" target="_blank" rel="noopener noreferrer" data-v-49fe041d>Releases <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div><!--]--><!----><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://github.com/zircote/swagger-php" target="_blank" rel="noopener noreferrer" data-v-49fe041d>GitHub <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div></nav></div><!--[--><!--]--></header><aside class="sidebar" data-v-17c48e2f><nav class="nav-links nav" data-v-17c48e2f data-v-35b91e7e><!--[--><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item active" href="/swagger-php/guide/" data-v-49fe041d>User Guide <!----></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item" href="/swagger-php/reference/" data-v-49fe041d>Reference <!----></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://learn.openapis.org/" target="_blank" rel="noopener noreferrer" data-v-49fe041d>OpenApi <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://github.com/zircote/swagger-php/releases" target="_blank" rel="noopener noreferrer" data-v-49fe041d>Releases <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div><!--]--><!----><div class="item" data-v-35b91e7e><div class="nav-link" data-v-35b91e7e data-v-49fe041d><a class="item isExternal" href="https://github.com/zircote/swagger-php" target="_blank" rel="noopener noreferrer" data-v-49fe041d>GitHub <svg class="icon outbound" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15" data-v-49fe041d><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div></div></nav><!--[--><!--]--><ul class="sidebar-links" data-v-17c48e2f><!--[--><li class="sidebar-link"><p class="sidebar-link-item">Introduction</p><ul class="sidebar-links"><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/">What is Swagger-PHP?</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/installation">Installation</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/generating-openapi-documents">Generating OpenAPI documents</a><!----></li></ul></li><li class="sidebar-link"><p class="sidebar-link-item">Annotating your code</p><ul class="sidebar-links"><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/attributes">Attributes</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/annotations">Annotations</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/required-elements">Required elements</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/common-techniques">Common techniques</a><!----></li></ul></li><li class="sidebar-link"><p class="sidebar-link-item">Upgrading</p><ul class="sidebar-links"><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/migrating-to-v4">Migration from 3.x to 4.x</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/migrating-to-v3">Migration from 2.x to 3.x</a><!----></li></ul></li><li class="sidebar-link"><p class="sidebar-link-item">Other</p><ul class="sidebar-links"><li class="sidebar-link"><a class="sidebar-link-item active" href="/swagger-php/guide/cookbook">Cookbook</a><ul class="sidebar-links"><li class="sidebar-link"><a class="sidebar-link-item" href="#x-taggroups">x-tagGroups</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#adding-examples-to-oa-response">Adding examples to @OA\Response</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#external-documentation">External documentation</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#properties-with-union-types">Properties with union types</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#referencing-a-security-scheme">Referencing a security scheme</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#file-upload-with-headers">File upload with headers</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#set-the-xml-root-name">Set the XML root name</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#upload-multipart-form-data">upload multipart/form-data</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#default-security-scheme-for-all-endpoints">Default security scheme for all endpoints</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#nested-objects">Nested objects</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#documenting-union-type-response-data-using-oneof">Documenting union type response data using oneOf</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#reusing-responses">Reusing responses</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#mediatype">mediaType=&quot;/&quot;</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#warning-about-multiple-response-with-same-response-200">Warning about Multiple response with same response=&quot;200&quot;</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#callbacks">Callbacks</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#mostly-virtual-models">(Mostly) virtual models</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#using-class-name-as-type-instead-of-references">Using class name as type instead of references</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#enums">Enums</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#multi-value-query-parameter-q-1-q-1">Multi value query parameter: &amp;q[]=1&amp;q[]=1</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#custom-response-classes">Custom response classes</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="#annotating-class-constants">Annotating class constants</a><!----></li></ul></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/faq">FAQ</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/guide/under-the-hood">Under the hood</a><!----></li><li class="sidebar-link"><a class="sidebar-link-item" href="/swagger-php/related-projects">Related Projects</a><!----></li></ul></li><!--]--></ul><!--[--><!--]--></aside><div class="sidebar-mask"></div><main class="page" data-v-8fcebc32><div class="container" data-v-8fcebc32><!--[--><!--]--><div style="position:relative;" class="content" data-v-8fcebc32><div><h1 id="cookbook" tabindex="-1">Cookbook <a class="header-anchor" href="#cookbook" aria-hidden="true">#</a></h1><h2 id="x-taggroups" tabindex="-1"><code>x-tagGroups</code> <a class="header-anchor" href="#x-taggroups" aria-hidden="true">#</a></h2><p>OpenApi has the concept of grouping endpoints using tags. On top of that, some tools (<a href="https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/" target="_blank" rel="noopener noreferrer">redocly</a>, for example) support further grouping via the vendor extension <code>x-tagGroups</code>.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\OpenApi(
+ *   x={
+ *       &quot;tagGroups&quot;=
+ *           {{&quot;name&quot;=&quot;User Management&quot;, &quot;tags&quot;={&quot;Users&quot;, &quot;API keys&quot;, &quot;Admin&quot;}}
+ *       }
+ *   }
+ * )
+ */</span>
+</code></pre></div><h2 id="adding-examples-to-oa-response" tabindex="-1">Adding examples to <code>@OA\Response</code> <a class="header-anchor" href="#adding-examples-to-oa-response" aria-hidden="true">#</a></h2><div class="language-php"><pre><code><span class="token comment">/*
+ * @OA\Response(
+ *     response=200,
+ *     description=&quot;OK&quot;,
+ *     @OA\JsonContent(
+ *         oneOf={
+ *             @OA\Schema(ref=&quot;#/components/schemas/Result&quot;),
+ *             @OA\Schema(type=&quot;boolean&quot;)
+ *         },
+ *         @OA\Examples(example=&quot;result&quot;, value={&quot;success&quot;: true}, summary=&quot;An result object.&quot;),
+ *         @OA\Examples(example=&quot;bool&quot;, value=false, summary=&quot;A boolean value.&quot;),
+ *     )
+ * )
+ */</span>
+</code></pre></div><h2 id="external-documentation" tabindex="-1">External documentation <a class="header-anchor" href="#external-documentation" aria-hidden="true">#</a></h2><p>OpenApi allows a single reference to external documentation. This is a part of the top level <code>@OA\OpenApi</code>.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\OpenApi(
+ *   @OA\ExternalDocumentation(
+ *     description=&quot;More documentation here...&quot;,
+ *     url=&quot;https://example.com/externaldoc1/&quot;
+ *   )
+ * )
+ */</span>
+</code></pre></div><div class="tip custom-block"><p class="custom-block-title">TIP</p><p>If no <code>@OA\OpenApi</code> is configured, <code>swagger-php</code> will create one automatically.</p><p>That means the above example would also work with just the <code>OA\ExternalDocumentation</code> annotation.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\ExternalDocumentation(
+ *   description=&quot;More documentation here...&quot;,
+ *   url=&quot;https://example.com/externaldoc1/&quot;
+ * )
+ */</span>
+</code></pre></div></div><h2 id="properties-with-union-types" tabindex="-1">Properties with union types <a class="header-anchor" href="#properties-with-union-types" aria-hidden="true">#</a></h2><p>Sometimes properties or even lists (arrays) may contain data of different types. This can be expressed using <code>oneOf</code>.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Schema(
+ *      schema=&quot;StringList&quot;,
+ *      @OA\Property(property=&quot;value&quot;, type=&quot;array&quot;, @OA\Items(anyOf={@OA\Schema(type=&quot;string&quot;)}))
+ * )
+ * @OA\Schema(
+ *      schema=&quot;String&quot;,
+ *      @OA\Property(property=&quot;value&quot;, type=&quot;string&quot;)
+ * )
+ * @OA\Schema(
+ *      schema=&quot;Object&quot;,
+ *      @OA\Property(property=&quot;value&quot;, type=&quot;object&quot;)
+ * )
+ * @OA\Schema(
+ *     schema=&quot;mixedList&quot;,
+ *     @OA\Property(property=&quot;fields&quot;, type=&quot;array&quot;, @OA\Items(oneOf={
+ *         @OA\Schema(ref=&quot;#/components/schemas/StringList&quot;),
+ *         @OA\Schema(ref=&quot;#/components/schemas/String&quot;),
+ *         @OA\Schema(ref=&quot;#/components/schemas/Object&quot;)
+ *     }))
+ * )
+ */</span>
+</code></pre></div><p>This will resolve into this YAML</p><div class="language-yaml"><pre><code><span class="token key atrule">openapi</span><span class="token punctuation">:</span> 3.0.0
+<span class="token key atrule">components</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schemas</span><span class="token punctuation">:</span>
+    <span class="token key atrule">StringList</span><span class="token punctuation">:</span>
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">value</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> array
+          <span class="token key atrule">items</span><span class="token punctuation">:</span>
+            <span class="token key atrule">anyOf</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span>
+                <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+    <span class="token key atrule">String</span><span class="token punctuation">:</span>
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">value</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+    <span class="token key atrule">Object</span><span class="token punctuation">:</span>
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">value</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+    <span class="token key atrule">mixedList</span><span class="token punctuation">:</span>
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">fields</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> array
+          <span class="token key atrule">items</span><span class="token punctuation">:</span>
+            <span class="token key atrule">oneOf</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span>
+                <span class="token key atrule">$ref</span><span class="token punctuation">:</span> <span class="token string">&#39;#/components/schemas/StringList&#39;</span>
+              <span class="token punctuation">-</span>
+                <span class="token key atrule">$ref</span><span class="token punctuation">:</span> <span class="token string">&#39;#/components/schemas/String&#39;</span>
+              <span class="token punctuation">-</span>
+                <span class="token key atrule">$ref</span><span class="token punctuation">:</span> <span class="token string">&#39;#/components/schemas/Object&#39;</span>
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+</code></pre></div><h2 id="referencing-a-security-scheme" tabindex="-1">Referencing a security scheme <a class="header-anchor" href="#referencing-a-security-scheme" aria-hidden="true">#</a></h2><p>An API might have zero or more security schemes. These are defined at the top level and vary from simple to complex:</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\SecurityScheme(
+ *     type=&quot;apiKey&quot;,
+ *     name=&quot;api_key&quot;,
+ *     in=&quot;header&quot;,
+ *     securityScheme=&quot;api_key&quot;
+ * )
+ *
+ * @OA\SecurityScheme(
+ *   type=&quot;oauth2&quot;,
+ *   securityScheme=&quot;petstore_auth&quot;,
+ *   @OA\Flow(
+ *      authorizationUrl=&quot;http://petstore.swagger.io/oauth/dialog&quot;,
+ *      flow=&quot;implicit&quot;,
+ *      scopes={
+ *         &quot;read:pets&quot;: &quot;read your pets&quot;,
+ *         &quot;write:pets&quot;: &quot;modify pets in your account&quot;
+ *      }
+ *   )
+ * )
+ */</span>
+</code></pre></div><p>To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be added to the operation, for example:</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Get(
+ *      path=&quot;/api/secure/&quot;,
+ *      summary=&quot;Requires authentication&quot;
+ *    ),
+ *    security={ {&quot;api_key&quot;: {}} }
+ * )
+ */</span>
+</code></pre></div><div class="tip custom-block"><p class="custom-block-title">Endpoints can support multiple security schemes and have custom options too:</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Get(
+ *      path=&quot;/api/secure/&quot;,
+ *      summary=&quot;Requires authentication&quot;
+ *    ),
+ *    security={
+ *      { &quot;api_key&quot;: {} },
+ *      { &quot;petstore_auth&quot;: {&quot;write:pets&quot;, &quot;read:pets&quot;} }
+ *    }
+ * )
+ */</span>
+</code></pre></div></div><h2 id="file-upload-with-headers" tabindex="-1">File upload with headers <a class="header-anchor" href="#file-upload-with-headers" aria-hidden="true">#</a></h2><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Post(
+ *   path=&quot;/v1/media/upload&quot;,
+ *   summary=&quot;Upload document&quot;,
+ *   description=&quot;&quot;,
+ *   tags={&quot;Media&quot;},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\MediaType(
+ *       mediaType=&quot;application/octet-stream&quot;,
+ *       @OA\Schema(
+ *         required={&quot;content&quot;},
+ *         @OA\Property(
+ *           description=&quot;Binary content of file&quot;,
+ *           property=&quot;content&quot;,
+ *           type=&quot;string&quot;,
+ *           format=&quot;binary&quot;
+ *         )
+ *       )
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200, description=&quot;Success&quot;,
+ *     @OA\Schema(type=&quot;string&quot;)
+ *   ),
+ *   @OA\Response(
+ *     response=400, description=&quot;Bad Request&quot;
+ *   )
+ * )
+ */</span>
+</code></pre></div><h2 id="set-the-xml-root-name" tabindex="-1">Set the XML root name <a class="header-anchor" href="#set-the-xml-root-name" aria-hidden="true">#</a></h2><p>The <code>OA\Xml</code> annotation may be used to set the XML root element for a given <code>@OA\XmlContent</code> response body</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Schema(
+ *     schema=&quot;Error&quot;,
+ *     @OA\Property(property=&quot;message&quot;),
+ *     @OA\Xml(name=&quot;details&quot;)
+ * )
+ */</span>
+
+<span class="token comment">/**
+ * @OA\Post(
+ *     path=&quot;/foobar&quot;,
+ *     @OA\Response(
+ *         response=400,
+ *         description=&quot;Request error&quot;,
+ *         @OA\XmlContent(ref=&quot;#/components/schemas/Error&quot;,
+ *           @OA\Xml(name=&quot;error&quot;)
+ *        )
+ *     )
+ * )
+ */</span>
+</code></pre></div><h2 id="upload-multipart-form-data" tabindex="-1">upload multipart/form-data <a class="header-anchor" href="#upload-multipart-form-data" aria-hidden="true">#</a></h2><p>Form posts are <code>@OA\Post</code> requests with a <code>multipart/form-data</code> <code>@OA\RequestBody</code>. The relevant bit looks something like this</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Post(
+ *   path=&quot;/v1/user/update&quot;,
+ *   summary=&quot;Form post&quot;,
+ *   @OA\RequestBody(
+ *     @OA\MediaType(
+ *       mediaType=&quot;multipart/form-data&quot;,
+ *       @OA\Schema(
+ *         @OA\Property(property=&quot;name&quot;),
+ *         @OA\Property(
+ *           description=&quot;file to upload&quot;,
+ *           property=&quot;avatar&quot;,
+ *           type=&quot;string&quot;,
+ *           format=&quot;binary&quot;,
+ *         ),
+ *       )
+ *     )
+ *   ),
+ *   @OA\Response(response=200, description=&quot;Success&quot;)
+ * )
+ */</span>
+</code></pre></div><h2 id="default-security-scheme-for-all-endpoints" tabindex="-1">Default security scheme for all endpoints <a class="header-anchor" href="#default-security-scheme-for-all-endpoints" aria-hidden="true">#</a></h2><p>Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way to also configure security schemes globally for the whole API.</p><p>This is done on the <code>@OA\OpenApi</code> annotations:</p><div><div class="tabs-component"><ul role="tablist" class="tabs-component-tabs"><!--[--><!--]--></ul><div class="tabs-component-panels"><!--[--><section id="minimal-an-pane" data-tab-id="minimal-an" aria-hidden="true" class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display:none;"><!--[--><!--[--><div class="language-php"><pre><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">use</span> <span class="token package">OpenApi<span class="token punctuation">\</span>Annotations</span> <span class="token keyword">as</span> <span class="token constant">OA</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @OA\OpenApi(
+ *   security={{&quot;bearerAuth&quot;: {}}}
+ * )
+ *
+ * @OA\SecurityScheme(
+ *   securityScheme=&quot;bearerAuth&quot;,
+ *   type=&quot;http&quot;,
+ *   scheme=&quot;bearer&quot;
+ * )
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">OpenApi</span>
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><!--]--><!--]--></section><section id="minimal-at-pane" data-tab-id="minimal-at" aria-hidden="true" class="tabs-component-panel" role="tabpanel" tabindex="-1" style="display:none;"><!--[--><!--[--><div class="language-php"><pre><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">use</span> <span class="token package">OpenApi<span class="token punctuation">\</span>Attributes</span> <span class="token keyword">as</span> <span class="token constant">OAT</span><span class="token punctuation">;</span>
+
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>OpenApi</span><span class="token punctuation">(</span>
+    <span class="token attribute-class-name class-name">security</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string single-quoted-string">&#39;bearerAuth&#39;</span> <span class="token operator">=&gt;</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Components</span><span class="token punctuation">(</span>
+    <span class="token attribute-class-name class-name">securitySchemes</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token attribute-class-name class-name">new</span> <span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>SecurityScheme</span><span class="token punctuation">(</span>
+            <span class="token attribute-class-name class-name">securityScheme</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;bearerAuth&#39;</span><span class="token punctuation">,</span>
+            <span class="token attribute-class-name class-name">type</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;http&#39;</span><span class="token punctuation">,</span>
+            <span class="token attribute-class-name class-name">scheme</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;bearer&#39;</span>
+        <span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">OpenApiSpec</span>
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+</span></code></pre></div><!--]--><!--]--></section><!--]--></div></div></div><h2 id="nested-objects" tabindex="-1">Nested objects <a class="header-anchor" href="#nested-objects" aria-hidden="true">#</a></h2><p>Complex, nested data structures are defined by nesting <code>@OA\Property</code> annotations inside others (with <code>type=&quot;object&quot;</code>).</p><div class="language-php"><pre><code><span class="token comment">/**
+ *  @OA\Schema(
+ *    schema=&quot;Profile&quot;,
+ *    type=&quot;object&quot;,
+*
+ *    @OA\Property(
+ *      property=&quot;Status&quot;,
+ *      type=&quot;string&quot;,
+ *      example=&quot;0&quot;
+ *    ),
+ *
+ *    @OA\Property(
+ *      property=&quot;Group&quot;,
+ *      type=&quot;object&quot;,
+ *
+ *      @OA\Property(
+ *        property=&quot;ID&quot;,
+ *        description=&quot;ID de grupo&quot;,
+ *        type=&quot;number&quot;,
+ *        example=-1
+ *      ),
+ *
+ *      @OA\Property(
+ *        property=&quot;Name&quot;,
+ *        description=&quot;Nombre de grupo&quot;,
+ *        type=&quot;string&quot;,
+ *        example=&quot;Superadmin&quot;
+ *      )
+ *    )
+ *  )
+ */</span>
+
+</code></pre></div><h2 id="documenting-union-type-response-data-using-oneof" tabindex="-1">Documenting union type response data using <code>oneOf</code> <a class="header-anchor" href="#documenting-union-type-response-data-using-oneof" aria-hidden="true">#</a></h2><p>A response with either a single or a list of <code>QualificationHolder</code>&#39;s.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Response(
+ *     response=200,
+ *     @OA\JsonContent(
+ *         oneOf={
+ *             @OA\Schema(ref=&quot;#/components/schemas/QualificationHolder&quot;),
+ *             @OA\Schema(
+ *                 type=&quot;array&quot;,
+ *                 @OA\Items(ref=&quot;#/components/schemas/QualificationHolder&quot;)
+ *             )
+ *         }
+ *     )
+ * )
+ */</span>
+</code></pre></div><h2 id="reusing-responses" tabindex="-1">Reusing responses <a class="header-anchor" href="#reusing-responses" aria-hidden="true">#</a></h2><p>Global responses are found under <code>/components/responses</code> and can be referenced/shared just like schema definitions (models)</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Response(
+ *   response=&quot;product&quot;,
+ *   description=&quot;All information about a product&quot;,
+ *   @OA\JsonContent(ref=&quot;#/components/schemas/Product&quot;)
+ * )
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">ProductResponse</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+ <span class="token comment">// ...</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">ProductController</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * @OA\Get(
+     *   tags={&quot;Products&quot;},
+     *   path=&quot;/products/{product_id}&quot;,
+     *   @OA\Response(
+     *       response=&quot;default&quot;,
+     *       ref=&quot;#/components/responses/product&quot;
+     *   )
+     * )
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getProduct</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="tip custom-block"><p class="custom-block-title">`response` parameter is always required</p><p>Even if referencing a shared response definition, the <code>response</code> parameter is still required.</p></div><h2 id="mediatype" tabindex="-1">mediaType=&quot;<em>/</em>&quot; <a class="header-anchor" href="#mediatype" aria-hidden="true">#</a></h2><p>Using <code>*/*</code> as <code>mediaType</code> is not possible using annotations.</p><p><strong>Example:</strong></p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\MediaType(
+ *     mediaType=&quot;*/</span><span class="token operator">*</span><span class="token string double-quoted-string">&quot;,
+ *     @OA\Schema(type=&quot;</span><span class="token keyword type-declaration">string</span><span class="token string double-quoted-string">&quot;,format=&quot;</span>binary&quot;<span class="token punctuation">)</span>
+ <span class="token operator">*</span> <span class="token punctuation">)</span>
+ <span class="token operator">*</span><span class="token operator">/</span>
+</code></pre></div><p>The doctrine annotations library used for parsing annotations does not handle this and will interpret the <code>*/</code> bit as the end of the comment.</p><p>Using just <code>*</code> or <code>application/octet-stream</code> might be usable workarounds.</p><h2 id="warning-about-multiple-response-with-same-response-200" tabindex="-1">Warning about <code>Multiple response with same response=&quot;200&quot;</code> <a class="header-anchor" href="#warning-about-multiple-response-with-same-response-200" aria-hidden="true">#</a></h2><p>There are two scenarios where this can happen</p><ol><li>A single endpoint contains two responses with the same <code>response</code> value.</li><li>There are multiple global response declared, again more than one with the same <code>response</code> value.</li></ol><h2 id="callbacks" tabindex="-1">Callbacks <a class="header-anchor" href="#callbacks" aria-hidden="true">#</a></h2><p>The API does include basic support for callbacks. However, this needs to be set up mostly manually.</p><p><strong>Example</strong></p><div class="language-php"><pre><code><span class="token comment">/**
+ *     ...
+ *
+ *     callbacks={
+ *         &quot;onChange&quot;={
+ *              &quot;{$request.query.callbackUrl}&quot;={
+ *                  &quot;post&quot;: {
+ *                      &quot;requestBody&quot;: @OA\RequestBody(
+ *                          description=&quot;subscription payload&quot;,
+ *                          @OA\MediaType(mediaType=&quot;application/json&quot;, @OA\Schema(
+ *                              @OA\Property(property=&quot;timestamp&quot;, type=&quot;string&quot;, format=&quot;date-time&quot;, description=&quot;time of change&quot;)
+ *                          ))
+ *                      )
+ *                  },
+ *                  &quot;responses&quot;: {
+ *                      &quot;202&quot;: {
+ *                          &quot;description&quot;: &quot;Your server implementation should return this HTTP status code if the data was received successfully&quot;
+ *                      }
+ *                  }
+ *              }
+ *         }
+ *     }
+ *
+ *     ...
+ *
+ */</span>
+</code></pre></div><h2 id="mostly-virtual-models" tabindex="-1">(Mostly) virtual models <a class="header-anchor" href="#mostly-virtual-models" aria-hidden="true">#</a></h2><p>Typically, a model is annotated by adding a <code>@OA\Schema</code> annotation to the class and then individual <code>@OA\Property</code> annotations to the individually declared class properties.</p><p>It is possible, however, to nest <code>O@\Property</code> annotations inside a schema even without properties. In fact, all that is needed is a code anchor - e.g. an empty class.</p><div class="language-php"><pre><code><span class="token keyword">use</span> <span class="token package">OpenApi<span class="token punctuation">\</span>Attributes</span> <span class="token keyword">as</span> <span class="token constant">OA</span><span class="token punctuation">;</span>
+
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Schema</span><span class="token punctuation">(</span>
+    <span class="token attribute-class-name class-name">properties</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token string single-quoted-string">&#39;name&#39;</span> <span class="token operator">=&gt;</span> <span class="token attribute-class-name class-name">new</span> <span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">property</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;name&#39;</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">type</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;string&#39;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string single-quoted-string">&#39;email&#39;</span> <span class="token operator">=&gt;</span> <span class="token attribute-class-name class-name">new</span> <span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">property</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;email&#39;</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">type</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;string&#39;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">User</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><h2 id="using-class-name-as-type-instead-of-references" tabindex="-1">Using class name as type instead of references <a class="header-anchor" href="#using-class-name-as-type-instead-of-references" aria-hidden="true">#</a></h2><p>Typically, when referencing schemas this is done using <code>$ref</code>&#39;s</p><div class="language-php"><pre><code><span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Schema</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">schema</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;user&#39;</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">User</span>
+<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Schema</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Book</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * @var User
+     */</span>
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">ref</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;#/components/schemas/user&#39;</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> <span class="token variable">$author</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>This works, but is not very convenient.</p><p>First, when using custom schema names (<code>schema: &#39;user&#39;</code>), this needs to be taken into account everywhere. Secondly, having to write <code>ref: &#39;#/components/schemas/user&#39;</code> is tedious and error-prone.</p><p>Using attributes all this changes as we can take advantage of PHP itself by referring to a schema by its (fully qualified) class name.</p><p>With the same <code>User</code> schema as before, the <code>Book::author</code> property could be written in a few different ways</p><div class="language-php"><pre><code>    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> User author<span class="token punctuation">;</span>
+</code></pre></div><p><strong>or</strong></p><div class="language-php"><pre><code>    <span class="token comment">/**
+     * @var User
+     */</span>
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> author<span class="token punctuation">;</span>
+</code></pre></div><p><strong>or</strong></p><div class="language-php"><pre><code>    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">type</span><span class="token punctuation">:</span> <span class="token attribute-class-name class-name">User</span><span class="token operator">::</span><span class="token constant">class</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> author<span class="token punctuation">;</span>
+</code></pre></div><h2 id="enums" tabindex="-1">Enums <a class="header-anchor" href="#enums" aria-hidden="true">#</a></h2><p>As of PHP 8.1 there is native support for <code>enum</code>&#39;s.</p><p><code>swagger-php</code> supports enums in much the same way as class names can be used to reference schemas.</p><p><strong>Example</strong></p><div class="language-php"><pre><code><span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Schema</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">enum</span> <span class="token class-name-definition class-name">State</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">OPEN</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">MERGED</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">DECLINED</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Schema</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">PullRequest</span>
+   <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OAT<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+   <span class="token keyword">public</span> <span class="token class-name type-declaration">State</span> <span class="token variable">$state</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>However, in this case the schema generated for <code>State</code> will be an enum:</p><div class="language-yaml"><pre><code><span class="token key atrule">components</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schemas</span><span class="token punctuation">:</span>
+    <span class="token key atrule">PullRequest</span><span class="token punctuation">:</span>
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">state</span><span class="token punctuation">:</span>
+          <span class="token key atrule">$ref</span><span class="token punctuation">:</span> <span class="token string">&#39;#/components/schemas/State&#39;</span>
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> object
+    <span class="token key atrule">State</span><span class="token punctuation">:</span>
+      <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+      <span class="token key atrule">enum</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> OPEN
+        <span class="token punctuation">-</span> MERGED
+        <span class="token punctuation">-</span> DECLINED
+</code></pre></div><h2 id="multi-value-query-parameter-q-1-q-1" tabindex="-1">Multi value query parameter: <code>&amp;q[]=1&amp;q[]=1</code> <a class="header-anchor" href="#multi-value-query-parameter-q-1-q-1" aria-hidden="true">#</a></h2><p>PHP allows to have query parameters multiple times in the url and will combine the values to an array if the parameter name uses trailing <code>[]</code>. In fact, it is possible to create nested arrays too by using more than one pair of <code>[]</code>.</p><p>In terms of OpenAPI, the parameters can be considered a single parameter with a list of values.</p><div class="language-php"><pre><code><span class="token comment">/**
+ * @OA\Get(
+ *     path=&quot;/api/endpoint&quot;,
+ *     description=&quot;The endpoint&quot;,
+ *     operationId=&quot;endpoint&quot;,
+ *     tags={&quot;endpoints&quot;},
+ *     @OA\Parameter(
+ *         name=&quot;things[]&quot;,
+ *         in=&quot;query&quot;,
+ *         description=&quot;A list of things.&quot;,
+ *         required=false,
+ *         @OA\Schema(
+ *             type=&quot;array&quot;,
+ *             @OA\Items(type=&quot;integer&quot;)
+ *         )
+ *     ),
+ *     @OA\Response(response=&quot;200&quot;, description=&quot;All good&quot;)
+ * )
+ */</span>
+</code></pre></div><p>The corresponding bit of the spec will look like this:</p><div class="language-yaml"><pre><code>      <span class="token key atrule">parameters</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span>
+          <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&#39;things[]&#39;</span>
+          <span class="token key atrule">in</span><span class="token punctuation">:</span> query
+          <span class="token key atrule">description</span><span class="token punctuation">:</span> <span class="token string">&#39;A list of things.&#39;</span>
+          <span class="token key atrule">required</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+          <span class="token key atrule">schema</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> array
+            <span class="token key atrule">items</span><span class="token punctuation">:</span>
+              <span class="token key atrule">type</span><span class="token punctuation">:</span> integer
+</code></pre></div><p><code>swagger-ui</code> will show a form that allows to add/remove items (<code>integer</code> values in this case) to/from a list and post those values as something like <code>?things[]=1&amp;things[]=2&amp;things[]=0</code></p><h2 id="custom-response-classes" tabindex="-1">Custom response classes <a class="header-anchor" href="#custom-response-classes" aria-hidden="true">#</a></h2><p>Even with using refs there is a bit of overhead in sharing responses. One way around that is to write your own response classes. The beauty is that in your custom <code>__construct()</code> method you can prefill as much as you need.</p><p>Best of all, this works for both annotations and attributes.</p><p>Example:</p><div class="language-php"><pre><code><span class="token keyword">use</span> <span class="token package">OpenApi<span class="token punctuation">\</span>Attributes</span> <span class="token keyword">as</span> <span class="token constant">OA</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @Annotation
+ */</span>
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content">\<span class="token attribute-class-name class-name">Attribute</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name class-name-fully-qualified"><span class="token punctuation">\</span>Attribute</span><span class="token operator">::</span><span class="token constant">TARGET_CLASS</span> <span class="token operator">|</span> <span class="token attribute-class-name class-name class-name-fully-qualified"><span class="token punctuation">\</span>Attribute</span><span class="token operator">::</span><span class="token constant">TARGET_METHOD</span> <span class="token operator">|</span> <span class="token attribute-class-name class-name class-name-fully-qualified"><span class="token punctuation">\</span>Attribute</span><span class="token operator">::</span><span class="token constant">IS_REPEATABLE</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BadRequest</span> <span class="token keyword">extends</span> <span class="token class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Response</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword static-context">parent</span><span class="token operator">::</span><span class="token function">__construct</span><span class="token punctuation">(</span><span class="token argument-name">response</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token argument-name">description</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;Bad request&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Controller</span>
+<span class="token punctuation">{</span>
+
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Get</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">path</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;/foo&#39;</span><span class="token punctuation">,</span> <span class="token attribute-class-name class-name">responses</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token attribute-class-name class-name">new</span> <span class="token attribute-class-name class-name">BadRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Post</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">path</span><span class="token punctuation">:</span> <span class="token string single-quoted-string">&#39;/foo&#39;</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">BadRequest</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">post</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * @OA\Delete(
+     *     path=&quot;/foo&quot;,
+     *     @BadRequest()
+     * )
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="tip custom-block"><p class="custom-block-title">Annotations only?</p><p>If you are only interested in annotations you canleave out the attribute setup line (<code>#[\Attribute...</code>) for <code>BadRequest</code>.</p><p>Furthermore, your custom annotations should extend from the <code>OpenApi\Annotations</code> namespace.</p></div><h2 id="annotating-class-constants" tabindex="-1">Annotating class constants <a class="header-anchor" href="#annotating-class-constants" aria-hidden="true">#</a></h2><div class="language-php"><pre><code><span class="token keyword">use</span> <span class="token package">OpenApi<span class="token punctuation">\</span>Attributes</span> <span class="token keyword">as</span> <span class="token constant">OA</span><span class="token punctuation">;</span>
+
+<span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Schema</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Airport</span>
+<span class="token punctuation">{</span>
+    <span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name class-name-fully-qualified">OA<span class="token punctuation">\</span>Property</span><span class="token punctuation">(</span><span class="token attribute-class-name class-name">property</span><span class="token operator">=</span><span class="token string single-quoted-string">&#39;kind&#39;</span><span class="token punctuation">)</span></span><span class="token delimiter punctuation">]</span></span>
+    <span class="token keyword">public</span> <span class="token keyword">const</span> <span class="token constant">KIND</span> <span class="token operator">=</span> <span class="token string single-quoted-string">&#39;Airport&#39;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>The <code>const</code> property is supported in OpenApi 3.1.0.</p><div class="language-yaml"><pre><code><span class="token key atrule">components</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schemas</span><span class="token punctuation">:</span>
+    <span class="token key atrule">Airport</span><span class="token punctuation">:</span>
+        <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+          <span class="token key atrule">kind</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+            <span class="token key atrule">const</span><span class="token punctuation">:</span> Airport
+</code></pre></div><p>For 3.0.0 this is serialized into a single value <code>enum</code>.</p><div class="language-yaml"><pre><code><span class="token key atrule">components</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schemas</span><span class="token punctuation">:</span>
+    <span class="token key atrule">Airport</span><span class="token punctuation">:</span>
+        <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+          <span class="token key atrule">kind</span><span class="token punctuation">:</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+            <span class="token key atrule">enum</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> Airport
+</code></pre></div></div></div><footer class="page-footer" data-v-8fcebc32 data-v-b65b4b36><div class="edit" data-v-b65b4b36><div class="edit-link" data-v-b65b4b36 data-v-55695e90><!----></div></div><div class="updated" data-v-b65b4b36><!----></div></footer><div class="next-and-prev-link" data-v-8fcebc32 data-v-e65a9748><div class="container" data-v-e65a9748><div class="prev" data-v-e65a9748><a class="link" href="/swagger-php/guide/migrating-to-v3" data-v-e65a9748><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" class="icon icon-prev" data-v-e65a9748><path d="M19,11H7.4l5.3-5.3c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0l-7,7c-0.1,0.1-0.2,0.2-0.2,0.3c-0.1,0.2-0.1,0.5,0,0.8c0.1,0.1,0.1,0.2,0.2,0.3l7,7c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L7.4,13H19c0.6,0,1-0.4,1-1S19.6,11,19,11z"></path></svg><span class="text" data-v-e65a9748>Migration from 2.x to 3.x</span></a></div><div class="next" data-v-e65a9748><a class="link" href="/swagger-php/guide/faq" data-v-e65a9748><span class="text" data-v-e65a9748>FAQ</span><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" class="icon icon-next" data-v-e65a9748><path d="M19.9,12.4c0.1-0.2,0.1-0.5,0-0.8c-0.1-0.1-0.1-0.2-0.2-0.3l-7-7c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l5.3,5.3H5c-0.6,0-1,0.4-1,1s0.4,1,1,1h11.6l-5.3,5.3c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l7-7C19.8,12.6,19.9,12.5,19.9,12.4z"></path></svg></a></div></div></div><!--[--><!--]--></div></main></div><!----><!--]--></div>
+    <script>__VP_HASH_MAP__ = JSON.parse("{\"guide_annotations.md\":\"5fc5eb8e\",\"guide_attributes.md\":\"c17404a0\",\"guide_common-techniques.md\":\"b14ec21f\",\"guide_cookbook.md\":\"708ef177\",\"guide_faq.md\":\"fbd6b12a\",\"guide_generating-openapi-documents.md\":\"2397a485\",\"guide_index.md\":\"0312471c\",\"guide_installation.md\":\"bc2d2d49\",\"guide_migrating-to-v3.md\":\"c16de4c2\",\"guide_migrating-to-v4.md\":\"af3a17a3\",\"guide_required-elements.md\":\"5589e1b6\",\"guide_under-the-hood.md\":\"2a72f3c0\",\"index.md\":\"81dec20d\",\"reference_annotations.md\":\"476c0809\",\"reference_attributes.md\":\"9d4f1504\",\"reference_generator.md\":\"88834548\",\"reference_index.md\":\"9664bb36\",\"reference_processors.md\":\"8c821bd4\",\"related-projects.md\":\"2f8ab01b\"}")</script>
+    <script type="module" async src="/swagger-php/assets/app.cfc21d1f.js"></script>
+    
+  </body>
+</html>

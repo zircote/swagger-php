@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as a,a as o}from"./app.cfc21d1f.js";const m='{"title":"What is Swagger-PHP?","description":"","frontmatter":{},"headers":[],"relativePath":"guide/index.md"}',n={},s=o("",6),i=[s];function r(c,d,p,h,l,g){return a(),t("div",null,i)}var _=e(n,[["render",r]]);export{m as __pageData,_ as default};

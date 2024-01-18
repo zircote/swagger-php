@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,a as t}from"./app.cfc21d1f.js";const b='{"title":"Attributes","description":"","frontmatter":{},"headers":[{"level":2,"title":"Nesting","slug":"nesting"}],"relativePath":"guide/attributes.md"}',e={},p=t("",11),c=[p];function o(i,l,u,r,k,m){return a(),n("div",null,c)}var g=s(e,[["render",o]]);export{b as __pageData,g as default};
