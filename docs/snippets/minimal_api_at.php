@@ -3,13 +3,21 @@
 use OpenApi\Attributes as OA;
 
 #[OA\Info(title: "My First API", version: "0.1")]
-class OpenApi {}
+class OpenApi
+{
+}
 
-class MyController {
+class MyController
+{
 
     #[OA\Get(path: '/api/data.json')]
     #[OA\Response(response: '200', description: 'The data')]
-    public function getResource() {
+    public function getResource()
+    {
         // ...
     }
+}
+
+class OpenApiSpec
+{
 }

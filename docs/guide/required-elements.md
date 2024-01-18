@@ -14,12 +14,12 @@ With the above in mind a minimal API with a single endpoint could look like this
 <codeblock id="minimal">
   <template v-slot:an>
 
-<<< @/snippets/minimal_api_annotations.php
+<<< @/snippets/minimal_api_an.php
 
-</template>
+  </template>
   <template v-slot:at>
 
-<<< @/snippets/minimal_api_attributes.php
+<<< @/snippets/minimal_api_at.php
 
   </template>
 </codeblock>
@@ -29,7 +29,7 @@ with the resulting OpenAPI document like this
 <<< @/snippets/minimal_api.yaml
 
 ::: warning Code locations
-Attributes and annotations can be added anywhere on declarations in code as defined by the PHP docs. 
+Attributes and annotations can be added anywhere on declarations in code as defined by the PHP docs.
 These are limited to the extent of what the PHP Reflection APIs supports.
 :::
 

@@ -26,7 +26,7 @@ These will be ignored by `swagger-php` but can be used for custom processing.
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
 ## [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
@@ -546,7 +546,7 @@ This is the root document object for the API specification.
 
 #### Nested elements
 ---
-<a href="#info">Info</a>, <a href="#server">Server</a>, <a href="#pathitem">PathItem</a>, <a href="#components">Components</a>, <a href="#tag">Tag</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#attachable">Attachable</a>
+<a href="#info">Info</a>, <a href="#server">Server</a>, <a href="#pathitem">PathItem</a>, <a href="#components">Components</a>, <a href="#tag">Tag</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#webhook">Webhook</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -1230,6 +1230,25 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
 <dl>
   <dt><strong>method</strong></dt>
   <dd><p>No details available.</p></dd>
+</dl>
+
+## [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
+
+Acts like a `PathItem` with the main difference being that it requires `webhook` instead of `path`.
+
+#### Allowed in
+---
+<a href="#openapi">OpenApi</a>
+
+#### Nested elements
+---
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>Key for the webhooks map.</p></dd>
 </dl>
 
 ## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
