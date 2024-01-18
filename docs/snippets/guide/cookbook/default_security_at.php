@@ -3,7 +3,7 @@
 use OpenApi\Attributes as OAT;
 
 #[OAT\OpenApi(
-    security: ['bearerAuth' => []]
+    security: [['bearerAuth' => []]]
 )]
 #[OAT\Components(
     securitySchemes: [
