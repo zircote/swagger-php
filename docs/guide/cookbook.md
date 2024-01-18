@@ -1,12 +1,12 @@
 # Cookbook
 
 ## `x-tagGroups`
-OpenApi has the concept of grouping endpoints using tags. On top of that, some tools 
-([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example) 
+OpenApi has the concept of grouping endpoints using tags. On top of that, some tools
+([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)
 support further grouping via the vendor extension `x-tagGroups`.
 
 ```php
-/** 
+/**
  * @OA\OpenApi(
  *   x={
  *       "tagGroups"=
@@ -14,7 +14,7 @@ support further grouping via the vendor extension `x-tagGroups`.
  *       }
  *   }
  * )
- */ 
+ */
 ```
 
 ## Adding examples to `@OA\Response`
@@ -142,7 +142,7 @@ An API might have zero or more security schemes. These are defined at the top le
  *     in="header",
  *     securityScheme="api_key"
  * )
- * 
+ *
  * @OA\SecurityScheme(
  *   type="oauth2",
  *   securityScheme="petstore_auth",
@@ -279,19 +279,19 @@ Unless specified each endpoint needs to declare what security schemes it support
 to also configure security schemes globally for the whole API.
 
 This is done on the `@OA\OpenApi` annotations:
-```php
-/**
- * @OA\OpenApi(
- *   security={{"bearerAuth": {}}}
- * )
- *
- * @OA\SecurityScheme(
- *   securityScheme="bearerAuth",
- *   type="http",
- *   scheme="bearer"
- * )
- */
-```
+
+<codeblock id="minimal">
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/default_security_an.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/default_security_at.php
+
+  </template>
+</codeblock>
 
 ## Nested objects
 Complex, nested data structures are defined by nesting `@OA\Property` annotations inside others (with `type="object"`).
@@ -300,7 +300,7 @@ Complex, nested data structures are defined by nesting `@OA\Property` annotation
  *  @OA\Schema(
  *    schema="Profile",
  *    type="object",
-*     
+*
  *    @OA\Property(
  *      property="Status",
  *      type="string",
@@ -350,7 +350,7 @@ A response with either a single or a list of `QualificationHolder`'s.
 ```
 
 ## Reusing responses
-Global responses are found under `/components/responses` and can be referenced/shared just like schema definitions (models) 
+Global responses are found under `/components/responses` and can be referenced/shared just like schema definitions (models)
 
 ```php
 /**
@@ -361,7 +361,7 @@ Global responses are found under `/components/responses` and can be referenced/s
  * )
  */
 class ProductResponse {}
- 
+
  // ...
 
 class ProductController
@@ -394,7 +394,7 @@ Using `*/*` as `mediaType` is not possible using annotations.
 /**
  * @OA\MediaType(
  *     mediaType="*/*",
- *     @OA\Schema(type="string",format="binary") 
+ *     @OA\Schema(type="string",format="binary")
  * )
  */
 ```
@@ -415,7 +415,7 @@ The API does include basic support for callbacks. However, this needs to be set 
 ```php
 /**
  *     ...
- * 
+ *
  *     callbacks={
  *         "onChange"={
  *              "{$request.query.callbackUrl}"={
@@ -435,9 +435,9 @@ The API does include basic support for callbacks. However, this needs to be set 
  *              }
  *         }
  *     }
- * 
+ *
  *     ...
- * 
+ *
  */
 ```
 
@@ -480,7 +480,7 @@ class Book
 }
 ```
 
-This works, but is not very convenient. 
+This works, but is not very convenient.
 
 First, when using custom schema names (`schema: 'user'`), this needs to be taken into account everywhere.
 Secondly, having to write `ref: '#/components/schemas/user'` is tedious and error-prone.
@@ -598,7 +598,7 @@ The corresponding bit of the spec will look like this:
 ```
 
 `swagger-ui` will show  a form that allows to add/remove items (`integer`  values in this case) to/from a list
-and post those values as something like ```?things[]=1&things[]=2&things[]=0``` 
+and post those values as something like ```?things[]=1&things[]=2&things[]=0```
 
 ## Custom response classes
 
@@ -651,9 +651,9 @@ class Controller
 ```
 
 ::: tip Annotations only?
-If you are only interested in annotations you canleave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.   
+If you are only interested in annotations you canleave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
 
-Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace. 
+Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace.
 :::
 
 ## Annotating class constants
@@ -685,6 +685,6 @@ components:
         properties:
           kind:
             type: string
-            enum: 
+            enum:
               - Airport
 ```

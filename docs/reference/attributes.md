@@ -174,7 +174,7 @@ These will be ignored but can be used for custom processing.</p></dd>
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Parameters
 ---
@@ -1437,7 +1437,7 @@ These will be ignored but can be used for custom processing.</p></dd>
 
 #### Nested elements
 ---
-<a href="#info">Info</a>, <a href="#server">Server</a>, <a href="#pathitem">PathItem</a>, <a href="#components">Components</a>, <a href="#tag">Tag</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#attachable">Attachable</a>
+<a href="#info">Info</a>, <a href="#server">Server</a>, <a href="#pathitem">PathItem</a>, <a href="#components">Components</a>, <a href="#tag">Tag</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#webhook">Webhook</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1476,6 +1476,8 @@ Each tag name in the list must be unique.</p></dd>
   <dd><p>The available paths and operations for the API.</p></dd>
   <dt><strong>components</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Components|null</span></dt>
   <dd><p>An element to hold various components for the specification.</p></dd>
+  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">Webhook[]|null</span></dt>
+  <dd><p>The available webhooks for the API.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -2869,6 +2871,65 @@ runtime, that identifies a URL to use for the callback operation.</p></dd>
 Consumers should refrain from usage of the declared operation.<br />
 <br />
 Default value is false.</p></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
+For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
+The keys inside the array will be prefixed with `x-`.</p></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>Arbitrary attachables for this annotation.<br />
+These will be ignored but can be used for custom processing.</p></dd>
+</dl>
+
+## [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Webhook.php)
+
+
+
+#### Allowed in
+---
+<a href="#openapi">OpenApi</a>
+
+#### Nested elements
+---
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Key for the webhooks map.</p></dd>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
+  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>An optional, string summary, intended to apply to all operations in this path.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>An optional, string description, intended to apply to all operations in this path.</p></dd>
+  <dt><strong>get</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Get|null</span></dt>
+  <dd><p>A definition of a GET operation on this path.</p></dd>
+  <dt><strong>put</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Put|null</span></dt>
+  <dd><p>A definition of a PUT operation on this path.</p></dd>
+  <dt><strong>post</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Post|null</span></dt>
+  <dd><p>A definition of a POST operation on this path.</p></dd>
+  <dt><strong>delete</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Delete|null</span></dt>
+  <dd><p>A definition of a DELETE operation on this path.</p></dd>
+  <dt><strong>options</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Options|null</span></dt>
+  <dd><p>A definition of a OPTIONS operation on this path.</p></dd>
+  <dt><strong>head</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Head|null</span></dt>
+  <dd><p>A definition of a HEAD operation on this path.</p></dd>
+  <dt><strong>patch</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Patch|null</span></dt>
+  <dd><p>A definition of a PATCH operation on this path.</p></dd>
+  <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
+  <dd><p>A definition of a TRACE operation on this path.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
+  <dd><p>An alternative server array to service all operations in this path.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
+  <dd><p>A list of parameters that are applicable for all the operations described under this path.<br />
+<br />
+These parameters can be overridden at the operation level, but cannot be removed there.<br />
+The list must not include duplicated parameters.<br />
+A unique parameter is defined by a combination of a name and location.<br />
+The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />

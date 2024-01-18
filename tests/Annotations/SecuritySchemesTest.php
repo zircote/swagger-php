@@ -79,7 +79,7 @@ SCHEME;
 
         $annotations = $this->annotationsFromDocBlockParser($comment);
         $this->assertCount(1, $annotations);
-        /** @var \OpenApi\Annotations\SecurityScheme $security */
+        /** @var OA\SecurityScheme $security */
         $security = $annotations[0];
         $this->assertInstanceOf(OA\SecurityScheme::class, $security);
 
@@ -119,7 +119,7 @@ SCHEME;
 
         $annotations = $this->annotationsFromDocBlockParser($comment);
         $this->assertCount(1, $annotations);
-        /** @var \OpenApi\Annotations\SecurityScheme $security */
+        /** @var OA\SecurityScheme $security */
         $security = $annotations[0];
 
         $this->assertCount(2, $security->flows);

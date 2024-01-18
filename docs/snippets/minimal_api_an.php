@@ -8,9 +8,12 @@ use OpenApi\Annotations as OA;
  *     version="0.1"
  * )
  */
-class OpenApi {}
+class OpenApi
+{
+}
 
-class MyController {
+class MyController
+{
 
     /**
      * @OA\Get(
@@ -21,7 +24,8 @@ class MyController {
      *     )
      * )
      */
-    public function getResource() {
+    public function getResource()
+    {
         // ...
     }
 }

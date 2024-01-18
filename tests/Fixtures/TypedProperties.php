@@ -48,7 +48,7 @@ class TypedProperties
     /**
      * @OA\Property
      */
-    public \OpenApi\Tests\Fixtures\TypedProperties $namespaced;
+    public TypedProperties $namespaced;
 
     /**
      * @OA\Property
