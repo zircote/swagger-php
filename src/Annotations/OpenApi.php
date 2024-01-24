@@ -137,7 +137,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $stack = null, array $skip = null, string $ref = '', $context = null): bool
+    public function validate(?array $stack = null, ?array $skip = null, string $ref = '', $context = null): bool
     {
         if ($stack !== null || $skip !== null || $ref !== '') {
             $this->_context->logger->warning('Nested validation for ' . $this->identity() . ' not allowed');
