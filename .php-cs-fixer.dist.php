@@ -63,6 +63,8 @@ return (new PhpCsFixer\Config())
         'fully_qualified_strict_types' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => null, 'import_functions' => null],
 
+        'nullable_type_declaration_for_default_null_value' => true,
+
         'no_empty_phpdoc' => true,
         // 7.3 only 'no_superfluous_phpdoc_tags' => true,
         'phpdoc_align' => true,

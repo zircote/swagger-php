@@ -22,7 +22,7 @@ class Response extends OA\Response
      */
     public function __construct(
         string|object|null $ref = null,
-        int|string $response = null,
+        int|string|null $response = null,
         ?string $description = null,
         ?array $headers = null,
         MediaType|JsonContent|XmlContent|Attachable|array|null $content = null,
