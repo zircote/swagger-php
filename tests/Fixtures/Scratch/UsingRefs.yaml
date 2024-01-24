@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: 'Parameter Ref'
+  version: 1.0.0
+paths:
+  '/item/{item_name}':
+    get:
+      operationId: 6ecb3788642c6ba8ce8d99cbcd554dbe
+      parameters:
+        -
+          $ref: '#/components/parameters/itemName'
+      responses:
+        '200':
+          $ref: '#/components/responses/item'
+components:
+  responses:
+    item:
+      description: 'Item response'
+  parameters:
+    itemName:
+      name: itemName
+      in: path
+      description: 'The item name'
