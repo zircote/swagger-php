@@ -5,12 +5,13 @@
  */
 
 // NOTE: this file uses "\r\n" linebreaks on purpose
+
 namespace OpenApi\Tests\Fixtures;
 
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\RequestBody()
+ * @OA\RequestBody
  */
 class Request
 {
