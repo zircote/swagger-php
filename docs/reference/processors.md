@@ -43,6 +43,9 @@ Determines `schema`, `enum` and `type`.
 Use the Schema context to extract useful information and inject that into the annotation.
 
 Merges properties.
+## [AugmentRequestBody](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRequestBody.php)
+
+Use the RequestBody context to extract useful information and inject that into the annotation.
 ## [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 
 Use the property context to extract useful information and inject that into the annotation.
