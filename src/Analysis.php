@@ -328,7 +328,6 @@ class Analysis
         $fqdn = '\\' . ltrim($fqdn, '\\');
 
         foreach ([$this->classes, $this->interfaces, $this->traits, $this->enums] as $definitions) {
-
             if (array_key_exists($fqdn, $definitions)) {
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
