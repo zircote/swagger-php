@@ -9,7 +9,6 @@
 namespace OpenApi\Tests\Fixtures;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Tests\Fixtures;
 
 /**
  * @OA\RequestBody
@@ -19,7 +18,7 @@ class Request
     /**
      * @OA\Post(
      *     path="/",
-     *     @OA\RequestBody(ref=Fixtures\Request::class),
+     *     @OA\RequestBody(ref=OpenApi\Tests\Fixtures\Request::class),
      *     @OA\Response(response="200", description="An example resource")
      * )
      */
