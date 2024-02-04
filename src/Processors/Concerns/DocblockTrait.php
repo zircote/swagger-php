@@ -199,4 +199,12 @@ trait DocblockTrait
 
         return isset($matches['example']) ? $matches['example'] : null;
     }
+
+    /**
+     * Returns true if the `@deprecated` tag is present, false otherwise.
+     */
+    public function isDeprecated(?string $docblock): bool
+    {
+        return 1 === preg_match('/@deprecated\s+([ \t])?(?<deprecated>.+)?$/im', $docblock);
+    }
 }

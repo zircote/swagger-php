@@ -66,6 +66,10 @@ class AugmentProperties implements ProcessorInterface
             if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
                 $property->example = $example;
             }
+
+            if (Generator::isDefault($property->deprecated) && ($deprecated = $this->isDeprecated((string) $context->comment))) {
+                $property->deprecated = $deprecated;
+            }
         }
     }
 
