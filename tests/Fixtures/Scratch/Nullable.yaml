@@ -49,6 +49,6 @@ components:
               type: 'null'
         description:
           type:
-              - string
-              - 'null'
+            - string
+            - 'null'
       type: object

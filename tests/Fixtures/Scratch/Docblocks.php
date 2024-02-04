@@ -17,6 +17,14 @@ class DocblockSchema
      * @var string The name
      */
     public $name;
+
+    /**
+     * @OA\Property
+     * @var string The name (old)
+     *
+     * @deprecated
+     */
+    public $oldName;
 }
 
 #[OAT\Schema]
