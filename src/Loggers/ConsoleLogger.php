@@ -80,18 +80,20 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         $logLine = sprintf('%s%s%s%s', $color, $prefix, $message, $stop);
         error_log($logLine);
 
-        if ($this->debug) {
-            if ($exception) {
-                error_log($exception->getTraceAsString());
-            } elseif (!empty($logLine)) {
-                $stack = explode(PHP_EOL, (new \Exception())->getTraceAsString());
-                // self
-                array_shift($stack);
-                // AbstractLogger
-                array_shift($stack);
-                foreach ($stack as $line) {
-                    error_log($line);
-                }
+        if (!$this->debug) {
+            return;
+        }
+
+        if ($exception) {
+            error_log($exception->getTraceAsString());
+        } elseif (!empty($logLine)) {
+            $stack = explode(PHP_EOL, (new \Exception())->getTraceAsString());
+            // self
+            array_shift($stack);
+            // AbstractLogger
+            array_shift($stack);
+            foreach ($stack as $line) {
+                error_log($line);
             }
         }
     }
