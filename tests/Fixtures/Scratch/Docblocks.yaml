@@ -16,6 +16,10 @@ components:
         name:
           description: 'The name'
           type: string
+        oldName:
+          description: 'The name (old)'
+          type: string
+          deprecated: true
       type: object
     DocblockSchemaChild:
       type: object
