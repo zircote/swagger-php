@@ -47,6 +47,9 @@ class Nullable
 
     #[OAT\Property(type: ['string', 'null'])]
     public ?string $description;
+
+    #[OAT\Property(enum: ['Choice1', 'Choice2', null], example: 'Choice1', nullable: true)]
+    public ?string $choice = null;
 }
 
 #[OAT\Get(

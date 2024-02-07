@@ -12,19 +12,19 @@ use OpenApi\Generator;
 class XmlContent extends \OpenApi\Annotations\XmlContent
 {
     /**
-     * @param string|non-empty-array<string>|null                    $type
-     * @param string|class-string|object|null                        $ref
-     * @param array<string,Examples>                                 $examples
-     * @param string[]                                               $required
-     * @param int|float                                              $maximum
-     * @param int|float                                              $minimum
-     * @param Property[]                                             $properties
-     * @param string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string $enum
-     * @param array<Schema|\OpenApi\Annotations\Schema>              $allOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>              $anyOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>              $oneOf
-     * @param array<string,mixed>|null                               $x
-     * @param Attachable[]|null                                      $attachables
+     * @param string|non-empty-array<string>|null                           $type
+     * @param string|class-string|object|null                               $ref
+     * @param array<string,Examples>                                        $examples
+     * @param string[]                                                      $required
+     * @param int|float                                                     $maximum
+     * @param int|float                                                     $minimum
+     * @param Property[]                                                    $properties
+     * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+     * @param array<Schema|\OpenApi\Annotations\Schema>                     $allOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>                     $anyOf
+     * @param array<Schema|\OpenApi\Annotations\Schema>                     $oneOf
+     * @param array<string,mixed>|null                                      $x
+     * @param Attachable[]|null                                             $attachables
      */
     public function __construct(
         ?array $examples = null,
