@@ -15,13 +15,7 @@ use OpenApi\Generator;
  */
 class TokenAnalyser implements AnalyserInterface
 {
-    /** @var Generator|null */
-    protected $generator;
-
-    public function setGenerator(Generator $generator): void
-    {
-        $this->generator = $generator;
-    }
+    use GeneratorAwareTrait;
 
     /**
      * Extract and process all doc-comments from a file.
@@ -166,7 +160,9 @@ class TokenAnalyser implements AnalyserInterface
 
                 if ($token[0] === T_IMPLEMENTS) {
                     $schemaContext->implements = $this->parseNamespaceList($tokens, $token, $parseContext);
-                    $classDefinition['implements'] = array_map([$schemaContext, 'fullyQualifiedName'], $schemaContext->implements);
+                    $classDefinition['implements'] = array_map(function (?string $source) use ($schemaContext): string {
+                        return $schemaContext->fullyQualifiedName($source);
+                    }, $schemaContext->implements);
                 }
 
                 if ($comment) {
@@ -207,7 +203,9 @@ class TokenAnalyser implements AnalyserInterface
 
                 if ($token[0] === T_EXTENDS) {
                     $schemaContext->extends = $this->parseNamespaceList($tokens, $token, $parseContext);
-                    $interfaceDefinition['extends'] = array_map([$schemaContext, 'fullyQualifiedName'], $schemaContext->extends);
+                    $interfaceDefinition['extends'] = array_map(function (?string $source) use ($schemaContext): string {
+                        return $schemaContext->fullyQualifiedName($source);
+                    }, $schemaContext->extends);
                 }
 
                 if ($comment) {

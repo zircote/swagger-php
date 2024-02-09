@@ -51,11 +51,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/Generator.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 3
 			path: src/Processors/AugmentProperties.php

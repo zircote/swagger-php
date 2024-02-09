@@ -95,8 +95,8 @@ trait DocblockTrait
 
         $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
-        $i = count($comment) - 1;
-        $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
+        $ii = count($comment) - 1;
+        $comment[$ii] = preg_replace('/\*\/[ \t]*$/', '', $comment[$ii]); // strip '*/'
         $lines = [];
         $append = false;
         $skip = false;
@@ -110,8 +110,8 @@ trait DocblockTrait
                 continue;
             }
             if ($append) {
-                $i = count($lines) - 1;
-                $lines[$i] = substr($lines[$i], 0, -1) . $line;
+                $ii = count($lines) - 1;
+                $lines[$ii] = substr($lines[$ii], 0, -1) . $line;
             } else {
                 $lines[] = $line;
             }
@@ -182,9 +182,7 @@ trait DocblockTrait
 
         return array_merge(
             ['type' => null, 'description' => null],
-            array_filter($matches, function ($key) {
-                return in_array($key, ['type', 'description']);
-            }, ARRAY_FILTER_USE_KEY)
+            array_filter($matches, fn ($key) => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
         );
     }
 
