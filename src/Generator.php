@@ -357,9 +357,7 @@ class Generator
             return $processor instanceof $otherClass;
         };
 
-        $processors = array_map(function ($other) use ($processor, $matcher) {
-            return $matcher($other) ? $processor : $other;
-        }, $this->getProcessors());
+        $processors = array_map(fn ($other) => $matcher($other) ? $processor : $other, $this->getProcessors());
         $this->setProcessors($processors);
 
         return $this;
