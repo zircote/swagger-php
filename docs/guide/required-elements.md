@@ -14,12 +14,12 @@ With the above in mind a minimal API with a single endpoint could look like this
 <codeblock id="minimal">
   <template v-slot:an>
 
-<<< @/snippets/minimal_api_an.php
+<<< @/snippets/minimal_api_at.php
 
   </template>
   <template v-slot:at>
 
-<<< @/snippets/minimal_api_at.php
+<<< @/snippets/minimal_api_an.php
 
   </template>
 </codeblock>

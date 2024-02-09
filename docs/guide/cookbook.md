@@ -283,12 +283,12 @@ This is done on the `@OA\OpenApi` annotations:
 <codeblock id="minimal">
   <template v-slot:an>
 
-<<< @/snippets/guide/cookbook/default_security_an.php
+<<< @/snippets/guide/cookbook/default_security_at.php
 
   </template>
   <template v-slot:at>
 
-<<< @/snippets/guide/cookbook/default_security_at.php
+<<< @/snippets/guide/cookbook/default_security_an.php
 
   </template>
 </codeblock>
