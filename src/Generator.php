@@ -176,7 +176,7 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new AttributeAnnotationFactory(), new DocBlockAnnotationFactory()]);
         $this->analyser->setGenerator($this);
 
         return $this->analyser;

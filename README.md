@@ -4,7 +4,7 @@
 
 # swagger-php
 
-Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) (preferred) or 
+Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) (preferred) or
 [doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) (requires additional `doctrine/annotations` library).
 
 See the [documentation website](https://zircote.github.io/swagger-php/guide/attributes.html) for supported attributes and annotations.
