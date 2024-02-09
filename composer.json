@@ -40,16 +40,16 @@
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "4.x-dev"
+            "dev-master": "5.x-dev"
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "ext-json": "*",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "symfony/deprecation-contracts": "^2 || ^3",
-        "symfony/finder": ">=2.2",
-        "symfony/yaml": ">=3.3"
+        "symfony/finder": "^5.0 || ^6.0 || ^7.0",
+        "symfony/yaml": "^5.0 || ^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -58,17 +58,17 @@
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
-        "doctrine/annotations": "^1.7 || ^2.0",
-        "friendsofphp/php-cs-fixer": "^2.17 || 3.62.0",
+        "doctrine/annotations": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^1.6",
-        "phpunit/phpunit": ">=8",
+        "phpunit/phpunit": "^9.0",
         "vimeo/psalm": "^4.23"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
     },
     "suggest": {
-        "doctrine/annotations": "^1.7 || ^2.0"
+        "doctrine/annotations": "^2.0"
     },
     "autoload-dev": {
         "exclude-from-classmap": [
