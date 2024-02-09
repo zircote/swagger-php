@@ -51,4 +51,13 @@ components:
           type:
             - string
             - 'null'
+        choice:
+          type:
+            - string
+            - 'null'
+          enum:
+            - Choice1
+            - Choice2
+            - null
+          example: Choice1
       type: object

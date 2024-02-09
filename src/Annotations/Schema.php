@@ -247,7 +247,7 @@ class Schema extends AbstractAnnotation
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
-     * @var string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string
+     * @var array<string|int|float|bool|\UnitEnum>|class-string
      */
     public $enum = Generator::UNDEFINED;
 

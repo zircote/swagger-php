@@ -118,10 +118,8 @@ class AttributesSyncTest extends OpenApiTestCase
     {
         $var = null;
         foreach ($this->prepDocComment($property->getDocComment()) as $line) {
-            if (substr($line, 0, 1) === '@') {
-                if (substr($line, 0, 5) === '@var ') {
-                    $var = trim(substr($line, 5));
-                }
+            if (substr($line, 0, 5) === '@var ') {
+                $var = trim(substr($line, 5));
             }
         }
 
