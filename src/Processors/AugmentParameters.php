@@ -15,7 +15,7 @@ class AugmentParameters implements ProcessorInterface
 {
     use DocblockTrait;
 
-    protected $augmentOperationParameters;
+    protected bool $augmentOperationParameters;
 
     public function __construct(bool $augmentOperationParameters = true)
     {

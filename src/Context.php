@@ -47,10 +47,8 @@ class Context
 {
     /**
      * Prototypical inheritance for properties.
-     *
-     * @var Context|null
      */
-    private $parent;
+    private ?Context $parent;
 
     /**
      * @deprecated
@@ -121,7 +119,7 @@ class Context
         if ($this->is($property)) {
             return $this;
         }
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->with($property);
         }
 
@@ -133,7 +131,7 @@ class Context
      */
     public function root(): Context
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->root();
         }
 
@@ -193,7 +191,7 @@ class Context
      */
     public function __get(string $property)
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->{$property};
         }
 
@@ -236,7 +234,7 @@ class Context
         if (isset($caller['class'])) {
             $fqn = explode('\\', $caller['class']);
             $context->class = array_pop($fqn);
-            if (count($fqn)) {
+            if ($fqn !== []) {
                 $context->namespace = implode('\\', $fqn);
             }
         }
@@ -254,12 +252,7 @@ class Context
             return '';
         }
 
-        if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
-        } else {
-            // global namespace
-            $namespace = '\\';
-        }
+        $namespace = $this->namespace ? str_replace('\\\\', '\\', '\\' . $this->namespace . '\\') : '\\';
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
