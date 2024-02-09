@@ -17,50 +17,34 @@ use OpenApi\Processors\ProcessorInterface;
  */
 class Analysis
 {
-    /**
-     * @var \SplObjectStorage
-     */
-    public $annotations;
+    public \SplObjectStorage $annotations;
 
     /**
      * Class definitions.
-     *
-     * @var array
      */
-    public $classes = [];
+    public array $classes = [];
 
     /**
      * Interface definitions.
-     *
-     * @var array
      */
-    public $interfaces = [];
+    public array $interfaces = [];
 
     /**
      * Trait definitions.
-     *
-     * @var array
      */
-    public $traits = [];
+    public array $traits = [];
 
     /**
      * Enum definitions.
-     *
-     * @var array
      */
-    public $enums = [];
+    public array $enums = [];
 
     /**
      * The target OpenApi annotation.
-     *
-     * @var OA\OpenApi|null
      */
-    public $openapi = null;
+    public ?OA\OpenApi $openapi = null;
 
-    /**
-     * @var Context|null
-     */
-    public $context = null;
+    public ?Context $context = null;
 
     public function __construct(array $annotations = [], ?Context $context = null)
     {

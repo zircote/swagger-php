@@ -51,11 +51,6 @@ parameters:
 			path: src/Context.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/Generator.php
-
-		-
 			message: "#^Variable \\$logLine in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: src/Loggers/ConsoleLogger.php
@@ -114,3 +109,4 @@ parameters:
 			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
 			count: 1
 			path: tests/Annotations/AttributesSyncTest.php
+

@@ -21,11 +21,10 @@ use OpenApi\Generator;
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
-    /** @var AnnotationFactoryInterface[] */
-    protected $annotationFactories;
+    use GeneratorAwareTrait;
 
-    /** @var Generator|null */
-    protected $generator;
+    /** @var AnnotationFactoryInterface[] */
+    protected array $annotationFactories;
 
     /**
      * @param array<AnnotationFactoryInterface> $annotationFactories

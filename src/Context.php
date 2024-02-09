@@ -49,7 +49,7 @@ class Context
      *
      * @var Context|null
      */
-    private $parent;
+    private ?Context $parent;
 
     public function clone()
     {

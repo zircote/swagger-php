@@ -212,7 +212,7 @@ class TokenScanner
     /**
      * Get the next token that is not whitespace or comment.
      *
-     * @return string|array|false
+     * @return string|array|false Next token
      */
     protected function nextToken(array &$tokens)
     {

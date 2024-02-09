@@ -18,10 +18,6 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
             return;
         }
 
-        if ($message instanceof \Exception) {
-            $message = $message->getMessage();
-        }
-
         if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO])) {
             $error_level = E_USER_NOTICE;
         } else {
