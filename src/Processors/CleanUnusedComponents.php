@@ -17,7 +17,7 @@ class CleanUnusedComponents implements ProcessorInterface
 {
     use Concerns\AnnotationTrait;
 
-    protected $enabled = false;
+    protected bool $enabled;
 
     public function __construct(bool $enabled = false)
     {

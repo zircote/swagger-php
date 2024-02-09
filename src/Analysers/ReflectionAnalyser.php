@@ -22,18 +22,16 @@ use OpenApi\OpenApiException;
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
-    /** @var AnnotationFactoryInterface[] */
-    protected $annotationFactories;
+    use GeneratorAwareTrait;
 
-    /** @var Generator|null */
-    protected $generator;
+    /** @var AnnotationFactoryInterface[] */
+    protected array $annotationFactories = [];
 
     /**
      * @param array<AnnotationFactoryInterface> $annotationFactories
      */
     public function __construct(array $annotationFactories = [])
     {
-        $this->annotationFactories = [];
         foreach ($annotationFactories as $annotationFactory) {
             if ($annotationFactory->isSupported()) {
                 $this->annotationFactories[] = $annotationFactory;
@@ -113,13 +111,11 @@ class ReflectionAnalyser implements AnalyserInterface
             'methods' => [],
             'context' => $context,
         ];
-        $normaliseClass = function (string $name): string {
-            return '\\' . ltrim($name, '\\');
-        };
+        $normaliseClass = fn (string $name): string => '\\' . ltrim($name, '\\');
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
         }
-        $definition[$contextType == 'class' ? 'implements' : 'extends'] = array_map($normaliseClass, $details['interfaces']);
+        $definition[$contextType === 'class' ? 'implements' : 'extends'] = array_map($normaliseClass, $details['interfaces']);
         $definition['traits'] = array_map($normaliseClass, $details['traits']);
 
         foreach ($this->annotationFactories as $annotationFactory) {

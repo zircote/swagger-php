@@ -62,7 +62,8 @@
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.0",
-        "vimeo/psalm": "^4.23"
+        "rector/rector": "^1.0",
+        "vimeo/psalm": "^4.30"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
@@ -82,6 +83,7 @@
     },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
+        "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run all non-legacy and codestyle tests",
         "testlegacy": "Run tests using the legacy TokenAnalyser",
@@ -96,7 +98,11 @@
     },
     "scripts": {
         "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
-        "lint": "@cs --dry-run",
+        "rector": "rector process src",
+        "lint": [
+            "@cs --dry-run",
+            "@rector --dry-run"
+        ],
         "test": [
             "export XDEBUG_MODE=off && phpunit",
             "@lint"

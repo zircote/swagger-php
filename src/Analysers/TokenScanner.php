@@ -66,7 +66,7 @@ class TokenScanner
                         break;
                     case '}':
                         array_pop($stack);
-                        if (count($stack) == $unitLevel) {
+                        if (count($stack) === $unitLevel) {
                             $currentName = null;
                         }
                         break;
@@ -76,7 +76,7 @@ class TokenScanner
 
             switch ($token[0]) {
                 case T_ABSTRACT:
-                    if (count($stack)) {
+                    if ($stack !== []) {
                         $isAbstractFunction = true;
                     }
                     break;
@@ -115,7 +115,7 @@ class TokenScanner
                     // unless ...
                     if (is_string($token) && ($token === '(' || $token === '{')) {
                         // new class[()] { ... }
-                        if ('{' == $token) {
+                        if ('{' === $token) {
                             prev($tokens);
                         }
                         break;
@@ -212,7 +212,7 @@ class TokenScanner
     /**
      * Get the next token that is not whitespace or comment.
      *
-     * @return string|array|false
+     * @return string|array|false Next token
      */
     protected function nextToken(array &$tokens)
     {
@@ -254,7 +254,7 @@ class TokenScanner
     protected function skipTo(array &$tokens, string $char, bool $prev = false): void
     {
         while (false !== ($token = next($tokens))) {
-            if (is_string($token) && $token == $char) {
+            if (is_string($token) && $token === $char) {
                 if ($prev) {
                     prev($tokens);
                 }
