@@ -12,17 +12,11 @@ use OpenApi\Generator;
 
 class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
-    /** @var Generator|null */
-    protected $generator;
+    use GeneratorAwareTrait;
 
     public function isSupported(): bool
     {
         return \PHP_VERSION_ID >= 80100;
-    }
-
-    public function setGenerator(Generator $generator): void
-    {
-        $this->generator = $generator;
     }
 
     public function build(\Reflector $reflector, Context $context): array
@@ -116,9 +110,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             Generator::$context = null;
         }
 
-        $annotations = array_values(array_filter($annotations, function ($a) {
-            return $a instanceof OA\AbstractAnnotation;
-        }));
+        $annotations = array_values(array_filter($annotations, fn ($a) => $a instanceof OA\AbstractAnnotation));
 
         // merge backwards into parents...
         $isParent = function (OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $possibleParent): bool {

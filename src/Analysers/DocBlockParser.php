@@ -16,10 +16,7 @@ use OpenApi\Generator;
  */
 class DocBlockParser
 {
-    /**
-     * @var DocParser
-     */
-    protected $docParser;
+    protected DocParser $docParser;
 
     /**
      * @param array<string, class-string> $aliases

@@ -93,13 +93,13 @@ class AugmentSchemas implements ProcessorInterface
     {
         foreach ($schemas as $schema) {
             if (Generator::isDefault($schema->type)) {
-                if (is_array($schema->properties) && count($schema->properties) > 0) {
+                if (is_array($schema->properties) && $schema->properties !== []) {
                     $schema->type = 'object';
-                } elseif (is_array($schema->additionalProperties) && count($schema->additionalProperties) > 0) {
+                } elseif (is_array($schema->additionalProperties) && $schema->additionalProperties !== []) {
                     $schema->type = 'object';
-                } elseif (is_array($schema->patternProperties) && count($schema->patternProperties) > 0) {
+                } elseif (is_array($schema->patternProperties) && $schema->patternProperties !== []) {
                     $schema->type = 'object';
-                } elseif (is_array($schema->propertyNames) && count($schema->propertyNames) > 0) {
+                } elseif (is_array($schema->propertyNames) && $schema->propertyNames !== []) {
                     $schema->type = 'object';
                 }
             } else {

@@ -32,7 +32,7 @@ class ExpandTraits implements ProcessorInterface
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = !Generator::isDefault($traitSchema->schema) ? $traitSchema->schema : $trait['trait'];
+                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         $this->mergeMethods($schema, $trait, $existing);
@@ -50,7 +50,7 @@ class ExpandTraits implements ProcessorInterface
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getSchemaForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = !Generator::isDefault($traitSchema->schema) ? $traitSchema->schema : $trait['trait'];
+                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         $this->mergeMethods($schema, $trait, $existing);
