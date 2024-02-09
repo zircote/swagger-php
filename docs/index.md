@@ -20,7 +20,10 @@ features:
 
 ### 2. Update your code
 
-Add `swagger-php` attributes or annotations to your source code.
+Add `swagger-php` attributes (or legacy annotations) to your source code.
+
+⚠️ `doctrine/annotations` is going to be deprecated in the future, so wherever
+possible attributes should be used.
 
 <codeblock id="minimal">
   <template v-slot:at>
@@ -53,4 +56,5 @@ Use an OpenAPI tool like [Swagger UI ](https://swagger.io/tools/swagger-ui/) to 
 - [OpenApi Specification](https://spec.openapis.org/oas/v3.1.0.html)
 - [Learn by example](https://github.com/zircote/swagger-php/tree/master/Examples)
 - [Related projects](related-projects.md)
-- [Swagger-php 2.x documentation](https://github.com/zircote/swagger-php/tree/2.x/docs)
+- [swagger-php 2.x documentation](https://github.com/zircote/swagger-php/tree/2.x/docs)
+- [swagger-php 3.x documentation](https://github.com/zircote/swagger-php/tree/3.x/docs)
