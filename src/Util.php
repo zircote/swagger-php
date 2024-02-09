@@ -34,13 +34,13 @@ class Util
         } else { // an array of paths
             foreach ($basePaths as $basePath) {
                 $relativePath = self::removePrefix($fullPath, $basePath);
-                if (!empty($relativePath)) {
+                if ($relativePath !== null && $relativePath !== '' && $relativePath !== '0') {
                     break;
                 }
             }
         }
 
-        return !empty($relativePath) ? trim($relativePath, '/') : $fullPath;
+        return $relativePath === null || $relativePath === '' || $relativePath === '0' ? $fullPath : trim($relativePath, '/');
     }
 
     /**
@@ -48,7 +48,7 @@ class Util
      */
     private static function removePrefix(string $str, string $prefix): ?string
     {
-        if (substr($str, 0, strlen($prefix)) == $prefix) {
+        if (substr($str, 0, strlen($prefix)) === $prefix) {
             return substr($str, strlen($prefix));
         }
 

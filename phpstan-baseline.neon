@@ -51,11 +51,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/Generator.php
-
-		-
 			message: "#^Call to function is_array\\(\\) with bool\\|OpenApi\\\\Annotations\\\\AdditionalProperties will always evaluate to false\\.$#"
 			count: 1
 			path: src/Processors/AugmentSchemas.php
