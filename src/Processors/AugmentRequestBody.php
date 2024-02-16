@@ -17,7 +17,7 @@ class AugmentRequestBody implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis)
     {
-        /** @var OA\RequestBody[] $requests */
+        /** @var array<OA\RequestBody> $requests */
         $requests = $analysis->getAnnotationsOfType(OA\RequestBody::class);
 
         $this->augmentRequestBody($requests);
