@@ -66,6 +66,8 @@ class AugmentRefs implements ProcessorInterface
                 // check if we have a schema for this
                 if ($refSchema = $analysis->getSchemaForSource($annotation->ref)) {
                     $annotation->ref = OA\Components::ref($refSchema);
+                } elseif ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation))) {
+                    $annotation->ref = OA\Components::ref($refAnnotation);
                 }
             }
         }

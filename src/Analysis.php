@@ -325,14 +325,27 @@ class Analysis
      */
     public function getSchemaForSource(string $fqdn): ?OA\Schema
     {
+        return $this->getAnnotationForSource($fqdn, OA\Schema::class);
+    }
+
+    /**
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param  string          $fqdn  the source class/interface/trait
+     * @param  class-string<T> $class
+     * @return T|null
+     */
+    public function getAnnotationForSource(string $fqdn, string $class): ?OA\AbstractAnnotation
+    {
         $fqdn = '\\' . ltrim($fqdn, '\\');
 
         foreach ([$this->classes, $this->interfaces, $this->traits, $this->enums] as $definitions) {
             if (array_key_exists($fqdn, $definitions)) {
                 $definition = $definitions[$fqdn];
                 if (is_iterable($definition['context']->annotations)) {
+                    /** @var OA\AbstractAnnotation $annotation */
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if ($annotation instanceof OA\Schema && $annotation->isRoot(OA\Schema::class) && !$annotation->_context->is('generated')) {
+                        if (is_a($annotation, $class) && $annotation->isRoot($class) && !$annotation->_context->is('generated')) {
                             return $annotation;
                         }
                     }
