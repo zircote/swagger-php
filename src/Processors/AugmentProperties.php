@@ -125,10 +125,10 @@ class AugmentProperties implements ProcessorInterface
                 [$min, $max] = explode(',', substr($typeMatches[2], 1, -1));
 
                 if (is_numeric($min)) {
-                    $property->minimum = $min;
+                    $property->minimum = (int) $min;
                 }
                 if (is_numeric($max)) {
-                    $property->maximum = $max;
+                    $property->maximum = (int) $max;
                 }
             } elseif ($type === 'positive-int') {
                 $property->type = 'integer';
