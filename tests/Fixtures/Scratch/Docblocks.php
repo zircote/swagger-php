@@ -25,6 +25,54 @@ class DocblockSchema
      * @deprecated
      */
     public $oldName;
+
+    /**
+     * @OA\Property
+     * @var int<5,25> The range integer
+     */
+    public $rangeInt;
+
+    /**
+     * @OA\Property
+     * @var int<2,max> The minimum range integer
+     */
+    public $minRangeInt;
+
+    /**
+     * @OA\Property
+     * @var int<min,10> The maximum range integer
+     */
+    public $maxRangeInt;
+
+    /**
+     * @OA\Property
+     * @var positive-int The positive integer
+     */
+    public $positiveInt;
+
+    /**
+     * @OA\Property
+     * @var negative-int The negative integer
+     */
+    public $negativeInt;
+
+    /**
+     * @OA\Property
+     * @var non-positive-int The non-positive integer
+     */
+    public $nonPositiveInt;
+
+    /**
+     * @OA\Property
+     * @var non-negative-int The non-negative integer
+     */
+    public $nonNegativeInt;
+
+    /**
+     * @OA\Property
+     * @var non-zero-int The non-zero integer
+     */
+    public $nonZeroInt;
 }
 
 #[OAT\Schema]

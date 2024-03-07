@@ -20,6 +20,41 @@ components:
           description: 'The name (old)'
           type: string
           deprecated: true
+        rangeInt:
+          description: 'The range integer'
+          type: integer
+          minimum: 5
+          maximum: 25
+        minRangeInt:
+          description: 'The minimum range integer'
+          type: integer
+          minimum: 2
+        maxRangeInt:
+          description: 'The maximum range integer'
+          type: integer
+          maximum: 10
+        positiveInt:
+          description: 'The positive integer'
+          type: integer
+          minimum: 1
+        negativeInt:
+          description: 'The negative integer'
+          type: integer
+          maximum: -1
+        nonPositiveInt:
+          description: 'The non-positive integer'
+          type: integer
+          maximum: 0
+        nonNegativeInt:
+          description: 'The non-negative integer'
+          type: integer
+          minimum: 0
+        nonZeroInt:
+          description: 'The non-zero integer'
+          type: integer
+          not:
+            const: 0
+
       type: object
     DocblockSchemaChild:
       type: object
