@@ -367,11 +367,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 $ref = ['oneOf' => [$ref]];
-                if ($this->_context->version == OpenApi::VERSION_3_1_0) {
-                    $ref['oneOf'][] = ['type' => 'null'];
-                } else {
-                    $ref['nullable'] = $data->nullable;
-                }
+                $ref['nullable'] = $data->nullable;
+
                 unset($data->nullable);
 
                 // preserve other properties
@@ -385,42 +382,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 }
             }
             $data = (object) $ref;
-        }
-
-        if ($this->_context->version === OpenApi::VERSION_3_1_0) {
-            if (isset($data->nullable)) {
-                if (true === $data->nullable) {
-                    if (isset($data->oneOf)) {
-                        $data->oneOf[] = ['type' => 'null'];
-                    } elseif (isset($data->anyOf)) {
-                        $data->anyOf[] = ['type' => 'null'];
-                    } elseif (isset($data->allOf)) {
-                        $data->allOf[] = ['type' => 'null'];
-                    } else {
-                        $data->type = (array) $data->type;
-                        $data->type[] = 'null';
-                    }
-                }
-                unset($data->nullable);
-            }
-
-            if (isset($data->minimum) && isset($data->exclusiveMinimum)) {
-                if (true === $data->exclusiveMinimum) {
-                    $data->exclusiveMinimum = $data->minimum;
-                    unset($data->minimum);
-                } elseif (false === $data->exclusiveMinimum) {
-                    unset($data->exclusiveMinimum);
-                }
-            }
-
-            if (isset($data->maximum) && isset($data->exclusiveMaximum)) {
-                if (true === $data->exclusiveMaximum) {
-                    $data->exclusiveMaximum = $data->maximum;
-                    unset($data->maximum);
-                } elseif (false === $data->exclusiveMaximum) {
-                    unset($data->exclusiveMaximum);
-                }
-            }
         }
 
         return $data;
