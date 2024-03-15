@@ -118,7 +118,6 @@ class OpenApiTestCase extends TestCase
      *
      * @param array|OA\OpenApi|\stdClass|string $actual     The generated output
      * @param array|OA\OpenApi|\stdClass|string $expected   The specification
-     * @param string                            $message
      * @param bool                              $normalized flag indicating whether the inputs are already normalized or
      *                                                      not
      */
@@ -255,8 +254,6 @@ class OpenApiTestCase extends TestCase
 
     /**
      * Collect list of all non-abstract annotation classes.
-     *
-     * @return array
      */
     public function allAnnotationClasses(): array
     {
@@ -278,8 +275,6 @@ class OpenApiTestCase extends TestCase
 
     /**
      * Collect list of all non-abstract attribute classes.
-     *
-     * @return array
      */
     public function allAttributeClasses(): array
     {

@@ -14,8 +14,6 @@ class PromotedPropertyDescription
 {
     /**
      * Property name.
-     *
-     * @var string
      */
     #[OAT\Property(property: 'thename')]
     public string $name = '';

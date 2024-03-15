@@ -116,7 +116,7 @@ class AttributesSyncTest extends OpenApiTestCase
 
     protected function propertyType(\ReflectionProperty $property): ?string
     {
-        $var = null;
+        $var = 'mixed';
         foreach ($this->prepDocComment($property->getDocComment()) as $line) {
             if (substr($line, 0, 5) === '@var ') {
                 $var = trim(substr($line, 5));

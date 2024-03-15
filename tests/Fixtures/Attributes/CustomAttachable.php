@@ -14,8 +14,6 @@ class CustomAttachable extends OAT\Attachable
 {
     /**
      * The attribute value.
-     *
-     * @var mixed
      */
     public $value = Generator::UNDEFINED;
 

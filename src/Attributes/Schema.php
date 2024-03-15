@@ -22,7 +22,6 @@ class Schema extends \OpenApi\Annotations\Schema
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $oneOf
-     * @param mixed                                                         $const
      * @param array<string,mixed>|null                                      $x
      * @param Attachable[]|null                                             $attachables
      */

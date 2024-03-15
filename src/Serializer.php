@@ -128,10 +128,6 @@ class Serializer
 
     /**
      * Deserialize the annotation's property.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
      */
     protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value, Context $context)
     {

@@ -72,8 +72,6 @@ class TypedProperties
     public string $annotationTrumpsNative;
 
     /**
-     * @var string
-     *
      * @OA\Property(
      *     type="integer",
      * )
