@@ -23,10 +23,6 @@ class Schema extends OAT\Schema
 {
     /**
      * @param class-string $of
-     * @param string|null  $description
-     * @param array        $optional
-     * @param int|null     $minLength
-     * @param int|null     $maxLength
      *
      * @throws \ReflectionException
      */

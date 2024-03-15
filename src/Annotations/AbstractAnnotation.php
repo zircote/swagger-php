@@ -156,9 +156,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         $this->_context->logger->warning('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
-    /**
-     * @param mixed $value
-     */
     public function __set(string $property, $value): void
     {
         $fields = get_object_vars($this);
@@ -287,9 +284,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         return $properties;
     }
 
-    /**
-     * @return mixed
-     */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
@@ -741,8 +735,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Validate array type.
-     *
-     * @param mixed $value
      */
     private function validateArrayType($value): bool
     {
@@ -764,7 +756,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Wrap the context with a reference to the annotation it is nested in.
      *
-     * @param AbstractAnnotation $annotation
      *
      * @return AbstractAnnotation
      */

@@ -53,8 +53,7 @@ class DocBlockParser
     /**
      * Use doctrine to parse the comment block and return the detected annotations.
      *
-     * @param string  $comment a T_DOC_COMMENT
-     * @param Context $context
+     * @param string $comment a T_DOC_COMMENT
      *
      * @return array<OA\AbstractAnnotation>
      */

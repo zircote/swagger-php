@@ -15,8 +15,6 @@ trait HasId
      *     format="int64",
      *     readOnly=true,
      * )
-     *
-     * @var int
      */
     public int $id;
 }

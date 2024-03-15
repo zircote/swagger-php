@@ -75,8 +75,6 @@ class Link extends AbstractAnnotation
 
     /**
      * A literal value or {expression} to use as a request body when calling the target operation.
-     *
-     * @var mixed
      */
     public $requestBody = Generator::UNDEFINED;
 
