@@ -46,8 +46,6 @@ class Context
 {
     /**
      * Prototypical inheritance for properties.
-     *
-     * @var Context|null
      */
     private ?Context $parent;
 
