@@ -652,7 +652,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function isRoot(string $rootClass): bool
     {
-        return $this->getRoot() == $rootClass;
+        return get_class($this) == $rootClass || $this->getRoot() == $rootClass;
     }
 
     /**

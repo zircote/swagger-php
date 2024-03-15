@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: RequestBody
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: 30597cf43b480393042f6b01a9d7980c
+      requestBody:
+        description: 'Information about a new pet in the system'
+        content:
+          application/json: {  }
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/ref:
+    post:
+      operationId: 4250dd87e4e3872a8f2e481532cbc245
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBodyRef'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/ref-foo:
+    post:
+      operationId: 344406e28927343e4e9e4f39bd6c385b
+      requestBody:
+        $ref: '#/components/requestBodies/foo'
+      responses:
+        '200':
+          description: 'All good'
+components:
+  requestBodies:
+    RequestBodyRef: {  }
+    foo: {  }

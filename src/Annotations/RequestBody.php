@@ -29,7 +29,7 @@ class RequestBody extends AbstractAnnotation
     public $ref = Generator::UNDEFINED;
 
     /**
-     * Request body model name.
+     * The key into Components->requestBodies array.
      *
      * @var string
      */
@@ -95,4 +95,17 @@ class RequestBody extends AbstractAnnotation
         MediaType::class => ['content', 'mediaType'],
         Attachable::class => ['attachables'],
     ];
+
+    /**
+     * @inheritdoc
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        unset($data->request);
+
+        return $data;
+    }
 }
