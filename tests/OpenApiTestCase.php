@@ -84,6 +84,13 @@ class OpenApiTestCase extends TestCase
         };
     }
 
+    public function skipLegacy(): void
+    {
+        if ($this->getAnalyzer() instanceof TokenAnalyser) {
+            $this->markTestSkipped();
+        }
+    }
+
     public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(

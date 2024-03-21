@@ -11,7 +11,6 @@ use OpenApi\Analysers\AnnotationFactoryInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -184,9 +183,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testPhp8PromotedProperties(): void
     {
-        if ($this->getAnalyzer() instanceof TokenAnalyser) {
-            $this->markTestSkipped();
-        }
+        $this->skipLegacy();
 
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);

@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\ExpandEnums;
@@ -17,15 +16,16 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
 
+/**
+ * @requires PHP 8.1
+ */
 class ExpandEnumsTest extends OpenApiTestCase
 {
     public function setUp(): void
     {
         parent::setUp();
 
-        if (PHP_VERSION_ID < 80100 || $this->getAnalyzer() instanceof TokenAnalyser) {
-            $this->markTestSkipped();
-        }
+        $this->skipLegacy();
     }
 
     public function testExpandUnitEnum(): void
