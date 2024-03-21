@@ -142,6 +142,21 @@ END;
         $this->assertFalse((new OA\AdditionalProperties([]))->isRoot(OA\Schema::class));
         $this->assertTrue((new SubSchema([]))->isRoot(OA\Schema::class));
     }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testValidateExamples(): void
+    {
+        $analysis = $this->analysisFromFixtures(['BadExampleParameter.php']);
+        $analysis->process((new Generator())->getProcessors());
+
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
+
+        $analysis->validate();
+    }
 }
 
 class SubSchema extends OA\Schema

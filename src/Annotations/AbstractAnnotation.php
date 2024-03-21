@@ -540,6 +540,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
         $stack[] = $this;
 
+        if (property_exists($this, 'example') && property_exists($this, 'examples')) {
+            if (!Generator::isDefault($this->example) && !Generator::isDefault($this->examples)) {
+                $valid = false;
+                $this->_context->logger->warning($this->identity() . ': "example" and "examples" are mutually exclusive');
+            }
+        }
+
         return self::_validate($this, $stack, $skip, $ref, $context) ? $valid : false;
     }
 
