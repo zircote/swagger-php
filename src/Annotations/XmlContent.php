@@ -6,7 +6,6 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -18,11 +17,6 @@ use OpenApi\Annotations as OA;
  */
 class XmlContent extends Schema
 {
-    /**
-     * @var array<string,Examples>
-     */
-    public $examples = Generator::UNDEFINED;
-
     /**
      * @inheritdoc
      */

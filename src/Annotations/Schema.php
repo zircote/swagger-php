@@ -57,7 +57,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * The maximum number of properties allowed in an object instance.
-     * An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.
+     * An object instance is valid against this property if its number of properties is less than, or equal to, the
+     * value of this attribute.
      *
      * @var int
      */
@@ -65,7 +66,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * The minimum number of properties allowed in an object instance.
-     * An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.
+     * An object instance is valid against this property if its number of properties is greater than, or equal to, the
+     * value of this attribute.
      *
      * @var int
      */
@@ -121,9 +123,9 @@ class Schema extends AbstractAnnotation
      * - ssv: space separated values foo bar.
      * - tsv: tab separated values foo\tbar.
      * - pipes: pipe separated values foo|bar.
-     * - multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.
-     *          This is valid only for parameters of type <code>query</code> or <code>formData</code>.
-     * Default value is csv.
+     * - multi: corresponds to multiple parameter instances instead of multiple values for a single instance
+     * foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default
+     * value is csv.
      *
      * @var string
      */
@@ -179,7 +181,8 @@ class Schema extends AbstractAnnotation
     /**
      * The maximum length of a string property.
      *
-     * A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.
+     * A string instance is valid against this property if its length is less than, or equal to, the value of this
+     * attribute.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor26)
      *
@@ -190,7 +193,8 @@ class Schema extends AbstractAnnotation
     /**
      * The minimum length of a string property.
      *
-     * A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.
+     * A string instance is valid against this property if its length is greater than, or equal to, the value of this
+     * attribute.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor29)
      *
@@ -208,7 +212,8 @@ class Schema extends AbstractAnnotation
     /**
      * The maximum number of items allowed in an array property.
      *
-     * An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.
+     * An array instance is valid against this property if its number of items is less than, or equal to, the value of
+     * this attribute.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor42)
      *
@@ -219,7 +224,8 @@ class Schema extends AbstractAnnotation
     /**
      * The minimum number of items allowed in an array property.
      *
-     * An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.
+     * An array instance is valid against this property if its number of items is greater than, or equal to, the value
+     * of this attribute.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor45)
      *
@@ -241,7 +247,8 @@ class Schema extends AbstractAnnotation
     /**
      * A collection of allowable values for a property.
      *
-     * A property instance is valid against this attribute if its value is one of the values specified in this collection.
+     * A property instance is valid against this attribute if its value is one of the values specified in this
+     * collection.
      *
      * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
      *
@@ -318,6 +325,16 @@ class Schema extends AbstractAnnotation
      * contain the example with escaping where necessary.
      */
     public $example = Generator::UNDEFINED;
+
+    /**
+     * An associative array of Examples attributes.
+     *
+     * The keys represent the name of the example and the values are instances of the Examples attribute.
+     * Each example is used to show how the content of the request or response should look like.
+     *
+     * @var array<string,Examples>
+     */
+    public $examples = Generator::UNDEFINED;
 
     /**
      * Allows sending a null value for the defined schema.
@@ -463,8 +480,9 @@ class Schema extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (isset($data->const)) {
-            if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+            unset($data->examples);
+            if (isset($data->const)) {
                 $data->enum = [$data->const];
                 unset($data->const);
             }
@@ -482,6 +500,14 @@ class Schema extends AbstractAnnotation
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             return false;
+        }
+
+        if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+            if (!Generator::isDefault($this->examples)) {
+                $this->_context->logger->warning($this->identity() . ' is only allowed for ' . OpenApi::VERSION_3_1_0);
+
+                return false;
+            }
         }
 
         return parent::validate($stack, $skip, $ref, $context);

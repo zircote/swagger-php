@@ -64,13 +64,19 @@ class AttributesSyncTest extends OpenApiTestCase
             }
             if (!$found) {
                 // exclusions...
-                if ($attributeRC->isSubclassOf(OA\Operation::class) && 'method' == $propertyName) {
+                if ($attributeRC->isSubclassOf(OA\Operation::class) && in_array($propertyName, ['method'])) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\Attachable::class) && 'x' == $propertyName) {
+                if ($attributeRC->isSubclassOf(OA\Attachable::class) && in_array($propertyName, ['x'])) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\AdditionalProperties::class) && 'additionalProperties' == $propertyName) {
+                if ($attributeRC->isSubclassOf(OA\AdditionalProperties::class) && in_array($propertyName, ['additionalProperties', 'examples'])) {
+                    continue;
+                }
+                if ($attributeRC->isSubclassOf(OA\Items::class) && in_array($propertyName, ['examples'])) {
+                    continue;
+                }
+                if ($attributeRC->isSubclassOf(OA\Property::class) && in_array($propertyName, ['examples'])) {
                     continue;
                 }
                 if (in_array($propertyName, static::$SCHEMA_EXCLUSIONS)) {

@@ -86,12 +86,12 @@ parameters:
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
-			message: "#^Property OpenApi\\\\Annotations\\\\JsonContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$examples \\(array\\<OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/MergeJsonContent.php
 
 		-
-			message: "#^Property OpenApi\\\\Annotations\\\\XmlContent\\:\\:\\$examples \\(array\\<string, OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$examples \\(array\\<OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/MergeXmlContent.php
 
