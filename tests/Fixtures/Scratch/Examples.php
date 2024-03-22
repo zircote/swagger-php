@@ -10,6 +10,13 @@ use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(
     schema: 'YoYo',
+    examples: [
+        new OAT\Examples(
+            example: 'yo',
+            summary: 'the yo',
+            value: 'YoYo'
+        ),
+    ]
 )]
 class ExampleSchema
 {

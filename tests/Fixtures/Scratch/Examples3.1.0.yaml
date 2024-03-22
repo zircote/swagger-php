@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: Examples
+  version: '1.0'
+paths:
+  '/endpoint/{name}/{other}':
+    get:
+      operationId: fc70869eba6848b340d6f3546b63e344
+      parameters:
+        -
+          name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Fritz
+        -
+          name: other
+          in: path
+          required: true
+          schema:
+            type: string
+          examples:
+            o1:
+              summary: 'other example 1'
+              value: ping
+            o2:
+              summary: 'other example 2'
+              value: pong
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    YoYo:
+      examples:
+        yo:
+          summary: 'the yo'
+          value: YoYo

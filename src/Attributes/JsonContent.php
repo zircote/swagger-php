@@ -14,7 +14,7 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
     /**
      * @param string|non-empty-array<string>|null                           $type
      * @param string|class-string|object|null                               $ref
-     * @param array<string,Examples>                                        $examples
+     * @param array<Examples>                                               $examples
      * @param string[]                                                      $required
      * @param Property[]                                                    $properties
      * @param int|float                                                     $maximum

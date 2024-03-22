@@ -20,7 +20,7 @@ class Schema extends \OpenApi\Annotations\Schema
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<string,Examples>                                        $examples
+     * @param array<Examples>                                               $examples
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $allOf
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $anyOf
      * @param array<Schema|\OpenApi\Annotations\Schema>                     $oneOf

@@ -1,0 +1,26 @@
+openapi: 3.1.0
+info:
+  title: 'Promoted Property Description Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: ff3eaf9da24371c37532fd0de82a3212
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    PromotedPropertyDescription:
+      properties:
+        thevalue:
+          description: 'Property value.'
+          type: string
+        thename:
+          description: 'Property name.'
+          type: string
+        themeta:
+          description: 'Property meta.'
+          type: string
+      type: object

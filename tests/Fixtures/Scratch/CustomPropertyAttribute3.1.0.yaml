@@ -1,0 +1,20 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 1.0.0
+paths:
+  /api:
+    get:
+      operationId: 232f976e7ad23d1e147e984eb3da3506
+      responses:
+        '200':
+          description: 'All good'
+components:
+  schemas:
+    CustomPropertyAttribute:
+      properties:
+        number:
+          type:
+            - integer
+            - 'null'
+      type: object

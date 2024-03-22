@@ -54,7 +54,7 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Examples.
      *
-     * @var Examples[]
+     * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
 

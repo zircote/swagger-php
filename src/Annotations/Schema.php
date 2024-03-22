@@ -327,12 +327,13 @@ class Schema extends AbstractAnnotation
     public $example = Generator::UNDEFINED;
 
     /**
-     * An associative array of Examples attributes.
+     * Examples of the schema.
      *
-     * The keys represent the name of the example and the values are instances of the Examples attribute.
-     * Each example is used to show how the content of the request or response should look like.
+     * Each example should contain a value in the correct format as specified in the parameter encoding.
+     * The examples object is mutually exclusive of the example object.
+     * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
-     * @var array<string,Examples>
+     * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
 
@@ -456,6 +457,7 @@ class Schema extends AbstractAnnotation
         Items::class => 'items',
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
+        Examples::class => ['examples', 'example'],
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
         Attachable::class => ['attachables'],

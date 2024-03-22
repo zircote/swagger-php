@@ -147,13 +147,13 @@ class Parameter extends AbstractAnnotation
     public $example = Generator::UNDEFINED;
 
     /**
-     * Examples of the media type.
+     * Examples of the parameter.
      *
      * Each example should contain a value in the correct format as specified in the parameter encoding.
      * The examples object is mutually exclusive of the example object.
      * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
-     * @var array<string,Examples>
+     * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
 

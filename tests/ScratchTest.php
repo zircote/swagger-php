@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 class ScratchTest extends OpenApiTestCase
@@ -19,11 +20,27 @@ class ScratchTest extends OpenApiTestCase
                 continue;
             }
 
-            yield $name => [
-                $this->fixture("Scratch/$name.php"),
-                $this->fixture("Scratch/$name.yaml"),
-                [],
+            $scratch = $this->fixture("Scratch/$name.php");
+            $specs = [
+                $this->fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
+                $this->fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
             ];
+
+            $expectedLogs = [
+                'Examples-3.0.0' => ['@OA\Schema() is only allowed for 3.1.0'],
+            ];
+
+            foreach ($specs as $spec => $version) {
+                if (file_exists($spec)) {
+                    $dataSet = "$name-$version";
+                    yield $dataSet => [
+                        $scratch,
+                        $spec,
+                        $version,
+                        array_key_exists($dataSet, $expectedLogs) ? $expectedLogs[$dataSet] : [],
+                    ];
+                }
+            }
         }
     }
 
@@ -34,21 +51,19 @@ class ScratchTest extends OpenApiTestCase
      *
      * @requires     PHP 8.1
      */
-    public function testScratch(string $scratch, string $spec, array $expectedLog): void
+    public function testScratch(string $scratch, string $spec, string $version, array $expectedLogs): void
     {
-        foreach ($expectedLog as $logLine) {
+        foreach ($expectedLogs as $logLine) {
             $this->assertOpenApiLogEntryContains($logLine);
         }
 
         require_once $scratch;
 
         $openapi = (new Generator($this->getTrackingLogger()))
+            ->setVersion($version)
             ->generate([$scratch]);
 
-        if (!file_exists($spec)) {
-            file_put_contents($spec, $openapi->toYaml());
-        }
-
+        // file_put_contents($spec, $openapi->toYaml());
         $this->assertSpecEquals($openapi, file_get_contents($spec));
     }
 }
