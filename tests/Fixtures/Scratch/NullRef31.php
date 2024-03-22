@@ -11,7 +11,7 @@ class Repository31
 {
 }
 
-#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\OpenApi(openapi: OAT\OpenApi::VERSION_3_1_0)]
 #[OAT\Info(
     title: 'Null Ref',
     version: '1.0'

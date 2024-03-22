@@ -18,7 +18,7 @@ class Types31
     public mixed $massiveTypes = '';
 }
 
-#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\OpenApi(openapi: OAT\OpenApi::VERSION_3_1_0)]
 #[OAT\Info(
     title: 'List of types',
     version: '1.0'

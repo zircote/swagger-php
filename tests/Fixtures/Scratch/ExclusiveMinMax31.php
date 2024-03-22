@@ -25,7 +25,7 @@ class MinMaxClass31
     private int $exclusiveMinMaxNumber = 61;
 }
 
-#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\OpenApi(openapi: OAT\OpenApi::VERSION_3_1_0)]
 #[OAT\Info(
     title: 'Exclusive minimum and maximum',
     version: '1.0'

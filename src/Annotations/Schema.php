@@ -464,7 +464,7 @@ class Schema extends AbstractAnnotation
         $data = parent::jsonSerialize();
 
         if (isset($data->const)) {
-            if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+            if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
                 $data->enum = [$data->const];
                 unset($data->const);
             }

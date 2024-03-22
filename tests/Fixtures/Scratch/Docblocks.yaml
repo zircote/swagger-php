@@ -1,17 +1,17 @@
 openapi: 3.0.0
 info:
-  title: API
+  title: Dockblocks
   version: '1.0'
 paths:
   /api/endpoint:
     get:
-      operationId: deb4d2aa2d9e471e6e6a6c8ed61123d0
+      operationId: 2dd3513e31e559b14abab58814959d68
       responses:
         '200':
           description: 'successful operation'
 components:
   schemas:
-    DocblockSchema:
+    DocblocksSchema:
       properties:
         name:
           description: 'The name'
@@ -23,8 +23,8 @@ components:
         rangeInt:
           description: 'The range integer'
           type: integer
-          minimum: 5
           maximum: 25
+          minimum: 5
         minRangeInt:
           description: 'The minimum range integer'
           type: integer
@@ -53,14 +53,14 @@ components:
           description: 'The non-zero integer'
           type: integer
           not:
-            const: 0
-
+            enum:
+              - 0
       type: object
     DocblockSchemaChild:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/DocblockSchema'
+          $ref: '#/components/schemas/DocblocksSchema'
         -
           properties:
             id:

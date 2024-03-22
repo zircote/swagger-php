@@ -166,6 +166,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
+     * Check if one of the given version numbers matches the current OpenAPI version.
+     *
+     * @param string|array $versions One or more version numbers
+     */
+    public function isOpenApiVersion($versions): bool
+    {
+        return $this->_context->isVersion($versions);
+    }
+
+    /**
      * Merge given annotations to their mapped properties configured in static::$_nested.
      *
      * Annotations that couldn't be merged are added to the _unmerged array.
@@ -350,7 +360,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            if ($this->_context->version === OpenApi::VERSION_3_1_0) {
+            if ($this->isOpenApiVersion(OpenApi::VERSION_3_1_0)) {
                 foreach (['summary', 'description'] as $prop) {
                     if (property_exists($this, $prop)) {
                         if (!Generator::isDefault($this->{$prop})) {
@@ -361,7 +371,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 $ref = ['oneOf' => [$ref]];
-                if ($this->_context->version == OpenApi::VERSION_3_1_0) {
+                if ($this->isOpenApiVersion(OpenApi::VERSION_3_1_0)) {
                     $ref['oneOf'][] = ['type' => 'null'];
                 } else {
                     $ref['nullable'] = $data->nullable;
@@ -381,7 +391,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $data = (object) $ref;
         }
 
-        if ($this->_context->version === OpenApi::VERSION_3_1_0) {
+        if ($this->isOpenApiVersion(OpenApi::VERSION_3_1_0)) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
                     if (isset($data->oneOf)) {
