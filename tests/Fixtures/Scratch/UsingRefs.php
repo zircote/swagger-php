@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\PathParameter(name: 'itemName', description: 'The item name')]
+#[OAT\PathParameter(name: 'item_name', description: 'The item name', required: true, schema: new OAT\Schema(type: 'string'))]
 class UsingRefsParameter
 {
 }
@@ -22,7 +22,7 @@ class UsingRefsResponse
 #[OAT\Get(
     path: '/item/{item_name}',
     parameters: [
-        new OAT\Parameter(ref: '#/components/parameters/itemName'),
+        new OAT\Parameter(ref: '#/components/parameters/item_name'),
     ],
     responses: [
         new OAT\Response(response: 200, ref: '#/components/responses/item'),

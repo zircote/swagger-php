@@ -8,7 +8,7 @@ paths:
       operationId: 6ecb3788642c6ba8ce8d99cbcd554dbe
       parameters:
         -
-          $ref: '#/components/parameters/itemName'
+          $ref: '#/components/parameters/item_name'
       responses:
         '200':
           $ref: '#/components/responses/item'
@@ -17,7 +17,10 @@ components:
     item:
       description: 'Item response'
   parameters:
-    itemName:
-      name: itemName
+    item_name:
+      name: item_name
       in: path
       description: 'The item name'
+      required: true
+      schema:
+        type: string

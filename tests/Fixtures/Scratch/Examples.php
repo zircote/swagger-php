@@ -19,12 +19,16 @@ class ExampleSchema
 #[OAT\Get(
     path: '/endpoint/{name}/{other}',
     parameters: [
-        new OAT\QueryParameter(
+        new OAT\PathParameter(
             name: 'name',
+            required: true,
+            schema: new OAT\Schema(type: 'string'),
             example: 'Fritz'
         ),
-        new OAT\QueryParameter(
+        new OAT\PathParameter(
             name: 'other',
+            required: true,
+            schema: new OAT\Schema(type: 'string'),
             examples: [
                 new OAT\Examples(
                     example: 'o1',

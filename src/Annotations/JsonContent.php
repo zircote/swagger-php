@@ -7,6 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 /**
  * Shorthand for a json response.

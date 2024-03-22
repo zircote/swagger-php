@@ -9,11 +9,17 @@ paths:
       parameters:
         -
           name: name
-          in: query
+          in: path
+          required: true
+          schema:
+            type: string
           example: Fritz
         -
           name: other
-          in: query
+          in: path
+          required: true
+          schema:
+            type: string
           examples:
             o1:
               summary: 'other example 1'
