@@ -333,6 +333,8 @@ class Schema extends AbstractAnnotation
      * The examples object is mutually exclusive of the example object.
      * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
+     * @since 3.1.0
+     *
      * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
