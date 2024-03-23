@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: 'Extended Attributes Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 242c3431636158b96b85e2adbefa76f4
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    CAItemModel: {  }
+    CAModel:
+      properties:
+        name:
+          type:
+            - string
+            - 'null'
+        item:
+          $ref: '#/components/schemas/CAItemModel'
+        items:
+          title: CAItemModel
+          type: array
+          items:
+            $ref: '#/components/schemas/CAItemModel'
+      type: object

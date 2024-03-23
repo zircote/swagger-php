@@ -12,7 +12,7 @@ use OpenApi\Tests\Fixtures\Attributes as OAF;
 /**
  * The Spec.
  */
-#[OAT\OpenApi(openapi: '3.1.0', security: [['bearerAuth' => []]])]
+#[OAT\OpenApi(openapi: OAT\OpenApi::VERSION_3_1_0, security: [['bearerAuth' => []]])]
 #[OAT\Info(
     version: '1.0.0',
     title: 'Basic single file API',

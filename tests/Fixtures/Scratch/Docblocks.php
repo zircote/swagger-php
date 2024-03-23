@@ -9,8 +9,14 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
-/** @OA\Schema  */
-class DocblockSchema
+/**
+ * @OA\OpenApi(
+ *     openapi="3.0.0"
+ * )
+ *
+ * @OA\Schema
+ */
+class DocblocksSchema
 {
     /**
      * @OA\Property
@@ -76,7 +82,7 @@ class DocblockSchema
 }
 
 #[OAT\Schema]
-class DocblockSchemaChild extends DocblockSchema
+class DocblockSchemaChild extends DocblocksSchema
 {
     /** @var int The id */
     #[OAT\Property]
@@ -84,7 +90,7 @@ class DocblockSchemaChild extends DocblockSchema
 }
 
 /**
- * @OA\Info(title="API", version="1.0")
+ * @OA\Info(title="Dockblocks", version="1.0")
  * @OA\Get(
  *     path="/api/endpoint",
  *     @OA\Response(
@@ -93,6 +99,6 @@ class DocblockSchemaChild extends DocblockSchema
  *     )
  * )
  */
-class DockblockEndpoint
+class DockblocksEndpoint
 {
 }

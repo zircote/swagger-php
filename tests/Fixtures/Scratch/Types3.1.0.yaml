@@ -6,13 +6,13 @@ paths:
   /api/endpoint:
     get:
       description: 'An endpoint'
-      operationId: 20a99cdde4e09b297c7555321c7cdb6f
+      operationId: 04621eecf5d57d633b0be3e42a30a379
       responses:
         '200':
           description: OK
 components:
   schemas:
-    Types31:
+    Types:
       properties:
         stringInteger:
           type:

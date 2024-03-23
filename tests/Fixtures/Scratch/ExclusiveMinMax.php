@@ -6,8 +6,8 @@
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema(schema: 'minMaxClass31')]
-class MinMaxClass31
+#[OAT\Schema(schema: 'minMaxClass')]
+class MinMaxClass
 {
     #[OAT\Property(minimum: 10)]
     private int $min = 10;
@@ -25,12 +25,11 @@ class MinMaxClass31
     private int $exclusiveMinMaxNumber = 61;
 }
 
-#[OAT\OpenApi(openapi: '3.1.0')]
 #[OAT\Info(
     title: 'Exclusive minimum and maximum',
     version: '1.0'
 )]
-class ExclusiveMinMax31
+class ExclusiveMinMax
 {
     #[OAT\Get(
         path: '/api/endpoint',

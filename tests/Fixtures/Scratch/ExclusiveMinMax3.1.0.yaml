@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: 'Exclusive minimum and maximum'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: ef57acec977120506db6b2cf1c500c15
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    minMaxClass:
+      properties:
+        min:
+          type: integer
+          minimum: 10
+        exclusiveMin:
+          type: integer
+          exclusiveMinimum: 20
+        max:
+          type: integer
+          maximum: 30
+        exclusiveMax:
+          type: integer
+          exclusiveMaximum: 40
+        exclusiveMinMax:
+          type: integer
+          exclusiveMaximum: 60
+          exclusiveMinimum: 50
+        exclusiveMinMaxNumber:
+          type: integer
+          exclusiveMaximum: 70
+          exclusiveMinimum: 60
+      type: object

@@ -7,6 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 /**
  * Base class for `@OA\Get`,  `@OA\Post`,  `@OA\Put`,  etc.

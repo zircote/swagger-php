@@ -49,7 +49,7 @@ class SerializerTest extends OpenApiTestCase
         $path->post->responses = [$resp, $respRange];
 
         $expected = new OA\OpenApi(['_context' => $this->getContext()]);
-        $expected->openapi = '3.0.0';
+        $expected->openapi = OA\OpenApi::VERSION_3_0_0;
         $expected->paths = [
             $path,
         ];

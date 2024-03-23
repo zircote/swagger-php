@@ -82,6 +82,7 @@ class Examples extends AbstractAnnotation
 
     public static $_parents = [
         Components::class,
+        Schema::class,
         Parameter::class,
         PathParameter::class,
         MediaType::class,

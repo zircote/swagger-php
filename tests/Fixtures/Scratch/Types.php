@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema]
-class Types31
+class Types
 {
     #[OAT\Property(type: ['string', 'integer'])]
     public string|int $stringInteger = '';
@@ -18,7 +18,7 @@ class Types31
     public mixed $massiveTypes = '';
 }
 
-#[OAT\OpenApi(openapi: '3.1.0')]
+#[OAT\OpenApi(openapi: OAT\OpenApi::VERSION_3_1_0)]
 #[OAT\Info(
     title: 'List of types',
     version: '1.0'
@@ -28,6 +28,6 @@ class Types31
     description: 'An endpoint',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
-class Types31Endpoint
+class TypesEndpoint
 {
 }

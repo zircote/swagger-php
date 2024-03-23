@@ -6,6 +6,8 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Annotations as OA;
+
 /**
  * A `@OA\Request` header parameter.
  *
