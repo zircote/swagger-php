@@ -36,6 +36,8 @@ components:
           exclusiveMinimum: true
         exclusiveMinMaxNumber:
           type: integer
-          exclusiveMaximum: 70
-          exclusiveMinimum: 60
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+          minimum: 60
+          maximum: 70
       type: object

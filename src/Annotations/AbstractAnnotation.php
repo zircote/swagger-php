@@ -391,6 +391,17 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $data = (object) $ref;
         }
 
+        if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+            if (isset($data->exclusiveMinimum) && is_numeric($data->exclusiveMinimum)) {
+                $data->minimum = $data->exclusiveMinimum;
+                $data->exclusiveMinimum = true;
+            }
+            if (isset($data->exclusiveMaximum) && is_numeric($data->exclusiveMaximum)) {
+                $data->maximum = $data->exclusiveMaximum;
+                $data->exclusiveMaximum = true;
+            }
+        }
+
         if ($this->isOpenApiVersion(OpenApi::VERSION_3_1_0)) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
