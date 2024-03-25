@@ -144,7 +144,7 @@ class AugmentProperties implements ProcessorInterface
                 $property->minimum = 0;
             } elseif ($type === 'non-zero-int') {
                 $property->type = 'integer';
-                if ($property->isOpenApiVersion(OA\OpenApi::VERSION_3_1_0)) {
+                if ($property->_context->isVersion(OA\OpenApi::VERSION_3_1_0)) {
                     $property->not = ['const' => 0];
                 } else {
                     $property->not = ['enum' => [0]];
