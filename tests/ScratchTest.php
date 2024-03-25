@@ -11,19 +11,19 @@ use OpenApi\Generator;
 
 class ScratchTest extends OpenApiTestCase
 {
-    public function scratchTests(): iterable
+    public static function scratchTests(): iterable
     {
-        foreach (glob($this->fixture('Scratch/*.php')) as $fixture) {
+        foreach (glob(static::fixture('Scratch/*.php')) as $fixture) {
             $name = pathinfo($fixture, PATHINFO_FILENAME);
 
             if (0 === strpos($name, 'Abstract')) {
                 continue;
             }
 
-            $scratch = $this->fixture("Scratch/$name.php");
+            $scratch = static::fixture("Scratch/$name.php");
             $specs = [
-                $this->fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
-                $this->fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
+                static::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
+                static::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
             ];
 
             $expectedLogs = [

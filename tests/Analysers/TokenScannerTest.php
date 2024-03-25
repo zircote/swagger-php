@@ -11,7 +11,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class TokenScannerTest extends OpenApiTestCase
 {
-    public function scanCases(): iterable
+    public static function scanCases(): iterable
     {
         if (\PHP_VERSION_ID >= 80100) {
             yield 'abstract' => [

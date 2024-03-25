@@ -11,9 +11,9 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class CleanUnusedComponentsTest extends OpenApiTestCase
 {
-    public function countCases(): iterable
+    public static function countCases(): iterable
     {
-        $defaultProcessors = $this->processors([CleanUnusedComponents::class]);
+        $defaultProcessors = static::processors([CleanUnusedComponents::class]);
 
         return [
             'var-default' => [$defaultProcessors, 'UsingVar.php', 2, 5],

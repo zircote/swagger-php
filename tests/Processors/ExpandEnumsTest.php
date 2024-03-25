@@ -68,7 +68,7 @@ class ExpandEnumsTest extends OpenApiTestCase
         $this->assertEquals('string', $schema->type);
     }
 
-    public function expandEnumClassStringFixtures(): iterable
+    public static function expandEnumClassStringFixtures(): iterable
     {
         if (!class_exists('\\ReflectionEnum')) {
             // otherwise PHPUnit will run this for all PHP versions

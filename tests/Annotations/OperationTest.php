@@ -11,7 +11,7 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class OperationTest extends OpenApiTestCase
 {
-    public function securityData(): iterable
+    public static function securityData(): iterable
     {
         return [
             'empty' => [

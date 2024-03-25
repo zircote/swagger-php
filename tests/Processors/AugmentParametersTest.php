@@ -23,7 +23,7 @@ class AugmentParametersTest extends OpenApiTestCase
         $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @OA\Parameter()->parameter is specified, use @OA\Parameter()->name');
     }
 
-    public function tagCases(): iterable
+    public static function tagCases(): iterable
     {
         yield 'complete' => [
             '@param string $foo The foo parameter.',

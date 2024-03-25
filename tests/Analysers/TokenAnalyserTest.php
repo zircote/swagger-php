@@ -25,7 +25,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         return $analyser->fromCode('<?php ' . $code, $this->getContext());
     }
 
-    public function singleDefinitionCases(): iterable
+    public static function singleDefinitionCases(): iterable
     {
         return [
             'global-class' => ['class AClass {}', '\AClass', 'AClass', 'classes', 'class'],
@@ -53,7 +53,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertSame([], $definition['methods']);
     }
 
-    public function extendsDefinitionCases(): iterable
+    public static function extendsDefinitionCases(): iterable
     {
         return [
             'global-class' => ['class BClass extends Other {}', '\BClass', 'BClass', '\Other', 'classes', 'class'],
@@ -91,7 +91,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         $this->assertSame($extends, $definition['extends']);
     }
 
-    public function usesDefinitionCases(): iterable
+    public static function usesDefinitionCases(): iterable
     {
         return [
             'global-class-use' => ['class YClass { use Other; }', '\YClass', 'YClass', ['\Other'], 'classes', 'class'],
@@ -167,10 +167,7 @@ class TokenAnalyserTest extends OpenApiTestCase
         }
     }
 
-    /**
-     * dataprovider.
-     */
-    public function descriptions(): iterable
+    public static function descriptions(): iterable
     {
         return [
             'class' => [

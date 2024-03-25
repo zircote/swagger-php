@@ -65,7 +65,7 @@ class UtilTest extends OpenApiTestCase
         $this->assertArrayNotHasKey($directory_path, $finder_result_array, 'The directory should not be a path in the finder.');
     }
 
-    public function shortenFixtures(): iterable
+    public static function shortenFixtures(): iterable
     {
         return [
             [[OA\Get::class], ['@OA\Get']],
