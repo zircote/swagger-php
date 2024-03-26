@@ -202,14 +202,14 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
-    public function example(string $name): string
+    public static function example(string $name): string
     {
         return __DIR__ . '/../Examples/' . $name;
     }
 
-    public function fixture(string $file): ?string
+    public static function fixture(string $file): ?string
     {
-        $fixtures = $this->fixtures([$file]);
+        $fixtures = static::fixtures([$file]);
 
         return $fixtures ? $fixtures[0] : null;
     }
@@ -219,14 +219,14 @@ class OpenApiTestCase extends TestCase
      *
      * @return array resolved filenames for loading scanning etc
      */
-    public function fixtures(array $files): array
+    public static function fixtures(array $files): array
     {
         return array_map(function ($file) {
             return __DIR__ . '/Fixtures/' . $file;
         }, $files);
     }
 
-    public function processors(array $strip = [], array $add = []): array
+    public static function processors(array $strip = [], array $add = []): array
     {
         $processors = (new Generator())->getProcessors();
 
@@ -264,7 +264,7 @@ class OpenApiTestCase extends TestCase
     /**
      * Collect list of all non-abstract annotation classes.
      */
-    public function allAnnotationClasses(): array
+    public static function allAnnotationClasses(): array
     {
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');
@@ -285,7 +285,7 @@ class OpenApiTestCase extends TestCase
     /**
      * Collect list of all non-abstract attribute classes.
      */
-    public function allAttributeClasses(): array
+    public static function allAttributeClasses(): array
     {
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Attributes');

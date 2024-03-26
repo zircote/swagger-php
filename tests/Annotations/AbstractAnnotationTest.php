@@ -106,7 +106,7 @@ END;
         $parameter->validate();
     }
 
-    public function nestedMatches(): iterable
+    public static function nestedMatches(): iterable
     {
         $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
 

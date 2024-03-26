@@ -13,9 +13,9 @@ use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
-    public function sourcesProvider(): iterable
+    public static function sourcesProvider(): iterable
     {
-        $sourceDir = $this->example('swagger-spec/petstore-simple');
+        $sourceDir = static::example('swagger-spec/petstore-simple');
 
         yield 'dir-list' => [$sourceDir, [$sourceDir]];
         yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/OpenApiSpec.php"]];
@@ -46,7 +46,7 @@ class GeneratorTest extends OpenApiTestCase
             ->generate(['/tmp/__swagger_php_does_not_exist__']);
     }
 
-    public function processorCases(): iterable
+    public static function processorCases(): iterable
     {
         return [
             [new OperationId(), true],
@@ -124,7 +124,7 @@ class GeneratorTest extends OpenApiTestCase
         }
     }
 
-    public function configCases(): iterable
+    public static function configCases(): iterable
     {
         return [
             'default' => [[], true],

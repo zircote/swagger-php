@@ -18,7 +18,7 @@ use OpenApi\Serializer;
 
 class ExamplesTest extends OpenApiTestCase
 {
-    public function exampleDetails(): iterable
+    public static function exampleDetails(): iterable
     {
         yield 'example-object' => [
             'version' => OA\OpenApi::VERSION_3_0_0,
@@ -185,14 +185,14 @@ class ExamplesTest extends OpenApiTestCase
         }
     }
 
-    public function exampleMappings(): iterable
+    public static function exampleMappings(): iterable
     {
         $analysers = [
             'token' => new TokenAnalyser(),
             'reflection' => new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]),
         ];
 
-        foreach ($this->exampleDetails() as $exampleKey => $example) {
+        foreach (static::exampleDetails() as $exampleKey => $example) {
             $exampleAnalysers = $example['analysers'];
             unset($example['analysers']);
             foreach ($exampleAnalysers as $analyserKey) {
