@@ -6,7 +6,6 @@
 
 namespace OpenApi;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
@@ -71,57 +70,12 @@ class Generator
      */
     protected $version = null;
 
-    private $configStack;
-
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
         $this->setAliases(self::DEFAULT_ALIASES);
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
-
-        // kinda config stack to stay BC...
-        // @deprecated Can be removed once doctrine/annotations 2.0 becomes mandatory
-        $this->configStack = new class() {
-            protected $generator;
-
-            public function push(Generator $generator): void
-            {
-                $this->generator = $generator;
-                /* @phpstan-ignore-next-line */
-                if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
-                    // keeping track of &this->generator allows to 'disable' the loader after we are done;
-                    // no unload, unfortunately :/
-                    $gref = &$this->generator;
-                    AnnotationRegistry::registerLoader(
-                        function (string $class) use (&$gref): bool {
-                            if ($gref) {
-                                foreach ($gref->getNamespaces() as $namespace) {
-                                    if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-                                        $loaded = class_exists($class);
-                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
-                                            if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
-                                                // Detected an 2.x annotation?
-                                                throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                                            }
-                                        }
-
-                                        return $loaded;
-                                    }
-                                }
-                            }
-
-                            return false;
-                        }
-                    );
-                }
-            }
-
-            public function pop(): void
-            {
-                $this->generator = null;
-            }
-        };
     }
 
     public static function isDefault($value): bool
@@ -421,12 +375,7 @@ class Generator
         ]);
         $analysis = new Analysis([], $rootContext);
 
-        $this->configStack->push($this);
-        try {
-            return $callable($this, $analysis, $rootContext);
-        } finally {
-            $this->configStack->pop();
-        }
+        return $callable($this, $analysis, $rootContext);
     }
 
     /**
@@ -448,24 +397,19 @@ class Generator
         ]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
 
-        $this->configStack->push($this);
-        try {
-            $this->scanSources($sources, $analysis, $rootContext);
+        $this->scanSources($sources, $analysis, $rootContext);
 
-            // post-processing
-            $analysis->process($this->getProcessors());
+        // post-processing
+        $analysis->process($this->getProcessors());
 
-            if ($analysis->openapi) {
-                $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
-                $rootContext->version = $analysis->openapi->openapi;
-            }
+        if ($analysis->openapi) {
+            $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
+            $rootContext->version = $analysis->openapi->openapi;
+        }
 
-            // validation
-            if ($validate) {
-                $analysis->validate();
-            }
-        } finally {
-            $this->configStack->pop();
+        // validation
+        if ($validate) {
+            $analysis->validate();
         }
 
         return $analysis->openapi;
