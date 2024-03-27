@@ -484,7 +484,7 @@ class Schema extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
             unset($data->examples);
             if (isset($data->const)) {
                 $data->enum = [$data->const];
@@ -506,7 +506,7 @@ class Schema extends AbstractAnnotation
             return false;
         }
 
-        if ($this->isOpenApiVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
             if (!Generator::isDefault($this->examples)) {
                 $this->_context->logger->warning($this->identity() . ' is only allowed for ' . OpenApi::VERSION_3_1_0);
 
