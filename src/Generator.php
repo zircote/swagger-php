@@ -6,7 +6,6 @@
 
 namespace OpenApi;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
@@ -28,10 +27,8 @@ class Generator
 {
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
-     *
-     * @var Context|null
      */
-    public static $context;
+    public static ?Context $context;
 
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
@@ -42,22 +39,21 @@ class Generator
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
     /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
-    protected $aliases;
+    protected array $aliases;
 
     /** @var array<string>|null List of annotation namespaces to be autoloaded by doctrine. */
-    protected $namespaces;
+    protected ?array $namespaces;
 
-    /** @var AnalyserInterface|null The configured analyzer. */
-    protected $analyser;
+    /** The configured analyzer. */
+    protected ?AnalyserInterface $analyser = null;
 
     /** @var array<string,mixed> */
-    protected $config = [];
+    protected array $config = [];
 
     /** @var array<ProcessorInterface|callable>|null List of configured processors. */
-    protected $processors = null;
+    protected ?array $processors = null;
 
-    /** @var LoggerInterface|null PSR logger. */
-    protected $logger = null;
+    protected ?LoggerInterface $logger = null;
 
     /**
      * OpenApi version override.
@@ -66,12 +62,8 @@ class Generator
      *
      * Due to the order of processing any conditional code using this (via `Context::$version`)
      * must come only after the analysis is finished.
-     *
-     * @var string|null
      */
-    protected $version = null;
-
-    private $configStack;
+    protected ?string $version = null;
 
     public function __construct(?LoggerInterface $logger = null)
     {
@@ -79,49 +71,6 @@ class Generator
 
         $this->setAliases(self::DEFAULT_ALIASES);
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
-
-        // kinda config stack to stay BC...
-        // @deprecated Can be removed once doctrine/annotations 2.0 becomes mandatory
-        $this->configStack = new class() {
-            protected $generator;
-
-            public function push(Generator $generator): void
-            {
-                $this->generator = $generator;
-                /* @phpstan-ignore-next-line */
-                if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
-                    // keeping track of &this->generator allows to 'disable' the loader after we are done;
-                    // no unload, unfortunately :/
-                    $gref = &$this->generator;
-                    AnnotationRegistry::registerLoader(
-                        function (string $class) use (&$gref): bool {
-                            if ($gref) {
-                                foreach ($gref->getNamespaces() as $namespace) {
-                                    if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-                                        $loaded = class_exists($class);
-                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
-                                            if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
-                                                // Detected an 2.x annotation?
-                                                throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                                            }
-                                        }
-
-                                        return $loaded;
-                                    }
-                                }
-                            }
-
-                            return false;
-                        }
-                    );
-                }
-            }
-
-            public function pop(): void
-            {
-                $this->generator = null;
-            }
-        };
     }
 
     public static function isDefault($value): bool
@@ -357,9 +306,7 @@ class Generator
             return $processor instanceof $otherClass;
         };
 
-        $processors = array_map(function ($other) use ($processor, $matcher) {
-            return $matcher($other) ? $processor : $other;
-        }, $this->getProcessors());
+        $processors = array_map(fn ($other) => $matcher($other) ? $processor : $other, $this->getProcessors());
         $this->setProcessors($processors);
 
         return $this;
@@ -421,12 +368,7 @@ class Generator
         ]);
         $analysis = new Analysis([], $rootContext);
 
-        $this->configStack->push($this);
-        try {
-            return $callable($this, $analysis, $rootContext);
-        } finally {
-            $this->configStack->pop();
-        }
+        return $callable($this, $analysis, $rootContext);
     }
 
     /**
@@ -448,24 +390,19 @@ class Generator
         ]);
         $analysis = $analysis ?: new Analysis([], $rootContext);
 
-        $this->configStack->push($this);
-        try {
-            $this->scanSources($sources, $analysis, $rootContext);
+        $this->scanSources($sources, $analysis, $rootContext);
 
-            // post-processing
-            $analysis->process($this->getProcessors());
+        // post-processing
+        $analysis->process($this->getProcessors());
 
-            if ($analysis->openapi) {
-                $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
-                $rootContext->version = $analysis->openapi->openapi;
-            }
+        if ($analysis->openapi) {
+            $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
+            $rootContext->version = $analysis->openapi->openapi;
+        }
 
-            // validation
-            if ($validate) {
-                $analysis->validate();
-            }
-        } finally {
-            $this->configStack->pop();
+        // validation
+        if ($validate) {
+            $analysis->validate();
         }
 
         return $analysis->openapi;

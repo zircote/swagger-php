@@ -21,11 +21,10 @@ use OpenApi\Generator;
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
-    /** @var AnnotationFactoryInterface[] */
-    protected $annotationFactories;
+    use GeneratorAwareTrait;
 
-    /** @var Generator|null */
-    protected $generator;
+    /** @var AnnotationFactoryInterface[] */
+    protected array $annotationFactories;
 
     /**
      * @param array<AnnotationFactoryInterface> $annotationFactories
@@ -112,9 +111,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'methods' => [],
             'context' => $context,
         ];
-        $normaliseClass = function (string $name): string {
-            return '\\' . ltrim($name, '\\');
-        };
+        $normaliseClass = fn (string $name): string => '\\' . ltrim($name, '\\');
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
         }

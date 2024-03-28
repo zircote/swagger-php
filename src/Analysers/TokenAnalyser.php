@@ -15,13 +15,7 @@ use OpenApi\Generator;
  */
 class TokenAnalyser implements AnalyserInterface
 {
-    /** @var Generator|null */
-    protected $generator;
-
-    public function setGenerator(Generator $generator): void
-    {
-        $this->generator = $generator;
-    }
+    use GeneratorAwareTrait;
 
     /**
      * Extract and process all doc-comments from a file.
