@@ -31,7 +31,10 @@ class SchemaQueryParameter
                 }
 
                 $schema = $analysis->getSchemaForSource($operation->x[self::REF]);
-                assert($schema instanceof Schema, 'Expected schema');
+                if (!$schema instanceof Schema) {
+                    throw new \InvalidArgumentException('Value of x.' . self::REF . ' contains reference to unknown schema: ' . $operation->x[self::REF]);
+                }
+
                 $this->expandQueryArgs($operation, $schema);
                 $this->cleanUp($operation);
             }
