@@ -27,12 +27,12 @@ class SchemaQueryParameter
         foreach ($operations as $operation) {
             if ($operation->x !== Generator::UNDEFINED && array_key_exists(self::REF, $operation->x)) {
                 if (!is_string($operation->x[self::REF])) {
-                    throw new \InvalidArgumentException('Value of x.' . self::REF . ' must be a string');
+                    throw new \InvalidArgumentException('Value of `x.' . self::REF . '` must be a string');
                 }
 
                 $schema = $analysis->getSchemaForSource($operation->x[self::REF]);
                 if (!$schema instanceof Schema) {
-                    throw new \InvalidArgumentException('Value of x.' . self::REF . ' contains reference to unknown schema: ' . $operation->x[self::REF]);
+                    throw new \InvalidArgumentException('Value of `x.' . self::REF . "` contains reference to unknown schema: `{$operation->x[self::REF]}`");
                 }
 
                 $this->expandQueryArgs($operation, $schema);
