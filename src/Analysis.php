@@ -72,6 +72,8 @@ class Analysis
 
     public function addAnnotation(object $annotation, Context $context): void
     {
+        assert(!Generator::isDefault($context->version));
+
         if ($this->annotations->contains($annotation)) {
             return;
         }
@@ -369,8 +371,7 @@ class Analysis
             return $context;
         }
 
-        // Weird, did you use the addAnnotation/addAnnotations methods?
-        throw new \Exception('Annotation has no context');
+        throw new \RuntimeException('Annotation has no context - did you use addAnnotation()/addAnnotations()');
     }
 
     /**
