@@ -33,10 +33,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -62,9 +64,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -82,29 +84,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -206,7 +213,7 @@ These will be ignored but can be used for custom processing.</p></dd>
   <dd><p>Reusable Parameters.</p></dd>
   <dt><strong>requestBodies</strong> : <span style="font-family: monospace;">RequestBody[]|null</span></dt>
   <dd><p>Reusable Request Bodies.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">Examples[]|null</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;|null</span></dt>
   <dd><p>Reusable Examples.</p></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]|null</span></dt>
   <dd><p>Reusable Headers.</p></dd>
@@ -313,8 +320,8 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>Examples of the media type.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
@@ -387,7 +394,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -482,7 +489,7 @@ These will be ignored but can be used for custom processing.</p></dd>
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Nested elements
 ---
@@ -628,7 +635,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -718,7 +725,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -884,8 +891,8 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>Examples of the media type.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
@@ -996,10 +1003,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -1025,9 +1034,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -1045,29 +1054,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -1142,11 +1156,12 @@ These will be ignored but can be used for custom processing.</p></dd>
 #### Parameters
 ---
 <dl>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>An associative array of Examples attributes.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
 <br />
-The keys represent the name of the example and the values are instances of the Examples attribute.<br />
-Each example is used to show how the content of the request or response should look like.</p></dd>
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1159,10 +1174,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -1188,9 +1205,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -1208,29 +1225,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -1407,14 +1429,12 @@ The example object is mutually exclusive of the examples object.<br />
 <br />
 Furthermore, if referencing a schema which contains an example,<br />
 the example value shall override the example provided by the schema.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the media type.<br />
 <br />
-Each example object should match the media type and specified schema if present.<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-<br />
-Furthermore, if referencing a schema which contains an example,<br />
-the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
   <dd><p>A map between a property name and its encoding information.<br />
 <br />
@@ -1516,7 +1536,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -1637,8 +1657,8 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>Examples of the media type.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
@@ -1711,7 +1731,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -1884,8 +1904,8 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>Examples of the media type.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
@@ -1958,7 +1978,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -2048,10 +2068,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -2077,9 +2099,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -2097,29 +2119,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -2212,7 +2239,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -2331,8 +2358,8 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>Examples of the media type.<br />
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
@@ -2394,7 +2421,7 @@ These will be ignored but can be used for custom processing.</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to a request body.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Request body model name.</p></dd>
+  <dd><p>The key into Components->requestBodies array.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
@@ -2482,7 +2509,7 @@ These will be ignored but can be used for custom processing.</p></dd>
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -2499,10 +2526,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -2528,9 +2557,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -2548,29 +2577,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -2605,6 +2639,12 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -2625,7 +2665,7 @@ schema defined by this property's value.</p></dd>
 defined by this property's value.</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
-  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
@@ -2745,7 +2785,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />
 Unlike the Schema Object's default, this value must be provided by the consumer.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map between a variable name and its value.<br />
@@ -2819,7 +2859,7 @@ follow common programming naming conventions.</p></dd>
 CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what the operation does.</p></dd>
-  <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
@@ -2997,8 +3037,12 @@ These will be ignored but can be used for custom processing.</p></dd>
 #### Parameters
 ---
 <dl>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;string,Examples&gt;</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -3011,10 +3055,12 @@ Preferably short; use <code>description</code> for more details.</p></dd>
   <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is less than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
-An object instance is valid against this property if its number of properties is greater than, or equal to, the value of this attribute.</p></dd>
+An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
+value of this attribute.</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p></dd>
@@ -3040,9 +3086,9 @@ Possible values are:<br />
 - ssv: space separated values foo bar.<br />
 - tsv: tab separated values foo\tbar.<br />
 - pipes: pipe separated values foo|bar.<br />
-- multi: corresponds to multiple parameter instances instead of multiple values for a single instance foo=bar&foo=baz.<br />
-This is valid only for parameters of type <code>query</code> or <code>formData</code>.<br />
-Default value is csv.</p></dd>
+- multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
+foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
+value is csv.</p></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
@@ -3060,29 +3106,34 @@ When set to true, the minimum value is excluded, and when false or not specified
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">string[]|int[]|float[]|bool[]|\UnitEnum[]|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
-A property instance is valid against this attribute if its value is one of the values specified in this collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
