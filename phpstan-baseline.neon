@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: Examples/processors/schema-query-parameter-attributes/SchemaQueryParameter.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$x \\(array\\<string, mixed\\>\\) does not accept string\\.$#"
+			count: 1
+			path: Examples/processors/schema-query-parameter-attributes/SchemaQueryParameter.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\<OpenApi\\\\Annotations\\\\Parameter\\> and '@OA\\\\\\\\Generator\\:…' will always evaluate to false\\.$#"
+			count: 1
+			path: Examples/processors/schema-query-parameter-attributes/SchemaQueryParameter.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\<OpenApi\\\\Annotations\\\\Property\\> and '@OA\\\\\\\\Generator\\:…' will always evaluate to false\\.$#"
+			count: 1
+			path: Examples/processors/schema-query-parameter-attributes/SchemaQueryParameter.php
+
+		-
 			message: "#^Result of && is always true\\.$#"
 			count: 1
 			path: Examples/processors/sort-components/SortComponents.php
