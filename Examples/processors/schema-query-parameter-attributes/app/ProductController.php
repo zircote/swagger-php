@@ -29,7 +29,9 @@ class ProductController
             ),
         ],
     )]
-    public function getProduct($id) {}
+    public function getProduct($id)
+    {
+    }
 
     #[OA\Get(
         path: '/products/search',
@@ -46,5 +48,7 @@ class ProductController
         ],
         x: [SchemaQueryParameter::REF => Product::class],
     )]
-    public function findProducts($id) {}
+    public function findProducts($id)
+    {
+    }
 }

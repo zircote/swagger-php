@@ -12,4 +12,6 @@ use OpenApi\Attributes as OA;
 #[OA\OpenApi(
     info: new OA\Info(version: '1.0.0', title: 'Example of using a custom processor in swagger-php'),
 )]
-class OpenApi {}
+class OpenApi
+{
+}

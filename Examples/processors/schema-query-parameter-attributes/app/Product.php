@@ -21,5 +21,6 @@ class Product
             example: 'Lorem ipsum',
         )]
         public string|null $name,
-    ) {}
+    ) {
+    }
 }
