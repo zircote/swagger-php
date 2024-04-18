@@ -456,7 +456,9 @@ class Generator
             $analysis->process($this->getProcessors());
 
             if ($analysis->openapi) {
-                $analysis->openapi->openapi = $this->version ?: $analysis->openapi->openapi;
+                // overwrite default/annotated version
+                $analysis->openapi->openapi = $this->getVersion() ?: $analysis->openapi->openapi;
+                // update context to provide the same to validation/serialisation code
                 $rootContext->version = $analysis->openapi->openapi;
             }
 

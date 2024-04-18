@@ -46,11 +46,6 @@ parameters:
 			path: src/Annotations/Schema.php
 
 		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/Context.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Generator.php
