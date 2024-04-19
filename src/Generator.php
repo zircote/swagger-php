@@ -54,7 +54,7 @@ class Generator
     protected $config = [];
 
     /** @var Pipeline|null List of configured processors. */
-    protected $processors = null;
+    protected $processor = null;
 
     /** @var LoggerInterface|null PSR logger. */
     protected $logger = null;
@@ -248,8 +248,13 @@ class Generator
      */
     public function getProcessors(): array
     {
-        if (null === $this->processors) {
-            $this->processors = new Pipeline([
+        return $this->getProcessor()->pipes();
+    }
+
+    public function getProcessor(): Pipeline
+    {
+        if (null === $this->processor) {
+            $this->processor = new Pipeline([
                 new Processors\DocBlockDescriptions(),
                 new Processors\MergeIntoOpenApi(),
                 new Processors\MergeIntoComponents(),
@@ -286,7 +291,7 @@ class Generator
             }
         };
 
-        return $this->processors->walk($walker)->pipes();
+        return $this->processor->walk($walker);
     }
 
     /**
@@ -294,7 +299,7 @@ class Generator
      */
     public function setProcessors(?array $processors): Generator
     {
-        $this->processors = null !== $processors ? new Pipeline($processors) : null;
+        $this->processor = null !== $processors ? new Pipeline($processors) : null;
 
         return $this;
     }
@@ -305,7 +310,7 @@ class Generator
      */
     public function addProcessor($processor, ?string $before = null): Generator
     {
-        $processors = $this->processors ?: new Pipeline($this->getProcessors());
+        $processors = $this->processor ?: new Pipeline($this->getProcessors());
         if (!$before) {
             $processors->add($processor);
         } else {
@@ -321,7 +326,7 @@ class Generator
             $processors->insert($processor, $matcher);
         }
 
-        $this->processors = $processors;
+        $this->processor = $processors;
 
         return $this;
     }
@@ -331,9 +336,9 @@ class Generator
      */
     public function removeProcessor($processor, bool $silent = false): Generator
     {
-        $processors = $this->processors ?: new Pipeline($this->getProcessors());
+        $processors = $this->processor ?: new Pipeline($this->getProcessors());
         $processors->remove($processor);
-        $this->processors = $processors;
+        $this->processor = $processors;
 
         return $this;
     }
