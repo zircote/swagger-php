@@ -7,7 +7,6 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Generator;
-use OpenApi\Pipeline;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
