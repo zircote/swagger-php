@@ -48,12 +48,12 @@ class Generator
     protected $namespaces;
 
     /** @var AnalyserInterface|null The configured analyzer. */
-    protected $analyser;
+    protected $analyser = null;
 
     /** @var array<string,mixed> */
     protected $config = [];
 
-    /** @var array<ProcessorInterface|callable>|null List of configured processors. */
+    /** @var Pipeline|null List of configured processors. */
     protected $processors = null;
 
     /** @var LoggerInterface|null PSR logger. */
@@ -249,7 +249,7 @@ class Generator
     public function getProcessors(): array
     {
         if (null === $this->processors) {
-            $this->processors = [
+            $this->processors = new Pipeline([
                 new Processors\DocBlockDescriptions(),
                 new Processors\MergeIntoOpenApi(),
                 new Processors\MergeIntoComponents(),
@@ -267,26 +267,26 @@ class Generator
                 new Processors\MergeXmlContent(),
                 new Processors\OperationId(),
                 new Processors\CleanUnmerged(),
-            ];
+            ]);
         }
 
         $config = $this->getConfig();
-        foreach ($this->processors as $processor) {
-            $rc = new \ReflectionClass($processor);
+        $walker = function (callable $pipe) use ($config) {
+            $rc = new \ReflectionClass($pipe);
 
             // apply config
             $processorKey = lcfirst($rc->getShortName());
             if (array_key_exists($processorKey, $config)) {
                 foreach ($config[$processorKey] as $name => $value) {
                     $setter = 'set' . ucfirst($name);
-                    if (method_exists($processor, $setter)) {
-                        $processor->{$setter}($value);
+                    if (method_exists($pipe, $setter)) {
+                        $pipe->{$setter}($value);
                     }
                 }
             }
-        }
+        };
 
-        return $this->processors;
+        return $this->processors->walk($walker)->pipes();
     }
 
     /**
@@ -294,7 +294,7 @@ class Generator
      */
     public function setProcessors(?array $processors): Generator
     {
-        $this->processors = $processors;
+        $this->processors = null !== $processors ? new Pipeline($processors) : null;
 
         return $this;
     }
@@ -305,21 +305,23 @@ class Generator
      */
     public function addProcessor($processor, ?string $before = null): Generator
     {
-        $processors = $this->getProcessors();
+        $processors = $this->processors ?: new Pipeline($this->getProcessors());
         if (!$before) {
-            $processors[] = $processor;
+            $processors->add($processor);
         } else {
-            $tmp = [];
-            foreach ($processors as $current) {
-                if ($current instanceof $before) {
-                    $tmp[] = $processor;
+            $matcher = function (array $pipes) use ($before) {
+                foreach ($pipes as $ii => $current) {
+                    if ($current instanceof $before) {
+                        return $ii;
+                    }
                 }
-                $tmp[] = $current;
-            }
-            $processors = $tmp;
+
+                return null;
+            };
+            $processors->insert($processor, $matcher);
         }
 
-        $this->setProcessors($processors);
+        $this->processors = $processors;
 
         return $this;
     }
@@ -329,15 +331,9 @@ class Generator
      */
     public function removeProcessor($processor, bool $silent = false): Generator
     {
-        $processors = $this->getProcessors();
-        if (false === ($key = array_search($processor, $processors, true))) {
-            if ($silent) {
-                return $this;
-            }
-            throw new \InvalidArgumentException('Processor not found');
-        }
-        unset($processors[$key]);
-        $this->setProcessors($processors);
+        $processors = $this->processors ?: new Pipeline($this->getProcessors());
+        $processors->remove($processor);
+        $this->processors = $processors;
 
         return $this;
     }
@@ -348,6 +344,8 @@ class Generator
      * @param ProcessorInterface|callable $processor the new processor
      * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
      *                                               If none given, matching is based on the processors class.
+     *
+     * @deprecated
      */
     public function updateProcessor($processor, ?callable $matcher = null): Generator
     {

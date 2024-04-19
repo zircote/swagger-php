@@ -67,7 +67,7 @@ class Pipeline
     public function insert(callable $pipe, callable $matcher): Pipeline
     {
         $index = $matcher($this->pipes);
-        if ($index < 0 || $index > count($this->pipes)) {
+        if (null === $index || $index < 0 || $index > count($this->pipes)) {
             throw new \InvalidArgumentException('Matcher result out of range');
         }
 
