@@ -10,6 +10,11 @@ use OpenApi\Pipeline;
 
 class PipelineTest extends OpenApiTestCase
 {
+    public function __invoke($payload)
+    {
+        return $payload . 'x';
+    }
+
     protected function pipe(string $add)
     {
         return new class($add) {
@@ -48,16 +53,40 @@ class PipelineTest extends OpenApiTestCase
         $this->assertEquals('ab', $pipeline->process(''));
     }
 
-    public function testRemoved()
+    public function testRemoveStrict()
     {
         $pipeline = new Pipeline();
 
         $pipeline->add($pipec = $this->pipe('c'));
-        $pipeline->add($piped = $this->pipe('d'));
+        $pipeline->add($this->pipe('d'));
         $this->assertEquals('cd', $pipeline->process(''));
 
         $pipeline->remove($pipec);
         $this->assertEquals('d', $pipeline->process(''));
+    }
+
+    public function testRemoveMatcher()
+    {
+        $pipeline = new Pipeline();
+
+        $pipeline->add($pipec = $this->pipe('c'));
+        $pipeline->add($this->pipe('d'));
+        $this->assertEquals('cd', $pipeline->process(''));
+
+        $pipeline->remove(null, function ($pipe) use ($pipec) { return $pipe !== $pipec; });
+        $this->assertEquals('d', $pipeline->process(''));
+    }
+
+    public function testRemoveClassString()
+    {
+        $pipeline = new Pipeline();
+
+        $pipeline->add($this->pipe('c'));
+        $pipeline->add($this);
+        $this->assertEquals('cx', $pipeline->process(''));
+
+        $pipeline->remove(__CLASS__);
+        $this->assertEquals('c', $pipeline->process(''));
     }
 
     public function testInsert()

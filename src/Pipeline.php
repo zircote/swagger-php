@@ -33,10 +33,21 @@ class Pipeline
         return $this;
     }
 
-    public function remove(?callable $pipe, ?callable $matcher = null): Pipeline
+    /**
+     * @param callable|class-string|null $pipe
+     */
+    public function remove($pipe = null, ?callable $matcher = null): Pipeline
     {
         if (!$pipe && !$matcher) {
             throw new \InvalidArgumentException('pipe or callable must not be empty');
+        }
+
+        // allow matching on class name in $pipe in a string
+        if (is_string($pipe) && !$matcher) {
+            $pipeClass = $pipe;
+            $matcher = function ($pipe) use ($pipeClass) {
+                return !$pipe instanceof $pipeClass;
+            };
         }
 
         if ($matcher) {
