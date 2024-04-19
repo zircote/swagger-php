@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
+use OpenApi\Pipeline;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -242,7 +243,7 @@ class OpenApiTestCase extends TestCase
 
         (new Generator($this->getTrackingLogger()))
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
-            ->setProcessors($processors)
+            ->setProcessor(new Pipeline($processors))
             ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;

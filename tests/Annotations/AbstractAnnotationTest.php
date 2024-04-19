@@ -130,7 +130,7 @@ END;
     public function testDuplicateOperationIdValidation(): void
     {
         $analysis = $this->analysisFromFixtures(['DuplicateOperationId.php']);
-        $analysis->process((new Generator())->getProcessors());
+        (new Generator())->getProcessor()->process($analysis);
 
         $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
         $this->assertFalse($analysis->validate());
@@ -151,7 +151,7 @@ END;
         $this->skipLegacy();
 
         $analysis = $this->analysisFromFixtures(['BadExampleParameter.php']);
-        $analysis->process((new Generator())->getProcessors());
+        (new Generator())->getProcessor()->process($analysis);
 
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');

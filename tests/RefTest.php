@@ -27,7 +27,7 @@ END;
         $openapi->merge($this->annotationsFromDocBlockParser($comment));
         $analysis = new Analysis([], $this->getContext());
         $analysis->addAnnotation($openapi, $this->getContext());
-        $analysis->process((new Generator())->getProcessors());
+        (new Generator())->getProcessor()->process($analysis);
 
         $analysis->validate();
         // escape / as ~1

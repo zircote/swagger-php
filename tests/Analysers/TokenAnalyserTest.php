@@ -280,7 +280,7 @@ class TokenAnalyserTest extends OpenApiTestCase
     public function testAnonymousFunctions(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/AnonymousFunctions.php'], [], new TokenAnalyser());
-        $analysis->process((new Generator())->getProcessors());
+        (new Generator())->getProcessor()->process($analysis);
 
         $infos = $analysis->getAnnotationsOfType(OA\Info::class, true);
         $this->assertCount(1, $infos);
@@ -295,6 +295,6 @@ class TokenAnalyserTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process((new Generator())->getProcessors());
+        (new Generator())->getProcessor()->process($analysis);
     }
 }

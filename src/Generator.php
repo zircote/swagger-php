@@ -243,14 +243,6 @@ class Generator
         return $this;
     }
 
-    /**
-     * @return array<ProcessorInterface|callable>
-     */
-    public function getProcessors(): array
-    {
-        return $this->getProcessor()->pipes();
-    }
-
     public function getProcessor(): Pipeline
     {
         if (null === $this->processor) {
@@ -294,8 +286,39 @@ class Generator
         return $this->processor->walk($walker);
     }
 
+    public function setProcessor(Pipeline $processor): Generator
+    {
+        $this->processor = $processor;
+
+        return $this;
+    }
+
+    /**
+     * Chainable method that allows to modify the processor pipeline.
+     *
+     * @param callable $with callable with the current processor pipeline passed in
+     */
+    public function withProcessor(callable $with): Generator
+    {
+        $with($this->getProcessor());
+
+        return $this;
+    }
+
+    /**
+     * @return array<ProcessorInterface|callable>
+     *
+     * @deprecated
+     */
+    public function getProcessors(): array
+    {
+        return $this->getProcessor()->pipes();
+    }
+
     /**
      * @param array<ProcessorInterface|callable>|null $processors
+     *
+     * @deprecated
      */
     public function setProcessors(?array $processors): Generator
     {
@@ -307,10 +330,12 @@ class Generator
     /**
      * @param callable|ProcessorInterface $processor
      * @param class-string|null           $before
+     *
+     * @deprecated
      */
     public function addProcessor($processor, ?string $before = null): Generator
     {
-        $processors = $this->processor ?: new Pipeline($this->getProcessors());
+        $processors = $this->processor ?: $this->getProcessor();
         if (!$before) {
             $processors->add($processor);
         } else {
@@ -333,10 +358,12 @@ class Generator
 
     /**
      * @param callable|ProcessorInterface $processor
+     *
+     * @deprecated
      */
     public function removeProcessor($processor, bool $silent = false): Generator
     {
-        $processors = $this->processor ?: new Pipeline($this->getProcessors());
+        $processors = $this->processor ?: $this->getProcessor();
         $processors->remove($processor);
         $this->processor = $processors;
 
@@ -393,6 +420,7 @@ class Generator
                 'namespaces' => self::DEFAULT_NAMESPACES,
                 'analyser' => null,
                 'analysis' => null,
+                'processor' => null,
                 'processors' => null,
                 'logger' => null,
                 'validate' => true,
@@ -404,7 +432,8 @@ class Generator
             ->setAliases($config['aliases'])
             ->setNamespaces($config['namespaces'])
             ->setAnalyser($config['analyser'])
-            ->setProcessors($config['processors'])
+            ->setProcessor($config['processor'])
+            ->setProcessor(new Pipeline($config['processors']))
             ->generate($sources, $config['analysis'], $config['validate']);
     }
 
@@ -458,7 +487,7 @@ class Generator
             $this->scanSources($sources, $analysis, $rootContext);
 
             // post-processing
-            $analysis->process($this->getProcessors());
+            $this->getProcessor()->process($analysis);
 
             if ($analysis->openapi) {
                 // overwrite default/annotated version

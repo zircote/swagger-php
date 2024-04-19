@@ -422,6 +422,8 @@ class Analysis
      * Apply the processor(s).
      *
      * @param callable|ProcessorInterface|array<ProcessorInterface|callable> $processors One or more processors
+     *
+     * @deprecated
      */
     public function process($processors = null): void
     {

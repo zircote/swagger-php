@@ -32,9 +32,9 @@ $openapi = \OpenApi\scan(__DIR__, ['exclude' => ['tests'], 'pattern' => '*.php']
 ```
 
 The two configuration options for the underlying Doctrine doc-block parser `aliases` and `namespaces`
-are not part of this function and need to be set separately. 
+are not part of this function and need to be set separately.
 
-Being static this means setting them back is the callers responsibility and there is also the fact that 
+Being static this means setting them back is the callers responsibility and there is also the fact that
 some Doctrine configuration currently can not be reverted easily.
 
 Therefore, having a single side effect free way of using swagger-php seemed like a good idea...
@@ -57,7 +57,7 @@ $processors = [/* my processors */];
 $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in(__DIR__);
 
 $openapi = (new \OpenApi\Generator($logger))
-            ->setProcessors($processors)
+            ->setProcessor(new \OpenApi\Pipeline($processors))
             ->setAliases(['MY' => 'My\Annotations'])
             ->setNamespaces(['My\\Annotations\\'])
             ->setAnalyser(new \OpenApi\Analysers\TokenAnalyser())
