@@ -85,6 +85,7 @@
         "testlegacy": "Run tests using the legacy TokenAnalyser",
         "testall": "Run all tests (test + testlegacy)",
         "analyse": "Run static analysis (phpstan/psalm)",
+        "rector": "Automatic refactoring",
         "spectral-examples": "Run spectral lint over all .yaml files in the Examples folder",
         "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
         "spectral": "Run all spectral tests",
@@ -108,6 +109,7 @@
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
             "export XDEBUG_MODE=off && psalm"
         ],
+        "rector": "rector process src --dry-run",
         "spectral-examples": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
         "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do spectral lint $ff; done",
         "spectral": [

@@ -96,7 +96,7 @@ class Context
         if ($this->is($property)) {
             return $this;
         }
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->with($property);
         }
 
@@ -108,7 +108,7 @@ class Context
      */
     public function root(): Context
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->root();
         }
 
@@ -168,7 +168,7 @@ class Context
      */
     public function __get(string $property)
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->{$property};
         }
 
