@@ -22,11 +22,7 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
             $message = $message->getMessage();
         }
 
-        if (in_array($level, [LogLevel::NOTICE, LogLevel::INFO])) {
-            $error_level = E_USER_NOTICE;
-        } else {
-            $error_level = E_USER_WARNING;
-        }
+        $error_level = in_array($level, [LogLevel::NOTICE, LogLevel::INFO]) ? E_USER_NOTICE : E_USER_WARNING;
 
         trigger_error($message, $error_level);
     }

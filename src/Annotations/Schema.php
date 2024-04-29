@@ -480,7 +480,7 @@ class Schema extends AbstractAnnotation
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
 
@@ -506,12 +506,10 @@ class Schema extends AbstractAnnotation
             return false;
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
-            if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed for ' . OpenApi::VERSION_3_1_0);
+        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0) && !Generator::isDefault($this->examples)) {
+            $this->_context->logger->warning($this->identity() . ' is only allowed for ' . OpenApi::VERSION_3_1_0);
 
-                return false;
-            }
+            return false;
         }
 
         return parent::validate($stack, $skip, $ref, $context);

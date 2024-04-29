@@ -44,10 +44,8 @@ trait DocblockTrait
                     if ($className === get_class($contextAnnotation)) {
                         return $annotation === $contextAnnotation;
                     }
-                } else {
-                    if ($contextAnnotation instanceof $className) {
-                        return $annotation === $contextAnnotation;
-                    }
+                } elseif ($contextAnnotation instanceof $className) {
+                    return $annotation === $contextAnnotation;
                 }
             }
         }

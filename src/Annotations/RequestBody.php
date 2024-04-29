@@ -100,7 +100,7 @@ class RequestBody extends AbstractAnnotation
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
 

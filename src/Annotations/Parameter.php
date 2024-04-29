@@ -277,12 +277,10 @@ class Parameter extends AbstractAnnotation
 
         $valid = parent::validate($stack, $skip, $ref, $context);
 
-        if (Generator::isDefault($this->ref)) {
-            if ($this->in === 'body') {
-                if (Generator::isDefault($this->schema)) {
-                    $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
-                    $valid = false;
-                }
+        if (Generator::isDefault($this->ref) && $this->in === 'body') {
+            if (Generator::isDefault($this->schema)) {
+                $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
+                $valid = false;
             }
         }
 

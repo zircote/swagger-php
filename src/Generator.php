@@ -54,10 +54,10 @@ class Generator
     protected $config = [];
 
     /** @var array<ProcessorInterface|callable>|null List of configured processors. */
-    protected $processors = null;
+    protected $processors;
 
     /** @var LoggerInterface|null PSR logger. */
-    protected $logger = null;
+    protected ?LoggerInterface $logger;
 
     /**
      * OpenApi version override.
@@ -69,9 +69,9 @@ class Generator
      *
      * @var string|null
      */
-    protected $version = null;
+    protected $version;
 
-    private $configStack;
+    private object $configStack;
 
     public function __construct(?LoggerInterface $logger = null)
     {
@@ -99,11 +99,9 @@ class Generator
                                 foreach ($gref->getNamespaces() as $namespace) {
                                     if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
                                         $loaded = class_exists($class);
-                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
-                                            if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
-                                                // Detected an 2.x annotation?
-                                                throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                                            }
+                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\' && in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
+                                            // Detected an 2.x annotation?
+                                            throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                                         }
 
                                         return $loaded;
@@ -427,6 +425,8 @@ class Generator
         } finally {
             $this->configStack->pop();
         }
+
+        return null;
     }
 
     /**

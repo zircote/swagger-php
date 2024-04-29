@@ -46,10 +46,8 @@ class Context
 {
     /**
      * Prototypical inheritance for properties.
-     *
-     * @var Context|null
      */
-    private $parent;
+    private ?Context $parent;
 
     public function clone()
     {
@@ -194,7 +192,7 @@ class Context
      */
     public static function detect(int $index = 0): Context
     {
-        trigger_deprecation('zircote/swagger-php', '4.9', 'Context detecting is deprecated');
+        // trigger_deprecation('zircote/swagger-php', '4.9', 'Context detecting is deprecated');
 
         $context = new Context();
         $backtrace = debug_backtrace();
@@ -215,7 +213,7 @@ class Context
         if (isset($caller['class'])) {
             $fqn = explode('\\', $caller['class']);
             $context->class = array_pop($fqn);
-            if (count($fqn)) {
+            if ($fqn !== []) {
                 $context->namespace = implode('\\', $fqn);
             }
         }
@@ -233,12 +231,7 @@ class Context
             return '';
         }
 
-        if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
-        } else {
-            // global namespace
-            $namespace = '\\';
-        }
+        $namespace = $this->namespace ? str_replace('\\\\', '\\', '\\' . $this->namespace . '\\') : '\\';
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {

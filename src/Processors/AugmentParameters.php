@@ -15,7 +15,7 @@ class AugmentParameters implements ProcessorInterface
 {
     use DocblockTrait;
 
-    protected $augmentOperationParameters;
+    protected bool $augmentOperationParameters;
 
     public function __construct(bool $augmentOperationParameters = true)
     {
@@ -80,10 +80,8 @@ class AugmentParameters implements ProcessorInterface
                 if (array_key_exists('param', $tags)) {
                     foreach ($tags['param'] as $name => $details) {
                         foreach ($operation->parameters as $parameter) {
-                            if ($parameter->name == $name) {
-                                if (Generator::isDefault($parameter->description) && $details['description']) {
-                                    $parameter->description = $details['description'];
-                                }
+                            if ($parameter->name == $name && (Generator::isDefault($parameter->description) && $details['description'])) {
+                                $parameter->description = $details['description'];
                             }
                         }
                     }

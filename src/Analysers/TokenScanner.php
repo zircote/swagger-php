@@ -66,7 +66,7 @@ class TokenScanner
                         break;
                     case '}':
                         array_pop($stack);
-                        if (count($stack) == $unitLevel) {
+                        if (count($stack) === $unitLevel) {
                             $currentName = null;
                         }
                         break;
@@ -76,7 +76,7 @@ class TokenScanner
 
             switch ($token[0]) {
                 case T_ABSTRACT:
-                    if (count($stack)) {
+                    if ($stack !== []) {
                         $isAbstractFunction = true;
                     }
                     break;
@@ -115,7 +115,7 @@ class TokenScanner
                     // unless ...
                     if (is_string($token) && ($token === '(' || $token === '{')) {
                         // new class[()] { ... }
-                        if ('{' == $token) {
+                        if ('{' === $token) {
                             prev($tokens);
                         }
                         break;
@@ -219,10 +219,8 @@ class TokenScanner
         $token = true;
         while ($token) {
             $token = next($tokens);
-            if (is_array($token)) {
-                if (in_array($token[0], [T_WHITESPACE, T_COMMENT])) {
-                    continue;
-                }
+            if (is_array($token) && in_array($token[0], [T_WHITESPACE, T_COMMENT])) {
+                continue;
             }
 
             return $token;
@@ -254,7 +252,7 @@ class TokenScanner
     protected function skipTo(array &$tokens, string $char, bool $prev = false): void
     {
         while (false !== ($token = next($tokens))) {
-            if (is_string($token) && $token == $char) {
+            if (is_string($token) && $token === $char) {
                 if ($prev) {
                     prev($tokens);
                 }

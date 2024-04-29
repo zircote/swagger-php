@@ -30,14 +30,12 @@ class TokenAnalyser implements AnalyserInterface
      */
     public function fromFile(string $filename, Context $context): Analysis
     {
-        if (function_exists('opcache_get_status') && function_exists('opcache_get_configuration')) {
-            if (empty($GLOBALS['openapi_opcache_warning'])) {
-                $GLOBALS['openapi_opcache_warning'] = true;
-                $status = opcache_get_status();
-                $config = opcache_get_configuration();
-                if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
-                    $context->logger->error("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
-                }
+        if (function_exists('opcache_get_status') && function_exists('opcache_get_configuration') && empty($GLOBALS['openapi_opcache_warning'])) {
+            $GLOBALS['openapi_opcache_warning'] = true;
+            $status = opcache_get_status();
+            $config = opcache_get_configuration();
+            if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
+                $context->logger->error("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
             }
         }
         $tokens = token_get_all(file_get_contents($filename));
@@ -166,7 +164,9 @@ class TokenAnalyser implements AnalyserInterface
 
                 if ($token[0] === T_IMPLEMENTS) {
                     $schemaContext->implements = $this->parseNamespaceList($tokens, $token, $parseContext);
-                    $classDefinition['implements'] = array_map([$schemaContext, 'fullyQualifiedName'], $schemaContext->implements);
+                    $classDefinition['implements'] = array_map(function (?string $source) use ($schemaContext): string {
+                        return $schemaContext->fullyQualifiedName($source);
+                    }, $schemaContext->implements);
                 }
 
                 if ($comment) {
@@ -207,7 +207,9 @@ class TokenAnalyser implements AnalyserInterface
 
                 if ($token[0] === T_EXTENDS) {
                     $schemaContext->extends = $this->parseNamespaceList($tokens, $token, $parseContext);
-                    $interfaceDefinition['extends'] = array_map([$schemaContext, 'fullyQualifiedName'], $schemaContext->extends);
+                    $interfaceDefinition['extends'] = array_map(function (?string $source) use ($schemaContext): string {
+                        return $schemaContext->fullyQualifiedName($source);
+                    }, $schemaContext->extends);
                 }
 
                 if ($comment) {
@@ -394,13 +396,11 @@ class TokenAnalyser implements AnalyserInterface
                 }
             }
 
-            if (in_array($token[0], [T_NAMESPACE, T_USE]) === false) {
-                // Skip "use" & "namespace" to prevent "never imported" warnings)
-                if ($comment) {
-                    // Not a doc-comment for a class, property or method?
-                    $this->analyseComment($analysis, $docBlockParser, $comment, new Context(['line' => $line], $schemaContext));
-                    $comment = false;
-                }
+            // Skip "use" & "namespace" to prevent "never imported" warnings)
+            if (in_array($token[0], [T_NAMESPACE, T_USE]) === false && $comment) {
+                // Not a doc-comment for a class, property or method?
+                $this->analyseComment($analysis, $docBlockParser, $comment, new Context(['line' => $line], $schemaContext));
+                $comment = false;
             }
 
             if ($token[0] === T_NAMESPACE) {
@@ -495,6 +495,8 @@ class TokenAnalyser implements AnalyserInterface
 
             return $token;
         }
+
+        return null;
     }
 
     private function parseAttribute(array &$tokens, &$token, Context $parseContext): void

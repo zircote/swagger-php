@@ -37,15 +37,13 @@ class ExpandEnums implements ProcessorInterface
         foreach ($schemas as $schema) {
             if ($schema->_context->is('enum')) {
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($schema->_context->enum));
-                $schema->schema = !Generator::isDefault($schema->schema) ? $schema->schema : $re->getShortName();
+                $schema->schema = Generator::isDefault($schema->schema) ? $re->getShortName() : $schema->schema;
 
                 $schemaType = $schema->type;
                 $enumType = null;
                 if ($re->isBacked()) {
                     $backingType = $re->getBackingType();
-                    if ($backingType instanceof \ReflectionNamedType) {
-                        $enumType = $backingType->getName();
-                    }
+                    $enumType = $backingType->getName();
                 }
 
                 // no (or invalid) schema type means name
@@ -99,11 +97,7 @@ class ExpandEnums implements ProcessorInterface
 
             $enums = [];
             foreach ($cases as $enum) {
-                if (is_a($enum, \UnitEnum::class)) {
-                    $enums[] = $enum->value ?? $enum->name;
-                } else {
-                    $enums[] = $enum;
-                }
+                $enums[] = is_a($enum, \UnitEnum::class) ? $enum->value ?? $enum->name : $enum;
             }
 
             $schema->enum = $enums;

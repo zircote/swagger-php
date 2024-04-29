@@ -74,11 +74,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 }
                                 $instance->nullable = $nullable ?: Generator::UNDEFINED;
 
-                                if ($rp->isPromoted()) {
-                                    // promoted parameter - docblock is available via class/property
-                                    if ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment()) {
-                                        $instance->_context->comment = $comment;
-                                    }
+                                // promoted parameter - docblock is available via class/property
+                                if ($rp->isPromoted() && ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment())) {
+                                    $instance->_context->comment = $comment;
                                 }
                             } else {
                                 if (!$instance->name || Generator::isDefault($instance->name)) {
@@ -118,28 +116,27 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
             $isParentAllowed = false;
             // support Attachable subclasses
-            if ($isAttachable = $annotation instanceof OA\Attachable) {
-                if (!$isParentAllowed = (null === $annotation->allowedParents())) {
-                    // check for allowed parents
-                    foreach ($annotation->allowedParents() as $allowedParent) {
-                        if ($possibleParent instanceof $allowedParent) {
-                            $isParentAllowed = true;
-                            break;
-                        }
+            if (($isAttachable = $annotation instanceof OA\Attachable) && !$isParentAllowed = (null === $annotation->allowedParents())) {
+                // check for allowed parents
+                foreach ($annotation->allowedParents() as $allowedParent) {
+                    if ($possibleParent instanceof $allowedParent) {
+                        $isParentAllowed = true;
+                        break;
                     }
                 }
             }
 
             // Property can be nested...
-            return $annotation->getRoot() != $possibleParent->getRoot()
+            return $annotation->getRoot() !== $possibleParent->getRoot()
                 && ($explicitParent || ($isAttachable && $isParentAllowed));
         };
 
         $annotationsWithoutParent = [];
         foreach ($annotations as $index => $annotation) {
             $mergedIntoParent = false;
+            $counter = count($annotations);
 
-            for ($ii = 0; $ii < count($annotations); ++$ii) {
+            for ($ii = 0; $ii < $counter; ++$ii) {
                 if ($ii === $index) {
                     continue;
                 }

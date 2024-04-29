@@ -48,13 +48,11 @@ class CleanUnusedComponents implements ProcessorInterface
                 }
             }
 
-            if ($annotation instanceof OA\OpenApi || $annotation instanceof OA\Operation) {
-                if (!Generator::isDefault($annotation->security)) {
-                    foreach ($annotation->security as $security) {
-                        foreach (array_keys($security) as $securityName) {
-                            $ref = OA\Components::COMPONENTS_PREFIX . 'securitySchemes/' . $securityName;
-                            $usedRefs[$ref] = $ref;
-                        }
+            if (($annotation instanceof OA\OpenApi || $annotation instanceof OA\Operation) && !Generator::isDefault($annotation->security)) {
+                foreach ($annotation->security as $security) {
+                    foreach (array_keys($security) as $securityName) {
+                        $ref = OA\Components::COMPONENTS_PREFIX . 'securitySchemes/' . $securityName;
+                        $usedRefs[$ref] = $ref;
                     }
                 }
             }

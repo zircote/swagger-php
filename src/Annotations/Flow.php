@@ -95,9 +95,9 @@ class Flow extends AbstractAnnotation
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
-        if (is_array($this->scopes) && empty($this->scopes)) {
+        if ($this->scopes === []) {
             $this->scopes = new \stdClass();
         }
 

@@ -15,7 +15,7 @@ use OpenApi\Generator;
  */
 class OperationId implements ProcessorInterface
 {
-    protected $hash;
+    protected bool $hash;
 
     public function __construct(bool $hash = true)
     {
@@ -57,11 +57,7 @@ class OperationId implements ProcessorInterface
                 $operationId = null;
                 if ($source) {
                     $method = $context->method ? ('::' . $context->method) : '';
-                    if ($context->namespace) {
-                        $operationId = $context->namespace . '\\' . $source . $method;
-                    } else {
-                        $operationId = $source . $method;
-                    }
+                    $operationId = $context->namespace ? $context->namespace . '\\' . $source . $method : $source . $method;
                 } elseif ($context->method) {
                     $operationId = $context->method;
                 }

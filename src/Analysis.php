@@ -55,12 +55,12 @@ class Analysis
      *
      * @var OA\OpenApi|null
      */
-    public $openapi = null;
+    public $openapi;
 
     /**
      * @var Context|null
      */
-    public $context = null;
+    public $context;
 
     public function __construct(array $annotations = [], ?Context $context = null)
     {
@@ -347,7 +347,7 @@ class Analysis
                 if (is_iterable($definition['context']->annotations)) {
                     /** @var OA\AbstractAnnotation $annotation */
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if (is_a($annotation, $class) && $annotation->isRoot($class) && !$annotation->_context->is('generated')) {
+                        if ($annotation instanceof $class && $annotation->isRoot($class) && !$annotation->_context->is('generated')) {
                             return $annotation;
                         }
                     }

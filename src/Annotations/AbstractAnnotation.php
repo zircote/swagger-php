@@ -37,7 +37,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * @var Context|null
      */
-    public $_context = null;
+    public $_context;
 
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
@@ -133,10 +133,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 $this->merge($annotations);
             } elseif (is_object($value)) {
                 $this->merge([$value]);
-            } else {
-                if (!Generator::isDefault($value)) {
-                    $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
-                }
+            } elseif (!Generator::isDefault($value)) {
+                $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
             }
         }
 
@@ -240,7 +238,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
                 $context1 = $this->_context;
                 $context2 = property_exists($object, '_context') ? $object->_context : 'unknown';
-                if (is_object($this->{$property}) && $this->{$property} instanceof AbstractAnnotation) {
+                if ($this->{$property} instanceof AbstractAnnotation) {
                     $context1 = $this->{$property}->_context;
                 }
                 $this->_context->logger->error('Multiple definitions for ' . $identity . '->' . $property . "\n     Using: " . $context1 . "\n  Skipping: " . $context2);
@@ -285,7 +283,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = new \stdClass();
 
@@ -303,7 +301,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // Correct empty array to empty objects.
         foreach (static::$_types as $property => $type) {
-            if ($type === 'object' && is_array($data->{$property}) && empty($data->{$property})) {
+            if ($type === 'object' && is_array($data->{$property}) && $data->{$property} === []) {
                 $data->{$property} = new \stdClass();
             }
         }
@@ -334,11 +332,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 } else {
                     $key = $item->{$keyField};
                     if (!Generator::isDefault($key) && empty($object->{$key})) {
-                        if ($item instanceof \JsonSerializable) {
-                            $object->{$key} = $item->jsonSerialize();
-                        } else {
-                            $object->{$key} = $item;
-                        }
+                        $object->{$key} = $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
                         unset($object->{$key}->{$keyField});
                     }
                 }
@@ -352,10 +346,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $ref = ['$ref' => $data->ref];
             if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
                 foreach (['summary', 'description'] as $prop) {
-                    if (property_exists($this, $prop)) {
-                        if (!Generator::isDefault($this->{$prop})) {
-                            $ref[$prop] = $data->{$prop};
-                        }
+                    if (property_exists($this, $prop) && !Generator::isDefault($this->{$prop})) {
+                        $ref[$prop] = $data->{$prop};
                     }
                 }
             }
@@ -370,7 +362,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
                 // preserve other properties
                 foreach (get_object_vars($this) as $property => $value) {
-                    if ('_' == $property[0] || in_array($property, ['ref', 'nullable'])) {
+                    if ('_' === $property[0] || in_array($property, ['ref', 'nullable'])) {
                         continue;
                     }
                     if (!Generator::isDefault($value)) {
@@ -499,7 +491,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         if (property_exists($this, 'ref') && !Generator::isDefault($this->ref) && is_string($this->ref)) {
-            if (substr($this->ref, 0, 2) === '#/' && count($stack) > 0 && $stack[0] instanceof OpenApi) {
+            if (substr($this->ref, 0, 2) === '#/' && $stack !== [] && $stack[0] instanceof OpenApi) {
                 // Internal reference
                 try {
                     $stack[0]->ref($this->ref);
@@ -551,14 +543,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
         $stack[] = $this;
 
-        if (property_exists($this, 'example') && property_exists($this, 'examples')) {
-            if (!Generator::isDefault($this->example) && !Generator::isDefault($this->examples)) {
-                $valid = false;
-                $this->_context->logger->warning($this->identity() . ': "example" and "examples" are mutually exclusive');
-            }
+        if (property_exists($this, 'example') && property_exists($this, 'examples') && (!Generator::isDefault($this->example) && !Generator::isDefault($this->examples))) {
+            $valid = false;
+            $this->_context->logger->warning($this->identity() . ': "example" and "examples" are mutually exclusive');
         }
 
-        return self::_validate($this, $stack, $skip, $ref, $context) ? $valid : false;
+        return self::_validate($this, $stack, $skip, $ref, $context) && $valid;
     }
 
     /**
@@ -664,7 +654,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function isRoot(string $rootClass): bool
     {
-        return get_class($this) == $rootClass || $this->getRoot() == $rootClass;
+        return get_class($this) === $rootClass || $this->getRoot() === $rootClass;
     }
 
     /**
@@ -696,7 +686,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 return false;
             }
             $itemType = substr($type, 1, -1);
-            foreach ($value as $i => $item) {
+            foreach ($value as $item) {
                 if ($this->validateType($itemType, $item) === false) {
                     return false;
                 }
@@ -760,7 +750,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             return false;
         }
         $count = 0;
-        foreach ($value as $i => $item) {
+        foreach (array_keys($value) as $i) {
             // not a array, but a hash/map
             if ($count !== $i) {
                 return false;

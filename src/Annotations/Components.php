@@ -128,12 +128,10 @@ class Components extends AbstractAnnotation
         if ($component instanceof AbstractAnnotation) {
             foreach (Components::$_nested as $type => $nested) {
                 // exclude attachables
-                if (2 == count($nested)) {
-                    if ($component instanceof $type) {
-                        $type = $nested[0];
-                        $name = $component->{$nested[1]};
-                        break;
-                    }
+                if (2 == count($nested) && $component instanceof $type) {
+                    $type = $nested[0];
+                    $name = $component->{$nested[1]};
+                    break;
                 }
             }
         } else {

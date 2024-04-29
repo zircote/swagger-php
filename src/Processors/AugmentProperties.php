@@ -50,10 +50,8 @@ class AugmentProperties implements ProcessorInterface
 
             if (Generator::isDefault($property->type)) {
                 $this->augmentType($analysis, $property, $context, $refs, $typeAndDescription['type']);
-            } else {
-                if (!is_array($property->type)) {
-                    $this->mapNativeType($property, $property->type);
-                }
+            } elseif (!is_array($property->type)) {
+                $this->mapNativeType($property, $property->type);
             }
 
             if (Generator::isDefault($property->description) && $typeAndDescription['description']) {
@@ -162,21 +160,17 @@ class AugmentProperties implements ProcessorInterface
                 $refKey = $this->toRefKey($context, $type);
                 if (Generator::isDefault($property->ref) && array_key_exists($refKey, $refs)) {
                     $this->applyRef($analysis, $property, $refs[$refKey]);
-                } else {
-                    if (is_string($context->type) && $typeSchema = $analysis->getSchemaForSource($context->type)) {
-                        if (Generator::isDefault($property->format)) {
-                            $property->ref = OA\Components::ref($typeSchema);
-                            $property->type = Generator::UNDEFINED;
-                        }
+                } elseif (is_string($context->type) && $typeSchema = $analysis->getSchemaForSource($context->type)) {
+                    if (Generator::isDefault($property->format)) {
+                        $property->ref = OA\Components::ref($typeSchema);
+                        $property->type = Generator::UNDEFINED;
                     }
                 }
             }
         }
 
-        if (!Generator::isDefault($property->const) && Generator::isDefault($property->type)) {
-            if (!$this->mapNativeType($property, gettype($property->const))) {
-                $property->type = Generator::UNDEFINED;
-            }
+        if (!Generator::isDefault($property->const) && Generator::isDefault($property->type) && !$this->mapNativeType($property, gettype($property->const))) {
+            $property->type = Generator::UNDEFINED;
         }
     }
 

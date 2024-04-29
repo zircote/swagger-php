@@ -72,7 +72,7 @@ class License extends AbstractAnnotation
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
 
@@ -90,11 +90,9 @@ class License extends AbstractAnnotation
     {
         $valid = parent::validate($stack, $skip, $ref, $context);
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
-            if (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
-                $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
-                $valid = false;
-            }
+        if ($this->_context->isVersion(OpenApi::VERSION_3_1_0) && (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED)) {
+            $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
+            $valid = false;
         }
 
         return $valid;

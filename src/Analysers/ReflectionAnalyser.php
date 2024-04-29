@@ -22,7 +22,7 @@ use OpenApi\Generator;
 class ReflectionAnalyser implements AnalyserInterface
 {
     /** @var AnnotationFactoryInterface[] */
-    protected $annotationFactories;
+    protected $annotationFactories = [];
 
     /** @var Generator|null */
     protected $generator;
@@ -32,7 +32,6 @@ class ReflectionAnalyser implements AnalyserInterface
      */
     public function __construct(array $annotationFactories = [])
     {
-        $this->annotationFactories = [];
         foreach ($annotationFactories as $annotationFactory) {
             if ($annotationFactory->isSupported()) {
                 $this->annotationFactories[] = $annotationFactory;
@@ -118,7 +117,7 @@ class ReflectionAnalyser implements AnalyserInterface
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
         }
-        $definition[$contextType == 'class' ? 'implements' : 'extends'] = array_map($normaliseClass, $details['interfaces']);
+        $definition[$contextType === 'class' ? 'implements' : 'extends'] = array_map($normaliseClass, $details['interfaces']);
         $definition['traits'] = array_map($normaliseClass, $details['traits']);
 
         foreach ($this->annotationFactories as $annotationFactory) {

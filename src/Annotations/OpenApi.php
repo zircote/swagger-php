@@ -178,11 +178,7 @@ class OpenApi extends AbstractAnnotation
             $format = strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
         }
 
-        if (strtolower($format) === 'json') {
-            $content = $this->toJson();
-        } else {
-            $content = $this->toYaml();
-        }
+        $content = strtolower($format) === 'json' ? $this->toJson() : $this->toYaml();
 
         if (file_put_contents($filename, $content) === false) {
             throw new \Exception('Failed to saveAs("' . $filename . '", "' . $format . '")');
@@ -229,11 +225,9 @@ class OpenApi extends AbstractAnnotation
                 return $container->{$property};
             }
             $mapping = [];
-            if ($container instanceof AbstractAnnotation) {
-                foreach ($container::$_nested as $nestedClass => $nested) {
-                    if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
-                        $mapping[$nestedClass] = $nested[1];
-                    }
+            foreach ($container::$_nested as $nestedClass => $nested) {
+                if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
+                    $mapping[$nestedClass] = $nested[1];
                 }
             }
 
@@ -258,7 +252,7 @@ class OpenApi extends AbstractAnnotation
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
 
