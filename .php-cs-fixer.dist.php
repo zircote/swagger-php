@@ -64,7 +64,7 @@ return (new PhpCsFixer\Config())
         'nullable_type_declaration_for_default_null_value' => true,
 
         'no_empty_phpdoc' => true,
-        'no_superfluous_phpdoc_tags' => true,
+        'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
         'phpdoc_align' => true,
         'general_phpdoc_tag_rename' => true,
         'phpdoc_inline_tag_normalizer' => true,
