@@ -96,6 +96,11 @@ class Pipeline
         return $this;
     }
 
+    /**
+     * @param mixed $payload
+     *
+     * @return mixed
+     */
     public function process($payload)
     {
         foreach ($this->pipes as $pipe) {

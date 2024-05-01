@@ -109,7 +109,7 @@ class GeneratorTest extends OpenApiTestCase
 
     protected function assertOperationIdHash(Generator $generator, bool $expected): void
     {
-        $generator->getProcessor()->walk(function ($processor) use ($expected) {
+        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected) {
             if ($processor instanceof OperationId) {
                 $this->assertEquals($expected, $processor->isHash());
             }

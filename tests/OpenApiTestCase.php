@@ -231,7 +231,7 @@ class OpenApiTestCase extends TestCase
         $processors = [];
 
         (new Generator())
-            ->getProcessor()
+            ->getProcessorPipeline()
             ->walk(function ($processor) use (&$processors, $strip) {
                 if (!is_object($processor) || !in_array(get_class($processor), $strip)) {
                     $processors[] = $processor;
@@ -247,7 +247,7 @@ class OpenApiTestCase extends TestCase
 
         (new Generator($this->getTrackingLogger()))
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
-            ->setProcessor(new Pipeline($processors))
+            ->setProcessorPipeline(new Pipeline($processors))
             ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;

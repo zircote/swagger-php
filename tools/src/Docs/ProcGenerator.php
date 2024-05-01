@@ -52,7 +52,7 @@ class ProcGenerator extends DocGenerator
 
         $defaultProcessors = [];
         (new Generator())
-            ->getProcessor()
+            ->getProcessorPipeline()
             ->walk(function ($processor) use (&$processors, &$defaultProcessors) {
                 $rc = new \ReflectionClass($processor);
                 $class = $rc->getName();

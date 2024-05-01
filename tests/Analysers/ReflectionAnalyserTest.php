@@ -94,7 +94,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/DocBlocks/basic.php'), $this->getContext([], $generator->getVersion()));
-                $generator->getProcessor()->process($analysis);
+                $generator->getProcessorPipeline()->process($analysis);
 
                 return $analysis;
             });
@@ -125,7 +125,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/Attributes/basic.php'), $this->getContext([], $generator->getVersion()));
-                $generator->getProcessor()->process($analysis);
+                $generator->getProcessorPipeline()->process($analysis);
 
                 return $analysis;
             });
@@ -166,7 +166,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
             ->withContext(function (Generator $generator) use ($analyser) {
                 $analyser->setGenerator($generator);
                 $analysis = $analyser->fromFile($this->fixture('Apis/Mixed/basic.php'), $this->getContext([], $generator->getVersion()));
-                $generator->getProcessor()->process($analysis);
+                $generator->getProcessorPipeline()->process($analysis);
 
                 return $analysis;
             });

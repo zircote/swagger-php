@@ -53,8 +53,8 @@ class Generator
     /** @var array<string,mixed> */
     protected $config = [];
 
-    /** @var Pipeline|null List of configured processors. */
-    protected $processor = null;
+    /** @var Pipeline|null */
+    protected $processorPipeline = null;
 
     /** @var LoggerInterface|null PSR logger. */
     protected $logger = null;
@@ -243,10 +243,10 @@ class Generator
         return $this;
     }
 
-    public function getProcessor(): Pipeline
+    public function getProcessorPipeline(): Pipeline
     {
-        if (null === $this->processor) {
-            $this->processor = new Pipeline([
+        if (null === $this->processorPipeline) {
+            $this->processorPipeline = new Pipeline([
                 new Processors\DocBlockDescriptions(),
                 new Processors\MergeIntoOpenApi(),
                 new Processors\MergeIntoComponents(),
@@ -283,12 +283,12 @@ class Generator
             }
         };
 
-        return $this->processor->walk($walker);
+        return $this->processorPipeline->walk($walker);
     }
 
-    public function setProcessor(Pipeline $processor): Generator
+    public function setProcessorPipeline(Pipeline $processor): Generator
     {
-        $this->processor = $processor;
+        $this->processorPipeline = $processor;
 
         return $this;
     }
@@ -300,7 +300,7 @@ class Generator
      */
     public function withProcessor(callable $with): Generator
     {
-        $with($this->getProcessor());
+        $with($this->getProcessorPipeline());
 
         return $this;
     }
@@ -312,7 +312,7 @@ class Generator
      */
     public function getProcessors(): array
     {
-        return $this->getProcessor()->pipes();
+        return $this->getProcessorPipeline()->pipes();
     }
 
     /**
@@ -322,7 +322,7 @@ class Generator
      */
     public function setProcessors(?array $processors): Generator
     {
-        $this->processor = null !== $processors ? new Pipeline($processors) : null;
+        $this->processorPipeline = null !== $processors ? new Pipeline($processors) : null;
 
         return $this;
     }
@@ -335,7 +335,7 @@ class Generator
      */
     public function addProcessor($processor, ?string $before = null): Generator
     {
-        $processors = $this->processor ?: $this->getProcessor();
+        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
         if (!$before) {
             $processors->add($processor);
         } else {
@@ -351,7 +351,7 @@ class Generator
             $processors->insert($processor, $matcher);
         }
 
-        $this->processor = $processors;
+        $this->processorPipeline = $processors;
 
         return $this;
     }
@@ -363,9 +363,9 @@ class Generator
      */
     public function removeProcessor($processor, bool $silent = false): Generator
     {
-        $processors = $this->processor ?: $this->getProcessor();
+        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
         $processors->remove($processor);
-        $this->processor = $processors;
+        $this->processorPipeline = $processors;
 
         return $this;
     }
@@ -432,8 +432,8 @@ class Generator
             ->setAliases($config['aliases'])
             ->setNamespaces($config['namespaces'])
             ->setAnalyser($config['analyser'])
-            ->setProcessor($config['processor'])
-            ->setProcessor(new Pipeline($config['processors']))
+            ->setProcessorPipeline($config['processor'])
+            ->setProcessorPipeline(new Pipeline($config['processors']))
             ->generate($sources, $config['analysis'], $config['validate']);
     }
 
@@ -487,7 +487,7 @@ class Generator
             $this->scanSources($sources, $analysis, $rootContext);
 
             // post-processing
-            $this->getProcessor()->process($analysis);
+            $this->getProcessorPipeline()->process($analysis);
 
             if ($analysis->openapi) {
                 // overwrite default/annotated version

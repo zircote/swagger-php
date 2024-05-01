@@ -57,7 +57,7 @@ $processors = [/* my processors */];
 $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in(__DIR__);
 
 $openapi = (new \OpenApi\Generator($logger))
-            ->setProcessor(new \OpenApi\Pipeline($processors))
+            ->setProcessorPipeline(new \OpenApi\Pipeline($processors))
             ->setAliases(['MY' => 'My\Annotations'])
             ->setNamespaces(['My\\Annotations\\'])
             ->setAnalyser(new \OpenApi\Analysers\TokenAnalyser())
