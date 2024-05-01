@@ -6,6 +6,9 @@
 
 namespace OpenApi\Processors;
 
+/**
+ * @deprecated
+ */
 interface ProcessorInterface
 {
 }
