@@ -446,7 +446,9 @@ class Generator
             'version' => $this->getVersion(),
             'logger' => $this->getLogger(),
         ]);
+
         $analysis = $analysis ?: new Analysis([], $rootContext);
+        $analysis->context = $analysis->context ?: $rootContext;
 
         $this->configStack->push($this);
         try {

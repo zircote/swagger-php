@@ -72,11 +72,11 @@ class Analysis
 
     public function addAnnotation(object $annotation, Context $context): void
     {
-        assert(!Generator::isDefault($context->version));
-
         if ($this->annotations->contains($annotation)) {
             return;
         }
+
+        $context->ensureRoot($this->context);
 
         if ($annotation instanceof OA\OpenApi) {
             $this->openapi = $this->openapi ?: $annotation;
