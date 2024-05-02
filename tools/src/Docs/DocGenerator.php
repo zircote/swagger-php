@@ -45,7 +45,7 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 EOT;
 
-        $preambleSnippet = $this->docPath('snippets'. DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
+        $preambleSnippet = $this->docPath('snippets' . DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
 
         if (file_exists($preambleSnippet)) {
             $preamble .= file_get_contents($preambleSnippet);
