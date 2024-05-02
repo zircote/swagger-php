@@ -51,6 +51,9 @@ class Context
      */
     private $parent;
 
+    /**
+     * @deprecated
+     */
     public function clone()
     {
         return new Context(get_object_vars($this), $this->parent);
@@ -67,6 +70,25 @@ class Context
 
         if (!$this->version) {
             $this->root()->version = OA\OpenApi::DEFAULT_VERSION;
+        }
+    }
+
+    /**
+     * Ensure this context is part of the context tree.
+     */
+    public function ensureRoot(?Context $rootContext): void
+    {
+        if ($rootContext === $this) {
+            return;
+        }
+
+        if (!$this->parent) {
+            // use root fallback for these...
+            foreach (['logger', 'version'] as $property) {
+                unset($this->{$property});
+            }
+
+            $this->parent = $rootContext;
         }
     }
 
@@ -194,8 +216,6 @@ class Context
      */
     public static function detect(int $index = 0): Context
     {
-        trigger_deprecation('zircote/swagger-php', '4.9', 'Context detecting is deprecated');
-
         $context = new Context();
         $backtrace = debug_backtrace();
         $position = $backtrace[$index];

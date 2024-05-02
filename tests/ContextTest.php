@@ -6,9 +6,11 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Context;
 use OpenApi\Generator;
+use Psr\Log\NullLogger;
 
 class ContextTest extends OpenApiTestCase
 {
@@ -42,5 +44,21 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('gEnerator')); // php has case-insensitive class names :-(
         $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('OpenApiGenerator'));
         $this->assertSame('\\OpenApi\\Annotations\\QualifiedAlias', $context->fullyQualifiedName('OA\\QualifiedAlias'));
+    }
+
+    public function testEnsureRoot(): void
+    {
+        $root = new Context(['logger' => new NullLogger(), 'version' => OA\OpenApi::VERSION_3_1_0]);
+        $context = new Context(['logger' => $this->getTrackingLogger()]);
+
+        // assert defaults set
+        $this->assertNotInstanceOf(NullLogger::class, $context->logger);
+        $this->assertEquals(OA\OpenApi::VERSION_3_0_0, $context->version);
+
+        $context->ensureRoot($root);
+
+        // assert inheriting from root
+        $this->assertInstanceOf(NullLogger::class, $context->logger);
+        $this->assertEquals(OA\OpenApi::VERSION_3_1_0, $context->version);
     }
 }
