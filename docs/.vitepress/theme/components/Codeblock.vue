@@ -1,11 +1,11 @@
 <template>
   <div>
     <tabs :options="{ useUrlFragment: false }">
-      <tab :id="anId" name="Annotations">
-        <slot name="an"></slot>
-      </tab>
       <tab :id="atId" name="Attributes">
         <slot name="at"></slot>
+      </tab>
+      <tab :id="anId" name="Annotations">
+        <slot name="an"></slot>
       </tab>
     </tabs>
   </div>

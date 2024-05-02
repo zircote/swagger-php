@@ -13,6 +13,6 @@ use OpenApi\Annotations as OA;
  *   scheme="bearer"
  * )
  */
-class OpenApi
+class OpenApiSpec
 {
 }

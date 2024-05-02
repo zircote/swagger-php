@@ -17,7 +17,3 @@ class MyController
         // ...
     }
 }
-
-class OpenApiSpec
-{
-}

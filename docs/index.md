@@ -20,17 +20,17 @@ features:
 
 ### 2. Update your code
 
-Add `swagger-php` annotations or attributes to your source code.
+Add `swagger-php` attributes or annotations to your source code.
 
 <codeblock id="minimal">
-  <template v-slot:an>
-
-<<< @/snippets/minimal_api_an.php
-
-  </template>
   <template v-slot:at>
 
 <<< @/snippets/minimal_api_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/minimal_api_an.php
 
   </template>
 </codeblock>
