@@ -1,12 +1,14 @@
-# Attributes
+# Attribute Reference
 
 This page is generated automatically from the `swagger-php` sources.
 
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
+
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
 
-## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
+## Attributes
+### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
 
 
 
@@ -175,7 +177,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Attachable.php)
+### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Attachable.php)
 
 
 
@@ -190,7 +192,7 @@ These will be ignored but can be used for custom processing.</p></dd>
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Components](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Components.php)
+### [Components](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Components.php)
 
 
 
@@ -232,7 +234,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Contact](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Contact.php)
+### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Contact.php)
 
 
 
@@ -262,7 +264,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
+### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
 
 
 
@@ -365,7 +367,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
+### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
 
 
 
@@ -455,7 +457,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Discriminator.php)
+### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Discriminator.php)
 
 
 
@@ -483,7 +485,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Examples](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Examples.php)
+### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Examples.php)
 
 
 
@@ -534,7 +536,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ExternalDocumentation.php)
+### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ExternalDocumentation.php)
 
 
 
@@ -562,7 +564,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Flow](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Flow.php)
+### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Flow.php)
 
 
 
@@ -606,7 +608,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Get](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Get.php)
+### [Get](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Get.php)
 
 
 
@@ -696,7 +698,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Head](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Head.php)
+### [Head](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Head.php)
 
 
 
@@ -786,7 +788,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Header](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Header.php)
+### [Header](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Header.php)
 
 
 
@@ -833,7 +835,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
+### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
 
 
 
@@ -936,7 +938,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Info](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Info.php)
+### [Info](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Info.php)
 
 
 
@@ -976,7 +978,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Items](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Items.php)
+### [Items](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Items.php)
 
 
 
@@ -1145,7 +1147,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
+### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
 
 
 
@@ -1316,7 +1318,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [License](https://github.com/zircote/swagger-php/tree/master/src/Attributes/License.php)
+### [License](https://github.com/zircote/swagger-php/tree/master/src/Attributes/License.php)
 
 
 
@@ -1348,7 +1350,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Link](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Link.php)
+### [Link](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Link.php)
 
 
 
@@ -1402,7 +1404,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Attributes/MediaType.php)
+### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Attributes/MediaType.php)
 
 
 
@@ -1451,7 +1453,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Attributes/OpenApi.php)
+### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Attributes/OpenApi.php)
 
 
 
@@ -1507,7 +1509,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
+### [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
 
 
 
@@ -1597,7 +1599,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Parameter.php)
+### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Parameter.php)
 
 
 
@@ -1702,7 +1704,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Patch](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Patch.php)
+### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Patch.php)
 
 
 
@@ -1792,7 +1794,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathItem.php)
+### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathItem.php)
 
 
 
@@ -1849,7 +1851,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathParameter.php)
+### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathParameter.php)
 
 
 
@@ -1949,7 +1951,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Post](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Post.php)
+### [Post](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Post.php)
 
 
 
@@ -2039,7 +2041,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
+### [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
 
 
 
@@ -2210,7 +2212,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Put](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Put.php)
+### [Put](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Put.php)
 
 
 
@@ -2300,7 +2302,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
+### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
 
 
 
@@ -2403,7 +2405,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Attributes/RequestBody.php)
+### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Attributes/RequestBody.php)
 
 
 
@@ -2447,7 +2449,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Response](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Response.php)
+### [Response](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Response.php)
 
 
 
@@ -2499,7 +2501,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Schema](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Schema.php)
+### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Schema.php)
 
 
 
@@ -2676,7 +2678,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Attributes/SecurityScheme.php)
+### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Attributes/SecurityScheme.php)
 
 
 
@@ -2722,7 +2724,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Server](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Server.php)
+### [Server](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Server.php)
 
 
 
@@ -2760,7 +2762,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ServerVariable.php)
+### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ServerVariable.php)
 
 
 
@@ -2800,7 +2802,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Tag.php)
+### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Tag.php)
 
 
 
@@ -2830,7 +2832,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Trace](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Trace.php)
+### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Trace.php)
 
 
 
@@ -2920,7 +2922,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Webhook.php)
+### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Webhook.php)
 
 
 
@@ -2979,7 +2981,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Xml.php)
+### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Xml.php)
 
 
 
@@ -3026,7 +3028,7 @@ The keys inside the array will be prefixed with `x-`.</p></dd>
 These will be ignored but can be used for custom processing.</p></dd>
 </dl>
 
-## [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/XmlContent.php)
+### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/XmlContent.php)
 
 
 
