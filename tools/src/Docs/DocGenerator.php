@@ -25,7 +25,7 @@ abstract class DocGenerator
     public function formatClassHeader(string $name, string $namespace): string
     {
         return <<< EOT
-## [$name](https://github.com/zircote/swagger-php/tree/master/src/$namespace/$name.php)
+### [$name](https://github.com/zircote/swagger-php/tree/master/src/$namespace/$name.php)
 
 
 EOT;
@@ -33,8 +33,10 @@ EOT;
 
     public function preamble(string $type): string
     {
-        return <<< EOT
-# $type
+        $title = rtrim($type, 's');
+
+        $preamble = <<< EOT
+# $title Reference
 
 This page is generated automatically from the `swagger-php` sources.
 
@@ -42,6 +44,20 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 
 EOT;
+
+        $preambleSnippet = $this->docPath('snippets' . DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
+
+        if (file_exists($preambleSnippet)) {
+            $preamble .= file_get_contents($preambleSnippet);
+        }
+
+        $preamble .= <<< EOT
+
+## $type
+
+EOT;
+
+        return $preamble;
     }
 
     protected function linkFromMarkup(string $see): ?string

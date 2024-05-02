@@ -1,12 +1,14 @@
-# Annotations
+# Annotation Reference
 
 This page is generated automatically from the `swagger-php` sources.
 
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
+
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
 
-## [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
+## Annotations
+### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
 
 
@@ -18,7 +20,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
-## [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
+### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
 
 A container for custom data to be attached to an annotation.
 
@@ -28,7 +30,7 @@ These will be ignored by `swagger-php` but can be used for custom processing.
 ---
 <a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
-## [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
+### [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
 Holds a set of reusable objects for different aspects of the OA.
 
@@ -54,7 +56,7 @@ referenced from properties outside the components object.
 ---
 - [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
 
-## [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
+### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
 
 Contact information for the exposed API.
 
@@ -81,7 +83,7 @@ Contact information for the exposed API.
 ---
 - [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
 
-## [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
+### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
 
 A `@OA\Request` cookie parameter.
 
@@ -100,7 +102,7 @@ A `@OA\Request` cookie parameter.
   <dd><p>This takes 'cookie' as the default location.</p></dd>
 </dl>
 
-## [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
+### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
 
 
@@ -119,7 +121,7 @@ A `@OA\Request` cookie parameter.
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
+### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
 
 The discriminator is a specific object in a schema which is used to inform the consumer of
 the specification of an alternative schema based on the value associated with it.
@@ -149,7 +151,7 @@ On top of this subset, there are extensions provided by this specification to al
 - [OAI Discriminator Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#discriminatorObject)
 - [JSON Schema](http://json-schema.org/)
 
-## [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
+### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
 
 
 
@@ -193,7 +195,7 @@ in JSON or YAML documents.<br />
 The value field and externalValue field are mutually exclusive.</p></dd>
 </dl>
 
-## [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ExternalDocumentation.php)
+### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ExternalDocumentation.php)
 
 Allows referencing an external resource for extended documentation.
 
@@ -218,7 +220,7 @@ Allows referencing an external resource for extended documentation.
 ---
 - [OAI External Documentation Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object)
 
-## [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
+### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
 
 Configuration details for a supported OAuth Flow.
 
@@ -259,7 +261,7 @@ A map between the scope name and a short description for it.</p></dd>
 ---
 - [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
 
-## [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
+### [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
 
 
@@ -278,7 +280,7 @@ A map between the scope name and a short description for it.</p></dd>
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
+### [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
 
 
@@ -297,7 +299,7 @@ A map between the scope name and a short description for it.</p></dd>
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
+### [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
 
 
 
@@ -339,7 +341,7 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 ---
 - [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
 
-## [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
+### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
 
 A `@OA\Request` header parameter.
 
@@ -358,7 +360,7 @@ A `@OA\Request` header parameter.
   <dd><p>This takes 'header' as the default location.</p></dd>
 </dl>
 
-## [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
+### [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
 
 The object provides metadata about the API.
 
@@ -393,7 +395,7 @@ Must be in the format of an url.</p></dd>
 ---
 - [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
 
-## [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
+### [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
 The description of an item in a Schema with type `array`.
 
@@ -405,7 +407,7 @@ The description of an item in a Schema with type `array`.
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
-## [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
+### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
 
 Shorthand for a json response.
 
@@ -415,7 +417,7 @@ Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` wi
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
-## [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
+### [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
 
 License information for the exposed API.
 
@@ -444,7 +446,7 @@ The `url` field is mutually exclusive of the `identifier` field.</p></dd>
 ---
 - [OAI License Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#license-object)
 
-## [Link](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Link.php)
+### [Link](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Link.php)
 
 The Link object represents a possible design-time link for a response.
 
@@ -502,7 +504,7 @@ CommonMark syntax may be used for rich text representation.</p></dd>
 ---
 - [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
 
-## [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Annotations/MediaType.php)
+### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Annotations/MediaType.php)
 
 Each Media Type object provides schema and examples for the media type identified by its key.
 
@@ -540,7 +542,7 @@ application/x-www-form-urlencoded.</p></dd>
 ---
 - [OAI Media Type Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#media-type-object)
 
-## [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Annotations/OpenApi.php)
+### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Annotations/OpenApi.php)
 
 This is the root document object for the API specification.
 
@@ -572,7 +574,7 @@ To make security optional, an empty security requirement `({})` can be included 
 ---
 - [OAI OpenApi Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#openapi-object)
 
-## [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
+### [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
 
 
@@ -591,7 +593,7 @@ To make security optional, an empty security requirement `({})` can be included 
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
+### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
 
 Describes a single operation parameter.
 
@@ -701,7 +703,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
 ---
 - [OAA Parameter Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object)
 
-## [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
+### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
 
 
@@ -720,7 +722,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
+### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
 
 Describes the operations available on a single path.
 
@@ -752,7 +754,7 @@ The path itself is still exposed to the documentation viewer, but they will not 
 ---
 - [OAI Path Item Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#path-item-object)
 
-## [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
+### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
 
 A `@OA\Request` path parameter.
 
@@ -773,7 +775,7 @@ A `@OA\Request` path parameter.
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
+### [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
 
 
@@ -792,7 +794,7 @@ A `@OA\Request` path parameter.
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
+### [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
 
 
 
@@ -811,7 +813,7 @@ A `@OA\Request` path parameter.
   <dd><p>The key into Schema->properties array.</p></dd>
 </dl>
 
-## [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
+### [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
 
 
 
@@ -830,7 +832,7 @@ A `@OA\Request` path parameter.
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
+### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
 
 A `@OA\Request` query parameter.
 
@@ -849,7 +851,7 @@ A `@OA\Request` query parameter.
   <dd><p>This takes 'query' as the default location.</p></dd>
 </dl>
 
-## [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
+### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
 
 Describes a single request body.
 
@@ -885,7 +887,7 @@ Otherwise, the property may be included and its default value is false.</p></dd>
 ---
 - [OAI Request Body Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#requestBodyObject)
 
-## [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
+### [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
 
 Describes a single response from an API Operation, including design-time,
 static links to operations based on the response.
@@ -917,7 +919,7 @@ CommonMark syntax may be used for rich text representation.</p></dd>
 ---
 - [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
 
-## [Schema](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Schema.php)
+### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Schema.php)
 
 The definition of input and output data types.
 
@@ -1086,7 +1088,7 @@ defined by this property's value.</p></dd>
 - [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
 - [JSON Schema](http://json-schema.org/)
 
-## [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
+### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
 
 
@@ -1127,7 +1129,7 @@ Bearer tokens are usually generated by an authorization server, so this informat
 ---
 - [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
 
-## [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
+### [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
 
 An object representing a server.
 
@@ -1158,7 +1160,7 @@ CommonMark syntax may be used for rich text representation.</p></dd>
 ---
 - [OAI Server Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object)
 
-## [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
+### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
 
 An object representing a server variable for server URL template substitution.
 
@@ -1195,7 +1197,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
 ---
 - [OAI Server Variable Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-variable-object)
 
-## [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
+### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
 
 
@@ -1220,7 +1222,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
 ---
 - [OAI Tag Object]( https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#tagObject).
 
-## [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
+### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
 
 
@@ -1239,7 +1241,7 @@ CommonMark syntax MAY be used for rich text representation.</p></dd>
   <dd><p>No details available.</p></dd>
 </dl>
 
-## [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
+### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
 
 Acts like a `PathItem` with the main difference being that it requires `webhook` instead of `path`.
 
@@ -1258,7 +1260,7 @@ Acts like a `PathItem` with the main difference being that it requires `webhook`
   <dd><p>Key for the webhooks map.</p></dd>
 </dl>
 
-## [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
+### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
 
 
 
@@ -1302,7 +1304,7 @@ Default value is false. The definition takes effect only when defined alongside 
 ---
 - [OAI XML Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#xmlObject).
 
-## [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/XmlContent.php)
+### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/XmlContent.php)
 
 Shorthand for a xml response.
 
