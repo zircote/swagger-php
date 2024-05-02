@@ -9,17 +9,17 @@ The endpoint, in turn, needs to have a path and at least one response.
 
 ## Minimum required annotations
 
-With the above in mind a minimal API with a single endpoint could look like this
+With the above in mind a minimal API with a single endpoint could look like this:
 
 <codeblock id="minimal">
-  <template v-slot:an>
-
-<<< @/snippets/minimal_api_an.php
-
-  </template>
   <template v-slot:at>
 
 <<< @/snippets/minimal_api_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/minimal_api_an.php
 
   </template>
 </codeblock>

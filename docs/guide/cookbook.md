@@ -278,17 +278,17 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
 Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way
 to also configure security schemes globally for the whole API.
 
-This is done on the `@OA\OpenApi` annotations:
+This is done on the `@OA\OpenApi` annotation:
 
 <codeblock id="minimal">
-  <template v-slot:an>
-
-<<< @/snippets/guide/cookbook/default_security_an.php
-
-  </template>
   <template v-slot:at>
 
 <<< @/snippets/guide/cookbook/default_security_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/default_security_an.php
 
   </template>
 </codeblock>
