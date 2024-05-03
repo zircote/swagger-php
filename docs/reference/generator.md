@@ -141,6 +141,7 @@ echo $openapi->toYaml();
      *                          processors: null|array                    Defaults to `Analysis::processors()`.
      *                          logger:     null|\Psr\Log\LoggerInterface If not set logging will use \OpenApi\Logger as before.
      *                          validate:   bool                          Defaults to `true`.
+     *                          version:    string                        Defaults to `\OpenApi\Annotations\OpenApi::VERSION_3_0_0`. Alternatives are: `\OpenApi\Annotations\OpenApi::VERSION_3_1_0`.
      */
     public static function scan(iterable $sources, array $options = []): OpenApi { /* ... */ }
 ```
