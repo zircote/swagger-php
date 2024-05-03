@@ -1,6 +1,7 @@
 # Migrating to v4
 
 ## Overview
+* Doctrine annotations library must now be installed manually: `composer require doctrine/annotations`
 * As of PHP 8.1 annotations may be used as
   [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) instead.
   That means all references to annotations in this document also apply to attributes.
