@@ -382,6 +382,20 @@ class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
+        yield 'namespaces3' => [
+            'PHP/namespaces3.php',
+            [
+                '\\BarClass' => [
+                    'uses' => [],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [],
+                    'properties' => [],
+                ],
+            ],
+        ];
+
         if (\PHP_VERSION_ID >= 80100) {
             yield 'enum' => [
                 'PHP/Enums/StatusEnum.php',

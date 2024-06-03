@@ -36,49 +36,56 @@ class TokenScanner
         }
 
         $result = [];
+        $result += $this->collect_stmts($stmts, '');
         foreach ($stmts as $stmt) {
-            // echo 'top: ' . get_class($stmt), PHP_EOL;
             if ($stmt instanceof Namespace_) {
                 $namespace = (string) $stmt->name;
 
-                $uses = [];
-                $resolve = function (string $name) use ($namespace, &$uses) {
-                    if (array_key_exists($name, $uses)) {
-                        return $uses[$name];
-                    }
+                $result += $this->collect_stmts($stmt->stmts, $namespace);
+            }
+        }
 
-                    return $namespace . '\\' . $name;
-                };
-                $details = function () use (&$uses) {
-                    return [
-                        'uses' => $uses,
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => [],
-                    ];
-                };
-                foreach ($stmt->stmts as $subStmt) {
-                    // echo 'sub: ' . get_class($subStmt), PHP_EOL;
-                    switch (get_class($subStmt)) {
-                        case Use_::class:
-                            $uses += $this->collect_uses($subStmt);
-                            break;
-                        case Class_::class:
-                            $result += $this->collect_class($subStmt, $details(), $resolve);
-                            break;
-                        case Interface_::class:
-                            $result += $this->collect_interface($subStmt, $details(), $resolve);
-                            break;
-                        case Trait_::class:
-                            $result += $this->collect_classlike($subStmt, $details(), $resolve);
-                            break;
-                        case Enum_::class:
-                            $result += $this->collect_classlike($subStmt, $details(), $resolve);
-                            break;
-                    }
-                }
+        return $result;
+    }
+
+    protected function collect_stmts(array $stmts, string $namespace): array
+    {
+        $uses = [];
+        $resolve = function (string $name) use ($namespace, &$uses) {
+            if (array_key_exists($name, $uses)) {
+                return $uses[$name];
+            }
+
+            return $namespace . '\\' . $name;
+        };
+        $details = function () use (&$uses) {
+            return [
+                'uses' => $uses,
+                'interfaces' => [],
+                'traits' => [],
+                'enums' => [],
+                'methods' => [],
+                'properties' => [],
+            ];
+        };
+        $result = [];
+        foreach ($stmts as $stmt) {
+            switch (get_class($stmt)) {
+                case Use_::class:
+                    $uses += $this->collect_uses($stmt);
+                    break;
+                case Class_::class:
+                    $result += $this->collect_class($stmt, $details(), $resolve);
+                    break;
+                case Interface_::class:
+                    $result += $this->collect_interface($stmt, $details(), $resolve);
+                    break;
+                case Trait_::class:
+                    $result += $this->collect_classlike($stmt, $details(), $resolve);
+                    break;
+                case Enum_::class:
+                    $result += $this->collect_classlike($stmt, $details(), $resolve);
+                    break;
             }
         }
 
