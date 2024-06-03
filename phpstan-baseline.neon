@@ -31,7 +31,7 @@ parameters:
 			path: Examples/using-links-php81/User.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between array\\|string and false will always evaluate to false\\.$#"
+			message: "#^Call to function array_key_exists\\(\\) with string and array\\{\\} will always evaluate to false\\.$#"
 			count: 1
 			path: src/Analysers/TokenScanner.php
 

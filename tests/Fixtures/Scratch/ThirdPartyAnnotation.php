@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
-// intentionally none: namespace OpenApi\Tests\Fixtures\Scratch;
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Annotations as OA;
 
