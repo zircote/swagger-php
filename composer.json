@@ -46,6 +46,7 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
+        "nikic/php-parser": "^4.19",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "symfony/deprecation-contracts": "^2 || ^3",
         "symfony/finder": ">=2.2",
