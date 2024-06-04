@@ -4,8 +4,6 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\Scratch;
-
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(schema: 'repository')]
