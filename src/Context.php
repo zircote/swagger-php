@@ -37,6 +37,7 @@ use Psr\Log\LoggerInterface;
  *                                                     the serializer
  * @property OA\AbstractAnnotation|null   $nested
  * @property OA\AbstractAnnotation[]|null $annotations
+ * @property OA\AbstractAnnotation[]|null $other       Annotations not related to OpenApi
  * @property LoggerInterface|null         $logger      Guaranteed to be set when using the `Generator`
  * @property array|null                   $scanned     Details of file scanner when using ReflectionAnalyser
  * @property string|null                  $version     The OpenAPI version in use
