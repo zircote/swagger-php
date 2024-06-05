@@ -107,21 +107,13 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertEquals($processors, $generator->getProcessors());
     }
 
-    public function testRemoveProcessorNotFound(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        (new Generator())->removeProcessor(function () {
-        });
-    }
-
     protected function assertOperationIdHash(Generator $generator, bool $expected): void
     {
-        foreach ($generator->getProcessors() as $processor) {
+        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected) {
             if ($processor instanceof OperationId) {
                 $this->assertEquals($expected, $processor->isHash());
             }
-        }
+        });
     }
 
     public static function configCases(): iterable

@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
+use OpenApi\Pipeline;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -225,13 +226,17 @@ class OpenApiTestCase extends TestCase
         }, $files);
     }
 
-    public static function processors(array $strip = [], array $add = []): array
+    public static function processors(array $strip = []): array
     {
-        $processors = (new Generator())->getProcessors();
+        $processors = [];
 
-        $processors = array_filter($processors, function ($processor) use ($strip) {
-            return !is_object($processor) || !in_array(get_class($processor), $strip);
-        });
+        (new Generator())
+            ->getProcessorPipeline()
+            ->walk(function ($processor) use (&$processors, $strip) {
+                if (!is_object($processor) || !in_array(get_class($processor), $strip)) {
+                    $processors[] = $processor;
+                }
+            });
 
         return $processors;
     }
@@ -242,7 +247,7 @@ class OpenApiTestCase extends TestCase
 
         (new Generator($this->getTrackingLogger()))
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
-            ->setProcessors($processors)
+            ->setProcessorPipeline(new Pipeline($processors))
             ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;

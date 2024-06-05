@@ -51,19 +51,21 @@ class ProcGenerator extends DocGenerator
         $processors = [];
 
         $defaultProcessors = [];
-        foreach ((new Generator())->getProcessors() as $processor) {
-            $rc = new \ReflectionClass($processor);
-            $class = $rc->getName();
+        (new Generator())
+            ->getProcessorPipeline()
+            ->walk(function ($processor) use (&$processors, &$defaultProcessors) {
+                $rc = new \ReflectionClass($processor);
+                $class = $rc->getName();
 
-            $defaultProcessors[] = $class;
-            $processors[] = [
-                'class' => $class,
-                'name' => $rc->getShortName(),
-                'default' => true,
-                'options' => $this->getOptionsDetails($rc),
-                'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
-            ];
-        }
+                $defaultProcessors[] = $class;
+                $processors[] = [
+                    'class' => $class,
+                    'name' => $rc->getShortName(),
+                    'default' => true,
+                    'options' => $this->getOptionsDetails($rc),
+                    'phpdoc' => $this->extractDocumentation($rc->getDocComment()),
+                ];
+            });
 
         $proccesorsDir = dirname((new \ReflectionClass(MergeIntoOpenApi::class))->getFileName());
         foreach (glob("$proccesorsDir/*.php") as $processor) {

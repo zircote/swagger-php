@@ -219,7 +219,7 @@ foreach ($options["processor"] as $processor) {
     } elseif (class_exists($processor)) {
         $processor = new $processor();
     }
-    $generator->addProcessor($processor);
+    $generator->getProcessorPipeline()->add($processor);
 }
 
 $analyser = $options['legacy']

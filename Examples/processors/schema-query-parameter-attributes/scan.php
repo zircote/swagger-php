@@ -1,6 +1,7 @@
 <?php
 
 use OpenApi\Generator;
+use OpenApi\Pipeline;
 use OpenApi\Processors\BuildPaths;
 use SchemaQueryParameterProcessor\SchemaQueryParameter;
 
@@ -11,19 +12,18 @@ $classLoader->addPsr4('App\\', __DIR__ . '/app');
 // and our custom processor
 $classLoader->addPsr4('SchemaQueryParameterProcessor\\', __DIR__);
 
-$openapiGenerator = new Generator();
-$processors = [];
-foreach ($openapiGenerator->getProcessors() as $processor) {
-    $processors[] = $processor;
-    if ($processor instanceof BuildPaths) {
-        $processors[] = new SchemaQueryParameter();
+$insertMatch = function (array $pipes) {
+    foreach ($pipes as $ii => $pipe) {
+        if ($pipe instanceof BuildPaths) {
+            return $ii;
+        }
     }
-}
 
-$openapi =  $openapiGenerator
-    ->setProcessors($processors)
+    return null;
+};
+
+$openapi = (new Generator())
+    ->withProcessor(function (Pipeline $pipeline) use ($insertMatch) { $pipeline->insert(new SchemaQueryParameter(), $insertMatch); })
     ->generate([__DIR__ . '/app']);
-
-file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
-
+// file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
 echo $openapi->toYaml();
