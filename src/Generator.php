@@ -286,7 +286,7 @@ class Generator
         return $this->processorPipeline->walk($walker);
     }
 
-    public function setProcessorPipeline(Pipeline $processor): Generator
+    public function setProcessorPipeline(?Pipeline $processor): Generator
     {
         $this->processorPipeline = $processor;
 
@@ -427,13 +427,15 @@ class Generator
                 'version' => null,
             ];
 
+        $processorPipeline = $config['processor'] ??
+            $config['processors'] ? new Pipeline($config['processors']) : null;
+
         return (new Generator($config['logger']))
             ->setVersion($config['version'])
             ->setAliases($config['aliases'])
             ->setNamespaces($config['namespaces'])
             ->setAnalyser($config['analyser'])
-            ->setProcessorPipeline($config['processor'])
-            ->setProcessorPipeline(new Pipeline($config['processors']))
+            ->setProcessorPipeline($processorPipeline)
             ->generate($sources, $config['analysis'], $config['validate']);
     }
 
