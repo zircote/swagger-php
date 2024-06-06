@@ -47,9 +47,14 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                     $instance = $attribute->newInstance();
                     if ($instance instanceof OA\AbstractAnnotation) {
                         $annotations[] = $instance;
+                    } else {
+                        if ($context->is('other') === false) {
+                            $context->other = [];
+                        }
+                        $context->other[] = $instance;
                     }
                 } else {
-                    $context->logger->debug(sprintf('Could not instantiate attribute "%s", because class not found.', $attribute->getName()));
+                    $context->logger->debug(sprintf('Could not instantiate attribute "%s"; class not found.', $attribute->getName()));
                 }
             }
 
