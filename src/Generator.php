@@ -102,7 +102,7 @@ class Generator
                                         if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
                                             if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
                                                 // Detected an 2.x annotation?
-                                                throw new \Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
+                                                throw new OpenApiException('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
                                             }
                                         }
 

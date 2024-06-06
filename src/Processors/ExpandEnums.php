@@ -9,6 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\OpenApiException;
 
 /**
  * Expands PHP enums.
@@ -77,7 +78,7 @@ class ExpandEnums implements ProcessorInterface
                 if (is_a($schema->enum, \UnitEnum::class, true)) {
                     $cases = $schema->enum::cases();
                 } else {
-                    throw new \InvalidArgumentException("Unexpected enum value, requires specifying the Enum class string: $schema->enum");
+                    throw new OpenApiException("Unexpected enum value, requires specifying the Enum class string: $schema->enum");
                 }
             } else {
                 // might be an array of \UnitEnum::class, string, int, etc...

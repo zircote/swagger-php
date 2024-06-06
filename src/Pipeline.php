@@ -39,7 +39,7 @@ class Pipeline
     public function remove($pipe = null, ?callable $matcher = null): Pipeline
     {
         if (!$pipe && !$matcher) {
-            throw new \InvalidArgumentException('pipe or callable must not be empty');
+            throw new OpenApiException('pipe or callable must not be empty');
         }
 
         // allow matching on class name in $pipe in a string
@@ -79,7 +79,7 @@ class Pipeline
     {
         $index = $matcher($this->pipes);
         if (null === $index || $index < 0 || $index > count($this->pipes)) {
-            throw new \InvalidArgumentException('Matcher result out of range');
+            throw new OpenApiException('Matcher result out of range');
         }
 
         array_splice($this->pipes, $index, 0, [$pipe]);
