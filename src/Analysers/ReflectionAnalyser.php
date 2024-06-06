@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\OpenApiException;
 
 /**
  * OpenApi analyser using reflection.
@@ -39,7 +40,7 @@ class ReflectionAnalyser implements AnalyserInterface
             }
         }
         if (!$this->annotationFactories) {
-            throw new \RuntimeException('No suitable annotation factory found. At least one of "Doctrine Annotations" or PHP 8.1 are required');
+            throw new OpenApiException('No suitable annotation factory found. At least one of "Doctrine Annotations" or PHP 8.1 are required');
         }
     }
 
