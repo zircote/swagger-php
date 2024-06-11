@@ -50,14 +50,6 @@ class Context
      */
     private ?Context $parent;
 
-    /**
-     * @deprecated
-     */
-    public function clone()
-    {
-        return new Context(get_object_vars($this), $this->parent);
-    }
-
     public function __construct(array $properties = [], ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
@@ -210,41 +202,6 @@ class Context
     public function __debugInfo()
     {
         return ['-' => $this->getDebugLocation()];
-    }
-
-    /**
-     * Create a Context based on `debug_backtrace`.
-     *
-     * @deprecated
-     */
-    public static function detect(int $index = 0): Context
-    {
-        $context = new Context();
-        $backtrace = debug_backtrace();
-        $position = $backtrace[$index];
-        if (isset($position['file'])) {
-            $context->filename = $position['file'];
-        }
-        if (isset($position['line'])) {
-            $context->line = $position['line'];
-        }
-        $caller = $backtrace[$index + 1] ?? null;
-        if (isset($caller['function'])) {
-            $context->method = $caller['function'];
-            if (isset($caller['type']) && $caller['type'] === '::') {
-                $context->static = true;
-            }
-        }
-        if (isset($caller['class'])) {
-            $fqn = explode('\\', $caller['class']);
-            $context->class = array_pop($fqn);
-            if ($fqn !== []) {
-                $context->namespace = implode('\\', $fqn);
-            }
-        }
-
-        // @todo extract namespaces and use statements
-        return $context;
     }
 
     /**
