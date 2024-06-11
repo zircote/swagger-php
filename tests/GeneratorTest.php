@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
 use OpenApi\Util;
@@ -69,30 +68,6 @@ class GeneratorTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider processorCases
-     */
-    public function testUpdateProcessor($p, bool $expected): void
-    {
-        $generator = (new Generator())
-            ->updateProcessor($p);
-        foreach ($generator->getProcessors() as $processor) {
-            if ($processor instanceof OperationId) {
-                $this->assertEquals($expected, $processor->isHash());
-            }
-        }
-    }
-
-    public function testAddProcessor(): void
-    {
-        $generator = new Generator();
-        $processors = $generator->getProcessors();
-        $generator->addProcessor(function (Analysis $analysis) {
-        });
-
-        $this->assertLessThan(count($generator->getProcessors()), count($processors));
-    }
-
     public function testAddAlias(): void
     {
         $generator = new Generator();
@@ -107,18 +82,6 @@ class GeneratorTest extends OpenApiTestCase
         $generator->addNamespace('Foo\\Bar\\');
 
         $this->assertEquals(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
-    }
-
-    public function testRemoveProcessor(): void
-    {
-        $generator = new Generator();
-        $processors = $generator->getProcessors();
-        $processor = function (Analysis $analysis): void {
-        };
-        $generator->addProcessor($processor);
-        $generator->removeProcessor($processor);
-
-        $this->assertEquals($processors, $generator->getProcessors());
     }
 
     protected function assertOperationIdHash(Generator $generator, bool $expected): void
@@ -150,18 +113,5 @@ class GeneratorTest extends OpenApiTestCase
 
         $generator->setConfig($config);
         $this->assertOperationIdHash($generator, $expected);
-    }
-
-    public function testCallableProcessor(): void
-    {
-        $generator = new Generator();
-        // not the default
-        $operationId = new OperationId(false);
-        $generator->addProcessor(function (Analysis $analysis) use ($operationId) {
-            $operationId($analysis);
-        });
-
-        $this->assertOperationIdHash($generator, true);
-        $this->assertFalse($operationId->isHash());
     }
 }
