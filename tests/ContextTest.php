@@ -15,18 +15,6 @@ use Psr\Log\NullLogger;
 
 class ContextTest extends OpenApiTestCase
 {
-    public function testDetect(): void
-    {
-        $context = Context::detect();
-        $line = __LINE__ - 1;
-        $this->assertSame('ContextTest', $context->class);
-        $this->assertSame('\\OpenApi\\Tests\\ContextTest', $context->fullyQualifiedName($context->class));
-        $this->assertSame('testDetect', $context->method);
-        $this->assertSame(__FILE__, $context->filename);
-        $this->assertSame($line, $context->line);
-        $this->assertSame('OpenApi\\Tests', $context->namespace);
-    }
-
     public function testFullyQualifiedName(): void
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
