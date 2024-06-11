@@ -18,14 +18,6 @@ class Pipeline
         $this->pipes = $pipes;
     }
 
-    /**
-     * @deprecated This will be removed in 5.0
-     */
-    public function pipes(): array
-    {
-        return $this->pipes;
-    }
-
     public function add(callable $pipe): Pipeline
     {
         $this->pipes[] = $pipe;

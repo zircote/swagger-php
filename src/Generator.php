@@ -12,7 +12,6 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
-use OpenApi\Processors\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -263,85 +262,6 @@ class Generator
     public function withProcessor(callable $with): Generator
     {
         $with($this->getProcessorPipeline());
-
-        return $this;
-    }
-
-    /**
-     * @return array<ProcessorInterface|callable>
-     *
-     * @deprecated
-     */
-    public function getProcessors(): array
-    {
-        return $this->getProcessorPipeline()->pipes();
-    }
-
-    /**
-     * @param array<ProcessorInterface|callable>|null $processors
-     *
-     * @deprecated
-     */
-    public function setProcessors(?array $processors): Generator
-    {
-        $this->processorPipeline = null !== $processors ? new Pipeline($processors) : null;
-
-        return $this;
-    }
-
-    /**
-     * @param callable|ProcessorInterface $processor
-     * @param class-string|null           $before
-     *
-     * @deprecated
-     */
-    public function addProcessor($processor, ?string $before = null): Generator
-    {
-        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
-        if (!$before) {
-            $processors->add($processor);
-        } else {
-            $processors->insert($processor, $before);
-        }
-
-        $this->processorPipeline = $processors;
-
-        return $this;
-    }
-
-    /**
-     * @param callable|ProcessorInterface $processor
-     *
-     * @deprecated
-     */
-    public function removeProcessor($processor, bool $silent = false): Generator
-    {
-        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
-        $processors->remove($processor);
-        $this->processorPipeline = $processors;
-
-        return $this;
-    }
-
-    /**
-     * Update/replace an existing processor with a new one.
-     *
-     * @param ProcessorInterface|callable $processor the new processor
-     * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
-     *                                               If none given, matching is based on the processors class.
-     *
-     * @deprecated
-     */
-    public function updateProcessor($processor, ?callable $matcher = null): Generator
-    {
-        $matcher = $matcher ?: function ($other) use ($processor): bool {
-            $otherClass = get_class($other);
-
-            return $processor instanceof $otherClass;
-        };
-
-        $processors = array_map(fn ($other) => $matcher($other) ? $processor : $other, $this->getProcessors());
-        $this->setProcessors($processors);
 
         return $this;
     }
