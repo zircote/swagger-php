@@ -11,7 +11,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\QueryParameter(
     name: 'bad',
     example: 'not good',
-    examples: [new OAT\Examples(example: 'first', summary: 'First example', value: false)]
+    examples: [new OAT\Examples(example: 'first', summary: 'First example', value: 'one')]
 )]
 class BadExampleParameter
 {
