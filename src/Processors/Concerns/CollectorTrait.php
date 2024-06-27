@@ -11,57 +11,38 @@ use OpenApi\Annotations as OA;
 trait CollectorTrait
 {
     /**
-     * Collects a complete list of all nested/referenced annotations.
+     * Collects a (complete) list of all nested/referenced annotations starting from the given root.
      */
-    public function collect(iterable $annotations): \SplObjectStorage
+    public function collect(iterable $root): \SplObjectStorage
     {
         $storage = new \SplObjectStorage();
 
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof OA\AbstractAnnotation) {
-                $storage->addAll($this->traverse($annotation));
-            }
-        }
-
-        return $storage;
-    }
-
-    public function traverse(OA\AbstractAnnotation $annotation): \SplObjectStorage
-    {
-        $storage = new \SplObjectStorage();
-
-        if ($storage->contains($annotation)) {
-            return $storage;
-        }
-
-        $storage->attach($annotation);
-
-        foreach (array_merge($annotation::$_nested, ['allOf', 'anyOf', 'oneOf', 'callbacks']) as $properties) {
-            foreach ((array) $properties as $property) {
-                if (isset($annotation->{$property})) {
-                    $storage->addAll($this->traverseNested($annotation->{$property}));
-                }
-            }
-        }
+        $this->traverse($root, function (OA\AbstractAnnotation $annotation) use (&$storage) {
+            $storage->attach($annotation);
+        });
 
         return $storage;
     }
 
     /**
-     * @param string|array|OA\AbstractAnnotation $nested
+     * @param string|array|OA\AbstractAnnotation $root
      */
-    protected function traverseNested($nested): \SplObjectStorage
+    public function traverse($root, callable $callable): void
     {
-        $storage = new \SplObjectStorage();
-
-        if (is_array($nested)) {
-            foreach ($nested as $value) {
-                $storage->addAll($this->traverseNested($value));
+        if (is_iterable($root)) {
+            foreach ($root as $value) {
+                $this->traverse($value, $callable);
             }
-        } elseif ($nested instanceof OA\AbstractAnnotation) {
-            $storage->addAll($this->traverse($nested));
-        }
+        } elseif ($root instanceof OA\AbstractAnnotation) {
+            $callable($root);
 
-        return $storage;
+            foreach (array_merge($root::$_nested, ['allOf', 'anyOf', 'oneOf', 'callbacks']) as $properties) {
+                foreach ((array) $properties as $property) {
+                    if (isset($root->{$property})) {
+                        $this->traverse($root->{$property}, $callable);
+                    }
+                }
+            }
+        }
     }
 }
