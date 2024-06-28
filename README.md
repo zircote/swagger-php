@@ -5,8 +5,11 @@
 # swagger-php
 
 Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using
-[doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) (optional as of version 4.8; if required the `doctrine/annotations` library must be installed in addition to swagger.php).
+[doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) (**optional as of version 4.8**; if required the `doctrine/annotations` library must be installed in addition to swagger.php).
 or [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php).
+
+⚠️ `doctrine/annotations` is going to be deprecated in the future, so wherever
+possible attributes should be used.
 
 For a full list of supported annotations, please have look at the [`OpenApi\Annotations` namespace](src/Annotations) or the [documentation website](https://zircote.github.io/swagger-php/guide/annotations.html).
 

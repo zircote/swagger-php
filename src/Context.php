@@ -47,18 +47,8 @@ class Context
 {
     /**
      * Prototypical inheritance for properties.
-     *
-     * @var Context|null
      */
-    private $parent;
-
-    /**
-     * @deprecated
-     */
-    public function clone()
-    {
-        return new Context(get_object_vars($this), $this->parent);
-    }
+    private ?Context $parent;
 
     public function __construct(array $properties = [], ?Context $parent = null)
     {
@@ -121,7 +111,7 @@ class Context
         if ($this->is($property)) {
             return $this;
         }
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->with($property);
         }
 
@@ -133,7 +123,7 @@ class Context
      */
     public function root(): Context
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->root();
         }
 
@@ -193,7 +183,7 @@ class Context
      */
     public function __get(string $property)
     {
-        if ($this->parent !== null) {
+        if ($this->parent instanceof Context) {
             return $this->parent->{$property};
         }
 
@@ -211,41 +201,6 @@ class Context
     }
 
     /**
-     * Create a Context based on `debug_backtrace`.
-     *
-     * @deprecated
-     */
-    public static function detect(int $index = 0): Context
-    {
-        $context = new Context();
-        $backtrace = debug_backtrace();
-        $position = $backtrace[$index];
-        if (isset($position['file'])) {
-            $context->filename = $position['file'];
-        }
-        if (isset($position['line'])) {
-            $context->line = $position['line'];
-        }
-        $caller = $backtrace[$index + 1] ?? null;
-        if (isset($caller['function'])) {
-            $context->method = $caller['function'];
-            if (isset($caller['type']) && $caller['type'] === '::') {
-                $context->static = true;
-            }
-        }
-        if (isset($caller['class'])) {
-            $fqn = explode('\\', $caller['class']);
-            $context->class = array_pop($fqn);
-            if (count($fqn)) {
-                $context->namespace = implode('\\', $fqn);
-            }
-        }
-
-        // @todo extract namespaces and use statements
-        return $context;
-    }
-
-    /**
      * Resolve the fully qualified name.
      */
     public function fullyQualifiedName(?string $source): string
@@ -254,12 +209,7 @@ class Context
             return '';
         }
 
-        if ($this->namespace) {
-            $namespace = str_replace('\\\\', '\\', '\\' . $this->namespace . '\\');
-        } else {
-            // global namespace
-            $namespace = '\\';
-        }
+        $namespace = $this->namespace ? str_replace('\\\\', '\\', '\\' . $this->namespace . '\\') : '\\';
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
