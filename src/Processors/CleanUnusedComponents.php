@@ -10,17 +10,42 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
+/**
+ * Tracks the use of all <code>Components</code> and removed unused schemas.
+ */
 class CleanUnusedComponents implements ProcessorInterface
 {
-    use Concerns\CollectorTrait;
+    use Concerns\AnnotationTrait;
+
+    /**
+     * @var bool
+     */
+    protected $enabled = false;
+
+    public function __construct(bool $enabled = false)
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): CleanUnusedComponents
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
 
     public function __invoke(Analysis $analysis)
     {
-        if (Generator::isDefault($analysis->openapi->components)) {
+        if (!$this->enabled || Generator::isDefault($analysis->openapi->components)) {
             return;
         }
 
-        $analysis->annotations = $this->collect($analysis->annotations);
+        $analysis->annotations = $this->collectAnnotations($analysis->annotations);
 
         // allow multiple runs to catch nested dependencies
         for ($ii = 0; $ii < 10; ++$ii) {
@@ -83,10 +108,12 @@ class CleanUnusedComponents implements ProcessorInterface
             foreach ($analysis->openapi->components->{$componentType} as $ii => $component) {
                 if ($component->{$nameProperty} == $name) {
                     $annotation = $analysis->openapi->components->{$componentType}[$ii];
-                    foreach ($this->collect([$annotation]) as $unused) {
-                        $analysis->annotations->detach($unused);
-                    }
+                    $this->removeAnnotation($analysis->annotations, $annotation);
                     unset($analysis->openapi->components->{$componentType}[$ii]);
+
+                    if (!$analysis->openapi->components->{$componentType}) {
+                        $analysis->openapi->components->{$componentType} = Generator::UNDEFINED;
+                    }
                 }
             }
         }

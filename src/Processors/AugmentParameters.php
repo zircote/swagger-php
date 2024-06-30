@@ -30,9 +30,11 @@ class AugmentParameters implements ProcessorInterface
     /**
      * If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.
      */
-    public function setAugmentOperationParameters(bool $augmentOperationParameters): void
+    public function setAugmentOperationParameters(bool $augmentOperationParameters): AugmentParameters
     {
         $this->augmentOperationParameters = $augmentOperationParameters;
+
+        return $this;
     }
 
     public function __invoke(Analysis $analysis)
