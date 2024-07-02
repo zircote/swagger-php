@@ -26,7 +26,7 @@ foreach ($procgen->getProcessorsDetails() as $ii => $details) {
 
                 echo '<dl>' . PHP_EOL;
                 echo '  <dt><strong>' . $configPrefix . $name . '</strong>' . $var . '</dt>' . PHP_EOL;
-                echo '  <dt><strong>default</strong> : ' . $default . '</dt>' . PHP_EOL;
+                echo '  <dt><strong>default</strong>' . $default . '</dt>' . PHP_EOL;
                 echo '  <dd>';
                 echo '<p>' . nl2br($odetails['phpdoc'] ? $odetails['phpdoc']['content'] : ProcGenerator::NO_DETAILS_AVAILABLE) . '</p>';
                 echo '  </dd>' . PHP_EOL;
