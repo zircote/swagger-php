@@ -39,7 +39,7 @@ class ProcGenerator extends DocGenerator
                 $default = 'N/A';
                 if ($rp = $rc->getProperty($pname)) {
                     $dv = $rp->getDefaultValue();
-                    $default = match(gettype($dv)) {
+                    $default = match (gettype($dv)) {
                         'boolean' => $dv ? 'true' : 'false',
                         'array' => '[' . implode(', ', $dv) . ']',
                     };
