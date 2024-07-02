@@ -195,8 +195,17 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 
         /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
-        $this->assertCount(2, $properties);
-        $this->assertEquals('id', $properties[0]->property);
-        $this->assertEquals('labels', $properties[1]->property);
+
+        [$tags, $id, $labels] = $properties;
+
+        $this->assertCount(3, $properties);
+        $this->assertEquals('tags', $tags->property);
+        $this->assertEquals('id', $id->property);
+        $this->assertEquals('labels', $labels->property);
+
+        // regression: check doc blocks
+        $this->assertStringContainsString('Label List', $labels->_context->comment);
+        $this->assertStringContainsString('Tag List', $tags->_context->comment);
+        $this->assertEmpty($id->_context->comment);
     }
 }
