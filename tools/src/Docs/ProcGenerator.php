@@ -30,15 +30,25 @@ class ProcGenerator extends DocGenerator
                 }
 
                 $phpdoc = $this->extractDocumentation($method->getDocComment());
-                $optiondoc = array_key_exists($pname, $phpdoc['params']) ? $phpdoc['params'][$pname] : null;
-                if ($optiondoc && $phpdoc['content']) {
+                $optiondoc = array_key_exists($pname, $phpdoc['params']) ? $phpdoc['params'][$pname] : [];
+                if ($phpdoc['content']) {
                     // use method content rather than param if exists
                     $optiondoc['content'] = $phpdoc['content'];
+                }
+
+                $default = 'N/A';
+                if ($rp = $rc->getProperty($pname)) {
+                    $dv = $rp->getDefaultValue();
+                    $default = match(gettype($dv)) {
+                        'boolean' => $dv ? 'true' : 'false',
+                        'array' => '[' . implode(', ', $dv) . ']',
+                    };
                 }
 
                 $options[$pname] = [
                     'type' => $type,
                     'phpdoc' => $optiondoc,
+                    'default' => $default,
                 ];
             }
         }

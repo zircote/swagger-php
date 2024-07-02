@@ -20,10 +20,8 @@ class PathFilter implements ProcessorInterface
 {
     use AnnotationTrait;
 
-    /** @var array */
     protected $tags = [];
 
-    /** @var array */
     protected $paths = [];
 
     public function __construct(array $tags = [], array $paths = [])

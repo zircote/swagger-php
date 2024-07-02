@@ -15,7 +15,7 @@ use OpenApi\Generator;
  */
 class OperationId implements ProcessorInterface
 {
-    protected $hash;
+    protected $hash = true;
 
     public function __construct(bool $hash = true)
     {

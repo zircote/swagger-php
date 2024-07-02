@@ -17,9 +17,6 @@ class CleanUnusedComponents implements ProcessorInterface
 {
     use Concerns\AnnotationTrait;
 
-    /**
-     * @var bool
-     */
     protected $enabled = false;
 
     public function __construct(bool $enabled = false)
@@ -32,6 +29,9 @@ class CleanUnusedComponents implements ProcessorInterface
         return $this->enabled;
     }
 
+    /**
+     * Enables/disables the <code>CleanUnusedComponents</code> processor.
+     */
     public function setEnabled(bool $enabled): CleanUnusedComponents
     {
         $this->enabled = $enabled;
