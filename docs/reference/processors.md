@@ -7,6 +7,34 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 *Processors are listed in the default order of execution.*
 
+## Processor Configuration
+### Command line
+The `-c` option allows to specify a name/value pair with the name consisting
+of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+
+```shell
+> ./bin/openapi -c operatinId.hash=true // ...
+> ./bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+```
+
+### Programmatically with PHP
+Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
+as on the command line or be broken down into nested arrays.
+
+```php
+(new Generator())
+    ->setConfig([
+        'operationId.hash' => true,
+        'pathFilter' => [
+            'tags' => [
+                '/pets/',
+                '/store/',
+            ],
+        ],
+    ]);
+```
+
+
 ## Default Processors
 ### [DocBlockDescriptions](https://github.com/zircote/swagger-php/tree/master/src/Processors/DocBlockDescriptions.php)
 
@@ -62,7 +90,7 @@ Augments shared and operations parameters from docblock comments.
 #### Config settings
 <dl>
   <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> :  : <span style="font-family: monospace;">true</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">true</span></dt>
   <dd><p>If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.</p>  </dd>
 </dl>
 
@@ -82,7 +110,7 @@ Generate the OperationId based on the context of the OpenApi annotation.
 #### Config settings
 <dl>
   <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> :  : <span style="font-family: monospace;">true</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">true</span></dt>
   <dd><p>If set to <code>true</code> generate ids (md5) instead of clear text operation ids.</p>  </dd>
 </dl>
 
@@ -102,12 +130,12 @@ All filter (regular) expressions must be enclosed within delimiter characters as
 #### Config settings
 <dl>
   <dt><strong>pathFilter.tags</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dt><strong>default</strong> :  : <span style="font-family: monospace;">[]</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
   <dd><p>A list of regular expressions to match <code>tags</code> to include.</p>  </dd>
 </dl>
 <dl>
   <dt><strong>pathFilter.paths</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dt><strong>default</strong> :  : <span style="font-family: monospace;">[]</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
   <dd><p>A list of regular expressions to match <code>paths</code> to include.</p>  </dd>
 </dl>
 
@@ -118,7 +146,7 @@ Tracks the use of all <code>Components</code> and removed unused schemas.
 #### Config settings
 <dl>
   <dt><strong>cleanUnusedComponents.enabled</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> :  : <span style="font-family: monospace;">false</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">false</span></dt>
   <dd><p>Enables/disables the <code>CleanUnusedComponents</code> processor.</p>  </dd>
 </dl>
 
