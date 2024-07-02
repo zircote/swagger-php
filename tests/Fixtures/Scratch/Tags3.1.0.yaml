@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  title: Tags
+  description: 'Tag Scratch'
+  contact:
+    name: contact
+    email: contact@example.com
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      tags:
+        - sandbox
+      description: 'Sandbox endpoint'
+      operationId: f1c7f5a59b9708596c2bc955017002e6
+      responses:
+        '200':
+          description: 'All good'
+tags:
+  -
+    name: sandbox
+    description: sandbox

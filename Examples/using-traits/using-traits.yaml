@@ -133,3 +133,10 @@ components:
               description: 'The trick.'
               example: 'recite poem'
           type: object
+tags:
+  -
+    name: Entities
+    description: Entities
+  -
+    name: Products
+    description: Products

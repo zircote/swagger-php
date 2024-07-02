@@ -24,3 +24,7 @@ paths:
       responses:
         '200':
           description: OK
+tags:
+  -
+    name: endpoints
+    description: endpoints

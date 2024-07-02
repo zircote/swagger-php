@@ -93,3 +93,13 @@ components:
         tag:
           type: string
       type: object
+tags:
+  -
+    name: pets
+    description: pets
+  -
+    name: pets
+    description: pets
+  -
+    name: pets
+    description: pets

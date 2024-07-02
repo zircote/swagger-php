@@ -96,3 +96,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Product'
+tags:
+  -
+    name: Products
+    description: Products
+  -
+    name: Products
+    description: Products
+  -
+    name: Products
+    description: Products

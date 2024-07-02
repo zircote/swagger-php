@@ -275,6 +275,7 @@ class Generator
                 new Processors\MergeJsonContent(),
                 new Processors\MergeXmlContent(),
                 new Processors\OperationId(),
+                new Processors\AugmentTags(),
                 new Processors\CleanUnmerged(),
             ]);
         }
