@@ -240,3 +240,7 @@ components:
         username: '$response.body#/author/username'
         slug: '$response.body#/repository/slug'
         pid: '$response.body#/id'
+tags:
+  -
+    name: Users
+    description: Users

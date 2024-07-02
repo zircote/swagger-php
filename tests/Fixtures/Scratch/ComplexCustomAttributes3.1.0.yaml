@@ -61,3 +61,7 @@ components:
       title: TargetId
     TargetType:
       title: TargetType
+tags:
+  -
+    name: 'Target groups'
+    description: 'Target groups'
