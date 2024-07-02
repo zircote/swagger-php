@@ -7,7 +7,7 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 *Processors are listed in the default order of execution.*
 
-## Processors
+## Default Processors
 ### [DocBlockDescriptions](https://github.com/zircote/swagger-php/tree/master/src/Processors/DocBlockDescriptions.php)
 
 Checks if the annotation has a summary and/or description property
@@ -58,11 +58,12 @@ Use the property context to extract useful information and inject that into the 
 Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (`@OA\Get`, `@OA\Post`, etc).
 ### [AugmentParameters](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentParameters.php)
 
-
-### Config settings
+Augments shared and operations parameters from docblock comments.
+#### Config settings
 <dl>
   <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>No details available.</p>  </dd>
+  <dt><strong>default</strong> :  : <span style="font-family: monospace;">true</span></dt>
+  <dd><p>If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.</p>  </dd>
 </dl>
 
 
@@ -78,16 +79,47 @@ Split XmlContent into Schema and MediaType.
 ### [OperationId](https://github.com/zircote/swagger-php/tree/master/src/Processors/OperationId.php)
 
 Generate the OperationId based on the context of the OpenApi annotation.
-### Config settings
+#### Config settings
 <dl>
   <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>No details available.</p>  </dd>
+  <dt><strong>default</strong> :  : <span style="font-family: monospace;">true</span></dt>
+  <dd><p>If set to <code>true</code> generate ids (md5) instead of clear text operation ids.</p>  </dd>
 </dl>
 
 
+### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
+
+Ensures that all tags used on operations also exist in the global <code>tags</code> list.
 ### [CleanUnmerged](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnmerged.php)
 
 
+### [PathFilter](https://github.com/zircote/swagger-php/tree/master/src/Processors/PathFilter.php)
+
+Allows to filter endpoints based on tags and/or path.
+
+If no `tags` or `paths` filters are set, no filtering is performed.
+All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
+#### Config settings
+<dl>
+  <dt><strong>pathFilter.tags</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>default</strong> :  : <span style="font-family: monospace;">[]</span></dt>
+  <dd><p>A list of regular expressions to match <code>tags</code> to include.</p>  </dd>
+</dl>
+<dl>
+  <dt><strong>pathFilter.paths</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>default</strong> :  : <span style="font-family: monospace;">[]</span></dt>
+  <dd><p>A list of regular expressions to match <code>paths</code> to include.</p>  </dd>
+</dl>
+
+
 ### [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)
+
+Tracks the use of all <code>Components</code> and removed unused schemas.
+#### Config settings
+<dl>
+  <dt><strong>cleanUnusedComponents.enabled</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>default</strong> :  : <span style="font-family: monospace;">false</span></dt>
+  <dd><p>Enables/disables the <code>CleanUnusedComponents</code> processor.</p>  </dd>
+</dl>
 
 

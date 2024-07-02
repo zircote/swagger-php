@@ -53,8 +53,6 @@ EOT;
 
         $preamble .= <<< EOT
 
-## $type
-
 EOT;
 
         return $preamble;

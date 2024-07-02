@@ -10,6 +10,7 @@ foreach ($refgen->types() as $type) {
     ob_start();
 
     echo $refgen->preamble($type);
+    echo PHP_EOL . "## $type" . PHP_EOL;
 
     foreach ($refgen->classesForType($type) as $name => $details) {
         echo $refgen->formatClassHeader($name, $type);

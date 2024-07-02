@@ -9,6 +9,7 @@ $procgen = new ProcGenerator(__DIR__ . '/../');
 ob_start();
 
 echo $procgen->preamble('Processors');
+echo PHP_EOL . '## Default Processors' . PHP_EOL;
 
 foreach ($procgen->getProcessorsDetails() as $ii => $details) {
     $off = $ii + 1;
@@ -17,12 +18,15 @@ foreach ($procgen->getProcessorsDetails() as $ii => $details) {
 
     if ($details['options']) {
         $configPrefix = lcfirst($details['name']) . '.';
-        echo '### Config settings' . PHP_EOL;
+        echo '#### Config settings' . PHP_EOL;
         foreach ($details['options'] as $name => $odetails) {
             if ($odetails) {
                 $var = ' : <span style="font-family: monospace;">' . $odetails['type'] . '</span>';
+                $default = ' : <span style="font-family: monospace;">' . $odetails['default'] . '</span>';
+
                 echo '<dl>' . PHP_EOL;
                 echo '  <dt><strong>' . $configPrefix . $name . '</strong>' . $var . '</dt>' . PHP_EOL;
+                echo '  <dt><strong>default</strong> : ' . $default . '</dt>' . PHP_EOL;
                 echo '  <dd>';
                 echo '<p>' . nl2br($odetails['phpdoc'] ? $odetails['phpdoc']['content'] : ProcGenerator::NO_DETAILS_AVAILABLE) . '</p>';
                 echo '  </dd>' . PHP_EOL;
