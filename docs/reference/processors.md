@@ -7,6 +7,34 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 *Processors are listed in the default order of execution.*
 
+## Processor Configuration
+### Command line
+The `-c` option allows to specify a name/value pair with the name consisting
+of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+
+```shell
+> ./bin/openapi -c operatinId.hash=true // ...
+> ./bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+```
+
+### Programmatically with PHP
+Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
+as on the command line or be broken down into nested arrays.
+
+```php
+(new Generator())
+    ->setConfig([
+        'operationId.hash' => true,
+        'pathFilter' => [
+            'tags' => [
+                '/pets/',
+                '/store/',
+            ],
+        ],
+    ]);
+```
+
+
 ## Default Processors
 ### [DocBlockDescriptions](https://github.com/zircote/swagger-php/tree/master/src/Processors/DocBlockDescriptions.php)
 

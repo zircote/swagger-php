@@ -9,8 +9,44 @@ $procgen = new ProcGenerator(__DIR__ . '/../');
 ob_start();
 
 echo $procgen->preamble('Processors');
-echo PHP_EOL . '## Default Processors' . PHP_EOL;
 
+echo PHP_EOL . '## Processor Configuration' . PHP_EOL;
+
+echo '### Command line' . PHP_EOL;
+echo <<< EOT
+The `-c` option allows to specify a name/value pair with the name consisting
+of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+
+```shell
+> ./bin/openapi -c operatinId.hash=true // ...
+> ./bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+```
+
+
+EOT;
+
+echo '### Programmatically with PHP' . PHP_EOL;
+echo <<< EOT
+Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
+as on the command line or be broken down into nested arrays.
+
+```php
+(new Generator())
+    ->setConfig([
+        'operationId.hash' => true,
+        'pathFilter' => [
+            'tags' => [
+                '/pets/',
+                '/store/',
+            ],
+        ],
+    ]);
+```
+
+
+EOT;
+
+echo PHP_EOL . '## Default Processors' . PHP_EOL;
 foreach ($procgen->getProcessorsDetails() as $ii => $details) {
     $off = $ii + 1;
     echo $procgen->formatClassHeader($details['name'], 'Processors');
