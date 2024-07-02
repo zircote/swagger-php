@@ -155,4 +155,21 @@ class PathItem extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
+
+    /**
+     * Returns a list of all operations (all methods) for this path item.
+     *
+     * @return Operation[]
+     */
+    public function operations(): array
+    {
+        $operations = [];
+        foreach (PathItem::$_nested as $className => $property) {
+            if (is_subclass_of($className, Operation::class) && !Generator::isDefault($this->{$property})) {
+                $operations[] = $this->{$property};
+            }
+        }
+
+        return $operations;
+    }
 }

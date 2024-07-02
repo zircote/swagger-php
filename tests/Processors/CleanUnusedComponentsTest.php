@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Generator;
 use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\OpenApiTestCase;
 
@@ -17,9 +18,9 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
 
         return [
             'var-default' => [$defaultProcessors, 'UsingVar.php', 2, 5],
-            'var-clean' => [array_merge($defaultProcessors, [new CleanUnusedComponents()]), 'UsingVar.php', 0, 2],
+            'var-clean' => [array_merge($defaultProcessors, [new CleanUnusedComponents(true)]), 'UsingVar.php', 0, 2],
             'unreferenced-default' => [$defaultProcessors, 'Unreferenced.php', 2, 11],
-            'unreferenced-clean' => [array_merge($defaultProcessors, [new CleanUnusedComponents()]), 'Unreferenced.php', 0, 5],
+            'unreferenced-clean' => [array_merge($defaultProcessors, [new CleanUnusedComponents(true)]), 'Unreferenced.php', 0, 5],
         ];
     }
 
@@ -30,7 +31,11 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures([$fixture], $processors);
 
-        $this->assertCount($expectedSchemaCount, $analysis->openapi->components->schemas);
+        if ($expectedSchemaCount === 0) {
+            $this->assertTrue(Generator::isDefault($analysis->openapi->components->schemas));
+        } else {
+            $this->assertCount($expectedSchemaCount, $analysis->openapi->components->schemas);
+        }
         $this->assertCount($expectedAnnotationCount, $analysis->annotations);
     }
 }

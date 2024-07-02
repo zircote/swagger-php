@@ -277,6 +277,8 @@ class Generator
                 new Processors\OperationId(),
                 new Processors\AugmentTags(),
                 new Processors\CleanUnmerged(),
+                new Processors\PathFilter(),
+                new Processors\CleanUnusedComponents(),
             ]);
         }
 
