@@ -232,7 +232,7 @@ class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'enums' => [],
                     'methods' => ['__construct'],
-                    'properties' => ['labels', 'id'],
+                    'properties' => ['labels', 'tags', 'id'],
                 ],
             ],
         ];

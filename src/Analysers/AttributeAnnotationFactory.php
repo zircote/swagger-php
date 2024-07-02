@@ -80,6 +80,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 $instance->nullable = $nullable ?: Generator::UNDEFINED;
 
                                 if ($rp->isPromoted()) {
+                                    // ensure each property has its own context
+                                    $instance->_context = new Context([], $instance->_context);
+
                                     // promoted parameter - docblock is available via class/property
                                     if ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment()) {
                                         $instance->_context->comment = $comment;
