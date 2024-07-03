@@ -23,6 +23,13 @@ class Php8PromotedProperties
          * @OA\Property()
          */
         public ?array $labels,
+        /**
+         * Tag List.
+         *
+         * @var array<int,string>
+         */
+        #[OAT\Property()]
+        public array $tags,
         #[OAT\Property()]
         public int $id,
     ) {
