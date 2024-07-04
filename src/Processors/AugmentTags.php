@@ -28,6 +28,7 @@ class AugmentTags implements ProcessorInterface
         }
 
         if ($usedTags) {
+            $usedTags = array_unique($usedTags);
             $declaredTags = [];
             if (!Generator::isDefault($analysis->openapi->tags)) {
                 foreach ($analysis->openapi->tags as $tag) {
