@@ -81,12 +81,12 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                                 if ($rp->isPromoted()) {
                                     // ensure each property has its own context
-                                    $instance->_context = new Context([], $instance->_context);
+                                    $instance->_context = new Context(['generated' => true], $context);
 
                                     // promoted parameter - docblock is available via class/property
                                     if ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment()) {
                                         $instance->_context->comment = $comment;
-                                    }
+                                   }
                                 }
                             } else {
                                 if (!$instance->name || Generator::isDefault($instance->name)) {

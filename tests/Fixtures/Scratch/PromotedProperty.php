@@ -28,6 +28,14 @@ class PromotedPropertyDescription
         public string $value = '',
 
         /**
+         * Other value.
+         *
+         * @var string
+         */
+        #[OAT\Property(property: 'other')]
+        public string $other = '',
+
+        /**
          * Property meta.
          *
          * @var string

@@ -17,6 +17,9 @@ components:
         thevalue:
           description: 'Property value.'
           type: string
+        other:
+            description: 'Other value'
+            type: string
         thename:
           description: 'Property name.'
           type: string
