@@ -20,24 +20,36 @@ class AugmentTags implements ProcessorInterface
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
-        $usedTags = [];
+        $usedTagNames = [];
         foreach ($operations as $operation) {
             if (!Generator::isDefault($operation->tags)) {
-                $usedTags = array_merge($usedTags, $operation->tags);
+                $usedTagNames = array_merge($usedTagNames, $operation->tags);
+            }
+        }
+        $usedTagNames = array_unique($usedTagNames);
+
+        $declaredTags = [];
+        if (!Generator::isDefault($analysis->openapi->tags)) {
+            foreach ($analysis->openapi->tags as $tag) {
+                $declaredTags[$tag->name] = $tag;
             }
         }
 
-        if ($usedTags) {
-            $usedTags = array_unique($usedTags);
-            $declaredTags = [];
-            if (!Generator::isDefault($analysis->openapi->tags)) {
-                foreach ($analysis->openapi->tags as $tag) {
-                    $declaredTags[] = $tag->name;
+        if ($usedTagNames) {
+            $declatedTagNames = array_keys($declaredTags);
+            foreach ($usedTagNames as $tagName) {
+                if (!in_array($tagName, $declatedTagNames)) {
+                    $analysis->openapi->merge([new OA\Tag(['name' => $tagName, 'description' => $tagName])]);
                 }
             }
-            foreach ($usedTags as $tag) {
-                if (!in_array($tag, $declaredTags)) {
-                    $analysis->openapi->merge([new OA\Tag(['name' => $tag, 'description' => $tag])]);
+        }
+
+        foreach ($declaredTags as $tag) {
+            if (!in_array($tag->name, $usedTagNames)) {
+                if (false !== $index = array_search($tag, $analysis->openapi->tags)) {
+                    $analysis->annotations->detach($tag);
+                    unset($analysis->openapi->tags[$index]);
+                    $analysis->openapi->tags = array_values($analysis->openapi->tags);
                 }
             }
         }

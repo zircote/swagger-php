@@ -11,6 +11,7 @@ paths:
     get:
       tags:
         - sandbox
+        - other
       description: 'Sandbox endpoint'
       operationId: f1c7f5a59b9708596c2bc955017002e6
       responses:
@@ -19,4 +20,7 @@ paths:
 tags:
   -
     name: sandbox
-    description: sandbox
+    description: 'Sandbox tag'
+  -
+    name: other
+    description: other

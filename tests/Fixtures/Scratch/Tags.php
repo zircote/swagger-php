@@ -8,6 +8,8 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
+#[OAT\Tag(name: 'sandbox', description: 'Sandbox tag')]
+#[OAT\Tag(name: 'unused', description: 'Not used')]
 #[OAT\Info(
     title: 'Tags',
     description: 'Tag Scratch',
@@ -18,7 +20,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Get(
     path: '/endpoint',
     description: 'Sandbox endpoint',
-    tags: ['sandbox'],
+    tags: ['sandbox', 'other'],
     responses: [
         new OAT\Response(
             response: 200,
