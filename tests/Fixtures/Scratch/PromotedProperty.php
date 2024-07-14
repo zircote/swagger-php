@@ -43,6 +43,15 @@ class PromotedPropertyDescription
          * @OA\Property(property="themeta")
          */
         public string $meta = '',
+
+        /**
+         * Property different.
+         *
+         * @var string
+         *
+         * @OA\Property()
+         */
+        public string $different = '',
     ) {
     }
 }

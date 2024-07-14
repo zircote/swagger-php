@@ -26,4 +26,7 @@ components:
         themeta:
           description: 'Property meta.'
           type: string
+        different:
+            description: 'Property different.'
+            type: string
       type: object
