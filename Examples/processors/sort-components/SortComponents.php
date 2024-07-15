@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SchemaQueryParameterProcessor;
+namespace SortComponentsProcessor;
 
 use OpenApi\Analysis;
 

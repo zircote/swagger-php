@@ -61,13 +61,6 @@ class MyCustomProcessor
 
 * **schema-query-parameter processor**
 
-  A processor that takes a vendor tag (expecting a schema `#ref`) and injects all properties of that given schema as
-  query parameter to the [request definition](processors/schema-query-parameter/app/ProductController.php).
-
-  [source](processors/schema-query-parameter)
-
-* **schema-query-parameter-attributes processor**
-
   Same as the `schema-query-parameter` processor but uses php attributes instead of annotations.
   A processor that takes a vendor tag (expecting a schema `#ref`) and injects all properties of that given schema as
   query parameter to the [request definition](processors/schema-query-parameter-attributes/SchemaQueryParameter.php).
@@ -76,6 +69,6 @@ class MyCustomProcessor
 
 * **sort-components processor**
 
-  A processor that sorts components so they appear in alphabetical order.
+  A processor that sorts components, so they appear in alphabetical order.
 
   [source](processors/sort-components)

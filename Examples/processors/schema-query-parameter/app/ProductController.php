@@ -1,48 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-/**
- * A controller.
- */
+use OpenApi\Attributes as OA;
+use OpenApi\Attributes\Response;
+use SchemaQueryParameterProcessor\SchemaQueryParameter;
+
 class ProductController
 {
-    /**
-     * @OA\Get(
-     *     tags={"Products"},
-     *     path="/products/{id}",
-     *     @OA\PathParameter(
-     *         name="id",
-     *         required=true
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="A single product",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
-     *     )
-     * )
-     */
+    #[OA\Get(
+        path: '/products/{id}',
+        tags: ['Products'],
+        parameters: [
+            new OA\PathParameter(
+                name: 'id',
+                required: true,
+            ),
+        ],
+        responses: [
+            new Response(
+                response: 200,
+                description: 'A single product',
+                content: new OA\JsonContent(
+                    ref: Product::class
+                )
+            ),
+        ],
+    )]
     public function getProduct($id)
     {
     }
 
-    /**
-     * Controller that takes all `Product` properties as query parameter.
-     *
-     * @OA\Get(
-     *     tags={"Products"},
-     *     path="/products/search",
-     *     x={"query-args-$ref": "#/components/schemas/Product"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="A list of matching products",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Product")
-     *         )
-     *     )
-     * )
-     */
+    #[OA\Get(
+        path: '/products/search',
+        tags: ['Products'],
+        responses: [
+            new Response(
+                response: 200,
+                description: 'A single product',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: Product::class)
+                )
+            ),
+        ],
+        x: [SchemaQueryParameter::REF => Product::class],
+    )]
     public function findProducts($id)
     {
     }
