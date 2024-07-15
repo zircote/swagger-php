@@ -46,23 +46,23 @@ class SchemaQueryParameter
      */
     private function expandQueryArgs(Operation $operation, Schema $schema): void
     {
-        if ($schema->properties === Generator::UNDEFINED || !$schema->properties) {
+        if (Generator::isDefault($schema->properties) || !$schema->properties) {
             return;
         }
 
-        $operation->parameters = $operation->parameters === Generator::UNDEFINED ? [] : $operation->parameters;
+        $operation->parameters = Generator::isDefault($operation->parameters) ? [] : $operation->parameters;
 
         foreach ($schema->properties as $property) {
-            $isNullable = $property->nullable !== Generator::UNDEFINED ? $property->nullable : false;
+            $isNullable = Generator::isDefault($property->nullable) ? false : $property->nullable;
             $schema = new Schema(
-                type: $property->format !== Generator::UNDEFINED ? $property->format : $property->type,
+                type: Generator::isDefault($property->format) ? $property->type : $property->format,
                 nullable: $isNullable
             );
             $schema->_context = $operation->_context; // inherit context from operation, required to pretend to be a parameter
 
             $parameter = new Parameter(
                 name: $property->property,
-                description: $property->description !== Generator::UNDEFINED ? $property->description : null,
+                description: Generator::isDefault($property->description) ? null : $property->description,
                 in: 'query',
                 required: !$isNullable,
                 schema: $schema,
