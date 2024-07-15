@@ -241,11 +241,12 @@ class OpenApiTestCase extends TestCase
         return $processors;
     }
 
-    public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null): Analysis
+    public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null, array $config = []): Analysis
     {
         $analysis = new Analysis([], $this->getContext());
 
         (new Generator($this->getTrackingLogger()))
+            ->setConfig($config)
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
             ->setProcessorPipeline(new Pipeline($processors))
             ->generate($this->fixtures($files), $analysis, false);
