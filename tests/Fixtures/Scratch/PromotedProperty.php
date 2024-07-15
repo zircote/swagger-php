@@ -28,6 +28,14 @@ class PromotedPropertyDescription
         public string $value = '',
 
         /**
+         * Other value.
+         *
+         * @var string
+         */
+        #[OAT\Property(property: 'other')]
+        public string $other = '',
+
+        /**
          * Property meta.
          *
          * @var string
@@ -35,6 +43,15 @@ class PromotedPropertyDescription
          * @OA\Property(property="themeta")
          */
         public string $meta = '',
+
+        /**
+         * Property different.
+         *
+         * @var string
+         *
+         * @OA\Property()
+         */
+        public string $different = '',
     ) {
     }
 }
