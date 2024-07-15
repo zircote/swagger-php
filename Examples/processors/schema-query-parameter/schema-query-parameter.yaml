@@ -67,3 +67,7 @@ components:
           example: 'Lorem ipsum'
           nullable: true
       type: object
+tags:
+  -
+    name: Products
+    description: Products
