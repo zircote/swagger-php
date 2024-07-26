@@ -13,7 +13,7 @@ class AugmentTagsTest extends OpenApiTestCase
     /**
      * @requires PHP 8.1
      */
-    public function testAugmentTags(): void
+    public function testFilteredAugmentTags(): void
     {
         $this->skipLegacy();
 
@@ -24,5 +24,18 @@ class AugmentTagsTest extends OpenApiTestCase
         $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors(), null, $config);
 
         $this->assertCount(1, $analysis->openapi->tags);
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testDedupedAugmentTags(): void
+    {
+        $this->skipLegacy();
+
+        $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors());
+
+        echo $analysis->openapi->toYaml();
+        $this->assertCount(3, $analysis->openapi->tags, 'Expecting 3 unique tags');
     }
 }

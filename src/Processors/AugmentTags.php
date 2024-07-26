@@ -34,6 +34,10 @@ class AugmentTags implements ProcessorInterface
                 $declaredTags[$tag->name] = $tag;
             }
         }
+        if ($declaredTags) {
+            // last one wins
+            $analysis->openapi->tags = array_values($declaredTags);
+        }
 
         if ($usedTagNames) {
             $declatedTagNames = array_keys($declaredTags);
