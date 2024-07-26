@@ -56,11 +56,6 @@ parameters:
 			path: src/Generator.php
 
 		-
-			message: "#^Variable \\$logLine in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: src/Loggers/ConsoleLogger.php
-
-		-
 			message: "#^Call to function is_array\\(\\) with bool\\|OpenApi\\\\Annotations\\\\AdditionalProperties will always evaluate to false\\.$#"
 			count: 1
 			path: src/Processors/AugmentSchemas.php
