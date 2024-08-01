@@ -33,7 +33,7 @@ class ExpandClasses implements ProcessorInterface
                 foreach ($ancestors as $ancestor) {
                     $ancestorSchema = $analysis->getSchemaForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
                     if ($ancestorSchema) {
-                        $refPath = !Generator::isDefault($ancestorSchema->schema) ? $ancestorSchema->schema : $ancestor['class'];
+                        $refPath = Generator::isDefault($ancestorSchema->schema) ? $ancestor['class'] : $ancestorSchema->schema;
                         $this->inheritFrom($analysis, $schema, $ancestorSchema, $refPath, $ancestor['context']);
 
                         // one ancestor is enough
