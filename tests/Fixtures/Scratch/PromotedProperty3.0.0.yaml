@@ -18,8 +18,8 @@ components:
           description: 'Property value.'
           type: string
         other:
-            description: 'Other value.'
-            type: string
+          description: 'Other value.'
+          type: string
         thename:
           description: 'Property name.'
           type: string
@@ -27,6 +27,6 @@ components:
           description: 'Property meta.'
           type: string
         different:
-            description: 'Property different.'
-            type: string
+          description: 'Property different.'
+          type: string
       type: object
