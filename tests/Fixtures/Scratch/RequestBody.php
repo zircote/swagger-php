@@ -8,6 +8,11 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
+#[OAT\Schema]
+class RequestBodySchema
+{
+}
+
 #[OAT\RequestBody()]
 class RequestBodyRef
 {
@@ -21,12 +26,30 @@ class RequestBodyRefFoo
 #[OAT\Info(title: 'RequestBody', version: '1.0')]
 class RequestBodyController
 {
-    #[OAT\Get(
-        path: '/endpoint',
+    #[OAT\Post(
+        path: '/endpoint/schema-ref-json',
+        requestBody: new OAT\RequestBody(
+            description: 'Information about a new pet in the system',
+            content: new OAT\JsonContent(ref: RequestBodySchema::class),
+        ),
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'All good'
+            ),
+        ]
+    )]
+    public function postSchemaRefJson()
+    {
+    }
+
+    #[OAT\Post(
+        path: '/endpoint/schema-ref',
         requestBody: new OAT\RequestBody(
             description: 'Information about a new pet in the system',
             content: new OAT\MediaType(
-                mediaType: 'application/json'
+                mediaType: 'application/json',
+                schema: new OAT\Schema(ref: RequestBodySchema::class)
             ),
         ),
         responses: [
@@ -36,7 +59,7 @@ class RequestBodyController
             ),
         ]
     )]
-    public function post()
+    public function postSchemaRef()
     {
     }
 

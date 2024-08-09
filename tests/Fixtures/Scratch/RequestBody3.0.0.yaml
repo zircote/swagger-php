@@ -3,13 +3,27 @@ info:
   title: RequestBody
   version: '1.0'
 paths:
-  /endpoint:
-    get:
-      operationId: 30597cf43b480393042f6b01a9d7980c
+  /endpoint/schema-ref-json:
+    post:
+      operationId: 8d1f9c9f0437712695d337f1c11badc7
       requestBody:
         description: 'Information about a new pet in the system'
         content:
-          application/json: {  }
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodySchema'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/schema-ref:
+    post:
+      operationId: 7fa3f3456b14a4a8eb3a0357283ecd15
+      requestBody:
+        description: 'Information about a new pet in the system'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodySchema'
       responses:
         '200':
           description: 'All good'
@@ -30,6 +44,8 @@ paths:
         '200':
           description: 'All good'
 components:
+  schemas:
+    RequestBodySchema: {  }
   requestBodies:
     RequestBodyRef: {  }
     foo: {  }
