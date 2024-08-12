@@ -12,6 +12,7 @@ use OpenApi\Annotations as OA;
  * The Spec.
  *
  * @OA\OpenApi(
+ *     openapi="3.1.0",
  *     security={{"bearerAuth": {}}}
  * )
  * @OA\Info(

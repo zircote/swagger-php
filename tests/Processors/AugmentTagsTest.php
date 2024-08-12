@@ -35,7 +35,6 @@ class AugmentTagsTest extends OpenApiTestCase
 
         $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors());
 
-        echo $analysis->openapi->toYaml();
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting 3 unique tags');
     }
 }

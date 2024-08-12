@@ -68,10 +68,6 @@ class Context
         $this->parent = $parent;
 
         $this->logger = $this->logger ?: new DefaultLogger();
-
-        if (!$this->version) {
-            $this->root()->version = OA\OpenApi::DEFAULT_VERSION;
-        }
     }
 
     /**
@@ -141,16 +137,23 @@ class Context
     }
 
     /**
+     * Get the OpenApi version.
+     *
+     * This is a best guess and only final once parsing is complete.
+     */
+    public function getVersion(): string
+    {
+        return $this->root()->version ?: OA\OpenApi::DEFAULT_VERSION;
+    }
+
+    /**
      * Check if one of the given version numbers matches the current OpenAPI version.
      *
      * @param string|array $versions One or more version numbers
      */
     public function isVersion($versions): bool
     {
-        $versions = (array) $versions;
-        $currentVersion = $this->version ?: OA\OpenApi::DEFAULT_VERSION;
-
-        return in_array($currentVersion, $versions);
+        return in_array($this->getVersion(), (array) $versions);
     }
 
     /**
