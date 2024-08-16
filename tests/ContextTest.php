@@ -53,12 +53,12 @@ class ContextTest extends OpenApiTestCase
 
         // assert defaults set
         $this->assertNotInstanceOf(NullLogger::class, $context->logger);
-        $this->assertEquals(OA\OpenApi::VERSION_3_0_0, $context->version);
+        $this->assertEquals(OA\OpenApi::VERSION_3_0_0, $context->getVersion());
 
         $context->ensureRoot($root);
 
         // assert inheriting from root
         $this->assertInstanceOf(NullLogger::class, $context->logger);
-        $this->assertEquals(OA\OpenApi::VERSION_3_1_0, $context->version);
+        $this->assertEquals(OA\OpenApi::VERSION_3_1_0, $context->getVersion());
     }
 }
