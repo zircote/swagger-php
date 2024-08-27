@@ -50,7 +50,7 @@ class AugmentTagsTest extends OpenApiTestCase
             static::processors(),
             null,
             [
-                'augmentTags' => ['unusedTagsToKeepWhitelist' => ['fancy']]
+                'augmentTags' => ['unusedTagsToKeepWhitelist' => ['fancy']],
             ]
         );
 

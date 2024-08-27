@@ -16,7 +16,7 @@ use OpenApi\Generator;
 class AugmentTags implements ProcessorInterface
 {
 
-    /** @var array<string>  */
+    /** @var array<string> */
     protected $unusedTagsToKeepWhitelist = [];
 
     public function __construct(array $unusedTagsToKeepWhitelist = [])
