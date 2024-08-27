@@ -54,6 +54,6 @@ class AugmentTagsTest extends OpenApiTestCase
             ]
         );
 
-        $this->assertCount(2, $analysis->openapi->tags, 'Expecting 3 unique tags');
+        $this->assertCount(2, $analysis->openapi->tags, 'Expecting fancy tag to be preserved');
     }
 }
