@@ -15,6 +15,22 @@ use OpenApi\Generator;
  */
 class AugmentTags implements ProcessorInterface
 {
+
+    /** @var array<string>  */
+    protected array $unusedTagsToKeepWhitelist = [];
+
+    public function __construct(array $unusedTagsToKeepWhitelist = [])
+    {
+        $this->unusedTagsToKeepWhitelist = $unusedTagsToKeepWhitelist;
+    }
+
+    public function setUnusedTagsToKeepWhitelist(array $unusedTagsToKeepWhitelist): AugmentTags
+    {
+        $this->unusedTagsToKeepWhitelist = $unusedTagsToKeepWhitelist;
+
+        return $this;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         /** @var OA\Operation[] $operations */
@@ -39,6 +55,7 @@ class AugmentTags implements ProcessorInterface
             $analysis->openapi->tags = array_values($declaredTags);
         }
 
+        // Add a tag for each tag that is used in operations but not declared in the global tags
         if ($usedTagNames) {
             $declatedTagNames = array_keys($declaredTags);
             foreach ($usedTagNames as $tagName) {
@@ -48,8 +65,10 @@ class AugmentTags implements ProcessorInterface
             }
         }
 
+        // remove tags that we don't want to keep (defaults to all unused tags)
+        $tagsToKeep = array_merge($usedTagNames, $this->unusedTagsToKeepWhitelist);
         foreach ($declaredTags as $tag) {
-            if (!in_array($tag->name, $usedTagNames)) {
+            if (!in_array($tag->name, $tagsToKeep)) {
                 if (false !== $index = array_search($tag, $analysis->openapi->tags, true)) {
                     $analysis->annotations->detach($tag);
                     unset($analysis->openapi->tags[$index]);
