@@ -50,10 +50,29 @@ class AugmentTagsTest extends OpenApiTestCase
             static::processors(),
             null,
             [
-                'augmentTags' => ['unusedTagsToKeepWhitelist' => ['fancy']],
+                'augmentTags' => ['whitelist' => ['fancy']],
             ]
         );
 
         $this->assertCount(2, $analysis->openapi->tags, 'Expecting fancy tag to be preserved');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testAllowUnusedTagsWildcard(): void
+    {
+        $this->skipLegacy();
+
+        $analysis = $this->analysisFromFixtures(
+            ['UnusedTags.php'],
+            static::processors(),
+            null,
+            [
+                'augmentTags' => ['whitelist' => ['*']],
+            ]
+        );
+
+        $this->assertCount(3, $analysis->openapi->tags, 'Expecting all tags to be preserved');
     }
 }

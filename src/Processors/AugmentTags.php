@@ -17,16 +17,19 @@ class AugmentTags implements ProcessorInterface
 {
 
     /** @var array<string> */
-    protected $unusedTagsToKeepWhitelist = [];
+    protected $whitelist;
 
-    public function __construct(array $unusedTagsToKeepWhitelist = [])
+    public function __construct(array $whitelist = [])
     {
-        $this->unusedTagsToKeepWhitelist = $unusedTagsToKeepWhitelist;
+        $this->whitelist = $whitelist;
     }
 
-    public function setUnusedTagsToKeepWhitelist(array $unusedTagsToKeepWhitelist): AugmentTags
+    /**
+     * Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.
+     */
+    public function setWhitelist(array $whitelist): AugmentTags
     {
-        $this->unusedTagsToKeepWhitelist = $unusedTagsToKeepWhitelist;
+        $this->whitelist = $whitelist;
 
         return $this;
     }
@@ -65,8 +68,16 @@ class AugmentTags implements ProcessorInterface
             }
         }
 
-        // remove tags that we don't want to keep (defaults to all unused tags)
-        $tagsToKeep = array_merge($usedTagNames, $this->unusedTagsToKeepWhitelist);
+        $this->removeUnusedTags($usedTagNames, $declaredTags, $analysis);
+    }
+
+    private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis)
+    {
+        if (in_array('*', $this->whitelist)) {
+            return;
+        }
+
+        $tagsToKeep = array_merge($usedTagNames, $this->whitelist);
         foreach ($declaredTags as $tag) {
             if (!in_array($tag->name, $tagsToKeep)) {
                 if (false !== $index = array_search($tag, $analysis->openapi->tags, true)) {
