@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class ServerVariable extends \OpenApi\Annotations\ServerVariable
+class ServerVariable extends OA\ServerVariable
 {
     /**
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum

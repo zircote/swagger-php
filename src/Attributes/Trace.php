@@ -6,8 +6,10 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations as OA;
+
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Trace extends \OpenApi\Annotations\Trace
+class Trace extends OA\Trace
 {
     use OperationTrait;
 }

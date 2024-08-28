@@ -6,8 +6,10 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations as OA;
+
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Delete extends \OpenApi\Annotations\Delete
+class Delete extends OA\Delete
 {
     use OperationTrait;
 }

@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Discriminator extends \OpenApi\Annotations\Discriminator
+class Discriminator extends OA\Discriminator
 {
     /**
      * @param string[]|null            $mapping

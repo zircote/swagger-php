@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Tag extends \OpenApi\Annotations\Tag
+class Tag extends OA\Tag
 {
     /**
      * @param array<string,mixed>|null $x

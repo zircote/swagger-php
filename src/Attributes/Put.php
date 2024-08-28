@@ -6,8 +6,10 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations as OA;
+
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Put extends \OpenApi\Annotations\Put
+class Put extends OA\Put
 {
     use OperationTrait;
 }

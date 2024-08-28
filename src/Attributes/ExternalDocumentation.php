@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class ExternalDocumentation extends \OpenApi\Annotations\ExternalDocumentation
+class ExternalDocumentation extends OA\ExternalDocumentation
 {
     /**
      * @param array<string,mixed>|null $x

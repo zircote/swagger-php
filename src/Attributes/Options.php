@@ -6,8 +6,10 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations as OA;
+
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Options extends \OpenApi\Annotations\Options
+class Options extends OA\Options
 {
     use OperationTrait;
 }

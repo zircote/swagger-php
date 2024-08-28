@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class JsonContent extends \OpenApi\Annotations\JsonContent
+class JsonContent extends OA\JsonContent
 {
     /**
      * @param string|non-empty-array<string>|null                           $type
@@ -20,9 +21,9 @@ class JsonContent extends \OpenApi\Annotations\JsonContent
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $allOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $anyOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $oneOf
+     * @param array<Schema|OA\Schema>                                       $allOf
+     * @param array<Schema|OA\Schema>                                       $anyOf
+     * @param array<Schema|OA\Schema>                                       $oneOf
      * @param array<string,mixed>|null                                      $x
      * @param Attachable[]|null                                             $attachables
      */

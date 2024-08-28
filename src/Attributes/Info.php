@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Info extends \OpenApi\Annotations\Info
+class Info extends OA\Info
 {
     /**
      * @param array<string,mixed>|null $x

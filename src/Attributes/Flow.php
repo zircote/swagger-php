@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Flow extends \OpenApi\Annotations\Flow
+class Flow extends OA\Flow
 {
     /**
      * @param array<string,mixed>|null $x
