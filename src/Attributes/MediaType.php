@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class MediaType extends \OpenApi\Annotations\MediaType
+class MediaType extends OA\MediaType
 {
     /**
      * @param array<Examples>          $examples

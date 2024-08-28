@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class OpenApi extends \OpenApi\Annotations\OpenApi
+class OpenApi extends OA\OpenApi
 {
     /**
      * @param Server[]|null            $servers

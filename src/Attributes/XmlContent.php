@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class XmlContent extends \OpenApi\Annotations\XmlContent
+class XmlContent extends OA\XmlContent
 {
     /**
      * @param string|non-empty-array<string>|null                           $type
@@ -20,9 +21,9 @@ class XmlContent extends \OpenApi\Annotations\XmlContent
      * @param int|float                                                     $minimum
      * @param Property[]                                                    $properties
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $allOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $anyOf
-     * @param array<Schema|\OpenApi\Annotations\Schema>                     $oneOf
+     * @param array<Schema|OA\Schema>                                       $allOf
+     * @param array<Schema|OA\Schema>                                       $anyOf
+     * @param array<Schema|OA\Schema>                                       $oneOf
      * @param array<string,mixed>|null                                      $x
      * @param Attachable[]|null                                             $attachables
      */

@@ -176,7 +176,7 @@ class AttributesSyncTest extends OpenApiTestCase
         }
 
         if ($var) {
-            $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], '', $var);
+            $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\', 'OA'], '', $var);
             if (false === strpos($var, '<')) {
                 $var = explode('|', $var);
                 sort($var);

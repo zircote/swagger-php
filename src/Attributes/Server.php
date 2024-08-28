@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class Server extends \OpenApi\Annotations\Server
+class Server extends OA\Server
 {
     /**
      * @param ServerVariable[]         $variables

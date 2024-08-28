@@ -6,9 +6,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Header extends \OpenApi\Annotations\Header
+class Header extends OA\Header
 {
     /**
      * @param string|class-string|object|null $ref

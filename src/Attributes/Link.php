@@ -7,9 +7,10 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Generator;
+use OpenApi\Annotations as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-class Link extends \OpenApi\Annotations\Link
+class Link extends OA\Link
 {
     /**
      * @param string|class-string|object|null $ref

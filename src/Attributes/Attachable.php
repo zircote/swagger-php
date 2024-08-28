@@ -6,8 +6,10 @@
 
 namespace OpenApi\Attributes;
 
+use OpenApi\Annotations as OA;
+
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
-class Attachable extends \OpenApi\Annotations\Attachable
+class Attachable extends OA\Attachable
 {
     public function __construct(array $properties = [])
     {
