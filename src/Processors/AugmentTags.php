@@ -17,7 +17,7 @@ class AugmentTags implements ProcessorInterface
 {
 
     /** @var array<string> */
-    protected $whitelist;
+    protected $whitelist = [];
 
     public function __construct(array $whitelist = [])
     {
