@@ -163,18 +163,29 @@ class RefGenerator extends DocGenerator
 
     protected function getPropertyDocumentation(string $fqdn, string $name): array
     {
+        /** @var class-string<AbstractAnnotation> $class */
+        $class = str_replace('Attributes', 'Annotations', $fqdn);
         try {
-            $rp = new \ReflectionProperty(str_replace('Attributes', 'Annotations', $fqdn), $name);
+            $rp = new \ReflectionProperty($class, $name);
         } catch (\ReflectionException $re) {
             $rp = null;
         }
 
-        return $this->extractDocumentation($rp ? $rp->getDocComment() : null);
+        $documentation = $this->extractDocumentation($rp ? $rp->getDocComment() : null);
+
+        $documentation['required'] = in_array($name, $class::$_required);
+
+        return $documentation;
     }
 
     protected function propertyDetails(array $propertyDocumentation): void
     {
         echo '<p>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</p>';
+
+
+        echo '<table class="table-plain">';
+        echo '<tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>' . ($propertyDocumentation['required'] ? 'yes' : 'no') . '</b></td></tr>';
+
         if ($propertyDocumentation['see']) {
             $links = [];
             foreach ($propertyDocumentation['see'] as $see) {
@@ -183,10 +194,11 @@ class RefGenerator extends DocGenerator
                 }
             }
             if ($links) {
-                echo '<p><i>See</i>: ' . implode(', ', $links) . '</p>';
+                echo '<tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;">' . implode(', ', $links) . '</td></tr>';
             }
         }
 
+        echo '</table>';
     }
 
     /**
