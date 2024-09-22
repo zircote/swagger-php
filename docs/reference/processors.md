@@ -115,9 +115,6 @@ Generate the OperationId based on the context of the OpenApi annotation.
 </dl>
 
 
-### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
-
-Ensures that all tags used on operations also exist in the global <code>tags</code> list.
 ### [CleanUnmerged](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnmerged.php)
 
 
@@ -151,3 +148,6 @@ Tracks the use of all <code>Components</code> and removed unused schemas.
 </dl>
 
 
+### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
+
+Ensures that all tags used on operations also exist in the global <code>tags</code> list.

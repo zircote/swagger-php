@@ -24,40 +24,40 @@ In addition to this page, there are also a number of [examples](https://github.c
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -68,57 +68,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -127,7 +127,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -135,46 +135,46 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Attachable.php)
@@ -189,7 +189,7 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Components.php)
@@ -208,30 +208,30 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>schemas</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;|null</span></dt>
-  <dd><p>Reusable Schemas.</p></dd>
+  <dd><p>Reusable Schemas.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]|null</span></dt>
-  <dd><p>Reusable Responses.</p></dd>
+  <dd><p>Reusable Responses.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
-  <dd><p>Reusable Parameters.</p></dd>
+  <dd><p>Reusable Parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBodies</strong> : <span style="font-family: monospace;">RequestBody[]|null</span></dt>
-  <dd><p>Reusable Request Bodies.</p></dd>
+  <dd><p>Reusable Request Bodies.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;|null</span></dt>
-  <dd><p>Reusable Examples.</p></dd>
+  <dd><p>Reusable Examples.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]|null</span></dt>
-  <dd><p>Reusable Headers.</p></dd>
+  <dd><p>Reusable Headers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>securitySchemes</strong> : <span style="font-family: monospace;">SecurityScheme[]|null</span></dt>
-  <dd><p>Reusable Security Schemes.</p></dd>
+  <dd><p>Reusable Security Schemes.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]|null</span></dt>
-  <dd><p>Reusable Links.</p></dd>
+  <dd><p>Reusable Links.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
-  <dd><p>Reusable Callbacks.</p></dd>
+  <dd><p>Reusable Callbacks.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Contact.php)
@@ -250,18 +250,18 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The identifying name of the contact person/organization.</p></dd>
+  <dd><p>The identifying name of the contact person/organization.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The URL pointing to the contact information.</p></dd>
+  <dd><p>The URL pointing to the contact information.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>email</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The email address of the contact person/organization.</p></dd>
+  <dd><p>The email address of the contact person/organization.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
@@ -280,29 +280,29 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
+  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
-For all other cases, the name corresponds to the parameter name used by the in property.</p></dd>
+For all other cases, the name corresponds to the parameter name used by the in property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>This takes 'cookie' as the default location.</p></dd>
+  <dd><p>This takes 'cookie' as the default location.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
-Otherwise, the property may be included and its default value is false.</p></dd>
+Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -310,61 +310,61 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the parameter.</p></dd>
+  <dd><p>The schema defining the type used for the parameter.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
-To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
+To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p></dd>
+The map must only contain one entry.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
 <br />
-Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p></dd>
+Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
 <br />
 For other types of parameters this property has no effect.<br />
 <br />
 When style is form, the default value is true.<br />
-For all other styles, the default value is false.</p></dd>
+For all other styles, the default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
 <br />
 This property only applies to parameters with an in value of query.<br />
 <br />
-The default value is false.</p></dd>
+The default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Space separated array values.<br />
 <br />
-This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Pipe separated array values.<br />
 <br />
-This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
@@ -383,19 +383,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -404,22 +404,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -429,9 +429,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -439,22 +439,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Discriminator.php)
@@ -473,16 +473,16 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>propertyName</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The name of the property in the payload that will hold the discriminator value.</p></dd>
+  <dd><p>The name of the property in the payload that will hold the discriminator value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>mapping</strong> : <span style="font-family: monospace;">string[]|null</span></dt>
-  <dd><p>An object to hold mappings between payload values and schema names or references.</p></dd>
+  <dd><p>An object to hold mappings between payload values and schema names or references.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Examples.php)
@@ -501,39 +501,39 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into `#/components/examples`.</p></dd>
+  <dd><p>The key into `#/components/examples`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Short description for the example.</p></dd>
+  <dd><p>Short description for the example.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Embedded literal example.<br />
 <br />
 The value field and externalValue field are mutually exclusive.<br />
 <br />
 To represent examples of media types that cannot naturally be represented<br />
-in JSON or YAML, use a string value to contain the example, escaping where necessary.</p></dd>
+in JSON or YAML, use a string value to contain the example, escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>value</strong> : <span style="font-family: monospace;">array|string|int|null</span></dt>
   <dd><p>Embedded literal example.<br />
 <br />
 The value field and externalValue field are mutually exclusive.<br />
 <br />
 To represent examples of media types that cannot naturally be represented<br />
-in JSON or YAML, use a string value to contain the example, escaping where necessary.</p></dd>
+in JSON or YAML, use a string value to contain the example, escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalValue</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An URL that points to the literal example.<br />
 <br />
 This provides the capability to reference examples that cannot easily be included<br />
 in JSON or YAML documents.<br />
 <br />
-The value field and externalValue field are mutually exclusive.</p></dd>
+The value field and externalValue field are mutually exclusive.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to an example.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to an example.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ExternalDocumentation.php)
@@ -552,16 +552,16 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short description of the target documentation. GFM syntax can be used for rich text representation.</p></dd>
+  <dd><p>A short description of the target documentation. GFM syntax can be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The URL for the target documentation.</p></dd>
+  <dd><p>The URL for the target documentation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Flow.php)
@@ -582,30 +582,30 @@ These will be ignored but can be used for custom processing.</p></dd>
   <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The authorization url to be used for this flow.<br />
 <br />
-This must be in the form of an url.</p></dd>
+This must be in the form of an url.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The token URL to be used for this flow.<br />
 <br />
-This must be in the form of an url.</p></dd>
+This must be in the form of an url.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The URL to be used for obtaining refresh tokens.<br />
 <br />
-This must be in the form of an url.</p></dd>
+This must be in the form of an url.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>flow</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Flow name.<br />
 <br />
-One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p></dd>
+One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>The available scopes for the OAuth2 security scheme.<br />
 <br />
-A map between the scope name and a short description for it.</p></dd>
+A map between the scope name and a short description for it.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Get](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Get.php)
@@ -624,19 +624,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -645,22 +645,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -670,9 +670,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -680,22 +680,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Head](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Head.php)
@@ -714,19 +714,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -735,22 +735,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -760,9 +760,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -770,22 +770,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Header](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Header.php)
@@ -804,20 +804,20 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>header</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>Schema object.</p></dd>
+  <dd><p>Schema object.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -825,14 +825,14 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
@@ -851,29 +851,29 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
+  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
-For all other cases, the name corresponds to the parameter name used by the in property.</p></dd>
+For all other cases, the name corresponds to the parameter name used by the in property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>This takes 'header' as the default location.</p></dd>
+  <dd><p>This takes 'header' as the default location.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
-Otherwise, the property may be included and its default value is false.</p></dd>
+Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -881,61 +881,61 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the parameter.</p></dd>
+  <dd><p>The schema defining the type used for the parameter.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
-To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
+To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p></dd>
+The map must only contain one entry.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
 <br />
-Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p></dd>
+Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
 <br />
 For other types of parameters this property has no effect.<br />
 <br />
 When style is form, the default value is true.<br />
-For all other styles, the default value is false.</p></dd>
+For all other styles, the default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
 <br />
 This property only applies to parameters with an in value of query.<br />
 <br />
-The default value is false.</p></dd>
+The default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Space separated array values.<br />
 <br />
-This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Pipe separated array values.<br />
 <br />
-This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Info](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Info.php)
@@ -954,28 +954,28 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>version</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).</p></dd>
+  <dd><p>The version of the OpenAPI document (which is distinct from the OpenAPI Specification version or the API implementation version).</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short description of the application.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The title of the application.</p></dd>
+  <dd><p>The title of the application.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>termsOfService</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An URL to the Terms of Service for the API.<br />
 <br />
-Must be in the format of an url.</p></dd>
+Must be in the format of an url.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>contact</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Contact|null</span></dt>
-  <dd><p>The contact information for the exposed API.</p></dd>
+  <dd><p>The contact information for the exposed API.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>license</strong> : <span style="font-family: monospace;">OpenApi\Attributes\License|null</span></dt>
-  <dd><p>The license information for the exposed API.</p></dd>
+  <dd><p>The license information for the exposed API.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Items](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Items.php)
@@ -994,40 +994,40 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -1038,57 +1038,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -1097,7 +1097,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -1105,46 +1105,46 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
@@ -1163,42 +1163,42 @@ These will be ignored but can be used for custom processing.</p></dd>
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -1209,57 +1209,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -1268,7 +1268,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -1276,46 +1276,46 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Attributes/License.php)
@@ -1334,20 +1334,20 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The license name used for the API.</p></dd>
+  <dd><p>The license name used for the API.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.</p></dd>
+  <dd><p>An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
-The `url` field is mutually exclusive of the `identifier` field.</p></dd>
+The `url` field is mutually exclusive of the `identifier` field.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Link](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Link.php)
@@ -1366,19 +1366,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>link</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into MediaType->links array.</p></dd>
+  <dd><p>The key into MediaType->links array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationRef</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A relative or absolute reference to an OA operation.<br />
 <br />
 This field is mutually exclusive of the <code>operationId</code> field, and must point to an Operation object.<br />
 <br />
-Relative values may be used to locate an existing Operation object in the OpenAPI definition.</p></dd>
+Relative values may be used to locate an existing Operation object in the OpenAPI definition.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name of an existing, resolvable OA operation, as defined with a unique <code>operationId</code>.<br />
 <br />
-This field is mutually exclusive of the <code>operationRef</code> field.</p></dd>
+This field is mutually exclusive of the <code>operationRef</code> field.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
   <dd><p>A map representing parameters to pass to an operation as specified with operationId or identified via<br />
 operationRef.<br />
@@ -1386,22 +1386,22 @@ operationRef.<br />
 The key is the parameter name to be used, whereas the value can be a constant or an expression to<br />
 be evaluated and passed to the linked operation.<br />
 The parameter name can be qualified using the parameter location [{in}.]{name} for operations<br />
-that use the same parameter name in different locations (e.g. path.id).</p></dd>
+that use the same parameter name in different locations (e.g. path.id).</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>A literal value or {expression} to use as a request body when calling the target operation.</p></dd>
+  <dd><p>A literal value or {expression} to use as a request body when calling the target operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A description of the link.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>server</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Server|null</span></dt>
-  <dd><p>A server object to be used by the target operation.</p></dd>
+  <dd><p>A server object to be used by the target operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Attributes/MediaType.php)
@@ -1420,9 +1420,9 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>mediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Operation->content array.</p></dd>
+  <dd><p>The key into Operation->content array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the request body.</p></dd>
+  <dd><p>The schema defining the type used for the request body.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
@@ -1430,27 +1430,27 @@ The example object should be in the correct format as specified by the media typ
 The example object is mutually exclusive of the examples object.<br />
 <br />
 Furthermore, if referencing a schema which contains an example,<br />
-the example value shall override the example provided by the schema.</p></dd>
+the example value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the media type.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
   <dd><p>A map between a property name and its encoding information.<br />
 <br />
 The key, being the property name, must exist in the schema as a property.<br />
 <br />
 The encoding object shall only apply to requestBody objects when the media type is multipart or<br />
-application/x-www-form-urlencoded.</p></dd>
+application/x-www-form-urlencoded.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Attributes/OpenApi.php)
@@ -1471,42 +1471,42 @@ The openapi field should be used by tooling specifications and clients to interp
 <br />
 A version specified via `Generator::setVersion()` will overwrite this value.<br />
 <br />
-This is not related to the API info::version string.</p></dd>
+This is not related to the API info::version string.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>info</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Info|null</span></dt>
-  <dd><p>Provides metadata about the API. The metadata may be used by tooling as required.</p></dd>
+  <dd><p>Provides metadata about the API. The metadata may be used by tooling as required.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
   <dd><p>An array of <code>@Server</code> objects, which provide connectivity information to a target server.<br />
 <br />
-If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.</p></dd>
+If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used across the API.<br />
 <br />
 The list of values includes alternative security requirement objects that can be used.<br />
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 Individual operations can override this definition.<br />
-To make security optional, an empty security requirement `({})` can be included in the array.</p></dd>
+To make security optional, an empty security requirement `({})` can be included in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">Tag[]|null</span></dt>
   <dd><p>A list of tags used by the specification with additional metadata.<br />
 <br />
 The order of the tags can be used to reflect on their order by the parsing tools.<br />
 Not all tags that are used by the Operation Object must be declared.<br />
 The tags that are not declared may be organized randomly or based on the tools' logic.<br />
-Each tag name in the list must be unique.</p></dd>
+Each tag name in the list must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation.</p></dd>
+  <dd><p>Additional external documentation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>paths</strong> : <span style="font-family: monospace;">PathItem[]|null</span></dt>
-  <dd><p>The available paths and operations for the API.</p></dd>
+  <dd><p>The available paths and operations for the API.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>components</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Components|null</span></dt>
-  <dd><p>An element to hold various components for the specification.</p></dd>
+  <dd><p>An element to hold various components for the specification.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>webhooks</strong> : <span style="font-family: monospace;">Webhook[]|null</span></dt>
-  <dd><p>The available webhooks for the API.</p></dd>
+  <dd><p>The available webhooks for the API.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
@@ -1525,19 +1525,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -1546,22 +1546,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -1571,9 +1571,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -1581,22 +1581,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Parameter.php)
@@ -1615,31 +1615,31 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
+  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
-For all other cases, the name corresponds to the parameter name used by the in property.</p></dd>
+For all other cases, the name corresponds to the parameter name used by the in property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The location of the parameter.<br />
 <br />
-Possible values are "query", "header", "path" or "cookie".</p></dd>
+Possible values are "query", "header", "path" or "cookie".</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
-Otherwise, the property may be included and its default value is false.</p></dd>
+Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -1647,61 +1647,61 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the parameter.</p></dd>
+  <dd><p>The schema defining the type used for the parameter.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
-To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
+To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p></dd>
+The map must only contain one entry.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
 <br />
-Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p></dd>
+Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
 <br />
 For other types of parameters this property has no effect.<br />
 <br />
 When style is form, the default value is true.<br />
-For all other styles, the default value is false.</p></dd>
+For all other styles, the default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
 <br />
 This property only applies to parameters with an in value of query.<br />
 <br />
-The default value is false.</p></dd>
+The default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Space separated array values.<br />
 <br />
-This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Pipe separated array values.<br />
 <br />
-This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Patch.php)
@@ -1720,19 +1720,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -1741,22 +1741,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -1766,9 +1766,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -1776,22 +1776,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathItem.php)
@@ -1810,45 +1810,45 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
+  <dd><p>Key for the Path Object (OpenApi->paths array).</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An optional, string summary, intended to apply to all operations in this path.</p></dd>
+  <dd><p>An optional, string summary, intended to apply to all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An optional, string description, intended to apply to all operations in this path.</p></dd>
+  <dd><p>An optional, string description, intended to apply to all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>get</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Get|null</span></dt>
-  <dd><p>A definition of a GET operation on this path.</p></dd>
+  <dd><p>A definition of a GET operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>put</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Put|null</span></dt>
-  <dd><p>A definition of a PUT operation on this path.</p></dd>
+  <dd><p>A definition of a PUT operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>post</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Post|null</span></dt>
-  <dd><p>A definition of a POST operation on this path.</p></dd>
+  <dd><p>A definition of a POST operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>delete</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Delete|null</span></dt>
-  <dd><p>A definition of a DELETE operation on this path.</p></dd>
+  <dd><p>A definition of a DELETE operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>options</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Options|null</span></dt>
-  <dd><p>A definition of a OPTIONS operation on this path.</p></dd>
+  <dd><p>A definition of a OPTIONS operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>head</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Head|null</span></dt>
-  <dd><p>A definition of a HEAD operation on this path.</p></dd>
+  <dd><p>A definition of a HEAD operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>patch</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Patch|null</span></dt>
-  <dd><p>A definition of a PATCH operation on this path.</p></dd>
+  <dd><p>A definition of a PATCH operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
-  <dd><p>A definition of a TRACE operation on this path.</p></dd>
+  <dd><p>A definition of a TRACE operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
-  <dd><p>An alternative server array to service all operations in this path.</p></dd>
+  <dd><p>An alternative server array to service all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
   <dd><p>A list of parameters that are applicable for all the operations described under this path.<br />
 <br />
 These parameters can be overridden at the operation level, but cannot be removed there.<br />
 The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
-The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.</p></dd>
+The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathParameter.php)
@@ -1867,26 +1867,26 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
+  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
-For all other cases, the name corresponds to the parameter name used by the in property.</p></dd>
+For all other cases, the name corresponds to the parameter name used by the in property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>This takes 'path' as the default location.</p></dd>
+  <dd><p>This takes 'path' as the default location.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>No details available.</p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -1894,61 +1894,61 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the parameter.</p></dd>
+  <dd><p>The schema defining the type used for the parameter.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
-To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
+To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p></dd>
+The map must only contain one entry.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
 <br />
-Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p></dd>
+Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
 <br />
 For other types of parameters this property has no effect.<br />
 <br />
 When style is form, the default value is true.<br />
-For all other styles, the default value is false.</p></dd>
+For all other styles, the default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
 <br />
 This property only applies to parameters with an in value of query.<br />
 <br />
-The default value is false.</p></dd>
+The default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Space separated array values.<br />
 <br />
-This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Pipe separated array values.<br />
 <br />
-This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Post](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Post.php)
@@ -1967,19 +1967,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -1988,22 +1988,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -2013,9 +2013,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -2023,22 +2023,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
@@ -2057,42 +2057,42 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Schema->properties array.</p></dd>
+  <dd><p>The key into Schema->properties array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -2103,57 +2103,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -2162,7 +2162,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -2170,46 +2170,46 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Put.php)
@@ -2228,19 +2228,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -2249,22 +2249,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -2274,9 +2274,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -2284,22 +2284,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
@@ -2318,29 +2318,29 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p></dd>
+  <dd><p>The key into <code>Components::parameters</code> or <code>PathItem::parameters</code> array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The (case-sensitive) name of the parameter.<br />
 <br />
 If in is "path", the name field must correspond to the associated path segment from the path field in the Paths Object.<br />
 <br />
 If in is "header" and the name field is "Accept", "Content-Type" or "Authorization", the parameter definition shall be ignored.<br />
-For all other cases, the name corresponds to the parameter name used by the in property.</p></dd>
+For all other cases, the name corresponds to the parameter name used by the in property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>This takes 'query' as the default location.</p></dd>
+  <dd><p>This takes 'query' as the default location.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
-Otherwise, the property may be included and its default value is false.</p></dd>
+Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p></dd>
+  <dd><p>Specifies that a parameter is deprecated and should be transitioned out of usage.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Sets the ability to pass empty-valued parameters.<br />
 <br />
@@ -2348,61 +2348,61 @@ This is valid only for query parameters and allows sending a parameter with an e
 <br />
 Default value is false.<br />
 <br />
-If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p></dd>
+If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>The schema defining the type used for the parameter.</p></dd>
+  <dd><p>The schema defining the type used for the parameter.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
-To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p></dd>
+To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the parameter.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>A map containing the representations for the parameter.<br />
 <br />
 The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p></dd>
+The map must only contain one entry.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Describes how the parameter value will be serialized depending on the type of the parameter value.<br />
 <br />
-Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p></dd>
+Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.<br />
 <br />
 For other types of parameters this property has no effect.<br />
 <br />
 When style is form, the default value is true.<br />
-For all other styles, the default value is false.</p></dd>
+For all other styles, the default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether the parameter value should allow reserved characters, as defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.<br />
 <br />
 This property only applies to parameters with an in value of query.<br />
 <br />
-The default value is false.</p></dd>
+The default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>spaceDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Space separated array values.<br />
 <br />
-This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>pipeDelimited</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Pipe separated array values.<br />
 <br />
-This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p></dd>
+This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Attributes/RequestBody.php)
@@ -2421,32 +2421,32 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to a request body.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to a request body.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->requestBodies array.</p></dd>
+  <dd><p>The key into Components->requestBodies array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter.<br />
 <br />
 This could contain examples of use.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
-Otherwise, the property may be included and its default value is false.</p></dd>
+Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType|JsonContent|XmlContent&gt;|MediaType|XmlContent|Attachable|null</span></dt>
   <dd><p>The content of the request body.<br />
 <br />
 The key is a media type or media type range and the value describes it. For requests that match multiple keys,<br />
-only the most specific key is applicable. e.g. text/plain overrides text/*.</p></dd>
+only the most specific key is applicable. e.g. text/plain overrides text/*.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Response](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Response.php)
@@ -2465,40 +2465,40 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to a response.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to a response.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>response</strong> : <span style="font-family: monospace;">string|int|null</span></dt>
   <dd><p>The key into Operations->responses array.<br />
 <br />
-A HTTP status code or <code>default</code>.</p></dd>
+A HTTP status code or <code>default</code>.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short description of the response.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
   <dd><p>Maps a header name to its definition.<br />
 <br />
 RFC7230 states header names are case insensitive.<br />
 <br />
-If a response header is defined with the name "Content-Type", it shall be ignored.</p><p><i>See</i>: <a href="https://tools.ietf.org/html/rfc7230#page-22">RFC7230</a></p></dd>
+If a response header is defined with the name "Content-Type", it shall be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc7230#page-22">RFC7230</a></td></tr></table></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|Attachable|array&lt;MediaType|Attachable&gt;</span></dt>
   <dd><p>A map containing descriptions of potential response payloads.<br />
 <br />
 The key is a media type or media type range and the value describes it.<br />
 <br />
 For responses that match multiple keys, only the most specific key is applicable;<br />
-e.g. <code>text/plain</code> overrides <code>text/*</code>.</p></dd>
+e.g. <code>text/plain</code> overrides <code>text/*</code>.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]</span></dt>
   <dd><p>A map of operations links that can be followed from the response.<br />
 <br />
 The key of the map is a short name for the link, following the naming constraints of the names for Component<br />
-Objects.</p></dd>
+Objects.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Schema.php)
@@ -2517,40 +2517,40 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -2561,57 +2561,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -2620,7 +2620,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -2628,54 +2628,54 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
   <dd><p>Examples of the schema.<br />
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p></dd>
+  <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Attributes/SecurityScheme.php)
@@ -2694,34 +2694,34 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to a security scheme.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to a security scheme.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into OpenApi->security array.</p></dd>
+  <dd><p>The key into OpenApi->security array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
-  <dd><p>The type of the security scheme.</p></dd>
+  <dd><p>The type of the security scheme.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short description for security scheme.</p></dd>
+  <dd><p>A short description for security scheme.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The name of the header or query parameter to be used.</p></dd>
+  <dd><p>The name of the header or query parameter to be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Required The location of the API key.</p></dd>
+  <dd><p>Required The location of the API key.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>bearerFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A hint to the client to identify how the bearer token is formatted.<br />
 <br />
-Bearer tokens are usually generated by an authorization server, so this information is primarily for documentation purposes.</p></dd>
+Bearer tokens are usually generated by an authorization server, so this information is primarily for documentation purposes.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>scheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The name of the HTTP Authorization scheme.</p><p><i>See</i>: <a href="https://tools.ietf.org/html/rfc7235#section-5.1">RFC7235</a></p></dd>
+  <dd><p>The name of the HTTP Authorization scheme.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc7235#section-5.1">RFC7235</a></td></tr></table></dd>
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.</p></dd>
+  <dd><p>OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>flows</strong> : <span style="font-family: monospace;">Flow[]</span></dt>
-  <dd><p>The flow used by the OAuth2 security scheme.</p></dd>
+  <dd><p>The flow used by the OAuth2 security scheme.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Server](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Server.php)
@@ -2744,22 +2744,22 @@ These will be ignored but can be used for custom processing.</p></dd>
 <br />
 This URL supports Server Variables and may be relative,<br />
 to indicate that the host location is relative to the location where the OpenAPI document is being served.<br />
-Variable substitutions will be made when a variable is named in {brackets}.</p></dd>
+Variable substitutions will be made when a variable is named in {brackets}.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional string describing the host designated by the URL.<br />
 <br />
-CommonMark syntax may be used for rich text representation.</p></dd>
+CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">ServerVariable[]</span></dt>
   <dd><p>A map between a variable name and its value.<br />
 <br />
-The value is used for substitution in the server's URL template.</p></dd>
+The value is used for substitution in the server's URL template.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ServerVariable.php)
@@ -2778,28 +2778,28 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Server->variables array.</p></dd>
+  <dd><p>The key into Server->variables array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An optional description for the server variable.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />
-Unlike the Schema Object's default, this value must be provided by the consumer.</p></dd>
+Unlike the Schema Object's default, this value must be provided by the consumer.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p></dd>
+  <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map between a variable name and its value.<br />
 <br />
-The value is used for substitution in the server's URL template.</p></dd>
+The value is used for substitution in the server's URL template.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Tag.php)
@@ -2818,18 +2818,18 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The name of the tag.</p></dd>
+  <dd><p>The name of the tag.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short description for the tag. GFM syntax can be used for rich text representation.</p></dd>
+  <dd><p>A short description for the tag. GFM syntax can be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this tag.</p></dd>
+  <dd><p>Additional external documentation for this tag.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Trace.php)
@@ -2848,19 +2848,19 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p></dd>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique string used to identify the operation.<br />
 <br />
 The id must be unique among all operations described in the API.<br />
 Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
-follow common programming naming conventions.</p></dd>
+follow common programming naming conventions.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A verbose explanation of the operation behavior.<br />
 <br />
-CommonMark syntax MAY be used for rich text representation.</p></dd>
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what the operation does.</p></dd>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
 <br />
@@ -2869,22 +2869,22 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 <br />
 This definition overrides any declared top-level security.<br />
-To remove a top-level security declaration, an empty array can be used.</p></dd>
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
-this value.</p></dd>
+this value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
   <dd><p>The request body applicable for this operation.<br />
 <br />
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
-by consumers.</p></dd>
+by consumers.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
-Tags can be used for logical grouping of operations by resources or any other qualifier.</p></dd>
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
@@ -2894,9 +2894,9 @@ The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
-components/parameters.</p></dd>
+components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
-  <dd><p>The list of possible responses as they are returned from executing this operation.</p></dd>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
 <br />
@@ -2904,22 +2904,22 @@ The key is a unique identifier for the Callback Object.<br />
 <br />
 Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
 and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
-runtime, that identifies a URL to use for the callback operation.</p></dd>
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this operation.</p></dd>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares this operation to be deprecated.<br />
 <br />
 Consumers should refrain from usage of the declared operation.<br />
 <br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Webhook.php)
@@ -2938,47 +2938,47 @@ These will be ignored but can be used for custom processing.</p></dd>
 ---
 <dl>
   <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key for the webhooks map.</p></dd>
+  <dd><p>Key for the webhooks map.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></table></dd>
   <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Key for the Path Object (OpenApi->paths array).</p></dd>
+  <dd><p>Key for the Path Object (OpenApi->paths array).</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>No details available.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An optional, string summary, intended to apply to all operations in this path.</p></dd>
+  <dd><p>An optional, string summary, intended to apply to all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An optional, string description, intended to apply to all operations in this path.</p></dd>
+  <dd><p>An optional, string description, intended to apply to all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>get</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Get|null</span></dt>
-  <dd><p>A definition of a GET operation on this path.</p></dd>
+  <dd><p>A definition of a GET operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>put</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Put|null</span></dt>
-  <dd><p>A definition of a PUT operation on this path.</p></dd>
+  <dd><p>A definition of a PUT operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>post</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Post|null</span></dt>
-  <dd><p>A definition of a POST operation on this path.</p></dd>
+  <dd><p>A definition of a POST operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>delete</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Delete|null</span></dt>
-  <dd><p>A definition of a DELETE operation on this path.</p></dd>
+  <dd><p>A definition of a DELETE operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>options</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Options|null</span></dt>
-  <dd><p>A definition of a OPTIONS operation on this path.</p></dd>
+  <dd><p>A definition of a OPTIONS operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>head</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Head|null</span></dt>
-  <dd><p>A definition of a HEAD operation on this path.</p></dd>
+  <dd><p>A definition of a HEAD operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>patch</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Patch|null</span></dt>
-  <dd><p>A definition of a PATCH operation on this path.</p></dd>
+  <dd><p>A definition of a PATCH operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
-  <dd><p>A definition of a TRACE operation on this path.</p></dd>
+  <dd><p>A definition of a TRACE operation on this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
-  <dd><p>An alternative server array to service all operations in this path.</p></dd>
+  <dd><p>An alternative server array to service all operations in this path.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
   <dd><p>A list of parameters that are applicable for all the operations described under this path.<br />
 <br />
 These parameters can be overridden at the operation level, but cannot be removed there.<br />
 The list must not include duplicated parameters.<br />
 A unique parameter is defined by a combination of a name and location.<br />
-The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.</p></dd>
+The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Xml.php)
@@ -3003,29 +3003,29 @@ When defined within the Items Object (items), it will affect the name of the ind
 When defined alongside type being array (outside the items), it will affect the wrapping element<br />
 and only if wrapped is <code>true</code>.<br />
 <br />
-If wrapped is <code>false</code>, it will be ignored.</p></dd>
+If wrapped is <code>false</code>, it will be ignored.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>namespace</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The URL of the namespace definition. Value SHOULD be in the form of a URL.</p></dd>
+  <dd><p>The URL of the namespace definition. Value SHOULD be in the form of a URL.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>prefix</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The prefix to be used for the name.</p></dd>
+  <dd><p>The prefix to be used for the name.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attribute</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares whether the property definition translates to an attribute instead of an element.<br />
 <br />
-Default value is <code>false</code>.</p></dd>
+Default value is <code>false</code>.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>wrapped</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>MAY be used only for an array definition.<br />
 <br />
 Signifies whether the array is wrapped (for example  <code>&lt;books>&lt;book/>&lt;book/>&lt;/books></code>)<br />
 or unwrapped (<code>&lt;book/>&lt;book/></code>).<br />
 <br />
-Default value is false. The definition takes effect only when defined alongside type being array (outside the items).</p></dd>
+Default value is false. The definition takes effect only when defined alongside type being array (outside the items).</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 
 ### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/XmlContent.php)
@@ -3044,42 +3044,42 @@ These will be ignored but can be used for custom processing.</p></dd>
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
-  <dd><p>The relative or absolute path to the endpoint.</p><p><i>See</i>: <a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></p></dd>
+  <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://swagger.io/docs/specification/using-ref/">Using refs</a></td></tr></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into Components->schemas array.</p></dd>
+  <dd><p>The key into Components->schemas array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Can be used to decorate a user interface with information about the data produced by this user interface.<br />
 <br />
-Preferably short; use <code>description</code> for more details.</p></dd>
+Preferably short; use <code>description</code> for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p></dd>
+  <dd><p>A description will provide explanation about the purpose of the instance described by this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is less than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
-value of this attribute.</p></dd>
+value of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p></dd>
+array value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
-Each property is represented as an instance of the <a href="#property">Property</a> class.</p></dd>
+Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
 <br />
-Since OpenApi v3.1 an array of types may be used.</p></dd>
+Since OpenApi v3.1 an array of types may be used.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p></dd>
+  <dd><p>The extending format for the previously mentioned type. See Data Type Formats for further details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Items|null</span></dt>
-  <dd><p>Required if type is "array". Describes the type of items in the array.</p></dd>
+  <dd><p>Required if type is "array". Describes the type of items in the array.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>collectionFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Determines the format of the array if type array is used.<br />
 <br />
@@ -3090,57 +3090,57 @@ Possible values are:<br />
 - pipes: pipe separated values foo|bar.<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
-value is csv.</p></dd>
+value is csv.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></p></dd>
+  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></p></dd>
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
   <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
 <br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></p></dd>
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum length of a string property.<br />
 <br />
 A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></p></dd>
+attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The maximum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></p></dd>
+this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
   <dd><p>The minimum number of items allowed in an array property.<br />
 <br />
 An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></p></dd>
+of this attribute.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
-If this attribute is set to true, then all items in the array must be unique.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></p></dd>
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p></dd>
+  <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A collection of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><p><i>See</i>: <a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></p></dd>
+collection.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
 The discriminator is an object name that is used to differentiate between other schemas which may satisfy the<br />
-payload description. See Composition and Inheritance for more details.</p></dd>
+payload description. See Composition and Inheritance for more details.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "read only".<br />
 <br />
@@ -3149,7 +3149,7 @@ Relevant only for Schema "properties" definitions.<br />
 This means that it may be sent as part of a response but should not be sent as part of the request.<br />
 If the property is marked as readOnly being true and is in the required list, the required will take effect on<br />
 the response only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Declares the property as "write only".<br />
 <br />
@@ -3157,45 +3157,45 @@ Relevant only for Schema "properties" definitions.<br />
 Therefore, it may be sent as part of a request but should not be sent as part of the response.<br />
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
-false.</p></dd>
+false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Xml|null</span></dt>
   <dd><p>This may be used only on properties schemas.<br />
 <br />
 It has no effect on root schemas.<br />
-Adds additional metadata to describe the XML representation of this property.</p></dd>
+Adds additional metadata to describe the XML representation of this property.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
-  <dd><p>Additional external documentation for this schema.</p></dd>
+  <dd><p>Additional external documentation for this schema.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
-contain the example with escaping where necessary.</p></dd>
+contain the example with escaping where necessary.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
 <br />
 This must not be used when using OpenApi version 3.1,<br />
-instead make the "type" property an array and add "null" as a possible type.</p></dd>
+instead make the "type" property an array and add "null" as a possible type.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
-Default value is false.</p></dd>
+Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
-schema defined by this property's value.</p></dd>
+schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
-defined by this property's value.</p></dd>
+defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p></dd>
+  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p></dd>
+The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
-These will be ignored but can be used for custom processing.</p></dd>
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
 </dl>
 

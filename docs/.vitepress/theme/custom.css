@@ -28,3 +28,9 @@
         border-bottom: solid 1px #ddd;
     }
 }
+
+.table-plain, table.table-plain tr, table.table-plain th, table.table-plain td  {
+    border: none;
+    padding: 2px 12px 2px 0;
+    background: none;
+}

@@ -25,4 +25,9 @@ class PathParameter extends Parameter
      * @inheritdoc
      */
     public $required = true;
+
+    /**
+     * @inheritdoc
+     */
+    public static $_required = ['name'];
 }
