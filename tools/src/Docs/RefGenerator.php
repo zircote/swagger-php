@@ -182,7 +182,6 @@ class RefGenerator extends DocGenerator
     {
         echo '<p>' . nl2br($propertyDocumentation['content'] ?: self::NO_DETAILS_AVAILABLE) . '</p>';
 
-
         echo '<table class="table-plain">';
         echo '<tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>' . ($propertyDocumentation['required'] ? 'yes' : 'no') . '</b></td></tr>';
 
