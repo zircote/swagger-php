@@ -151,3 +151,11 @@ Tracks the use of all <code>Components</code> and removed unused schemas.
 ### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
 
 Ensures that all tags used on operations also exist in the global <code>tags</code> list.
+#### Config settings
+<dl>
+  <dt><strong>augmentTags.whitelist</strong> : <span style="font-family: monospace;">array</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
+  <dd><p>Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.</p>  </dd>
+</dl>
+
+

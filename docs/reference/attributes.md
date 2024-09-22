@@ -157,13 +157,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
@@ -207,7 +207,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 #### Parameters
 ---
 <dl>
-  <dt><strong>schemas</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;|null</span></dt>
+  <dt><strong>schemas</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;|null</span></dt>
   <dd><p>Reusable Schemas.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]|null</span></dt>
   <dd><p>Reusable Responses.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
@@ -1127,13 +1127,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
@@ -1298,13 +1298,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
@@ -2192,13 +2192,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
@@ -2656,13 +2656,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
@@ -3179,13 +3179,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Annotations\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
