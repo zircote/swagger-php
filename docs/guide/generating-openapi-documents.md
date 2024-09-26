@@ -15,6 +15,17 @@ the tool will use the file extension to determine the format.
 The `--format` option can be used to force a specific format.
 :::
 
+::: tip Bootstrap
+The bootstrap option `-b` is useful when trying to use `swagger-php` without proper autoloading.
+
+For example, you might want to evaluate the library using a single file with just a few annotations. In this case telling swagger-php to bootstrap (pre-load) the file prior to processing it will ensure PHP's `reflection` code will be able to inspect your code.
+
+```shell
+> ./vendor/bin/openapi -b my_file.php my_file.php
+```
+:::
+
+
 For a list of all available options use the `-h` option
 
 ```shell
