@@ -1,8 +1,8 @@
 # Generating OpenAPI documents
 
-## `./bin/openapi`
+## `./vendor/bin/openapi`
 
-`swagger-php` includes a command line tool `./bin/openapi`. This can be used to generate OpenAPI documents.
+`swagger-php` includes a command line tool `./vendor/bin/openapi`. This can be used to generate OpenAPI documents.
 
 ```shell
 > ./vendor/bin/openapi app -o openapi.yaml
@@ -18,7 +18,7 @@ The `--format` option can be used to force a specific format.
 For a list of all available options use the `-h` option
 
 ```shell
-> ./bin/openapi -h
+> ./vendor/bin/openapi -h
 
 Usage: openapi [--option value] [/path/to/project ...]
 

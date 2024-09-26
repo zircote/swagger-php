@@ -38,7 +38,7 @@ Add `swagger-php` attributes or annotations to your source code.
 ### 3. Generate OpenAPI documentation
 
 ```shell
-> ./bin/openapi src -o openapi.yaml
+> ./vendor/bin/openapi src -o openapi.yaml
 ```
 
 ### 4. Explore and interact with your API
