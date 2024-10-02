@@ -444,7 +444,7 @@ class Generator
             ];
 
         $processorPipeline = $config['processor'] ??
-            $config['processors'] ? new Pipeline($config['processors']) : null;
+            ($config['processors'] ? new Pipeline($config['processors']) : null);
 
         return (new Generator($config['logger']))
             ->setVersion($config['version'])

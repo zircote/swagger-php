@@ -26,11 +26,25 @@ class GeneratorTest extends OpenApiTestCase
     /**
      * @dataProvider sourcesProvider
      */
-    public function testScan(string $sourceDir, iterable $sources): void
+    public function testGenerate(string $sourceDir, iterable $sources): void
     {
         $openapi = (new Generator())
             ->setAnalyser($this->getAnalyzer())
             ->generate($sources);
+
+        $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
+    }
+
+    /**
+     * @dataProvider sourcesProvider
+     */
+    public function testScan(string $sourceDir, iterable $sources): void
+    {
+        $analyzer = $this->getAnalyzer();
+        $processor = (new Generator())
+            ->getProcessorPipeline();
+
+        $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
 
         $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
     }
