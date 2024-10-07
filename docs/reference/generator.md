@@ -56,13 +56,15 @@ $logger = new \Psr\Log\NullLogger();
 $processors = [/* my processors */];
 $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in(__DIR__);
 
+$context = new OpenApi\Context();
+
 $openapi = (new \OpenApi\Generator($logger))
             ->setProcessorPipeline(new \OpenApi\Pipeline($processors))
             ->setAliases(['MY' => 'My\Annotations'])
             ->setNamespaces(['My\\Annotations\\'])
-            ->setAnalyser(new \OpenApi\Analysers\TokenAnalyser())
+            ->setAnalyser(new \OpenApi\Analysers\ReflectionAnalyser([new OpenApi\Analysers\DocBlockAnnotationFactory(), new OpenApi\Analysers\AttributeAnnotationFactory()]))
             ->setVersion(\OpenApi\Annotations\OpenApi::VERSION_3_0_0)
-            ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis(), $validate);
+            ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis([], $context)), $validate);
 ```
 
 `Aliases` and `namespaces` are additional options that allow to customize the parsing of docblocks.
