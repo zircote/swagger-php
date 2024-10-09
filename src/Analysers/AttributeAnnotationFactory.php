@@ -139,9 +139,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                 }
             }
 
-            // Property can be nested...
-            return $annotation->getRoot() != $possibleParent->getRoot()
-                && ($explicitParent || ($isAttachable && $isParentAllowed));
+            // Attachables can always be nested (unless explicitly restricted)
+            return ($isAttachable && $isParentAllowed)
+                || ($annotation->getRoot() != $possibleParent->getRoot() && $explicitParent);
         };
 
         $annotationsWithoutParent = [];
