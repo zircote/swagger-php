@@ -354,16 +354,7 @@ class Generator
         if (!$before) {
             $processors->add($processor);
         } else {
-            $matcher = function (array $pipes) use ($before) {
-                foreach ($pipes as $ii => $current) {
-                    if ($current instanceof $before) {
-                        return $ii;
-                    }
-                }
-
-                return null;
-            };
-            $processors->insert($processor, $matcher);
+            $processors->insert($processor, $before);
         }
 
         $this->processorPipeline = $processors;

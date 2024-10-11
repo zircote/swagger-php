@@ -89,7 +89,7 @@ class PipelineTest extends OpenApiTestCase
         $this->assertEquals('c', $pipeline->process(''));
     }
 
-    public function testInsert()
+    public function testInsertMatcher()
     {
         $pipeline = new Pipeline();
 
@@ -99,5 +99,17 @@ class PipelineTest extends OpenApiTestCase
 
         $pipeline->insert($this->pipe('y'), function ($pipes) { return 1; });
         $this->assertEquals('xyz', $pipeline->process(''));
+    }
+
+    public function testInsertClassString()
+    {
+        $pipeline = new Pipeline();
+
+        $pipeline->add($this);
+        $pipeline->add($this->pipe('y'));
+        $this->assertEquals('xy', $pipeline->process(''));
+
+        $pipeline->insert($this->pipe('a'), __CLASS__);
+        $this->assertEquals('axy', $pipeline->process(''));
     }
 }
