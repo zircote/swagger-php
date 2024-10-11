@@ -73,10 +73,25 @@ class Pipeline
     }
 
     /**
-     * @param callable $matcher Callable to determine the position to insert (returned as `int`)
+     * @param callable|class-string $matcher used to determine the position to insert
+     *                                       either an `int` from a callable or, in the case of `$matcher` being
+     *                                       a `class-string`, the position before the first pipe of that class
      */
-    public function insert(callable $pipe, callable $matcher): Pipeline
+    public function insert(callable $pipe, $matcher): Pipeline
     {
+        if (is_string($matcher)) {
+            $before = $matcher;
+            $matcher = function (array $pipes) use ($before) {
+                foreach ($pipes as $ii => $current) {
+                    if ($current instanceof $before) {
+                        return $ii;
+                    }
+                }
+
+                return null;
+            };
+        }
+
         $index = $matcher($this->pipes);
         if (null === $index || $index < 0 || $index > count($this->pipes)) {
             throw new OpenApiException('Matcher result out of range');
