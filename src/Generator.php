@@ -6,14 +6,12 @@
 
 namespace OpenApi;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
-use OpenApi\Processors\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -28,10 +26,8 @@ class Generator
 {
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
-     *
-     * @var Context|null
      */
-    public static $context;
+    public static ?Context $context;
 
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
@@ -42,22 +38,19 @@ class Generator
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
     /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
-    protected $aliases;
+    protected array $aliases;
 
     /** @var array<string>|null List of annotation namespaces to be autoloaded by doctrine. */
-    protected $namespaces;
+    protected ?array $namespaces;
 
-    /** @var AnalyserInterface|null The configured analyzer. */
-    protected $analyser = null;
+    protected ?AnalyserInterface $analyser = null;
 
     /** @var array<string,mixed> */
-    protected $config = [];
+    protected array $config = [];
 
-    /** @var Pipeline|null */
-    protected $processorPipeline = null;
+    protected ?Pipeline $processorPipeline = null;
 
-    /** @var LoggerInterface|null PSR logger. */
-    protected $logger = null;
+    protected ?LoggerInterface $logger = null;
 
     /**
      * OpenApi version override.
@@ -66,12 +59,8 @@ class Generator
      *
      * Due to the order of processing any conditional code using this (via `Context::$version`)
      * must come only after the analysis is finished.
-     *
-     * @var string|null
      */
-    protected $version = null;
-
-    private $configStack;
+    protected ?string $version = null;
 
     public function __construct(?LoggerInterface $logger = null)
     {
@@ -79,49 +68,6 @@ class Generator
 
         $this->setAliases(self::DEFAULT_ALIASES);
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
-
-        // kinda config stack to stay BC...
-        // @deprecated Can be removed once doctrine/annotations 2.0 becomes mandatory
-        $this->configStack = new class() {
-            protected $generator;
-
-            public function push(Generator $generator): void
-            {
-                $this->generator = $generator;
-                /* @phpstan-ignore-next-line */
-                if (class_exists(AnnotationRegistry::class, true) && method_exists(AnnotationRegistry::class, 'registerLoader')) {
-                    // keeping track of &this->generator allows to 'disable' the loader after we are done;
-                    // no unload, unfortunately :/
-                    $gref = &$this->generator;
-                    AnnotationRegistry::registerLoader(
-                        function (string $class) use (&$gref): bool {
-                            if ($gref) {
-                                foreach ($gref->getNamespaces() as $namespace) {
-                                    if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
-                                        $loaded = class_exists($class);
-                                        if (!$loaded && $namespace === 'OpenApi\\Annotations\\') {
-                                            if (in_array(strtolower(substr($class, 20)), ['definition', 'path'])) {
-                                                // Detected an 2.x annotation?
-                                                throw new OpenApiException('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Generator::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v3.md");
-                                            }
-                                        }
-
-                                        return $loaded;
-                                    }
-                                }
-                            }
-
-                            return false;
-                        }
-                    );
-                }
-            }
-
-            public function pop(): void
-            {
-                $this->generator = null;
-            }
-        };
     }
 
     public static function isDefault($value): bool
@@ -176,7 +122,7 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new AttributeAnnotationFactory(), new DocBlockAnnotationFactory()]);
         $this->analyser->setGenerator($this);
 
         return $this->analyser;
@@ -219,7 +165,7 @@ class Generator
                 $value = 'true' == $value;
             }
 
-            if ($isList = ('[]' == substr($key, -2))) {
+            if ($isList = ('[]' === substr($key, -2))) {
                 $key = substr($key, 0, -2);
             }
             $token = explode('.', $key);
@@ -257,7 +203,7 @@ class Generator
 
     public function getProcessorPipeline(): Pipeline
     {
-        if (null === $this->processorPipeline) {
+        if (!$this->processorPipeline instanceof Pipeline) {
             $this->processorPipeline = new Pipeline([
                 new Processors\DocBlockDescriptions(),
                 new Processors\MergeIntoOpenApi(),
@@ -316,87 +262,6 @@ class Generator
     public function withProcessor(callable $with): Generator
     {
         $with($this->getProcessorPipeline());
-
-        return $this;
-    }
-
-    /**
-     * @return array<ProcessorInterface|callable>
-     *
-     * @deprecated
-     */
-    public function getProcessors(): array
-    {
-        return $this->getProcessorPipeline()->pipes();
-    }
-
-    /**
-     * @param array<ProcessorInterface|callable>|null $processors
-     *
-     * @deprecated
-     */
-    public function setProcessors(?array $processors): Generator
-    {
-        $this->processorPipeline = null !== $processors ? new Pipeline($processors) : null;
-
-        return $this;
-    }
-
-    /**
-     * @param callable|ProcessorInterface $processor
-     * @param class-string|null           $before
-     *
-     * @deprecated
-     */
-    public function addProcessor($processor, ?string $before = null): Generator
-    {
-        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
-        if (!$before) {
-            $processors->add($processor);
-        } else {
-            $processors->insert($processor, $before);
-        }
-
-        $this->processorPipeline = $processors;
-
-        return $this;
-    }
-
-    /**
-     * @param callable|ProcessorInterface $processor
-     *
-     * @deprecated
-     */
-    public function removeProcessor($processor, bool $silent = false): Generator
-    {
-        $processors = $this->processorPipeline ?: $this->getProcessorPipeline();
-        $processors->remove($processor);
-        $this->processorPipeline = $processors;
-
-        return $this;
-    }
-
-    /**
-     * Update/replace an existing processor with a new one.
-     *
-     * @param ProcessorInterface|callable $processor the new processor
-     * @param null|callable               $matcher   Optional matcher callable to identify the processor to replace.
-     *                                               If none given, matching is based on the processors class.
-     *
-     * @deprecated
-     */
-    public function updateProcessor($processor, ?callable $matcher = null): Generator
-    {
-        $matcher = $matcher ?: function ($other) use ($processor): bool {
-            $otherClass = get_class($other);
-
-            return $processor instanceof $otherClass;
-        };
-
-        $processors = array_map(function ($other) use ($processor, $matcher) {
-            return $matcher($other) ? $processor : $other;
-        }, $this->getProcessors());
-        $this->setProcessors($processors);
 
         return $this;
     }
@@ -463,12 +328,7 @@ class Generator
         ]);
         $analysis = new Analysis([], $rootContext);
 
-        $this->configStack->push($this);
-        try {
-            return $callable($this, $analysis, $rootContext);
-        } finally {
-            $this->configStack->pop();
-        }
+        return $callable($this, $analysis, $rootContext);
     }
 
     /**
@@ -492,26 +352,21 @@ class Generator
         $analysis = $analysis ?: new Analysis([], $rootContext);
         $analysis->context = $analysis->context ?: $rootContext;
 
-        $this->configStack->push($this);
-        try {
-            $this->scanSources($sources, $analysis, $rootContext);
+        $this->scanSources($sources, $analysis, $rootContext);
 
-            // post-processing
-            $this->getProcessorPipeline()->process($analysis);
+        // post-processing
+        $this->getProcessorPipeline()->process($analysis);
 
-            if ($analysis->openapi) {
-                // overwrite default/annotated version
-                $analysis->openapi->openapi = $this->getVersion() ?: $analysis->openapi->openapi;
-                // update context to provide the same to validation/serialisation code
-                $rootContext->version = $analysis->openapi->openapi;
-            }
+        if ($analysis->openapi) {
+            // overwrite default/annotated version
+            $analysis->openapi->openapi = $this->getVersion() ?: $analysis->openapi->openapi;
+            // update context to provide the same to validation/serialisation code
+            $rootContext->version = $analysis->openapi->openapi;
+        }
 
-            // validation
-            if ($validate) {
-                $analysis->validate();
-            }
-        } finally {
-            $this->configStack->pop();
+        // validation
+        if ($validate) {
+            $analysis->validate();
         }
 
         return $analysis->openapi;

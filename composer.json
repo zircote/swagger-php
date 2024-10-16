@@ -40,16 +40,17 @@
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "4.x-dev"
+            "dev-master": "5.x-dev"
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "ext-json": "*",
+        "nikic/php-parser": "^4.19",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "symfony/deprecation-contracts": "^2 || ^3",
-        "symfony/finder": ">=2.2",
-        "symfony/yaml": ">=3.3"
+        "symfony/finder": "^5.0 || ^6.0 || ^7.0",
+        "symfony/yaml": "^5.0 || ^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -58,14 +59,15 @@
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
-        "doctrine/annotations": "^1.7 || ^2.0",
-        "friendsofphp/php-cs-fixer": "^2.17 || 3.62.0",
+        "doctrine/annotations": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^1.6",
-        "phpunit/phpunit": ">=8",
-        "vimeo/psalm": "^4.23"
+        "phpunit/phpunit": "^9.0",
+        "rector/rector": "^1.0",
+        "vimeo/psalm": "^4.30"
     },
     "suggest": {
-        "doctrine/annotations": "^1.7 || ^2.0"
+        "doctrine/annotations": "^2.0"
     },
     "autoload-dev": {
         "exclude-from-classmap": [
@@ -79,6 +81,7 @@
     },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
+        "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run all non-legacy and codestyle tests",
         "testlegacy": "Run tests using the legacy TokenAnalyser",
@@ -93,7 +96,11 @@
     },
     "scripts": {
         "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
-        "lint": "@cs --dry-run",
+        "rector": "rector process src",
+        "lint": [
+            "@cs --dry-run",
+            "@rector --dry-run"
+        ],
         "test": [
             "export XDEBUG_MODE=off && phpunit",
             "@lint"
