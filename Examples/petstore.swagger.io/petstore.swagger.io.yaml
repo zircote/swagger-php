@@ -116,7 +116,6 @@ paths:
       tags:
         - pet
       summary: 'Updates a pet in the store with form data'
-      description: ''
       operationId: updatePetWithForm
       parameters:
         -
@@ -152,7 +151,6 @@ paths:
       tags:
         - pet
       summary: 'Deletes a pet'
-      description: ''
       operationId: deletePet
       parameters:
         -
@@ -178,7 +176,6 @@ paths:
       tags:
         - pet
       summary: 'Update an existing pet.'
-      description: ''
       operationId: updatePet
       requestBody:
         description: 'Pet object that needs to be added to the store'
@@ -206,7 +203,6 @@ paths:
       tags:
         - pet
       summary: 'Add a new pet to the store'
-      description: ''
       operationId: addPet
       requestBody:
         description: 'Pet object that needs to be added to the store'
@@ -231,7 +227,6 @@ paths:
       tags:
         - pet
       summary: 'uploads an image'
-      description: ''
       operationId: uploadFile
       parameters:
         -
@@ -285,7 +280,6 @@ paths:
       tags:
         - store
       summary: 'Place an order for a pet'
-      description: ''
       operationId: placeOrder
       requestBody:
         description: 'order placed for purchasing the pet'
@@ -367,7 +361,6 @@ paths:
       tags:
         - user
       summary: 'Creates list of users with given input array'
-      description: ''
       operationId: createUsersWithArrayInput
       requestBody:
         description: 'List of user object'
@@ -386,7 +379,6 @@ paths:
       tags:
         - user
       summary: 'Creates list of users with given input array'
-      description: ''
       operationId: createUsersWithListInput
       requestBody:
         description: 'List of user object'
@@ -405,7 +397,6 @@ paths:
       tags:
         - user
       summary: 'Logs user into the system'
-      description: ''
       operationId: loginUser
       parameters:
         -
@@ -442,7 +433,6 @@ paths:
       tags:
         - user
       summary: 'Logs out current logged in user session'
-      description: ''
       operationId: logoutUser
       parameters: []
       responses:
@@ -453,7 +443,6 @@ paths:
       tags:
         - user
       summary: 'Get user by user name'
-      description: ''
       operationId: getUserByName
       parameters:
         -

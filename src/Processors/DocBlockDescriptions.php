@@ -11,10 +11,10 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
- * Checks if the annotation has a summary and/or description property
- * and uses the text in the comment block (above the annotations) as summary and/or description.
+ * Checks if the annotation has a summary and/or description property and uses
+ * the text in the docblock (above the annotations) as summary and/or description.
  *
- * Use `null`, for example: `@Annotation(description=null)`, if you don't want the annotation to have a description.
+ * Use an empty string `''`, for example: `@Annotation(description="")`, if you don't want the annotation to have a description.
  */
 class DocBlockDescriptions implements ProcessorInterface
 {
@@ -54,7 +54,7 @@ class DocBlockDescriptions implements ProcessorInterface
     protected function description(OA\AbstractAnnotation $annotation): void
     {
         if (!Generator::isDefault($annotation->description)) {
-            if ($annotation->description === null) {
+            if ($annotation->description === null || $annotation->description === '') {
                 $annotation->description = Generator::UNDEFINED;
             }
 
@@ -69,8 +69,8 @@ class DocBlockDescriptions implements ProcessorInterface
      */
     protected function summaryAndDescription(OA\AbstractAnnotation $annotation): void
     {
-        $ignoreSummary = !Generator::isDefault($annotation->summary);
-        $ignoreDescription = !Generator::isDefault($annotation->description);
+        $ignoreSummary = !Generator::isDefault($annotation->summary) && $annotation->summary !== '';
+        $ignoreDescription = !Generator::isDefault($annotation->description) && $annotation->description !== '';
         if ($annotation->summary === null) {
             $ignoreSummary = true;
             $annotation->summary = Generator::UNDEFINED;
