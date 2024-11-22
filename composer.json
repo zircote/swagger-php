@@ -51,11 +51,6 @@
         "symfony/finder": ">=2.2",
         "symfony/yaml": ">=3.3"
     },
-    "autoload": {
-        "psr-4": {
-            "OpenApi\\": "src"
-        }
-    },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.7 || ^2.0",
@@ -64,8 +59,10 @@
         "phpunit/phpunit": ">=8",
         "vimeo/psalm": "^4.23"
     },
-    "suggest": {
-        "doctrine/annotations": "^1.7 || ^2.0"
+    "autoload": {
+        "psr-4": {
+            "OpenApi\\": "src"
+        }
     },
     "autoload-dev": {
         "exclude-from-classmap": [
@@ -76,6 +73,12 @@
             "OpenApi\\Tests\\": "tests/",
             "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
         }
+    },
+    "conflict": {
+        "symfony/process": ">=6, <6.4.14"
+    },
+    "suggest": {
+        "doctrine/annotations": "^1.7 || ^2.0"
     },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
