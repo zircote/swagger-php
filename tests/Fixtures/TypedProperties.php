@@ -29,7 +29,7 @@ class TypedProperties
     public ?string $nullableString;
 
     /**
-     * @var \OpenApi\Tests\Fixtures\TypedProperties[]
+     * @var TypedProperties[]
      *
      * @OA\Property()
      */

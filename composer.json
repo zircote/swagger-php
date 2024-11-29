@@ -64,6 +64,9 @@
         "phpunit/phpunit": ">=8",
         "vimeo/psalm": "^4.23"
     },
+    "conflict": {
+        "symfony/process": ">=6, <6.4.14"
+    },
     "suggest": {
         "doctrine/annotations": "^1.7 || ^2.0"
     },
