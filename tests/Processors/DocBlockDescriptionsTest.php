@@ -8,12 +8,13 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Tests\OpenApiTestCase;
 
 class DocBlockDescriptionsTest extends OpenApiTestCase
 {
-    use \OpenApi\Processors\Concerns\DocblockTrait;
+    use DocblockTrait;
 
     public function testDocBlockDescription(): void
     {
