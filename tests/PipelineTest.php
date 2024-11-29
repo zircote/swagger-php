@@ -17,7 +17,7 @@ class PipelineTest extends OpenApiTestCase
 
     protected function pipe(string $add)
     {
-        return new class($add) {
+        return new class ($add) {
             protected $add;
 
             public function __construct(string $add)

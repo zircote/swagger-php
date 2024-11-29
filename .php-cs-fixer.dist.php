@@ -6,9 +6,15 @@ use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tests')->name('*.php')
-    // ContextTest::testFullyQualifiedName relies on the 'use Exception' statement...
     ->filter(function (\SplFileInfo $file) {
-        return !strpos($file->getPathname(), 'tests/Fixtures/Customer.php');
+        return
+            // ContextTest::testFullyQualifiedName relies on the 'use Exception' statement...
+            !strpos($file->getPathname(), 'tests/Fixtures/Customer.php')
+            // multi arg use; 'use a, b;`
+            && !strpos($file->getPathname(), 'tests/Fixtures/Parser/HelloTrait.php')
+            // FQDN in docblock
+            && !strpos($file->getPathname(), 'tests/Fixtures/TypedProperties.php')
+        ;
     })
     ->path('Examples')->name('*.php')
     ->filter(function (\SplFileInfo $file) {
@@ -24,10 +30,11 @@ return (new PhpCsFixer\Config())
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
     ])
     ->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
         '@DoctrineAnnotation' => true,
         'OpenApi/license' => true,
         'OpenApi/declare_strict_types' => true,
+        'blank_line_after_opening_tag' => false,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],

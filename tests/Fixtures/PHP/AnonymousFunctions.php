@@ -22,7 +22,7 @@ class AnonymousFunctions
 
     protected function query()
     {
-        return new class() {
+        return new class () {
             public function leftJoin(string $foo, callable $callback)
             {
                 return $this;
