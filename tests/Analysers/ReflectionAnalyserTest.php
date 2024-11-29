@@ -24,7 +24,7 @@ class ReflectionAnalyserTest extends OpenApiTestCase
 {
     protected function collectingAnnotationFactory(): AnnotationFactoryInterface
     {
-        return new class() implements AnnotationFactoryInterface {
+        return new class () implements AnnotationFactoryInterface {
             public $reflectors = [];
 
             public function build(\Reflector $reflector, Context $context): array

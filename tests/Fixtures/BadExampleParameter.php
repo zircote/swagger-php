@@ -15,5 +15,4 @@ use OpenApi\Attributes as OAT;
 )]
 class BadExampleParameter
 {
-
 }

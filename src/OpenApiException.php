@@ -8,5 +8,4 @@ namespace OpenApi;
 
 class OpenApiException extends \Exception
 {
-
 }

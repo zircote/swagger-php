@@ -63,7 +63,7 @@ class GeneratorTest extends OpenApiTestCase
     {
         return [
             [new OperationId(), true],
-            [new class(false) extends OperationId {
+            [new class (false) extends OperationId {
             }, false],
         ];
     }

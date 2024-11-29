@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use function \get_class_vars;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 

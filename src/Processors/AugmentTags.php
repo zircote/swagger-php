@@ -15,7 +15,6 @@ use OpenApi\Generator;
  */
 class AugmentTags implements ProcessorInterface
 {
-
     /** @var array<string> */
     protected array $whitelist = [];
 
