@@ -20,6 +20,7 @@ function getGuideSidebar() {
     {
       text: 'Upgrading',
       children: [
+        { text: 'Migration from 4.x to 5.x', link: '/guide/migrating-to-v5' },
         { text: 'Migration from 3.x to 4.x', link: '/guide/migrating-to-v4' },
         { text: 'Migration from 2.x to 3.x', link: '/guide/migrating-to-v3' },
       ]
