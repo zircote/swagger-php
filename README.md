@@ -98,9 +98,6 @@ The `openapi` command line interface can be used to generate the documentation t
 ```shell
 ./vendor/bin/openapi --help
 ```
-Starting with version 4 the default analyser used on the command line is the new `ReflectionAnalyser`.
-
-Using the `--legacy` flag (`-l`) the legacy `TokenAnalyser` can still be used.
 
 ### Usage from the Deserializer
 

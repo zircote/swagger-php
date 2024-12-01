@@ -18,9 +18,6 @@ return RectorConfig::configure()
     ->withSkip([
         CombineIfRector::class,
         ExplicitBoolCompareRector::class,
-        ExplicitReturnNullRector::class => [
-            __DIR__ . '/src/Analysers/TokenAnalyser.php',
-        ],
         ForRepeatedCountToOwnVariableRector::class,
         RemoveAlwaysTrueIfConditionRector::class => [
             __DIR__ . '/src/Processors/ExpandEnums.php',

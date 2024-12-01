@@ -6,40 +6,12 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
 
 class UtilTest extends OpenApiTestCase
 {
-    public function testExclude(): void
-    {
-        $exclude = [
-            'Customer.php',
-            'CustomerInterface.php',
-            'GrandAncestor.php',
-            'InheritProperties',
-            'Apis',
-            'PHP',
-            'Parser',
-            'Analysers',
-            'Processors',
-            'Scratch',
-            'TypedProperties.php',
-            'Unreferenced.php',
-            'UsingRefs.php',
-            'UsingPhpDoc.php',
-            'UsingCustomAttachables',
-            'DuplicateOperationId',
-        ];
-        $openapi = (new Generator())
-            ->setAnalyser(new TokenAnalyser())
-            ->generate(Util::finder($this->fixture(''), $exclude));
-        $this->assertSame('Fixture for ParserTest', $openapi->info->title, 'No errors about duplicate @OA\Info() annotations');
-    }
-
     public function testRefEncode(): void
     {
         $this->assertSame('#/paths/~1blogs~1{blog_id}~1new~0posts', '#/paths/' . Util::refEncode('/blogs/{blog_id}/new~posts'));

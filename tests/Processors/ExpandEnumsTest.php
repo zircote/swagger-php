@@ -21,13 +21,6 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class ExpandEnumsTest extends OpenApiTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->skipLegacy();
-    }
-
     public function testExpandUnitEnum(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnum.php']);

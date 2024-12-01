@@ -15,8 +15,6 @@ class AugmentTagsTest extends OpenApiTestCase
      */
     public function testFilteredAugmentTags(): void
     {
-        $this->skipLegacy();
-
         $config = [
             'pathFilter' => ['paths' => ['#^/hello/#']],
             'cleanUnusedComponents' => ['enabled' => true],
@@ -31,8 +29,6 @@ class AugmentTagsTest extends OpenApiTestCase
      */
     public function testDedupedAugmentTags(): void
     {
-        $this->skipLegacy();
-
         $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors());
 
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting 3 unique tags');
@@ -43,8 +39,6 @@ class AugmentTagsTest extends OpenApiTestCase
      */
     public function testAllowUnusedTags(): void
     {
-        $this->skipLegacy();
-
         $analysis = $this->analysisFromFixtures(
             ['UnusedTags.php'],
             static::processors(),
@@ -62,8 +56,6 @@ class AugmentTagsTest extends OpenApiTestCase
      */
     public function testAllowUnusedTagsWildcard(): void
     {
-        $this->skipLegacy();
-
         $analysis = $this->analysisFromFixtures(
             ['UnusedTags.php'],
             static::processors(),

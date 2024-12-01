@@ -4,7 +4,6 @@
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
@@ -23,7 +22,6 @@ error_reporting(E_ALL);
 // Possible options and their default values.
 $options = [
     'config' => [],
-    'legacy' => false,
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
@@ -36,7 +34,6 @@ $options = [
 ];
 $aliases = [
     'c' => 'config',
-    'l' => 'legacy',
     'o' => 'output',
     'e' => 'exclude',
     'n' => 'pattern',
@@ -132,7 +129,6 @@ Usage: openapi [--option value] [/path/to/project ...]
 Options:
   --config (-c)     Generator config
                     ex: -c operationId.hash=false
-  --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).
@@ -222,9 +218,7 @@ foreach ($options["processor"] as $processor) {
     $generator->getProcessorPipeline()->add($processor);
 }
 
-$analyser = $options['legacy']
-    ? new TokenAnalyser()
-    : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+$analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
 
 $openapi = $generator
     ->setVersion($options['version'])

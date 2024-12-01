@@ -86,9 +86,7 @@
         "cs": "Fix all codestyle issues",
         "rector": "Automatic refactoring",
         "lint": "Test codestyle",
-        "test": "Run all non-legacy and codestyle tests",
-        "testlegacy": "Run tests using the legacy TokenAnalyser",
-        "testall": "Run all tests (test + testlegacy)",
+        "test": "Run all PHP, codestyle and rector tests",
         "analyse": "Run static analysis (phpstan/psalm)",
         "spectral-examples": "Run spectral lint over all .yaml files in the Examples folder",
         "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
@@ -107,11 +105,6 @@
         "test": [
             "export XDEBUG_MODE=off && phpunit",
             "@lint"
-        ],
-        "testlegacy": "export XDEBUG_MODE=off && export PHPUNIT_ANALYSER=legacy && phpunit",
-        "testall": [
-            "@test",
-            "@testlegacy"
         ],
         "analyse": [
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
