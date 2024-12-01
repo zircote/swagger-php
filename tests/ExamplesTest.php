@@ -11,7 +11,6 @@ use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
@@ -26,7 +25,7 @@ class ExamplesTest extends OpenApiTestCase
             'example-object.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'misc' => [
@@ -35,7 +34,7 @@ class ExamplesTest extends OpenApiTestCase
             'misc.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'nesting' => [
@@ -44,7 +43,7 @@ class ExamplesTest extends OpenApiTestCase
             'nesting.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'petstore-3.0' => [
@@ -53,7 +52,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore-3.0.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'petstore.swagger.io' => [
@@ -62,7 +61,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore.swagger.io.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'swagger-spec/petstore' => [
@@ -71,7 +70,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'swagger-spec/petstore-simple' => [
@@ -80,7 +79,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore-simple.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'swagger-spec/petstore-simple-3.1.0' => [
@@ -89,7 +88,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore-simple-3.1.0.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'swagger-spec/petstore-with-external-docs' => [
@@ -98,7 +97,7 @@ class ExamplesTest extends OpenApiTestCase
             'petstore-with-external-docs.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'polymorphism' => [
@@ -125,7 +124,7 @@ class ExamplesTest extends OpenApiTestCase
             'using-interfaces.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'using-traits' => [
@@ -134,7 +133,7 @@ class ExamplesTest extends OpenApiTestCase
             'using-traits.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         yield 'using-links' => [
@@ -143,7 +142,7 @@ class ExamplesTest extends OpenApiTestCase
             'using-links.yaml',
             'debug' => false,
             'expectedLog' => [],
-            'analysers' => ['token', 'reflection'],
+            'analysers' => ['reflection'],
         ];
 
         if (\PHP_VERSION_ID >= 80100) {
@@ -162,7 +161,7 @@ class ExamplesTest extends OpenApiTestCase
                 'webhooks.yaml',
                 'debug' => false,
                 'expectedLog' => [],
-                'analysers' => ['token','reflection'],
+                'analysers' => ['reflection'],
             ];
 
             yield 'webhooks81' => [
@@ -188,7 +187,6 @@ class ExamplesTest extends OpenApiTestCase
     public static function exampleMappings(): iterable
     {
         $analysers = [
-            'token' => new TokenAnalyser(),
             'reflection' => new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]),
         ];
 

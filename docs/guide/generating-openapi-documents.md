@@ -36,7 +36,6 @@ Usage: openapi [--option value] [/path/to/project ...]
 Options:
   --config (-c)     Generator config
                     ex: -c operationId.hash=false
-  --legacy (-l)     Use legacy TokenAnalyser; default is the new ReflectionAnalyser
   --output (-o)     Path to store the generated documentation.
                     ex: --output openapi.yaml
   --exclude (-e)    Exclude path(s).

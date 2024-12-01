@@ -182,8 +182,6 @@ class ReflectionAnalyserTest extends OpenApiTestCase
      */
     public function testPhp8PromotedProperties(): void
     {
-        $this->skipLegacy();
-
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 

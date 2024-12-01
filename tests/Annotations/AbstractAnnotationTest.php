@@ -148,8 +148,6 @@ END;
      */
     public function testValidateExamples(): void
     {
-        $this->skipLegacy();
-
         $analysis = $this->analysisFromFixtures(['BadExampleParameter.php']);
         (new Generator())->getProcessorPipeline()->process($analysis);
 

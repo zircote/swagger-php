@@ -6,9 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analysers\TokenAnalyser;
-use OpenApi\Generator;
-
 class ConstantsTest extends OpenApiTestCase
 {
     public const URL = 'http://example.com';
@@ -50,13 +47,5 @@ class ConstantsTest extends OpenApiTestCase
         }
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(name=AnotherNamespace\Annotations\Constants::INVALID_TIMEZONE_LOCATION)');
         $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
-    }
-
-    public function testDynamicImports(): void
-    {
-        $analyser = new TokenAnalyser();
-        $analyser->setGenerator((new Generator())->setNamespaces(null));
-        $analyser->fromFile($this->fixture('Customer.php'), $this->getContext());
-        $analyser->fromFile($this->fixture('ThirdPartyAnnotations.php'), $this->getContext());
     }
 }

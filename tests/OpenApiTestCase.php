@@ -14,7 +14,6 @@ use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Generator;
 use OpenApi\Pipeline;
 use PHPUnit\Framework\TestCase;
@@ -85,13 +84,6 @@ class OpenApiTestCase extends TestCase
         };
     }
 
-    public function skipLegacy(): void
-    {
-        if ($this->getAnalyzer() instanceof TokenAnalyser) {
-            $this->markTestSkipped();
-        }
-    }
-
     public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
@@ -104,11 +96,7 @@ class OpenApiTestCase extends TestCase
 
     public function getAnalyzer(): AnalyserInterface
     {
-        $legacyAnalyser = getenv('PHPUNIT_ANALYSER') === 'legacy';
-
-        return $legacyAnalyser
-            ? new TokenAnalyser()
-            : new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+        return new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
     public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void

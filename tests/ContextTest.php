@@ -7,7 +7,6 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\Customer;
@@ -19,7 +18,7 @@ class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
-            ->setAnalyser(new TokenAnalyser())
+            ->setAnalyser($this->getAnalyzer())
             ->generate([$this->fixture('Customer.php')]);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
