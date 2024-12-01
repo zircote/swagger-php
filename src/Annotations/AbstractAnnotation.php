@@ -251,6 +251,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Generate the documentation in YAML format.
+     *
+     * @param int-mask-of<Yaml::PARSE_*>|null $flags A bit field of PARSE_* constants to customize the YAML parser behavior
      */
     public function toYaml(?int $flags = null): string
     {

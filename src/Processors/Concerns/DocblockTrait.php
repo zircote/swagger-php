@@ -186,8 +186,6 @@ trait DocblockTrait
         );
     }
 
-    // ------------------------------------------------------------------------
-
     /**
      * Extract example text from a `@example` dockblock line.
      */

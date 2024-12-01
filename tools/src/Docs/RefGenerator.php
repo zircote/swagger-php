@@ -159,8 +159,6 @@ class RefGenerator extends DocGenerator
         return ob_get_clean();
     }
 
-    // ------------------------------------------------------------------------
-
     protected function getPropertyDocumentation(string $fqdn, string $name): array
     {
         /** @var class-string<AbstractAnnotation> $class */

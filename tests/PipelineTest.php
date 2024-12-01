@@ -25,8 +25,6 @@ class PipelineTest extends OpenApiTestCase
                 $this->add = $add;
             }
 
-            // ------------------------------------------------------------------------
-
             public function __invoke($payload)
             {
                 return $payload . $this->add;
