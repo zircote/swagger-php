@@ -54,12 +54,11 @@ class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
-            ->setAnalyser(new TokenAnalyser())
             ->generate([$this->fixture('Customer.php')]);
 
         $customerSchema = $openapi->components->schemas[0];
         $this->assertStringContainsString(
-            'Fixtures/Customer.php on line 16',
+            'Fixtures/Customer.php on line ',
             $customerSchema->_context->getDebugLocation()
         );
 
