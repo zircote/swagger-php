@@ -8,7 +8,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @see [OAI Header Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#headerObject).
+ * @see [Header Object](https://spec.openapis.org/oas/v3.1.1.html#header-object)
  *
  * @Annotation
  */
@@ -17,7 +17,7 @@ class Header extends AbstractAnnotation
     /**
      * The relative or absolute path to the endpoint.
      *
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
      *
      * @var string|class-string|object
      */

@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * Each Media Type object provides schema and examples for the media type identified by its key.
  *
- * @see [OAI Media Type Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#media-type-object)
+ * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  *
  * @Annotation
  */

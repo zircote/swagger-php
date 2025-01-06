@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * Allows referencing an external resource for extended documentation.
  *
- * @see [OAI External Documentation Object](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#external-documentation-object)
+ * @see [External Documentation Object](https://spec.openapis.org/oas/v3.1.1.html#external-documentation-object)
  *
  * @Annotation
  */

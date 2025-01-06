@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * An object representing a server.
  *
- * @see [OAI Server Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#server-object)
+ * @see [Server Object](https://spec.openapis.org/oas/v3.1.1.html#server-object)
  *
  * @Annotation
  */

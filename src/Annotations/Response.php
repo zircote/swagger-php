@@ -12,7 +12,7 @@ use OpenApi\Generator;
  * Describes a single response from an API Operation, including design-time,
  * static links to operations based on the response.
  *
- * @see [OAI Response Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#response-object)
+ * @see [Response Object](https://spec.openapis.org/oas/v3.1.1.html#response-object)
  *
  * @Annotation
  */
@@ -21,7 +21,7 @@ class Response extends AbstractAnnotation
     /**
      * The relative or absolute path to a response.
      *
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
      *
      * @var string|class-string|object
      */
@@ -48,7 +48,7 @@ class Response extends AbstractAnnotation
     /**
      * Maps a header name to its definition.
      *
-     * RFC7230 states header names are case insensitive.
+     * RFC7230 states header names are case-insensitive.
      *
      * If a response header is defined with the name "Content-Type", it shall be ignored.
      *

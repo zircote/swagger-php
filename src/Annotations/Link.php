@@ -20,14 +20,14 @@ use OpenApi\Generator;
  * For computing links, and providing instructions to execute them, a runtime expression is used for
  * accessing values in an operation and using them as parameters while invoking the linked operation.
  *
- * @see [OAI Link Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#link-object)
+ * @see [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
  *
  * @Annotation
  */
 class Link extends AbstractAnnotation
 {
     /**
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
      *
      * @var string|class-string|object
      */
