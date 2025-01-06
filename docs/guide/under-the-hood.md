@@ -16,7 +16,7 @@ about the PHP context where the annotation was found.
 
 Typically, there will be a processor that uses the data to augment/enrich the annotation.
 
-**Examples of the data collected:** 
+**Examples of the data collected:**
   - class/interface/trait/enum names
   - property names
   - doctype or native type hints
@@ -35,7 +35,7 @@ This documentation is generated with [VitePress](https://vitepress.vuejs.org/)
 ### Installation
 ```shell
 cd docs
-npm install vitepress 
+npm install
 ```
 
 ### Workflow

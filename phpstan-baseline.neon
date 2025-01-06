@@ -31,6 +31,11 @@ parameters:
 			path: src/Annotations/AbstractAnnotation.php
 
 		-
+			message: "#^Parameter \\#4 \\$flags of static method Symfony\\\\Component\\\\Yaml\\\\Yaml\\:\\:dump\\(\\) expects 0\\|1\\|16\\|17\\|64\\|65\\|80\\|81\\|128\\|129\\|144\\|145\\|192\\|193\\|208\\|209\\|1024\\|1025\\|1040\\|1041\\|1088\\|1089\\|1104\\|1105\\|1152\\|1153\\|1168\\|1169\\|1216\\|1217\\|1232\\|1233\\|2048\\|2049\\|2064\\|2065\\|2112\\|2113\\|2128\\|2129\\|2176\\|2177\\|2192\\|2193\\|2240\\|2241\\|2256\\|2257\\|3072\\|3073\\|3088\\|3089\\|3136\\|3137\\|3152\\|3153\\|3200\\|3201\\|3216\\|3217\\|3264\\|3265\\|3280\\|3281\\|4096\\|4097\\|4112\\|4113\\|4160\\|4161\\|4176\\|4177\\|4224\\|4225\\|4240\\|4241\\|4288\\|4289\\|4304\\|4305\\|5120\\|5121\\|5136\\|5137\\|5184\\|5185\\|5200\\|5201\\|5248\\|5249\\|5264\\|5265\\|5312\\|5313\\|5328\\|5329\\|6144\\|6145\\|6160\\|6161\\|6208\\|6209\\|6224\\|6225\\|6272\\|6273\\|6288\\|6289\\|6336\\|6337\\|6352\\|6353\\|7168\\|7169\\|7184\\|7185\\|7232\\|7233\\|7248\\|7249\\|7296\\|7297\\|7312\\|7313\\|7360\\|7361\\|7376\\|7377, int given\\.$#"
+			count: 1
+			path: src/Annotations/AbstractAnnotation.php
+
+		-
 			message: "#^Variable \\$name might not be defined\\.$#"
 			count: 2
 			path: src/Annotations/Components.php
@@ -54,16 +59,6 @@ parameters:
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Generator.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 3
-			path: src/Processors/AugmentProperties.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-string and '' will always evaluate to false\\.$#"
-			count: 1
-			path: src/Processors/AugmentProperties.php
 
 		-
 			message: "#^Call to function is_array\\(\\) with bool\\|OpenApi\\\\Annotations\\\\AdditionalProperties will always evaluate to false\\.$#"
