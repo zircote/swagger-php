@@ -121,7 +121,7 @@ class Response extends AbstractAnnotation
         $valid = parent::validate($stack, $skip, $ref, $context);
 
         if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
-            $this->_context->logger->warning($this->identity() . ' One of description or ref is required');
+            $this->_context->logger->warning($this->identity() . ' One of description or ref is required in ' . $this->_context->getDebugLocation());
             $valid = false;
         }
 
