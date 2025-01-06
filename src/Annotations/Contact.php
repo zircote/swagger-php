@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * Contact information for the exposed API.
  *
- * @see [OAI Contact Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#contact-object)
+ * @see [Contact Object](https://spec.openapis.org/oas/v3.1.1.html#components-object)
  *
  * @Annotation
  */

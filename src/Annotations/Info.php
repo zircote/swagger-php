@@ -13,7 +13,7 @@ use OpenApi\Generator;
  *
  * The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
  *
- * @see [OAI Info Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#info-object)
+ * @see [Info Object](https://spec.openapis.org/oas/v3.1.1.html#info-object)
  *
  * @Annotation
  */

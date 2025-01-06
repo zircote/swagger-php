@@ -9,7 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * @see [OAI Security Scheme Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#securitySchemeObject).
+ * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object-0)
  *
  * @Annotation
  */
@@ -18,7 +18,7 @@ class SecurityScheme extends AbstractAnnotation
     /**
      * The relative or absolute path to a security scheme.
      *
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
      *
      * @var string|class-string|object
      */

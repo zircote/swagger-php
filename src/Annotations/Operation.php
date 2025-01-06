@@ -14,7 +14,7 @@ use OpenApi\Annotations as OA;
  *
  * Describes a single API operation on a path.
  *
- * @see [OAI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object)
+ * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  *
  * @Annotation
  */

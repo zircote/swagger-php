@@ -15,7 +15,7 @@ use OpenApi\Util;
  * All objects defined within the components object will have no effect on the API unless they are explicitly
  * referenced from properties outside the components object.
  *
- * @see [OAI Components Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#components-object)
+ * @see [Components Object](https://spec.openapis.org/oas/v3.1.1.html#components-object)
  *
  * @Annotation
  */

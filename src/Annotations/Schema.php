@@ -16,7 +16,7 @@ use OpenApi\Generator;
  * This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
  * On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
  *
- * @see [OAI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#schemaObject)
+ * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  * @see [JSON Schema](http://json-schema.org/)
  *
  * @Annotation
@@ -26,7 +26,7 @@ class Schema extends AbstractAnnotation
     /**
      * The relative or absolute path to the endpoint.
      *
-     * @see [Using refs](https://swagger.io/docs/specification/using-ref/)
+     * @see [Reference Object](https://spec.openapis.org/oas/v3.1.1.html#reference-object)
      *
      * @var string|class-string|object
      */
@@ -102,7 +102,9 @@ class Schema extends AbstractAnnotation
     public $type = Generator::UNDEFINED;
 
     /**
-     * The extending format for the previously mentioned type. See Data Type Formats for further details.
+     * The extending format for the previously mentioned type.
+     *
+     * @see [Data Types](https://spec.openapis.org/oas/v3.1.1.html#data-types)
      *
      * @var string
      */

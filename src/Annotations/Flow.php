@@ -9,9 +9,9 @@ namespace OpenApi\Annotations;
 use OpenApi\Generator;
 
 /**
- * Configuration details for a supported OAuth Flow.
+ * Configuration details for a supported OAuth flow.
  *
- * @see [OAI OAuth Flow Object](https://swagger.io/specification/#oauthFlowObject)
+ * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  *
  * @Annotation
  */
