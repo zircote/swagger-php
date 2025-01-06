@@ -154,6 +154,20 @@ openapi -b myapp/vendor/autoload.php myapp/src
 
 The `-b` allows to execute some extra PHP code to load whatever is needed to register your apps classloader with PHP.
 
+::: warning
+One common case for this type of error is when trying out annotations in a standalone single file.
+Typically, this means it will not use namespaces or confirm to any other autoloading standards.
+
+In this case the `-b` option can also be used to autoload the actual file.
+
+Please note that you still need to provide the file (or its folder) as the target.
+
+```shell
+openapi -b src/test.php src/test.php
+```
+:::
+
+
 ### Namespace mismatch
 
 Another reason for this error could be that your class actually has the wrong namespace (or no namespace at all!).
