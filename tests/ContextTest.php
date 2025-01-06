@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\Tests\Fixtures\Customer;
 use Psr\Log\NullLogger;
 
 class ContextTest extends OpenApiTestCase
@@ -60,5 +61,25 @@ class ContextTest extends OpenApiTestCase
         // assert inheriting from root
         $this->assertInstanceOf(NullLogger::class, $context->logger);
         $this->assertEquals(OA\OpenApi::VERSION_3_1_0, $context->getVersion());
+    }
+
+    public function testDebugLocation(): void
+    {
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $openapi = (new Generator($this->getTrackingLogger()))
+            ->setAnalyser(new TokenAnalyser())
+            ->generate([$this->fixture('Customer.php')]);
+
+        $customerSchema = $openapi->components->schemas[0];
+        $this->assertStringContainsString(
+            'Fixtures/Customer.php on line 16',
+            $customerSchema->_context->getDebugLocation()
+        );
+
+        $customerPropertyFirstName = $customerSchema->properties[0];
+        $this->assertStringContainsString(
+            Customer::class . '->firstname in ',
+            $customerPropertyFirstName->_context->getDebugLocation()
+        );
     }
 }

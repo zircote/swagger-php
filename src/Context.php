@@ -164,8 +164,9 @@ class Context
     public function getDebugLocation(): string
     {
         $location = '';
-        if ($this->class && ($this->method || $this->property)) {
-            $location .= $this->fullyQualifiedName($this->class);
+        $fqn = $this->fullyQualifiedName($this->class ?? $this->interface ?? $this->trait ?? $this->enum);
+        if ($fqn && ($this->method || $this->property)) {
+            $location .= $fqn;
             if ($this->method) {
                 $location .= ($this->static ? '::' : '->') . $this->method . '()';
             } elseif ($this->property) {
