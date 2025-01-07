@@ -36,8 +36,17 @@ class ProcGenerator extends DocGenerator
                     $optiondoc['content'] = $phpdoc['content'];
                 }
 
+                // default is set on the constructor only
+                $rp = null;
+                $cc = $rc->getMethod('__construct');
+                foreach ($cc->getParameters() as $parameter) {
+                    if ($parameter->getName() === $pname) {
+                        $rp = $parameter;
+                        break;
+                    }
+                }
                 $default = 'N/A';
-                if ($rp = $rc->getProperty($pname)) {
+                if ($rp) {
                     $dv = $rp->getDefaultValue();
                     $default = match (gettype($dv)) {
                         'boolean' => $dv ? 'true' : 'false',
