@@ -30,7 +30,7 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 
 ## Requirements
 
-`swagger-php` requires at least PHP 7.2 for annotations and PHP 8.1 for using attributes.
+`swagger-php` requires at least PHP 7.4 for annotations and PHP 8.1 for using attributes.
 
 ## Installation (with [Composer](https://getcomposer.org))
 
