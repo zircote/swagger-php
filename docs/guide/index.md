@@ -15,6 +15,6 @@ either adding [`Annotations`](annotations.md) or [`Attributes`](attributes.md).
 :::
 
 ::: warning Requirements
-Using `swagger-php` requires a minimum of **PHP&nbsp;7.2** for using annotations and
+Using `swagger-php` requires a minimum of **PHP&nbsp;7.4** for using annotations and
 at least **PHP&nbsp;8.1** to use attributes.
 :::
