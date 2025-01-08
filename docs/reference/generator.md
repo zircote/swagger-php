@@ -64,7 +64,7 @@ $openapi = (new \OpenApi\Generator($logger))
             ->setNamespaces(['My\\Annotations\\'])
             ->setAnalyser(new \OpenApi\Analysers\ReflectionAnalyser([new OpenApi\Analysers\DocBlockAnnotationFactory(), new OpenApi\Analysers\AttributeAnnotationFactory()]))
             ->setVersion(\OpenApi\Annotations\OpenApi::VERSION_3_0_0)
-            ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis([], $context)), $validate);
+            ->generate(['/path1/to/project', $finder], new \OpenApi\Analysis([], $context), $validate);
 ```
 
 `Aliases` and `namespaces` are additional options that allow to customize the parsing of docblocks.
