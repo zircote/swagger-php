@@ -27,7 +27,7 @@ class Generator
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
      */
-    public static ?Context $context;
+    public static ?Context $context = null;
 
     /** @var string Magic value to differentiate between null and undefined. */
     public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
