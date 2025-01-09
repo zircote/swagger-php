@@ -108,7 +108,7 @@
         ],
         "analyse": [
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
-            "export XDEBUG_MODE=off && psalm"
+            "export XDEBUG_MODE=off && psalm --threads=1"
         ],
         "spectral-examples": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
         "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do spectral lint $ff; done",

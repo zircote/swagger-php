@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88">
-  <file src="src/Serializer.php">
-    <ReservedWord occurrences="1">
-      <code>Yaml::parse($contents)</code>
-    </ReservedWord>
-  </file>
-</files>
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0"/>

@@ -25,12 +25,6 @@ parameters:
 			path: src/Analysers/ReflectionAnalyser.php
 
 		-
-			message: '#^Call to function array_key_exists\(\) with string and array\{\} will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: src/Analysers/TokenScanner.php
-
-		-
 			message: '#^Access to an undefined property OpenApi\\Annotations\\AbstractAnnotation\:\:\$description\.$#'
 			identifier: property.notFound
 			count: 1

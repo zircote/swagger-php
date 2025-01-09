@@ -32,7 +32,7 @@ class AugmentSchemasTest extends OpenApiTestCase
 
         $this->assertSame('Customer', $customer->schema, '@OA\Schema()->schema based on classname');
         $this->assertIsArray($customer->properties);
-        $this->assertCount(10, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
+        $this->assertCount(10, (array) $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 
     public function testAugmentSchemasForInterface(): void
@@ -51,6 +51,6 @@ class AugmentSchemasTest extends OpenApiTestCase
         $analysis->process([new AugmentSchemas()]);
 
         $this->assertIsArray($customer->properties);
-        $this->assertCount(9, $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
+        $this->assertCount(9, (array) $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');
     }
 }
