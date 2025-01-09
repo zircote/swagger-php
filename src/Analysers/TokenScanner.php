@@ -50,6 +50,7 @@ class TokenScanner
 
     protected function collect_stmts(array $stmts, string $namespace): array
     {
+        /** @var array $uses */
         $uses = [];
         $resolve = function (string $name) use ($namespace, &$uses) {
             if (array_key_exists($name, $uses)) {

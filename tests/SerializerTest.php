@@ -196,7 +196,6 @@ JSON;
             $allOfItem = current($schemaObject->allOf);
             $this->assertIsObject($allOfItem);
             $this->assertInstanceOf(OA\Schema::class, $allOfItem);
-            $this->assertTrue(property_exists($allOfItem, 'ref'));
             $this->assertNotSame($allOfItem->ref, Generator::UNDEFINED);
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
         }
