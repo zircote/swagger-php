@@ -110,8 +110,6 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             Generator::$context = null;
         }
 
-        $annotations = array_values(array_filter($annotations, fn ($a) => $a instanceof OA\AbstractAnnotation));
-
         // merge backwards into parents...
         $isParent = function (OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $possibleParent): bool {
             // regular annotation hierarchy

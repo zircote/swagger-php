@@ -16,7 +16,7 @@ class DocBlockParserTest extends OpenApiTestCase
     public function testParseContents(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Parameter(description="This is my parameter")', self::SWG_ALIAS);
-        $this->assertIsArray($annotations);
+        $this->assertNotEmpty($annotations);
         $parameter = $annotations[0];
         $this->assertInstanceOf('OpenApi\Annotations\Parameter', $parameter);
         $this->assertSame('This is my parameter', $parameter->description);

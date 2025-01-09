@@ -12,6 +12,7 @@ parameters:
         processTimeout: 300.0
     excludePaths:
         - 'tests/Fixtures/*'
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '#does not accept default value of type #'
         ## Examples
