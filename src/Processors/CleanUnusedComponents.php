@@ -13,7 +13,7 @@ use OpenApi\Generator;
 /**
  * Tracks the use of all <code>Components</code> and removed unused schemas.
  */
-class CleanUnusedComponents implements ProcessorInterface
+class CleanUnusedComponents
 {
     use Concerns\AnnotationTrait;
 

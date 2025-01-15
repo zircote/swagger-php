@@ -13,7 +13,7 @@ use OpenApi\Generator;
 /**
  * Ensures that all tags used on operations also exist in the global <code>tags</code> list.
  */
-class AugmentTags implements ProcessorInterface
+class AugmentTags
 {
     /** @var array<string> */
     protected array $whitelist = [];

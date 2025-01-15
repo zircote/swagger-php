@@ -7,7 +7,6 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Processors\ProcessorInterface;
 
 /**
  * Result of the analyser.
@@ -405,11 +404,11 @@ class Analysis
     /**
      * Apply the processor(s).
      *
-     * @param callable|ProcessorInterface|array<ProcessorInterface|callable> $processors One or more processors
+     * @param callable|array<callable> $processors One or more processors
      */
     public function process($processors = null): void
     {
-        if (is_array($processors) === false && is_callable($processors) || $processors instanceof ProcessorInterface) {
+        if (false === is_array($processors) && is_callable($processors)) {
             $processors = [$processors];
         }
 

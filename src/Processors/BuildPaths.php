@@ -14,7 +14,7 @@ use OpenApi\Generator;
 /**
  * Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (`@OA\Get`, `@OA\Post`, etc).
  */
-class BuildPaths implements ProcessorInterface
+class BuildPaths
 {
     public function __invoke(Analysis $analysis)
     {

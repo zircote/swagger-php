@@ -17,7 +17,7 @@ use OpenApi\Generator;
  * - else
  *   => merge ancestor properties into the schema.
  */
-class ExpandClasses implements ProcessorInterface
+class ExpandClasses
 {
     use Concerns\MergePropertiesTrait;
 

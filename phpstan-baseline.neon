@@ -1,187 +1,86 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Property OpenApi\\Annotations\\AbstractAnnotation\:\:\$x \(array\<string, mixed\>\) does not accept string\.$#'
-			identifier: assign.propertyType
+			message: "#^Property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$x \\(array\\<string, mixed\\>\\) does not accept string\\.$#"
 			count: 1
 			path: Examples/processors/schema-query-parameter/SchemaQueryParameter.php
 
 		-
-			message: '#^Attribute class JetBrains\\PhpStorm\\ArrayShape does not exist\.$#'
-			identifier: attribute.notFound
+			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
 			count: 1
 			path: Examples/using-links-php81/User.php
 
 		-
-			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Analysers/AttributeAnnotationFactory.php
-
-		-
-			message: '#^Call to function method_exists\(\) with ReflectionClass\<object\> and ''isEnum'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Analysers/ReflectionAnalyser.php
-
-		-
-			message: '#^Access to an undefined property OpenApi\\Annotations\\AbstractAnnotation\:\:\$description\.$#'
-			identifier: property.notFound
+			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$description\\.$#"
 			count: 1
 			path: src/Annotations/AbstractAnnotation.php
 
 		-
-			message: '#^Access to an undefined property OpenApi\\Annotations\\AbstractAnnotation\:\:\$summary\.$#'
-			identifier: property.notFound
+			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$summary\\.$#"
 			count: 1
 			path: src/Annotations/AbstractAnnotation.php
 
 		-
-			message: '#^Call to function property_exists\(\) with OpenApi\\Annotations\\AbstractAnnotation and ''_context'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Annotations/AbstractAnnotation.php
-
-		-
-			message: '#^Variable \$name might not be defined\.$#'
-			identifier: variable.undefined
+			message: "#^Variable \\$name might not be defined\\.$#"
 			count: 2
 			path: src/Annotations/Components.php
 
 		-
-			message: '#^Variable \$type might not be defined\.$#'
-			identifier: variable.undefined
+			message: "#^Variable \\$type might not be defined\\.$#"
 			count: 1
 			path: src/Annotations/Components.php
 
 		-
-			message: '#^Property OpenApi\\Annotations\\Flow\:\:\$scopes \(array\) does not accept stdClass\.$#'
-			identifier: assign.propertyType
+			message: "#^Property OpenApi\\\\Annotations\\\\Flow\\:\\:\\$scopes \\(array\\) does not accept stdClass\\.$#"
 			count: 1
 			path: src/Annotations/Flow.php
 
 		-
-			message: '#^Method OpenApi\\Processors\\AugmentParameters\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
+			message: "#^Access to an undefined property object\\:\\:\\$enum\\.$#"
 			count: 1
-			path: src/Processors/AugmentParameters.php
+			path: src/Annotations/Schema.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Processors/AugmentParameters.php
-
-		-
-			message: '#^Method OpenApi\\Processors\\AugmentProperties\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Processors/AugmentProperties.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Processors/AugmentProperties.php
-
-		-
-			message: '#^Property OpenApi\\Annotations\\Schema\:\:\$properties \(array\<OpenApi\\Annotations\\Property\>\) does not accept string\.$#'
-			identifier: assign.propertyType
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$properties \\(array\\<OpenApi\\\\Annotations\\\\Property\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/AugmentSchemas.php
 
 		-
-			message: '#^Method OpenApi\\Processors\\DocBlockDescriptions\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:description\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
 			count: 1
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
-			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:description\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
-			identifier: argument.type
+			message: "#^Parameter \\#1 \\$annotation of method OpenApi\\\\Processors\\\\DocBlockDescriptions\\:\\:summaryAndDescription\\(\\) expects OpenApi\\\\Annotations\\\\Operation\\|OpenApi\\\\Annotations\\\\Parameter\\|OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
 			count: 1
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
-			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:summaryAndDescription\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Processors/DocBlockDescriptions.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Processors/DocBlockDescriptions.php
-
-		-
-			message: '#^Property OpenApi\\Annotations\\Schema\:\:\$examples \(array\<OpenApi\\Annotations\\Examples\>\) does not accept string\.$#'
-			identifier: assign.propertyType
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$examples \\(array\\<OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/MergeJsonContent.php
 
 		-
-			message: '#^Property OpenApi\\Annotations\\Schema\:\:\$examples \(array\<OpenApi\\Annotations\\Examples\>\) does not accept string\.$#'
-			identifier: assign.propertyType
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$examples \\(array\\<OpenApi\\\\Annotations\\\\Examples\\>\\) does not accept string\\.$#"
 			count: 1
 			path: src/Processors/MergeXmlContent.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function spl_autoload_register expects \(callable\(string\)\: void\)\|null, array\{Composer\\Autoload\\ClassLoader, ''findFile''\} given\.$#'
-			identifier: argument.type
+			message: "#^Parameter \\#1 \\$callback of function spl_autoload_register expects \\(callable\\(string\\)\\: void\\)\\|null, array\\{Composer\\\\Autoload\\\\ClassLoader, 'findFile'\\} given\\.$#"
 			count: 1
 			path: tests/Analysers/ComposerAutoloaderScannerTest.php
 
 		-
-			message: '#^Access to an undefined property OpenApi\\Analysers\\AnnotationFactoryInterface\:\:\$reflectors\.$#'
-			identifier: property.notFound
+			message: "#^Access to an undefined property OpenApi\\\\Analysers\\\\AnnotationFactoryInterface\\:\\:\\$reflectors\\.$#"
 			count: 2
 			path: tests/Analysers/ReflectionAnalyserTest.php
 
 		-
-			message: '#^Access to an undefined property Reflector\:\:\$name\.$#'
-			identifier: property.notFound
+			message: "#^Access to an undefined property Reflector\\:\\:\\$name\\.$#"
 			count: 1
 			path: tests/Analysers/ReflectionAnalyserTest.php
 
 		-
-			message: '#^Call to an undefined method ReflectionType\:\:getName\(\)\.$#'
-			identifier: method.notFound
+			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
 			count: 1
 			path: tests/Annotations/AttributesSyncTest.php
-
-		-
-			message: '#^Method OpenApi\\Tests\\Processors\\AugmentParametersTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: tests/Processors/AugmentParametersTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/AugmentParametersTest.php
-
-		-
-			message: '#^Method OpenApi\\Tests\\Processors\\AugmentRefsTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: tests/Processors/AugmentRefsTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/AugmentRefsTest.php
-
-		-
-			message: '#^Method OpenApi\\Tests\\Processors\\DocBlockDescriptionsTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: tests/Processors/DocBlockDescriptionsTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/DocBlockDescriptionsTest.php

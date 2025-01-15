@@ -16,7 +16,7 @@ use OpenApi\Processors\Concerns\AnnotationTrait;
  * If no `tags` or `paths` filters are set, no filtering is performed.
  * All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
  */
-class PathFilter implements ProcessorInterface
+class PathFilter
 {
     use AnnotationTrait;
 
