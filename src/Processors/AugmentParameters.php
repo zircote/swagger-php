@@ -14,7 +14,7 @@ use OpenApi\Processors\Concerns\DocblockTrait;
 /**
  * Augments shared and operations parameters from docblock comments.
  */
-class AugmentParameters implements ProcessorInterface
+class AugmentParameters
 {
     use DocblockTrait;
 

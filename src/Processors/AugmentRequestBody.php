@@ -13,7 +13,7 @@ use OpenApi\Generator;
 /**
  * Use the RequestBody context to extract useful information and inject that into the annotation.
  */
-class AugmentRequestBody implements ProcessorInterface
+class AugmentRequestBody
 {
     public function __invoke(Analysis $analysis)
     {

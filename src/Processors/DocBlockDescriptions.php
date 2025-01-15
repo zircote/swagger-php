@@ -16,7 +16,7 @@ use OpenApi\Generator;
  *
  * Use `null`, for example: `@Annotation(description=null)`, if you don't want the annotation to have a description.
  */
-class DocBlockDescriptions implements ProcessorInterface
+class DocBlockDescriptions
 {
     use Concerns\DocblockTrait;
 

@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class AugmentRefs implements ProcessorInterface
+class AugmentRefs
 {
     use Concerns\RefTrait;
 

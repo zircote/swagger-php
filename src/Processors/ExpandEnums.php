@@ -16,7 +16,7 @@ use OpenApi\OpenApiException;
  *
  * Determines `schema`, `enum` and `type`.
  */
-class ExpandEnums implements ProcessorInterface
+class ExpandEnums
 {
     use Concerns\TypesTrait;
 
