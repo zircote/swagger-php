@@ -2,10 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Composer\Autoload\ClassLoader;
+use OpenApi\Tests\Concerns\UsesExamples;
 
-$exampleDir = __DIR__ . '/../Examples';
+(new class () {
+    use UsesExamples;
 
-$classloader = new ClassLoader();
-$classloader->addPsr4('OpenApi\\Examples\\SwaggerSpec\\PetstoreSimple\\', $exampleDir . '/swagger-spec/petstore-simple');
-$classloader->register();
+    public function __invoke()
+    {
+        $this->registerExampleClassloader('petstore');
+    }
+})();

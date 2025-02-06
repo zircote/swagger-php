@@ -6,195 +6,48 @@
 
 namespace OpenApi\Tests;
 
-use Composer\Autoload\ClassLoader;
-use OpenApi\Analysers\AnalyserInterface;
-use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Analysers\DocBlockAnnotationFactory;
-use OpenApi\Analysers\ReflectionAnalyser;
+use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 
+/**
+ * @requires PHP 8.1
+ */
 class ExamplesTest extends OpenApiTestCase
 {
-    public static function exampleDetails(): iterable
+    use UsesExamples;
+
+    public function exampleSpecs(): iterable
     {
-        yield 'example-object' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'example-object',
-            'example-object.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
+        $examples = [
+            'api',
+            'misc',
+            'nesting',
+            'petstore',
+            'polymorphism',
+            'using-interfaces',
+            'using-links',
+            'using-refs',
+            'using-traits',
+            'webhooks',
         ];
+        $implementations = ['annotations', 'attributes', 'mixed'];
+        $versions = [OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0];
 
-        yield 'misc' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'misc',
-            'misc.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
+        foreach ($examples as $example) {
+            foreach ($implementations as $implementation) {
+                if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
+                    continue;
+                }
 
-        yield 'nesting' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'nesting',
-            'nesting.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'petstore-3.0' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'petstore-3.0',
-            'petstore-3.0.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'petstore.swagger.io' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'petstore.swagger.io',
-            'petstore.swagger.io.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'swagger-spec/petstore' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'swagger-spec/petstore',
-            'petstore.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'swagger-spec/petstore-simple' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'swagger-spec/petstore-simple',
-            'petstore-simple.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'swagger-spec/petstore-simple-3.1.0' => [
-            'version' => OA\OpenApi::VERSION_3_1_0,
-            'example' => 'swagger-spec/petstore-simple',
-            'petstore-simple-3.1.0.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'swagger-spec/petstore-with-external-docs' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'swagger-spec/petstore-with-external-docs',
-            'petstore-with-external-docs.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'polymorphism' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'polymorphism',
-            'polymorphism.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'polymorphism-3.1.0' => [
-            'version' => OA\OpenApi::VERSION_3_1_0,
-            'example' => 'polymorphism',
-            'polymorphism-3.1.0.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'using-interfaces' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'using-interfaces',
-            'using-interfaces.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'using-traits' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'using-traits',
-            'using-traits.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        yield 'using-links' => [
-            'version' => OA\OpenApi::VERSION_3_0_0,
-            'example' => 'using-links',
-            'using-links.yaml',
-            'debug' => false,
-            'expectedLog' => [],
-            'analysers' => ['reflection'],
-        ];
-
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'using-refs' => [
-                'version' => OA\OpenApi::VERSION_3_0_0,
-                'example' => 'using-refs',
-                'using-refs.yaml',
-                'debug' => false,
-                'expectedLog' => [],
-                'analysers' => ['reflection'],
-            ];
-
-            yield 'webhooks' => [
-                'version' => OA\OpenApi::VERSION_3_1_0,
-                'example' => 'webhooks',
-                'webhooks.yaml',
-                'debug' => false,
-                'expectedLog' => [],
-                'analysers' => ['reflection'],
-            ];
-
-            yield 'webhooks81' => [
-                'version' => OA\OpenApi::VERSION_3_1_0,
-                'example' => 'webhooks81',
-                'webhooks.yaml',
-                'debug' => false,
-                'expectedLog' => [],
-                'analysers' => ['reflection'],
-            ];
-
-            yield 'using-links-php81' => [
-                'version' => OA\OpenApi::VERSION_3_0_0,
-                'example' => 'using-links-php81',
-                'using-links-php81.yaml',
-                'debug' => true,
-                'expectedLog' => ['JetBrains\PhpStorm\ArrayShape'],
-                'analysers' => ['reflection'],
-            ];
-        }
-    }
-
-    public static function exampleMappings(): iterable
-    {
-        $analysers = [
-            'reflection' => new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]),
-        ];
-
-        foreach (static::exampleDetails() as $exampleKey => $example) {
-            $exampleAnalysers = $example['analysers'];
-            unset($example['analysers']);
-            foreach ($exampleAnalysers as $analyserKey) {
-                yield $exampleKey . ':' . $analyserKey => array_merge($example, [$analysers[$analyserKey]]);
+                foreach ($versions as $version) {
+                    yield "$example:$implementation;$version" => [
+                        $example,
+                        $implementation,
+                        $version,
+                    ];
+                }
             }
         }
     }
@@ -202,43 +55,35 @@ class ExamplesTest extends OpenApiTestCase
     /**
      * Validate openapi definitions of the included examples.
      *
-     * @dataProvider exampleMappings
+     * @dataProvider exampleSpecs
      */
-    public function testExamples(string $version, string $example, string $spec, bool $debug, array $expectedLog, AnalyserInterface $analyser): void
+    public function testExample(string $name, string $implementation, string $version): void
     {
-        // register autoloader for examples that require autoloading due to inheritance, etc.
-        $path = $this->example($example);
-        $exampleNS = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $example)));
-        $exampleNS = str_replace(' ', '\\', ucwords(str_replace('/', ' ', $exampleNS)));
-        $classloader = new ClassLoader();
-        $classloader->addPsr4('OpenApi\\Examples\\' . $exampleNS . '\\', $path);
-        $classloader->register();
+        $this->registerExampleClassloader($name, $implementation);
 
-        foreach ($expectedLog as $logLine) {
-            $this->assertOpenApiLogEntryContains($logLine);
-        }
+        $path = $this->examplePath("$name/$implementation");
+        $specFilename = $this->getSpecFilename($name, $implementation, $version);
 
-        $path = $this->example($example);
-        $openapi = (new Generator($this->getTrackingLogger($debug)))
+        $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
-            ->setAnalyser($analyser)
             ->generate([$path]);
-        // file_put_contents($path . '/' . $spec, $openapi->toYaml());
+        // file_put_contents($specFilename, $openapi->toYaml());
         $this->assertSpecEquals(
             $openapi,
-            file_get_contents($path . '/' . $spec),
-            get_class($analyser) . ': Examples/' . $example . '/' . $spec
+            file_get_contents($specFilename),
+            "Example: $name/$implementation/" . basename($specFilename)
         );
     }
 
     /**
-     * @dataProvider exampleDetails
+     * @dataProvider exampleSpecs
      */
-    public function testSerializer(string $version, string $example, string $spec, bool $debug, array $expectedLog): void
+    public function testSerializer(string $name, string $implementation, string $version): void
     {
-        $filename = $this->example($example) . '/' . $spec;
-        $reserialized = (new Serializer())->deserializeFile($filename)->toYaml();
+        $specFilename = $this->getSpecFilename($name, $implementation, $version);
 
-        $this->assertEquals(file_get_contents($filename), $reserialized);
+        $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();
+
+        $this->assertEquals(file_get_contents($specFilename), $reserialized);
     }
 }

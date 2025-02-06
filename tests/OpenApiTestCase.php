@@ -190,11 +190,6 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
-    public static function example(string $name): string
-    {
-        return __DIR__ . '/../Examples/' . $name;
-    }
-
     public static function fixture(string $file): ?string
     {
         $fixtures = static::fixtures([$file]);

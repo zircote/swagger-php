@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: 'Testing annotations from bugreports'
+  description: "NOTE:\nThis sentence is on a new line"
+  contact:
+    name: 'Swagger API Team'
+  license:
+    name: apache
+    url: 'https://github.com/zircote/swagger-php/blob/master/LICENSE'
+  version: 1.0.0
+servers:
+  -
+    url: '{schema}://host.dev'
+    description: 'OpenApi parameters'
+    variables:
+      schema:
+        enum:
+          - https
+          - http
+        default: https
+paths:
+  /api/endpoint:
+    get:
+      tags:
+        - endpoints
+      summary: 'An API endpoint.'
+      description: 'An endpoint'
+      operationId: endpoint
+      parameters:
+        -
+          name: filter
+          in: query
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string }
+                  color: { type: string }
+                type: object
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+      security:
+        -
+          bearerAuth: []
+  /api/anotherendpoint:
+    get:
+      tags:
+        - endpoints
+      summary: 'Another API endpoint.'
+      description: 'Another endpoint'
+      operationId: anotherendpoints
+      parameters:
+        -
+          name: 'things[]'
+          in: query
+          description: 'A list of things.'
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+      security:
+        -
+          bearerAuth: []
+  /users:
+    post:
+      tags:
+        - user
+      summary: 'Adds a new user - with oneOf examples'
+      description: 'Adds a new user'
+      operationId: addUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                phone:
+                  oneOf: [{ type: string }, { type: integer }]
+              type: object
+              example:
+                id: a3fb6
+                name: 'Jessica Smith'
+                phone: 12345678
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/Result' }
+                  - { type: boolean }
+              examples:
+                result:
+                  summary: 'An result object.'
+                  value: { success: true }
+                bool:
+                  summary: 'A boolean value.'
+                  value: false
+  '/users/{id}':
+    put:
+      tags:
+        - user
+      summary: 'Updates a user'
+      description: 'Updates a user'
+      operationId: updateUser
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Parameter with mutliple examples'
+          required: true
+          schema:
+            type: string
+          examples:
+            int:
+              summary: 'An int value.'
+              value: '1'
+            uuid:
+              summary: 'An UUID value.'
+              value: 0006faf6-7a61-426c-9034-579f2cfcfa83
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Result:
+      title: 'Sample schema for using references'
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      type: object
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            properties:
+              name:
+                description: demo
+                type: integer
+            type: object
+          examples:
+            '200':
+              summary: ''
+              value:
+                name: 1
+            '300':
+              summary: ''
+              value:
+                name: 1
+            '400':
+              summary: ''
+              value:
+                name: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  -
+    bearerAuth: []
+tags:
+  -
+    name: endpoints
+  -
+    name: user
+    description: user
