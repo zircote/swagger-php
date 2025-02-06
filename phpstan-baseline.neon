@@ -10,7 +10,7 @@ parameters:
 			message: '#^Attribute class JetBrains\\PhpStorm\\ArrayShape does not exist\.$#'
 			identifier: attribute.notFound
 			count: 1
-			path: Examples/using-links-php81/User.php
+			path: Examples/specs/using-links/attributes/User.php
 
 		-
 			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'

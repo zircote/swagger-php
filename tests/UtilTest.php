@@ -7,11 +7,14 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Util;
 use Symfony\Component\Finder\Finder;
 
 class UtilTest extends OpenApiTestCase
 {
+    use UsesExamples;
+
     public function testRefEncode(): void
     {
         $this->assertSame('#/paths/~1blogs~1{blog_id}~1new~0posts', '#/paths/' . Util::refEncode('/blogs/{blog_id}/new~posts'));
@@ -25,10 +28,10 @@ class UtilTest extends OpenApiTestCase
     public function testFinder(): void
     {
         // Create a finder for one of the example directories that has a subdirectory.
-        $finder = (new Finder())->in($this->example('using-traits'));
+        $finder = (new Finder())->in($this->examplePath('using-traits/annotations'));
         $this->assertGreaterThan(0, iterator_count($finder), 'There should be at least a few files and a directory.');
         $finder_array = \iterator_to_array($finder);
-        $directory_path = $this->example('using-traits/Decoration');
+        $directory_path = $this->examplePath('using-traits/annotations/Decoration');
         $this->assertArrayHasKey($directory_path, $finder_array, 'The directory should be a path in the finder.');
         // Use the Util method that should set the finder to only find files, since swagger-php only needs files.
         $finder_result = Util::finder($finder);
