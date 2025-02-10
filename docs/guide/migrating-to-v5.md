@@ -11,5 +11,10 @@ v5 is mostly a cleanup release with updated dependencies. The main changes are:
 * Removal of deprecated features
   * empty/unused `ProcessorInterface`
   * `Context::clone()` and `Context::detect()`
+  * `\Openapi\Generator::getProcessors()` and `\Openapi\Generator::setProcessors()`
 
 For most installations upgrading should not require any changes.
+
+## Removed deprecated elements
+### `\Openapi\Generator::getProcessors()` and `\Openapi\Generator::setProcessors()`
+Use `getProcessorPipeline()` and `setProcessorPipeline(new Pipeline(...))` methods instead 
