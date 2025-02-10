@@ -11,3 +11,4 @@ docs/package-lock.json
 scratch/
 vendor/
 .idea/
+.phpstan/

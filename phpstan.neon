@@ -7,7 +7,8 @@ parameters:
     paths:
         - src
         - tests
-        - Examples
+        - examples
+    tmpDir: .phpstan
     parallel:
         processTimeout: 300.0
     excludePaths:

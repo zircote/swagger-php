@@ -54,7 +54,7 @@ Use an OpenAPI tool like [Swagger UI ](https://swagger.io/tools/swagger-ui/) to 
 - [Reference](reference/index.md)
 - [OpenApi Documentation](https://learn.openapis.org/)
 - [OpenApi Specification](https://spec.openapis.org/oas/v3.1.0.html)
-- [Learn by example](https://github.com/zircote/swagger-php/tree/master/Examples)
+- [Learn by example](https://github.com/zircote/swagger-php/tree/master/examples#readme)
 - [Related projects](related-projects.md)
 - [swagger-php 2.x documentation](https://github.com/zircote/swagger-php/tree/2.x/docs)
 - [swagger-php 3.x documentation](https://github.com/zircote/swagger-php/tree/3.x/docs)
