@@ -1,15 +1,15 @@
 <?php
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Attributes as OA;
 
-#[OAT\Tag(name: "user", description: "User related operations")]
-#[OAT\Info(
+#[OA\Tag(name: "user", description: "User related operations")]
+#[OA\Info(
     version: "1.0",
     title: "Example API",
     description: "Example info",
-    contact: new OAT\Contact(name: "Swagger API Team"),
+    contact: new OA\Contact(name: "Swagger API Team"),
 )]
-#[OAT\Server(
+#[OA\Server(
     url: "https://example.localhost",
     description: "API server",
 )]
