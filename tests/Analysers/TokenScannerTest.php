@@ -30,69 +30,6 @@ class TokenScannerTest extends OpenApiTestCase
                 ],
             ];
         }
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'basic' => [
-                'Apis/DocBlocks/basic.php',
-                [
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\OpenApiSpec' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => [],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Product' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => ['OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductInterface'],
-                        'traits' => ['OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\NameTrait'],
-                        'enums' => [],
-                        'methods' => ['__construct'],
-                        'properties' => ['releasedAt', 'quantity', 'brand', 'colour', 'id'],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductController' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => ['getProduct', 'addProduct', 'getAll', 'subscribe'],
-                        'properties' => [],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\ProductInterface' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => [],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\NameTrait' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => ['name'],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Colour' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => [],
-                    ],
-                    'OpenApi\\Tests\\Fixtures\\Apis\\DocBlocks\\Server' => [
-                        'uses' => ['OA' => 'OpenApi\\Annotations'],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => [],
-                        'properties' => [],
-                    ],
-                ],
-            ];
-        }
 
         yield 'references' => [
             'PHP/References.php',
