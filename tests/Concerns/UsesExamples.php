@@ -22,6 +22,7 @@ trait UsesExamples
             "$name-$version.yaml",
             "$name-$implementation-$version.yaml",
         ];
+
         $basePath = $this->examplePath($name);
         foreach ($specs as $spec) {
             $specFilename = "$basePath/$spec";

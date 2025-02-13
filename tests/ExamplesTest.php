@@ -42,6 +42,10 @@ class ExamplesTest extends OpenApiTestCase
                 }
 
                 foreach ($versions as $version) {
+                    if (!file_exists($this->getSpecFilename($example, $implementation, $version))) {
+                        continue;
+                    }
+
                     yield "$example:$implementation;$version" => [
                         $example,
                         $implementation,
