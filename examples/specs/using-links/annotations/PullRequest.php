@@ -36,4 +36,15 @@ class PullRequest
      * @var User
      */
     public $author;
+
+    public function __construct(
+        /**
+         * @OA\Property(
+         *     ref="OpenApi\Examples\Specs\UsingLinks\Annotations\State"
+         * )
+         */
+        public string $state
+    )
+    {
+    }
 }

@@ -80,10 +80,7 @@ class RepositoriesController
      *     @OA\Parameter(name="state",
      *         in="path",
      *         required=true,
-     *         @OA\Schema(
-     *             type="string",
-     *             enum={"open", "merged", "declined"}
-     *         )
+     *         @OA\Schema(ref="OpenApi\Examples\Specs\UsingLinks\Annotations\State")
      *     ),
      *     @OA\Parameter(name="label",
      *         in="query",

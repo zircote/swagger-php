@@ -2,9 +2,9 @@
 
 namespace OpenApi\Examples\Specs\UsingLinks\Attributes;
 
-use OpenApi\Attributes\Schema;
+use OpenApi\Attributes as OAT;
 
-#[Schema()]
+#[OAT\Schema()]
 enum State
 {
     case OPEN;
