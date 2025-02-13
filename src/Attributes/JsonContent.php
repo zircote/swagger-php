@@ -13,11 +13,11 @@ use OpenApi\Annotations as OA;
 class JsonContent extends OA\JsonContent
 {
     /**
-     * @param string|non-empty-array<string>|null                           $type
-     * @param string|class-string|object|null                               $ref
      * @param array<Examples>                                               $examples
+     * @param string|class-string|object|null                               $ref
      * @param string[]                                                      $required
      * @param Property[]                                                    $properties
+     * @param string|non-empty-array<string>|null                           $type
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum

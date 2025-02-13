@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Examples\Specs\Misc\Annotations;
 
 use OpenApi\Annotations as OA;

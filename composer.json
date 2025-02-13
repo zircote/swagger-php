@@ -57,6 +57,16 @@
             "OpenApi\\": "src"
         }
     },
+    "autoload-dev": {
+        "exclude-from-classmap": [
+            "/tests/Fixtures"
+        ],
+        "psr-4": {
+            "OpenApi\\Tools\\": "tools/src/",
+            "OpenApi\\Tests\\": "tests/",
+            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
+        }
+    },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
@@ -71,16 +81,6 @@
     },
     "suggest": {
         "doctrine/annotations": "^2.0"
-    },
-    "autoload-dev": {
-        "exclude-from-classmap": [
-            "/tests/Fixtures"
-        ],
-        "psr-4": {
-            "OpenApi\\Tools\\": "tools/src/",
-            "OpenApi\\Tests\\": "tests/",
-            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
-        }
     },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",

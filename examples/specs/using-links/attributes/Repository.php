@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace OpenApi\Examples\Specs\UsingLinks\Attributes;
 
 use OpenApi\Attributes as OAT;
