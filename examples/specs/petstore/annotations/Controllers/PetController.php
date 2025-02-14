@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
-class Pet
+class PetController
 {
     /**
      * Add a new pet to the store.
@@ -144,7 +144,7 @@ class Pet
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="Invalid status value"
+     *         description="Invalid tag value"
      *     ),
      *     security={
      *         {"petstore_auth": {"write:pets", "read:pets"}}

@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
-class Store
+class StoreController
 {
     /**
      * @OA\Get(
@@ -54,7 +54,7 @@ class Store
      *         @OA\XmlContent(ref="#/components/schemas/Order")
      *     ),
      *     @OA\RequestBody(
-     *         description="order placed for purchasing th pet",
+     *         description="order placed for purchasing the pet",
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/Order")
      *     )

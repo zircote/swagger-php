@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'Swagger Petstore'
-  description: "This is a sample Petstore server.  You can find\nout more about Swagger at\n[http://swagger.io](http://swagger.io) or on\n[irc.freenode.net, #swagger](http://swagger.io/irc/)."
+  description: "This is a sample Petstore server.\nYou can find out more about Swagger at [http://swagger.io](http://swagger.io)\nor on [irc.freenode.net, #swagger](http://swagger.io/irc/)."
   termsOfService: 'http://swagger.io/terms/'
   contact:
     email: apiteam@swagger.io
@@ -11,8 +11,8 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0'
-    description: 'SwaggerHUB API Mocking'
+    url: 'https://petstore.com/1.0.0'
+    description: 'Petstore API'
 paths:
   /pet:
     put:
@@ -125,7 +125,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Pet'
         '400':
-          description: 'Invalid status value'
+          description: 'Invalid tag value'
       security:
         -
           petstore_auth:
@@ -290,7 +290,7 @@ paths:
       summary: 'Place an order for a pet'
       operationId: placeOrder
       requestBody:
-        description: 'order placed for purchasing th pet'
+        description: 'order placed for purchasing the pet'
         required: true
         content:
           application/json:
@@ -464,8 +464,8 @@ paths:
         '404':
           description: 'User not found'
     put:
-      summary: 'Updated user'
-      description: 'This can pnly be done by the logged in user.'
+      summary: 'Update user'
+      description: 'This can only be done by the logged in user.'
       operationId: updateUser
       parameters:
         -
@@ -515,6 +515,10 @@ components:
           description: Code
           type: integer
           format: int32
+        type:
+          title: Type
+          description: Type
+          type: string
         message:
           title: Message
           description: Message
@@ -556,7 +560,7 @@ components:
           title: Quantity
           description: Quantity
           type: integer
-          format: in32
+          format: int32
           default: 12
         shipDate:
           title: 'Shipping date'
@@ -565,8 +569,8 @@ components:
           format: datetime
           default: '2017-02-02 18:31:45'
         status:
-          title: 'Order status.'
-          description: 'Order status.'
+          title: 'Order status'
+          description: 'Order status'
           type: string
           default: placed
           enum:
@@ -577,7 +581,6 @@ components:
           title: 'Complete status'
           description: 'Complete status'
           type: boolean
-          format: int64
           default: false
       type: object
     Pet:
@@ -597,7 +600,7 @@ components:
         name:
           title: 'Pet name'
           description: 'Pet name'
-          type: integer
+          type: string
           format: int64
         photoUrls:
           title: 'Photo urls'
@@ -667,7 +670,6 @@ components:
           title: Password
           description: Password
           type: string
-          format: int64
           maximum: 255
         phone:
           title: Phone

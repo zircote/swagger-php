@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Specs\Petstore\Annotations\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Class Order.
  *
@@ -45,7 +47,7 @@ class Order
     /**
      * @OA\Property(
      *     default=12,
-     *     format="in32",
+     *     format="int32",
      *     description="Quantity",
      *     title="Quantity",
      * )
@@ -70,8 +72,8 @@ class Order
     /**
      * @OA\Property(
      *     default="placed",
-     *     title="Order status.",
-     *     description="Order status.",
+     *     title="Order status",
+     *     description="Order status",
      *     enum={"placed", "approved", "delivered"},
      * )
      *
@@ -82,7 +84,7 @@ class Order
     /**
      * @OA\Property(
      *     default=false,
-     *     format="int64",
+     *     type="boolean",
      *     description="Complete status",
      *     title="Complete status",
      * )

@@ -32,10 +32,10 @@ class ApiResponse
     private $code;
 
     /**
-     * OA\Property(
-     *    description="Type",
-     *    title="Type",
-     * ).
+     * @OA\Property(
+     *     description="Type",
+     *     title="Type",
+     * )
      *
      * @var string
      */

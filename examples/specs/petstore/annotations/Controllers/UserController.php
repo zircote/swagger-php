@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
-class User
+class UserController
 {
     /**
      * @OA\Post(
@@ -171,8 +171,8 @@ class User
     /**
      * @OA\Put(
      *     path="/user/{username}",
-     *     summary="Updated user",
-     *     description="This can pnly be done by the logged in user.",
+     *     summary="Update user",
+     *     description="This can only be done by the logged in user.",
      *     operationId="updateUser",
      *     @OA\Parameter(
      *         name="username",

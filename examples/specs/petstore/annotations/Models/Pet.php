@@ -51,7 +51,7 @@ class Pet
      *     title="Pet name",
      * )
      *
-     * @var int
+     * @var string
      */
     private $name;
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Specs\Petstore\Annotations\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\RequestBody(
  *     request="Pet",

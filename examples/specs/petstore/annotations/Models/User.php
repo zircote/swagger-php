@@ -6,6 +6,8 @@
 
 namespace OpenApi\Examples\Specs\Petstore\Annotations\Models;
 
+use OpenApi\Annotations as OA;
+
 /**
  * Class User.
  *
@@ -72,7 +74,6 @@ class User
 
     /**
      * @OA\Property(
-     *     format="int64",
      *     description="Password",
      *     title="Password",
      *     maximum=255
