@@ -5,6 +5,8 @@ use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
 
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
+    ->path('tools')->name('*.php')
+    ->path('examples')->name('*.php')
     ->path('tests')->name('*.php')
     ->filter(function (\SplFileInfo $file) {
         return
@@ -16,17 +18,11 @@ $finder = PhpCsFixer\Finder::create()
             && !strpos($file->getPathname(), 'tests/Fixtures/TypedProperties.php')
         ;
     })
-    ->path('Examples')->name('*.php')
-    ->filter(function (\SplFileInfo $file) {
-        return !strpos($file->getPathname(), 'Examples/petstore-3.0/Petstore.php')
-            && !strpos($file->getPathname(), 'Examples/misc/OpenApiSpec.php');
-    })
-    ->path('tools')->name('*.php')
     ->in(__DIR__);
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        (new ScopedLicenseFixer())->scope(['/src/', '/tests/']), //, '/Examples/']),
+        (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
     ])
     ->setRules([
@@ -89,5 +85,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_no_empty_return' => true,
         'phpdoc_no_alias_tag' => true,
+        'phpdoc_param_order' => true,
     ])
     ->setFinder($finder);

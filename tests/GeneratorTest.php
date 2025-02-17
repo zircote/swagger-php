@@ -8,44 +8,51 @@ namespace OpenApi\Tests;
 
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
+use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
+    use UsesExamples;
+
     public static function sourcesProvider(): iterable
     {
-        $sourceDir = static::example('swagger-spec/petstore-simple');
+        $name = 'petstore';
+        $sourceDir = static::examplePath("$name/annotations");
 
-        yield 'dir-list' => [$sourceDir, [$sourceDir]];
-        yield 'file-list' => [$sourceDir, ["$sourceDir/SimplePet.php", "$sourceDir/SimplePetsController.php", "$sourceDir/OpenApiSpec.php"]];
-        yield 'finder' => [$sourceDir, Util::finder($sourceDir)];
-        yield 'finder-list' => [$sourceDir, [Util::finder($sourceDir)]];
+        yield 'dir-list' => [$name, [$sourceDir]];
+        yield 'finder' => [$name, Util::finder($sourceDir)];
+        yield 'finder-list' => [$name, [Util::finder($sourceDir)]];
     }
 
     /**
      * @dataProvider sourcesProvider
      */
-    public function testGenerate(string $sourceDir, iterable $sources): void
+    public function testGenerate(string $name, iterable $sources): void
     {
+        $this->registerExampleClassloader($name);
+
         $openapi = (new Generator())
             ->setAnalyser($this->getAnalyzer())
             ->generate($sources);
 
-        $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
+        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
     }
 
     /**
      * @dataProvider sourcesProvider
      */
-    public function testScan(string $sourceDir, iterable $sources): void
+    public function testScan(string $name, iterable $sources): void
     {
+        $this->registerExampleClassloader($name);
+
         $analyzer = $this->getAnalyzer();
         $processor = (new Generator())
             ->getProcessorPipeline();
 
         $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
 
-        $this->assertSpecEquals(file_get_contents(sprintf('%s/%s.yaml', $sourceDir, basename($sourceDir))), $openapi);
+        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
     }
 
     public function testScanInvalidSource(): void

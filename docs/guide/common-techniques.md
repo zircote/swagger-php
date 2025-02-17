@@ -136,7 +136,7 @@ This doesn't do anything by itself, but now you can reference this fragment by i
 ```
 
 ::: info Examples
-There are more uses cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
+There are more uses cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/examples/specs/using-refs).
 :::
 
 ## Array parameters in query
