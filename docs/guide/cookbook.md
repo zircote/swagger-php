@@ -5,17 +5,18 @@ OpenApi has the concept of grouping endpoints using tags. On top of that, some t
 ([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)
 support further grouping via the vendor extension `x-tagGroups`.
 
-```php
-/**
- * @OA\OpenApi(
- *   x={
- *       "tagGroups"=
- *           {{"name"="User Management", "tags"={"Users", "API keys", "Admin"}}
- *       }
- *   }
- * )
- */
-```
+<codeblock id="x-tag-groups">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_an.php
+
+  </template>
+</codeblock>
 
 ## Adding examples to `@OA\Response`
 ```php
