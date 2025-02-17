@@ -1,4 +1,4 @@
-## Code/Annotation examples
+## Specs
 
 Collection of code/annotation examples and their corresponding OpenAPI specs generated using swagger-php.
 
