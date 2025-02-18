@@ -117,6 +117,16 @@ class Components extends AbstractAnnotation
     ];
 
     /**
+     * Returns a list of component annotation types.
+     *
+     * Each may be used as a root to resolve component refs
+     */
+    public static function componentTypes(): array
+    {
+        return array_filter(array_keys(self::$_nested), fn ($value) => $value !== Attachable::class);
+    }
+
+    /**
      * Generate a `#/components/...` reference for the given annotation.
      *
      * A `string` component value always assumes type `Schema`.

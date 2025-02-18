@@ -59,14 +59,19 @@ class AugmentRefs
     protected function resolveFQCNRefs(Analysis $analysis): void
     {
         /** @var OA\AbstractAnnotation[] $annotations */
-        $annotations = $analysis->getAnnotationsOfType([OA\Examples::class, OA\Header::class, OA\Link::class, OA\Parameter::class, OA\PathItem::class, OA\RequestBody::class, OA\Response::class, OA\Schema::class, OA\SecurityScheme::class]);
+        $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
 
         foreach ($annotations as $annotation) {
             if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
-                // check if we have a schema for this
-                if ($refSchema = $analysis->getSchemaForSource($annotation->ref)) {
-                    $annotation->ref = OA\Components::ref($refSchema);
-                } elseif ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation))) {
+                // check if we can resolve the ref to a component
+                $resolved = false;
+                foreach (OA\Components::componentTypes() as $type) {
+                    if ($refSchema = $analysis->getAnnotationForSource($annotation->ref, $type)) {
+                        $resolved = true;
+                        $annotation->ref = OA\Components::ref($refSchema);
+                    }
+                }
+                if (!$resolved && ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation)))) {
                     $annotation->ref = OA\Components::ref($refAnnotation);
                 }
             }
