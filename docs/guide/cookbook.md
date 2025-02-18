@@ -5,35 +5,33 @@ OpenApi has the concept of grouping endpoints using tags. On top of that, some t
 ([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)
 support further grouping via the vendor extension `x-tagGroups`.
 
-```php
-/**
- * @OA\OpenApi(
- *   x={
- *       "tagGroups"=
- *           {{"name"="User Management", "tags"={"Users", "API keys", "Admin"}}
- *       }
- *   }
- * )
- */
-```
+<codeblock id="x-tag-groups">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_an.php
+
+  </template>
+</codeblock>
 
 ## Adding examples to `@OA\Response`
-```php
-/*
- * @OA\Response(
- *     response=200,
- *     description="OK",
- *     @OA\JsonContent(
- *         oneOf={
- *             @OA\Schema(ref="#/components/schemas/Result"),
- *             @OA\Schema(type="boolean")
- *         },
- *         @OA\Examples(example="result", value={"success": true}, summary="An result object."),
- *         @OA\Examples(example="bool", value=false, summary="A boolean value."),
- *     )
- * )
- */
-```
+
+<codeblock id="response-examples">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/response_examples_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/response_examples_an.php
+
+  </template>
+</codeblock>
 
 ## External documentation
 OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.

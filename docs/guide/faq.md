@@ -24,27 +24,18 @@ related code, the info annotation (and a few more) is kind of global.
 The simplest solution to avoid this issue is to add a 'dummy' class to the docblock and add
 all 'global' annotations (e.g. `Tag`, `Server`, `SecurityScheme`, etc.) **in a single docblock** to that class.
 
-```php
-/**
- * @OA\Tag(
- *     name="user",
- *     description="User related operations"
- * )
- * @OA\Info(
- *     version="1.0",
- *     title="Example API",
- *     description="Example info",
- *     @OA\Contact(name="Swagger API Team")
- * )
- * @OA\Server(
- *     url="https://example.localhost",
- *     description="API server"
- * )
- */
-class OpenApiSpec
-{
-}
-```
+<codeblock id="dummy-class">
+  <template v-slot:at>
+
+<<< @/snippets/guide/faq/dummy_class_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/faq/dummy_class_an.php
+
+  </template>
+</codeblock>
 
 **As of version 4.8 the `doctrine/annotations` library is optional and might cause the same message.**
 
