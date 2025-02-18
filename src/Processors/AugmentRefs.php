@@ -8,6 +8,14 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Annotations\Examples;
+use OpenApi\Annotations\Header;
+use OpenApi\Annotations\Link;
+use OpenApi\Annotations\Parameter;
+use OpenApi\Annotations\RequestBody;
+use OpenApi\Annotations\Response;
+use OpenApi\Annotations\Schema;
+use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Generator;
 
 class AugmentRefs
@@ -26,8 +34,8 @@ class AugmentRefs
      */
     protected function resolveAllOfRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
+        /** @var Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
 
         // ref rewriting
         $updatedRefs = [];
@@ -59,14 +67,19 @@ class AugmentRefs
     protected function resolveFQCNRefs(Analysis $analysis): void
     {
         /** @var OA\AbstractAnnotation[] $annotations */
-        $annotations = $analysis->getAnnotationsOfType([OA\Examples::class, OA\Header::class, OA\Link::class, OA\Parameter::class, OA\PathItem::class, OA\RequestBody::class, OA\Response::class, OA\Schema::class, OA\SecurityScheme::class]);
+        $annotations = $analysis->getAnnotationsOfType([Examples::class, Header::class, Link::class, Parameter::class, OA\PathItem::class, RequestBody::class, Response::class, Schema::class, SecurityScheme::class]);
 
         foreach ($annotations as $annotation) {
             if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
-                // check if we have a schema for this
-                if ($refSchema = $analysis->getSchemaForSource($annotation->ref)) {
-                    $annotation->ref = OA\Components::ref($refSchema);
-                } elseif ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation))) {
+                // check if we can resolve the ref to a component
+                $resolved = false;
+                foreach (OA\Components::componentTypes() as $type) {
+                    if ($refSchema = $analysis->getAnnotationForSource($annotation->ref, $type)) {
+                        $resolved = true;
+                        $annotation->ref = OA\Components::ref($refSchema);
+                    }
+                }
+                if (!$resolved && ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation)))) {
                     $annotation->ref = OA\Components::ref($refAnnotation);
                 }
             }
@@ -75,8 +88,8 @@ class AugmentRefs
 
     protected function removeDuplicateRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
+        /** @var Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(Schema::class);
 
         foreach ($schemas as $schema) {
             if (!Generator::isDefault($schema->allOf)) {

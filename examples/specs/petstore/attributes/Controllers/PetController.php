@@ -9,6 +9,7 @@ namespace OpenApi\Examples\Specs\Petstore\Attributes\Controllers;
 use OpenApi\Attributes as OAT;
 use OpenApi\Examples\Specs\Petstore\Attributes\Models\ApiResponse;
 use OpenApi\Examples\Specs\Petstore\Attributes\Models\Pet;
+use OpenApi\Examples\Specs\Petstore\Attributes\Models\PetRequestBody;
 
 /**
  * Class Pet.
@@ -39,7 +40,7 @@ class PetController
             ],
         ],
         requestBody: new OAT\RequestBody(
-            ref: '#/components/requestBodies/Pet'
+            ref: PetRequestBody::class
         )
     )]
     public function addPet()
@@ -76,7 +77,7 @@ class PetController
             ],
         ],
         requestBody: new OAT\RequestBody(
-            ref: '#/components/requestBodies/Pet'
+            ref: PetRequestBody::class
         )
     )]
     public function updatePet()
