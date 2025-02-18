@@ -123,7 +123,7 @@ class Components extends AbstractAnnotation
      */
     public static function componentTypes(): array
     {
-        return array_filter(array_keys(self::$_nested), fn ($key, $value) => $value !== Attachable::class, ARRAY_FILTER_USE_BOTH);
+        return array_filter(array_keys(self::$_nested), fn ($value) => $value !== Attachable::class);
     }
 
     /**
