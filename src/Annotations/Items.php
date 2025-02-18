@@ -50,12 +50,11 @@ class Items extends Schema
         $valid = parent::validate($stack, $skip, $ref, $context);
 
         $parent = end($stack);
-        if ($parent instanceof Schema && $parent->type !== 'array') {
+        // type might be array in 3.1.0
+        if ($parent instanceof Schema && ($parent->type !== 'array' && !(is_array($parent->type) && in_array('array', $parent->type)))) {
             $this->_context->logger->warning('@OA\\Items() parent type must be "array" in ' . $this->_context);
             $valid = false;
         }
-
-        // @todo Additional validation when used inside a Header or Parameter context.
 
         return $valid;
     }
