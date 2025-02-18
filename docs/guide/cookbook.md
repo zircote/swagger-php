@@ -36,16 +36,18 @@ support further grouping via the vendor extension `x-tagGroups`.
 ## External documentation
 OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
 
-```php
-/**
- * @OA\OpenApi(
- *   @OA\ExternalDocumentation(
- *     description="More documentation here...",
- *     url="https://example.com/externaldoc1/"
- *   )
- * )
- */
-```
+<codeblock id="external-doc">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/external_documentation_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/external_documentation_an.php
+
+  </template>
+</codeblock>
 
 ::: tip
 If no `@OA\OpenApi` is configured, `swagger-php` will create one automatically.
