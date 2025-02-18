@@ -8,14 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Examples;
-use OpenApi\Annotations\Header;
-use OpenApi\Annotations\Link;
-use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\RequestBody;
-use OpenApi\Annotations\Response;
-use OpenApi\Annotations\Schema;
-use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Generator;
 
 class AugmentRefs
@@ -34,8 +26,8 @@ class AugmentRefs
      */
     protected function resolveAllOfRefs(Analysis $analysis): void
     {
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // ref rewriting
         $updatedRefs = [];
@@ -67,7 +59,7 @@ class AugmentRefs
     protected function resolveFQCNRefs(Analysis $analysis): void
     {
         /** @var OA\AbstractAnnotation[] $annotations */
-        $annotations = $analysis->getAnnotationsOfType([Examples::class, Header::class, Link::class, Parameter::class, OA\PathItem::class, RequestBody::class, Response::class, Schema::class, SecurityScheme::class]);
+        $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
 
         foreach ($annotations as $annotation) {
             if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
@@ -88,8 +80,8 @@ class AugmentRefs
 
     protected function removeDuplicateRefs(Analysis $analysis): void
     {
-        /** @var Schema[] $schemas */
-        $schemas = $analysis->getAnnotationsOfType(Schema::class);
+        /** @var OA\Schema[] $schemas */
+        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($schemas as $schema) {
             if (!Generator::isDefault($schema->allOf)) {
