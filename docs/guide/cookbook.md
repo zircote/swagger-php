@@ -67,30 +67,19 @@ That means the above example would also work with just the `OA\ExternalDocumenta
 ## Properties with union types
 Sometimes properties or even lists (arrays) may contain data of different types. This can be expressed using `oneOf`.
 
-```php
-/**
- * @OA\Schema(
- *      schema="StringList",
- *      @OA\Property(property="value", type="array", @OA\Items(anyOf={@OA\Schema(type="string")}))
- * )
- * @OA\Schema(
- *      schema="String",
- *      @OA\Property(property="value", type="string")
- * )
- * @OA\Schema(
- *      schema="Object",
- *      @OA\Property(property="value", type="object")
- * )
- * @OA\Schema(
- *     schema="mixedList",
- *     @OA\Property(property="fields", type="array", @OA\Items(oneOf={
- *         @OA\Schema(ref="#/components/schemas/StringList"),
- *         @OA\Schema(ref="#/components/schemas/String"),
- *         @OA\Schema(ref="#/components/schemas/Object")
- *     }))
- * )
- */
-```
+<codeblock id="props-with-union-types">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_an.php
+
+  </template>
+</codeblock>
+
 
 This will resolve into this YAML
 ```yaml
