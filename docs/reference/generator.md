@@ -162,3 +162,4 @@ $openapi = \OpenApi\Generator::scan(\OpenApi\Util::finder(__DIR__, $exclude, $pa
 // same as
 
 $openapi = \OpenApi\scan(__DIR__, ['exclude' => $exclude, 'pattern' => $pattern]);
+```

@@ -4,11 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Tools\Docs\ProcGenerator;
 
-$procgen = new ProcGenerator(__DIR__ . '/../');
+$gen = new ProcGenerator(__DIR__ . '/../');
 
 ob_start();
 
-echo $procgen->preamble('Processors');
+echo $gen->preamble('Processors');
 
 echo PHP_EOL . '## Processor Configuration' . PHP_EOL;
 
@@ -47,9 +47,9 @@ as on the command line or be broken down into nested arrays.
 EOT;
 
 echo PHP_EOL . '## Default Processors' . PHP_EOL;
-foreach ($procgen->getProcessorsDetails() as $ii => $details) {
+foreach ($gen->getProcessorsDetails() as $ii => $details) {
     $off = $ii + 1;
-    echo $procgen->formatClassHeader($details['name'], 'Processors');
+    echo $gen->formatClassHeader($details['name'], 'Processors');
     echo $details['phpdoc']['content'] . PHP_EOL;
 
     if ($details['options']) {
@@ -84,4 +84,4 @@ foreach ($procgen->getProcessorsDetails() as $ii => $details) {
     }
 }
 
-file_put_contents($procgen->docPath('reference/processors.md'), ob_get_clean());
+file_put_contents($gen->docPath('reference/processors.md'), ob_get_clean());
