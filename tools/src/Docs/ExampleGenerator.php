@@ -6,8 +6,6 @@
 
 namespace OpenApi\Tools\Docs;
 
-use OpenApi\Analysers\TokenScanner;
-use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\Finder\Finder;
 
 class ExampleGenerator extends DocGenerator
