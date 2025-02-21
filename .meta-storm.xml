@@ -1,0 +1,39 @@
+<meta-storm xmlns="meta-storm">
+    <definitions>
+        <classConstructor class="\OpenApi\Attributes\Property" argument="0">
+            <collection name="zircote/swagger-php:types"/>
+        </classConstructor>
+        <classConstructor class="\OpenApi\Attributes\ParameterTrait" argument="3">
+            <collection name="zircote/swagger-php:path-in"/>
+        </classConstructor>
+        <classConstructor class="\OpenApi\Attributes\SecurityScheme" argument="1">
+            <collection name="zircote/swagger-php:path-in"/>
+        </classConstructor>
+        <classConstructor class="\OpenApi\Attributes\MediaType" argument="0">
+            <collection name="GLOBAL:media-types"/>
+        </classConstructor>
+        <classMethod class="\OpenApi\Annotations\AbstractAnnotation" method="__construct" argument="0" targetInArray="key">
+            <properties xpath="$containingClass" />
+        </classMethod>
+    </definitions>
+    <collections>
+        <strings name="zircote/swagger-php:types">
+            <value>string</value>
+            <value>number</value>
+            <value>integer</value>
+            <value>boolean</value>
+            <value>array</value>
+        </strings>
+        <strings name="zircote/swagger-php:path-in">
+            <value>path</value>
+            <value>header</value>
+            <value>query</value>
+            <value>cookie</value>
+        </strings>
+        <strings name="zircote/swagger-php:security-schema-in">
+            <value>header</value>
+            <value>query</value>
+            <value>cookie</value>
+        </strings>
+    </collections>
+</meta-storm>
