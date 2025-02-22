@@ -138,16 +138,19 @@ An API might have zero or more security schemes. These are defined at the top le
 
 To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be
 added to the operation, for example:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={ {"api_key": {}} }
- * )
- */
-```
+
+<codeblock id="secure-endpoint">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_an.php
+
+  </template>
+</codeblock>
 
 ::: tip Endpoints can support multiple security schemes and have custom options too:
 ```php
