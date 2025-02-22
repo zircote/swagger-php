@@ -123,30 +123,18 @@ components:
 ## Referencing a security scheme
 An API might have zero or more security schemes. These are defined at the top level and vary from simple to complex:
 
-```php
-/**
- * @OA\SecurityScheme(
- *     type="apiKey",
- *     name="api_key",
- *     in="header",
- *     securityScheme="api_key"
- * )
- *
- * @OA\SecurityScheme(
- *   type="oauth2",
- *   securityScheme="petstore_auth",
- *   @OA\Flow(
- *      authorizationUrl="http://petstore.swagger.io/oauth/dialog",
- *      flow="implicit",
- *      scopes={
- *         "read:pets": "read your pets",
- *         "write:pets": "modify pets in your account"
- *      }
- *   )
- * )
- */
-```
+<codeblock id="security-schemas">
+  <template v-slot:at>
 
+<<< @/snippets/guide/cookbook/security_schemas_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schemas_an.php
+
+  </template>
+</codeblock>
 
 To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be
 added to the operation, for example:
