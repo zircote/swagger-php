@@ -10,7 +10,7 @@ class OpenApi
 class MyController
 {
 
-    #[OA\Get(path: '/api/data.json')]
+    #[OA\Get(path: '/api/data.json', operationId: 'getData')]
     #[OA\Response(response: '200', description: 'The data')]
     public function getResource()
     {

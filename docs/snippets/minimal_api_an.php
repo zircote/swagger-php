@@ -18,6 +18,7 @@ class MyController
     /**
      * @OA\Get(
      *     path="/api/data.json",
+     *     operationId="getData",
      *     @OA\Response(
      *         response="200",
      *         description="The data"
