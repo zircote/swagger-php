@@ -35,6 +35,7 @@ class OpenApiTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.0.0, 3.1.0');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
+        /** @phpstan-ignore assign.propertyType */
         $openapi->openapi = '2';
         $openapi->validate();
     }

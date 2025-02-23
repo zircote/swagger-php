@@ -29,7 +29,7 @@ paths:
           description: 'the product id'
           required: false
           schema:
-            type: int
+            type: integer
       responses:
         '200':
           description: 'successful operation'

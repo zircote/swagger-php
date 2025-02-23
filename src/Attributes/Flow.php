@@ -13,8 +13,9 @@ use OpenApi\Annotations as OA;
 class Flow extends OA\Flow
 {
     /**
-     * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param 'implicit'|'password'|'authorizationCode'|'clientCredentials'|null $flow
+     * @param array<string,mixed>|null                                           $x
+     * @param Attachable[]|null                                                  $attachables
      */
     public function __construct(
         ?string $authorizationUrl = null,
