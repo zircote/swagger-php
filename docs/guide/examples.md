@@ -5,7 +5,10 @@ This page is generated automatically from the `swagger-php` sources.
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
 
-## api
+## Api
+
+A simple API example uing `enums`, `traits` and `callbacks`.
+
 ### Server.php
 
 <codeblock id="api-Server">
@@ -97,7 +100,10 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 </codeblock>
 
 
-## petstore
+## Petstore
+
+Classic petstore sample app. Uses `OAuth`
+
 ### Models/Category.php
 
 <codeblock id="petstore-Category">

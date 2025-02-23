@@ -9,9 +9,17 @@ $gen = new ExampleGenerator(__DIR__ . '/../');
 ob_start();
 echo $gen->preamble('Example');
 
+
+
 foreach (['api', 'petstore'] as $name) {
+    $exampleFolder = $gen->examplePath("specs/$name");
+
     echo PHP_EOL;
-    echo '## ' . $name . PHP_EOL;
+    if (file_exists("$exampleFolder/Readme.md")) {
+        echo file_get_contents("$exampleFolder/Readme.md") . PHP_EOL;
+    } else {
+        echo '## ' . $name . PHP_EOL;
+    }
 
     $typeFiles = [];
     foreach (['annotations', 'attributes'] as $type) {
