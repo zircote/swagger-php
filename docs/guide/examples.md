@@ -14,12 +14,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-Server">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/Server.php
+<<< @/examples/specs/api/attributes/Server.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/Server.php
+<<< @/examples/specs/api/annotations/Server.php
 
   </template>
 </codeblock>
@@ -29,12 +29,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-Product">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/Product.php
+<<< @/examples/specs/api/attributes/Product.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/Product.php
+<<< @/examples/specs/api/annotations/Product.php
 
   </template>
 </codeblock>
@@ -44,12 +44,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-NameTrait">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/NameTrait.php
+<<< @/examples/specs/api/attributes/NameTrait.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/NameTrait.php
+<<< @/examples/specs/api/annotations/NameTrait.php
 
   </template>
 </codeblock>
@@ -59,12 +59,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-Colour">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/Colour.php
+<<< @/examples/specs/api/attributes/Colour.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/Colour.php
+<<< @/examples/specs/api/annotations/Colour.php
 
   </template>
 </codeblock>
@@ -74,12 +74,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-OpenApiSpec">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/OpenApiSpec.php
+<<< @/examples/specs/api/attributes/OpenApiSpec.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/OpenApiSpec.php
+<<< @/examples/specs/api/annotations/OpenApiSpec.php
 
   </template>
 </codeblock>
@@ -89,12 +89,12 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <codeblock id="api-ProductController">
   <template v-slot:at>
 
-<<< ../examples/specs/api/attributes/ProductController.php
+<<< @/examples/specs/api/attributes/ProductController.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/api/annotations/ProductController.php
+<<< @/examples/specs/api/annotations/ProductController.php
 
   </template>
 </codeblock>
@@ -109,12 +109,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Category">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/Category.php
+<<< @/examples/specs/petstore/attributes/Models/Category.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/Category.php
+<<< @/examples/specs/petstore/annotations/Models/Category.php
 
   </template>
 </codeblock>
@@ -124,12 +124,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Order">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/Order.php
+<<< @/examples/specs/petstore/attributes/Models/Order.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/Order.php
+<<< @/examples/specs/petstore/annotations/Models/Order.php
 
   </template>
 </codeblock>
@@ -139,12 +139,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-PetRequestBody">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/PetRequestBody.php
+<<< @/examples/specs/petstore/attributes/Models/PetRequestBody.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/PetRequestBody.php
+<<< @/examples/specs/petstore/annotations/Models/PetRequestBody.php
 
   </template>
 </codeblock>
@@ -154,12 +154,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Tag">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/Tag.php
+<<< @/examples/specs/petstore/attributes/Models/Tag.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/Tag.php
+<<< @/examples/specs/petstore/annotations/Models/Tag.php
 
   </template>
 </codeblock>
@@ -169,12 +169,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-User">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/User.php
+<<< @/examples/specs/petstore/attributes/Models/User.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/User.php
+<<< @/examples/specs/petstore/annotations/Models/User.php
 
   </template>
 </codeblock>
@@ -184,12 +184,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-ApiResponse">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/ApiResponse.php
+<<< @/examples/specs/petstore/attributes/Models/ApiResponse.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/ApiResponse.php
+<<< @/examples/specs/petstore/annotations/Models/ApiResponse.php
 
   </template>
 </codeblock>
@@ -199,12 +199,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-UserArrayRequestBody">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/UserArrayRequestBody.php
+<<< @/examples/specs/petstore/attributes/Models/UserArrayRequestBody.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/UserArrayRequestBody.php
+<<< @/examples/specs/petstore/annotations/Models/UserArrayRequestBody.php
 
   </template>
 </codeblock>
@@ -214,12 +214,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Pet">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Models/Pet.php
+<<< @/examples/specs/petstore/attributes/Models/Pet.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Models/Pet.php
+<<< @/examples/specs/petstore/annotations/Models/Pet.php
 
   </template>
 </codeblock>
@@ -229,12 +229,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Security">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Security.php
+<<< @/examples/specs/petstore/attributes/Security.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Security.php
+<<< @/examples/specs/petstore/annotations/Security.php
 
   </template>
 </codeblock>
@@ -244,12 +244,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-UserController">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Controllers/UserController.php
+<<< @/examples/specs/petstore/attributes/Controllers/UserController.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Controllers/UserController.php
+<<< @/examples/specs/petstore/annotations/Controllers/UserController.php
 
   </template>
 </codeblock>
@@ -259,12 +259,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-StoreController">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Controllers/StoreController.php
+<<< @/examples/specs/petstore/attributes/Controllers/StoreController.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Controllers/StoreController.php
+<<< @/examples/specs/petstore/annotations/Controllers/StoreController.php
 
   </template>
 </codeblock>
@@ -274,12 +274,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-PetController">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Controllers/PetController.php
+<<< @/examples/specs/petstore/attributes/Controllers/PetController.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Controllers/PetController.php
+<<< @/examples/specs/petstore/annotations/Controllers/PetController.php
 
   </template>
 </codeblock>
@@ -289,12 +289,12 @@ Classic petstore sample app. Uses `OAuth`
 <codeblock id="petstore-Petstore">
   <template v-slot:at>
 
-<<< ../examples/specs/petstore/attributes/Petstore.php
+<<< @/examples/specs/petstore/attributes/Petstore.php
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/petstore/annotations/Petstore.php
+<<< @/examples/specs/petstore/annotations/Petstore.php
 
   </template>
 </codeblock>

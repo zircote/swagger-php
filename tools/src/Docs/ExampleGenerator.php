@@ -17,7 +17,7 @@ class ExampleGenerator extends DocGenerator
 
     public function examplePath(string $relativeName): string
     {
-        return $this->projectRoot . '/examples/' . $relativeName;
+        return $this->projectRoot . '/docs/examples/' . $relativeName;
     }
 
     public function collectFiles(string $folder, string $name): array

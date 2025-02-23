@@ -13,7 +13,7 @@ trait UsesExamples
 {
     public static function examplePath(string $name): string
     {
-        return sprintf('%s/examples/specs/%s', dirname(__DIR__, 2), $name);
+        return sprintf('%s/docs/examples/specs/%s', dirname(__DIR__, 2), $name);
     }
 
     public function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
