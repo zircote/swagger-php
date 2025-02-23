@@ -57,11 +57,13 @@ function getReferenceSidebar() {
   ]
 }
 
-
 module.exports = {
   title: "Swagger-PHP",
   base: "/swagger-php/",
   description: "Generate OpenAPI documentation for your RESTful API.",
+  srcExclude: [
+      'examples/Readme.md'
+  ],
   themeConfig: {
     repo: 'zircote/swagger-php',
     docsDir: 'docs',

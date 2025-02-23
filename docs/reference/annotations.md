@@ -5,7 +5,7 @@ This page is generated automatically from the `swagger-php` sources.
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
 
-In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/examples#readme) which might help you out.
+In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/docs/examples#readme) which might help you out.
 
 ## Annotations
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)

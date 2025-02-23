@@ -27,11 +27,6 @@ jobs:
       - name: Install vitepress and deps
         run: cd docs && npm install
 
-      - name: Add examples
-        run: |
-          cp -r examples docs
-          rm docs/examples/Readme.md
-
       - name: Build site
         run: composer docs:build
 
