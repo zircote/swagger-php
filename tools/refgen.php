@@ -4,19 +4,19 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Tools\Docs\RefGenerator;
 
-$refgen = new RefGenerator(__DIR__ . '/../');
+$gen = new RefGenerator(__DIR__ . '/../');
 
-foreach ($refgen->types() as $type) {
+foreach ($gen->types() as $type) {
     ob_start();
 
-    echo $refgen->preamble($type);
+    echo $gen->preamble($type);
     echo PHP_EOL . "## $type" . PHP_EOL;
 
-    foreach ($refgen->classesForType($type) as $name => $details) {
-        echo $refgen->formatClassHeader($name, $type);
+    foreach ($gen->classesForType($type) as $name => $details) {
+        echo $gen->formatClassHeader($name, $type);
         $method = "format{$type}Details";
-        echo $refgen->$method($name, $details['fqdn'], $details['filename']);
+        echo $gen->$method($name, $details['fqdn'], $details['filename']);
     }
 
-    file_put_contents($refgen->docPath('reference/' . strtolower($type) . '.md'), ob_get_clean());
+    file_put_contents($gen->docPath('reference/' . strtolower($type) . '.md'), ob_get_clean());
 }

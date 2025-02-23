@@ -118,7 +118,8 @@
         ],
         "docs:gen": [
             "@php tools/refgen.php",
-            "@php tools/procgen.php"
+            "@php tools/procgen.php",
+            "@php tools/examplegen.php"
         ],
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
