@@ -9,8 +9,6 @@ $gen = new ExampleGenerator(__DIR__ . '/../');
 ob_start();
 echo $gen->preamble('Example');
 
-
-
 foreach (['api', 'petstore'] as $name) {
     $exampleFolder = $gen->examplePath("specs/$name");
 
