@@ -34,12 +34,12 @@ foreach (['api', 'petstore'] as $name) {
 <codeblock id="$name-$filename">
   <template v-slot:at>
 
-<<< ../examples/specs/$name/attributes/$relFilename
+<<< @/examples/specs/$name/attributes/$relFilename
 
   </template>
   <template v-slot:an>
 
-<<< ../examples/specs/$name/annotations/$relFilename
+<<< @/examples/specs/$name/annotations/$relFilename
 
   </template>
 </codeblock>
