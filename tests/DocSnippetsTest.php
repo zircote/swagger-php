@@ -47,7 +47,7 @@ class DocSnippetsTest extends OpenApiTestCase
         $lastSpec = null;
         foreach ($filenames as $filename) {
             $namespace = basename($filename, '.php');
-            $tmp = sys_get_temp_dir() . "$namespace.php";
+            $tmp = sys_get_temp_dir() . "/$namespace.php";
             file_put_contents($tmp, "<?php namespace $namespace; ?>" . file_get_contents($filename));
             require_once $tmp;
             $openapi = (new Generator($this->getTrackingLogger()))
