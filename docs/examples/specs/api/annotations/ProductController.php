@@ -23,7 +23,7 @@ class ProductController
      *     @OA\PathParameter(
      *         name="product_id",
      *         required=false,
-     *         @OA\Schema(type="int")
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,

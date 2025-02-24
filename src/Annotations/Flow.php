@@ -49,7 +49,7 @@ class Flow extends AbstractAnnotation
      *
      * One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].
      *
-     * @var string
+     * @var 'authorizationCode'|'clientCredentials'|'implicit'|'password'
      */
     public $flow = Generator::UNDEFINED;
 

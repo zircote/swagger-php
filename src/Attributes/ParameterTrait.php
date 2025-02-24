@@ -11,6 +11,7 @@ use OpenApi\Generator;
 trait ParameterTrait
 {
     /**
+     * @param 'query'|'header'|'path'|'cookie'|null                   $in
      * @param string|class-string|object|null                         $ref
      * @param array<Examples>                                         $examples
      * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
