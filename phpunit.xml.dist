@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false"
          colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
          convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/schema/9.3.xsd">
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
     <coverage>
         <include>
             <directory>src</directory>
