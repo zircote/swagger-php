@@ -8,7 +8,7 @@
     "deploy": "npm run build && git-directory-deploy --branch gh-pages --directory .vitepress/dist/"
   },
   "devDependencies": {
-    "vitepress": "^0.22",
-    "vue3-tabs-component": "^1.0.8"
+    "vitepress": "^1.6",
+    "vue3-tabs-component": "^1.3.7"
   }
 }

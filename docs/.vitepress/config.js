@@ -2,7 +2,7 @@ function getGuideSidebar() {
   return [
     {
       text: 'Introduction',
-      children: [
+      items: [
         { text: 'What is Swagger-PHP?', link: '/guide/' },
         { text: 'Installation', link: '/guide/installation' },
         { text: 'Generating OpenAPI documents', link: '/guide/generating-openapi-documents' },
@@ -10,7 +10,7 @@ function getGuideSidebar() {
     },
     {
       text: 'Annotating your code',
-      children: [
+      items: [
         { text: 'Attributes', link: '/guide/attributes' },
         { text: 'Annotations', link: '/guide/annotations' },
         { text: 'Required elements', link: '/guide/required-elements' },
@@ -19,7 +19,7 @@ function getGuideSidebar() {
     },
     {
       text: 'Upgrading',
-      children: [
+      items: [
         { text: 'Migration from 4.x to 5.x', link: '/guide/migrating-to-v5' },
         { text: 'Migration from 3.x to 4.x', link: '/guide/migrating-to-v4' },
         { text: 'Migration from 2.x to 3.x', link: '/guide/migrating-to-v3' },
@@ -27,7 +27,7 @@ function getGuideSidebar() {
     },
     {
       text: 'Other',
-      children: [
+      items: [
         { text: 'Cookbook', link: '/guide/cookbook' },
         { text: 'Examples', link: '/guide/examples' },
         { text: 'FAQ', link: '/guide/faq' },
@@ -42,14 +42,14 @@ function getReferenceSidebar() {
   return [
     {
       text: 'Reference',
-      children: [
+      items: [
         { text: 'Attributes', link: '/reference/attributes' },
         { text: 'Annotations', link: '/reference/annotations' },
       ]
     },
     {
       text: 'Api',
-      children: [
+      items: [
         { text: 'Generator', link: '/reference/generator' },
         { text: 'Processors', link: '/reference/processors' },
       ]
@@ -64,8 +64,10 @@ module.exports = {
   srcExclude: [
       'examples/Readme.md'
   ],
-  themeConfig: {
-    repo: 'zircote/swagger-php',
+  themeConfig: {    
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/zircote/swagger-php' },
+    ],
     docsDir: 'docs',
     docsBranch: 'master',
     editLinks: false,
@@ -81,6 +83,10 @@ module.exports = {
     sidebar: {
       '/guide/': getGuideSidebar(),
       '/reference/': getReferenceSidebar()
+    },
+
+    outline: {
+      level: [2, 3]
     }
   }
 };
