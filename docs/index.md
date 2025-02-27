@@ -1,7 +1,12 @@
 ---
-home: true
-actionText: User Guide →
-actionLink: /guide/
+layout: home
+hero: 
+  name: Swagger-PHP
+  tagline: Generate OpenAPI documentation for your RESTful API.
+  actions:
+      - theme: brand
+        text:  User Guide →
+        link: /guide/
 features:
   - title: OpenAPI conformant
     details: Generate OpenAPI documents in version 3.0 or 3.1.
@@ -46,7 +51,7 @@ possible attributes should be used.
 
 ### 4. Explore and interact with your API
 
-Use an OpenAPI tool like [Swagger UI ](https://swagger.io/tools/swagger-ui/) to explore and interact with your API.
+Use an OpenAPI tool like [Swagger UI](https://swagger.io/tools/swagger-ui/) to explore and interact with your API.
 
 ## Links
 
