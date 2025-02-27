@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  title: 'Vendor Extensions Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 9f9c3ac290b01608dc0d04386a9d00cc
+      responses:
+        '200':
+          description: OK
+tags: []
