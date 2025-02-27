@@ -11,7 +11,7 @@ use OpenApi\Generator;
 
 class ScratchTest extends OpenApiTestCase
 {
-    public static function scratchTests(): iterable
+    public static function scratchTestProvider(): iterable
     {
         foreach (glob(static::fixture('Scratch/*.php')) as $fixture) {
             $name = pathinfo($fixture, PATHINFO_FILENAME);
@@ -47,7 +47,7 @@ class ScratchTest extends OpenApiTestCase
     /**
      * Test scratch fixtures.
      *
-     * @dataProvider scratchTests
+     * @dataProvider scratchTestProvider
      *
      * @requires     PHP 8.1
      */
@@ -63,7 +63,7 @@ class ScratchTest extends OpenApiTestCase
             ->setVersion($version)
             ->generate([$scratch]);
 
-        // file_put_contents($spec, $openapi->toYaml());
+        file_put_contents($spec, $openapi->toYaml());
         $this->assertSpecEquals($openapi, file_get_contents($spec));
     }
 }
