@@ -28,20 +28,20 @@ components:
           type: string
           nullable: true
         birthdate:
-          nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
+          nullable: true
         otherdate:
-          nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
+          nullable: true
         anotherdate:
-          nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
+          nullable: true
         description:
           type:
             - string
