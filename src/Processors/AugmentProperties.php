@@ -75,6 +75,12 @@ class AugmentProperties
 
     protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, array $refs, ?string $varType): void
     {
+        /*
+         *  - nullable
+         *  - native types[]
+         *  - mixed -> 3.0.0
+         */
+
         // docblock typehints
         if ($varType) {
             $allTypes = strtolower(trim($varType));
@@ -98,16 +104,11 @@ class AugmentProperties
             // ok, so we possibly have a type or ref
             if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
-                $property->oneOf = [
-                    $schema = new OA\Schema([
-                        'ref' => $refs[$refKey],
-                        '_context' => new Context(['generated' => true], $property->_context),
-                    ]),
-                ];
-                $analysis->addAnnotation($schema, $schema->_context);
+                $property->ref = $refs[$refKey];
                 $property->nullable = true;
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
+                    $refKey = $this->toRefKey($context, $type);
                     $property->items = $items = new OA\Items(
                         [
                             'type' => $property->type,
