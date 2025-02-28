@@ -66,12 +66,6 @@ class AugmentProperties
 
     protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, ?string $varType): void
     {
-        /*
-         *  - nullable
-         *  - native types[]
-         *  - mixed -> 3.0.0
-         */
-
         // docblock typehints
         if ($varType) {
             $allTypes = trim($varType);
