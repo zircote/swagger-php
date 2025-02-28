@@ -105,7 +105,6 @@ class AugmentProperties
             if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->ref = $refs[$refKey];
-                $property->nullable = true;
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
                     $refKey = $this->toRefKey($context, $type);
