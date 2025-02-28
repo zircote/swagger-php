@@ -107,7 +107,6 @@ class AugmentProperties
                 $property->ref = $refs[$refKey];
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
-                    $refKey = $this->toRefKey($context, $type);
                     $property->items = $items = new OA\Items(
                         [
                             'type' => $property->type,
