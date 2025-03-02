@@ -135,6 +135,11 @@ All filter (regular) expressions must be enclosed within delimiter characters as
   <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
   <dd><p>A list of regular expressions to match <code>paths</code> to include.</p>  </dd>
 </dl>
+<dl>
+  <dt><strong>pathFilter.recurseCleanup</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">true</span></dt>
+  <dd><p>Flag to do a recursive cleanup of unused paths and their nested annotations.</p>  </dd>
+</dl>
 
 
 ### [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)

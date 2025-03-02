@@ -24,10 +24,13 @@ class PathFilter
 
     protected array $paths;
 
-    public function __construct(array $tags = [], array $paths = [])
+    protected bool $recurseCleanup;
+
+    public function __construct(array $tags = [], array $paths = [], bool $recurseCleanup = true)
     {
         $this->tags = $tags;
         $this->paths = $paths;
+        $this->recurseCleanup = $recurseCleanup;
     }
 
     public function getTags(): array
@@ -64,6 +67,19 @@ class PathFilter
         return $this;
     }
 
+    public function isRecurseCleanup(): bool
+    {
+        return $this->recurseCleanup;
+    }
+
+    /**
+     * Flag to do a recursive cleanup of unused paths and their nested annotations.
+     */
+    public function setRecurseCleanup(bool $recurseCleanup): void
+    {
+        $this->recurseCleanup = $recurseCleanup;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         if (($this->tags || $this->paths) && !Generator::isDefault($analysis->openapi->paths)) {
@@ -93,7 +109,7 @@ class PathFilter
                 if ($matched) {
                     $filtered[] = $matched;
                 } else {
-                    $this->removeAnnotation($analysis->annotations, $pathItem);
+                    $this->removeAnnotation($analysis->annotations, $pathItem, $this->recurseCleanup);
                 }
             }
 

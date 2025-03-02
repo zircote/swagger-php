@@ -31,7 +31,7 @@ trait AnnotationTrait
     /**
      * Remove all annotations that are part of the `$annotation` tree.
      */
-    public function removeAnnotation(iterable $root, OA\AbstractAnnotation $annotation): void
+    public function removeAnnotation(iterable $root, OA\AbstractAnnotation $annotation, bool $recurse = true): void
     {
         $remove = $this->collectAnnotations($annotation);
         $this->traverseAnnotations($root, function ($item) use ($remove) {
@@ -40,25 +40,29 @@ trait AnnotationTrait
                     $item->detach($annotation);
                 }
             }
-        });
+        }, $recurse);
     }
 
     /**
      * @param string|array|iterable|OA\AbstractAnnotation $root
      */
-    public function traverseAnnotations($root, callable $callable): void
+    public function traverseAnnotations($root, callable $callable, bool $recurse = true): void
     {
         $callable($root);
 
+        if (!$recurse) {
+            return;
+        }
+
         if (is_iterable($root)) {
             foreach ($root as $value) {
-                $this->traverseAnnotations($value, $callable);
+                $this->traverseAnnotations($value, $callable, $recurse);
             }
         } elseif ($root instanceof OA\AbstractAnnotation) {
             foreach (array_merge($root::$_nested, ['allOf', 'anyOf', 'oneOf', 'callbacks']) as $properties) {
                 foreach ((array) $properties as $property) {
                     if (isset($root->{$property})) {
-                        $this->traverseAnnotations($root->{$property}, $callable);
+                        $this->traverseAnnotations($root->{$property}, $callable, $recurse);
                     }
                 }
             }
