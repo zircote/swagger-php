@@ -2,7 +2,7 @@
 :root {
     --vp-c-brand-1: #74a535;
     --vp-button-brand-bg: var(--vp-c-brand-1);
-    --vp-home-hero-name-color: #2c3e50;
+    --vp-home-hero-name-color: var(--vp-c-text-1);
     --c-brand-light: #94c73d;
     --c-bg: #fefefe;
 }
