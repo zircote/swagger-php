@@ -50,11 +50,7 @@ trait AnnotationTrait
     {
         $callable($root);
 
-        if (!$recurse) {
-            return;
-        }
-
-        if (is_iterable($root)) {
+        if (is_iterable($root) && $recurse) {
             foreach ($root as $value) {
                 $this->traverseAnnotations($value, $callable, $recurse);
             }
