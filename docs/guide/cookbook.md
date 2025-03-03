@@ -153,19 +153,18 @@ added to the operation, for example:
 </codeblock>
 
 ::: tip Endpoints can support multiple security schemes and have custom options too:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={
- *      { "api_key": {} },
- *      { "petstore_auth": {"write:pets", "read:pets"} }
- *    }
- * )
- */
-```
+<codeblock id="security-schema-tips">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_an.php
+
+  </template>
+</codeblock>
 :::
 
 ## File upload with headers
