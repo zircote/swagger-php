@@ -52,9 +52,9 @@ Merge reusable annotation into @OA\Schemas.
 
 Iterate over the chain of ancestors of a schema and:
 - if the ancestor has a schema
-=> inherit from the ancestor if it has a schema (allOf) and stop.
+  => inherit from the ancestor if it has a schema (allOf) and stop.
 - else
-=> merge ancestor properties into the schema.
+  => merge ancestor properties into the schema.
 ### [ExpandInterfaces](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandInterfaces.php)
 
 Look at all (direct) interfaces for a schema and:

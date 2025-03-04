@@ -247,7 +247,7 @@ This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td
   <dd><p>The URL to be used for obtaining refresh tokens.<br />
 <br />
 This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>flow</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>flow</strong> : <span style="font-family: monospace;">&#039;authorizationCode&#039;|&#039;clientCredentials&#039;|&#039;implicit&#039;|&#039;password&#039;</span></dt>
   <dd><p>Flow name.<br />
 <br />
 One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -411,7 +411,21 @@ The description of an item in a Schema with type `array`.
 
 Shorthand for a json response.
 
-Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` will be generated.
+Example:
+```php
+@OA\JsonContent(
+    ref="#/components/schemas/user"
+)
+```
+vs.
+```php
+@OA\MediaType(
+    mediaType="application/json",
+    @OA\Schema(
+        ref="#/components/schemas/user"
+    )
+)
+```
 
 #### Nested elements
 ---
@@ -553,7 +567,7 @@ This is the root document object for the API specification.
 #### Properties
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />

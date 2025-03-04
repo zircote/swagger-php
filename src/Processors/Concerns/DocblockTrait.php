@@ -101,9 +101,9 @@ trait DocblockTrait
         $append = false;
         $skip = false;
         foreach ($comment as $line) {
-            $line = ltrim($line, "\t *");
-            if (substr($line, 0, 1) === '@') {
-                $this->handleTag($line, $tags);
+            $line = preg_replace('/^\s+\* ?/', '', $line);
+            if (substr($tagline = trim($line), 0, 1) === '@') {
+                $this->handleTag($tagline, $tags);
                 $skip = true;
             }
             if ($skip) {

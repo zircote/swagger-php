@@ -294,7 +294,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'cookie' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
@@ -591,7 +591,7 @@ This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td
   <dd><p>The URL to be used for obtaining refresh tokens.<br />
 <br />
 This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>flow</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>flow</strong> : <span style="font-family: monospace;">&#039;implicit&#039;|&#039;password&#039;|&#039;authorizationCode&#039;|&#039;clientCredentials&#039;|null</span></dt>
   <dd><p>Flow name.<br />
 <br />
 One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -865,7 +865,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'header' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
@@ -1149,7 +1149,23 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
 
+Shorthand for a json response.
 
+Example:
+```php
+#[OA\JsonContent(
+    ref: '#/components/schemas/user'
+)]
+```
+vs.
+```php
+#[OA\MediaType(
+    mediaType: 'application/json',
+    schema: new OA\Schema(
+        ref: '#/components/schemas/user'
+    )
+)
+```
 
 #### Nested elements
 ---
@@ -1464,7 +1480,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 #### Parameters
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
@@ -1629,7 +1645,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>The location of the parameter.<br />
 <br />
 Possible values are "query", "header", "path" or "cookie".</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -1881,7 +1897,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'path' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2332,7 +2348,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'query' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
