@@ -9,6 +9,27 @@ namespace OpenApi\Attributes;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
+/**
+ * Shorthand for a json response.
+ *
+ * Example:
+ * ```php
+ * #[OA\JsonContent(
+ *     ref: '#/components/schemas/user'
+ * )]
+ * ```
+ * vs.
+ * ```php
+ * #[OA\MediaType(
+ *     mediaType: 'application/json',
+ *     schema: new OA\Schema(
+ *         ref: '#/components/schemas/user'
+ *     )
+ * )
+ * ```
+ *
+ * @Annotation
+ */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends OA\JsonContent
 {

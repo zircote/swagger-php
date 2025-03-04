@@ -83,13 +83,15 @@ EOT;
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
-            $line = ltrim($line, "\t *");
+            $line = preg_replace('/^\s+\* ?/', '', $line);
             if (substr($line, 0, 1) === '@') {
                 if (substr($line, 0, 5) === '@see ') {
                     $see[] = trim(substr($line, 5));
+                    continue;
                 }
                 if (substr($line, 0, 5) === '@var ') {
                     $var = trim(substr($line, 5));
+                    continue;
                 }
                 if (substr($line, 0, 7) === '@param ') {
                     preg_match('/^([^\$]+)\$([^\s]+)(.*)$/', trim(substr($line, 7)), $match);
@@ -98,9 +100,12 @@ EOT;
                             'type' => trim($match[1]),
                             'content' => 4 == count($match) ? $match[3] : null,
                         ];
+                        continue;
                     }
                 }
-                continue;
+                if (in_array(substr($line, 0), ['@Annotation', '@inheritdoc', '@since 3.1.0'])) {
+                    continue;
+                }
             }
 
             if ($append) {
@@ -111,6 +116,7 @@ EOT;
             }
             $append = (substr($line, -1) === '\\');
         }
+
         $content = trim(implode("\n", $contentLines));
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
