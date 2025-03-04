@@ -13,7 +13,6 @@ use OpenApi\Annotations as OA;
  *
  * Example:
  * ```php
- *
  * @OA\JsonContent(
  *     ref="#/components/schemas/user"
  * )
