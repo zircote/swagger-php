@@ -8,7 +8,6 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Components;
 use OpenApi\Context;
 use OpenApi\Generator;
 
@@ -82,7 +81,7 @@ class AugmentProperties
             if (!$this->mapNativeType($property, $type)) {
                 $schema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if (Generator::isDefault($property->ref) && $schema) {
-                    $property->ref = Components::ref($schema);
+                    $property->ref = OA\Components::ref($schema);
                 }
             }
 
@@ -90,7 +89,7 @@ class AugmentProperties
             if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $schema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if ($schema) {
-                    $property->ref = Components::ref($schema);
+                    $property->ref = OA\Components::ref($schema);
                 }
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
@@ -147,11 +146,11 @@ class AugmentProperties
             if (!$this->mapNativeType($property, $type)) {
                 $schema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if (Generator::isDefault($property->ref) && $schema) {
-                    $this->applyRef($analysis, $property, Components::ref($schema));
+                    $this->applyRef($analysis, $property, OA\Components::ref($schema));
                 } else {
                     if (is_string($context->type) && $typeSchema = $analysis->getSchemaForSource($context->type)) {
                         if (Generator::isDefault($property->format)) {
-                            $property->ref = Components::ref($typeSchema);
+                            $property->ref = OA\Components::ref($typeSchema);
                             $property->type = Generator::UNDEFINED;
                         }
                     }

@@ -215,6 +215,7 @@ class Generator
                 new Processors\AugmentSchemas(),
                 new Processors\AugmentRequestBody(),
                 new Processors\AugmentProperties(),
+                new Processors\AugmentDiscriminators(),
                 new Processors\BuildPaths(),
                 new Processors\AugmentParameters(),
                 new Processors\AugmentRefs(),

@@ -17,8 +17,8 @@ use OpenApi\Attributes as OAT;
     discriminator: new OAT\Discriminator(
         propertyName: 'type',
         mapping: [
-            'fl' => '#/components/schemas/FlResponsible',
-            'employee' => '#/components/schemas/EmployeeResponsible',
+            'fl' => Fl::class,
+            'employee' => Employee::class,
         ]
     )
 )]
