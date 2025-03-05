@@ -15,7 +15,7 @@ paths:
       tags:
         - api
       description: 'Get test'
-      operationId: c2ce98e75eedefc189265e365c6e54de
+      operationId: test
       responses:
         '200':
           description: Polymorphism
