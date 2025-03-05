@@ -80,7 +80,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_to_comment' => true,
         'phpdoc_summary' => true,
         'phpdoc_single_line_var_spacing' => true,
-        'phpdoc_separation' => ['skip_unlisted_annotations' => true],
+        'phpdoc_separation' => false,
         'phpdoc_scalar' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_no_empty_return' => true,
