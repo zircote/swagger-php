@@ -9,7 +9,7 @@ $gen = new ExampleGenerator(__DIR__ . '/../');
 ob_start();
 echo $gen->preamble('Example');
 
-foreach (['api', 'petstore'] as $name) {
+foreach (['api', 'petstore', 'polymorphism'] as $name) {
     $exampleFolder = $gen->examplePath("specs/$name");
 
     echo PHP_EOL;

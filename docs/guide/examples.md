@@ -299,3 +299,83 @@ Classic petstore sample app. Uses `OAuth`
   </template>
 </codeblock>
 
+
+## Polymorphism
+
+Demonstrates the use of `Discriminator`
+
+### Controller.php
+
+<codeblock id="polymorphism-Controller">
+  <template v-slot:at>
+
+<<< @/examples/specs/polymorphism/attributes/Controller.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/examples/specs/polymorphism/annotations/Controller.php
+
+  </template>
+</codeblock>
+
+### Request.php
+
+<codeblock id="polymorphism-Request">
+  <template v-slot:at>
+
+<<< @/examples/specs/polymorphism/attributes/Request.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/examples/specs/polymorphism/annotations/Request.php
+
+  </template>
+</codeblock>
+
+### Employee.php
+
+<codeblock id="polymorphism-Employee">
+  <template v-slot:at>
+
+<<< @/examples/specs/polymorphism/attributes/Employee.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/examples/specs/polymorphism/annotations/Employee.php
+
+  </template>
+</codeblock>
+
+### AbstractResponsible.php
+
+<codeblock id="polymorphism-AbstractResponsible">
+  <template v-slot:at>
+
+<<< @/examples/specs/polymorphism/attributes/AbstractResponsible.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/examples/specs/polymorphism/annotations/AbstractResponsible.php
+
+  </template>
+</codeblock>
+
+### Fl.php
+
+<codeblock id="polymorphism-Fl">
+  <template v-slot:at>
+
+<<< @/examples/specs/polymorphism/attributes/Fl.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/examples/specs/polymorphism/annotations/Fl.php
+
+  </template>
+</codeblock>
+
