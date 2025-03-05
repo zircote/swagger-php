@@ -6,7 +6,6 @@
 
 namespace OpenApi\Attributes;
 
-use OpenApi\Annotations\Examples;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
