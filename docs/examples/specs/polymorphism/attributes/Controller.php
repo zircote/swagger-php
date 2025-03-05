@@ -11,7 +11,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Info(
     title: 'Polymorphism',
     description: 'Polymorphism example',
-    version: 1,
+    version: '1',
     contact: new OAT\Contact(
         name: 'Swagger API Team'
     )
@@ -38,7 +38,7 @@ class Controller
                 content: new OAT\JsonContent(
                     ref: Request::class
                 )
-            )
+            ),
         ]
     )]
     public function getProduct($id)
