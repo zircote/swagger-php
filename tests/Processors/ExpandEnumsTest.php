@@ -61,6 +61,15 @@ class ExpandEnumsTest extends OpenApiTestCase
         $this->assertEquals('string', $schema->type);
     }
 
+    public function testEnumNamesInBackedStringEnum(): void
+    {
+        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumStringBacked.php']);
+        $analysis->process([new ExpandEnums()]);
+        $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+
+        $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->x['enumNames']);
+    }
+
     public static function expandEnumClassStringFixtures(): iterable
     {
         if (!class_exists('\\ReflectionEnum')) {

@@ -56,6 +56,15 @@ class ExpandEnums
                     return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
 
+                if (!$useName) {
+                    $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
+                    $schemaX['enumNames'] = array_map(function ($case) {
+                        return $case->name;
+                    }, $re->getCases());
+
+                    $schema->x = $schemaX;
+                }
+
                 $schema->type = $useName ? 'string' : $enumType;
 
                 $this->mapNativeType($schema, $schemaType);
