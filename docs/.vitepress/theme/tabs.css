@@ -31,7 +31,7 @@
 }
 
 .tabs-component-tab.is-active {
-    color: #000;
+    color: var(--vp-c-text-1);
 }
 
 .tabs-component-tab.is-disabled * {
@@ -41,7 +41,7 @@
 
 @media (min-width: 700px) {
     .tabs-component-tab {
-        background-color: #fff;
+        background-color: var(--vp-c-bg);
         border: solid 1px #ddd;
         border-radius: 3px 3px 0 0;
         margin-right: 0.5em;
@@ -70,7 +70,7 @@
 
 @media (min-width: 700px) {
     .tabs-component-panels {
-        background-color: #fff;
+        background-color: var(--vp-c-bg);
         border: solid 1px #ddd;
         border-radius: 6px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);

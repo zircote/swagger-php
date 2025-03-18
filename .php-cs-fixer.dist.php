@@ -6,7 +6,7 @@ use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tools')->name('*.php')
-    ->path('examples')->name('*.php')
+    ->path('docs/examples')->name('*.php')
     ->path('tests')->name('*.php')
     ->filter(function (\SplFileInfo $file) {
         return
@@ -22,7 +22,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->registerCustomFixers([
-        (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/examples/']),
+        (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/docs/examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
     ])
     ->setRules([
@@ -80,7 +80,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_to_comment' => true,
         'phpdoc_summary' => true,
         'phpdoc_single_line_var_spacing' => true,
-        'phpdoc_separation' => ['skip_unlisted_annotations' => true],
+        'phpdoc_separation' => false,
         'phpdoc_scalar' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_no_empty_return' => true,

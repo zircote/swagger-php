@@ -147,7 +147,7 @@ class ReflectionAnalyser implements AnalyserInterface
                 if ($property->isStatic()) {
                     $ctx->static = true;
                 }
-                if (\PHP_VERSION_ID >= 70400 && ($type = $property->getType())) {
+                if ($type = $property->getType()) {
                     $ctx->nullable = $type->allowsNull();
                     if ($type instanceof \ReflectionNamedType) {
                         $ctx->type = $type->getName();

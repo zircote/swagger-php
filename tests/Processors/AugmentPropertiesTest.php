@@ -126,7 +126,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
         $this->assertSame('bestFriend', $bestFriend->property);
         $this->assertTrue($bestFriend->nullable);
-        $this->assertSame('#/components/schemas/Customer', $bestFriend->oneOf[0]->ref);
+        $this->assertSame('#/components/schemas/Customer', $bestFriend->ref);
 
         $this->assertSame('endorsedFriends', $endorsedFriends->property);
         $this->assertSame('array', $endorsedFriends->type);

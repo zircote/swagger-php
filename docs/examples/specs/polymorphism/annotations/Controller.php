@@ -29,6 +29,7 @@ class Controller
     /**
      * @OA\Get(
      *     path="/test",
+     *     operationId="test",
      *     description="Get test",
      *     tags={"api"},
      *     @OA\Response(

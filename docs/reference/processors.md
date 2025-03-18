@@ -52,9 +52,9 @@ Merge reusable annotation into @OA\Schemas.
 
 Iterate over the chain of ancestors of a schema and:
 - if the ancestor has a schema
-=> inherit from the ancestor if it has a schema (allOf) and stop.
+  => inherit from the ancestor if it has a schema (allOf) and stop.
 - else
-=> merge ancestor properties into the schema.
+  => merge ancestor properties into the schema.
 ### [ExpandInterfaces](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandInterfaces.php)
 
 Look at all (direct) interfaces for a schema and:
@@ -123,6 +123,7 @@ Generate the OperationId based on the context of the OpenApi annotation.
 Allows to filter endpoints based on tags and/or path.
 
 If no `tags` or `paths` filters are set, no filtering is performed.
+
 All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
 #### Config settings
 <dl>
@@ -134,6 +135,11 @@ All filter (regular) expressions must be enclosed within delimiter characters as
   <dt><strong>pathFilter.paths</strong> : <span style="font-family: monospace;">array</span></dt>
   <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
   <dd><p>A list of regular expressions to match <code>paths</code> to include.</p>  </dd>
+</dl>
+<dl>
+  <dt><strong>pathFilter.recurseCleanup</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">false</span></dt>
+  <dd><p>Flag to do a recursive cleanup of unused paths and their nested annotations.</p>  </dd>
 </dl>
 
 
