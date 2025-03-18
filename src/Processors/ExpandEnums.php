@@ -22,7 +22,7 @@ class ExpandEnums
 
     protected ?string $enumNames;
 
-    public function __construct(string $enumNames = null)
+    public function __construct(?string $enumNames = null)
     {
         $this->enumNames = $enumNames;
     }
@@ -41,7 +41,7 @@ class ExpandEnums
      * x-enumNames:
      *   - NAME1
      *   - NAME2
-     * ```
+     * ```.
      */
     public function setEnumNames(?string $enumNames = null): void
     {
