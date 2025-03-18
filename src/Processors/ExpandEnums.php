@@ -20,6 +20,24 @@ class ExpandEnums
 {
     use Concerns\TypesTrait;
 
+    /** @var bool Whether to add the extension `x-enumNames` to backed enums (default false). */
+    protected bool $addXEnumNames;
+
+    public function __construct(bool $addXEnumNames = false)
+    {
+        $this->addXEnumNames = $addXEnumNames;
+    }
+
+    public function addXEnumNames(): bool
+    {
+        return $this->addXEnumNames;
+    }
+
+    public function setAddXEnumNames(bool $addXEnumNames): void
+    {
+        $this->addXEnumNames = $addXEnumNames;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         if (!class_exists('\\ReflectionEnum')) {
@@ -56,7 +74,7 @@ class ExpandEnums
                     return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
 
-                if (!$useName) {
+                if ($this->addXEnumNames && !$useName) {
                     $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
                     $schemaX['enumNames'] = array_map(function ($case) {
                         return $case->name;
