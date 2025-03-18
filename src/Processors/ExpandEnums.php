@@ -20,22 +20,32 @@ class ExpandEnums
 {
     use Concerns\TypesTrait;
 
-    /** @var bool Whether to add the extension `x-enumNames` to backed enums (default false). */
-    protected bool $addXEnumNames;
+    protected ?string $enumNames;
 
-    public function __construct(bool $addXEnumNames = false)
+    public function __construct(string $enumNames = null)
     {
-        $this->addXEnumNames = $addXEnumNames;
+        $this->enumNames = $enumNames;
     }
 
-    public function addXEnumNames(): bool
+    public function getEnumNames(): ?string
     {
-        return $this->addXEnumNames;
+        return $this->enumNames;
     }
 
-    public function setAddXEnumNames(bool $addXEnumNames): void
+    /**
+     * Specifies the name of the extension variable where backed enum names will be stored.
+     * Set to `NULL` to avoid writing backed enum names.
+     * Example:
+     * `setEnumNames('enumNames')` yields:
+     * ```
+     * x-enumNames:
+     *   - NAME1
+     *   - NAME2
+     * ```
+     */
+    public function setEnumNames(?string $enumNames = null): void
     {
-        $this->addXEnumNames = $addXEnumNames;
+        $this->enumNames = $enumNames;
     }
 
     public function __invoke(Analysis $analysis)
@@ -74,9 +84,9 @@ class ExpandEnums
                     return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
 
-                if ($this->addXEnumNames && !$useName) {
+                if ($this->enumNames !== null && !$useName) {
                     $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
-                    $schemaX['enumNames'] = array_map(function ($case) {
+                    $schemaX[$this->enumNames] = array_map(function ($case) {
                         return $case->name;
                     }, $re->getCases());
 
