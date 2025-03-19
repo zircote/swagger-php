@@ -124,10 +124,10 @@ class ExpandEnums
 
                 $cases = [];
 
-                // transform each Enum cases into UnitEnum
+                // transform \UnitEnum into individual cases
+                /** @var string|class-string<\UnitEnum> $enum */
                 foreach ($schema->enum as $enum) {
                     if (is_string($enum) && function_exists('enum_exists') && enum_exists($enum)) {
-                        /** @var \UnitEnum $enum */
                         foreach ($enum::cases() as $case) {
                             $cases[] = $case;
                         }
