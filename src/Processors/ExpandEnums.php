@@ -20,6 +20,34 @@ class ExpandEnums
 {
     use Concerns\TypesTrait;
 
+    protected ?string $enumNames;
+
+    public function __construct(?string $enumNames = null)
+    {
+        $this->enumNames = $enumNames;
+    }
+
+    public function getEnumNames(): ?string
+    {
+        return $this->enumNames;
+    }
+
+    /**
+     * Specifies the name of the extension variable where backed enum names will be stored.
+     * Set to `NULL` to avoid writing backed enum names.
+     * Example:
+     * `setEnumNames('enumNames')` yields:
+     * ```
+     * x-enumNames:
+     *   - NAME1
+     *   - NAME2
+     * ```.
+     */
+    public function setEnumNames(?string $enumNames = null): void
+    {
+        $this->enumNames = $enumNames;
+    }
+
     public function __invoke(Analysis $analysis)
     {
         if (!class_exists('\\ReflectionEnum')) {
@@ -55,6 +83,15 @@ class ExpandEnums
                 $schema->enum = array_map(function ($case) use ($useName) {
                     return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
+
+                if ($this->enumNames !== null && !$useName) {
+                    $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
+                    $schemaX[$this->enumNames] = array_map(function ($case) {
+                        return $case->name;
+                    }, $re->getCases());
+
+                    $schema->x = $schemaX;
+                }
 
                 $schema->type = $useName ? 'string' : $enumType;
 
