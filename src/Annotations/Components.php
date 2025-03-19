@@ -127,9 +127,9 @@ class Components extends AbstractAnnotation
     }
 
     /**
-     * Generate a `#/components/...` reference for the given annotation.
+     * Generate a <code>#/components/...</code> reference for the given annotation.
      *
-     * A `string` component value always assumes type `Schema`.
+     * A <code>string</code> component value always assumes type <code>Schema</code>.
      *
      * @param AbstractAnnotation|string $component
      */

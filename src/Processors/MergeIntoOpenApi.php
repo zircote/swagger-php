@@ -12,7 +12,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
- * Merge all @OA\OpenApi annotations into one.
+ * Merge all <code>@OA\OpenApi</code> annotations into one.
  */
 class MergeIntoOpenApi
 {

@@ -14,7 +14,7 @@ use OpenApi\OpenApiException;
 /**
  * Expands PHP enums.
  *
- * Determines `schema`, `enum` and `type`.
+ * Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
  */
 class ExpandEnums
 {
@@ -34,14 +34,15 @@ class ExpandEnums
 
     /**
      * Specifies the name of the extension variable where backed enum names will be stored.
-     * Set to `NULL` to avoid writing backed enum names.
+     * Set to <code>null</code> to avoid writing backed enum names.
+     *
      * Example:
-     * `setEnumNames('enumNames')` yields:
+     * <code>->setEnumNames('enumNames')</code> yields:
+     * ```yaml
+     *   x-enumNames:
+     *     - NAME1
+     *     - NAME2
      * ```
-     * x-enumNames:
-     *   - NAME1
-     *   - NAME2
-     * ```.
      */
     public function setEnumNames(?string $enumNames = null): void
     {
@@ -126,6 +127,7 @@ class ExpandEnums
                 // transform each Enum cases into UnitEnum
                 foreach ($schema->enum as $enum) {
                     if (is_string($enum) && function_exists('enum_exists') && enum_exists($enum)) {
+                        /** @var \UnitEnum $enum */
                         foreach ($enum::cases() as $case) {
                             $cases[] = $case;
                         }

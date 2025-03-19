@@ -13,7 +13,7 @@ use OpenApi\Processors\Concerns\AnnotationTrait;
 /**
  * Allows to filter endpoints based on tags and/or path.
  *
- * If no `tags` or `paths` filters are set, no filtering is performed.
+ * If no <code>tags</code> or <code>paths</code> filters are set, no filtering is performed.
  *
  * All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
  */

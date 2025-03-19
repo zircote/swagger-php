@@ -19,8 +19,8 @@ use Psr\Log\LoggerInterface;
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
  *
- * This is an object-oriented alternative to using the now deprecated `\OpenApi\scan()` function and
- * static class properties of the `Analyzer` and `Analysis` classes.
+ * This is an object-oriented alternative to using the now deprecated <code>\OpenApi\scan()</code> function and
+ * static class properties of the <code>Analyzer</code> and <code>Analysis</code> classes.
  */
 class Generator
 {
@@ -55,9 +55,9 @@ class Generator
     /**
      * OpenApi version override.
      *
-     * If set, it will override the version set in the `OpenApi` annotation.
+     * If set, it will override the version set in the <code>OpenApi</code> annotation.
      *
-     * Due to the order of processing any conditional code using this (via `Context::$version`)
+     * Due to the order of processing any conditional code using this (via <code>Context::$version</code>)
      * must come only after the analysis is finished.
      */
     protected ?string $version = null;
@@ -317,9 +317,9 @@ class Generator
      * Run code in the context of this generator.
      *
      * @param callable $callable Callable in the form of
-     *                           `function(Generator $generator, Analysis $analysis, Context $context): mixed`
+     *                           <code>function(Generator $generator, Analysis $analysis, Context $context): mixed</code>
      *
-     * @return mixed the result of the `callable`
+     * @return mixed the result of the <code>callable</code>
      */
     public function withContext(callable $callable)
     {

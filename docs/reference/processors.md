@@ -41,13 +41,13 @@ as on the command line or be broken down into nested arrays.
 Checks if the annotation has a summary and/or description property
 and uses the text in the comment block (above the annotations) as summary and/or description.
 
-Use `null`, for example: `@Annotation(description=null)`, if you don't want the annotation to have a description.
+Use <code>null</code>, for example: <code>@Annotation(description=null)</code>, if you don't want the annotation to have a description.
 ### [MergeIntoOpenApi](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoOpenApi.php)
 
-Merge all @OA\OpenApi annotations into one.
+Merge all <code>@OA\OpenApi</code> annotations into one.
 ### [MergeIntoComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoComponents.php)
 
-Merge reusable annotation into @OA\Schemas.
+Merge reusable annotation into <code>@OA\Schemas</code>.
 ### [ExpandClasses](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandClasses.php)
 
 Iterate over the chain of ancestors of a schema and:
@@ -69,7 +69,26 @@ Look at all (direct) traits for a schema and:
 
 Expands PHP enums.
 
-Determines `schema`, `enum` and `type`.
+Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
+#### Config settings
+**expandEnums.enumNames**
+: <span style="font-family: monospace;">string</span>
+<br>**default**
+: <span style="font-family: monospace;">null</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Specifies the name of the extension variable where backed enum names will be stored.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Set to <code>null</code> to avoid writing backed enum names.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Example:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>->setEnumNames('enumNames')</code> yields:<br>
+```yaml
+  x-enumNames:
+    - NAME1
+    - NAME2
+```
+
+
+
 ### [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
 
 Use the Schema context to extract useful information and inject that into the annotation.
@@ -81,18 +100,23 @@ Use the RequestBody context to extract useful information and inject that into t
 ### [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 
 Use the property context to extract useful information and inject that into the annotation.
+### [AugmentDiscriminators](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentDiscriminators.php)
+
+Use the property context to extract useful information and inject that into the annotation.
 ### [BuildPaths](https://github.com/zircote/swagger-php/tree/master/src/Processors/BuildPaths.php)
 
-Build the openapi->paths using the detected `@OA\PathItem` and `@OA\Operation` (`@OA\Get`, `@OA\Post`, etc).
+Build the openapi->paths using the detected <code>@OA\PathItem</code> and <code>@OA\Operation</code> (<code>@OA\Get</code>, etc).
 ### [AugmentParameters](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentParameters.php)
 
 Augments shared and operations parameters from docblock comments.
 #### Config settings
-<dl>
-  <dt><strong>augmentParameters.augmentOperationParameters</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">true</span></dt>
-  <dd><p>If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.</p>  </dd>
-</dl>
+**augmentParameters.augmentOperationParameters**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">true</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.<br>
+
 
 
 ### [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
@@ -108,11 +132,13 @@ Split XmlContent into Schema and MediaType.
 
 Generate the OperationId based on the context of the OpenApi annotation.
 #### Config settings
-<dl>
-  <dt><strong>operationId.hash</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">true</span></dt>
-  <dd><p>If set to <code>true</code> generate ids (md5) instead of clear text operation ids.</p>  </dd>
-</dl>
+**operationId.hash**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">true</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code> generate ids (md5) instead of clear text operation ids.<br>
+
 
 
 ### [CleanUnmerged](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnmerged.php)
@@ -122,46 +148,56 @@ Generate the OperationId based on the context of the OpenApi annotation.
 
 Allows to filter endpoints based on tags and/or path.
 
-If no `tags` or `paths` filters are set, no filtering is performed.
+If no <code>tags</code> or <code>paths</code> filters are set, no filtering is performed.
 
 All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
 #### Config settings
-<dl>
-  <dt><strong>pathFilter.tags</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
-  <dd><p>A list of regular expressions to match <code>tags</code> to include.</p>  </dd>
-</dl>
-<dl>
-  <dt><strong>pathFilter.paths</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
-  <dd><p>A list of regular expressions to match <code>paths</code> to include.</p>  </dd>
-</dl>
-<dl>
-  <dt><strong>pathFilter.recurseCleanup</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">false</span></dt>
-  <dd><p>Flag to do a recursive cleanup of unused paths and their nested annotations.</p>  </dd>
-</dl>
+**pathFilter.tags**
+: <span style="font-family: monospace;">array</span>
+<br>**default**
+: <span style="font-family: monospace;">[]</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;A list of regular expressions to match <code>tags</code> to include.<br>
+
+**pathFilter.paths**
+: <span style="font-family: monospace;">array</span>
+<br>**default**
+: <span style="font-family: monospace;">[]</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;A list of regular expressions to match <code>paths</code> to include.<br>
+
+**pathFilter.recurseCleanup**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">false</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Flag to do a recursive cleanup of unused paths and their nested annotations.<br>
+
 
 
 ### [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)
 
 Tracks the use of all <code>Components</code> and removed unused schemas.
 #### Config settings
-<dl>
-  <dt><strong>cleanUnusedComponents.enabled</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">false</span></dt>
-  <dd><p>Enables/disables the <code>CleanUnusedComponents</code> processor.</p>  </dd>
-</dl>
+**cleanUnusedComponents.enabled**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">false</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables the <code>CleanUnusedComponents</code> processor.<br>
+
 
 
 ### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
 
 Ensures that all tags used on operations also exist in the global <code>tags</code> list.
 #### Config settings
-<dl>
-  <dt><strong>augmentTags.whitelist</strong> : <span style="font-family: monospace;">array</span></dt>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">[]</span></dt>
-  <dd><p>Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.</p>  </dd>
-</dl>
+**augmentTags.whitelist**
+: <span style="font-family: monospace;">array</span>
+<br>**default**
+: <span style="font-family: monospace;">[]</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.<br>
+
 
 

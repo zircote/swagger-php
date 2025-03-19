@@ -22,7 +22,7 @@ class AugmentRefs
     }
 
     /**
-     * Update refs broken due to `allOf` augmenting.
+     * Update refs broken due to <code>allOf</code> augmenting.
      */
     protected function resolveAllOfRefs(Analysis $analysis): void
     {

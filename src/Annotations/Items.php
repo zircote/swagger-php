@@ -7,7 +7,7 @@
 namespace OpenApi\Annotations;
 
 /**
- * The description of an item in a Schema with type `array`.
+ * The description of an item in a Schema with type <code>array</code>.
  *
  * @Annotation
  */
