@@ -30,7 +30,7 @@ class OpenApi extends AbstractAnnotation
      *
      * The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.
      *
-     * A version specified via `Generator::setVersion()` will overwrite this value.
+     * A version specified via <code>Generator::setVersion()</code> will overwrite this value.
      *
      * This is not related to the API info::version string.
      *
@@ -74,7 +74,7 @@ class OpenApi extends AbstractAnnotation
      * The list of values includes alternative security requirement objects that can be used.
      * Only one of the security requirement objects need to be satisfied to authorize a request.
      * Individual operations can override this definition.
-     * To make security optional, an empty security requirement `({})` can be included in the array.
+     * To make security optional, an empty security requirement (<code>{}</code>) can be included in the array.
      *
      * @var array
      */

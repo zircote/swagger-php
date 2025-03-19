@@ -49,6 +49,7 @@ class ProcGenerator extends DocGenerator
                 if ($rp) {
                     $dv = $rp->getDefaultValue();
                     $default = match (gettype($dv)) {
+                        'NULL' => 'null',
                         'boolean' => $dv ? 'true' : 'false',
                         'array' => '[' . implode(', ', $dv) . ']',
                     };

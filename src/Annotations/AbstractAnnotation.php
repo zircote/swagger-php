@@ -21,7 +21,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
      * For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions
-     * The keys inside the array will be prefixed with `x-`.
+     * The keys inside the array will be prefixed with <code>x-</code>.
      *
      * @var array<string,mixed>
      */
@@ -623,11 +623,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-     * Check if `$other` can be nested and if so return details about where/how.
+     * Check if <code>$other</code> can be nested and if so return details about where/how.
      *
      * @param AbstractAnnotation $other the other annotation
      *
-     * @return null|object key/value object or `null`
+     * @return null|object key/value object or <code>null</code>
      */
     public function matchNested($other)
     {
@@ -644,7 +644,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * This is used for resolving type equality and nesting rules to allow those rules to also work for custom,
      * derived annotation classes.
      *
-     * @return class-string the root annotation class in the `OpenApi\\Annotations` namespace
+     * @return class-string the root annotation class in the <code>OpenApi\\Annotations</code> namespace
      */
     public function getRoot(): string
     {

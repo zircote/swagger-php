@@ -29,7 +29,7 @@ trait AnnotationTrait
     }
 
     /**
-     * Remove all annotations that are part of the `$annotation` tree.
+     * Remove all annotations that are part of the <code>$annotation</code> tree.
      */
     public function removeAnnotation(iterable $root, OA\AbstractAnnotation $annotation, bool $recurse = true): void
     {

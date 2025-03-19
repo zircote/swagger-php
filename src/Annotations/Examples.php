@@ -23,7 +23,7 @@ class Examples extends AbstractAnnotation
     public $ref = Generator::UNDEFINED;
 
     /**
-     * The key into `#/components/examples`.
+     * The key into <code>#/components/examples</code>.
      *
      * @var string
      */

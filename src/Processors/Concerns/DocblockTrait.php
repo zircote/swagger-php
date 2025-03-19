@@ -170,9 +170,9 @@ trait DocblockTrait
     }
 
     /**
-     * Extract property type and description from a `@var` dockblock line.
+     * Extract property type and description from a <code>@var</code> dockblock line.
      *
-     * @return array<string, ?string> extracted `type` and `description`; values default to `null`
+     * @return array<string, ?string> extracted <code>type</code> and <code>description</code>; values default to <code>null</code>
      */
     public function extractVarTypeAndDescription(?string $docblock): array
     {
@@ -187,7 +187,7 @@ trait DocblockTrait
     }
 
     /**
-     * Extract example text from a `@example` dockblock line.
+     * Extract example text from a <code>@example</code> dockblock line.
      */
     public function extractExampleDescription(?string $docblock): ?string
     {
@@ -197,7 +197,7 @@ trait DocblockTrait
     }
 
     /**
-     * Returns true if the `\@deprecated` tag is present, false otherwise.
+     * Returns true if the <code>\@deprecated</code> tag is present, false otherwise.
      */
     public function isDeprecated(?string $docblock): bool
     {

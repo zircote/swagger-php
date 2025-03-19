@@ -46,6 +46,36 @@ as on the command line or be broken down into nested arrays.
 
 EOT;
 
+$mono = function (string $s): string {
+    return '<span style="font-family: monospace;">' . $s . '</span>';
+};
+
+$nl2br = function (string $s, bool $indent = false): string {
+    $lines = explode("\n", $s);
+
+    $processed  = [];
+    $inBlock = false;
+    foreach ($lines as $line) {
+        $blockStart = !$inBlock && str_contains($line, '```');
+        if ($blockStart) {
+            $inBlock = true;
+        }
+        if (!$inBlock) {
+            if ($indent) {
+                $line = '&nbsp;&nbsp;&nbsp;&nbsp;' . $line;
+            }
+            $processed[] = $line . '<br>';
+        } else {
+            $processed[] = $line;
+            if ('```' == $line) {
+                $inBlock = false;
+            }
+        }
+    }
+
+    return implode("\n", $processed);
+};
+
 echo PHP_EOL . '## Default Processors' . PHP_EOL;
 foreach ($gen->getProcessorsDetails() as $ii => $details) {
     $off = $ii + 1;
@@ -57,16 +87,9 @@ foreach ($gen->getProcessorsDetails() as $ii => $details) {
         echo '#### Config settings' . PHP_EOL;
         foreach ($details['options'] as $name => $odetails) {
             if ($odetails) {
-                $var = ' : <span style="font-family: monospace;">' . $odetails['type'] . '</span>';
-                $default = ' : <span style="font-family: monospace;">' . $odetails['default'] . '</span>';
-
-                echo '<dl>' . PHP_EOL;
-                echo '  <dt><strong>' . $configPrefix . $name . '</strong>' . $var . '</dt>' . PHP_EOL;
-                echo '  <dt><strong>default</strong>' . $default . '</dt>' . PHP_EOL;
-                echo '  <dd>';
-                echo '<p>' . nl2br($odetails['phpdoc'] ? $odetails['phpdoc']['content'] : ProcGenerator::NO_DETAILS_AVAILABLE) . '</p>';
-                echo '  </dd>' . PHP_EOL;
-                echo '</dl>' . PHP_EOL;
+                echo "**{$configPrefix}{$name}**\n: " . $mono($odetails['type']) . "\n<br>";
+                echo "**default**\n: " . $mono($odetails['default']) . "\n\n";
+                echo $nl2br($odetails['phpdoc'] ? $odetails['phpdoc']['content'] : ProcGenerator::NO_DETAILS_AVAILABLE, true) . "\n\n";
             }
         }
         echo PHP_EOL;

@@ -15,7 +15,7 @@ use OpenApi\OpenApiException;
 /**
  * OpenApi analyser using reflection.
  *
- * Can read either PHP `DocBlock`s or `Attribute`s.
+ * Can read either PHP <code>DocBlock</code>s or <code>Attribute</code>s.
  *
  * Due to the nature of reflection this requires all related classes
  * to be auto-loadable.
