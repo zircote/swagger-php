@@ -29,7 +29,7 @@ class Contact extends OA\Contact
             'url' => $url ?? Generator::UNDEFINED,
             'email' => $email ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($attachables),
+            'attachables' => $attachables ?? Generator::UNDEFINED,
         ]);
     }
 }

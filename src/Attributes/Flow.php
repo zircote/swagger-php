@@ -34,7 +34,7 @@ class Flow extends OA\Flow
                 'flow' => $flow ?? Generator::UNDEFINED,
                 'scopes' => $scopes ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
             ]);
     }
 }

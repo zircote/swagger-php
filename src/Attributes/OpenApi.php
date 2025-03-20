@@ -39,7 +39,8 @@ class OpenApi extends OA\OpenApi
                 'openapi' => $openapi,
                 'security' => $security ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks),
             ]);
     }
 }

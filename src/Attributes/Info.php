@@ -33,7 +33,8 @@ class Info extends OA\Info
                 'title' => $title ?? Generator::UNDEFINED,
                 'termsOfService' => $termsOfService ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($contact, $license, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($contact, $license),
             ]);
     }
 }

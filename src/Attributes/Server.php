@@ -29,7 +29,8 @@ class Server extends OA\Server
                 'url' => $url ?? Generator::UNDEFINED,
                 'description' => $description ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($variables, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($variables),
             ]);
     }
 }

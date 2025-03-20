@@ -27,7 +27,7 @@ class ExternalDocumentation extends OA\ExternalDocumentation
                 'description' => $description ?? Generator::UNDEFINED,
                 'url' => $url ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
             ]);
     }
 }

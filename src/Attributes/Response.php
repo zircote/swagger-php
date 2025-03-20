@@ -36,7 +36,8 @@ class Response extends OA\Response
             'response' => $response ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($headers, $content, $links, $attachables),
+            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'value' => $this->combine($headers, $content, $links),
         ]);
     }
 }
