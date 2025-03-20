@@ -108,7 +108,7 @@ class Schema extends OA\Schema
             'const' => $const,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $examples, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $examples),
         ]);
     }
 }

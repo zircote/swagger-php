@@ -28,7 +28,7 @@ class Discriminator extends OA\Discriminator
             'propertyName' => $propertyName ?? Generator::UNDEFINED,
             'mapping' => $mapping ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($attachables),
+            'attachables' => $attachables ?? Generator::UNDEFINED,
         ]);
     }
 }

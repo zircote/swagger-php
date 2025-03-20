@@ -103,7 +103,7 @@ class AdditionalProperties extends OA\AdditionalProperties
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),
         ]);
     }
 }

@@ -56,7 +56,8 @@ trait ParameterTrait
                 'spaceDelimited' => $spaceDelimited ?? Generator::UNDEFINED,
                 'pipeDelimited' => $pipeDelimited ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($schema, $examples, $content, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($schema, $examples, $content),
             ]);
     }
 }
