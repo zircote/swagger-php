@@ -45,7 +45,8 @@ class SecurityScheme extends OA\SecurityScheme
                 'scheme' => $scheme ?? Generator::UNDEFINED,
                 'openIdConnectUrl' => $openIdConnectUrl ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($flows, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($flows),
             ]);
     }
 }

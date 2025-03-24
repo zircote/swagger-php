@@ -33,7 +33,7 @@ class Xml extends OA\Xml
                 'attribute' => $attribute ?? Generator::UNDEFINED,
                 'wrapped' => $wrapped ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
             ]);
     }
 }

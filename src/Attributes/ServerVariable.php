@@ -34,7 +34,7 @@ class ServerVariable extends OA\ServerVariable
                 'enum' => $enum ?? Generator::UNDEFINED,
                 'variables' => $variables ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
             ]);
     }
 }

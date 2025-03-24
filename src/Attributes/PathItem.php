@@ -44,7 +44,8 @@ class PathItem extends OA\PathItem
             'summary' => $summary ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $servers, $parameters, $attachables),
+            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $servers, $parameters),
         ]);
     }
 }
