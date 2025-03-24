@@ -354,10 +354,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $ref = ['$ref' => $data->ref];
             if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
                 foreach (['summary', 'description'] as $prop) {
-                    if (property_exists($this, $prop)) {
-                        if (!Generator::isDefault($this->{$prop})) {
-                            $ref[$prop] = $data->{$prop};
-                        }
+                    if (property_exists($data, $prop)) {
+                        $ref[$prop] = $data->{$prop};
                     }
                 }
             }
@@ -368,16 +366,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 } else {
                     $ref['nullable'] = $data->nullable;
                 }
-                unset($data->nullable);
+                unset($data->ref, $data->nullable);
 
                 // preserve other properties
-                foreach (get_object_vars($this) as $property => $value) {
-                    if ('_' === $property[0] || in_array($property, ['ref', 'nullable'])) {
-                        continue;
-                    }
-                    if (!Generator::isDefault($value)) {
-                        $ref[$property] = $value;
-                    }
+                foreach (get_object_vars($data) as $property => $value) {
+                    $ref[$property] = $value;
                 }
             }
             $data = (object) $ref;
