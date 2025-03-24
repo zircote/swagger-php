@@ -29,7 +29,7 @@ use OpenApi\Attributes as OAT;
             scopes: [
                 'read:products' => 'Access products',
             ],
-        )
+        ),
     ],
 )]
 class Security
