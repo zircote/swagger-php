@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: JsonContentEquiv
+  version: '1.0'
+paths:
+  /endpoint/json-content:
+    get:
+      operationId: b598e813bcf7ee84638f257a2eac34cd
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonContentEquiv'
+  /endpoint/media-type:
+    get:
+      operationId: 2ca68e25f7c9f045816f28dd8f975aa6
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonContentEquiv'
+components:
+  schemas:
+    JsonContentEquiv: {  }
