@@ -8,11 +8,8 @@ namespace OpenApi\Analysers;
 
 use OpenApi\Analysis;
 use OpenApi\Context;
-use OpenApi\Generator;
 
-interface AnalyserInterface
+interface AnalyserInterface extends GeneratorAwareInterface
 {
-    public function setGenerator(Generator $generator): void;
-
     public function fromFile(string $filename, Context $context): Analysis;
 }

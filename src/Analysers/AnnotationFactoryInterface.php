@@ -10,14 +10,14 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 
-interface AnnotationFactoryInterface
+interface AnnotationFactoryInterface extends GeneratorAwareInterface
 {
     /**
      * Checks if this factory is supported by the current runtime.
      */
     public function isSupported(): bool;
 
-    public function setGenerator(Generator $generator): void;
+    public function setGenerator(Generator $generator);
 
     /**
      * @return array<OA\AbstractAnnotation> top level annotations

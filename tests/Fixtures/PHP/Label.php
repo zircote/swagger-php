@@ -6,12 +6,12 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Label
 {
     protected $name;
 
-    public function __construct(string $name, array $numbers)
+    public function __construct(string $name, array $numbers = [])
     {
         $this->name = $name;
     }
