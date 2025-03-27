@@ -127,7 +127,7 @@ class GeneratorTest extends OpenApiTestCase
         $generator = new Generator();
 
         // valid; default
-        $this->assertTrue($generator->getSetting('otherAttributes'));
+        $this->assertFalse($generator->getSetting('ignoreOtherAttributes'));
 
         // invalid
         $this->assertNull($generator->getSetting('invalid'));

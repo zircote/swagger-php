@@ -151,7 +151,7 @@ class Generator
     {
         return $this->config + $this->getDefaultConfig() + [
                 'generator' => [
-                    'otherAttributes' => true,
+                    'ignoreOtherAttributes' => false,
                 ],
             ];
     }

@@ -47,7 +47,7 @@ class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $this->getFactory()->build($rm, $this->getContext());
     }
 
-    public function testOtherAttributes(): void
+    public function testIgnoreOtherAttributes(): void
     {
         $rc = new \ReflectionClass(UsingAttributes::class);
 
@@ -55,7 +55,7 @@ class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $this->assertIsArray($context->other);
         $this->assertCount(1, $context->other);
 
-        $this->getFactory(['generator' => ['otherAttributes' => false]])->build($rc, $context = $this->getContext());
+        $this->getFactory(['generator' => ['ignoreOtherAttributes' => true]])->build($rc, $context = $this->getContext());
         $this->assertNull($context->other);
     }
 }
