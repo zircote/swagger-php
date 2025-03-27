@@ -42,13 +42,15 @@ class ReflectionAnalyser implements AnalyserInterface
         }
     }
 
-    public function setGenerator(Generator $generator): void
+    public function setGenerator(Generator $generator)
     {
         $this->generator = $generator;
 
         foreach ($this->annotationFactories as $annotationFactory) {
             $annotationFactory->setGenerator($generator);
         }
+
+        return $this;
     }
 
     public function fromFile(string $filename, Context $context): Analysis

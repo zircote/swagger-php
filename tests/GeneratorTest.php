@@ -121,4 +121,15 @@ class GeneratorTest extends OpenApiTestCase
         $generator->setConfig($config);
         $this->assertOperationIdHash($generator, $expected);
     }
+
+    public function testGetSetting(): void
+    {
+        $generator = new Generator();
+
+        // valid; default
+        $this->assertTrue($generator->getSetting('otherAttributes'));
+
+        // invalid
+        $this->assertNull($generator->getSetting('invalid'));
+    }
 }
