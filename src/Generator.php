@@ -135,6 +135,9 @@ class Generator
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function getDefaultConfig(): array
     {
         return [
@@ -146,7 +149,19 @@ class Generator
 
     public function getConfig(): array
     {
-        return $this->config + $this->getDefaultConfig();
+        return $this->config + $this->getDefaultConfig() + [
+                'generator' => [
+                    'ignoreOtherAttributes' => false,
+                ],
+            ];
+    }
+
+    /**
+     * Get the value of a `Generator` setting.
+     */
+    public function getSetting(string $name)
+    {
+        return $this->getConfig()['generator'][$name] ?? null;
     }
 
     protected function normaliseConfig(array $config): array

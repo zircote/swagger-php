@@ -12,8 +12,10 @@ trait GeneratorAwareTrait
 {
     protected ?Generator $generator = null;
 
-    public function setGenerator(Generator $generator): void
+    public function setGenerator(Generator $generator)
     {
         $this->generator = $generator;
+
+        return $this;
     }
 }

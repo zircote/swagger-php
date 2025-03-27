@@ -36,13 +36,17 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         /** @var OA\AbstractAnnotation[] $annotations */
         $annotations = [];
         try {
-            foreach ($reflector->getAttributes() as $attribute) {
+            $attributeArgs = $this->generator->getSetting('ignoreOtherAttributes')
+                ? [OA\AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF]
+                : [];
+
+            foreach ($reflector->getAttributes(...$attributeArgs) as $attribute) {
                 if (class_exists($attribute->getName())) {
                     $instance = $attribute->newInstance();
                     if ($instance instanceof OA\AbstractAnnotation) {
                         $annotations[] = $instance;
                     } else {
-                        if ($context->is('other') === false) {
+                        if (false === $context->is('other')) {
                             $context->other = [];
                         }
                         $context->other[] = $instance;
