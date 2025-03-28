@@ -168,38 +168,20 @@ added to the operation, for example:
 :::
 
 ## File upload with headers
-```php
-/**
- * @OA\Post(
- *   path="/v1/media/upload",
- *   summary="Upload document",
- *   description="",
- *   tags={"Media"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\MediaType(
- *       mediaType="application/octet-stream",
- *       @OA\Schema(
- *         required={"content"},
- *         @OA\Property(
- *           description="Binary content of file",
- *           property="content",
- *           type="string",
- *           format="binary"
- *         )
- *       )
- *     )
- *   ),
- *   @OA\Response(
- *     response=200, description="Success",
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(
- *     response=400, description="Bad Request"
- *   )
- * )
- */
-```
+
+<codeblock id="file-upload-with-headers">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_an.php
+
+  </template>
+</codeblock>
+
 ## Set the XML root name
 
 The `OA\Xml` annotation may be used to set the XML root element for a given `@OA\XmlContent` response body
