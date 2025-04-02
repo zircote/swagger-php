@@ -21,6 +21,15 @@ use Psr\Log\LoggerInterface;
  *
  * This is an object-oriented alternative to using the now deprecated <code>\OpenApi\scan()</code> function and
  * static class properties of the <code>Analyzer</code> and <code>Analysis</code> classes.
+ *
+ * Supported generator config:
+ * <code>
+ *     [
+ *         'generator' => [
+ *             'ignoreOtherAttributes' => true|false,
+ *         ]
+ *     ]
+ * </code>
  */
 class Generator
 {
@@ -156,12 +165,9 @@ class Generator
             ];
     }
 
-    /**
-     * Get the value of a `Generator` setting.
-     */
-    public function getSetting(string $name)
+    public function isIgnoreOtherAttributes(): bool
     {
-        return $this->getConfig()['generator'][$name] ?? null;
+        return $this->getConfig()['generator']['ignoreOtherAttributes'];
     }
 
     protected function normaliseConfig(array $config): array

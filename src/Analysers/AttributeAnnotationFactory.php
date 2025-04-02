@@ -36,7 +36,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         /** @var OA\AbstractAnnotation[] $annotations */
         $annotations = [];
         try {
-            $attributeArgs = $this->generator->getSetting('ignoreOtherAttributes')
+            $attributeArgs = $this->generator->isIgnoreOtherAttributes()
                 ? [OA\AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF]
                 : [];
 

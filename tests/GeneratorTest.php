@@ -122,14 +122,13 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertOperationIdHash($generator, $expected);
     }
 
-    public function testGetSetting(): void
+    public function testIsIgnoreOtherAttributes(): void
     {
         $generator = new Generator();
 
-        // valid; default
-        $this->assertFalse($generator->getSetting('ignoreOtherAttributes'));
+        $this->assertFalse($generator->isIgnoreOtherAttributes());
 
-        // invalid
-        $this->assertNull($generator->getSetting('invalid'));
+        $generator->setConfig(['generator' => ['ignoreOtherAttributes' => true]]);
+        $this->assertTrue($generator->isIgnoreOtherAttributes());
     }
 }
