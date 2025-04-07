@@ -5,7 +5,7 @@
     "bin": [
         "bin/openapi"
     ],
-    "description": "Generate interactive documentation for your RESTful API using PHP attributes (prefered) or PHPDoc annotations",
+    "description": "Generate interactive documentation for your RESTful API using PHP attributes (preferred) or PHPDoc annotations",
     "keywords": [
         "json",
         "rest",
