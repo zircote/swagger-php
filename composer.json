@@ -5,14 +5,14 @@
     "bin": [
         "bin/openapi"
     ],
-    "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
+    "description": "Generate interactive documentation for your RESTful API using PHP attributes (preferred) or PHPDoc annotations",
     "keywords": [
         "json",
         "rest",
         "api",
         "service discovery"
     ],
-    "homepage": "https://github.com/zircote/swagger-php/",
+    "homepage": "https://github.com/zircote/swagger-php",
     "authors": [
         {
             "name": "Robert Allen",
