@@ -26,11 +26,13 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         return DocBlockParser::isEnabled();
     }
 
-    public function setGenerator(Generator $generator): void
+    public function setGenerator(Generator $generator)
     {
         $this->generator = $generator;
 
         $this->docBlockParser->setAliases($generator->getAliases());
+
+        return $this;
     }
 
     public function build(\Reflector $reflector, Context $context): array
