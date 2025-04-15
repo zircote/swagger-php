@@ -28,6 +28,10 @@ class Controller
         ),
     )]
     #[OA\Response(
+        response: 200,
+        description: "Success",
+    )]
+    #[OA\Response(
         response: 400,
         description: "Bad Request",
     )]
