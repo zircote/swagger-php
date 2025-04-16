@@ -201,29 +201,19 @@ The `OA\Xml` annotation may be used to set the XML root element for a given `@OA
 
 ## upload multipart/form-data
 Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
-```php
-/**
- * @OA\Post(
- *   path="/v1/user/update",
- *   summary="Form post",
- *   @OA\RequestBody(
- *     @OA\MediaType(
- *       mediaType="multipart/form-data",
- *       @OA\Schema(
- *         @OA\Property(property="name"),
- *         @OA\Property(
- *           description="file to upload",
- *           property="avatar",
- *           type="string",
- *           format="binary",
- *         ),
- *       )
- *     )
- *   ),
- *   @OA\Response(response=200, description="Success")
- * )
- */
-```
+
+<codeblock id="set-xml-root-name">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/uploading_multiple_formdata_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/uploading_multiple_formdata_an.php
+
+  </template>
+</codeblock>
 
 ## Default security scheme for all endpoints
 Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way
