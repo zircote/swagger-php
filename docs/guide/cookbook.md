@@ -186,28 +186,18 @@ added to the operation, for example:
 
 The `OA\Xml` annotation may be used to set the XML root element for a given `@OA\XmlContent` response body
 
-```php
-/**
- * @OA\Schema(
- *     schema="Error",
- *     @OA\Property(property="message"),
- *     @OA\Xml(name="details")
- * )
- */
+<codeblock id="set-xml-root-name">
+  <template v-slot:at>
 
-/**
- * @OA\Post(
- *     path="/foobar",
- *     @OA\Response(
- *         response=400,
- *         description="Request error",
- *         @OA\XmlContent(ref="#/components/schemas/Error",
- *           @OA\Xml(name="error")
- *        )
- *     )
- * )
- */
- ```
+<<< @/snippets/guide/cookbook/set_xml_root_name_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/set_xml_root_name_an.php
+
+  </template>
+</codeblock>
 
 ## upload multipart/form-data
 Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
