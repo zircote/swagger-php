@@ -9,6 +9,7 @@ namespace OpenApi\Analysers;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareTrait;
 
 class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
