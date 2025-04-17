@@ -218,6 +218,7 @@ foreach ($options["processor"] as $processor) {
 }
 
 $analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+$analyser->setGenerator($generator);
 
 $openapi = $generator
     ->setVersion($options['version'])

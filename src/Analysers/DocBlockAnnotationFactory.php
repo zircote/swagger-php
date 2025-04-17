@@ -9,6 +9,7 @@ namespace OpenApi\Analysers;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareTrait;
 
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
@@ -26,11 +27,13 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         return DocBlockParser::isEnabled();
     }
 
-    public function setGenerator(Generator $generator): void
+    public function setGenerator(Generator $generator)
     {
         $this->generator = $generator;
 
         $this->docBlockParser->setAliases($generator->getAliases());
+
+        return $this;
     }
 
     public function build(\Reflector $reflector, Context $context): array

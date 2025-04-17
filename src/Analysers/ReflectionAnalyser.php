@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
 
 /**
