@@ -15,6 +15,13 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
     use GeneratorAwareTrait;
 
+    protected bool $ignoreOtherAttributes = false;
+
+    public function __construct(bool $ignoreOtherAttributes = false)
+    {
+        $this->ignoreOtherAttributes = $ignoreOtherAttributes;
+    }
+
     public function isSupported(): bool
     {
         return \PHP_VERSION_ID >= 80100;
@@ -37,7 +44,11 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         /** @var OA\AbstractAnnotation[] $annotations */
         $annotations = [];
         try {
-            foreach ($reflector->getAttributes() as $attribute) {
+            $attributeName = $this->ignoreOtherAttributes
+                ? [OA\AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF]
+                : [];
+
+            foreach ($reflector->getAttributes(...$attributeName) as $attribute) {
                 if (class_exists($attribute->getName())) {
                     $instance = $attribute->newInstance();
                     if ($instance instanceof OA\AbstractAnnotation) {
