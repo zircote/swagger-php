@@ -57,7 +57,7 @@ class Generator
      *
      * If set, it will override the version set in the <code>OpenApi</code> annotation.
      *
-     * Due to the order of processing any conditional code using this (via <code>Context::$version</code>)
+     * Due to the order of processing, any conditional code using this (via <code>Context::$version</code>)
      * must come only after the analysis is finished.
      */
     protected ?string $version = null;
@@ -122,7 +122,11 @@ class Generator
 
     public function getAnalyser(): AnalyserInterface
     {
-        $this->analyser = $this->analyser ?: new ReflectionAnalyser([new AttributeAnnotationFactory(), new DocBlockAnnotationFactory()]);
+        $generatorConfig = $this->getConfig()['generator'];
+        $this->analyser = $this->analyser ?: new ReflectionAnalyser([
+            new AttributeAnnotationFactory($generatorConfig['ignoreOtherAttributes']),
+            new DocBlockAnnotationFactory(),
+        ]);
         $this->analyser->setGenerator($this);
 
         return $this->analyser;
@@ -138,6 +142,9 @@ class Generator
     public function getDefaultConfig(): array
     {
         return [
+            'generator' => [
+                'ignoreOtherAttributes' => false,
+            ],
             'operationId' => [
                 'hash' => true,
             ],
