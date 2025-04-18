@@ -5,49 +5,49 @@ OpenApi has the concept of grouping endpoints using tags. On top of that, some t
 ([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)
 support further grouping via the vendor extension `x-tagGroups`.
 
-```php
-/**
- * @OA\OpenApi(
- *   x={
- *       "tagGroups"=
- *           {{"name"="User Management", "tags"={"Users", "API keys", "Admin"}}
- *       }
- *   }
- * )
- */
-```
+<codeblock id="x-tag-groups">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_an.php
+
+  </template>
+</codeblock>
 
 ## Adding examples to `@OA\Response`
-```php
-/*
- * @OA\Response(
- *     response=200,
- *     description="OK",
- *     @OA\JsonContent(
- *         oneOf={
- *             @OA\Schema(ref="#/components/schemas/Result"),
- *             @OA\Schema(type="boolean")
- *         },
- *         @OA\Examples(example="result", value={"success": true}, summary="An result object."),
- *         @OA\Examples(example="bool", value=false, summary="A boolean value."),
- *     )
- * )
- */
-```
+
+<codeblock id="response-examples">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/response_examples_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/response_examples_an.php
+
+  </template>
+</codeblock>
 
 ## External documentation
 OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
 
-```php
-/**
- * @OA\OpenApi(
- *   @OA\ExternalDocumentation(
- *     description="More documentation here...",
- *     url="https://example.com/externaldoc1/"
- *   )
- * )
- */
-```
+<codeblock id="external-doc">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/external_documentation_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/external_documentation_an.php
+
+  </template>
+</codeblock>
 
 ::: tip
 If no `@OA\OpenApi` is configured, `swagger-php` will create one automatically.
@@ -67,30 +67,19 @@ That means the above example would also work with just the `OA\ExternalDocumenta
 ## Properties with union types
 Sometimes properties or even lists (arrays) may contain data of different types. This can be expressed using `oneOf`.
 
-```php
-/**
- * @OA\Schema(
- *      schema="StringList",
- *      @OA\Property(property="value", type="array", @OA\Items(anyOf={@OA\Schema(type="string")}))
- * )
- * @OA\Schema(
- *      schema="String",
- *      @OA\Property(property="value", type="string")
- * )
- * @OA\Schema(
- *      schema="Object",
- *      @OA\Property(property="value", type="object")
- * )
- * @OA\Schema(
- *     schema="mixedList",
- *     @OA\Property(property="fields", type="array", @OA\Items(oneOf={
- *         @OA\Schema(ref="#/components/schemas/StringList"),
- *         @OA\Schema(ref="#/components/schemas/String"),
- *         @OA\Schema(ref="#/components/schemas/Object")
- *     }))
- * )
- */
-```
+<codeblock id="props-with-union-types">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_an.php
+
+  </template>
+</codeblock>
+
 
 This will resolve into this YAML
 ```yaml
@@ -134,119 +123,81 @@ components:
 ## Referencing a security scheme
 An API might have zero or more security schemes. These are defined at the top level and vary from simple to complex:
 
-```php
-/**
- * @OA\SecurityScheme(
- *     type="apiKey",
- *     name="api_key",
- *     in="header",
- *     securityScheme="api_key"
- * )
- *
- * @OA\SecurityScheme(
- *   type="oauth2",
- *   securityScheme="petstore_auth",
- *   @OA\Flow(
- *      authorizationUrl="http://petstore.swagger.io/oauth/dialog",
- *      flow="implicit",
- *      scopes={
- *         "read:pets": "read your pets",
- *         "write:pets": "modify pets in your account"
- *      }
- *   )
- * )
- */
-```
+<codeblock id="security-schemas">
+  <template v-slot:at>
 
+<<< @/snippets/guide/cookbook/security_schemas_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schemas_an.php
+
+  </template>
+</codeblock>
 
 To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be
 added to the operation, for example:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={ {"api_key": {}} }
- * )
- */
-```
+
+<codeblock id="secure-endpoint">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_an.php
+
+  </template>
+</codeblock>
 
 ::: tip Endpoints can support multiple security schemes and have custom options too:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={
- *      { "api_key": {} },
- *      { "petstore_auth": {"write:pets", "read:pets"} }
- *    }
- * )
- */
-```
+<codeblock id="security-schema-tips">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_an.php
+
+  </template>
+</codeblock>
 :::
 
 ## File upload with headers
-```php
-/**
- * @OA\Post(
- *   path="/v1/media/upload",
- *   summary="Upload document",
- *   description="",
- *   tags={"Media"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\MediaType(
- *       mediaType="application/octet-stream",
- *       @OA\Schema(
- *         required={"content"},
- *         @OA\Property(
- *           description="Binary content of file",
- *           property="content",
- *           type="string",
- *           format="binary"
- *         )
- *       )
- *     )
- *   ),
- *   @OA\Response(
- *     response=200, description="Success",
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(
- *     response=400, description="Bad Request"
- *   )
- * )
- */
-```
+
+<codeblock id="file-upload-with-headers">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_an.php
+
+  </template>
+</codeblock>
+
 ## Set the XML root name
 
 The `OA\Xml` annotation may be used to set the XML root element for a given `@OA\XmlContent` response body
 
-```php
-/**
- * @OA\Schema(
- *     schema="Error",
- *     @OA\Property(property="message"),
- *     @OA\Xml(name="details")
- * )
- */
+<codeblock id="set-xml-root-name">
+  <template v-slot:at>
 
-/**
- * @OA\Post(
- *     path="/foobar",
- *     @OA\Response(
- *         response=400,
- *         description="Request error",
- *         @OA\XmlContent(ref="#/components/schemas/Error",
- *           @OA\Xml(name="error")
- *        )
- *     )
- * )
- */
- ```
+<<< @/snippets/guide/cookbook/set_xml_root_name_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/set_xml_root_name_an.php
+
+  </template>
+</codeblock>
 
 ## upload multipart/form-data
 Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
