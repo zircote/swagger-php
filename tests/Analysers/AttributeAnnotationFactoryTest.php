@@ -16,7 +16,7 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class AttributeAnnotationFactoryTest extends OpenApiTestCase
 {
-    public function testReturnedAnnotationsCout(): void
+    public function testReturnedAnnotationsCount(): void
     {
         $rc = new \ReflectionClass(UsingAttributes::class);
 
@@ -33,5 +33,17 @@ class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $this->expectExceptionMessage('OpenApi\Attributes\Property::__construct(): Argument #8 ($required) must be of type ?array');
 
         (new AttributeAnnotationFactory())->build($rm, $this->getContext());
+    }
+
+    public function testIgnoreOtherAttributes(): void
+    {
+        $rc = new \ReflectionClass(UsingAttributes::class);
+
+        (new AttributeAnnotationFactory())->build($rc, $context = $this->getContext());
+        $this->assertIsArray($context->other);
+        $this->assertCount(1, $context->other);
+
+        (new AttributeAnnotationFactory(true))->build($rc, $context = $this->getContext());
+        $this->assertNull($context->other);
     }
 }
