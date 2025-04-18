@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: 'Path parameter'
+  version: '1.0'
+paths:
+  '/items/{item_name}':
+    get:
+      summary: 'Get item'
+      operationId: getItem
+      parameters:
+        -
+          name: item_name
+          in: path
+          required: true
+      responses:
+        default:
+          description: OK
+  '/admin/items/{item_name}':
+    get:
+      summary: 'Get admin item'
+      operationId: getAdminItem
+      parameters:
+        -
+          name: item_name
+          in: path
+          required: true
+      responses:
+        default:
+          description: OK
