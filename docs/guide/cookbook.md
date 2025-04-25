@@ -252,22 +252,19 @@ Complex, nested data structures are defined by nesting `@OA\Property` annotation
 
 ## Documenting union type response data using `oneOf`
 A response with either a single or a list of `QualificationHolder`'s.
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     @OA\JsonContent(
- *         oneOf={
- *             @OA\Schema(ref="#/components/schemas/QualificationHolder"),
- *             @OA\Schema(
- *                 type="array",
- *                 @OA\Items(ref="#/components/schemas/QualificationHolder")
- *             )
- *         }
- *     )
- * )
- */
-```
+
+<codeblock id="oneof-example">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/oneof_example_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/oneof_example_an.php
+
+  </template>
+</codeblock>
 
 ## Reusing responses
 Global responses are found under `/components/responses` and can be referenced/shared just like schema definitions (models)
