@@ -236,40 +236,19 @@ This is done on the `@OA\OpenApi` annotation:
 
 ## Nested objects
 Complex, nested data structures are defined by nesting `@OA\Property` annotations inside others (with `type="object"`).
-```php
-/**
- *  @OA\Schema(
- *    schema="Profile",
- *    type="object",
-*
- *    @OA\Property(
- *      property="Status",
- *      type="string",
- *      example="0"
- *    ),
- *
- *    @OA\Property(
- *      property="Group",
- *      type="object",
- *
- *      @OA\Property(
- *        property="ID",
- *        description="ID de grupo",
- *        type="number",
- *        example=-1
- *      ),
- *
- *      @OA\Property(
- *        property="Name",
- *        description="Nombre de grupo",
- *        type="string",
- *        example="Superadmin"
- *      )
- *    )
- *  )
- */
 
-```
+<codeblock id="minimal">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/nested_objects_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/nested_objects_an.php
+
+  </template>
+</codeblock>
 
 ## Documenting union type response data using `oneOf`
 A response with either a single or a list of `QualificationHolder`'s.
