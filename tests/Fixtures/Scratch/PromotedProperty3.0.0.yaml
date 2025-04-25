@@ -12,6 +12,10 @@ paths:
           description: OK
 components:
   schemas:
+    MyEnum:
+      type: string
+      enum:
+        - AA
     PromotedPropertyDescription:
       properties:
         thevalue:
@@ -20,6 +24,8 @@ components:
         other:
           description: 'Other value.'
           type: string
+        myEnum:
+          $ref: '#/components/schemas/MyEnum'
         thename:
           description: 'Property name.'
           type: string

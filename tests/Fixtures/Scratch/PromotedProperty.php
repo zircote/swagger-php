@@ -9,6 +9,12 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
+#[OAT\Schema(type: 'string')]
+enum MyEnum: string
+{
+    case AA = 'AA';
+}
+
 #[OAT\Schema]
 class PromotedPropertyDescription
 {
@@ -52,6 +58,12 @@ class PromotedPropertyDescription
          * @OA\Property()
          */
         public string $different = '',
+
+        /*
+         * Intentionally not promoted!
+         */
+        #[OAT\Property()]
+        MyEnum $myEnum,
     ) {
     }
 }
