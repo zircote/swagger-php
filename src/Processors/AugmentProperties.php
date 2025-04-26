@@ -78,7 +78,7 @@ class AugmentProperties
             $type = $typeMatches[1];
 
             // finalise property type/ref
-            if (!$this->mapNativeType($property, $type)) {
+            if (!$this->mapNativeType($property, $type) && Generator::isDefault($property->items)) {
                 $schema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if (Generator::isDefault($property->ref) && $schema) {
                     $property->ref = OA\Components::ref($schema);
