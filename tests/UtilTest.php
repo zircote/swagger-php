@@ -38,9 +38,7 @@ class UtilTest extends OpenApiTestCase
         $normalizePathKeys = static function ($paths) use ($normalize) {
             return \array_combine(
                 \array_map(
-                    static function ($path) use ($normalize) {
-                        return $normalize($path);
-                    },
+                    $normalize,
                     \array_keys($paths)
                 ),
                 \array_values($paths)
