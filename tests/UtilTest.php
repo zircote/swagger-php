@@ -9,7 +9,6 @@ namespace OpenApi\Tests;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Util;
-use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
 
 class UtilTest extends OpenApiTestCase
@@ -32,12 +31,15 @@ class UtilTest extends OpenApiTestCase
         $finder = (new Finder())->in($this->examplePath('using-traits/annotations'));
         $this->assertGreaterThan(0, iterator_count($finder), 'There should be at least a few files and a directory.');
         $finder_array = \iterator_to_array($finder);
-        $directory_path = Path::normalize($this->examplePath('using-traits/annotations/Decoration'));
-        $normalizePathKeys = function ($paths) {
+        $normalize = static function (string $path): string {
+            return str_replace('\\', '/', $path);
+        };
+        $directory_path = $normalize($this->examplePath('using-traits/annotations/Decoration'));
+        $normalizePathKeys = static function ($paths) use ($normalize) {
             return \array_combine(
                 \array_map(
-                    function ($path) {
-                        return Path::normalize($path);
+                    static function ($path) use ($normalize) {
+                        return $normalize($path);
                     },
                     \array_keys($paths)
                 ),
