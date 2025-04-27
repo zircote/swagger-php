@@ -31,13 +31,25 @@ class UtilTest extends OpenApiTestCase
         $finder = (new Finder())->in($this->examplePath('using-traits/annotations'));
         $this->assertGreaterThan(0, iterator_count($finder), 'There should be at least a few files and a directory.');
         $finder_array = \iterator_to_array($finder);
-        $directory_path = $this->examplePath('using-traits/annotations/Decoration');
-        $this->assertArrayHasKey($directory_path, $finder_array, 'The directory should be a path in the finder.');
+        $normalize = static function (string $path): string {
+            return str_replace('\\', '/', $path);
+        };
+        $directory_path = $normalize($this->examplePath('using-traits/annotations/Decoration'));
+        $normalizePathKeys = static function ($paths) use ($normalize) {
+            return \array_combine(
+                \array_map(
+                    $normalize,
+                    \array_keys($paths)
+                ),
+                \array_values($paths)
+            );
+        };
+        $this->assertArrayHasKey($directory_path, $normalizePathKeys($finder_array), 'The directory should be a path in the finder.');
         // Use the Util method that should set the finder to only find files, since swagger-php only needs files.
         $finder_result = Util::finder($finder);
         $this->assertGreaterThan(0, iterator_count($finder_result), 'There should be at least a few file paths.');
         $finder_result_array = \iterator_to_array($finder_result);
-        $this->assertArrayNotHasKey($directory_path, $finder_result_array, 'The directory should not be a path in the finder.');
+        $this->assertArrayNotHasKey($directory_path, $normalizePathKeys($finder_result_array), 'The directory should not be a path in the finder.');
     }
 
     public static function shortenFixtures(): iterable
