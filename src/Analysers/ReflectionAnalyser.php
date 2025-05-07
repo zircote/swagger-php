@@ -94,6 +94,7 @@ class ReflectionAnalyser implements AnalyserInterface
         $contextType = $rc->isInterface() ? 'interface' : ($rc->isTrait() ? 'trait' : ((method_exists($rc, 'isEnum') && $rc->isEnum()) ? 'enum' : 'class'));
         $context = new Context([
             $contextType => $rc->getShortName(),
+            'reflection_class' => $rc,
             'namespace' => $rc->getNamespaceName() ?: null,
             'uses' => $details['uses'],
             'comment' => $rc->getDocComment() ?: null,
@@ -126,6 +127,8 @@ class ReflectionAnalyser implements AnalyserInterface
         foreach ($rc->getMethods() as $method) {
             if (in_array($method->name, $details['methods'])) {
                 $definition['methods'][$method->getName()] = $ctx = new Context([
+                    'reflection_class' => $rc,
+                    'reflection_method' => $method,
                     'method' => $method->getName(),
                     'comment' => $method->getDocComment() ?: null,
                     'filename' => $method->getFileName() ?: null,

@@ -67,19 +67,19 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
-                    foreach ([OA\Property::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
+                    foreach ([OA\Schema::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
                         foreach ($rp->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
-                            /** @var OA\Property|OA\Parameter|OA\RequestBody $instance */
+                            /** @var OA\Schema|OA\Parameter|OA\RequestBody $instance */
                             $instance = $attribute->newInstance();
-                            $instance->_context = new Context(['nested' => false], $context);
+                            $instance->_context = new Context(['nested' => false, 'reflection_argument' => $rp, 'argument' => $rp->getName()], $context);
 
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             $nullable = $rnt ? $rnt->allowsNull() : true;
 
                             if ($instance instanceof OA\RequestBody) {
                                 $instance->required = !$nullable;
-                            } elseif ($instance instanceof OA\Property) {
-                                if (Generator::isDefault($instance->property)) {
+                            } elseif ($instance instanceof OA\Schema) {
+                                if ($instance instanceof OA\Property && Generator::isDefault($instance->property)) {
                                     $instance->property = $rp->getName();
                                 }
                                 if (Generator::isDefault($instance->type)) {

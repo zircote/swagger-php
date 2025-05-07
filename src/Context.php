@@ -23,12 +23,16 @@ use Psr\Log\LoggerInterface;
  * @property string|null                  $namespace
  * @property array|null                   $uses
  * @property string|null                  $class
+ * @property \ReflectionClass|null        $reflection_class
  * @property string|null                  $interface
  * @property string|null                  $trait
  * @property string|null                  $enum
  * @property array|string|null            $extends     Interfaces may extend a list of interfaces
  * @property array|null                   $implements
  * @property string|null                  $method
+ * @property \ReflectionMethod|null       $reflection_method
+ * @property string|null                  $argument
+ * @property \ReflectionParameter|null    $reflection_argument
  * @property string|null                  $property
  * @property string|\ReflectionType|null  $type
  * @property bool|null                    $static      Indicate a static method
