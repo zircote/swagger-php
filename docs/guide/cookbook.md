@@ -532,16 +532,20 @@ Furthermore, your custom annotations should extend from the `OpenApi\Annotations
 :::
 
 ## Annotating class constants
-```php
-use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
-class Airport
-{
-    #[OA\Property(property='kind')]
-    public const KIND = 'Airport';
-}
-```
+<codeblock id="class-constants">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/class_constants_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/class_constants_an.php
+
+  </template>
+</codeblock>
+
 The `const` property is supported in OpenApi 3.1.0.
 ```yaml
 components:
