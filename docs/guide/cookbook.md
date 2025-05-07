@@ -202,7 +202,7 @@ The `OA\Xml` annotation may be used to set the XML root element for a given `@OA
 ## upload multipart/form-data
 Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
 
-<codeblock id="set-xml-root-name">
+<codeblock id="upload-multipart-form-data">
   <template v-slot:at>
 
 <<< @/snippets/guide/cookbook/uploading_multiple_formdata_at.php
