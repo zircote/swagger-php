@@ -312,34 +312,20 @@ There are two scenarios where this can happen
 The API does include basic support for callbacks. However, this needs to be set up mostly manually.
 
 **Example**
-```php
-/**
- *     ...
- *
- *     callbacks={
- *         "onChange"={
- *              "{$request.query.callbackUrl}"={
- *                  "post": {
- *                      "requestBody": @OA\RequestBody(
- *                          description="subscription payload",
- *                          @OA\MediaType(mediaType="application/json", @OA\Schema(
- *                              @OA\Property(property="timestamp", type="string", format="date-time", description="time of change")
- *                          ))
- *                      )
- *                  },
- *                  "responses": {
- *                      "202": {
- *                          "description": "Your server implementation should return this HTTP status code if the data was received successfully"
- *                      }
- *                  }
- *              }
- *         }
- *     }
- *
- *     ...
- *
- */
-```
+
+<codeblock id="callbacks">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/callbacks_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/callbacks_an.php
+
+  </template>
+</codeblock>
+
 
 ## (Mostly) virtual models
 Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
