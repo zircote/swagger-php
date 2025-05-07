@@ -269,35 +269,18 @@ A response with either a single or a list of `QualificationHolder`'s.
 ## Reusing responses
 Global responses are found under `/components/responses` and can be referenced/shared just like schema definitions (models)
 
-```php
-/**
- * @OA\Response(
- *   response="product",
- *   description="All information about a product",
- *   @OA\JsonContent(ref="#/components/schemas/Product")
- * )
- */
-class ProductResponse {}
+<codeblock id="reusing-response">
+  <template v-slot:at>
 
- // ...
+<<< @/snippets/guide/cookbook/reusing_response_at.php
 
-class ProductController
-{
-    /**
-     * @OA\Get(
-     *   tags={"Products"},
-     *   path="/products/{product_id}",
-     *   @OA\Response(
-     *       response="default",
-     *       ref="#/components/responses/product"
-     *   )
-     * )
-     */
-    public function getProduct($id)
-    {
-    }
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/reusing_response_an.php
+
+  </template>
+</codeblock>
 
 ::: tip `response` parameter is always required
 Even if referencing a shared response definition, the `response` parameter is still required.
