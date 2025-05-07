@@ -66,30 +66,33 @@ components:
 
 The `@OA\MediaType` is used to describe the content:
 
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     description="successful operation",
- *     @OA\MediaType(
- *         mediaType="application/json",
- *         @OA\Schema(ref="#/components/schemas/User"),
- *     )
- * ),
- */
-```
+<codeblock id="response-media-type">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/response_media_type_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/response_media_type_an.php
+
+  </template>
+</codeblock>
 
 But because most API requests and responses are JSON, the `@OA\JsonContent` allows you to simplify this by writing:
 
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     description="successful operation",
- *     @OA\JsonContent(ref="#/components/schemas/User"),
- * )
- */
-```
+<codeblock id="response-json-content">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/response_json_content_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/response_json_content_an.php
+
+  </template>
+</codeblock>
 
 During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(...)`
 and will generate the same output.
