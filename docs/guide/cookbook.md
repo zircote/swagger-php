@@ -511,46 +511,19 @@ The beauty is that in your custom `__construct()` method you can prefill as much
 Best of all, this works for both annotations and attributes.
 
 Example:
-```php
-use OpenApi\Attributes as OA;
 
-/**
- * @Annotation
- */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class BadRequest extends OA\Response
-{
-    public function __construct()
-    {
-        parent::__construct(response: 400, description: 'Bad request');
-    }
-}
+<codeblock id="custom-response-classes">
+  <template v-slot:at>
 
-class Controller
-{
+<<< @/snippets/guide/cookbook/custom_response_classes_at.php
 
-    #[OA\Get(path: '/foo', responses: [new BadRequest()])]
-    public function get()
-    {
-    }
+  </template>
+  <template v-slot:an>
 
-    #[OA\Post(path: '/foo')]
-    #[BadRequest]
-    public function post()
-    {
-    }
+<<< @/snippets/guide/cookbook/custom_response_classes_an.php
 
-    /**
-     * @OA\Delete(
-     *     path="/foo",
-     *     @BadRequest()
-     * )
-     */
-    public function delete()
-    {
-    }
-}
-```
+  </template>
+</codeblock>
 
 ::: tip Annotations only?
 If you are only interested in annotations you canleave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
