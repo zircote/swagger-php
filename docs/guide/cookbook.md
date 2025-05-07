@@ -334,17 +334,19 @@ to the individually declared class properties.
 It is possible, however, to nest `O@\Property` annotations inside a schema even without properties. In fact, all that is needed
 is a code anchor - e.g. an empty class.
 
-```php
-use OpenApi\Attributes as OA;
+<codeblock id="virtual-model">
+  <template v-slot:at>
 
-#[OA\Schema(
-    properties: [
-        'name' => new OA\Property(property: 'name', type: 'string'),
-        'email' => new OA\Property(property: 'email', type: 'string'),
-    ]
-)]
-class User {}
-```
+<<< @/snippets/guide/cookbook/virtual_model_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/virtual_model_an.php
+
+  </template>
+</codeblock>
+
 
 ## Using class name as type instead of references
 Typically, when referencing schemas this is done using `$ref`'s
