@@ -342,24 +342,18 @@ components:
 
 **Using the backing value:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="backed-enum-values-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema(type: 'integer')]
-enum Colour: int
-{
-    case GREEN = 1;
-    case BLUE = 2;
-    case RED = 3;
-}
+<<< @/snippets/guide/common-techniques/backed_enum_values_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/backed_enum_values_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
