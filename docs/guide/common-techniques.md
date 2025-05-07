@@ -262,24 +262,18 @@ If the enum is a backed enum, the case backing value is used instead of the name
 
 The simples way of using enums is to annotate them as `Schema`. This allows you to reference them like any other schema in your spec.
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="enum-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema()]
-enum Colour
-{
-    case GREEN;
-    case BLUE;
-    case RED;
-}
+<<< @/snippets/guide/common-techniques/enum_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/enum_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
