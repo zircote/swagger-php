@@ -205,12 +205,12 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
 <codeblock id="upload-multipart-form-data">
   <template v-slot:at>
 
-<<< @/snippets/guide/cookbook/uploading_multiple_formdata_at.php
+<<< @/snippets/guide/cookbook/uploading_multipart_formdata_at.php
 
   </template>
   <template v-slot:an>
 
-<<< @/snippets/guide/cookbook/uploading_multiple_formdata_an.php
+<<< @/snippets/guide/cookbook/uploading_multipart_formdata_an.php
 
   </template>
 </codeblock>
