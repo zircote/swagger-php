@@ -308,24 +308,18 @@ For backed enums there exist two rules that determine whether the name or backin
 
 **Using the name of a backed enum:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="backed-enum-names-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema()]
-enum Colour: int
-{
-    case GREEN = 1;
-    case BLUE = 2;
-    case RED = 3;
-}
+<<< @/snippets/guide/common-techniques/backed_enum_names_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/backed_enum_names_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
