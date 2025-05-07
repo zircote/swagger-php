@@ -470,27 +470,19 @@ name uses trailing `[]`. In fact, it is possible to create nested arrays too by 
 
 In terms of OpenAPI, the parameters can be considered a single parameter with a list of values.
 
-```php
-/**
- * @OA\Get(
- *     path="/api/endpoint",
- *     description="The endpoint",
- *     operationId="endpoint",
- *     tags={"endpoints"},
- *     @OA\Parameter(
- *         name="things[]",
- *         in="query",
- *         description="A list of things.",
- *         required=false,
- *         @OA\Schema(
- *             type="array",
- *             @OA\Items(type="integer")
- *         )
- *     ),
- *     @OA\Response(response="200", description="All good")
- * )
- */
-```
+<codeblock id="multi-value-query-parameter">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/multi_value_query_parameter_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/multi_value_query_parameter_an.php
+
+  </template>
+</codeblock>
+
 
 The corresponding bit of the spec will look like this:
 
