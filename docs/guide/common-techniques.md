@@ -224,23 +224,18 @@ Enum cases can be used as value in an `enum` list just like a `string`, `integer
 
 **Basic enum:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="enum-as-values">
+  <template v-slot:at>
 
-enum Suit
-{
-    case Hearts;
-    case Diamonds;
-    case Clubs;
-    case Spades;
-}
+<<< @/snippets/guide/common-techniques/enum_as_values_at.php
 
-class Model
-{
-    #[OAT\Property(enum: [Suit::Hearts, Suit::Diamonds])]
-    protected array $someSuits;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/enum_as_values_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
