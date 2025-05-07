@@ -184,24 +184,18 @@ The specification allows for [custom properties](http://swagger.io/specification
 as long as they start with "x-". Therefore, all swagger-php annotations have an `x` property which accepts an array (map)
 and will unfold into "x-" properties.
 
-```php
-/**
- * @OA\Info(
- *   title="Example",
- *   version="1.0.0",
- *   x={
- *     "some-name": "a-value",
- *     "another": 2,
- *     "complex-type": {
- *       "supported":{
- *         {"version": "1.0", "level": "baseapi"},
- *         {"version": "2.1", "level": "fullapi"},
- *       }
- *     }
- *   }
- * )
- */
-```
+<codeblock id="custom-property">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/custom_property_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/custom_property_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
