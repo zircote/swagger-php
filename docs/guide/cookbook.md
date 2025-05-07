@@ -432,21 +432,18 @@ As of PHP 8.1 there is native support for `enum`'s.
 
 **Example**
 
-```php
-#[Schema()]
-enum State
-{
-    case OPEN;
-    case MERGED;
-    case DECLINED;
-}
+<codeblock id="enums">
+  <template v-slot:at>
 
-#[Schema()]
-class PullRequest
-   #[OAT\Property()]
-   public State $state
-}
-```
+<<< @/snippets/guide/cookbook/enums_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/enums_an.php
+
+  </template>
+</codeblock>
 
 However, in this case the schema generated for `State` will be an enum:
 
