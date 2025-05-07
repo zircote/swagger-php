@@ -20,22 +20,19 @@ a structural element (`class`, `method`, `parameter` or `enum`)
 This means in a lot of cases it is not necessary to explicitly document all details.
 
 **Example**
-```php
-<?php
 
-/**
- * @OA\Schema()
- */
-class Product {
+<codeblock id="context-awareness">
+  <template v-slot:at>
 
-    /**
-     * The product name,
-     * @var string
-     * @OA\Property()
-     */
-    public $name;
-}
-```
+<<< @/snippets/guide/common-techniques/context_awareness_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/context_awareness_an.php
+
+  </template>
+</codeblock>
 
 **Results in**
 ```yaml
@@ -52,19 +49,18 @@ components:
 
 **As if you'd written**
 
-```php
-    /**
-     * The product name
-     * @var string
-     *
-     * @OA\Property(
-     *   property="name",
-     *   type="string",
-     *   description="The product name"
-     * )
-     */
-    public $name;
-```
+<codeblock id="explicit-context">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/explicit_context_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/explicit_context_an.php
+
+  </template>
+</codeblock>
 
 ## Response media type
 
