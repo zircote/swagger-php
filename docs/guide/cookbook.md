@@ -378,6 +378,9 @@ class name.
 
 With the same `User` schema as before, the `Book::author` property could be written in a few different ways
 
+<tabs options="{ useUrlFragment: false }">
+  <tab id="at" name="Attributes">
+
 ```php
     #[OAT\Property()]
     public User author;
@@ -396,9 +399,31 @@ With the same `User` schema as before, the `Book::author` property could be writ
 **or**
 
 ```php
-    #[OAT\Property(type: User::class)]
+    #[OA\Property(type: User::class)]
     public author;
 ```
+
+  </tab>
+
+  <tab id="an" name="Annotations">
+
+```php
+    /** @OA\Property() */
+    public User author;
+```
+
+**or**
+
+```php
+    /**
+     * @var User
+     * @OA\Property()
+     */
+    public author;
+```
+
+  </tab>
+</tabs>
 
 ## Enums
 As of PHP 8.1 there is native support for `enum`'s.
