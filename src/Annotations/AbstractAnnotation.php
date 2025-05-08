@@ -21,7 +21,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
      * For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions
-     * The keys inside the array will be prefixed with `x-`.
+     * The keys inside the array will be prefixed with <code>x-</code>.
      *
      * @var array<string,mixed>
      */
@@ -354,10 +354,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $ref = ['$ref' => $data->ref];
             if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
                 foreach (['summary', 'description'] as $prop) {
-                    if (property_exists($this, $prop)) {
-                        if (!Generator::isDefault($this->{$prop})) {
-                            $ref[$prop] = $data->{$prop};
-                        }
+                    if (property_exists($data, $prop)) {
+                        $ref[$prop] = $data->{$prop};
                     }
                 }
             }
@@ -368,16 +366,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 } else {
                     $ref['nullable'] = $data->nullable;
                 }
-                unset($data->nullable);
+                unset($data->ref, $data->nullable);
 
                 // preserve other properties
-                foreach (get_object_vars($this) as $property => $value) {
-                    if ('_' === $property[0] || in_array($property, ['ref', 'nullable'])) {
-                        continue;
-                    }
-                    if (!Generator::isDefault($value)) {
-                        $ref[$property] = $value;
-                    }
+                foreach (get_object_vars($data) as $property => $value) {
+                    $ref[$property] = $value;
                 }
             }
             $data = (object) $ref;
@@ -623,11 +616,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-     * Check if `$other` can be nested and if so return details about where/how.
+     * Check if <code>$other</code> can be nested and if so return details about where/how.
      *
      * @param AbstractAnnotation $other the other annotation
      *
-     * @return null|object key/value object or `null`
+     * @return null|object key/value object or <code>null</code>
      */
     public function matchNested($other)
     {
@@ -644,7 +637,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * This is used for resolving type equality and nesting rules to allow those rules to also work for custom,
      * derived annotation classes.
      *
-     * @return class-string the root annotation class in the `OpenApi\\Annotations` namespace
+     * @return class-string the root annotation class in the <code>OpenApi\\Annotations</code> namespace
      */
     public function getRoot(): string
     {

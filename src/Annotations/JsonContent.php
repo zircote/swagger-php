@@ -11,7 +11,21 @@ use OpenApi\Annotations as OA;
 /**
  * Shorthand for a json response.
  *
- * Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` will be generated.
+ * Example:
+ * ```php
+ * @OA\JsonContent(
+ *     ref="#/components/schemas/user"
+ * )
+ * ```
+ * vs.
+ * ```php
+ * @OA\MediaType(
+ *     mediaType="application/json",
+ *     @OA\Schema(
+ *         ref="#/components/schemas/user"
+ *     )
+ * )
+ * ```
  *
  * @Annotation
  */

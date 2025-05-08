@@ -9,7 +9,7 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="Object Mapper Test Suite">
+        <testsuite name="Swagger PHP Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

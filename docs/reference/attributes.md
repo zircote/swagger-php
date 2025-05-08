@@ -5,7 +5,7 @@ This page is generated automatically from the `swagger-php` sources.
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
 
-In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
+In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/docs/examples#readme) which might help you out.
 
 ## Attributes
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
@@ -171,7 +171,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -228,7 +228,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -258,7 +258,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -294,7 +294,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'cookie' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
@@ -361,7 +361,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -451,7 +451,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -479,7 +479,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -501,7 +501,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 ---
 <dl>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key into `#/components/examples`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>The key into <code>#/components/examples</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -530,7 +530,7 @@ The value field and externalValue field are mutually exclusive.</p><table class=
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -558,7 +558,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -591,7 +591,7 @@ This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td
   <dd><p>The URL to be used for obtaining refresh tokens.<br />
 <br />
 This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>flow</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>flow</strong> : <span style="font-family: monospace;">&#039;implicit&#039;|&#039;password&#039;|&#039;authorizationCode&#039;|&#039;clientCredentials&#039;|null</span></dt>
   <dd><p>Flow name.<br />
 <br />
 One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -602,7 +602,7 @@ A map between the scope name and a short description for it.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -692,7 +692,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -782,7 +782,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -829,7 +829,7 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -865,7 +865,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'header' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
@@ -932,7 +932,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -972,7 +972,7 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1141,7 +1141,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1149,7 +1149,23 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
 
+Shorthand for a json response.
 
+Example:
+```php
+#[OA\JsonContent(
+    ref: '#/components/schemas/user'
+)]
+```
+vs.
+```php
+#[OA\MediaType(
+    mediaType: 'application/json',
+    schema: new OA\Schema(
+        ref: '#/components/schemas/user'
+    )
+)
+```
 
 #### Nested elements
 ---
@@ -1312,7 +1328,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1336,15 +1352,15 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The license name used for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An URL to the license used for the API. This MUST be in the form of a URL.<br />
+  <dd><p>A URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
-The `url` field is mutually exclusive of the `identifier` field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The <code>url</code> field is mutually exclusive of the <code>identifier</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1398,7 +1414,7 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1447,7 +1463,7 @@ application/x-www-form-urlencoded.</p><table class="table-plain"><tbody><tr><td>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1464,12 +1480,12 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 #### Parameters
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
 <br />
-A version specified via `Generator::setVersion()` will overwrite this value.<br />
+A version specified via <code>Generator::setVersion()</code> will overwrite this value.<br />
 <br />
 This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>info</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Info|null</span></dt>
@@ -1484,7 +1500,7 @@ If not provided, or is an empty array, the default value would be a Server Objec
 The list of values includes alternative security requirement objects that can be used.<br />
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 Individual operations can override this definition.<br />
-To make security optional, an empty security requirement `({})` can be included in the array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+To make security optional, an empty security requirement (<code>{}</code>) can be included in the array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>tags</strong> : <span style="font-family: monospace;">Tag[]|null</span></dt>
   <dd><p>A list of tags used by the specification with additional metadata.<br />
 <br />
@@ -1503,7 +1519,7 @@ Each tag name in the list must be unique.</p><table class="table-plain"><tbody><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1593,7 +1609,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1629,7 +1645,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>The location of the parameter.<br />
 <br />
 Possible values are "query", "header", "path" or "cookie".</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -1698,7 +1714,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1788,7 +1804,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1845,7 +1861,7 @@ The list can use the Reference Object to link to parameters that are defined at 
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1881,7 +1897,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'path' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1945,7 +1961,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2035,7 +2051,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2206,7 +2222,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2296,7 +2312,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2332,7 +2348,7 @@ For all other cases, the name corresponds to the parameter name used by the in p
 This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>in</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
   <dd><p>This takes 'query' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
@@ -2399,7 +2415,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2443,7 +2459,7 @@ only the most specific key is applicable. e.g. text/plain overrides text/*.</p><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2495,7 +2511,7 @@ Objects.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td s
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2672,7 +2688,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2718,7 +2734,7 @@ Bearer tokens are usually generated by an authorization server, so this informat
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2756,7 +2772,7 @@ The value is used for substitution in the server's URL template.</p><table class
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2796,7 +2812,7 @@ The value is used for substitution in the server's URL template.</p><table class
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2826,7 +2842,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2916,7 +2932,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2975,7 +2991,7 @@ The list can use the Reference Object to link to parameters that are defined at 
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -3022,7 +3038,7 @@ Default value is false. The definition takes effect only when defined alongside 
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -3193,7 +3209,7 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
-The keys inside the array will be prefixed with `x-`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>

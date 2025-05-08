@@ -13,6 +13,7 @@ use OpenApi\Annotations as OA;
 class OpenApi extends OA\OpenApi
 {
     /**
+     * @param '3.0.0'|'3.1.0'          $openapi
      * @param Server[]|null            $servers
      * @param Tag[]|null               $tags
      * @param PathItem[]|null          $paths
@@ -38,7 +39,8 @@ class OpenApi extends OA\OpenApi
                 'openapi' => $openapi,
                 'security' => $security ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
-                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks, $attachables),
+                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks),
             ]);
     }
 }

@@ -10,7 +10,7 @@ use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
 /**
- * Base class for `@OA\Get`,  `@OA\Post`,  `@OA\Put`,  etc.
+ * Base class for <code>@OA\Get</code>,  <code>@OA\Post</code>,  <code>@OA\Put</code>,  etc.
  *
  * Describes a single API operation on a path.
  *

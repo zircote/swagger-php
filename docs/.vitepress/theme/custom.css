@@ -1,8 +1,9 @@
 /* https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css */
 :root {
-    --c-brand: #74a535;
+    --vp-c-brand-1: #74a535;
+    --vp-button-brand-bg: var(--vp-c-brand-1);
+    --vp-home-hero-name-color: var(--vp-c-text-1);
     --c-brand-light: #94c73d;
-
     --c-bg: #fefefe;
 }
 
@@ -17,16 +18,22 @@
 
 .tabs-component-tab-a {
     padding: 0.5em;
+    color: inherit !important;
 }
 
 .tabs-component-tab {
     transform: none;
+    margin-top: 0 !important;
 }
 
 @media (min-width: 700px) {
     .tabs-component-tab.is-active {
         border-bottom: solid 1px #ddd;
     }
+}
+
+.vp-doc a {
+    text-decoration: none;
 }
 
 .table-plain, table.table-plain tr, table.table-plain th, table.table-plain td  {

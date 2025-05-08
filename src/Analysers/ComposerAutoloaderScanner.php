@@ -11,7 +11,7 @@ use Composer\Autoload\ClassLoader;
 /**
  * Scans for classes/interfaces/traits.
  *
- * Relies on a `composer --optimized` run in order to utilize
+ * Relies on a <code>composer --optimized</code> run in order to utilize
  * the generated class map.
  */
 class ComposerAutoloaderScanner

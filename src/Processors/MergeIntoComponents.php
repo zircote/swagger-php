@@ -12,7 +12,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
- * Merge reusable annotation into @OA\Schemas.
+ * Merge reusable annotation into <code>@OA\Schemas</code>.
  */
 class MergeIntoComponents
 {

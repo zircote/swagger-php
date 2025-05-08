@@ -154,7 +154,6 @@ $errorTypes = [
     E_WARNING => 'Warning',
     E_PARSE => 'Parser error',
     E_NOTICE => 'Notice',
-    E_STRICT => 'Strict',
     E_DEPRECATED => 'Deprecated',
     E_CORE_ERROR => 'Error(Core)',
     E_CORE_WARNING => 'Warning(Core)',
@@ -219,6 +218,7 @@ foreach ($options["processor"] as $processor) {
 }
 
 $analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+$analyser->setGenerator($generator);
 
 $openapi = $generator
     ->setVersion($options['version'])

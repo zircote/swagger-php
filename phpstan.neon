@@ -7,7 +7,7 @@ parameters:
     paths:
         - src
         - tests
-        - Examples
+        - docs/examples
     parallel:
         processTimeout: 300.0
     excludePaths:

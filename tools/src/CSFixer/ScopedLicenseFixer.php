@@ -17,7 +17,7 @@ class ScopedLicenseFixer extends AbstractFixer
 
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens as $index => $token) {
+        foreach ($tokens as $token) {
             if ($token->isComment()) {
                 if (false !== strpos($token->getContent(), '@license')) {
                     return;

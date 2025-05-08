@@ -13,10 +13,10 @@ use OpenApi\Annotations as OA;
 class Items extends OA\Items
 {
     /**
-     * @param string|non-empty-array<string>|null                           $type
      * @param string|class-string|object|null                               $ref
      * @param string[]                                                      $required
      * @param Property[]                                                    $properties
+     * @param string|non-empty-array<string>|null                           $type
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
@@ -106,7 +106,7 @@ class Items extends OA\Items
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs),
         ]);
     }
 }

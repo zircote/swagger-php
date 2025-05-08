@@ -13,13 +13,13 @@ use OpenApi\Annotations as OA;
 class XmlContent extends OA\XmlContent
 {
     /**
-     * @param string|non-empty-array<string>|null                           $type
-     * @param string|class-string|object|null                               $ref
      * @param array<Examples>                                               $examples
+     * @param string|class-string|object|null                               $ref
      * @param string[]                                                      $required
+     * @param Property[]                                                    $properties
+     * @param string|non-empty-array<string>|null                           $type
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
-     * @param Property[]                                                    $properties
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
      * @param array<Schema|OA\Schema>                                       $allOf
      * @param array<Schema|OA\Schema>                                       $anyOf
@@ -109,7 +109,7 @@ class XmlContent extends OA\XmlContent
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs),
         ]);
     }
 }

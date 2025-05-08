@@ -40,7 +40,7 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
     /**
      * @param string            $level
      * @param string|\Exception $message
-     * @param array             $context additional details; supports custom `prefix` and `exception`
+     * @param array             $context additional details; supports custom <code>prefix</code> and <code>exception</code>
      */
     public function log($level, $message, array $context = []): void
     {

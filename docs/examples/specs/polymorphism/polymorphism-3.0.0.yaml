@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: Polymorphism
+  description: 'Polymorphism example'
+  contact:
+    name: 'Swagger API Team'
+  version: '1'
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
+paths:
+  /test:
+    get:
+      tags:
+        - api
+      description: 'Get test'
+      operationId: test
+      responses:
+        '200':
+          description: Polymorphism
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+components:
+  schemas:
+    Responsible:
+      properties:
+        type:
+          type: string
+          enum:
+            - employee
+            - assignee
+            - fl
+          nullable: false
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          fl: '#/components/schemas/FlResponsible'
+          employee: '#/components/schemas/EmployeeResponsible'
+      oneOf:
+        -
+          $ref: '#/components/schemas/FlResponsible'
+        -
+          $ref: '#/components/schemas/EmployeeResponsible'
+    EmployeeResponsible:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Responsible'
+        -
+          properties:
+            property2:
+              type: string
+              nullable: false
+            type:
+              type: string
+              enum:
+                - Virtual
+          type: object
+    FlResponsible:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Responsible'
+        -
+          properties:
+            property3:
+              type: string
+              nullable: true
+          type: object
+    Request:
+      properties:
+        payload:
+          $ref: '#/components/schemas/Responsible'
+      type: object
+tags:
+  -
+    name: api
+    description: 'API operations'

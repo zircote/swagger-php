@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: 'Example of using interfaces in swagger-php'
+  description: 'Using interfaces'
+  contact:
+    name: 'Swagger API Team'
+  version: 1.0.0
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
+paths:
+  '/products/{id}':
+    get:
+      tags:
+        - api
+      description: 'Get product in any colour for id'
+      operationId: 0787cf008b6d08a91ee494a88d16a4cd
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  '/products/green/{id}':
+    get:
+      tags:
+        - api
+      description: 'Get green products'
+      operationId: 3e21c50a909c7623a326e8ae9848f40a
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of product to return'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GreenProduct'
+components:
+  schemas:
+    GreenProduct:
+      title: GreenProduct
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Product'
+        -
+          properties:
+            color:
+              description: 'The product color.'
+              example: blue
+          type: object
+    Product:
+      title: 'Product model'
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/ProductInterface'
+        -
+          properties:
+            id:
+              description: 'The unique identifier of a product in our catalog.'
+              type: integer
+              format: int64
+              example: 1
+          type: object
+    ProductInterface:
+      properties:
+        name:
+          description: 'The product name.'
+          example: toaster
+      type: object
+tags:
+  -
+    name: api
+    description: 'API operations'

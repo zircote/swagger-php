@@ -9,15 +9,36 @@ namespace OpenApi\Attributes;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
+/**
+ * Shorthand for a json response.
+ *
+ * Example:
+ * ```php
+ * #[OA\JsonContent(
+ *     ref: '#/components/schemas/user'
+ * )]
+ * ```
+ * vs.
+ * ```php
+ * #[OA\MediaType(
+ *     mediaType: 'application/json',
+ *     schema: new OA\Schema(
+ *         ref: '#/components/schemas/user'
+ *     )
+ * )
+ * ```
+ *
+ * @Annotation
+ */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends OA\JsonContent
 {
     /**
-     * @param string|non-empty-array<string>|null                           $type
-     * @param string|class-string|object|null                               $ref
      * @param array<Examples>                                               $examples
+     * @param string|class-string|object|null                               $ref
      * @param string[]                                                      $required
      * @param Property[]                                                    $properties
+     * @param string|non-empty-array<string>|null                           $type
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
@@ -109,7 +130,7 @@ class JsonContent extends OA\JsonContent
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs),
         ]);
     }
 }

@@ -5,14 +5,14 @@
     "bin": [
         "bin/openapi"
     ],
-    "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
+    "description": "Generate interactive documentation for your RESTful API using PHP attributes (preferred) or PHPDoc annotations",
     "keywords": [
         "json",
         "rest",
         "api",
         "service discovery"
     ],
-    "homepage": "https://github.com/zircote/swagger-php/",
+    "homepage": "https://github.com/zircote/swagger-php",
     "authors": [
         {
             "name": "Robert Allen",
@@ -57,6 +57,16 @@
             "OpenApi\\": "src"
         }
     },
+    "autoload-dev": {
+        "exclude-from-classmap": [
+            "/tests/Fixtures"
+        ],
+        "psr-4": {
+            "OpenApi\\Tools\\": "tools/src/",
+            "OpenApi\\Tests\\": "tests/",
+            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
+        }
+    },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
@@ -72,25 +82,18 @@
     "suggest": {
         "doctrine/annotations": "^2.0"
     },
-    "autoload-dev": {
-        "exclude-from-classmap": [
-            "/tests/Fixtures"
-        ],
-        "psr-4": {
-            "OpenApi\\Tools\\": "tools/src/",
-            "OpenApi\\Tests\\": "tests/",
-            "AnotherNamespace\\": "tests/Fixtures/AnotherNamespace"
-        }
-    },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
         "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run all PHP, codestyle and rector tests",
         "analyse": "Run static analysis (phpstan/psalm)",
-        "spectral-examples": "Run spectral lint over all .yaml files in the Examples folder",
+        "spectral-examples": "Run spectral lint over all .yaml files in the docs/examples folder",
         "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
         "spectral": "Run all spectral tests",
+        "redocly-examples": "Run redocly lint over all .yaml files in the docs/examples folder",
+        "redocly-scratch": "Run redocly lint over all .yaml files in the tests/Fixtures/Scratch folder",
+        "redocly": "Run all redocly tests",
         "docs:gen": "Rebuild reference documentation",
         "docs:dev": "Run dev server for local development of gh-pages",
         "docs:build": "Re-build static gh-pages"
@@ -110,15 +113,22 @@
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
             "export XDEBUG_MODE=off && psalm --threads=1"
         ],
-        "spectral-examples": "for ff in `find Examples -name '*.yaml'`; do spectral lint $ff; done",
-        "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do spectral lint $ff; done",
+        "spectral-examples": "for ff in `find docs/examples -name '*.yaml'`; do npm run spectral lint $ff; done",
+        "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do npm run spectral lint $ff; done",
         "spectral": [
             "@spectral-examples",
             "@spectral-scratch"
         ],
+        "redocly-examples": "for ff in `find docs/examples -name '*.yaml'`; do npm run redocly lint $ff; done",
+        "redocly-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do npm run redocly lint $ff; done",
+        "redocly": [
+            "@redocly-examples",
+            "@redocly-scratch"
+        ],
         "docs:gen": [
             "@php tools/refgen.php",
-            "@php tools/procgen.php"
+            "@php tools/procgen.php",
+            "@php tools/examplegen.php"
         ],
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [

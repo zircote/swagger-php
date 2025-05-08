@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: 'Property Items Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 22e79d8d650659ed1ced1f375c7e723d
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    ItemDto:
+      title: 'Item Dto'
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Car
+      type: object
+    PropertyItems:
+      title: 'Property Items'
+      required:
+        - list1
+      properties:
+        list1:
+          description: 'Missing docblock'
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDto'
+          minItems: 2
+        list2:
+          description: 'With docblock'
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemDto'
+          minItems: 1
+        list3:
+          description: 'Simple type'
+          type: array
+          items:
+            type: string
+            minLength: 2
+          maxItems: 5
+          minItems: 0
+      type: object

@@ -5,7 +5,7 @@ This page is generated automatically from the `swagger-php` sources.
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
 
-In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/Examples#readme) which might help you out.
+In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/docs/examples#readme) which might help you out.
 
 ## Annotations
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
@@ -85,7 +85,7 @@ Contact information for the exposed API.
 
 ### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
 
-A `@OA\Request` cookie parameter.
+A <code>@OA\Request</code> cookie parameter.
 
 #### Allowed in
 ---
@@ -169,7 +169,7 @@ On top of this subset, there are extensions provided by this specification to al
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object</span></dt>
   <dd><p>The relative or absolute path to an example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://spec.openapis.org/oas/v3.1.1.html#reference-object">Reference Object</a></td></tr></tbody></table></dd>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>The key into `#/components/examples`.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>The key into <code>#/components/examples</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
@@ -247,7 +247,7 @@ This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td
   <dd><p>The URL to be used for obtaining refresh tokens.<br />
 <br />
 This must be in the form of an url.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>flow</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>flow</strong> : <span style="font-family: monospace;">&#039;authorizationCode&#039;|&#039;clientCredentials&#039;|&#039;implicit&#039;|&#039;password&#039;</span></dt>
   <dd><p>Flow name.<br />
 <br />
 One of ['implicit', 'password', 'authorizationCode', 'clientCredentials'].</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
@@ -343,7 +343,7 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 
 ### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
 
-A `@OA\Request` header parameter.
+A <code>@OA\Request</code> header parameter.
 
 #### Allowed in
 ---
@@ -397,7 +397,7 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
 
 ### [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
-The description of an item in a Schema with type `array`.
+The description of an item in a Schema with type <code>array</code>.
 
 #### Allowed in
 ---
@@ -411,7 +411,21 @@ The description of an item in a Schema with type `array`.
 
 Shorthand for a json response.
 
-Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/json'` will be generated.
+Example:
+```php
+@OA\JsonContent(
+    ref="#/components/schemas/user"
+)
+```
+vs.
+```php
+@OA\MediaType(
+    mediaType="application/json",
+    @OA\Schema(
+        ref="#/components/schemas/user"
+    )
+)
+```
 
 #### Nested elements
 ---
@@ -435,11 +449,11 @@ License information for the exposed API.
   <dt><strong>name</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The license name used for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>An URL to the license used for the API. This MUST be in the form of a URL.<br />
+  <dd><p>A URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
-The `url` field is mutually exclusive of the `identifier` field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+The <code>url</code> field is mutually exclusive of the <code>identifier</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 #### Reference
@@ -553,12 +567,12 @@ This is the root document object for the API specification.
 #### Properties
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
 <br />
-A version specified via `Generator::setVersion()` will overwrite this value.<br />
+A version specified via <code>Generator::setVersion()</code> will overwrite this value.<br />
 <br />
 This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
@@ -567,7 +581,7 @@ This is not related to the API info::version string.</p><table class="table-plai
 The list of values includes alternative security requirement objects that can be used.<br />
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 Individual operations can override this definition.<br />
-To make security optional, an empty security requirement `({})` can be included in the array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+To make security optional, an empty security requirement (<code>{}</code>) can be included in the array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 #### Reference
@@ -756,7 +770,7 @@ The path itself is still exposed to the documentation viewer, but they will not 
 
 ### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
 
-A `@OA\Request` path parameter.
+A <code>@OA\Request</code> path parameter.
 
 #### Allowed in
 ---
@@ -834,7 +848,7 @@ A `@OA\Request` path parameter.
 
 ### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
 
-A `@OA\Request` query parameter.
+A <code>@OA\Request</code> query parameter.
 
 #### Allowed in
 ---
@@ -1243,7 +1257,7 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
 
-Acts like a `PathItem` with the main difference being that it requires `webhook` instead of `path`.
+Acts like a <code>PathItem</code> with the main difference being that it requires <code>webhook</code> instead of <code>path</code>.
 
 #### Allowed in
 ---
@@ -1308,7 +1322,7 @@ Default value is false. The definition takes effect only when defined alongside 
 
 Shorthand for a xml response.
 
-Use as `@OA\Schema` inside a `Response` and `MediaType`->`'application/xml'` will be generated.
+Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaType</code>-><code>'application/xml'</code> will be generated.
 
 #### Nested elements
 ---

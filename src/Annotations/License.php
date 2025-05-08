@@ -25,16 +25,16 @@ class License extends AbstractAnnotation
     public $name = Generator::UNDEFINED;
 
     /**
-     * An SPDX license expression for the API. The `identifier` field is mutually exclusive of the `url` field.
+     * An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.
      *
      * @var string
      */
     public $identifier = Generator::UNDEFINED;
 
     /**
-     * An URL to the license used for the API. This MUST be in the form of a URL.
+     * A URL to the license used for the API. This MUST be in the form of a URL.
      *
-     * The `url` field is mutually exclusive of the `identifier` field.
+     * The <code>url</code> field is mutually exclusive of the <code>identifier</code> field.
      *
      * @var string
      */

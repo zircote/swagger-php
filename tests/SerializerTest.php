@@ -9,9 +9,12 @@ namespace OpenApi\Tests;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
+use OpenApi\Tests\Concerns\UsesExamples;
 
 class SerializerTest extends OpenApiTestCase
 {
+    use UsesExamples;
+
     private function getExpected(): OA\OpenApi
     {
         $path = new OA\PathItem(['_context' => $this->getContext()]);
@@ -148,10 +151,10 @@ JSON;
     public function testPetstoreExample(): void
     {
         $serializer = new Serializer();
-        $spec = $this->example('petstore.swagger.io/petstore.swagger.io.json');
-        $openapi = $serializer->deserializeFile($spec);
+        $spec = $this->examplePath('petstore/petstore-3.0.0.yaml');
+        $openapi = $serializer->deserializeFile($spec, 'yaml');
         $this->assertInstanceOf(OA\OpenApi::class, $openapi);
-        $this->assertJsonStringEqualsJsonString(file_get_contents($spec), $openapi->toJson());
+        $this->assertSpecEquals(file_get_contents($spec), $openapi->toYaml());
     }
 
     /**

@@ -13,10 +13,10 @@ use OpenApi\Annotations as OA;
 class AdditionalProperties extends OA\AdditionalProperties
 {
     /**
-     * @param string|non-empty-array<string>|null                           $type
      * @param string|class-string|object|null                               $ref
      * @param string[]                                                      $required
      * @param Property[]                                                    $properties
+     * @param string|non-empty-array<string>|null                           $type
      * @param int|float                                                     $maximum
      * @param int|float                                                     $minimum
      * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
@@ -103,7 +103,7 @@ class AdditionalProperties extends OA\AdditionalProperties
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties, $attachables),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),
         ]);
     }
 }

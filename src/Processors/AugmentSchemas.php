@@ -114,7 +114,7 @@ class AugmentSchemas
     }
 
     /**
-     * Merge schema properties into `allOf` if both exist.
+     * Merge schema properties into <code>allOf</code> if both exist.
      *
      * @param array<OA\Schema> $schemas
      */

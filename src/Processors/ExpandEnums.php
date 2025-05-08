@@ -14,11 +14,40 @@ use OpenApi\OpenApiException;
 /**
  * Expands PHP enums.
  *
- * Determines `schema`, `enum` and `type`.
+ * Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
  */
 class ExpandEnums
 {
     use Concerns\TypesTrait;
+
+    protected ?string $enumNames;
+
+    public function __construct(?string $enumNames = null)
+    {
+        $this->enumNames = $enumNames;
+    }
+
+    public function getEnumNames(): ?string
+    {
+        return $this->enumNames;
+    }
+
+    /**
+     * Specifies the name of the extension variable where backed enum names will be stored.
+     * Set to <code>null</code> to avoid writing backed enum names.
+     *
+     * Example:
+     * <code>->setEnumNames('enumNames')</code> yields:
+     * ```yaml
+     *   x-enumNames:
+     *     - NAME1
+     *     - NAME2
+     * ```
+     */
+    public function setEnumNames(?string $enumNames = null): void
+    {
+        $this->enumNames = $enumNames;
+    }
 
     public function __invoke(Analysis $analysis)
     {
@@ -56,6 +85,15 @@ class ExpandEnums
                     return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
 
+                if ($this->enumNames !== null && !$useName) {
+                    $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
+                    $schemaX[$this->enumNames] = array_map(function ($case) {
+                        return $case->name;
+                    }, $re->getCases());
+
+                    $schema->x = $schemaX;
+                }
+
                 $schema->type = $useName ? 'string' : $enumType;
 
                 $this->mapNativeType($schema, $schemaType);
@@ -86,7 +124,8 @@ class ExpandEnums
 
                 $cases = [];
 
-                // transform each Enum cases into UnitEnum
+                // transform \UnitEnum into individual cases
+                /** @var string|class-string<\UnitEnum> $enum */
                 foreach ($schema->enum as $enum) {
                     if (is_string($enum) && function_exists('enum_exists') && enum_exists($enum)) {
                         foreach ($enum::cases() as $case) {

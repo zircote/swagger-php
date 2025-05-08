@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Analysers;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use OpenApi\Tests\OpenApiTestCase;
 
 class DocBlockParserTest extends OpenApiTestCase
@@ -20,17 +19,6 @@ class DocBlockParserTest extends OpenApiTestCase
         $parameter = $annotations[0];
         $this->assertInstanceOf('OpenApi\Annotations\Parameter', $parameter);
         $this->assertSame('This is my parameter', $parameter->description);
-    }
-
-    public function testDeprecatedAnnotationWarning(): void
-    {
-        /* @phpstan-ignore-next-line */
-        if (!class_exists(AnnotationRegistry::class, true) || !method_exists(AnnotationRegistry::class, 'registerLoader')) {
-            $this->markTestSkipped('Not supported in doctrine/annotations v2');
-        }
-
-        $this->assertOpenApiLogEntryContains('The annotation @SWG\Definition() is deprecated.');
-        $this->annotationsFromDocBlockParser('@SWG\Definition()', self::SWG_ALIAS);
     }
 
     public function testExtraAliases(): void

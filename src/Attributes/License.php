@@ -29,7 +29,7 @@ class License extends OA\License
             'identifier' => $identifier ?? Generator::UNDEFINED,
             'url' => $url ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
-            'value' => $this->combine($attachables),
+            'attachables' => $attachables ?? Generator::UNDEFINED,
         ]);
     }
 }

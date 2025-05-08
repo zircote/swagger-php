@@ -58,7 +58,7 @@ class ContextTest extends OpenApiTestCase
 
         $customerSchema = $openapi->components->schemas[0];
         $this->assertStringContainsString(
-            'Fixtures/Customer.php on line ',
+            'Fixtures' . DIRECTORY_SEPARATOR . 'Customer.php on line ',
             $customerSchema->_context->getDebugLocation()
         );
 
