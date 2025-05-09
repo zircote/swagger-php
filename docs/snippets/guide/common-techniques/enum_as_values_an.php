@@ -13,7 +13,7 @@ enum Suit
 class Model
 {
     /**
-     * @OA\Property(enum={Suit::Hearts, Suit::Diamonds})
+     * @OA\Property(enum={"Suit::Hearts", "Suit::Diamonds"})
      */
     protected array $someSuits;
 }

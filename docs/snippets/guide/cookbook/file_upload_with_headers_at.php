@@ -9,7 +9,7 @@ class Controller
         summary: "Upload document",
         description: "",
         tags: ["Media"],
-        body: new OA\RequestBody(
+        requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
                 mediaType: "application/octet-stream",
