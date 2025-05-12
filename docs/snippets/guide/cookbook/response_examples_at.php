@@ -4,6 +4,13 @@ use OpenApi\Attributes as OA;
 
 class Controller
 {
+    #[OA\Schema(
+        schema: 'Result',
+        type: 'object',
+        properties: [
+            new OA\Property(property: 'success', type: 'boolean'),
+        ],
+    )]
     #[OA\Response(
         response: 200,
         description: 'OK',
@@ -18,7 +25,5 @@ class Controller
             ],
         ),
     )]
-    public function operation()
-    {
-    }
+    public function operation() {}
 }
