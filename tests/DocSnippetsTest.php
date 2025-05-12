@@ -8,6 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Attributes\OpenApi;
 use OpenApi\Generator;
+use OpenApi\Pipeline;
+use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
 
@@ -46,12 +48,13 @@ class DocSnippetsTest extends OpenApiTestCase
     {
         $lastSpec = null;
         foreach ($filenames as $filename) {
-            $namespace = str_replace(['_an', '_at'], '', basename($filename, '.php'));
+            $namespace = basename($filename, '.php');
             $tmp = sys_get_temp_dir() . "/$namespace.php";
             file_put_contents($tmp, "<?php namespace $namespace; ?>" . file_get_contents($filename));
             require_once $tmp;
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
+                ->withProcessor(fn(Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
             if ($lastSpec) {
                 $this->assertSpecEquals(
