@@ -78,8 +78,8 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                             if ($instance instanceof OA\RequestBody) {
                                 $instance->required = !$nullable;
-                            } elseif ($instance instanceof OA\Schema) {
-                                if ($instance instanceof OA\Property && Generator::isDefault($instance->property)) {
+                            } elseif (($instance instanceof OA\Property)) {
+                                if (Generator::isDefault($instance->property)) {
                                     $instance->property = $rp->getName();
                                 }
                                 if (Generator::isDefault($instance->type)) {
@@ -96,6 +96,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                         $instance->_context->comment = $comment;
                                     }
                                 }
+                            } elseif ($instance instanceof OA\Schema) {
+                                // explicitly omitting mention of nesting in context for schema, as during analysis schema might not merge into components and become orphaned
+                                $instance->_context = new Context(['reflection_argument' => $rp, 'argument' => $rp->getName()], $context);
                             } else {
                                 if (!$instance->name || Generator::isDefault($instance->name)) {
                                     $instance->name = $rp->getName();
@@ -112,7 +115,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                 if (($rrt = $reflector->getReturnType()) && $rrt instanceof \ReflectionNamedType) {
                     foreach ($annotations as $annotation) {
-                        if ($annotation instanceof OA\Property && Generator::isDefault($annotation->type)) {
+                        if ($annotation instanceof OA\Schema && Generator::isDefault($annotation->type)) {
                             // pick up simple return types
                             $annotation->type = $rrt->getName();
                         }
