@@ -313,19 +313,75 @@ The API does include basic support for callbacks. However, this needs to be set 
 
 **Example**
 
-<codeblock id="callbacks">
-  <template v-slot:at>
+<tabs options="{ useUrlFragment: false }">
+  <tab id="at" name="Attributes">
 
-<<< @/snippets/guide/cookbook/callbacks_at.php
+```php
+#[OA\Get(
+    // ...
+    callbacks: [
+        'onChange' => [
+            '{$request.query.callbackUrl}' => [
+                'post' => [
+                    'requestBody' => new OA\RequestBody(
+                        description: 'subscription payload',
+                        content: [
+                            new OA\MediaType(
+                                mediaType: 'application/json',
+                                schema: new OA\Schema(
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'timestamp',
+                                            type: 'string',
+                                            format: 'date-time',
+                                            description: 'time of change'
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ],
+                    ),
+                ],
+            ],
+        ],
+    ],
+    // ...
+)]
+```
 
-  </template>
-  <template v-slot:an>
+  </tab>
+  <tab id="an" name="Annotations">
 
-<<< @/snippets/guide/cookbook/callbacks_an.php
+```php
+/**
+ * @OA\Get(
+ *     ...
+ *     callbacks={
+ *         "onChange"={
+ *              "{$request.query.callbackUrl}"={
+ *                  "post": {
+ *                      "requestBody": @OA\RequestBody(
+ *                          description="subscription payload",
+ *                          @OA\MediaType(mediaType="application/json", @OA\Schema(
+ *                              @OA\Property(property="timestamp", type="string", format="date-time", description="time of change")
+ *                          ))
+ *                      )
+ *                  },
+ *                  "responses": {
+ *                      "202": {
+ *                          "description": "Your server implementation should return this HTTP status code if the data was received successfully"
+ *                      }
+ *                  }
+ *              }
+ *         }
+ *     }
+ *     ...
+ * )
+ */
+```
 
-  </template>
-</codeblock>
-
+  </tab>
+</tabs>
 
 ## (Mostly) virtual models
 Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
