@@ -10,7 +10,7 @@ enum State
     case DECLINED;
 }
 
-/** @OA\Schema() */
+/** @OA\Schema */
 class PullRequest
 {
     /** @OA\Property */

@@ -14,8 +14,8 @@ use OpenApi\Annotations as OA;
  *         response=400,
  *         description="Request error",
  *         @OA\XmlContent(ref="#/components/schemas/Error",
- *           @OA\Xml(name="error")
- *        )
+ *             @OA\Xml(name="error")
+ *         )
  *     )
  * )
  */

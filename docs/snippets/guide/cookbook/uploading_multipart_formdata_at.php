@@ -5,21 +5,21 @@ use OpenApi\Attributes as OA;
 class OpenApiSpec
 {
     #[OA\Post(
-        path: "/v1/user/update",
-        summary: "Form post",
+        path: '/v1/user/update',
+        summary: 'Form post',
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
-                mediaType: "multipart/form-data",
+                mediaType: 'multipart/form-data',
                 schema: new OA\Schema(
                     properties: [
                         new OA\Property(
-                            property: "name",
+                            property: 'name',
                         ),
                         new OA\Property(
-                            description: "file to upload",
-                            property: "avatar",
-                            type: "string",
-                            format: "binary",
+                            description: 'file to upload',
+                            property: 'avatar',
+                            type: 'string',
+                            format: 'binary',
                         ),
                     ],
                 ),
@@ -28,7 +28,7 @@ class OpenApiSpec
     )]
     #[OA\Response(
         response: 200,
-        description: "Success"
+        description: 'Success'
     )]
     public function update()
     {

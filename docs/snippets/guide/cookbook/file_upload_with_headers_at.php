@@ -5,22 +5,22 @@ use OpenApi\Attributes as OA;
 class Controller
 {
     #[OA\Post(
-        path: "/v1/media/upload",
-        summary: "Upload document",
-        description: "",
-        tags: ["Media"],
+        path: '/v1/media/upload',
+        summary: 'Upload document',
+        description: '',
+        tags: ['Media'],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
-                mediaType: "application/octet-stream",
+                mediaType: 'application/octet-stream',
                 schema: new OA\Schema(
-                    required: ["content"],
+                    required: ['content'],
                     properties: [
                         new OA\Property(
-                            description: "Binary content of file",
-                            property: "content",
-                            type: "string",
-                            format: "binary",
+                            description: 'Binary content of file',
+                            property: 'content',
+                            type: 'string',
+                            format: 'binary',
                         ),
                     ],
                 ),
@@ -29,11 +29,11 @@ class Controller
     )]
     #[OA\Response(
         response: 200,
-        description: "Success",
+        description: 'Success',
     )]
     #[OA\Response(
         response: 400,
-        description: "Bad Request",
+        description: 'Bad Request',
     )]
     public function upload()
     {

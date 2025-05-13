@@ -6,7 +6,7 @@ use OpenApi\Attributes as OA;
 class Product
 {
     /**
-     * The product name,
+     * The product name,.
      * @var string
      */
     #[OA\Property()]

@@ -4,16 +4,16 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *      schema="StringList",
- *      @OA\Property(property="value", type="array", @OA\Items(anyOf={@OA\Schema(type="string")}))
+ *     schema="StringList",
+ *     @OA\Property(property="value", type="array", @OA\Items(anyOf={@OA\Schema(type="string")}))
  * )
  * @OA\Schema(
- *      schema="String",
- *      @OA\Property(property="value", type="string")
+ *     schema="String",
+ *     @OA\Property(property="value", type="string")
  * )
  * @OA\Schema(
- *      schema="Object",
- *      @OA\Property(property="value", type="object")
+ *     schema="Object",
+ *     @OA\Property(property="value", type="object")
  * )
  * @OA\Schema(
  *     schema="mixedList",

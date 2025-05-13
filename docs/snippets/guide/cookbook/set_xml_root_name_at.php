@@ -3,19 +3,19 @@
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "Error",
-    properties: [new OA\Property(property: "message")],
-    xml: new OA\Xml(name: "details"),
+    schema: 'Error',
+    properties: [new OA\Property(property: 'message')],
+    xml: new OA\Xml(name: 'details'),
 )]
 #[OA\Post(
-    path: "/foobar",
+    path: '/foobar',
     responses: [
         new OA\Response(
             response: 400,
-            description: "Request error",
+            description: 'Request error',
             content: new OA\XmlContent(
-                ref: "#/components/schemas/Error",
-                xml: new OA\Xml(name: "error"),
+                ref: '#/components/schemas/Error',
+                xml: new OA\Xml(name: 'error'),
             ),
         ),
     ],

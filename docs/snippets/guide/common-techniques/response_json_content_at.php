@@ -11,5 +11,7 @@ class Controller
             ref: '#/components/schemas/User',
         ),
     )]
-    public function endpoint() {}
+    public function endpoint()
+    {
+    }
 }

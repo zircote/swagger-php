@@ -8,4 +8,6 @@ use OpenApi\Attributes as OA;
         'email' => new OA\Property(property: 'email', type: 'string'),
     ]
 )]
-class User {}
+class User
+{
+}

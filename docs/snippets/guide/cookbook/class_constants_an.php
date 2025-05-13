@@ -3,7 +3,7 @@
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Airport
 {

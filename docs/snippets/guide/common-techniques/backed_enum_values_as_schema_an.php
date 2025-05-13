@@ -13,12 +13,12 @@ enum Colour: int
 }
 
 /**
- * @OA\Schema()
+ * @OA\Schema
  */
 class Product
 {
     /**
-     * @OA\Property()
+     * @OA\Property
      */
     public Colour $colour;
 }

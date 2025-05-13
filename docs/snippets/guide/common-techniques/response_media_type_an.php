@@ -14,5 +14,7 @@ class Controller
      *     )
      * ),
      */
-    public function endpoint() {}
+    public function endpoint()
+    {
+    }
 }

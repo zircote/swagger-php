@@ -7,7 +7,9 @@ use OpenApi\Attributes as OA;
     description: 'All information about a product',
     content: new OA\JsonContent(ref: '#/components/schemas/Product'),
 )]
-class ProductResponse {}
+class ProductResponse
+{
+}
 
 // ...
 
@@ -20,8 +22,10 @@ class ProductController
             new OA\Response(
                 response: 'default',
                 ref: '#/components/responses/product'
-            )
+            ),
         ],
     )]
-    public function getProduct($id) {}
+    public function getProduct($id)
+    {
+    }
 }

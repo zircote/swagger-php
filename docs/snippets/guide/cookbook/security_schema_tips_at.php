@@ -9,7 +9,7 @@ class Controller
         summary: 'Requires authentication',
         security: [
             ['api_key' => []],
-            ['petstore_auth' => ['write:pets', 'read:pets']]
+            ['petstore_auth' => ['write:pets', 'read:pets']],
         ]
     )]
     public function secure()

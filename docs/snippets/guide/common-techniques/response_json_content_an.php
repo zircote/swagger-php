@@ -11,5 +11,7 @@ class Controller
      *     @OA\JsonContent(ref="#/components/schemas/User"),
      * )
      */
-    public function endpoint() {}
+    public function endpoint()
+    {
+    }
 }
