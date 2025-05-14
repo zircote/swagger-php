@@ -4,13 +4,13 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\OpenApi(
- *   security={{"bearerAuth": {}}}
+ *     security={{"bearerAuth": {}}}
  * )
  *
  * @OA\SecurityScheme(
- *   securityScheme="bearerAuth",
- *   type="http",
- *   scheme="bearer"
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer"
  * )
  */
 class OpenApiSpec

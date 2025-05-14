@@ -5,49 +5,49 @@ OpenApi has the concept of grouping endpoints using tags. On top of that, some t
 ([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)
 support further grouping via the vendor extension `x-tagGroups`.
 
-```php
-/**
- * @OA\OpenApi(
- *   x={
- *       "tagGroups"=
- *           {{"name"="User Management", "tags"={"Users", "API keys", "Admin"}}
- *       }
- *   }
- * )
- */
-```
+<codeblock id="x-tag-groups">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_an.php
+
+  </template>
+</codeblock>
 
 ## Adding examples to `@OA\Response`
-```php
-/*
- * @OA\Response(
- *     response=200,
- *     description="OK",
- *     @OA\JsonContent(
- *         oneOf={
- *             @OA\Schema(ref="#/components/schemas/Result"),
- *             @OA\Schema(type="boolean")
- *         },
- *         @OA\Examples(example="result", value={"success": true}, summary="An result object."),
- *         @OA\Examples(example="bool", value=false, summary="A boolean value."),
- *     )
- * )
- */
-```
+
+<codeblock id="response-examples">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/response_examples_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/response_examples_an.php
+
+  </template>
+</codeblock>
 
 ## External documentation
 OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
 
-```php
-/**
- * @OA\OpenApi(
- *   @OA\ExternalDocumentation(
- *     description="More documentation here...",
- *     url="https://example.com/externaldoc1/"
- *   )
- * )
- */
-```
+<codeblock id="external-doc">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/external_documentation_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/external_documentation_an.php
+
+  </template>
+</codeblock>
 
 ::: tip
 If no `@OA\OpenApi` is configured, `swagger-php` will create one automatically.
@@ -67,30 +67,19 @@ That means the above example would also work with just the `OA\ExternalDocumenta
 ## Properties with union types
 Sometimes properties or even lists (arrays) may contain data of different types. This can be expressed using `oneOf`.
 
-```php
-/**
- * @OA\Schema(
- *      schema="StringList",
- *      @OA\Property(property="value", type="array", @OA\Items(anyOf={@OA\Schema(type="string")}))
- * )
- * @OA\Schema(
- *      schema="String",
- *      @OA\Property(property="value", type="string")
- * )
- * @OA\Schema(
- *      schema="Object",
- *      @OA\Property(property="value", type="object")
- * )
- * @OA\Schema(
- *     schema="mixedList",
- *     @OA\Property(property="fields", type="array", @OA\Items(oneOf={
- *         @OA\Schema(ref="#/components/schemas/StringList"),
- *         @OA\Schema(ref="#/components/schemas/String"),
- *         @OA\Schema(ref="#/components/schemas/Object")
- *     }))
- * )
- */
-```
+<codeblock id="props-with-union-types">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_an.php
+
+  </template>
+</codeblock>
+
 
 This will resolve into this YAML
 ```yaml
@@ -134,145 +123,97 @@ components:
 ## Referencing a security scheme
 An API might have zero or more security schemes. These are defined at the top level and vary from simple to complex:
 
-```php
-/**
- * @OA\SecurityScheme(
- *     type="apiKey",
- *     name="api_key",
- *     in="header",
- *     securityScheme="api_key"
- * )
- *
- * @OA\SecurityScheme(
- *   type="oauth2",
- *   securityScheme="petstore_auth",
- *   @OA\Flow(
- *      authorizationUrl="http://petstore.swagger.io/oauth/dialog",
- *      flow="implicit",
- *      scopes={
- *         "read:pets": "read your pets",
- *         "write:pets": "modify pets in your account"
- *      }
- *   )
- * )
- */
-```
+<codeblock id="security-schemas">
+  <template v-slot:at>
 
+<<< @/snippets/guide/cookbook/security_schemas_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schemas_an.php
+
+  </template>
+</codeblock>
 
 To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be
 added to the operation, for example:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={ {"api_key": {}} }
- * )
- */
-```
+
+<codeblock id="secure-endpoint">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_an.php
+
+  </template>
+</codeblock>
 
 ::: tip Endpoints can support multiple security schemes and have custom options too:
-```php
-/**
- * @OA\Get(
- *      path="/api/secure/",
- *      summary="Requires authentication"
- *    ),
- *    security={
- *      { "api_key": {} },
- *      { "petstore_auth": {"write:pets", "read:pets"} }
- *    }
- * )
- */
-```
+<codeblock id="security-schema-tips">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_an.php
+
+  </template>
+</codeblock>
 :::
 
 ## File upload with headers
-```php
-/**
- * @OA\Post(
- *   path="/v1/media/upload",
- *   summary="Upload document",
- *   description="",
- *   tags={"Media"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\MediaType(
- *       mediaType="application/octet-stream",
- *       @OA\Schema(
- *         required={"content"},
- *         @OA\Property(
- *           description="Binary content of file",
- *           property="content",
- *           type="string",
- *           format="binary"
- *         )
- *       )
- *     )
- *   ),
- *   @OA\Response(
- *     response=200, description="Success",
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(
- *     response=400, description="Bad Request"
- *   )
- * )
- */
-```
+
+<codeblock id="file-upload-with-headers">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_an.php
+
+  </template>
+</codeblock>
+
 ## Set the XML root name
 
 The `OA\Xml` annotation may be used to set the XML root element for a given `@OA\XmlContent` response body
 
-```php
-/**
- * @OA\Schema(
- *     schema="Error",
- *     @OA\Property(property="message"),
- *     @OA\Xml(name="details")
- * )
- */
+<codeblock id="set-xml-root-name">
+  <template v-slot:at>
 
-/**
- * @OA\Post(
- *     path="/foobar",
- *     @OA\Response(
- *         response=400,
- *         description="Request error",
- *         @OA\XmlContent(ref="#/components/schemas/Error",
- *           @OA\Xml(name="error")
- *        )
- *     )
- * )
- */
- ```
+<<< @/snippets/guide/cookbook/set_xml_root_name_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/set_xml_root_name_an.php
+
+  </template>
+</codeblock>
 
 ## upload multipart/form-data
 Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
-```php
-/**
- * @OA\Post(
- *   path="/v1/user/update",
- *   summary="Form post",
- *   @OA\RequestBody(
- *     @OA\MediaType(
- *       mediaType="multipart/form-data",
- *       @OA\Schema(
- *         @OA\Property(property="name"),
- *         @OA\Property(
- *           description="file to upload",
- *           property="avatar",
- *           type="string",
- *           format="binary",
- *         ),
- *       )
- *     )
- *   ),
- *   @OA\Response(response=200, description="Success")
- * )
- */
-```
+
+<codeblock id="upload-multipart-form-data">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/uploading_multipart_formdata_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/uploading_multipart_formdata_an.php
+
+  </template>
+</codeblock>
 
 ## Default security scheme for all endpoints
 Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way
@@ -295,92 +236,51 @@ This is done on the `@OA\OpenApi` annotation:
 
 ## Nested objects
 Complex, nested data structures are defined by nesting `@OA\Property` annotations inside others (with `type="object"`).
-```php
-/**
- *  @OA\Schema(
- *    schema="Profile",
- *    type="object",
-*
- *    @OA\Property(
- *      property="Status",
- *      type="string",
- *      example="0"
- *    ),
- *
- *    @OA\Property(
- *      property="Group",
- *      type="object",
- *
- *      @OA\Property(
- *        property="ID",
- *        description="ID de grupo",
- *        type="number",
- *        example=-1
- *      ),
- *
- *      @OA\Property(
- *        property="Name",
- *        description="Nombre de grupo",
- *        type="string",
- *        example="Superadmin"
- *      )
- *    )
- *  )
- */
 
-```
+<codeblock id="minimal">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/nested_objects_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/nested_objects_an.php
+
+  </template>
+</codeblock>
 
 ## Documenting union type response data using `oneOf`
 A response with either a single or a list of `QualificationHolder`'s.
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     @OA\JsonContent(
- *         oneOf={
- *             @OA\Schema(ref="#/components/schemas/QualificationHolder"),
- *             @OA\Schema(
- *                 type="array",
- *                 @OA\Items(ref="#/components/schemas/QualificationHolder")
- *             )
- *         }
- *     )
- * )
- */
-```
+
+<codeblock id="oneof-example">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/oneof_example_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/oneof_example_an.php
+
+  </template>
+</codeblock>
 
 ## Reusing responses
 Global responses are found under `/components/responses` and can be referenced/shared just like schema definitions (models)
 
-```php
-/**
- * @OA\Response(
- *   response="product",
- *   description="All information about a product",
- *   @OA\JsonContent(ref="#/components/schemas/Product")
- * )
- */
-class ProductResponse {}
+<codeblock id="reusing-response">
+  <template v-slot:at>
 
- // ...
+<<< @/snippets/guide/cookbook/reusing_response_at.php
 
-class ProductController
-{
-    /**
-     * @OA\Get(
-     *   tags={"Products"},
-     *   path="/products/{product_id}",
-     *   @OA\Response(
-     *       response="default",
-     *       ref="#/components/responses/product"
-     *   )
-     * )
-     */
-    public function getProduct($id)
-    {
-    }
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/reusing_response_an.php
+
+  </template>
+</codeblock>
 
 ::: tip `response` parameter is always required
 Even if referencing a shared response definition, the `response` parameter is still required.
@@ -412,10 +312,50 @@ There are two scenarios where this can happen
 The API does include basic support for callbacks. However, this needs to be set up mostly manually.
 
 **Example**
+
+<tabs options="{ useUrlFragment: false }">
+  <tab id="at" name="Attributes">
+
+```php
+#[OA\Get(
+    // ...
+    callbacks: [
+        'onChange' => [
+            '{$request.query.callbackUrl}' => [
+                'post' => [
+                    'requestBody' => new OA\RequestBody(
+                        description: 'subscription payload',
+                        content: [
+                            new OA\MediaType(
+                                mediaType: 'application/json',
+                                schema: new OA\Schema(
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'timestamp',
+                                            type: 'string',
+                                            format: 'date-time',
+                                            description: 'time of change'
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ],
+                    ),
+                ],
+            ],
+        ],
+    ],
+    // ...
+)]
+```
+
+  </tab>
+  <tab id="an" name="Annotations">
+
 ```php
 /**
+ * @OA\Get(
  *     ...
- *
  *     callbacks={
  *         "onChange"={
  *              "{$request.query.callbackUrl}"={
@@ -435,11 +375,13 @@ The API does include basic support for callbacks. However, this needs to be set 
  *              }
  *         }
  *     }
- *
  *     ...
- *
+ * )
  */
 ```
+
+  </tab>
+</tabs>
 
 ## (Mostly) virtual models
 Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
@@ -448,17 +390,19 @@ to the individually declared class properties.
 It is possible, however, to nest `O@\Property` annotations inside a schema even without properties. In fact, all that is needed
 is a code anchor - e.g. an empty class.
 
-```php
-use OpenApi\Attributes as OA;
+<codeblock id="virtual-model">
+  <template v-slot:at>
 
-#[OA\Schema(
-    properties: [
-        'name' => new OA\Property(property: 'name', type: 'string'),
-        'email' => new OA\Property(property: 'email', type: 'string'),
-    ]
-)]
-class User {}
-```
+<<< @/snippets/guide/cookbook/virtual_model_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/virtual_model_an.php
+
+  </template>
+</codeblock>
+
 
 ## Using class name as type instead of references
 Typically, when referencing schemas this is done using `$ref`'s
@@ -490,6 +434,9 @@ class name.
 
 With the same `User` schema as before, the `Book::author` property could be written in a few different ways
 
+<tabs options="{ useUrlFragment: false }">
+  <tab id="at" name="Attributes">
+
 ```php
     #[OAT\Property()]
     public User author;
@@ -508,9 +455,31 @@ With the same `User` schema as before, the `Book::author` property could be writ
 **or**
 
 ```php
-    #[OAT\Property(type: User::class)]
+    #[OA\Property(type: User::class)]
     public author;
 ```
+
+  </tab>
+
+  <tab id="an" name="Annotations">
+
+```php
+    /** @OA\Property() */
+    public User author;
+```
+
+**or**
+
+```php
+    /**
+     * @var User
+     * @OA\Property()
+     */
+    public author;
+```
+
+  </tab>
+</tabs>
 
 ## Enums
 As of PHP 8.1 there is native support for `enum`'s.
@@ -519,21 +488,18 @@ As of PHP 8.1 there is native support for `enum`'s.
 
 **Example**
 
-```php
-#[Schema()]
-enum State
-{
-    case OPEN;
-    case MERGED;
-    case DECLINED;
-}
+<codeblock id="enums">
+  <template v-slot:at>
 
-#[Schema()]
-class PullRequest
-   #[OAT\Property()]
-   public State $state
-}
-```
+<<< @/snippets/guide/cookbook/enums_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/enums_an.php
+
+  </template>
+</codeblock>
 
 However, in this case the schema generated for `State` will be an enum:
 
@@ -560,27 +526,19 @@ name uses trailing `[]`. In fact, it is possible to create nested arrays too by 
 
 In terms of OpenAPI, the parameters can be considered a single parameter with a list of values.
 
-```php
-/**
- * @OA\Get(
- *     path="/api/endpoint",
- *     description="The endpoint",
- *     operationId="endpoint",
- *     tags={"endpoints"},
- *     @OA\Parameter(
- *         name="things[]",
- *         in="query",
- *         description="A list of things.",
- *         required=false,
- *         @OA\Schema(
- *             type="array",
- *             @OA\Items(type="integer")
- *         )
- *     ),
- *     @OA\Response(response="200", description="All good")
- * )
- */
-```
+<codeblock id="multi-value-query-parameter">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/multi_value_query_parameter_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/multi_value_query_parameter_an.php
+
+  </template>
+</codeblock>
+
 
 The corresponding bit of the spec will look like this:
 
@@ -609,6 +567,7 @@ The beauty is that in your custom `__construct()` method you can prefill as much
 Best of all, this works for both annotations and attributes.
 
 Example:
+
 ```php
 use OpenApi\Attributes as OA;
 
@@ -657,16 +616,20 @@ Furthermore, your custom annotations should extend from the `OpenApi\Annotations
 :::
 
 ## Annotating class constants
-```php
-use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
-class Airport
-{
-    #[OA\Property(property='kind')]
-    public const KIND = 'Airport';
-}
-```
+<codeblock id="class-constants">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/class_constants_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/class_constants_an.php
+
+  </template>
+</codeblock>
+
 The `const` property is supported in OpenApi 3.1.0.
 ```yaml
 components:
