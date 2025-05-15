@@ -27,5 +27,5 @@ return RectorConfig::configure()
         ],
         ShortenElseIfRector::class,
     ])
-    ->withPreparedSets(true, true)
-    ->withPhpVersion(PhpVersion::PHP_74);
+    ->withPreparedSets(deadCode: true, codeQuality: true)
+    ->withPhpVersion(PhpVersion::PHP_81);
