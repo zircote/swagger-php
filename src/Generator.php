@@ -211,29 +211,7 @@ class Generator
     public function getProcessorPipeline(): Pipeline
     {
         if (!$this->processorPipeline instanceof Pipeline) {
-            $this->processorPipeline = new Pipeline([
-                new Processors\DocBlockDescriptions(),
-                new Processors\MergeIntoOpenApi(),
-                new Processors\MergeIntoComponents(),
-                new Processors\ExpandClasses(),
-                new Processors\ExpandInterfaces(),
-                new Processors\ExpandTraits(),
-                new Processors\ExpandEnums(),
-                new Processors\AugmentSchemas(),
-                new Processors\AugmentRequestBody(),
-                new Processors\AugmentProperties(),
-                new Processors\AugmentDiscriminators(),
-                new Processors\BuildPaths(),
-                new Processors\AugmentParameters(),
-                new Processors\AugmentRefs(),
-                new Processors\MergeJsonContent(),
-                new Processors\MergeXmlContent(),
-                new Processors\OperationId(),
-                new Processors\CleanUnmerged(),
-                new Processors\PathFilter(),
-                new Processors\CleanUnusedComponents(),
-                new Processors\AugmentTags(),
-            ]);
+            $this->processorPipeline = new Pipeline(self::getDefaultProcessors());
         }
 
         $config = $this->getConfig();
@@ -318,6 +296,38 @@ class Generator
             ->setProcessorPipeline($processorPipeline)
             ->setConfig($config['config'])
             ->generate($sources, $config['analysis'], $config['validate']);
+    }
+
+    /**
+     * Retrieves the default list of processors.
+     *
+     * @return array An array of default processor instances to be applied.
+     */
+    public static function getDefaultProcessors(): array
+    {
+        return [
+            new Processors\DocBlockDescriptions(),
+            new Processors\MergeIntoOpenApi(),
+            new Processors\MergeIntoComponents(),
+            new Processors\ExpandClasses(),
+            new Processors\ExpandInterfaces(),
+            new Processors\ExpandTraits(),
+            new Processors\ExpandEnums(),
+            new Processors\AugmentSchemas(),
+            new Processors\AugmentRequestBody(),
+            new Processors\AugmentProperties(),
+            new Processors\AugmentDiscriminators(),
+            new Processors\BuildPaths(),
+            new Processors\AugmentParameters(),
+            new Processors\AugmentRefs(),
+            new Processors\MergeJsonContent(),
+            new Processors\MergeXmlContent(),
+            new Processors\OperationId(),
+            new Processors\CleanUnmerged(),
+            new Processors\PathFilter(),
+            new Processors\CleanUnusedComponents(),
+            new Processors\AugmentTags(),
+        ];
     }
 
     /**
