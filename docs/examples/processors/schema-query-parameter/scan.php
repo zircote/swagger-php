@@ -23,7 +23,7 @@ $insertMatch = function (array $pipes) {
 };
 
 $openapi = (new Generator())
-    ->withProcessor(function (Pipeline $pipeline) use ($insertMatch) { $pipeline->insert(new SchemaQueryParameter(), $insertMatch); })
+    ->withProcessorPipeline(function (Pipeline $pipeline) use ($insertMatch) { $pipeline->insert(new SchemaQueryParameter(), $insertMatch); })
     ->generate([__DIR__ . '/app']);
 // file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
 echo $openapi->toYaml();

@@ -10,6 +10,8 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * Convenient utility functions that don't neatly fit anywhere else.
+ *
+ * @deprecated
  */
 class Util
 {
