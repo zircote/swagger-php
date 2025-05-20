@@ -267,11 +267,19 @@ class Generator
      *
      * @param callable $with callable with the current processor pipeline passed in
      */
-    public function withProcessor(callable $with): Generator
+    public function withProcessorPipeline(callable $with): Generator
     {
         $with($this->getProcessorPipeline());
 
         return $this;
+    }
+
+    /**
+     * @deprecated use `withProcessorPipeline()` instead
+     */
+    public function withProcessor(callable $with): Generator
+    {
+        return $this->withProcessorPipeline($with);
     }
 
     public function getLogger(): ?LoggerInterface
@@ -291,6 +299,9 @@ class Generator
         return $this;
     }
 
+    /**
+     * @deprecated use non-static `generate()` instead
+     */
     public static function scan(iterable $sources, array $options = []): ?OA\OpenApi
     {
         // merge with defaults

@@ -63,7 +63,7 @@ class PromotedPropertyDescription
          * Intentionally not promoted!
          */
         #[OAT\Property()]
-        MyEnum $myEnum,
+        MyEnum $myEnum = MyEnum::AA,
     ) {
     }
 }

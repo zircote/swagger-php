@@ -54,7 +54,7 @@ class DocSnippetsTest extends OpenApiTestCase
             require_once $tmp;
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
-                ->withProcessor(fn (Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
+                ->withProcessorPipeline(fn (Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
             if ($lastSpec) {
                 $this->assertSpecEquals(
