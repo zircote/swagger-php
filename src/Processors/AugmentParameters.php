@@ -92,11 +92,13 @@ class AugmentParameters
                                     $parameter->description = $details['description'];
                                 }
                             }
-
-                            if (!Generator::isDefault($parameter->schema)) {
-                                $this->mapNativeType($parameter->schema, $parameter->schema->type);
-                            }
                         }
+                    }
+                }
+
+                foreach ($operation->parameters as $parameter) {
+                    if (!Generator::isDefault($parameter->schema)) {
+                        $this->mapNativeType($parameter->schema, $parameter->schema->type);
                     }
                 }
             }
