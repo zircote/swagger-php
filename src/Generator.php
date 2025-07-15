@@ -293,14 +293,6 @@ class Generator
         return $this;
     }
 
-    /**
-     * @deprecated use `withProcessorPipeline()` instead
-     */
-    public function withProcessor(callable $with): Generator
-    {
-        return $this->withProcessorPipeline($with);
-    }
-
     public function setTypeResolver(?TypeResolverInterface $typeResolver): Generator
     {
         $this->typeResolver = $typeResolver;
