@@ -288,14 +288,6 @@ class Generator
         return $this;
     }
 
-    /**
-     * @deprecated use `withProcessorPipeline()` instead
-     */
-    public function withProcessor(callable $with): Generator
-    {
-        return $this->withProcessorPipeline($with);
-    }
-
     public function getLogger(): ?LoggerInterface
     {
         return $this->logger ?: new DefaultLogger();
