@@ -6,8 +6,15 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Annotations\Operation;
+use OpenApi\Annotations\Parameter;
+use OpenApi\Annotations\PathItem;
 use OpenApi\Generator;
+use OpenApi\Processors\AugmentParameters;
+use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\Concerns\DocblockTrait;
+use OpenApi\Processors\MergeIntoComponents;
+use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentParametersTest extends OpenApiTestCase
@@ -55,5 +62,41 @@ class AugmentParametersTest extends OpenApiTestCase
         $tags = [];
         $this->extractContent($mixed->comment, $tags);
         $this->assertEquals($expected, $tags);
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testParameterNativeType(): void
+    {
+        $analysis = $this->analysisFromFixtures(['RequestUsingAttribute.php']);
+        $analysis->process([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new BuildPaths(),
+            new AugmentParameters(),
+        ]);
+
+        $findPathItemByPath = function (string $path) use ($analysis): PathItem {
+            foreach ($analysis->openapi->paths as $pathItem) {
+                if ($pathItem->path === $path) {
+                    return $pathItem;
+                }
+            }
+            throw new \InvalidArgumentException('Not found');
+        };
+        $findParameterByName = function (string $name, Operation $operation): Parameter {
+            foreach ($operation->parameters as $parameter) {
+                if ($parameter->name === $name) {
+                    return $parameter;
+                }
+            }
+            throw new \InvalidArgumentException('Not found');
+        };
+
+        $pathItem = $findPathItemByPath('/get/{id}');
+        $parameter = $findParameterByName('id', $pathItem->get);
+
+        $this->assertEquals('integer', $parameter->schema->type);
     }
 }
