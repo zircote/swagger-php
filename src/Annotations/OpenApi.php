@@ -219,11 +219,21 @@ class OpenApi extends AbstractAnnotation
         $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
 
         if (is_object($container)) {
-            if (property_exists($container, $property) === false) {
+            // support use x-* in ref
+            $xKey = strpos($property, 'x-') === 0 ? substr($property, 2) : null;
+            if ($xKey) {
+                if (!is_array($container->x) || !array_key_exists($xKey, $container->x)) {
+                    $xKey = null;
+                }
+            }
+            if (property_exists($container, $property) === false && !$xKey) {
                 throw new OpenApiException('$ref "' . $ref . '" not found');
             }
+
+            $nextContainer = $xKey ? $container->x[$xKey] : $container->{$property};
+
             if ($slash === false) {
-                return $container->{$property};
+                return $nextContainer;
             }
             $mapping = [];
             foreach ($container::$_nested as $nestedClass => $nested) {
@@ -232,7 +242,7 @@ class OpenApi extends AbstractAnnotation
                 }
             }
 
-            return self::resolveRef($ref, $unresolved, $container->{$property}, $mapping);
+            return self::resolveRef($ref, $unresolved, $nextContainer, $mapping);
         } elseif (is_array($container)) {
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);
