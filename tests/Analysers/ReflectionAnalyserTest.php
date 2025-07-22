@@ -79,9 +79,6 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testPhp8PromotedProperties(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);

@@ -10,9 +10,6 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentTagsTest extends OpenApiTestCase
 {
-    /**
-     * @requires PHP 8.1
-     */
     public function testFilteredAugmentTags(): void
     {
         $config = [
@@ -24,9 +21,6 @@ class AugmentTagsTest extends OpenApiTestCase
         $this->assertCount(1, $analysis->openapi->tags);
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testDedupedAugmentTags(): void
     {
         $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors());
@@ -34,9 +28,6 @@ class AugmentTagsTest extends OpenApiTestCase
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting 3 unique tags');
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testAllowUnusedTags(): void
     {
         $analysis = $this->analysisFromFixtures(
@@ -51,9 +42,6 @@ class AugmentTagsTest extends OpenApiTestCase
         $this->assertCount(2, $analysis->openapi->tags, 'Expecting fancy tag to be preserved');
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testAllowUnusedTagsWildcard(): void
     {
         $analysis = $this->analysisFromFixtures(

@@ -11,9 +11,6 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 
-/**
- * @requires PHP 8.1
- */
 class ExamplesTest extends OpenApiTestCase
 {
     use UsesExamples;

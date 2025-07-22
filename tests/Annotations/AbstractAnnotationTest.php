@@ -146,9 +146,6 @@ END;
         $this->assertTrue((new SubSchema([]))->isRoot(OA\Schema::class));
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testValidateExamples(): void
     {
         $analysis = $this->analysisFromFixtures(['BadExampleParameter.php']);
