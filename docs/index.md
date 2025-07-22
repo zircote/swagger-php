@@ -1,6 +1,6 @@
 ---
 layout: home
-hero: 
+hero:
   name: Swagger-PHP
   tagline: Generate OpenAPI documentation for your RESTful API.
   actions:
@@ -27,7 +27,7 @@ features:
 
 Add `swagger-php` attributes (or legacy annotations) to your source code.
 
-⚠️ `doctrine/annotations` is going to be deprecated in the future, so wherever
+⚠️ The `doctrine/annotations` library used to parse annotation is going to be deprecated, so wherever
 possible attributes should be used.
 
 <codeblock id="minimal">
