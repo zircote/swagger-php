@@ -16,9 +16,6 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
 
-/**
- * @requires PHP 8.1
- */
 class ExpandEnumsTest extends OpenApiTestCase
 {
     public function testExpandUnitEnum(): void
@@ -153,8 +150,6 @@ class ExpandEnumsTest extends OpenApiTestCase
     }
 
     /**
-     * @requires     PHP 8.1
-     *
      * @dataProvider expandEnumClassStringFixtures
      */
     public function testExpandEnumClassString(array $files, string $title, mixed $expected): void
