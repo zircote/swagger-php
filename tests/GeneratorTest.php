@@ -40,23 +40,6 @@ class GeneratorTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
     }
 
-    /**
-     * @dataProvider sourcesProvider
-     */
-    public function testScan(string $name, iterable $sources): void
-    {
-        $this->registerExampleClassloader($name);
-
-        $analyzer = $this->getAnalyzer();
-        $processor = (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline();
-
-        $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
-
-        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
-    }
-
     public function testScanInvalidSource(): void
     {
         $this->assertOpenApiLogEntryContains('Skipping invalid source: /tmp/__swagger_php_does_not_exist__');
