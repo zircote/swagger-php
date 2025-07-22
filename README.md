@@ -96,7 +96,7 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = \OpenApi\Generator::scan(['/path/to/project']);
+$openapi = (new \OpenApi\Generator->generate(['/path/to/project']);
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```
