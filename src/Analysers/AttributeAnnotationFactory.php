@@ -25,7 +25,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
     public function isSupported(): bool
     {
-        return \PHP_VERSION_ID >= 80100;
+        return true;
     }
 
     public function build(\Reflector $reflector, Context $context): array

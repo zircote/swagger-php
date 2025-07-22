@@ -9,9 +9,6 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
-/**
- * @requires PHP 8.1
- */
 class AttributesSyncTest extends OpenApiTestCase
 {
     public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];

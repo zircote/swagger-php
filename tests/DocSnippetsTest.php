@@ -13,9 +13,6 @@ use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
 
-/**
- * @requires PHP 8.1
- */
 class DocSnippetsTest extends OpenApiTestCase
 {
     use UsesExamples;
