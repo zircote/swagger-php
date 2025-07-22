@@ -18,9 +18,6 @@ use Psr\Log\LoggerInterface;
  * OpenApi spec generator.
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
- *
- * This is an object-oriented alternative to using the now deprecated <code>\OpenApi\scan()</code> function and
- * static class properties of the <code>Analyzer</code> and <code>Analysis</code> classes.
  */
 class Generator
 {
@@ -303,38 +300,6 @@ class Generator
         $this->version = $version;
 
         return $this;
-    }
-
-    /**
-     * @deprecated use non-static `generate()` instead
-     */
-    public static function scan(iterable $sources, array $options = []): ?OA\OpenApi
-    {
-        // merge with defaults
-        $config = $options + [
-                'aliases' => self::DEFAULT_ALIASES,
-                'namespaces' => self::DEFAULT_NAMESPACES,
-                'analyser' => null,
-                'analysis' => null,
-                'processor' => null,
-                'processors' => null,
-                'config' => [],
-                'logger' => null,
-                'validate' => true,
-                'version' => null,
-            ];
-
-        $processorPipeline = $config['processor'] ??
-            ($config['processors'] ? new Pipeline($config['processors']) : null);
-
-        return (new Generator($config['logger']))
-            ->setVersion($config['version'])
-            ->setAliases($config['aliases'])
-            ->setNamespaces($config['namespaces'])
-            ->setAnalyser($config['analyser'])
-            ->setProcessorPipeline($processorPipeline)
-            ->setConfig($config['config'])
-            ->generate($sources, $config['analysis'], $config['validate']);
     }
 
     /**
