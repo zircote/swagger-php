@@ -109,7 +109,6 @@ class Pipeline
     public function process($payload)
     {
         foreach ($this->pipes as $pipe) {
-            /** @deprecated null payload returned from pipe */
             $payload = $pipe($payload) ?: $payload;
         }
 
