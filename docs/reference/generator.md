@@ -51,14 +51,12 @@ require('"vendor/autoload.php');
 $openapi = (new \OpenApi\Generator())->generate(['/path1/to/project']);
 ```
 
-The `generate()` method does not support the CLI `exclude` and `pattern` options directly. Instead, a Symfony `Finder` instance can be passed in
-as source directly.
-
-If needed, the `\OpenApi\Util` class provides a builder method that undertands these options.
+The `generate()` method does not support the CLI `exclude` and `pattern` options directly.
+Instead, a custom Symfony `Finder` class (`SourceFinder`) can be used that understands these options.
 
 ```php
 $exclude = ['tests'];
 $pattern = '*.php';
 
-$openapi = (new \OpenApi\Generator())->generate(\OpenApi\Util::finder(__DIR__, $exclude, $pattern));
+$openapi = (new \OpenApi\Generator())->generate(new \OpenApi\SourceFinder(__DIR__, $exclude, $pattern));
 ```
