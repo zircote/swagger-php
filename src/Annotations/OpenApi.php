@@ -9,7 +9,6 @@ namespace OpenApi\Annotations;
 use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\OpenApiException;
-use OpenApi\Util;
 
 /**
  * This is the root document object for the API specification.
@@ -215,7 +214,7 @@ class OpenApi extends AbstractAnnotation
         $slash = strpos($path, '/');
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
-        $property = Util::refDecode($subpath);
+        $property = Components::refDecode($subpath);
         $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
 
         if (is_object($container)) {
