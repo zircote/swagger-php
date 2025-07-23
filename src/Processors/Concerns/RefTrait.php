@@ -19,6 +19,6 @@ trait RefTrait
 
     protected function isRef(?string $ref): bool
     {
-        return $ref && 0 === strpos($ref, '#/');
+        return $ref && str_starts_with($ref, '#/');
     }
 }

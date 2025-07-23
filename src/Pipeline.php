@@ -71,7 +71,7 @@ class Pipeline
     {
         if (is_string($matcher)) {
             $before = $matcher;
-            $matcher = function (array $pipes) use ($before) {
+            $matcher = function (array $pipes) use ($before): int|string|null {
                 foreach ($pipes as $ii => $current) {
                     if ($current instanceof $before) {
                         return $ii;
