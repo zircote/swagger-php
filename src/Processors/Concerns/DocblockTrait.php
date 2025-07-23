@@ -193,7 +193,7 @@ trait DocblockTrait
     {
         preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $docblock, $matches);
 
-        return isset($matches['example']) ? $matches['example'] : null;
+        return $matches['example'] ?? null;
     }
 
     /**

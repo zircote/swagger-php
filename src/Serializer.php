@@ -69,7 +69,7 @@ class Serializer
      */
     public function deserialize(string $jsonString, string $className): OA\AbstractAnnotation
     {
-        if (!$this->isValidAnnotationClass($className)) {
+        if (!static::isValidAnnotationClass($className)) {
             throw new OpenApiException($className . ' is not defined in OpenApi PHP Annotations');
         }
 
@@ -81,7 +81,7 @@ class Serializer
      */
     public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class): OA\AbstractAnnotation
     {
-        if (!$this->isValidAnnotationClass($className)) {
+        if (!static::isValidAnnotationClass($className)) {
             throw new OpenApiException($className . ' is not a valid OpenApi PHP Annotations');
         }
 

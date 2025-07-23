@@ -37,4 +37,5 @@ return RectorConfig::configure()
         ],
     ])
     ->withPreparedSets(true, true, true, true)
-    ->withPhpVersion(PhpVersion::PHP_74);
+    ->withPhpVersion(PhpVersion::PHP_74)
+    ->withPhpSets();
