@@ -10,7 +10,6 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 use OpenApi\OpenApiException;
-use OpenApi\Util;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -465,14 +464,14 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if ($details = $this->matchNested($annotation)) {
                 $property = $details->value;
                 if (is_array($property)) {
-                    $this->_context->logger->warning('Only one ' . Util::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
+                    $this->_context->logger->warning('Only one ' . static::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
                 } else {
-                    $this->_context->logger->warning('Only one ' . Util::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->{$property}->_context . "\n  Skipped: " . $annotation->_context);
+                    $this->_context->logger->warning('Only one ' . static::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->{$property}->_context . "\n  Skipped: " . $annotation->_context);
                 }
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if ($class::$_parents) {
-                    $message .= ', expected to be inside ' . implode(', ', Util::shorten($class::$_parents));
+                    $message .= ', expected to be inside ' . implode(', ', static::shorten($class::$_parents));
                 }
                 $this->_context->logger->warning($message . ' in ' . $annotation->_context);
             }
@@ -492,7 +491,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $keyField = $nested[1];
             foreach ($this->{$property} as $key => $item) {
                 if (is_array($item) && is_numeric($key) === false) {
-                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . Util::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
+                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . static::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
                 } elseif (Generator::isDefault($item->{$keyField})) {
                     $this->_context->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
@@ -522,11 +521,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
                         if ($property === $nestedProperty) {
                             if ($this instanceof OpenApi) {
-                                $message = 'Required ' . Util::shorten($class) . '() not found';
+                                $message = 'Required ' . static::shorten($class) . '() not found';
                             } elseif (is_array($nested)) {
-                                $message = $this->identity() . ' requires at least one ' . Util::shorten($class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires at least one ' . static::shorten($class) . '() in ' . $this->_context;
                             } else {
-                                $message = $this->identity() . ' requires a ' . Util::shorten($class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires a ' . static::shorten($class) . '() in ' . $this->_context;
                             }
                             break;
                         }
@@ -686,7 +685,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return Util::shorten(get_class($this)) . '(' . implode(',', $fields) . ')';
+        return static::shorten(get_class($this)) . '(' . implode(',', $fields) . ')';
     }
 
     /**
@@ -804,5 +803,25 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+    }
+
+    /**
+     * Shorten class name(s).
+     *
+     * @param array|object|string $classes Class(es) to shorten
+     *
+     * @return string|string[] One or more shortened class names
+     */
+    protected static function shorten($classes)
+    {
+        $short = [];
+        foreach ((array) $classes as $class) {
+            $short[] = '@' . str_replace([
+                    'OpenApi\\Annotations\\',
+                    'OpenApi\\Attributes\\',
+                ], 'OA\\', $class);
+        }
+
+        return is_array($classes) ? $short : array_pop($short);
     }
 }
