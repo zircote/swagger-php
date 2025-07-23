@@ -6,7 +6,7 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
-use OpenApi\Util;
+use OpenApi\SourceFinder;
 use OpenApi\Loggers\ConsoleLogger;
 
 if (class_exists(Generator::class) === false) {
@@ -224,7 +224,7 @@ $openapi = $generator
     ->setVersion($options['version'])
     ->setConfig($options['config'])
     ->setAnalyser($analyser)
-    ->generate(Util::finder($paths, $exclude, $pattern));
+    ->generate(new SourceFinder($paths, $exclude, $pattern));
 
 if ($options['output'] === false) {
     if (strtolower($options['format']) === 'json') {
