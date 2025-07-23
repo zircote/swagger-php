@@ -158,7 +158,7 @@ class Generator
         $normalised = [];
         foreach ($config as $key => $value) {
             if (is_numeric($key)) {
-                $token = explode('=', $value);
+                $token = explode('=', (string) $value);
                 if (2 == count($token)) {
                     // 'operationId.hash=false'
                     [$key, $value] = $token;
@@ -169,7 +169,7 @@ class Generator
                 $value = 'true' == $value;
             }
 
-            if ($isList = ('[]' === substr($key, -2))) {
+            if ($isList = (str_ends_with($key, '[]'))) {
                 $key = substr($key, 0, -2);
             }
             $token = explode('.', $key);
