@@ -31,7 +31,7 @@ class LegacyTypeResolver implements TypeResolverInterface
 
         if ($this->context) {
             foreach ($types as $ii => $type) {
-                if (!array_key_exists(strtolower($type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
+                if (!array_key_exists(strtolower((string) $type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
                     if (($resolved = $this->context->fullyQualifiedName($type)) && class_exists($resolved)) {
                         $types[$ii] = ltrim($resolved, '\\');
                     } else {
@@ -100,22 +100,15 @@ class LegacyTypeResolver implements TypeResolverInterface
      */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $docComment = $reflector->getDeclaringFunction()->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $docComment = $reflector->getDocComment();
-                break;
-            default:
-                $docComment = null;
-        }
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
 
         // cheat
         $name = $reflector->getName();
@@ -124,21 +117,14 @@ class LegacyTypeResolver implements TypeResolverInterface
             return $this->normaliseTypeResult(null, null, [], $name);
         }
 
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                    ? '@param'
-                    : '@var';
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $tagName = '@param';
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $tagName = '@return';
-                break;
-            default:
-                $tagName = null;
-        }
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
 
         if (!$tagName) {
             return $this->normaliseTypeResult(null, null, [], $name);
@@ -152,7 +138,7 @@ class LegacyTypeResolver implements TypeResolverInterface
 
         $docComment = str_replace("\r\n", "\n", $docComment);
         $docComment = preg_replace('/\*\/[ \t]*$/', '', $docComment); // strip '*/'
-        preg_match($pattern, $docComment, $matches);
+        preg_match($pattern, (string) $docComment, $matches);
 
         $explicitType = null;
         $explicitDetails = null;
