@@ -10,7 +10,6 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 use OpenApi\OpenApiException;
-use OpenApi\Util;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -152,13 +151,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
     }
 
-    public function __get(string $property)
+    public function __get(string $property): mixed
     {
         $properties = get_object_vars($this);
         $this->_context->logger->warning('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
-    public function __set(string $property, $value): void
+    public function __set(string $property, mixed $value): void
     {
         $fields = get_object_vars($this);
         foreach (static::$_blacklist as $_property) {
@@ -239,7 +238,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if (Generator::isDefault($value)) {
                     continue;
                 }
-                $identity = method_exists($object, 'identity') ? $object->identity() : get_class($object);
+                $identity = method_exists($object, 'identity') ? $object->identity() : $object::class;
                 $context1 = $this->_context;
                 $context2 = property_exists($object, '_context') ? $object->_context : 'unknown';
                 if ($this->{$property} instanceof AbstractAnnotation) {
@@ -461,19 +460,18 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 break;
             }
 
-            /** @var class-string<AbstractAnnotation> $class */
-            $class = get_class($annotation);
+            $class = $annotation::class;
             if ($details = $this->matchNested($annotation)) {
                 $property = $details->value;
                 if (is_array($property)) {
-                    $this->_context->logger->warning('Only one ' . Util::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
+                    $this->_context->logger->warning('Only one ' . static::shorten($annotation::class) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
                 } else {
-                    $this->_context->logger->warning('Only one ' . Util::shorten(get_class($annotation)) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->{$property}->_context . "\n  Skipped: " . $annotation->_context);
+                    $this->_context->logger->warning('Only one ' . static::shorten($annotation::class) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->{$property}->_context . "\n  Skipped: " . $annotation->_context);
                 }
             } elseif ($annotation instanceof AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
                 if ($class::$_parents) {
-                    $message .= ', expected to be inside ' . implode(', ', Util::shorten($class::$_parents));
+                    $message .= ', expected to be inside ' . implode(', ', static::shorten($class::$_parents));
                 }
                 $this->_context->logger->warning($message . ' in ' . $annotation->_context);
             }
@@ -493,7 +491,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $keyField = $nested[1];
             foreach ($this->{$property} as $key => $item) {
                 if (is_array($item) && is_numeric($key) === false) {
-                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . Util::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
+                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . static::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
                 } elseif (Generator::isDefault($item->{$keyField})) {
                     $this->_context->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
@@ -506,7 +504,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         if (property_exists($this, 'ref') && !Generator::isDefault($this->ref) && is_string($this->ref)) {
-            if (substr($this->ref, 0, 2) === '#/' && $stack !== [] && $stack[0] instanceof OpenApi) {
+            if (str_starts_with($this->ref, '#/') && $stack !== [] && $stack[0] instanceof OpenApi) {
                 // Internal reference
                 try {
                     $stack[0]->ref($this->ref);
@@ -523,11 +521,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
                         if ($property === $nestedProperty) {
                             if ($this instanceof OpenApi) {
-                                $message = 'Required ' . Util::shorten($class) . '() not found';
+                                $message = 'Required ' . static::shorten($class) . '() not found';
                             } elseif (is_array($nested)) {
-                                $message = $this->identity() . ' requires at least one ' . Util::shorten($class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires at least one ' . static::shorten($class) . '() in ' . $this->_context;
                             } else {
-                                $message = $this->identity() . ' requires a ' . Util::shorten($class) . '() in ' . $this->_context;
+                                $message = $this->identity() . ' requires a ' . static::shorten($class) . '() in ' . $this->_context;
                             }
                             break;
                         }
@@ -553,7 +551,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     $this->_context->logger->warning($this->identity() . '->' . $property . ' "' . $value . '" is invalid, expecting "' . implode('", "', $type) . '" in ' . $this->_context);
                 }
             } else {
-                throw new OpenApiException('Invalid ' . get_class($this) . '::$_types[' . $property . ']');
+                throw new OpenApiException('Invalid ' . static::class . '::$_types[' . $property . ']');
             }
         }
         $stack[] = $this;
@@ -612,7 +610,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function identity(): string
     {
-        $class = get_class($this);
+        $class = static::class;
         $properties = [];
         /** @var class-string<AbstractAnnotation> $parent */
         foreach (static::$_parents as $parent) {
@@ -653,10 +651,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function getRoot(): string
     {
-        $class = get_class($this);
+        $class = static::class;
 
         do {
-            if (0 === strpos($class, 'OpenApi\\Annotations\\')) {
+            if (str_starts_with($class, 'OpenApi\\Annotations\\')) {
                 break;
             }
         } while ($class = get_parent_class($class));
@@ -671,7 +669,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function isRoot(string $rootClass): bool
     {
-        return get_class($this) === $rootClass || $this->getRoot() === $rootClass;
+        return static::class === $rootClass || $this->getRoot() === $rootClass;
     }
 
     /**
@@ -687,7 +685,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return Util::shorten(get_class($this)) . '(' . implode(',', $fields) . ')';
+        return static::shorten(static::class) . '(' . implode(',', $fields) . ')';
     }
 
     /**
@@ -698,7 +696,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     private function validateType(string $type, $value): bool
     {
-        if (substr($type, 0, 1) === '[' && substr($type, -1) === ']') { // Array of a specified type?
+        if (str_starts_with($type, '[') && str_ends_with($type, ']')) { // Array of a specified type?
             if ($this->validateType('array', $value) === false) {
                 return false;
             }
@@ -738,24 +736,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
             return false;
         }
 
-        switch ($type) {
-            case 'string':
-                return is_string($value);
-            case 'boolean':
-                return is_bool($value);
-            case 'integer':
-                return is_int($value);
-            case 'number':
-                return is_numeric($value);
-            case 'object':
-                return is_object($value);
-            case 'array':
-                return $this->validateArrayType($value);
-            case 'scheme':
-                return in_array($value, ['http', 'https', 'ws', 'wss'], true);
-            default:
-                throw new OpenApiException('Invalid type "' . $type . '"');
-        }
+        return match ($type) {
+            'string' => is_string($value),
+            'boolean' => is_bool($value),
+            'integer' => is_int($value),
+            'number' => is_numeric($value),
+            'object' => is_object($value),
+            'array' => $this->validateArrayType($value),
+            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], true),
+            default => throw new OpenApiException('Invalid type "' . $type . '"'),
+        };
     }
 
     /**
@@ -805,5 +795,25 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+    }
+
+    /**
+     * Shorten class name(s).
+     *
+     * @param array|object|string $classes Class(es) to shorten
+     *
+     * @return string|string[] One or more shortened class names
+     */
+    protected static function shorten($classes)
+    {
+        $short = [];
+        foreach ((array) $classes as $class) {
+            $short[] = '@' . str_replace([
+                    'OpenApi\\Annotations\\',
+                    'OpenApi\\Attributes\\',
+                ], 'OA\\', $class);
+        }
+
+        return is_array($classes) ? $short : array_pop($short);
     }
 }

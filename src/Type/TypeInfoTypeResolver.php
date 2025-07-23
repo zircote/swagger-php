@@ -128,7 +128,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
         try {
             $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
             $resolved = (new ReflectionTypeResolver())->resolve($subject, $typeContext);
-        } catch (UnsupportedException $unsupportedException) {
+        } catch (UnsupportedException) {
             $resolved = null;
         }
 
@@ -140,22 +140,15 @@ class TypeInfoTypeResolver implements TypeResolverInterface
      */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $docComment = $reflector->getDeclaringFunction()->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $docComment = $reflector->getDocComment();
-                break;
-            default:
-                $docComment = null;
-        }
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
 
         if (!$docComment) {
             return $this->normaliseTypeResult($reflector, null);
@@ -163,21 +156,14 @@ class TypeInfoTypeResolver implements TypeResolverInterface
 
         $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                    ? '@param'
-                    : '@var';
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $tagName = '@param';
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $tagName = '@return';
-                break;
-            default:
-                $tagName = null;
-        }
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
 
         $lexer = new Lexer(new ParserConfig([]));
         $phpDocParser = new PhpDocParser(
@@ -201,7 +187,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                     $resolved = (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
 
                     return $this->normaliseTypeResult($reflector, $resolved);
-                } catch (UnsupportedException $e) {
+                } catch (UnsupportedException) {
                     // ignore
                 }
             }

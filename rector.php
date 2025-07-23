@@ -12,6 +12,7 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\ValueObject\PhpVersion;
 
@@ -40,6 +41,7 @@ return RectorConfig::configure()
         ParamTypeByMethodCallTypeRector::class => [
             __DIR__ . '/src/Serializer.php',
         ],
+        ClassPropertyAssignToConstructorPromotionRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,
