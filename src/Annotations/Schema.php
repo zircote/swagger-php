@@ -500,7 +500,7 @@ class Schema extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         if ($this->type === 'array' && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);

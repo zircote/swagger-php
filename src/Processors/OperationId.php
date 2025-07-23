@@ -37,7 +37,7 @@ class OperationId
         return $this;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $allOperations = $analysis->getAnnotationsOfType(OA\Operation::class);
 

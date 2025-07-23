@@ -81,7 +81,7 @@ class PathFilter
         $this->recurseCleanup = $recurseCleanup;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         if (($this->tags || $this->paths) && !Generator::isDefault($analysis->openapi->paths)) {
             $filtered = [];

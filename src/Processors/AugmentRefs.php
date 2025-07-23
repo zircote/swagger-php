@@ -14,7 +14,7 @@ class AugmentRefs
 {
     use Concerns\RefTrait;
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $this->resolveAllOfRefs($analysis);
         $this->resolveFQCNRefs($analysis);

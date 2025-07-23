@@ -31,8 +31,8 @@ class TokenScanner
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {
             $stmts = $parser->parse(file_get_contents($filename));
-        } catch (Error $e) {
-            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+        } catch (Error $error) {
+            throw new \RuntimeException($error->getMessage(), $error->getCode(), $error);
         }
 
         $result = [];
@@ -59,7 +59,7 @@ class TokenScanner
 
             return $namespace . '\\' . $name;
         };
-        $details = function () use (&$uses) {
+        $details = function () use (&$uses): array {
             return [
                 'uses' => $uses,
                 'interfaces' => [],

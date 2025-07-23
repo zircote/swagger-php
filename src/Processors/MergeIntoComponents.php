@@ -16,7 +16,7 @@ use OpenApi\Generator;
  */
 class MergeIntoComponents
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $components = $analysis->openapi->components;
         if (Generator::isDefault($components)) {

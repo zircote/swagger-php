@@ -198,7 +198,7 @@ class OpenApi extends AbstractAnnotation
             throw new OpenApiException('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
 
-        return $this->resolveRef($ref, '#/', $this, []);
+        return self::resolveRef($ref, '#/', $this, []);
     }
 
     /**

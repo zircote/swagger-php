@@ -86,7 +86,7 @@ class License extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         $valid = parent::validate($stack, $skip, $ref, $context);
 

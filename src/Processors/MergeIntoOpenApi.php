@@ -16,7 +16,7 @@ use OpenApi\Generator;
  */
 class MergeIntoOpenApi
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         // Auto-create the OpenApi annotation.
         if (!$analysis->openapi) {

@@ -20,7 +20,7 @@ class DocBlockDescriptions
 {
     use Concerns\DocblockTrait;
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {

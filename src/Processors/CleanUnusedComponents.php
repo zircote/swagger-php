@@ -39,7 +39,7 @@ class CleanUnusedComponents
         return $this;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         if (!$this->enabled || Generator::isDefault($analysis->openapi->components)) {
             return;

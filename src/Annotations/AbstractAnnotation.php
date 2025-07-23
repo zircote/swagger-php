@@ -434,7 +434,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * @param string $ref     Current ref path?
      * @param object $context a free-form context contains
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         if (in_array($this, $skip, true)) {
             return true;
@@ -792,6 +792,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return array_filter($combined, fn ($value) => !Generator::isDefault($value) && $value !== null);
+        return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
     }
 }

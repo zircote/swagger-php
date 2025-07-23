@@ -16,7 +16,7 @@ use OpenApi\Generator;
  */
 class BuildPaths
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $paths = [];
         // Merge @OA\PathItems with the same path.

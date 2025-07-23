@@ -20,7 +20,7 @@ class AugmentProperties
     use Concerns\RefTrait;
     use Concerns\TypesTrait;
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
@@ -93,13 +93,11 @@ class AugmentProperties
                 }
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
-                    $property->items = $items = new OA\Items(
-                        [
-                            'type' => $property->type,
-                            '_context' => new Context(['generated' => true], $context),
-                        ]
-                    );
-                    $analysis->addAnnotation($items, $items->_context);
+                    $property->items = new OA\Items([
+                        'type' => $property->type,
+                        '_context' => new Context(['generated' => true], $context),
+                    ]);
+                    $analysis->addAnnotation($property->items, $property->items->_context);
                     if (!Generator::isDefault($property->ref)) {
                         $property->items->ref = $property->ref;
                         $property->ref = Generator::UNDEFINED;
