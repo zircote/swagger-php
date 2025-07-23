@@ -192,7 +192,7 @@ class OpenApi extends AbstractAnnotation
      */
     public function ref(string $ref)
     {
-        if (substr($ref, 0, 2) !== '#/') {
+        if (!str_starts_with($ref, '#/')) {
             // @todo Add support for external (http) refs?
             throw new OpenApiException('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
@@ -219,7 +219,7 @@ class OpenApi extends AbstractAnnotation
 
         if (is_object($container)) {
             // support use x-* in ref
-            $xKey = strpos($property, 'x-') === 0 ? substr($property, 2) : null;
+            $xKey = str_starts_with($property, 'x-') ? substr($property, 2) : null;
             if ($xKey) {
                 if (!is_array($container->x) || !array_key_exists($xKey, $container->x)) {
                     $xKey = null;
