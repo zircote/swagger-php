@@ -71,7 +71,7 @@ class TokenScanner
         };
         $result = [];
         foreach ($stmts as $stmt) {
-            switch (get_class($stmt)) {
+            switch ($stmt::class) {
                 case Use_::class:
                     $uses += $this->collect_uses($stmt);
                     break;
