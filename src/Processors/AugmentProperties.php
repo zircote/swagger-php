@@ -93,12 +93,10 @@ class AugmentProperties
                 }
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($schema->items)) {
-                    $schema->items = new OA\Items(
-                        [
+                    $schema->items = new OA\Items([
                             'type' => $schema->type,
                             '_context' => new Context(['generated' => true], $context),
-                        ]
-                    );
+                        ]);
                     $analysis->addAnnotation($schema->items, $schema->items->_context);
                     if (!Generator::isDefault($schema->ref)) {
                         $schema->items->ref = $schema->ref;
@@ -138,7 +136,7 @@ class AugmentProperties
             if ($context->nullable === true && Generator::isDefault($schema->nullable)) {
                 $schema->nullable = true;
             }
-            $type = strtolower($context->type);
+            $type = strtolower((string) $context->type);
             if (!$this->mapNativeType($schema, $type)) {
                 $typeSchema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if (Generator::isDefault($schema->ref) && $typeSchema) {
@@ -168,7 +166,7 @@ class AugmentProperties
 
     protected function stripNull(string $typeDescription): string
     {
-        if (strpos($typeDescription, '|') === false) {
+        if (!str_contains($typeDescription, '|')) {
             return $typeDescription;
         }
         $types = [];
