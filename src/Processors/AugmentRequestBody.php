@@ -15,7 +15,7 @@ use OpenApi\Generator;
  */
 class AugmentRequestBody
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var array<OA\RequestBody> $requests */
         $requests = $analysis->getAnnotationsOfType(OA\RequestBody::class);

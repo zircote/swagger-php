@@ -33,7 +33,7 @@ class AugmentTags
         return $this;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
@@ -70,7 +70,7 @@ class AugmentTags
         $this->removeUnusedTags($usedTagNames, $declaredTags, $analysis);
     }
 
-    private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis)
+    private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void
     {
         if (in_array('*', $this->whitelist)) {
             return;

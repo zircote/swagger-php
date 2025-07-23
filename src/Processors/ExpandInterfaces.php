@@ -19,7 +19,7 @@ class ExpandInterfaces
 {
     use Concerns\MergePropertiesTrait;
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);

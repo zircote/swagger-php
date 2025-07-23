@@ -49,7 +49,7 @@ class ExpandEnums
         $this->enumNames = $enumNames;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         if (!class_exists('\\ReflectionEnum')) {
             return;
@@ -87,7 +87,7 @@ class ExpandEnums
 
                 if ($this->enumNames !== null && !$useName) {
                     $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
-                    $schemaX[$this->enumNames] = array_map(function ($case) {
+                    $schemaX[$this->enumNames] = array_map(function ($case): string {
                         return $case->name;
                     }, $re->getCases());
 

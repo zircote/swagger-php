@@ -37,7 +37,7 @@ class Pipeline
         // allow matching on class name in $pipe in a string
         if (is_string($pipe) && !$matcher) {
             $pipeClass = $pipe;
-            $matcher = function ($pipe) use ($pipeClass) {
+            $matcher = function ($pipe) use ($pipeClass): bool {
                 return !$pipe instanceof $pipeClass;
             };
         }

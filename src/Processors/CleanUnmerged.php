@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 
 class CleanUnmerged
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $split = $analysis->split();
         $merged = $split->merged->annotations;

@@ -42,7 +42,7 @@ class AugmentParameters
         return $this;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $this->augmentSharedParameters($analysis);
         if ($this->augmentOperationParameters) {

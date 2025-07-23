@@ -237,7 +237,7 @@ class Generator
         }
 
         $config = $this->getConfig();
-        $walker = function (callable $pipe) use ($config) {
+        $walker = function (callable $pipe) use ($config): void {
             $rc = new \ReflectionClass($pipe);
 
             // apply config

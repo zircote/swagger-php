@@ -182,7 +182,7 @@ trait DocblockTrait
 
         return array_merge(
             ['type' => null, 'description' => null],
-            array_filter($matches, fn ($key) => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
+            array_filter($matches, fn ($key): bool => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
         );
     }
 

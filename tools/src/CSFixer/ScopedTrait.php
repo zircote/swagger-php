@@ -15,7 +15,7 @@ trait ScopedTrait
         return parent::supports($file) && $this->isScoped($file);
     }
 
-    public function scope(array $scopes): static
+    public function scope(array $scopes)
     {
         $this->scopes = $scopes;
 

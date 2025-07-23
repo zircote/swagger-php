@@ -65,19 +65,19 @@ class DocBlockParser
             }
 
             return $this->docParser->parse($comment, $context->getDebugLocation());
-        } catch (\Exception $e) {
-            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string) $context, '/') . '\.$/', $e->getMessage(), $matches)) {
+        } catch (\Exception $exception) {
+            if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string) $context, '/') . '\.$/', $exception->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
                 $errorPos = (int) $matches[2];
                 $atPos = strpos($comment, '@');
                 $context->line -= substr_count($comment, "\n", $atPos + $errorPos) + 1;
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1
-                $context->logger->error($errorMessage . ' in ' . $context, ['exception' => $e]);
+                $context->logger->error($errorMessage . ' in ' . $context, ['exception' => $exception]);
             } else {
                 $context->logger->error(
-                    $e->getMessage() . ($context->filename ? ('; file=' . $context->filename) : ''),
-                    ['exception' => $e]
+                    $exception->getMessage() . ($context->filename ? ('; file=' . $context->filename) : ''),
+                    ['exception' => $exception]
                 );
             }
 
