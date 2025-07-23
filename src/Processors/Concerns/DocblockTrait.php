@@ -41,7 +41,7 @@ trait DocblockTrait
         foreach ($matchPriorityMap as $className => $strict) {
             foreach ($annotation->_context->annotations as $contextAnnotation) {
                 if ($strict) {
-                    if ($className === get_class($contextAnnotation)) {
+                    if ($className === $contextAnnotation::class) {
                         return $annotation === $contextAnnotation;
                     }
                 } else {
@@ -96,13 +96,13 @@ trait DocblockTrait
         $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $ii = count($comment) - 1;
-        $comment[$ii] = preg_replace('/\*\/[ \t]*$/', '', $comment[$ii]); // strip '*/'
+        $comment[$ii] = preg_replace('/\*\/[ \t]*$/', '', (string) $comment[$ii]); // strip '*/'
         $lines = [];
         $append = false;
         $skip = false;
         foreach ($comment as $line) {
-            $line = preg_replace('/^\s+\* ?/', '', $line);
-            if (substr($tagline = trim($line), 0, 1) === '@') {
+            $line = preg_replace('/^\s+\* ?/', '', (string) $line);
+            if (str_starts_with($tagline = trim((string) $line), '@')) {
                 $this->handleTag($tagline, $tags);
                 $skip = true;
             }
@@ -111,11 +111,11 @@ trait DocblockTrait
             }
             if ($append) {
                 $ii = count($lines) - 1;
-                $lines[$ii] = substr($lines[$ii], 0, -1) . $line;
+                $lines[$ii] = substr((string) $lines[$ii], 0, -1) . $line;
             } else {
                 $lines[] = $line;
             }
-            $append = (substr($line, -1) === '\\');
+            $append = (str_ends_with((string) $line, '\\'));
         }
 
         $description = trim(implode("\n", $lines));
@@ -140,7 +140,7 @@ trait DocblockTrait
         $summary = '';
         foreach ($lines as $line) {
             $summary .= $line . "\n";
-            if ($line === '' || substr($line, -1) === '.') {
+            if ($line === '' || str_ends_with($line, '.')) {
                 return trim($summary);
             }
         }
@@ -169,7 +169,7 @@ trait DocblockTrait
         }
 
         $description = '';
-        if (false !== ($substr = substr($content, strlen($summary)))) {
+        if (false !== ($substr = substr($content, strlen((string) $summary)))) {
             $description = trim($substr);
         }
 
@@ -186,7 +186,7 @@ trait DocblockTrait
         $comment = str_replace("\r\n", "\n", (string) $docblock);
         $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
 
-        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?+$/im', $comment, $matches);
+        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?+$/im', (string) $comment, $matches);
 
         $result = array_merge(
             ['type' => null, 'description' => null],
