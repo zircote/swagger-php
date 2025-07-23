@@ -169,7 +169,7 @@ class Generator
         $normalised = [];
         foreach ($config as $key => $value) {
             if (is_numeric($key)) {
-                $token = explode('=', $value);
+                $token = explode('=', (string) $value);
                 if (2 === count($token)) {
                     // 'operationId.hash=false'
                     [$key, $value] = $token;
@@ -180,10 +180,10 @@ class Generator
                 $value = 'true' == $value;
             }
 
-            if ($isList = ('[]' === substr($key, -2))) {
-                $key = substr($key, 0, -2);
+            if ($isList = (str_ends_with((string) $key, '[]'))) {
+                $key = substr((string) $key, 0, -2);
             }
-            $token = explode('.', $key);
+            $token = explode('.', (string) $key);
             if (2 === count($token)) {
                 // 'operationId.hash' => false
                 // namespaced / processor
@@ -406,7 +406,7 @@ class Generator
                     continue;
                 }
                 if (is_dir($resolvedSource)) {
-                    $this->scanSources(Util::finder($resolvedSource), $analysis, $rootContext);
+                    $this->scanSources(new SourceFinder($resolvedSource), $analysis, $rootContext);
                 } else {
                     $rootContext->logger->debug(sprintf('Analysing source: %s', $resolvedSource));
                     $analysis->addAnalysis($analyser->fromFile($resolvedSource, $rootContext));

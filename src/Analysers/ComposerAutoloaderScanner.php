@@ -29,7 +29,7 @@ class ComposerAutoloaderScanner
         if ($autoloader = static::getComposerAutoloader()) {
             foreach (array_keys($autoloader->getClassMap()) as $unit) {
                 foreach ($namespaces as $namespace) {
-                    if (0 === strpos($unit, $namespace)) {
+                    if (str_starts_with($unit, $namespace)) {
                         $units[] = $unit;
                         break;
                     }

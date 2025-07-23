@@ -60,7 +60,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
         if (is_array($type)) {
             $mapped = [];
             foreach ($type as $t) {
-                $mapped[] = $this->native2spec(strtolower($t));
+                $mapped[] = $this->native2spec(strtolower((string) $t));
             }
 
             $schema->type = $mapped;

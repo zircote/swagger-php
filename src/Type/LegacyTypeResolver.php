@@ -142,22 +142,15 @@ class LegacyTypeResolver extends AbstractTypeResolver
      */
     protected function getDocblockTypeDetails(\Reflector $reflector, ?Context $context): \stdClass
     {
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $docComment = $reflector->getDeclaringFunction()->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $docComment = $reflector->getDocComment();
-                break;
-            default:
-                $docComment = null;
-        }
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
 
         // cheat
         $name = $reflector->getName();
@@ -166,21 +159,14 @@ class LegacyTypeResolver extends AbstractTypeResolver
             return $this->normaliseTypeResult(null, null, [], $name, null, null, false, $context);
         }
 
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                    ? '@param'
-                    : '@var';
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $tagName = '@param';
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $tagName = '@return';
-                break;
-            default:
-                $tagName = null;
-        }
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
 
         if (!$tagName) {
             return $this->normaliseTypeResult(null, null, [], $name, null, null, false, $context);
@@ -216,7 +202,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         if ($result) {
             $type = $isArray ? $matches[2] : $matches[1];
             if ('int' === $type) {
-                $minMax = array_map(fn (string $s): string => trim($s), explode(',', $matches[2]));
+                $minMax = array_map(trim(...), explode(',', $matches[2]));
                 if (2 === count($minMax)) {
                     $explicitDetails = [
                         'min' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),

@@ -8,8 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
+use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -21,8 +21,8 @@ class GeneratorTest extends OpenApiTestCase
         $sourceDir = static::examplePath("$name/annotations");
 
         yield 'dir-list' => [$name, [$sourceDir]];
-        yield 'finder' => [$name, Util::finder($sourceDir)];
-        yield 'finder-list' => [$name, [Util::finder($sourceDir)]];
+        yield 'finder' => [$name, new SourceFinder($sourceDir)];
+        yield 'finder-list' => [$name, [new SourceFinder($sourceDir)]];
     }
 
     /**
