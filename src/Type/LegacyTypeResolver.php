@@ -12,6 +12,9 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
 
+/**
+ * @deprecated use `TypeInfoTypeResolver` instead
+ */
 class LegacyTypeResolver extends AbstractTypeResolver
 {
     /** @inheritdoc */

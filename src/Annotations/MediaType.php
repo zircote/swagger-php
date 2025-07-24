@@ -11,6 +11,8 @@ use OpenApi\Generator;
 /**
  * Each Media Type object provides schema and examples for the media type identified by its key.
  *
+ * Parameter encodings can be set either here, or on nested `Property` annotations directly.
+ *
  * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  *
  * @Annotation
