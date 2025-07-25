@@ -101,6 +101,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'line' => $rc->getStartLine(),
             'annotations' => [],
             'scanned' => $details,
+            'reflector' => $rc,
         ], $analysis->context);
 
         $definition = [
@@ -131,6 +132,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     'filename' => $method->getFileName() ?: null,
                     'line' => $method->getStartLine(),
                     'annotations' => [],
+                    'reflector' => $method,
                 ], $context);
                 foreach ($this->annotationFactories as $annotationFactory) {
                     $analysis->addAnnotations($annotationFactory->build($method, $ctx), $ctx);
