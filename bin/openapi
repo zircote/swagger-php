@@ -31,6 +31,7 @@ $options = [
     'debug' => false,
     'processor' => [],
     'version' => null,
+    'show-version' => false,
 ];
 $aliases = [
     'c' => 'config',
@@ -41,7 +42,8 @@ $aliases = [
     'h' => 'help',
     'd' => 'debug',
     'p' => 'processor',
-    'f' => 'format'
+    'f' => 'format',
+    'V' => 'show-version'
 ];
 $needsArgument = [
     'config',
@@ -110,6 +112,11 @@ if (!$error && $options['bootstrap']) {
         }
     }
 }
+if ($options['show-version']) {
+    $logger->info(\OpenApi\Version::getCurrent());
+    exit(0);
+}
+
 if (count($paths) === 0) {
     $error = 'Specify at least one path.';
 }
@@ -142,6 +149,7 @@ Options:
   --debug (-d)      Show additional error information.
   --version         The OpenAPI version; defaults to {$defaultVersion}.
   --help (-h)       Display this help message.
+  -V                Display the current version of this script.
 
 
 EOF;

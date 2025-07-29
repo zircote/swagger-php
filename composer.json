@@ -46,6 +46,8 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
+        "composer/semver": "^3.0",
+        "czproject/git-php": "^4.5",
         "nikic/php-parser": "^4.19 || ^5.0",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "symfony/deprecation-contracts": "^2 || ^3",
