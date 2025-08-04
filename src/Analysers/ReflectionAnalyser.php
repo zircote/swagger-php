@@ -146,6 +146,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     'property' => $property->getName(),
                     'comment' => $property->getDocComment() ?: null,
                     'annotations' => [],
+                    'reflector' => $property,
                 ], $context);
                 if ($property->isStatic()) {
                     $ctx->static = true;
@@ -172,6 +173,7 @@ class ReflectionAnalyser implements AnalyserInterface
                     'constant' => $constant->getName(),
                     'comment' => $constant->getDocComment() ?: null,
                     'annotations' => [],
+                    'reflector' => $constant,
                 ], $context);
                 foreach ($annotationFactory->build($constant, $ctx) as $annotation) {
                     if ($annotation instanceof OA\Property) {
