@@ -71,7 +71,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         foreach ($rp->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                             /** @var OA\Property|OA\Parameter|OA\RequestBody $instance */
                             $instance = $attribute->newInstance();
-                            $instance->_context = new Context(['nested' => false], $context);
+                            $instance->_context = new Context(['nested' => false, 'reflector' => $rp], $context);
 
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             $nullable = $rnt ? $rnt->allowsNull() : true;
@@ -89,7 +89,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                                 if ($rp->isPromoted()) {
                                     // ensure each property has its own context
-                                    $instance->_context = new Context(['generated' => true, 'annotations' => [$instance]], $context);
+                                    $instance->_context = new Context(['generated' => true, 'annotations' => [$instance], 'reflector' => $rp], $context);
 
                                     // promoted parameter - docblock is available via class/property
                                     if ($comment = $rp->getDeclaringClass()->getProperty($rp->getName())->getDocComment()) {
@@ -101,7 +101,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                     $instance->name = $rp->getName();
                                 }
                                 $instance->required = !$nullable;
-                                $context = new Context(['nested' => $this], $context);
+                                $context = new Context(['nested' => $this, 'reflector' => $rp], $context);
                                 $context->comment = null;
                                 $instance->merge([new OA\Schema(['type' => $type, '_context' => $context])]);
                             }
@@ -115,6 +115,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         if ($annotation instanceof OA\Property && Generator::isDefault($annotation->type)) {
                             // pick up simple return types
                             $annotation->type = $rrt->getName();
+                            $annotation->_context->reflector = $rrt;
                         }
                     }
                 }
