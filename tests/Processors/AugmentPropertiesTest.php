@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
@@ -136,10 +135,6 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties(): void
     {
-        if ($this->getAnalyzer() instanceof ReflectionAnalyser && PHP_VERSION_ID < 70400) {
-            $this->markTestSkipped();
-        }
-
         $analysis = $this->analysisFromFixtures(['TypedProperties.php']);
         $analysis->process([
             new MergeIntoOpenApi(),

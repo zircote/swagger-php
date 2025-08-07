@@ -44,7 +44,7 @@ use Psr\Log\LoggerInterface;
  * @property string|null                  $version     The OpenAPI version in use
  */
 #[\AllowDynamicProperties]
-class Context
+class Context implements \Stringable
 {
     /**
      * Prototypical inheritance for properties.

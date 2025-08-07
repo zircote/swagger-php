@@ -170,7 +170,7 @@ class AugmentProperties
 
     protected function stripNull(string $typeDescription): string
     {
-        if (strpos($typeDescription, '|') === false) {
+        if (!str_contains($typeDescription, '|')) {
             return $typeDescription;
         }
         $types = [];
