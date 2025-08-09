@@ -32,6 +32,9 @@ class Nullable
     #[OAT\Property]
     public ?string $firstname;
 
+    #[OAT\Property(nullable: false)]
+    public ?string $middlename;
+
     #[OAT\Property(nullable: true)]
     public ?string $lastname;
 

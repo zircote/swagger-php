@@ -137,7 +137,7 @@ class AugmentProperties
 
         // native typehints
         if ($context->type && !Generator::isDefault($context->type)) {
-            if ($context->nullable === true) {
+            if ($context->nullable === true && Generator::isDefault($property->nullable)) {
                 $property->nullable = true;
             }
             $type = strtolower($context->type);

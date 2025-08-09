@@ -24,6 +24,9 @@ components:
         firstname:
           type: string
           nullable: true
+        middlename:
+          type: string
+          nullable: false
         lastname:
           type: string
           nullable: true

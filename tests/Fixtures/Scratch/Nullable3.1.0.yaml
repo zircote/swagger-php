@@ -25,6 +25,8 @@ components:
           type:
             - string
             - 'null'
+        middlename:
+          type: string
         lastname:
           type:
             - string
