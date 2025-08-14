@@ -85,7 +85,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 if (Generator::isDefault($instance->type)) {
                                     $instance->type = $type;
                                 }
-                                $instance->nullable = $nullable ?: Generator::UNDEFINED;
+                                if (Generator::isDefault($instance->nullable)) {
+                                    $instance->nullable = $nullable ?: Generator::UNDEFINED;
+                                }
 
                                 if ($rp->isPromoted()) {
                                     // ensure each property has its own context
