@@ -189,6 +189,7 @@ class Context
     public function __serialize(): array
     {
         $data = (array) $this;
+        $data['reflector'] = null;
         unset($data['reflector']);
 
         return $data;
