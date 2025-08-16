@@ -184,6 +184,17 @@ class Context
     }
 
     /**
+     * Excludes `reflector` property.
+     */
+    public function __serialize(): array
+    {
+        $data = (array) $this;
+        unset($data['reflector']);
+
+        return $data;
+    }
+
+    /**
      * Traverse the context tree to get the property value.
      */
     public function __get(string $property)
