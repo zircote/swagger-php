@@ -81,11 +81,11 @@ class ExpandEnums
                 // no (or invalid) schema type means name
                 $useName = Generator::isDefault($schemaType) || ($enumType && $this->native2spec($enumType) != $schemaType);
 
-                $schema->enum = array_map(fn ($case) => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
+                $schema->enum = array_map(fn (\ReflectionEnumUnitCase $case) => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
 
                 if ($this->enumNames !== null && !$useName) {
                     $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
-                    $schemaX[$this->enumNames] = array_map(fn ($case): string => $case->name, $re->getCases());
+                    $schemaX[$this->enumNames] = array_map(fn (\ReflectionEnumUnitCase $case): string => $case->name, $re->getCases());
 
                     $schema->x = $schemaX;
                 }

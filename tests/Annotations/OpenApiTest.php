@@ -39,4 +39,12 @@ class OpenApiTest extends OpenApiTestCase
         $openapi->openapi = '2';
         $openapi->validate();
     }
+
+    public function testSerialize(): void
+    {
+        $openapi = $this->analysisFromFixtures(['Customer.php'])->openapi;
+        $unserialized = unserialize(serialize($openapi));
+
+        $this->assertSpecEquals($openapi, $unserialized);
+    }
 }
