@@ -17,7 +17,7 @@ class OpenApiTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
-        $openapi->openapi = OA\OpenApi::VERSION_3_0_0;
+        $openapi->openapi = '3.0.3';
         $openapi->validate();
     }
 
@@ -26,13 +26,13 @@ class OpenApiTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains("At least one of 'Required @OA\PathItem(), @OA\Components() or @OA\Webhook() not found'");
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
-        $openapi->openapi = OA\OpenApi::VERSION_3_1_0;
+        $openapi->openapi = '3.1.1';
         $openapi->validate();
     }
 
     public function testInvalidVersion(): void
     {
-        $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are: 3.0.0, 3.1.0');
+        $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are:');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         /* @phpstan-ignore assign.propertyType */
@@ -46,5 +46,21 @@ class OpenApiTest extends OpenApiTestCase
         $unserialized = unserialize(serialize($openapi));
 
         $this->assertSpecEquals($openapi, $unserialized);
+    }
+
+    public static function versionMatchProvider(): iterable
+    {
+        yield '3.0.0-3.0.0' => ['3.0.0', '3.0.0', true];
+        yield '3.0.0-3.0.x' => ['3.0.0', '3.0.x', true];
+        yield '3.0.3-3.0.x' => ['3.0.3', '3.0.x', true];
+        yield '3.0.3-3.1.x' => ['3.0.3', '3.1.x', false];
+    }
+
+    /**
+     * @dataProvider versionMatchProvider
+     */
+    public function testVersionMatch(string $given, string $compare, bool $expected): void
+    {
+        $this->assertEquals($expected, OA\OpenApi::versionMatch($given, $compare));
     }
 }

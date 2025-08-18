@@ -23,7 +23,10 @@ class OpenApi extends AbstractAnnotation
     public const VERSION_3_0_0 = '3.0.0';
     public const VERSION_3_1_0 = '3.1.0';
     public const DEFAULT_VERSION = self::VERSION_3_0_0;
-    public const SUPPORTED_VERSIONS = [self::VERSION_3_0_0, self::VERSION_3_1_0];
+    public const SUPPORTED_VERSIONS = [
+        self::VERSION_3_0_0, '3.0.1',  '3.0.2', '3.0.3', '3.0.4',
+        self::VERSION_3_1_0, '3.1.1',
+    ];
 
     /**
      * The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.
@@ -152,12 +155,12 @@ class OpenApi extends AbstractAnnotation
             return false;
         }
 
-        /* paths is optional in 3.1.0 */
-        if ($this->openapi === self::VERSION_3_0_0 && Generator::isDefault($this->paths)) {
+        /* paths is optional in 3.1.x */
+        if (self::versionMatch($this->openapi, '3.0.x') && Generator::isDefault($this->paths)) {
             $this->_context->logger->warning('Required @OA\PathItem() not found');
         }
 
-        if ($this->openapi === self::VERSION_3_1_0
+        if (self::versionMatch($this->openapi, '3.1.x')
             && Generator::isDefault($this->paths)
             && Generator::isDefault($this->webhooks)
             && Generator::isDefault($this->components)
@@ -168,6 +171,28 @@ class OpenApi extends AbstractAnnotation
         }
 
         return parent::validate([], [], '#', new \stdClass());
+    }
+
+    /**
+     * Compare OpenApi version numbers.
+     *
+     * Allows patch version placeholder `x`; e.g. `3.1.x`.
+     */
+    public static function versionMatch(string $version1, string $version2): bool
+    {
+        $expand = function (string $v): array {
+            if (!str_ends_with($v, '.x')) {
+                return [$v];
+            }
+
+            $minor = str_replace('.x', '', $v);
+
+            return array_filter(self::SUPPORTED_VERSIONS, fn (string $sv): bool => str_starts_with($sv, $minor));
+        };
+        $versions1 = $expand($version1);
+        $versions2 = $expand($version2);
+
+        return array_intersect($versions1, $versions2) !== [];
     }
 
     /**
@@ -267,7 +292,7 @@ class OpenApi extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+        if (!$this->_context->isVersion('3.1.x')) {
             unset($data->webhooks);
         }
 

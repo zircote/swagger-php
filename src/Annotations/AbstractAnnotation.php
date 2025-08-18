@@ -352,7 +352,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+            if ($this->_context->isVersion('3.1.x')) {
                 foreach (['summary', 'description'] as $prop) {
                     if (property_exists($data, $prop)) {
                         $ref[$prop] = $data->{$prop};
@@ -361,7 +361,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 $ref = ['oneOf' => [$ref]];
-                if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+                if ($this->_context->isVersion('3.1.x')) {
                     $ref['oneOf'][] = ['type' => 'null'];
                 } else {
                     $ref['nullable'] = $data->nullable;
@@ -376,7 +376,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $data = (object) $ref;
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion('3.0.x')) {
             if (isset($data->exclusiveMinimum) && is_numeric($data->exclusiveMinimum)) {
                 $data->minimum = $data->exclusiveMinimum;
                 $data->exclusiveMinimum = true;
@@ -398,7 +398,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+        if ($this->_context->isVersion('3.1.x')) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
                     if (isset($data->oneOf)) {
