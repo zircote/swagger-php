@@ -37,9 +37,9 @@ class OpenApi extends AbstractAnnotation
      *
      * This is not related to the API info::version string.
      *
-     * @var '3.0.0'|'3.1.0'
+     * @var string $openapi Any value in `self::SUPPORTED_VERSIONS`
      */
-    public $openapi = self::DEFAULT_VERSION;
+    public string $openapi = self::DEFAULT_VERSION;
 
     /**
      * Provides metadata about the API. The metadata may be used by tooling as required.
