@@ -35,11 +35,11 @@ class OpenApi extends AbstractAnnotation
      *
      * A version specified via <code>Generator::setVersion()</code> will overwrite this value.
      *
-     * This is not related to the API info::version string.
+     * NOTE: This is not related to the API info::version string.
      *
-     * @var string $openapi Any value in `self::SUPPORTED_VERSIONS`
+     * @var string
      */
-    public string $openapi = self::DEFAULT_VERSION;
+    public $openapi = self::DEFAULT_VERSION;
 
     /**
      * Provides metadata about the API. The metadata may be used by tooling as required.
