@@ -68,4 +68,13 @@ class ContextTest extends OpenApiTestCase
             $customerPropertyFirstName->_context->getDebugLocation()
         );
     }
+
+    // -------------------------------------------------------------------------
+
+    public function testSerialize(): void
+    {
+        $context = new Context([], $this->getContext());
+        $serialized = serialize($context);
+        $this->assertIsString($serialized);
+    }
 }

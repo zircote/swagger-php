@@ -188,11 +188,13 @@ class Context
      */
     public function __serialize(): array
     {
-        $data = (array) $this;
-        $data['reflector'] = null;
-        unset($data['reflector']);
+        return array_filter(get_object_vars($this), function ($value): bool {
+            $rc = is_object($value) ? new \ReflectionClass($value) : null;
 
-        return $data;
+            return (!$rc || !$rc->isAnonymous())
+                && !$value instanceof \Reflector
+                && !$value instanceof \Closure;
+        });
     }
 
     /**
