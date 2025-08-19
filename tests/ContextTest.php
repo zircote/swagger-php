@@ -75,6 +75,8 @@ class ContextTest extends OpenApiTestCase
     {
         $context = new Context([], $this->getContext());
         $serialized = serialize($context);
-        $this->assertIsString($serialized);
+        $unserialized = unserialize($serialized);
+
+        $this->assertEquals($serialized, serialize($unserialized));
     }
 }
