@@ -140,11 +140,11 @@ class Context
     /**
      * Check if one of the given version numbers matches the current OpenAPI version.
      *
-     * @param string|array $versions One or more version numbers
+     * @param string $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
      */
-    public function isVersion($versions): bool
+    public function isVersion(string $version): bool
     {
-        return in_array($this->getVersion(), (array) $versions);
+        return OA\OpenApi::versionMatch($this->getVersion(), $version);
     }
 
     /**

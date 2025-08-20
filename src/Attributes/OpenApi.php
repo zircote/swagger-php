@@ -13,7 +13,6 @@ use OpenApi\Annotations as OA;
 class OpenApi extends OA\OpenApi
 {
     /**
-     * @param '3.0.0'|'3.1.0'          $openapi
      * @param Server[]|null            $servers
      * @param Tag[]|null               $tags
      * @param PathItem[]|null          $paths

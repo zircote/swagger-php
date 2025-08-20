@@ -127,11 +127,7 @@ class AugmentProperties
                 $property->minimum = 0;
             } elseif ($type === 'non-zero-int') {
                 $property->type = 'integer';
-                if ($property->_context->isVersion(OA\OpenApi::VERSION_3_1_0)) {
-                    $property->not = ['const' => 0];
-                } else {
-                    $property->not = ['enum' => [0]];
-                }
+                $property->not = $property->_context->isVersion('3.1.x') ? ['const' => 0] : ['enum' => [0]];
             }
         }
 
