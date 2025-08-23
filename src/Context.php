@@ -49,7 +49,7 @@ class Context
     /**
      * Prototypical inheritance for properties.
      */
-    private ?Context $parent;
+    protected ?Context $parent;
 
     public function __construct(array $properties = [], ?Context $parent = null)
     {
@@ -183,16 +183,22 @@ class Context
         return $location;
     }
 
-    /**
-     * Excludes `reflector` property.
-     */
     public function __serialize(): array
     {
-        $data = (array) $this;
-        $data['reflector'] = null;
-        unset($data['reflector']);
+        return array_filter(get_object_vars($this), function ($value): bool {
+            $rc = is_object($value) ? new \ReflectionClass($value) : null;
 
-        return $data;
+            return (!$rc || !$rc->isAnonymous())
+                && !$value instanceof \Reflector
+                && !$value instanceof \Closure;
+        });
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $name => $value) {
+            $this->{$name} = $value;
+        }
     }
 
     /**
