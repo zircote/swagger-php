@@ -73,10 +73,13 @@ class ContextTest extends OpenApiTestCase
 
     public function testSerialize(): void
     {
-        $context = new Context([], $this->getContext());
+        $context = new Context(['filename' => __FILE__], $this->getContext());
         $serialized = serialize($context);
         $unserialized = unserialize($serialized);
 
         $this->assertEquals($serialized, serialize($unserialized));
+        $this->assertInstanceOf(Context::class, $unserialized->root());
+        $this->assertNotSame($unserialized, $unserialized->root());
+        $this->assertEquals(__FILE__, $unserialized->filename);
     }
 }
