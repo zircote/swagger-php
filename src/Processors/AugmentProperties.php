@@ -136,7 +136,7 @@ class AugmentProperties
             if ($context->nullable === true && Generator::isDefault($property->nullable)) {
                 $property->nullable = true;
             }
-            $type = strtolower($context->type);
+            $type = strtolower((string) $context->type);
             if (!$this->mapNativeType($property, $type)) {
                 $schema = $analysis->getSchemaForSource($context->fullyQualifiedName($type));
                 if (Generator::isDefault($property->ref) && $schema) {
@@ -166,7 +166,7 @@ class AugmentProperties
 
     protected function stripNull(string $typeDescription): string
     {
-        if (strpos($typeDescription, '|') === false) {
+        if (!str_contains($typeDescription, '|')) {
             return $typeDescription;
         }
         $types = [];
