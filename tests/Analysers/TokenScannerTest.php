@@ -333,6 +333,28 @@ class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
+        yield 'MultiNamespace' => [
+            'PHP/MultiNamespace.php',
+            [
+                '\\Test' => [
+                    'uses' => [],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [],
+                    'properties' => [],
+                ],
+                'OpenApi\\Tests\\Fixtures\\PHP\\MultiNamespace' => [
+                    'uses' => [],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => [],
+                    'properties' => [],
+                ],
+            ],
+        ];
+
         if (\PHP_VERSION_ID >= 80100) {
             yield 'enum' => [
                 'PHP/Enums/StatusEnum.php',
