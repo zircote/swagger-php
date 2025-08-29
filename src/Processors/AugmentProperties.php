@@ -20,7 +20,7 @@ class AugmentProperties
     use Concerns\RefTrait;
     use Concerns\TypesTrait;
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
@@ -93,13 +93,11 @@ class AugmentProperties
                 }
             } elseif ($typeMatches[2] === '[]') {
                 if (Generator::isDefault($property->items)) {
-                    $property->items = $items = new OA\Items(
-                        [
-                            'type' => $property->type,
-                            '_context' => new Context(['generated' => true], $context),
-                        ]
-                    );
-                    $analysis->addAnnotation($items, $items->_context);
+                    $property->items = new OA\Items([
+                        'type' => $property->type,
+                        '_context' => new Context(['generated' => true], $context),
+                    ]);
+                    $analysis->addAnnotation($property->items, $property->items->_context);
                     if (!Generator::isDefault($property->ref)) {
                         $property->items->ref = $property->ref;
                         $property->ref = Generator::UNDEFINED;
@@ -129,17 +127,13 @@ class AugmentProperties
                 $property->minimum = 0;
             } elseif ($type === 'non-zero-int') {
                 $property->type = 'integer';
-                if ($property->_context->isVersion(OA\OpenApi::VERSION_3_1_0)) {
-                    $property->not = ['const' => 0];
-                } else {
-                    $property->not = ['enum' => [0]];
-                }
+                $property->not = $property->_context->isVersion('3.1.x') ? ['const' => 0] : ['enum' => [0]];
             }
         }
 
         // native typehints
         if ($context->type && !Generator::isDefault($context->type)) {
-            if ($context->nullable === true) {
+            if ($context->nullable === true && Generator::isDefault($property->nullable)) {
                 $property->nullable = true;
             }
             $type = strtolower($context->type);

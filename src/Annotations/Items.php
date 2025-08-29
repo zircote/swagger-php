@@ -41,7 +41,7 @@ class Items extends Schema
     /**
      * @inheritdoc
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         if (in_array($this, $skip, true)) {
             return true;

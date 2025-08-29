@@ -387,7 +387,7 @@ class Analysis
      *
      * @return \stdClass {merged: Analysis, unmerged: Analysis}
      */
-    public function split()
+    public function split(): \stdClass
     {
         $result = new \stdClass();
         $result->merged = $this->merged();

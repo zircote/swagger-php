@@ -19,7 +19,7 @@ Nested:
     #[OA\Get(
         path: '/api/users',
         responses: [
-            new OA\Response(response: 200, description: 'AOK'),
+            new OA\Response(response: 200, description: 'OK'),
             new OA\Response(response: 401, description: 'Not allowed'),
         ]
     )]
@@ -29,7 +29,7 @@ Nested:
 Not nested:
 ```php
     #[OA\Get(path: '/api/users')]
-    #[OA\Response(response: 200, description: 'AOK')]
+    #[OA\Response(response: 200, description: 'OK')]
     #[OA\Response(response: 401, description: 'Not allowed')]
     public function users() { /* ... */ }
 ```

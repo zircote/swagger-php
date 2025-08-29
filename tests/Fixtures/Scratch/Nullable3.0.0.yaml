@@ -21,9 +21,15 @@ components:
       example: '2023-08-02T07:06:46+03:30'
     Nullable:
       properties:
+        title:
+          type: string
+          nullable: false
         firstname:
           type: string
           nullable: true
+        middlename:
+          type: string
+          nullable: false
         lastname:
           type: string
           nullable: true
@@ -43,9 +49,8 @@ components:
               $ref: '#/components/schemas/MyDateTime'
           nullable: true
         description:
-          type:
-            - string
-            - 'null'
+          type: string
+          nullable: true
         choice:
           type: string
           enum:

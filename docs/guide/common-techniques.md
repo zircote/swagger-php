@@ -20,22 +20,19 @@ a structural element (`class`, `method`, `parameter` or `enum`)
 This means in a lot of cases it is not necessary to explicitly document all details.
 
 **Example**
-```php
-<?php
 
-/**
- * @OA\Schema()
- */
-class Product {
+<codeblock id="context-awareness">
+  <template v-slot:at>
 
-    /**
-     * The product name,
-     * @var string
-     * @OA\Property()
-     */
-    public $name;
-}
-```
+<<< @/snippets/guide/common-techniques/context_awareness_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/context_awareness_an.php
+
+  </template>
+</codeblock>
 
 **Results in**
 ```yaml
@@ -52,48 +49,50 @@ components:
 
 **As if you'd written**
 
-```php
-    /**
-     * The product name
-     * @var string
-     *
-     * @OA\Property(
-     *   property="name",
-     *   type="string",
-     *   description="The product name"
-     * )
-     */
-    public $name;
-```
+<codeblock id="explicit-context">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/explicit_context_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/explicit_context_an.php
+
+  </template>
+</codeblock>
 
 ## Response media type
 
 The `@OA\MediaType` is used to describe the content:
 
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     description="successful operation",
- *     @OA\MediaType(
- *         mediaType="application/json",
- *         @OA\Schema(ref="#/components/schemas/User"),
- *     )
- * ),
- */
-```
+<codeblock id="response-media-type">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/response_media_type_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/response_media_type_an.php
+
+  </template>
+</codeblock>
 
 But because most API requests and responses are JSON, the `@OA\JsonContent` allows you to simplify this by writing:
 
-```php
-/**
- * @OA\Response(
- *     response=200,
- *     description="successful operation",
- *     @OA\JsonContent(ref="#/components/schemas/User"),
- * )
- */
-```
+<codeblock id="response-json-content">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/response_json_content_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/response_json_content_an.php
+
+  </template>
+</codeblock>
 
 During processing the `@OA\JsonContent` unfolds to `@OA\MediaType( mediaType="application/json", @OA\Schema(...)`
 and will generate the same output.
@@ -102,6 +101,21 @@ and will generate the same output.
 
 It's quite common that endpoints have some overlap in either their request or response data.
 To keep things DRY (Don't Repeat Yourself) the specification allows reusing components using `$ref`'s
+
+<codeblock id="using-references">
+  <template v-slot:at>
+
+```php
+#[OA\Schema(
+  schema: 'product_id',
+  type: 'integer',
+  format: 'int64',
+  description: 'The unique identifier of a product in our catalog',
+)]
+```
+
+  </template>
+  <template v-slot:an>
 
 ```php
 /**
@@ -113,6 +127,9 @@ To keep things DRY (Don't Repeat Yourself) the specification allows reusing comp
  * )
  */
 ```
+
+  </template>
+</codeblock>
 
 **Results in:**
 
@@ -128,12 +145,26 @@ components:
 
 This doesn't do anything by itself, but now you can reference this fragment by its path in the document tree `#/components/schemas/product_id`
 
+<codeblock id="refer-to-$ref">
+  <template v-slot:at>
+
+```php
+    #[OA\Property(ref: "#/components/schemas/product_id")]
+    public $id;
+```
+
+  </template>
+  <template v-slot:an>
+
 ```php
     /**
      * @OA\Property(ref="#/components/schemas/product_id")
      */
     public $id;
 ```
+
+  </template>
+</codeblock>
 
 ::: info Examples
 There are more uses cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/examples/specs/using-refs).
@@ -153,24 +184,18 @@ The specification allows for [custom properties](http://swagger.io/specification
 as long as they start with "x-". Therefore, all swagger-php annotations have an `x` property which accepts an array (map)
 and will unfold into "x-" properties.
 
-```php
-/**
- * @OA\Info(
- *   title="Example",
- *   version="1.0.0",
- *   x={
- *     "some-name": "a-value",
- *     "another": 2,
- *     "complex-type": {
- *       "supported":{
- *         {"version": "1.0", "level": "baseapi"},
- *         {"version": "2.1", "level": "fullapi"},
- *       }
- *     }
- *   }
- * )
- */
-```
+<codeblock id="custom-property">
+  <template v-slot:at>
+
+<<< @/snippets/guide/common-techniques/custom_property_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/custom_property_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
@@ -199,23 +224,18 @@ Enum cases can be used as value in an `enum` list just like a `string`, `integer
 
 **Basic enum:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="enum-as-values">
+  <template v-slot:at>
 
-enum Suit
-{
-    case Hearts;
-    case Diamonds;
-    case Clubs;
-    case Spades;
-}
+<<< @/snippets/guide/common-techniques/enum_as_values_at.php
 
-class Model
-{
-    #[OAT\Property(enum: [Suit::Hearts, Suit::Diamonds])]
-    protected array $someSuits;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/enum_as_values_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
@@ -242,24 +262,18 @@ If the enum is a backed enum, the case backing value is used instead of the name
 
 The simples way of using enums is to annotate them as `Schema`. This allows you to reference them like any other schema in your spec.
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="enum-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema()]
-enum Colour
-{
-    case GREEN;
-    case BLUE;
-    case RED;
-}
+<<< @/snippets/guide/common-techniques/enum_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/enum_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
@@ -288,24 +302,18 @@ For backed enums there exist two rules that determine whether the name or backin
 
 **Using the name of a backed enum:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="backed-enum-names-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema()]
-enum Colour: int
-{
-    case GREEN = 1;
-    case BLUE = 2;
-    case RED = 3;
-}
+<<< @/snippets/guide/common-techniques/backed_enum_names_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/backed_enum_names_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 
@@ -328,24 +336,18 @@ components:
 
 **Using the backing value:**
 
-```php
-use OpenApi\Attributes as OAT;
+<codeblock id="backed-enum-values-as-schema">
+  <template v-slot:at>
 
-#[OAT\Schema(type: 'integer')]
-enum Colour: int
-{
-    case GREEN = 1;
-    case BLUE = 2;
-    case RED = 3;
-}
+<<< @/snippets/guide/common-techniques/backed_enum_values_as_schema_at.php
 
-#[OAT\Schema()]
-class Product
-{
-    #[OAT\Property()]
-    public Colour $colour;
-}
-```
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/common-techniques/backed_enum_values_as_schema_an.php
+
+  </template>
+</codeblock>
 
 **Results in:**
 

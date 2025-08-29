@@ -486,7 +486,7 @@ class Schema extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion('3.0.x')) {
             unset($data->examples);
             if (isset($data->const)) {
                 $data->enum = [$data->const];
@@ -500,7 +500,7 @@ class Schema extends AbstractAnnotation
     /**
      * @inheritdoc
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         if ($this->type === 'array' && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
@@ -508,9 +508,9 @@ class Schema extends AbstractAnnotation
             return false;
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion('3.0.x')) {
             if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed for ' . OpenApi::VERSION_3_1_0);
+                $this->_context->logger->warning($this->identity() . ' is only allowed for 3.1.x');
 
                 return false;
             }

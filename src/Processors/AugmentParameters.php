@@ -42,7 +42,7 @@ class AugmentParameters
         return $this;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         $this->augmentSharedParameters($analysis);
         if ($this->augmentOperationParameters) {
@@ -92,11 +92,13 @@ class AugmentParameters
                                     $parameter->description = $details['description'];
                                 }
                             }
-
-                            if (!Generator::isDefault($parameter->schema)) {
-                                $this->mapNativeType($parameter->schema, $parameter->schema->type);
-                            }
                         }
+                    }
+                }
+
+                foreach ($operation->parameters as $parameter) {
+                    if (!Generator::isDefault($parameter->schema)) {
+                        $this->mapNativeType($parameter->schema, $parameter->schema->type);
                     }
                 }
             }

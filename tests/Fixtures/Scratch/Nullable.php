@@ -32,6 +32,9 @@ class Nullable
     #[OAT\Property]
     public ?string $firstname;
 
+    #[OAT\Property(nullable: false)]
+    public ?string $middlename;
+
     #[OAT\Property(nullable: true)]
     public ?string $lastname;
 
@@ -49,6 +52,12 @@ class Nullable
 
     #[OAT\Property(enum: ['Choice1', 'Choice2', null], example: 'Choice1', nullable: true)]
     public ?string $choice = null;
+
+    public function __construct(
+        #[OAT\Property(nullable: false)]
+        public ?string $title,
+    ) {
+    }
 }
 
 #[OAT\Get(

@@ -352,7 +352,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($data->ref)) {
             // Only specific https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#reference-object
             $ref = ['$ref' => $data->ref];
-            if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+            if ($this->_context->isVersion('3.1.x')) {
                 foreach (['summary', 'description'] as $prop) {
                     if (property_exists($data, $prop)) {
                         $ref[$prop] = $data->{$prop};
@@ -361,7 +361,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if (property_exists($this, 'nullable') && $this->nullable === true) {
                 $ref = ['oneOf' => [$ref]];
-                if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+                if ($this->_context->isVersion('3.1.x')) {
                     $ref['oneOf'][] = ['type' => 'null'];
                 } else {
                     $ref['nullable'] = $data->nullable;
@@ -376,18 +376,29 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $data = (object) $ref;
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_0_0)) {
+        if ($this->_context->isVersion('3.0.x')) {
             if (isset($data->exclusiveMinimum) && is_numeric($data->exclusiveMinimum)) {
                 $data->minimum = $data->exclusiveMinimum;
                 $data->exclusiveMinimum = true;
             }
+
             if (isset($data->exclusiveMaximum) && is_numeric($data->exclusiveMaximum)) {
                 $data->maximum = $data->exclusiveMaximum;
                 $data->exclusiveMaximum = true;
             }
+
+            if (isset($data->type) && is_array($data->type)) {
+                if (in_array('null', $data->type)) {
+                    $data->nullable = true;
+                    $data->type = array_filter($data->type, fn ($v): bool => $v !== 'null');
+                    if (1 === count($data->type)) {
+                        $data->type = array_pop($data->type);
+                    }
+                }
+            }
         }
 
-        if ($this->_context->isVersion(OpenApi::VERSION_3_1_0)) {
+        if ($this->_context->isVersion('3.1.x')) {
             if (isset($data->nullable)) {
                 if (true === $data->nullable) {
                     if (isset($data->oneOf)) {
@@ -434,7 +445,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * @param string $ref     Current ref path?
      * @param object $context a free-form context contains
      */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', $context = null): bool
+    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
         if (in_array($this, $skip, true)) {
             return true;
@@ -792,6 +803,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return array_filter($combined, fn ($value) => !Generator::isDefault($value) && $value !== null);
+        return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
     }
 }

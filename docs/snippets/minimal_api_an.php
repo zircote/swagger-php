@@ -14,7 +14,6 @@ class OpenApi
 
 class MyController
 {
-
     /**
      * @OA\Get(
      *     path="/api/data.json",

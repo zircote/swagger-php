@@ -11,7 +11,7 @@ use OpenApi\Attributes as OAT;
             securityScheme: 'bearerAuth',
             type: 'http',
             scheme: 'bearer'
-        )
+        ),
     ]
 )]
 class OpenApiSpec

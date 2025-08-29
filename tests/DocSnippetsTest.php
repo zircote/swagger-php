@@ -8,6 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Attributes\OpenApi;
 use OpenApi\Generator;
+use OpenApi\Pipeline;
+use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
 
@@ -52,6 +54,7 @@ class DocSnippetsTest extends OpenApiTestCase
             require_once $tmp;
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
+                ->withProcessorPipeline(fn (Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
             if ($lastSpec) {
                 $this->assertSpecEquals(

@@ -7,6 +7,7 @@ $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
     ->path('tools')->name('*.php')
     ->path('docs/examples')->name('*.php')
+    ->path('docs/snippets')->name('*.php')
     ->path('tests')->name('*.php')
     ->filter(function (\SplFileInfo $file) {
         return
