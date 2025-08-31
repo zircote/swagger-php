@@ -47,12 +47,7 @@ composer global require zircote/swagger-php
 ### doctrine/annotations
 As of version `4.8` the [doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) library **is optional** and **no longer installed by default**.
 
-To use PHPDoc annotations this needs to be installed on top of `swagger-php`:
-```shell
-composer require doctrine/annotations
-```
-
-If your code uses PHPDoc annotations you will need to install this as well:
+If your code uses PHPDoc annotations you will need to install that library manually:
 
 ```shell
 composer require doctrine/annotations
