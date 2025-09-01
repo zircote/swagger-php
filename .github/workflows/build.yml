@@ -38,5 +38,9 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: "${{ matrix.composer-options }}"
 
+      - name: Require type-info-extras
+        if: ${{ matrix.php >= '8.2' }}
+        run: composer require radebatz/type-info-extras -W
+
       - name: PHPUnit Tests
         run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
