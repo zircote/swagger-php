@@ -8,31 +8,10 @@ namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\TypeResolverInterface;
 
 trait TypesTrait
 {
-    protected static $NATIVE_TYPE_MAP = [
-        'array' => 'array',
-        'byte' => ['string', 'byte'],
-        'boolean' => 'boolean',
-        'bool' => 'boolean',
-        'int' => 'integer',
-        'integer' => 'integer',
-        'long' => ['integer', 'long'],
-        'float' => ['number', 'float'],
-        'double' => ['number', 'double'],
-        'string' => 'string',
-        'date' => ['string', 'date'],
-        'datetime' => ['string', 'date-time'],
-        '\\datetime' => ['string', 'date-time'],
-        'datetimeimmutable' => ['string', 'date-time'],
-        '\\datetimeimmutable' => ['string', 'date-time'],
-        'datetimeinterface' => ['string', 'date-time'],
-        '\\datetimeinterface' => ['string', 'date-time'],
-        'number' => 'number',
-        'object' => 'object',
-    ];
-
     /**
      * @param string|array $type
      */
@@ -41,8 +20,8 @@ trait TypesTrait
         if (is_array($type)) {
             $mapped = [];
             foreach ($type as $t) {
-                if (array_key_exists($t, self::$NATIVE_TYPE_MAP)) {
-                    $t = self::$NATIVE_TYPE_MAP[$t];
+                if (array_key_exists($t, TypeResolverInterface::$NATIVE_TYPE_MAP)) {
+                    $t = TypeResolverInterface::$NATIVE_TYPE_MAP[$t];
                     if (is_array($t)) {
                         $t = $t[0];
                     }
@@ -55,11 +34,11 @@ trait TypesTrait
             return true;
         }
 
-        if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
+        if (!array_key_exists($type, TypeResolverInterface::$NATIVE_TYPE_MAP)) {
             return false;
         }
 
-        $type = self::$NATIVE_TYPE_MAP[$type];
+        $type = TypeResolverInterface::$NATIVE_TYPE_MAP[$type];
         if (is_array($type)) {
             if (Generator::isDefault($schema->format)) {
                 $schema->format = $type[1];
@@ -74,7 +53,9 @@ trait TypesTrait
 
     public function native2spec(string $type): string
     {
-        $mapped = array_key_exists($type, self::$NATIVE_TYPE_MAP) ? self::$NATIVE_TYPE_MAP[$type] : $type;
+        $mapped = array_key_exists($type, TypeResolverInterface::$NATIVE_TYPE_MAP)
+            ? TypeResolverInterface::$NATIVE_TYPE_MAP[$type]
+            : $type;
 
         return is_array($mapped) ? $mapped[0] : $mapped;
     }
