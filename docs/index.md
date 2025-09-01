@@ -1,6 +1,6 @@
 ---
 layout: home
-hero: 
+hero:
   name: Swagger-PHP
   tagline: Generate OpenAPI documentation for your RESTful API.
   actions:
@@ -51,7 +51,7 @@ possible attributes should be used.
 
 ### 4. Explore and interact with your API
 
-Use an OpenAPI tool like [Swagger UI](https://swagger.io/tools/swagger-ui/) to explore and interact with your API.
+Use an OpenAPI tool like [Swagger UI](https://swagger.io/tools/swagger-ui/) or [Scalar](https://github.com/scalar/scalar) to explore and interact with your API.
 
 ## Links
 
