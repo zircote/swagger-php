@@ -7,7 +7,10 @@
 namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\Type\LegacyTypeResolver;
+use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 
 trait TypesTrait
@@ -58,5 +61,12 @@ trait TypesTrait
             : $type;
 
         return is_array($mapped) ? $mapped[0] : $mapped;
+    }
+
+    public function getTypeResolver(?Context $context = null): TypeResolverInterface
+    {
+        return class_exists(\Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver::class)
+            ? new TypeInfoTypeResolver()
+            : new LegacyTypeResolver($context);
     }
 }
