@@ -31,6 +31,9 @@ use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 class TypeInfoTypeResolver implements TypeResolverInterface
 {
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     protected function normaliseTypeResult(\Reflector $reflector, ?Type $resolved): \stdClass
     {
         $details = (object) [
@@ -81,6 +84,9 @@ class TypeInfoTypeResolver implements TypeResolverInterface
         return $details;
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
     {
         $subject = $reflector instanceof \ReflectionClass
@@ -100,6 +106,9 @@ class TypeInfoTypeResolver implements TypeResolverInterface
         return $this->normaliseTypeResult($reflector, $resolved);
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
         switch (true) {
