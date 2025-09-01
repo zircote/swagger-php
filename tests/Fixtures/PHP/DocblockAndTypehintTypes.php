@@ -79,6 +79,11 @@ class DocblockAndTypehintTypes
     public int $positiveInt;
 
     /**
+     * @var non-zero-int The non-zero integer
+     */
+    public int $nonZeroInt;
+
+    /**
      * @var array{foo:bool}
      */
     public array $arrayShape;

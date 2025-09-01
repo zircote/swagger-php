@@ -68,7 +68,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $expectedValues = [
             'property' => 'firstname',
@@ -152,6 +152,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $nullableString,
             $arrayType,
             $dateTime,
+            $dateTimeTimestamp,
             $qualified,
             $namespaced,
             $importedNamespace,
@@ -186,6 +187,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($dateTime, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => Generator::UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => Generator::UNDEFINED,
@@ -240,7 +245,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
 
-        $analysis->process([new AugmentProperties()]);
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $this->assertName($stringType, [
             'property' => 'stringType',
@@ -268,6 +273,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'dateTime',
             'type' => 'string',
             'format' => 'date-time',
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => 'dateTimeTimestamp',
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => 'qualified',

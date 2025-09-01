@@ -70,6 +70,7 @@ class ExamplesTest extends OpenApiTestCase
 
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
+            ->setTypeResolver($this->getTypeResolver())
             ->generate([$path]);
         // file_put_contents($specFilename, $openapi->toYaml());
         $this->assertSpecEquals(

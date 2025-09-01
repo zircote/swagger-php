@@ -28,32 +28,36 @@ components:
         minRangeInt:
           description: 'The minimum range integer'
           type: integer
+          maximum: 9223372036854775807
           minimum: 2
         maxRangeInt:
           description: 'The maximum range integer'
           type: integer
           maximum: 10
+          minimum: -9223372036854775808
         positiveInt:
           description: 'The positive integer'
           type: integer
+          maximum: 9223372036854775807
           minimum: 1
         negativeInt:
           description: 'The negative integer'
           type: integer
           maximum: -1
+          minimum: -9223372036854775808
         nonPositiveInt:
           description: 'The non-positive integer'
           type: integer
           maximum: 0
+          minimum: -9223372036854775808
         nonNegativeInt:
           description: 'The non-negative integer'
           type: integer
+          maximum: 9223372036854775807
           minimum: 0
         nonZeroInt:
           description: 'The non-zero integer'
           type: integer
-          not:
-            const: 0
       type: object
     DocblockSchemaChild:
       type: object

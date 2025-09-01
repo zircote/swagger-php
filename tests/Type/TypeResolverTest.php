@@ -43,8 +43,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nothing'),
                 [
-                    'reflection' => ['explicitType' => null, 'types' => [], 'name' => 'nothing', 'nullable' => true, 'isArray' => false],
-                    'docblock' => ['explicitType' => null, 'types' => [], 'name' => 'nothing', 'nullable' => true, 'isArray' => false],
+                    'reflection' => ['explicitType' => null, 'explicitDetails' => null, 'types' => [], 'name' => 'nothing', 'nullable' => true, 'isArray' => false],
+                    'docblock' => ['explicitType' => null, 'explicitDetails' => null, 'types' => [], 'name' => 'nothing', 'nullable' => true, 'isArray' => false],
                 ],
             ];
 
@@ -52,8 +52,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'string'),
                 [
-                    'reflection' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'string', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'string', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'string', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'string', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -61,8 +61,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nullableString'),
                 [
-                    'reflection' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'nullableString', 'nullable' => true, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'nullableString', 'nullable' => true, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'nullableString', 'nullable' => true, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'nullableString', 'nullable' => true, 'isArray' => false],
                 ],
             ];
 
@@ -70,8 +70,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'stringArray'),
                 [
-                    'reflection' => ['explicitType' => 'mixed', 'types' => ['mixed'], 'name' => 'stringArray', 'nullable' => false, 'isArray' => true],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'stringArray', 'nullable' => false, 'isArray' => true],
+                    'reflection' => ['explicitType' => 'mixed', 'explicitDetails' => null, 'types' => ['mixed'], 'name' => 'stringArray', 'nullable' => false, 'isArray' => true],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'stringArray', 'nullable' => false, 'isArray' => true],
                 ],
             ];
 
@@ -79,8 +79,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'stringList'),
                 [
-                    'reflection' => ['explicitType' => 'mixed', 'types' => ['mixed'], 'name' => 'stringList', 'nullable' => false, 'isArray' => true],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'stringList', 'nullable' => false, 'isArray' => true],
+                    'reflection' => ['explicitType' => 'mixed', 'explicitDetails' => null, 'types' => ['mixed'], 'name' => 'stringList', 'nullable' => false, 'isArray' => true],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'stringList', 'nullable' => false, 'isArray' => true],
                 ],
             ];
 
@@ -88,8 +88,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nullableStringList'),
                 [
-                    'reflection' => ['explicitType' => 'mixed', 'types' => ['mixed'], 'name' => 'nullableStringList', 'nullable' => true, 'isArray' => true],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'nullableStringList', 'nullable' => true, 'isArray' => true],
+                    'reflection' => ['explicitType' => 'mixed', 'explicitDetails' => null, 'types' => ['mixed'], 'name' => 'nullableStringList', 'nullable' => true, 'isArray' => true],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'nullableStringList', 'nullable' => true, 'isArray' => true],
                 ],
             ];
 
@@ -97,8 +97,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nullableStringListUnion'),
                 [
-                    'reflection' => ['explicitType' => 'mixed', 'types' => ['mixed'], 'name' => 'nullableStringListUnion', 'nullable' => true, 'isArray' => true],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'nullableStringListUnion', 'nullable' => true, 'isArray' => true],
+                    'reflection' => ['explicitType' => 'mixed', 'explicitDetails' => null, 'types' => ['mixed'], 'name' => 'nullableStringListUnion', 'nullable' => true, 'isArray' => true],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'nullableStringListUnion', 'nullable' => true, 'isArray' => true],
                 ],
             ];
 
@@ -106,8 +106,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'class'),
                 [
-                    'reflection' => ['explicitType' => DocblockAndTypehintTypes::class, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'class', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => DocblockAndTypehintTypes::class, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'class', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => DocblockAndTypehintTypes::class, 'explicitDetails' => null, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'class', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => DocblockAndTypehintTypes::class, 'explicitDetails' => null, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'class', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -115,8 +115,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nullableClass'),
                 [
-                    'reflection' => ['explicitType' => DocblockAndTypehintTypes::class, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'nullableClass', 'nullable' => true, 'isArray' => false],
-                    'docblock' => ['explicitType' => DocblockAndTypehintTypes::class, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'nullableClass', 'nullable' => true, 'isArray' => false],
+                    'reflection' => ['explicitType' => DocblockAndTypehintTypes::class, 'explicitDetails' => null, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'nullableClass', 'nullable' => true, 'isArray' => false],
+                    'docblock' => ['explicitType' => DocblockAndTypehintTypes::class, 'explicitDetails' => null, 'types' => [DocblockAndTypehintTypes::class], 'name' => 'nullableClass', 'nullable' => true, 'isArray' => false],
                 ],
             ];
 
@@ -124,8 +124,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'namespacedGlobalClass'),
                 [
-                    'reflection' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'namespacedGlobalClass', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'namespacedGlobalClass', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'namespacedGlobalClass', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'namespacedGlobalClass', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -133,8 +133,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nullableNamespacedGlobalClass'),
                 [
-                    'reflection' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'nullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
-                    'docblock' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'nullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
+                    'reflection' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'nullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
+                    'docblock' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'nullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
                 ],
             ];
 
@@ -142,8 +142,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'alsoNullableNamespacedGlobalClass'),
                 [
-                    'reflection' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'alsoNullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
-                    'docblock' => ['explicitType' => \DateTime::class, 'types' => [\DateTime::class], 'name' => 'alsoNullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
+                    'reflection' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'alsoNullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
+                    'docblock' => ['explicitType' => \DateTime::class, 'explicitDetails' => null, 'types' => [\DateTime::class], 'name' => 'alsoNullableNamespacedGlobalClass', 'nullable' => true, 'isArray' => false],
                 ],
             ];
 
@@ -151,8 +151,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'intRange'),
                 [
-                    'reflection' => ['explicitType' => 'int', 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'int', 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'int', 'explicitDetails' => ['min' => \PHP_INT_MIN, 'max' => 10], 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -160,8 +160,17 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'positiveInt'),
                 [
-                    'reflection' => ['explicitType' => 'int', 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'positive-int', 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'positive-int', 'explicitDetails' => ['min' => 1, 'max' => \PHP_INT_MAX], 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
+                ],
+            ];
+
+            yield "$key-non-zero-int" => [
+                $typeResolver,
+                new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nonZeroInt'),
+                [
+                    'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'nonZeroInt', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'non-zero-int', 'explicitDetails' => [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]], 'types' => ['int'], 'name' => 'nonZeroInt', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -169,8 +178,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'arrayShape'),
                 [
-                    'reflection' => ['explicitType' => 'mixed', 'types' => ['mixed'], 'name' => 'arrayShape', 'nullable' => false, 'isArray' => true],
-                    'docblock' => ['explicitType' => 'bool', 'types' => ['bool'], 'name' => 'arrayShape', 'nullable' => false, 'isArray' => true],
+                    'reflection' => ['explicitType' => 'mixed', 'explicitDetails' => null, 'types' => ['mixed'], 'name' => 'arrayShape', 'nullable' => false, 'isArray' => true],
+                    'docblock' => ['explicitType' => 'bool', 'explicitDetails' => null, 'types' => ['bool'], 'name' => 'arrayShape', 'nullable' => false, 'isArray' => true],
                 ],
             ];
 
@@ -178,8 +187,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'unionType'),
                 [
-                    'reflection' => ['explicitType' => 'int', 'types' => ['int', 'string'], 'name' => 'unionType', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'int', 'types' => ['int', 'string'], 'name' => 'unionType', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int', 'string'], 'name' => 'unionType', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int', 'string'], 'name' => 'unionType', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -187,8 +196,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 (new \ReflectionClass(DocblockAndTypehintTypes::class))->getConstructor()->getParameters()[1],
                 [
-                    'reflection' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'promotedString', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'promotedString', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'promotedString', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'promotedString', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -196,8 +205,8 @@ class TypeResolverTest extends OpenApiTestCase
                 $typeResolver,
                 (new \ReflectionClass(DocblockAndTypehintTypes::class))->getMethod('getString'),
                 [
-                    'reflection' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'getString', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'string', 'types' => ['string'], 'name' => 'getString', 'nullable' => false, 'isArray' => false],
+                    'reflection' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'getString', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'string', 'explicitDetails' => null, 'types' => ['string'], 'name' => 'getString', 'nullable' => false, 'isArray' => false],
                 ],
             ];
         }
@@ -216,6 +225,7 @@ class TypeResolverTest extends OpenApiTestCase
      */
     public function testGetDocblockTypeDetails(TypeResolverInterface $typeResolver, \Reflector $reflector, array $expected): void
     {
-        $this->assertEquals((object) $expected['docblock'], $typeResolver->getDocblockTypeDetails($reflector));
+        $actual = $typeResolver->getDocblockTypeDetails($reflector);
+        $this->assertEquals((object) $expected['docblock'], $actual, json_encode(['expected' => (object) $expected['docblock'], 'actual' => $actual]));
     }
 }

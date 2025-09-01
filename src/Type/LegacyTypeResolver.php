@@ -18,8 +18,17 @@ class LegacyTypeResolver implements TypeResolverInterface
         $this->context = $context;
     }
 
-    protected function normaliseTypeResult(?string $explicitType = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): \stdClass
+    public function setContext(Context $context): LegacyTypeResolver
     {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): \stdClass
+    {
+        $types = array_filter($types, fn (string $t): bool => !in_array($t, ['null', '']));
+
         if ($this->context) {
             foreach ($types as $ii => $type) {
                 if (!array_key_exists(strtolower($type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
@@ -34,6 +43,7 @@ class LegacyTypeResolver implements TypeResolverInterface
 
         return (object) [
             'explicitType' => $explicitType,
+            'explicitDetails' => $explicitDetails,
             'types' => $types,
             'name' => $name,
             'nullable' => $explicitType ? $nullable : true,
@@ -74,9 +84,10 @@ class LegacyTypeResolver implements TypeResolverInterface
         }
 
         $name = $reflector->getName();
-        $nullable = is_object($rtype) ? $rtype->allowsNull() : true;
 
-        return $this->normaliseTypeResult(null, array_reverse($types), $name, $nullable, $isArray);
+        $nullable = (is_object($rtype) ? $rtype->allowsNull() : true) || in_array('null', $types);
+
+        return $this->normaliseTypeResult(null, null, array_reverse($types), $name, $nullable, $isArray);
     }
 
     /**
@@ -105,7 +116,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         $name = $reflector->getName();
 
         if (!$docComment) {
-            return $this->normaliseTypeResult(null, [], $name);
+            return $this->normaliseTypeResult(null, null, [], $name);
         }
 
         switch (true) {
@@ -125,7 +136,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         }
 
         if (!$tagName) {
-            return $this->normaliseTypeResult(null, [], $name);
+            return $this->normaliseTypeResult(null, null, [], $name);
         }
 
         $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?/im";
@@ -139,6 +150,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         preg_match($pattern, $docComment, $matches);
 
         $explicitType = null;
+        $explicitDetails = null;
         $type = $matches['type'] ?? '';
         $nullable = in_array('null', explode('|', strtolower($type))) || str_contains($type, '?');
         $isArray = str_contains($type, '[]') || str_contains($type, 'array');
@@ -148,9 +160,18 @@ class LegacyTypeResolver implements TypeResolverInterface
         $result = preg_match('/([^<]+)<([^>]+)>/', $type, $matches);
         if ($result) {
             $type = $isArray ? $matches[2] : $matches[1];
+            if ('int' === $type) {
+                $minMax = array_map(fn (string $s): string => trim($s), explode(',', $matches[2]));
+                if (2 === count($minMax)) {
+                    $explicitDetails = [
+                        'min' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),
+                        'max' => (int) ('max' === $minMax[1] ? \PHP_INT_MAX : $minMax[1]),
+                    ];
+                }
+            }
         }
 
-        // partial array shape
+        // array shape
         $result = preg_match('/([^{]+){([^}]+)}/', $type, $matches);
         if ($result) {
             $shapeTypes = [];
@@ -166,11 +187,28 @@ class LegacyTypeResolver implements TypeResolverInterface
         // special types
         switch ($type) {
             case 'positive-int':
+                $explicitType = $type;
+                $explicitDetails = ['min' => 1, 'max' => \PHP_INT_MAX];
+                $type = 'int';
+                break;
             case 'negative-int':
+                $explicitType = $type;
+                $explicitDetails = ['min' => \PHP_INT_MIN, 'max' => -1];
+                $type = 'int';
+                break;
             case 'non-positive-int':
+                $explicitType = $type;
+                $explicitDetails = ['min' => \PHP_INT_MIN, 'max' => 0];
+                $type = 'int';
+                break;
             case 'non-negative-int':
+                $explicitType = $type;
+                $explicitDetails = ['min' => 0, 'max' => \PHP_INT_MAX];
+                $type = 'int';
+                break;
             case 'non-zero-int':
                 $explicitType = $type;
+                $explicitDetails = [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]];
                 $type = 'int';
                 break;
         }
@@ -178,6 +216,6 @@ class LegacyTypeResolver implements TypeResolverInterface
         $type = ltrim($type, '\\');
         $types = explode('|', $type);
 
-        return $this->normaliseTypeResult($explicitType, $types, $name, $nullable, $isArray);
+        return $this->normaliseTypeResult($explicitType, $explicitDetails, $types, $name, $nullable, $isArray);
     }
 }

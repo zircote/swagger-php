@@ -38,6 +38,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
     {
         $details = (object) [
             'explicitType' => null,
+            'explicitDetails' => null,
             'types' => [],
             'name' => $reflector->getName(),
             'nullable' => false,
@@ -55,12 +56,16 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                 $details->types[] = (string) $type;
             } elseif ($type instanceof CollectionType) {
                 $details->isArray = true;
-                $details->types[] = $type->getCollectionValueType();
+                $details->types[] = (string) $type->getCollectionValueType();
             } elseif ($type instanceof IntRangeType) {
                 // use just `int` for custom `int<..>`
                 $details->explicitType = str_contains($type->getExplicitType(), '<')
                     ? $type->getTypeIdentifier()->value
                     : $type->getExplicitType();
+                $details->explicitDetails = [
+                    'min' => $type->getFrom(),
+                    'max' => $type->getTo(),
+                ];
                 $details->types[] = $type->getTypeIdentifier()->value;
             } elseif ($type instanceof ExplicitType) {
                 $details->explicitType = $type->getExplicitType();
@@ -68,18 +73,42 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             }
         };
 
+        $handleNonZeroInt = function (array $utypes) use ($details): void {
+            // non-zero-int
+            if (2 === count($utypes) && $utypes[0] instanceof IntRangeType && $utypes[1] instanceof IntRangeType) {
+                $details->explicitType = 'non-zero-int';
+                $details->explicitDetails = [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]];
+                $details->types = array_unique($details->types);
+            }
+        };
+
         if ($resolved instanceof NullableType) {
             $details->nullable = true;
-            $fromType($resolved->getWrappedType(), $details);
+            $fromType($wrapped = $resolved->getWrappedType(), $details);
+            if ($wrapped instanceof UnionType) {
+                foreach (($utypes = $wrapped->getTypes()) as $utype) {
+                    $fromType($utype, $details);
+                }
+
+                $handleNonZeroInt($utypes);
+            }
         } elseif ($resolved instanceof UnionType) {
-            foreach ($resolved->getTypes() as $utype) {
+            foreach (($utypes = $resolved->getTypes()) as $utype) {
                 $fromType($utype, $details);
             }
+
+            $handleNonZeroInt($utypes);
         } else {
             $fromType($resolved, $details);
         }
 
-        $details->explicitType = $details->explicitType ?: ($details->types ? $details->types[0] : null);
+        if (in_array('null', $details->types)) {
+            $details->nullable = true;
+            // @phpstan-ignore notIdentical.alwaysTrue
+            $details->types = array_filter($details->types, fn ($t): bool => 'null' !== $t);
+        }
+
+        $details->explicitType ??= $details->types[0] ?? null;
 
         return $details;
     }
