@@ -40,7 +40,7 @@ class OperationTest extends OpenApiTestCase
     /**
      * @dataProvider securityData
      */
-    public function testSecuritySerialization(array $security, string $dockBlock, string $expected): void
+    public function testSecuritySerialization(array $security, string $docBlock, string $expected): void
     {
         // test with Get implementation...
         $operation = new OA\Get([
@@ -51,7 +51,7 @@ class OperationTest extends OpenApiTestCase
         $json = $operation->toJson($flags);
         $this->assertEquals($expected, $json);
 
-        $annotations = $this->annotationsFromDocBlockParser($dockBlock);
+        $annotations = $this->annotationsFromDocBlockParser($docBlock);
         $this->assertCount(1, $annotations);
         $json = $annotations[0]->toJson($flags);
         $this->assertEquals($expected, $json);

@@ -90,7 +90,7 @@ class DocblockSchemaChild extends DocblocksSchema
 }
 
 /**
- * @OA\Info(title="Dockblocks", version="1.0")
+ * @OA\Info(title="Docblocks", version="1.0")
  * @OA\Get(
  *     path="/api/endpoint",
  *     @OA\Response(
@@ -99,6 +99,6 @@ class DocblockSchemaChild extends DocblocksSchema
  *     )
  * )
  */
-class DockblocksEndpoint
+class DocblocksEndpoint
 {
 }

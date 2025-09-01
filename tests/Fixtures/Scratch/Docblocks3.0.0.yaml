@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Dockblocks
+  title: Docblocks
   version: '1.0'
 paths:
   /api/endpoint:
     get:
-      operationId: 2dd3513e31e559b14abab58814959d68
+      operationId: 9ed0ad39e1cf5baebc3c0e2c101c9cad
       responses:
         '200':
           description: 'successful operation'
