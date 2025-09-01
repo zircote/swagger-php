@@ -41,6 +41,9 @@ class LegacyTypeResolver implements TypeResolverInterface
         ];
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
     {
         $rtype = $reflector instanceof \ReflectionClass
@@ -76,6 +79,9 @@ class LegacyTypeResolver implements TypeResolverInterface
         return $this->normaliseTypeResult(null, array_reverse($types), $name, $nullable, $isArray);
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
         switch (true) {
