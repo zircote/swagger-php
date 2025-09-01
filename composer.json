@@ -49,7 +49,6 @@
         "nikic/php-parser": "^4.19 || ^5.0",
         "phpstan/phpdoc-parser": "^2.0",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
-        "radebatz/type-info-extras": "^1.0.2",
         "symfony/deprecation-contracts": "^2 || ^3",
         "symfony/finder": "^5.0 || ^6.0 || ^7.0",
         "symfony/yaml": "^5.0 || ^6.0 || ^7.0"
@@ -82,6 +81,7 @@
         "symfony/process": ">=6, <6.4.14"
     },
     "suggest": {
+        "radebatz/type-info-extras": "^1.0.2",
         "doctrine/annotations": "^2.0"
     },
     "scripts-descriptions": {
