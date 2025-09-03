@@ -59,9 +59,18 @@ class ReflectionAnalyser implements AnalyserInterface
 
         $analysis = new Analysis([], $context);
         foreach ($fileDetails as $fqdn => $details) {
-            $this->analyzeFqdn($fqdn, $analysis, $details);
+            if ($details) {
+                $this->analyzeFqdn($fqdn, $analysis, $details);
+            } else {
+                $this->fromFunction($fqdn, $analysis);
+            }
         }
 
+        return $analysis;
+    }
+
+    public function fromFunction(string $function, Analysis $analysis): Analysis
+    {
         return $analysis;
     }
 

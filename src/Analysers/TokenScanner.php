@@ -10,6 +10,7 @@ use PhpParser\Error;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Node\Stmt\Trait_;
@@ -85,6 +86,9 @@ class TokenScanner
                 case Enum_::class:
                     $result += $this->collect_classlike($stmt, $details(), $resolve);
                     break;
+                case Function_::class:
+                    $result += $this->collect_function($stmt, $details());
+                    break;
             }
         }
 
@@ -150,5 +154,10 @@ class TokenScanner
         }
 
         return $this->collect_classlike($stmt, $details, $resolve);
+    }
+
+    protected function collect_function(Function_ $stmt, array $details): array
+    {
+        return [(string) $stmt->name => null];
     }
 }

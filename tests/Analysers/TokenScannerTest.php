@@ -51,7 +51,9 @@ class TokenScannerTest extends OpenApiTestCase
 
         yield 'php7' => [
             'PHP/php7.php',
-            [],
+            [
+                'deng' => null,
+            ],
         ];
 
         yield 'php8' => [
@@ -81,6 +83,7 @@ class TokenScannerTest extends OpenApiTestCase
                     'methods' => ['foo', 'bar'],
                     'properties' => [],
                 ],
+                'dong' => null,
             ],
         ];
 
