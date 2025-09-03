@@ -71,6 +71,43 @@ class ReflectionAnalyser implements AnalyserInterface
 
     public function fromFunction(string $function, Analysis $analysis): Analysis
     {
+        $rf = new \ReflectionFunction($function);
+        $contextType = 'function';
+
+        $context = new Context([
+            $contextType => $function,
+            'namespace' => $rf->getNamespaceName() ?: null,
+            'uses' => [],
+            'comment' => $rf->getDocComment() ?: null,
+            'filename' => $rf->getFileName() ?: null,
+            'line' => $rf->getStartLine(),
+            'annotations' => [],
+            'scanned' => [],
+            'reflector' => $rf,
+        ], $analysis->context);
+
+        $definition = [
+            $contextType => $function,
+            'extends' => null,
+            'implements' => [],
+            'traits' => [],
+            'properties' => [],
+            'methods' => [],
+            'context' => $context,
+        ];
+
+        $definition['methods'][$function] = $ctx = new Context([
+            'method' => $function,
+            'comment' => $rf->getDocComment() ?: null,
+            'filename' => $rf->getFileName() ?: null,
+            'line' => $rf->getStartLine(),
+            'annotations' => [],
+            'reflector' => $rf,
+        ], $context);
+        foreach ($this->annotationFactories as $annotationFactory) {
+            $analysis->addAnnotations($annotationFactory->build($rf, $ctx), $ctx);
+        }
+
         return $analysis;
     }
 
