@@ -31,3 +31,8 @@ class Decorated
     {
     }
 }
+
+function dong()
+{
+
+}

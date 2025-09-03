@@ -8,7 +8,7 @@ namespace OpenApi\Attributes;
 use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_FUNCTION | \Attribute::IS_REPEATABLE)]
 class Header extends OA\Header
 {
     /**

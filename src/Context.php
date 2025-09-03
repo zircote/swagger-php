@@ -26,6 +26,7 @@ use Psr\Log\LoggerInterface;
  * @property string|null                  $interface
  * @property string|null                  $trait
  * @property string|null                  $enum
+ * @property string|null                  $function
  * @property array|string|null            $extends     Interfaces may extend a list of interfaces
  * @property array|null                   $implements
  * @property string|null                  $method

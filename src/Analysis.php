@@ -39,6 +39,11 @@ class Analysis
     public array $enums = [];
 
     /**
+     * Function definitions.
+     */
+    public array $functions = [];
+
+    /**
      * The target OpenApi annotation.
      */
     public ?OA\OpenApi $openapi = null;
@@ -122,6 +127,12 @@ class Analysis
     {
         $enum = $definition['context']->fullyQualifiedName($definition['enum']);
         $this->enums[$enum] = $definition;
+    }
+
+    public function addFunctionDefinition(array $definition): void
+    {
+        $function = $definition['function'];
+        $this->functions[$function] = $definition;
     }
 
     public function addAnalysis(Analysis $analysis): void
