@@ -82,7 +82,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'filename' => $rf->getFileName() ?: null,
             'line' => $rf->getStartLine(),
             'annotations' => [],
-            'scanned' => [],
+            'scanned' => ['uses' => []],
             'reflector' => $rf,
         ], $analysis->context);
 
@@ -96,8 +96,8 @@ class ReflectionAnalyser implements AnalyserInterface
             'context' => $context,
         ];
 
-        $definition['methods'][$function] = $ctx = new Context([
-            'method' => $function,
+        $definition['fucntions'][$function] = $ctx = new Context([
+            'function' => $function,
             'comment' => $rf->getDocComment() ?: null,
             'filename' => $rf->getFileName() ?: null,
             'line' => $rf->getStartLine(),
@@ -107,6 +107,9 @@ class ReflectionAnalyser implements AnalyserInterface
         foreach ($this->annotationFactories as $annotationFactory) {
             $analysis->addAnnotations($annotationFactory->build($rf, $ctx), $ctx);
         }
+
+        $addDefinition = 'add' . ucfirst($contextType) . 'Definition';
+        $analysis->{$addDefinition}($definition);
 
         return $analysis;
     }
