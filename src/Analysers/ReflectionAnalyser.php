@@ -59,8 +59,57 @@ class ReflectionAnalyser implements AnalyserInterface
 
         $analysis = new Analysis([], $context);
         foreach ($fileDetails as $fqdn => $details) {
-            $this->analyzeFqdn($fqdn, $analysis, $details);
+            if ($details) {
+                $this->analyzeFqdn($fqdn, $analysis, $details);
+            } else {
+                $this->fromFunction($fqdn, $analysis);
+            }
         }
+
+        return $analysis;
+    }
+
+    public function fromFunction(string $function, Analysis $analysis): Analysis
+    {
+        $rf = new \ReflectionFunction($function);
+        $contextType = 'function';
+
+        $context = new Context([
+            $contextType => $function,
+            'namespace' => $rf->getNamespaceName() ?: null,
+            'uses' => [],
+            'comment' => $rf->getDocComment() ?: null,
+            'filename' => $rf->getFileName() ?: null,
+            'line' => $rf->getStartLine(),
+            'annotations' => [],
+            'scanned' => ['uses' => []],
+            'reflector' => $rf,
+        ], $analysis->context);
+
+        $definition = [
+            $contextType => $function,
+            'extends' => null,
+            'implements' => [],
+            'traits' => [],
+            'properties' => [],
+            'methods' => [],
+            'context' => $context,
+        ];
+
+        $definition['fucntions'][$function] = $ctx = new Context([
+            'function' => $function,
+            'comment' => $rf->getDocComment() ?: null,
+            'filename' => $rf->getFileName() ?: null,
+            'line' => $rf->getStartLine(),
+            'annotations' => [],
+            'reflector' => $rf,
+        ], $context);
+        foreach ($this->annotationFactories as $annotationFactory) {
+            $analysis->addAnnotations($annotationFactory->build($rf, $ctx), $ctx);
+        }
+
+        $addDefinition = 'add' . ucfirst($contextType) . 'Definition';
+        $analysis->{$addDefinition}($definition);
 
         return $analysis;
     }
