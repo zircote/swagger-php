@@ -87,7 +87,7 @@ class TokenScanner
                     $result += $this->collect_classlike($stmt, $details(), $resolve);
                     break;
                 case Function_::class:
-                    $result += $this->collect_function($stmt, $details());
+                    $result += $this->collect_function($stmt, $resolve);
                     break;
             }
         }
@@ -156,8 +156,8 @@ class TokenScanner
         return $this->collect_classlike($stmt, $details, $resolve);
     }
 
-    protected function collect_function(Function_ $stmt, array $details): array
+    protected function collect_function(Function_ $stmt, callable $resolve): array
     {
-        return [(string) $stmt->name => null];
+        return [$resolve((string) $stmt->name) => null];
     }
 }
