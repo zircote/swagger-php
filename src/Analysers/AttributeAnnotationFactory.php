@@ -67,18 +67,18 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
             if ($reflector instanceof \ReflectionMethod) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
-                    foreach ([OA\Property::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
+                    foreach ([OA\Schema::class, OA\Parameter::class, OA\RequestBody::class] as $attributeName) {
                         foreach ($rp->getAttributes($attributeName, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
-                            /** @var OA\Property|OA\Parameter|OA\RequestBody $instance */
+                            /** @var OA\Schema|OA\Parameter|OA\RequestBody $instance */
                             $instance = $attribute->newInstance();
-                            $instance->_context = new Context(['nested' => false, 'reflector' => $rp], $context);
-
+                            $instance->_context = new Context(['nested' => false, 'reflector' => $rp, 'argument' => $rp->getName()], $context);
+                          
                             $type = (($rnt = $rp->getType()) && $rnt instanceof \ReflectionNamedType) ? $rnt->getName() : Generator::UNDEFINED;
                             $nullable = $rnt ? $rnt->allowsNull() : true;
 
                             if ($instance instanceof OA\RequestBody) {
                                 $instance->required = !$nullable;
-                            } elseif ($instance instanceof OA\Property) {
+                            } elseif (($instance instanceof OA\Property)) {
                                 if (Generator::isDefault($instance->property)) {
                                     $instance->property = $rp->getName();
                                 }
@@ -98,6 +98,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                         $instance->_context->comment = $comment;
                                     }
                                 }
+                            } elseif ($instance instanceof OA\Schema) {
+                                // explicitly omitting mention of nesting in context for schema, as during analysis schema might not merge into components and become orphaned
+                                $instance->_context = new Context(['reflection_argument' => $rp, 'argument' => $rp->getName()], $context);
                             } else {
                                 if (!$instance->name || Generator::isDefault($instance->name)) {
                                     $instance->name = $rp->getName();
@@ -114,7 +117,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                 if (($rrt = $reflector->getReturnType()) && $rrt instanceof \ReflectionNamedType) {
                     foreach ($annotations as $annotation) {
-                        if ($annotation instanceof OA\Property && Generator::isDefault($annotation->type)) {
+                        if ($annotation instanceof OA\Schema && Generator::isDefault($annotation->type)) {
                             // pick up simple return types
                             $annotation->type = $rrt->getName();
                             $annotation->_context->reflector = $rrt;
