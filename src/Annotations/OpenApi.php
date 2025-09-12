@@ -229,7 +229,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * Recursive helper for ref().
      *
-     * @param array|AbstractAnnotation $container
+     * @param array|AbstractAnnotation                                     $container
      * @param array<class-string<AbstractAnnotation>,string|array<string>> $mapping
      */
     private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
