@@ -23,7 +23,8 @@ class ResponseController
                         type: 'string',
                         format: 'byte',
                     ),
-                ),            ),
+                ),
+            ),
         ]
     )]
     public function responseSchema()
