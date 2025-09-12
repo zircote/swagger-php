@@ -70,10 +70,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Declarative mapping of Annotation types to properties.
+     *
      * Examples:
-     *   Info::clas => 'info', // Set @OA\Info annotation as the info property.
-     *   Parameter::clas => ['parameters'],  // Append @OA\Parameter annotations the parameters array.
-     *   PathItem::clas => ['paths', 'path'],  // Append @OA\PathItem annotations the paths array and use path as key.
+     *   Info::clas => 'info',                // Set @OA\Info annotation as the info property.
+     *   Parameter::clas => ['parameters'],   // Append @OA\Parameter annotations the parameters array.
+     *   PathItem::clas => ['paths', 'path'], // Append @OA\PathItem annotations the paths array and use path as key.
      *
      * @var array<class-string<AbstractAnnotation>,string|array<string>>
      */
