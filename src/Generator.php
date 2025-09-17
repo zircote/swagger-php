@@ -18,9 +18,6 @@ use Psr\Log\LoggerInterface;
  * OpenApi spec generator.
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
- *
- * This is an object-oriented alternative to using the now deprecated <code>\OpenApi\scan()</code> function and
- * static class properties of the <code>Analyzer</code> and <code>Analysis</code> classes.
  */
 class Generator
 {
@@ -161,7 +158,7 @@ class Generator
         $normalised = [];
         foreach ($config as $key => $value) {
             if (is_numeric($key)) {
-                $token = explode('=', $value);
+                $token = explode('=', (string) $value);
                 if (2 == count($token)) {
                     // 'operationId.hash=false'
                     [$key, $value] = $token;
@@ -172,10 +169,10 @@ class Generator
                 $value = 'true' == $value;
             }
 
-            if ($isList = ('[]' === substr($key, -2))) {
-                $key = substr($key, 0, -2);
+            if ($isList = (str_ends_with((string) $key, '[]'))) {
+                $key = substr((string) $key, 0, -2);
             }
-            $token = explode('.', $key);
+            $token = explode('.', (string) $key);
             if (2 == count($token)) {
                 // 'operationId.hash' => false
                 // namespaced / processor
@@ -274,14 +271,6 @@ class Generator
         return $this;
     }
 
-    /**
-     * @deprecated use `withProcessorPipeline()` instead
-     */
-    public function withProcessor(callable $with): Generator
-    {
-        return $this->withProcessorPipeline($with);
-    }
-
     public function getLogger(): ?LoggerInterface
     {
         return $this->logger ?: new DefaultLogger();
@@ -297,38 +286,6 @@ class Generator
         $this->version = $version;
 
         return $this;
-    }
-
-    /**
-     * @deprecated use non-static `generate()` instead
-     */
-    public static function scan(iterable $sources, array $options = []): ?OA\OpenApi
-    {
-        // merge with defaults
-        $config = $options + [
-                'aliases' => self::DEFAULT_ALIASES,
-                'namespaces' => self::DEFAULT_NAMESPACES,
-                'analyser' => null,
-                'analysis' => null,
-                'processor' => null,
-                'processors' => null,
-                'config' => [],
-                'logger' => null,
-                'validate' => true,
-                'version' => null,
-            ];
-
-        $processorPipeline = $config['processor'] ??
-            ($config['processors'] ? new Pipeline($config['processors']) : null);
-
-        return (new Generator($config['logger']))
-            ->setVersion($config['version'])
-            ->setAliases($config['aliases'])
-            ->setNamespaces($config['namespaces'])
-            ->setAnalyser($config['analyser'])
-            ->setProcessorPipeline($processorPipeline)
-            ->setConfig($config['config'])
-            ->generate($sources, $config['analysis'], $config['validate']);
     }
 
     /**
@@ -405,7 +362,7 @@ class Generator
                     continue;
                 }
                 if (is_dir($resolvedSource)) {
-                    $this->scanSources(Util::finder($resolvedSource), $analysis, $rootContext);
+                    $this->scanSources(new SourceFinder($resolvedSource), $analysis, $rootContext);
                 } else {
                     $rootContext->logger->debug(sprintf('Analysing source: %s', $resolvedSource));
                     $analysis->addAnalysis($analyser->fromFile($resolvedSource, $rootContext));
