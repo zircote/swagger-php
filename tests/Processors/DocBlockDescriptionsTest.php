@@ -34,7 +34,7 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $operations[1]->description, 'This operation only has summary in the phpDoc, no description');
     }
 
-    public function testPhpdocContent(): void
+    public function testParseDocblockContent(): void
     {
         $singleLine = $this->getContext(['comment' => <<<END
     /**
@@ -44,7 +44,7 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
      */
 END
         ]);
-        $this->assertEquals('A single line.', $this->extractContent($singleLine->comment));
+        $this->assertEquals('A single line.', $this->parseDocblock($singleLine->comment));
 
         $multiline = $this->getContext(['comment' => <<<END
 /**
@@ -57,7 +57,7 @@ END
  */
 END
         ]);
-        $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $this->extractContent($multiline->comment));
+        $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $this->parseDocblock($multiline->comment));
 
         $escapedLinebreak = $this->getContext(['comment' => <<<END
 /**
@@ -68,18 +68,18 @@ END
  */
 END
         ]);
-        $this->assertEquals('A single line spread across multiple lines.', $this->extractContent($escapedLinebreak->comment));
+        $this->assertEquals('A single line spread across multiple lines.', $this->parseDocblock($escapedLinebreak->comment));
     }
 
     /**
      * https://phpdoc.org/docs/latest/guides/docblocks.html.
      */
-    public function testPhpdocSummaryAndDescription(): void
+    public function testExtractDocblockSummaryAndDescription(): void
     {
         $single = $this->getContext(['comment' => '/** This is a single line DocComment. */']);
-        $this->assertEquals('This is a single line DocComment.', $this->extractContent($single->comment));
+        $this->assertEquals('This is a single line DocComment.', $this->parseDocblock($single->comment));
         $multi = $this->getContext(['comment' => "/**\n * This is a multi-line DocComment.\n */"]);
-        $this->assertEquals('This is a multi-line DocComment.', $this->extractContent($multi->comment));
+        $this->assertEquals('This is a multi-line DocComment.', $this->parseDocblock($multi->comment));
 
         $emptyWhiteline = $this->getContext(['comment' => <<<END
     /**
@@ -89,7 +89,7 @@ END
      */
 END
         ]);
-        $this->assertEquals('This is a summary', $this->extractSummary($emptyWhiteline->comment));
+        $this->assertEquals('This is a summary', $this->extractCommentSummary($this->parseDocblock($emptyWhiteline->comment)));
         $periodNewline = $this->getContext(['comment' => <<<END
      /**
      * This is a summary.
@@ -97,7 +97,7 @@ END
      */
 END
         ]);
-        $this->assertEquals('This is a summary.', $this->extractSummary($periodNewline->comment));
+        $this->assertEquals('This is a summary.', $this->extractCommentSummary($this->parseDocblock($periodNewline->comment)));
         $multilineSummary = $this->getContext(['comment' => <<<END
      /**
      * This is a summary
@@ -105,6 +105,6 @@ END
      */
 END
         ]);
-        $this->assertEquals("This is a summary\nbut this is part of the summary", $this->extractSummary($multilineSummary->comment));
+        $this->assertEquals("This is a summary\nbut this is part of the summary", $this->parseDocblock($this->extractCommentSummary($multilineSummary->comment)));
     }
 }
