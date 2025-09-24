@@ -83,7 +83,7 @@ class AugmentParameters
         foreach ($operations as $operation) {
             if (!Generator::isDefault($operation->parameters)) {
                 $tags = [];
-                $this->extractContent($operation->_context->comment, $tags);
+                $this->parseDocblock($operation->_context->comment, $tags);
                 $docblockParams = $tags['param'] ?? [];
 
                 foreach ($operation->parameters as $parameter) {

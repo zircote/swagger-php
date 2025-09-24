@@ -36,7 +36,7 @@ class AugmentProperties
                 continue;
             }
 
-            $typeAndDescription = $this->extractVarTypeAndDescription((string) $context->comment);
+            $typeAndDescription = $this->parseVarLine((string) $context->comment);
 
             if (Generator::isDefault($property->type)) {
                 $this->augmentSchemaType($analysis, $property, $context, $typeAndDescription['type']);
@@ -49,8 +49,8 @@ class AugmentProperties
             if (Generator::isDefault($property->description) && $typeAndDescription['description']) {
                 $property->description = trim($typeAndDescription['description']);
             }
-            if (Generator::isDefault($property->description) && $this->isRoot($property)) {
-                $property->description = $this->extractContent($context->comment);
+            if (Generator::isDefault($property->description) && $this->isDocblockRoot($property)) {
+                $property->description = $this->parseDocblock($context->comment);
             }
 
             if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {

@@ -56,11 +56,11 @@ class AugmentParametersTest extends OpenApiTestCase
     /**
      * @dataProvider tagCases
      */
-    public function testExtractTags(string $params, array $expected): void
+    public function testParseTags(string $params, array $expected): void
     {
         $mixed = $this->getContext(['comment' => "/**\n$params\n  *"]);
         $tags = [];
-        $this->extractContent($mixed->comment, $tags);
+        $this->parseDocblock($mixed->comment, $tags);
         $this->assertEquals($expected, $tags);
     }
 

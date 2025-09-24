@@ -13,9 +13,9 @@ use OpenApi\Generator;
 trait DocblockTrait
 {
     /**
-     * An annotation is a root if it is the top-level / outermost annotation in a PHP docblock.
+     * An annotation is a docblock root if it is the top-level / outermost annotation in a PHP docblock.
      */
-    public function isRoot(OA\AbstractAnnotation $annotation): bool
+    public function isDocblockRoot(OA\AbstractAnnotation $annotation): bool
     {
         if (!$annotation->_context) {
             return true;
@@ -37,7 +37,7 @@ trait DocblockTrait
             OA\Schema::class => true,
             OAT\Schema::class => true,
         ];
-        // try to find best root match
+        // try to find the best root match
         foreach ($matchPriorityMap as $className => $strict) {
             foreach ($annotation->_context->annotations as $contextAnnotation) {
                 if ($strict) {
@@ -85,9 +85,9 @@ trait DocblockTrait
     }
 
     /**
-     * The text contents of the phpdoc comment (excl. tags).
+     * Parse a docblock and return the full content/text.
      */
-    public function extractContent(?string $docblock, ?array &$tags = null): string
+    public function parseDocblock(?string $docblock, ?array &$tags = null): string
     {
         if (Generator::isDefault($docblock)) {
             return Generator::UNDEFINED;
@@ -117,22 +117,25 @@ trait DocblockTrait
             }
             $append = (substr($line, -1) === '\\');
         }
-        $description = trim(implode("\n", $lines));
-        if ($description === '') {
-            return Generator::UNDEFINED;
-        }
 
-        return $description;
+        $description = trim(implode("\n", $lines));
+
+        return $description === ''
+            ? Generator::UNDEFINED
+            : $description;
     }
 
     /**
      * A short piece of text, usually one line, providing the basic function of the associated element.
+     *
+     * @param string $content The full docblock content
      */
-    public function extractSummary(?string $docblock): string
+    public function extractCommentSummary(string $content): string
     {
-        if (!$content = $this->extractContent($docblock)) {
+        if ($content === Generator::UNDEFINED) {
             return Generator::UNDEFINED;
         }
+
         $lines = preg_split('/(\n|\r\n)/', $content);
         $summary = '';
         foreach ($lines as $line) {
@@ -152,17 +155,21 @@ trait DocblockTrait
     /**
      * An optional longer piece of text providing more details on the associated element’s function.
      *
-     * This is very useful when working with a complex element.
+     * @param string $content The full docblock content
      */
-    public function extractDescription(?string $docblock): string
+    public function extractCommentDescription(string $content): string
     {
-        $summary = $this->extractSummary($docblock);
-        if (!$summary) {
+        if ($content === Generator::UNDEFINED) {
+            return Generator::UNDEFINED;
+        }
+
+        $summary = $this->extractCommentSummary($content);
+        if ($summary === Generator::UNDEFINED) {
             return Generator::UNDEFINED;
         }
 
         $description = '';
-        if (false !== ($substr = substr($this->extractContent($docblock), strlen($summary)))) {
+        if (false !== ($substr = substr($content, strlen($summary)))) {
             $description = trim($substr);
         }
 
@@ -172,9 +179,9 @@ trait DocblockTrait
     /**
      * Extract property type and description from a <code>@var</code> dockblock line.
      *
-     * @return array<string, ?string> extracted <code>type</code> and <code>description</code>; values default to <code>null</code>
+     * @return array{type: ?string, description: ?string}
      */
-    public function extractVarTypeAndDescription(?string $docblock): array
+    public function parseVarLine(?string $docblock): array
     {
         $comment = str_replace("\r\n", "\n", (string) $docblock);
         $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
@@ -189,8 +196,12 @@ trait DocblockTrait
     /**
      * Extract example text from a <code>@example</code> dockblock line.
      */
-    public function extractExampleDescription(?string $docblock): ?string
+    public function extractExampleDescription(string $docblock): ?string
     {
+        if (!$docblock || $docblock === Generator::UNDEFINED) {
+            return null;
+        }
+
         preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $docblock, $matches);
 
         return $matches['example'] ?? null;
@@ -201,6 +212,10 @@ trait DocblockTrait
      */
     public function isDeprecated(?string $docblock): bool
     {
-        return 1 === preg_match('/@deprecated\s+([ \t])?(?<deprecated>.+)?$/im', (string) $docblock);
+        if (!$docblock || $docblock === Generator::UNDEFINED) {
+            return false;
+        }
+
+        return 1 === preg_match('/@deprecated\s+([ \t])?(?<deprecated>.+)?$/im', $docblock);
     }
 }

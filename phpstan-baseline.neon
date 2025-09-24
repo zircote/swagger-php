@@ -49,22 +49,10 @@ parameters:
 			path: src/Annotations/Flow.php
 
 		-
-			message: '#^Method OpenApi\\Processors\\AugmentParameters\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Processors/AugmentParameters.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Processors/AugmentParameters.php
-
-		-
-			message: '#^Method OpenApi\\Processors\\AugmentProperties\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Processors/AugmentProperties.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
@@ -77,12 +65,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/Processors/AugmentSchemas.php
-
-		-
-			message: '#^Method OpenApi\\Processors\\DocBlockDescriptions\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Processors/DocBlockDescriptions.php
 
 		-
 			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:description\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
@@ -139,8 +121,8 @@ parameters:
 			path: tests/Annotations/AttributesSyncTest.php
 
 		-
-			message: '#^Method OpenApi\\Tests\\Processors\\AugmentParametersTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
+			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: tests/Processors/AugmentParametersTest.php
 
@@ -148,25 +130,7 @@ parameters:
 			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
-			path: tests/Processors/AugmentParametersTest.php
-
-		-
-			message: '#^Method OpenApi\\Tests\\Processors\\AugmentRefsTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
 			path: tests/Processors/AugmentRefsTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/AugmentRefsTest.php
-
-		-
-			message: '#^Method OpenApi\\Tests\\Processors\\DocBlockDescriptionsTest\:\:extractVarTypeAndDescription\(\) should return array\<string, string\|null\> but returns array\<int\|string, string\|null\>\.$#'
-			identifier: return.type
-			count: 1
-			path: tests/Processors/DocBlockDescriptionsTest.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
