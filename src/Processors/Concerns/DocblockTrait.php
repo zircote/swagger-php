@@ -196,8 +196,12 @@ trait DocblockTrait
     /**
      * Extract example text from a <code>@example</code> dockblock line.
      */
-    public function extractExampleDescription(?string $docblock): ?string
+    public function extractExampleDescription(string $docblock): ?string
     {
+        if (!$docblock || $docblock === Generator::UNDEFINED) {
+            return null;
+        }
+
         preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $docblock, $matches);
 
         return $matches['example'] ?? null;
@@ -208,6 +212,10 @@ trait DocblockTrait
      */
     public function isDeprecated(?string $docblock): bool
     {
-        return 1 === preg_match('/@deprecated\s+([ \t])?(?<deprecated>.+)?$/im', (string) $docblock);
+        if (!$docblock || $docblock === Generator::UNDEFINED) {
+            return false;
+        }
+
+        return 1 === preg_match('/@deprecated\s+([ \t])?(?<deprecated>.+)?$/im', $docblock);
     }
 }
