@@ -17,6 +17,7 @@ trait TypesTrait
 {
     public function mapNativeType(OA\Schema $schema, string $type): bool
     {
+        $type = strtolower($type);
         if (!array_key_exists($type, TypeResolverInterface::NATIVE_TYPE_MAP)) {
             return false;
         }

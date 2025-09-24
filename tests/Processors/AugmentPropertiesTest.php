@@ -152,6 +152,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $nullableString,
             $arrayType,
             $dateTime,
+            $dateTimeTimestamp,
             $qualified,
             $namespaced,
             $importedNamespace,
@@ -186,6 +187,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($dateTime, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => Generator::UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => Generator::UNDEFINED,
@@ -268,6 +273,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'dateTime',
             'type' => 'string',
             'format' => 'date-time',
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => 'dateTimeTimestamp',
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => 'qualified',
