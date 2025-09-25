@@ -408,7 +408,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                         $data->anyOf[] = ['type' => 'null'];
                     } elseif (isset($data->allOf)) {
                         $data->allOf[] = ['type' => 'null'];
-                    } else {
+                    } elseif (isset($data->type)) {
                         $data->type = (array) $data->type;
                         $data->type[] = 'null';
                     }
