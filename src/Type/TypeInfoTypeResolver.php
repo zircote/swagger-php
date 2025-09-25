@@ -55,7 +55,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                 $details->types[] = (string) $type;
             } elseif ($type instanceof CollectionType) {
                 $details->isArray = true;
-                $details->types[] = $type->getCollectionValueType();
+                $details->types[] = (string) $type->getCollectionValueType();
             } elseif ($type instanceof IntRangeType) {
                 // use just `int` for custom `int<..>`
                 $details->explicitType = str_contains($type->getExplicitType(), '<')
