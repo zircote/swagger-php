@@ -25,6 +25,12 @@ parameters:
 			path: src/Analysers/ReflectionAnalyser.php
 
 		-
+			message: '#^Trait OpenApi\\Analysers\\TypeResolverTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Analysers/TypeResolverTrait.php
+
+		-
 			message: '#^Call to function property_exists\(\) with OpenApi\\Annotations\\AbstractAnnotation and ''_context'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -95,6 +101,18 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/Processors/MergeXmlContent.php
+
+		-
+			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: src/Type/LegacyTypeResolver.php
+
+		-
+			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: src/Type/TypeInfoTypeResolver.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function spl_autoload_register expects \(callable\(string\)\: void\)\|null, array\{Composer\\Autoload\\ClassLoader, ''findFile''\} given\.$#'
