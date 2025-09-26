@@ -97,7 +97,15 @@ class AugmentProperties
                 // otherwise, use the reflection type if possible
                 : ($reflectionTypeDetails->explicitType ? $reflectionTypeDetails : $docblockDetails);
 
+            // for now
             $schema->type = $details->types[0];
+
+            if ('int' === $schema->type && is_array($details->explicitDetails)) {
+                if (array_key_exists('from', $details->explicitDetails)) {
+                    $schema->minimum = $details->explicitDetails['from'];
+                    $schema->maximum = $details->explicitDetails['to'];
+                }
+            }
         }
 
         if ($docblockDetails->isArray || $reflectionTypeDetails->isArray) {
@@ -186,9 +194,13 @@ class AugmentProperties
 
                 if (is_numeric($min)) {
                     $schema->minimum = (int) $min;
+                } elseif ('min' === $min) {
+                    $schema->minimum = \PHP_INT_MIN;
                 }
                 if (is_numeric($max)) {
                     $schema->maximum = (int) $max;
+                } elseif ('max' === $max) {
+                    $schema->maximum = \PHP_INT_MAX;
                 }
             } elseif ($type === 'positive-int') {
                 $schema->type = 'integer';
