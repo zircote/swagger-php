@@ -97,7 +97,9 @@ class AugmentProperties
                 : ($reflectionTypeDetails->explicitType ? $reflectionTypeDetails : $docblockDetails);
 
             // for now
-            $schema->type = $details->types[0];
+            if (1 === count($details->types)) {
+                $schema->type = $details->types[0];
+            }
 
             if ('int' === $schema->type && is_array($details->explicitDetails)) {
                 if (array_key_exists('from', $details->explicitDetails)) {
