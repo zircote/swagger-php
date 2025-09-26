@@ -84,6 +84,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         }
 
         $name = $reflector->getName();
+
         $nullable = (is_object($rtype) ? $rtype->allowsNull() : true) || in_array('null', $types);
         $types = array_filter($types, fn(string $t) => 'null' !== $t);
 

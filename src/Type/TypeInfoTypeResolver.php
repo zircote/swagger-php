@@ -91,6 +91,11 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             $fromType($resolved, $details);
         }
 
+        if (in_array('null', $details->types)) {
+            $details->nullable = true;
+            $details->typrd = array_filter($details->types, fn(string $t) => 'null' !== $t);
+        }
+
         $details->explicitType ??= $details->explicitType ?: ($details->types ? $details->types[0] : null);
 
         return $details;
