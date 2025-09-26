@@ -8,6 +8,15 @@ namespace OpenApi\Type;
 
 use OpenApi\Context;
 use OpenApi\TypeResolverInterface;
+use ReflectionClass;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionProperty;
+use ReflectionUnionType;
+use Reflector;
+use stdClass;
 
 class LegacyTypeResolver implements TypeResolverInterface
 {
@@ -18,7 +27,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         $this->context = $context;
     }
 
-    protected function normaliseTypeResult(?string $explicitType = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): \stdClass
+    protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): stdClass
     {
         if ($this->context) {
             foreach ($types as $ii => $type) {
@@ -32,8 +41,9 @@ class LegacyTypeResolver implements TypeResolverInterface
 
         $explicitType = $explicitType ?: ($types ? $types[0] : null);
 
-        return (object) [
+        return (object)[
             'explicitType' => $explicitType,
+            'explicitDetails' => $explicitDetails,
             'types' => $types,
             'name' => $name,
             'nullable' => $explicitType ? $nullable : true,
@@ -42,14 +52,14 @@ class LegacyTypeResolver implements TypeResolverInterface
     }
 
     /**
-     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     * @param ReflectionParameter|ReflectionProperty|ReflectionMethod $reflector
      */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
+    public function getReflectionTypeDetails(Reflector $reflector): stdClass
     {
-        $rtype = $reflector instanceof \ReflectionClass
+        $rtype = $reflector instanceof ReflectionClass
             ? $reflector->getName()
             : (
-                $reflector instanceof \ReflectionMethod
+            $reflector instanceof ReflectionMethod
                 ? $reflector->getReturnType()
                 : ($reflector->getType())
             );
@@ -57,14 +67,14 @@ class LegacyTypeResolver implements TypeResolverInterface
         $isArray = false;
 
         $types = [];
-        if ($rtype instanceof \ReflectionUnionType) {
+        if ($rtype instanceof ReflectionUnionType) {
             foreach ($rtype->getTypes() as $utype) {
                 // more nesting is not supported
-                if ($utype instanceof \ReflectionNamedType) {
+                if ($utype instanceof ReflectionNamedType) {
                     $types[] = $utype->getName();
                 }
             }
-        } elseif ($rtype instanceof \ReflectionNamedType) {
+        } elseif ($rtype instanceof ReflectionNamedType) {
             $types[] = $rtype->getName();
         }
 
@@ -76,25 +86,25 @@ class LegacyTypeResolver implements TypeResolverInterface
         $name = $reflector->getName();
         $nullable = is_object($rtype) ? $rtype->allowsNull() : true;
 
-        return $this->normaliseTypeResult(null, array_reverse($types), $name, $nullable, $isArray);
+        return $this->normaliseTypeResult(null, null, array_reverse($types), $name, $nullable, $isArray);
     }
 
     /**
-     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     * @param ReflectionParameter|ReflectionProperty|ReflectionMethod $reflector
      */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
+    public function getDocblockTypeDetails(Reflector $reflector): stdClass
     {
         switch (true) {
-            case $reflector instanceof \ReflectionProperty:
+            case $reflector instanceof ReflectionProperty:
                 $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
                 && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
                     ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
                     : $reflector->getDocComment();
                 break;
-            case $reflector instanceof \ReflectionParameter:
+            case $reflector instanceof ReflectionParameter:
                 $docComment = $reflector->getDeclaringFunction()->getDocComment();
                 break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
+            case $reflector instanceof ReflectionFunctionAbstract:
                 $docComment = $reflector->getDocComment();
                 break;
             default:
@@ -105,19 +115,19 @@ class LegacyTypeResolver implements TypeResolverInterface
         $name = $reflector->getName();
 
         if (!$docComment) {
-            return $this->normaliseTypeResult(null, [], $name);
+            return $this->normaliseTypeResult(null, null, [], $name);
         }
 
         switch (true) {
-            case $reflector instanceof \ReflectionProperty:
+            case $reflector instanceof ReflectionProperty:
                 $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
                     ? '@param'
                     : '@var';
                 break;
-            case $reflector instanceof \ReflectionParameter:
+            case $reflector instanceof ReflectionParameter:
                 $tagName = '@param';
                 break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
+            case $reflector instanceof ReflectionFunctionAbstract:
                 $tagName = '@return';
                 break;
             default:
@@ -125,7 +135,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         }
 
         if (!$tagName) {
-            return $this->normaliseTypeResult(null, [], $name);
+            return $this->normaliseTypeResult(null, null, [], $name);
         }
 
         $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?/im";
@@ -139,6 +149,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         preg_match($pattern, $docComment, $matches);
 
         $explicitType = null;
+        $explicitDetails = null;
         $type = $matches['type'] ?? '';
         $nullable = in_array('null', explode('|', strtolower($type))) || str_contains($type, '?');
         $isArray = str_contains($type, '[]') || str_contains($type, 'array');
@@ -148,6 +159,15 @@ class LegacyTypeResolver implements TypeResolverInterface
         $result = preg_match('/([^<]+)<([^>]+)>/', $type, $matches);
         if ($result) {
             $type = $isArray ? $matches[2] : $matches[1];
+            if ('int' === $type) {
+                $minMax = array_map(fn(string $s) => trim($s), explode(',', $matches[2]));
+                if (2 === count($minMax)) {
+                    $explicitDetails = [
+                        'from' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),
+                        'to' => (int) ('max' === $minMax[1] ? \PHP_INT_MAX : $minMax[1]),
+                    ];
+                }
+            }
         }
 
         // partial array shape
@@ -166,11 +186,28 @@ class LegacyTypeResolver implements TypeResolverInterface
         // special types
         switch ($type) {
             case 'positive-int':
+                $explicitType = $type;
+                $explicitDetails = ['from' => 1, 'to' => \PHP_INT_MAX];
+                $type = 'int';
+                break;
             case 'negative-int':
+                $explicitType = $type;
+                $explicitDetails = ['from' => \PHP_INT_MIN, 'to' => -1];
+                $type = 'int';
+                break;
             case 'non-positive-int':
+                $explicitType = $type;
+                $explicitDetails = ['from' => \PHP_INT_MIN, 'to' => 0];
+                $type = 'int';
+                break;
             case 'non-negative-int':
+                $explicitType = $type;
+                $explicitDetails = ['from' => 0, 'to' => \PHP_INT_MAX];
+                $type = 'int';
+                break;
             case 'non-zero-int':
                 $explicitType = $type;
+                $explicitDetails = [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]];
                 $type = 'int';
                 break;
         }
@@ -178,6 +215,6 @@ class LegacyTypeResolver implements TypeResolverInterface
         $type = ltrim($type, '\\');
         $types = explode('|', $type);
 
-        return $this->normaliseTypeResult($explicitType, $types, $name, $nullable, $isArray);
+        return $this->normaliseTypeResult($explicitType, $explicitDetails, $types, $name, $nullable, $isArray);
     }
 }

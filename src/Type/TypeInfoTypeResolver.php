@@ -38,6 +38,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
     {
         $details = (object) [
             'explicitType' => null,
+            'explicitDetails' => null,
             'types' => [],
             'name' => $reflector->getName(),
             'nullable' => false,
@@ -61,6 +62,10 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                 $details->explicitType = str_contains($type->getExplicitType(), '<')
                     ? $type->getTypeIdentifier()->value
                     : $type->getExplicitType();
+                $details->explicitDetails = [
+                    'from' => $type->getFrom(),
+                    'to' => $type->getTo(),
+                ];
                 $details->types[] = $type->getTypeIdentifier()->value;
             } elseif ($type instanceof ExplicitType) {
                 $details->explicitType = $type->getExplicitType();
@@ -72,14 +77,21 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             $details->nullable = true;
             $fromType($resolved->getWrappedType(), $details);
         } elseif ($resolved instanceof UnionType) {
-            foreach ($resolved->getTypes() as $utype) {
+            foreach (($utypes = $resolved->getTypes()) as $utype) {
                 $fromType($utype, $details);
+            }
+
+            // non-zero-int
+            if (2 === count($utypes) && $utypes[0] instanceof IntRangeType && $utypes[1] instanceof IntRangeType) {
+                $details->explicitType = 'non-zero-int';
+                $details->explicitDetails = [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]];
+                $details->types = array_unique($details->types);
             }
         } else {
             $fromType($resolved, $details);
         }
 
-        $details->explicitType = $details->explicitType ?: ($details->types ? $details->types[0] : null);
+        $details->explicitType ??= $details->explicitType ?: ($details->types ? $details->types[0] : null);
 
         return $details;
     }
