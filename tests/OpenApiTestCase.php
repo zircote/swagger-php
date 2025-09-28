@@ -117,7 +117,7 @@ class OpenApiTestCase extends TestCase
      * @param bool                              $normalized flag indicating whether the inputs are already normalized or
      *                                                      not
      */
-    protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
+    public function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
         $formattedValue = function ($value): string {
             if (is_bool($value)) {
