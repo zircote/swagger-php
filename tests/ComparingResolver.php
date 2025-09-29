@@ -16,7 +16,7 @@ class ComparingResolver implements TypeResolverInterface
 
     public function __construct(OpenApiTestCase $testCase, ?Context $context = null)
     {
-        $this->testCase = new OpenApiTestCase();
+        $this->testCase = $testCase;
 
         $this->legacyTypeResolver = new LegacyTypeResolver($context);
         if (class_exists(\Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver::class)) {
@@ -24,6 +24,9 @@ class ComparingResolver implements TypeResolverInterface
         }
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
     {
         $legacyDetails = $this->legacyTypeResolver->getReflectionTypeDetails($reflector);
@@ -36,6 +39,9 @@ class ComparingResolver implements TypeResolverInterface
         return $typeInfoDetails ?? $legacyDetails;
     }
 
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
         $legacyDetails = $this->legacyTypeResolver->getDocblockTypeDetails($reflector);
@@ -43,7 +49,7 @@ class ComparingResolver implements TypeResolverInterface
             ? $this->typeInfoResolver->getDocblockTypeDetails($reflector)
             : null;
 
-        //$this->compare($legacyDetails, $typeInfoDetails);
+        // $this->compare($legacyDetails, $typeInfoDetails);
 
         return $typeInfoDetails ?? $legacyDetails;
     }

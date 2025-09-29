@@ -391,7 +391,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if (isset($data->type) && is_array($data->type)) {
                 if (in_array('null', $data->type)) {
                     $data->nullable = true;
-                    $data->type = array_filter($data->type, fn ($v): bool => $v !== 'null');
+                    $data->type = array_filter($data->type, fn ($t): bool => 'null' !== $t);
                     if (1 === count($data->type)) {
                         $data->type = array_pop($data->type);
                     }

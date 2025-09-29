@@ -56,7 +56,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                 $details->types[] = (string) $type;
             } elseif ($type instanceof CollectionType) {
                 $details->isArray = true;
-                $details->types[] = (string)$type->getCollectionValueType();
+                $details->types[] = (string) $type->getCollectionValueType();
             } elseif ($type instanceof IntRangeType) {
                 // use just `int` for custom `int<..>`
                 $details->explicitType = str_contains($type->getExplicitType(), '<')
@@ -104,10 +104,11 @@ class TypeInfoTypeResolver implements TypeResolverInterface
 
         if (in_array('null', $details->types)) {
             $details->nullable = true;
-            $details->typrd = array_filter($details->types, fn(string $t) => 'null' !== $t);
+            // @phpstan-ignore notIdentical.alwaysTrue
+            $details->types = array_filter($details->types, fn ($t) => 'null' !== $t);
         }
 
-        $details->explicitType ??= $details->explicitType ?: ($details->types ? $details->types[0] : null);
+        $details->explicitType ??= $details->types[0] ?? null;
 
         return $details;
     }

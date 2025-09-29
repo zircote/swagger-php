@@ -46,8 +46,7 @@ trait TypesTrait
 
     public function getTypeResolver(?Context $context = null): TypeResolverInterface
     {
-        return new ComparingResolver(new OpenApiTestCase(), $context);
-
+        // return new ComparingResolver(new OpenApiTestCase(), $context);
         return class_exists(\Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver::class)
             ? new TypeInfoTypeResolver()
             : new LegacyTypeResolver($context);
