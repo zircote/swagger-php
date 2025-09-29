@@ -165,8 +165,8 @@ class LegacyTypeResolver implements TypeResolverInterface
                 $minMax = array_map(fn(string $s) => trim($s), explode(',', $matches[2]));
                 if (2 === count($minMax)) {
                     $explicitDetails = [
-                        'from' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),
-                        'to' => (int) ('max' === $minMax[1] ? \PHP_INT_MAX : $minMax[1]),
+                        'min' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),
+                        'max' => (int) ('max' === $minMax[1] ? \PHP_INT_MAX : $minMax[1]),
                     ];
                 }
             }
@@ -189,27 +189,27 @@ class LegacyTypeResolver implements TypeResolverInterface
         switch ($type) {
             case 'positive-int':
                 $explicitType = $type;
-                $explicitDetails = ['from' => 1, 'to' => \PHP_INT_MAX];
+                $explicitDetails = ['min' => 1, 'max' => \PHP_INT_MAX];
                 $type = 'int';
                 break;
             case 'negative-int':
                 $explicitType = $type;
-                $explicitDetails = ['from' => \PHP_INT_MIN, 'to' => -1];
+                $explicitDetails = ['min' => \PHP_INT_MIN, 'max' => -1];
                 $type = 'int';
                 break;
             case 'non-positive-int':
                 $explicitType = $type;
-                $explicitDetails = ['from' => \PHP_INT_MIN, 'to' => 0];
+                $explicitDetails = ['min' => \PHP_INT_MIN, 'max' => 0];
                 $type = 'int';
                 break;
             case 'non-negative-int':
                 $explicitType = $type;
-                $explicitDetails = ['from' => 0, 'to' => \PHP_INT_MAX];
+                $explicitDetails = ['min' => 0, 'max' => \PHP_INT_MAX];
                 $type = 'int';
                 break;
             case 'non-zero-int':
                 $explicitType = $type;
-                $explicitDetails = [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]];
+                $explicitDetails = [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]];
                 $type = 'int';
                 break;
         }

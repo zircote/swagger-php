@@ -63,8 +63,8 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                     ? $type->getTypeIdentifier()->value
                     : $type->getExplicitType();
                 $details->explicitDetails = [
-                    'from' => $type->getFrom(),
-                    'to' => $type->getTo(),
+                    'min' => $type->getFrom(),
+                    'max' => $type->getTo(),
                 ];
                 $details->types[] = $type->getTypeIdentifier()->value;
             } elseif ($type instanceof ExplicitType) {
@@ -77,7 +77,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             // non-zero-int
             if (2 === count($utypes) && $utypes[0] instanceof IntRangeType && $utypes[1] instanceof IntRangeType) {
                 $details->explicitType = 'non-zero-int';
-                $details->explicitDetails = [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]];
+                $details->explicitDetails = [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]];
                 $details->types = array_unique($details->types);
             }
         };

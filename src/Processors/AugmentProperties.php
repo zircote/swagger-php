@@ -83,18 +83,18 @@ class AugmentProperties
 
         // we only consider nullable hints if the type is explicitly set
         if (Generator::isDefault($schema->nullable)
-            && (($docblockDetails->explicitType && $docblockDetails->nullable)
-                || ($reflectionTypeDetails->explicitType && $reflectionTypeDetails->nullable))
+            && (($docblockDetails->types && $docblockDetails->nullable)
+                || ($reflectionTypeDetails->types && $reflectionTypeDetails->nullable))
         ) {
             $schema->nullable = true;
         }
 
         if (Generator::isDefault($schema->type) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
-            $details = $docblockDetails->explicitType && $docblockDetails->isArray
+            $details = $docblockDetails->types && $docblockDetails->isArray
                 // for arrays, we prefer the docblock type
                 ? $docblockDetails
                 // otherwise, use the reflection type if possible
-                : ($reflectionTypeDetails->explicitType ? $reflectionTypeDetails : $docblockDetails);
+                : ($reflectionTypeDetails->types ? $reflectionTypeDetails : $docblockDetails);
 
             // for now
             if (1 === count($details->types)) {
@@ -102,9 +102,9 @@ class AugmentProperties
             }
 
             if ('int' === $schema->type && is_array($details->explicitDetails)) {
-                if (array_key_exists('from', $details->explicitDetails)) {
-                    $schema->minimum = $details->explicitDetails['from'];
-                    $schema->maximum = $details->explicitDetails['to'];
+                if (array_key_exists('min', $details->explicitDetails)) {
+                    $schema->minimum = $details->explicitDetails['min'];
+                    $schema->maximum = $details->explicitDetails['max'];
                 }
             }
         }

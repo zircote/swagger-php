@@ -152,7 +152,7 @@ class TypeResolverTest extends OpenApiTestCase
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'intRange'),
                 [
                     'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'int', 'explicitDetails' => ['from' => \PHP_INT_MIN, 'to' => 10], 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'int', 'explicitDetails' => ['min' => \PHP_INT_MIN, 'max' => 10], 'types' => ['int'], 'name' => 'intRange', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -161,7 +161,7 @@ class TypeResolverTest extends OpenApiTestCase
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'positiveInt'),
                 [
                     'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'positive-int', 'explicitDetails' => ['from' => 1, 'to' => \PHP_INT_MAX], 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'positive-int', 'explicitDetails' => ['min' => 1, 'max' => \PHP_INT_MAX], 'types' => ['int'], 'name' => 'positiveInt', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
@@ -170,7 +170,7 @@ class TypeResolverTest extends OpenApiTestCase
                 new \ReflectionProperty(DocblockAndTypehintTypes::class, 'nonZeroInt'),
                 [
                     'reflection' => ['explicitType' => 'int', 'explicitDetails' => null, 'types' => ['int'], 'name' => 'nonZeroInt', 'nullable' => false, 'isArray' => false],
-                    'docblock' => ['explicitType' => 'non-zero-int', 'explicitDetails' => [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]], 'types' => ['int'], 'name' => 'nonZeroInt', 'nullable' => false, 'isArray' => false],
+                    'docblock' => ['explicitType' => 'non-zero-int', 'explicitDetails' => [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]], 'types' => ['int'], 'name' => 'nonZeroInt', 'nullable' => false, 'isArray' => false],
                 ],
             ];
 
