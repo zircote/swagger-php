@@ -20,6 +20,8 @@ class LegacyTypeResolver implements TypeResolverInterface
 
     protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): \stdClass
     {
+        $types = array_filter($types, fn (string $t) => !in_array($t, ['null', '']));
+
         if ($this->context) {
             foreach ($types as $ii => $type) {
                 if (!array_key_exists(strtolower($type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
@@ -77,7 +79,6 @@ class LegacyTypeResolver implements TypeResolverInterface
         $name = $reflector->getName();
 
         $nullable = (is_object($rtype) ? $rtype->allowsNull() : true) || in_array('null', $types);
-        $types = array_filter($types, fn (string $t) => 'null' !== $t);
 
         return $this->normaliseTypeResult(null, null, array_reverse($types), $name, $nullable, $isArray);
     }
