@@ -164,7 +164,7 @@ class LegacyTypeResolver implements TypeResolverInterface
             }
         }
 
-        // partial array shape
+        // array shape
         $result = preg_match('/([^{]+){([^}]+)}/', $type, $matches);
         if ($result) {
             $shapeTypes = [];
