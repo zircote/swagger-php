@@ -56,7 +56,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
                 $details->types[] = (string) $type;
             } elseif ($type instanceof CollectionType) {
                 $details->isArray = true;
-                $details->types[] = (string) $type->getCollectionValueType();
+                $details->types[] = (string)$type->getCollectionValueType();
             } elseif ($type instanceof IntRangeType) {
                 // use just `int` for custom `int<..>`
                 $details->explicitType = str_contains($type->getExplicitType(), '<')
@@ -73,20 +73,31 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             }
         };
 
-        if ($resolved instanceof NullableType) {
-            $details->nullable = true;
-            $fromType($resolved->getWrappedType(), $details);
-        } elseif ($resolved instanceof UnionType) {
-            foreach (($utypes = $resolved->getTypes()) as $utype) {
-                $fromType($utype, $details);
-            }
-
+        $handleNonZeroInt = function (array $utypes) use ($details): void {
             // non-zero-int
             if (2 === count($utypes) && $utypes[0] instanceof IntRangeType && $utypes[1] instanceof IntRangeType) {
                 $details->explicitType = 'non-zero-int';
                 $details->explicitDetails = [['from' => \PHP_INT_MIN, 'to' => -1], ['from' => 1, 'to' => \PHP_INT_MAX]];
                 $details->types = array_unique($details->types);
             }
+        };
+
+        if ($resolved instanceof NullableType) {
+            $details->nullable = true;
+            $fromType($wrapped = $resolved->getWrappedType(), $details);
+            if ($wrapped instanceof UnionType) {
+                foreach (($utypes = $wrapped->getTypes()) as $utype) {
+                    $fromType($utype, $details);
+                }
+
+                $handleNonZeroInt($utypes);
+            }
+        } elseif ($resolved instanceof UnionType) {
+            foreach (($utypes = $resolved->getTypes()) as $utype) {
+                $fromType($utype, $details);
+            }
+
+            $handleNonZeroInt($utypes);
         } else {
             $fromType($resolved, $details);
         }
