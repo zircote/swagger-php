@@ -5,6 +5,7 @@ use Rector\CodeQuality\Rector\If_\CombineIfRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\If_\ShortenElseIfRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
@@ -30,6 +31,10 @@ return RectorConfig::configure()
         NullableCompareToNullRector::class,
         StringClassNameToClassConstantRector::class => [
             __DIR__ . '/src/Analysers/DocBlockParser.php',
+            __DIR__ . '/src/Analysers/TypeResolverTrait.php',
+        ],
+        WrapEncapsedVariableInCurlyBracesRector::class => [
+            __DIR__ . '/src/Type/LegacyTypeResolver.php',
         ],
         EncapsedStringsToSprintfRector::class,
         ParamTypeByMethodCallTypeRector::class => [
