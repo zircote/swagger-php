@@ -118,6 +118,6 @@ class CleanUnusedComponents
             }
         }
 
-        return 0 != count($unusedRefs);
+        return [] !== $unusedRefs;
     }
 }
