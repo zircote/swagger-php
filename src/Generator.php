@@ -162,7 +162,7 @@ class Generator
         foreach ($config as $key => $value) {
             if (is_numeric($key)) {
                 $token = explode('=', $value);
-                if (2 == count($token)) {
+                if (2 === count($token)) {
                     // 'operationId.hash=false'
                     [$key, $value] = $token;
                 }
@@ -176,7 +176,7 @@ class Generator
                 $key = substr($key, 0, -2);
             }
             $token = explode('.', $key);
-            if (2 == count($token)) {
+            if (2 === count($token)) {
                 // 'operationId.hash' => false
                 // namespaced / processor
                 if ($isList) {

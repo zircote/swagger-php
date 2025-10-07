@@ -42,7 +42,7 @@ class Util
             }
         }
 
-        return $relativePath === null || $relativePath === '' || $relativePath === '0' ? $fullPath : trim($relativePath, '/');
+        return in_array($relativePath, [null, '', '0'], true) ? $fullPath : trim($relativePath, '/');
     }
 
     /**
