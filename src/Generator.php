@@ -250,6 +250,10 @@ class Generator
                     }
                 }
             }
+
+            if (is_a($pipe, GeneratorAwareInterface::class)) {
+                $pipe->setGenerator($this);
+            }
         };
 
         return $this->processorPipeline->walk($walker);
