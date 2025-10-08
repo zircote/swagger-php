@@ -401,23 +401,6 @@ class Analysis
         return $result;
     }
 
-    /**
-     * Apply the processor(s).
-     *
-     * @param callable|array<callable> $processors One or more processors
-     * @deprecated use Generator::withProcessorPipeline() instead
-     */
-    public function process($processors = null): void
-    {
-        if (false === is_array($processors) && is_callable($processors)) {
-            $processors = [$processors];
-        }
-
-        foreach ($processors as $processor) {
-            $processor($this);
-        }
-    }
-
     public function validate(): bool
     {
         if ($this->openapi instanceof OA\OpenApi) {

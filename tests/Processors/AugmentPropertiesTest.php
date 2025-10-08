@@ -21,12 +21,13 @@ class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties(): void
     {
-        $analysis = $this->analysisFromFixtures(['Customer.php']);
-        $analysis->process([
+        $analysis = $this->analysisFromFixtures([
+            'Customer.php',
+        ], $this->processorPipeline([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
             new AugmentSchemas(),
-        ]);
+        ]));
 
         $customer = $analysis->openapi->components->schemas[0];
         $firstName = $customer->properties[0];
@@ -67,7 +68,8 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
 
-        $analysis->process(new AugmentProperties());
+        $this->processorPipeline([new AugmentProperties()])->process($analysis);
+        ;
 
         $expectedValues = [
             'property' => 'firstname',
@@ -135,12 +137,14 @@ class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testTypedProperties(): void
     {
-        $analysis = $this->analysisFromFixtures(['TypedProperties.php']);
-        $analysis->process([
+        $analysis = $this->analysisFromFixtures([
+            'TypedProperties.php',
+        ], $this->processorPipeline([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
             new AugmentSchemas(),
-        ]);
+        ]));
+
         [
             $stringType,
             $intType,
@@ -235,7 +239,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
 
-        $analysis->process([new AugmentProperties()]);
+        $this->processorPipeline([new AugmentProperties()])->process($analysis);
 
         $this->assertName($stringType, [
             'property' => 'stringType',
