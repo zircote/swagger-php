@@ -230,22 +230,20 @@ class OpenApiTestCase extends TestCase
         }, $files);
     }
 
-    public static function processors(array $strip = []): array
+    public function processorPipeline(?array $processors = null, array $strip = []): Pipeline
     {
-        $processors = [];
+        $generator = (new Generator())
+                ->setTypeResolver($this->getTypeResolver());
 
-        (new Generator())
-            ->getProcessorPipeline()
-            ->walk(function ($processor) use (&$processors, $strip) {
-                if (!is_object($processor) || !in_array(get_class($processor), $strip)) {
-                    $processors[] = $processor;
-                }
-            });
+        if ($processors) {
+            $generator->setProcessorPipeline(new Pipeline($processors));
+        }
 
-        return $processors;
+        return $generator->getProcessorPipeline()
+            ->remove(fn ($processor) => is_object($processor) && in_array(get_class($processor), $strip));
     }
 
-    public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null, array $config = []): Analysis
+    public function analysisFromFixtures(array $files, ?Pipeline $pipeline = null, ?AnalyserInterface $analyzer = null, array $config = []): Analysis
     {
         $analysis = new Analysis([], $this->getContext());
 
@@ -253,7 +251,7 @@ class OpenApiTestCase extends TestCase
             ->setConfig($config)
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
             ->setTypeResolver($this->getTypeResolver())
-            ->setProcessorPipeline(new Pipeline($processors))
+            ->setProcessorPipeline($pipeline ?? new Pipeline())
             ->generate($this->fixtures($files), $analysis, false);
 
         return $analysis;

@@ -28,7 +28,11 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
      */
     public function testCounts(array $config, string $fixture, int $expectedSchemaCount, int $expectedAnnotationCount): void
     {
-        $analysis = $this->analysisFromFixtures([$fixture], static::processors(), null, $config);
+        $analysis = $this->analysisFromFixtures(
+            [$fixture],
+            $this->processorPipeline(),
+            config: $config
+        );
 
         if ($expectedSchemaCount === 0) {
             $this->assertTrue(Generator::isDefault($analysis->openapi->components->schemas));
