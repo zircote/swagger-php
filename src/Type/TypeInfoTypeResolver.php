@@ -106,7 +106,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
         if (in_array('null', $details->types)) {
             $details->nullable = true;
             // @phpstan-ignore notIdentical.alwaysTrue
-            $details->types = array_filter($details->types, fn ($t) => 'null' !== $t);
+            $details->types = array_filter($details->types, fn ($t): bool => 'null' !== $t);
         }
 
         $details->explicitType ??= $details->types[0] ?? null;

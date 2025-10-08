@@ -18,9 +18,16 @@ class LegacyTypeResolver implements TypeResolverInterface
         $this->context = $context;
     }
 
+    public function setContext(Context $context): LegacyTypeResolver
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
     protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null): \stdClass
     {
-        $types = array_filter($types, fn (string $t) => !in_array($t, ['null', '']));
+        $types = array_filter($types, fn (string $t): bool => !in_array($t, ['null', '']));
 
         if ($this->context) {
             foreach ($types as $ii => $type) {
@@ -154,7 +161,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         if ($result) {
             $type = $isArray ? $matches[2] : $matches[1];
             if ('int' === $type) {
-                $minMax = array_map(fn (string $s) => trim($s), explode(',', $matches[2]));
+                $minMax = array_map(fn (string $s): string => trim($s), explode(',', $matches[2]));
                 if (2 === count($minMax)) {
                     $explicitDetails = [
                         'min' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),

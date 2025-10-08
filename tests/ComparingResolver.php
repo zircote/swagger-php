@@ -24,6 +24,13 @@ class ComparingResolver implements TypeResolverInterface
         }
     }
 
+    public function setContext(Context $context): ComparingResolver
+    {
+        $this->legacyTypeResolver = new LegacyTypeResolver($context);
+
+        return $this;
+    }
+
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */

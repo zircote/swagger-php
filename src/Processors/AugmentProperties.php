@@ -10,12 +10,15 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
+use OpenApi\GeneratorAwareTrait;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties implements GeneratorAwareInterface
 {
+    use GeneratorAwareTrait;
     use Concerns\DocblockTrait;
     use Concerns\RefTrait;
     use Concerns\TypesTrait;
@@ -67,12 +70,15 @@ class AugmentProperties
     protected function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
     {
         $context = $schema->_context;
-        $typeResolver = $this->getTypeResolver($context);
+        $typeResolver = $this->generator->getTypeResolver();
+        if (method_exists($typeResolver, 'setContext')) {
+            $typeResolver->setContext($context);
+        }
 
         $docblockDetails = $typeResolver->getDocblockTypeDetails($context->reflector);
         $reflectionTypeDetails = $typeResolver->getReflectionTypeDetails($context->reflector);
 
-        $type2ref = function (OA\Schema $schema) use ($analysis) {
+        $type2ref = function (OA\Schema $schema) use ($analysis): void {
             if (!Generator::isDefault($schema->type)) {
                 if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
                     $schema->type = Generator::UNDEFINED;

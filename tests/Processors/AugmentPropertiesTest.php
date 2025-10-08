@@ -68,7 +68,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $expectedValues = [
             'property' => 'firstname',
@@ -245,7 +245,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
 
-        $analysis->process([new AugmentProperties()]);
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $this->assertName($stringType, [
             'property' => 'stringType',
