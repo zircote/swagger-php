@@ -405,6 +405,7 @@ class Analysis
      * Apply the processor(s).
      *
      * @param callable|array<callable> $processors One or more processors
+     * @deprecated use Generator::withProcessorPipeline() instead
      */
     public function process($processors = null): void
     {
