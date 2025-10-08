@@ -152,7 +152,7 @@ class LegacyTypeResolver implements TypeResolverInterface
         if ($result) {
             $type = $isArray ? $matches[2] : $matches[1];
             if ('int' === $type) {
-                $minMax = array_map(fn (string $s): string => trim($s), explode(',', $matches[2]));
+                $minMax = array_map(trim(...), explode(',', $matches[2]));
                 if (2 === count($minMax)) {
                     $explicitDetails = [
                         'min' => (int) ('min' === $minMax[0] ? \PHP_INT_MIN : $minMax[0]),
