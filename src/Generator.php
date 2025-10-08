@@ -263,6 +263,16 @@ class Generator
     {
         $this->processorPipeline = $processor;
 
+        $walker = function (callable $pipe): void {
+            if (is_a($pipe, GeneratorAwareInterface::class)) {
+                $pipe->setGenerator($this);
+            }
+        };
+
+        if ($this->processorPipeline) {
+            $this->processorPipeline->walk($walker);
+        }
+
         return $this;
     }
 
