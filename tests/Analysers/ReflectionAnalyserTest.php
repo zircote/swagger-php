@@ -85,7 +85,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process($this->processors([CleanUnusedComponents::class]));
+        $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
+        ;
 
         /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);

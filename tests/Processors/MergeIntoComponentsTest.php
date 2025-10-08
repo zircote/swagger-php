@@ -26,7 +26,8 @@ class MergeIntoComponentsTest extends OpenApiTestCase
             $this->getContext()
         );
         $this->assertSame(Generator::UNDEFINED, $openapi->components);
-        $analysis->process([new MergeIntoComponents()]);
+
+        $this->processorPipeline([new MergeIntoComponents()])->process($analysis);
 
         $this->assertCount(1, $openapi->components->responses);
         $this->assertSame($response, $openapi->components->responses[0]);
