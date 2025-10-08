@@ -70,8 +70,9 @@ class AugmentParametersTest extends OpenApiTestCase
      */
     public function testParameterNativeType(): void
     {
-        $analysis = $this->analysisFromFixtures(['RequestUsingAttribute.php']);
-        $analysis->process($this->initializeProcessors([
+        $analysis = $this->analysisFromFixtures([
+            'RequestUsingAttribute.php',
+        ], $this->processorPipeline([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
             new BuildPaths(),

@@ -34,7 +34,7 @@ class Pipeline
             throw new OpenApiException('pipe or callable must not be empty');
         }
 
-        // allow matching on class name in $pipe in a string
+        // allow matching on class name if $pipe in a string
         if (is_string($pipe) && !$matcher) {
             $pipeClass = $pipe;
             $matcher = (fn ($pipe): bool => !$pipe instanceof $pipeClass);
