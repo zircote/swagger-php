@@ -151,21 +151,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
     }
 
-    public function __get(string $property): mixed
-    {
-        $properties = get_object_vars($this);
-        $this->_context->logger->warning('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        $fields = get_object_vars($this);
-        foreach (static::$_blacklist as $_property) {
-            unset($fields[$_property]);
-        }
-        $this->_context->logger->warning('Ignoring unexpected property "' . $property . '" for ' . $this->identity() . ', expecting "' . implode('", "', array_keys($fields)) . '" in ' . $this->_context);
-    }
-
     /**
      * Merge given annotations to their mapped properties configured in static::$_nested.
      *
