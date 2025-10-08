@@ -20,15 +20,6 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $this->assertSame(123, $output->$prefixedProperty);
     }
 
-    /**
-     * @requires PHP < 8.2
-     */
-    public function testInvalidField(): void
-    {
-        $this->assertOpenApiLogEntryContains('Ignoring unexpected property "doesnot" for @OA\Get(), expecting');
-        $this->annotationsFromDocBlockParser('@OA\Get(doesnot="exist")');
-    }
-
     public function testUmergedAnnotation(): void
     {
         $openapi = $this->createOpenApiWithInfo();

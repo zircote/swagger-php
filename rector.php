@@ -1,5 +1,6 @@
 <?php
 
+use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\CodeQuality\Rector\For_\ForRepeatedCountToOwnVariableRector;
 use Rector\CodeQuality\Rector\If_\CombineIfRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
@@ -42,6 +43,9 @@ return RectorConfig::configure()
             __DIR__ . '/src/Serializer.php',
         ],
         ClassPropertyAssignToConstructorPromotionRector::class,
+        CompleteDynamicPropertiesRector::class => [
+            __DIR__ . '/src/Annotations/AbstractAnnotation.php',
+        ],
     ])
     ->withPreparedSets(
         deadCode: true,
