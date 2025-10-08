@@ -204,7 +204,7 @@ class Context implements \Stringable
     /**
      * Traverse the context tree to get the property value.
      */
-    public function __get(string $property)
+    public function __get(string $property): mixed
     {
         if ($this->parent instanceof Context) {
             return $this->parent->{$property};

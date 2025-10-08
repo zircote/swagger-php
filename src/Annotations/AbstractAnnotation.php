@@ -157,7 +157,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         $this->_context->logger->warning('Property "' . $property . '" doesn\'t exist in a ' . $this->identity() . ', existing properties: "' . implode('", "', array_keys($properties)) . '" in ' . $this->_context);
     }
 
-    public function __set(string $property, $value): void
+    public function __set(string $property, mixed $value)
     {
         $fields = get_object_vars($this);
         foreach (static::$_blacklist as $_property) {
