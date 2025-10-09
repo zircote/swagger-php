@@ -7,21 +7,21 @@
 namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Type\LegacyTypeResolver;
-use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 
 trait TypesTrait
 {
-    public function mapNativeType(OA\Schema $schema, string $type): bool
+    /**
+     * @param string|array $type
+     */
+    public function mapNativeType(OA\Schema $schema, $type): bool
     {
-        $type = strtolower($type);
-
         if (is_array($type)) {
             $mapped = [];
             foreach ($type as $t) {
+                $t = strtolower($t);
+
                 if (array_key_exists($t, TypeResolverInterface::NATIVE_TYPE_MAP)) {
                     $t = TypeResolverInterface::NATIVE_TYPE_MAP[$t];
                     if (is_array($t)) {
@@ -35,6 +35,8 @@ trait TypesTrait
 
             return true;
         }
+
+        $type = strtolower($type);
 
         if (!array_key_exists($type, TypeResolverInterface::NATIVE_TYPE_MAP)) {
             return false;
@@ -60,12 +62,5 @@ trait TypesTrait
             : $type;
 
         return is_array($mapped) ? $mapped[0] : $mapped;
-    }
-
-    public function getTypeResolver(?Context $context = null): TypeResolverInterface
-    {
-        return class_exists(\Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver::class)
-            ? new TypeInfoTypeResolver()
-            : new LegacyTypeResolver($context);
     }
 }
