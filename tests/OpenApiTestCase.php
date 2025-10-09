@@ -17,8 +17,6 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareInterface;
 use OpenApi\Pipeline;
-use OpenApi\Type\LegacyTypeResolver;
-use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
@@ -105,8 +103,6 @@ class OpenApiTestCase extends TestCase
 
     public function getTypeResolver(): TypeResolverInterface
     {
-        // return new LegacyTypeResolver();
-        // return new TypeInfoTypeResolver();
         return new ComparingResolver($this);
     }
 
@@ -266,6 +262,7 @@ class OpenApiTestCase extends TestCase
     protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
     {
         return (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
             ->setVersion($version)
             ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
                 $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);

@@ -58,6 +58,9 @@ components:
         nonZeroInt:
           description: 'The non-zero integer'
           type: integer
+          not:
+            enum:
+              - 0
       type: object
     DocblockSchemaChild:
       type: object

@@ -60,6 +60,7 @@ class ScratchTest extends OpenApiTestCase
         require_once $scratch;
 
         $openapi = (new Generator($this->getTrackingLogger()))
+            ->setTypeResolver($this->getTypeResolver())
             ->setVersion($version)
             ->generate([$scratch]);
 

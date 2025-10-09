@@ -123,7 +123,7 @@ class TypeInfoTypeResolver implements TypeResolverInterface
             : (
                 $reflector instanceof \ReflectionMethod
                 ? $reflector->getReturnType()
-                : ($reflector->getType())
+                : (method_exists($reflector, 'getType') ? $reflector->getType() : null)
             );
         try {
             $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
