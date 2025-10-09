@@ -111,6 +111,10 @@ class AugmentProperties implements GeneratorAwareInterface
                 if (array_key_exists('min', $details->explicitDetails)) {
                     $schema->minimum = $details->explicitDetails['min'];
                     $schema->maximum = $details->explicitDetails['max'];
+                } elseif ('non-zero-int' === $details->explicitType) {
+                    $schema->not = $schema->_context->isVersion('3.1.x')
+                        ? ['const' => 0]
+                        : ['enum' => [0]];
                 }
             }
         }
