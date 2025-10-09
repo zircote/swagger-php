@@ -66,7 +66,7 @@ class LegacyTypeResolver implements TypeResolverInterface
             : (
                 $reflector instanceof \ReflectionMethod
                 ? $reflector->getReturnType()
-                : ($reflector->getType())
+                : (method_exists($reflector, 'getType') ? $reflector->getType() : null)
             );
 
         $isArray = false;
