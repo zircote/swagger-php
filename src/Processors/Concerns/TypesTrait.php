@@ -33,8 +33,28 @@ trait TypesTrait
         'object' => 'object',
     ];
 
-    public function mapNativeType(OA\Schema $schema, string $type): bool
+    /**
+     * @param string|array $type
+     */
+    public function mapNativeType(OA\Schema $schema, $type): bool
     {
+        if (is_array($type)) {
+            $mapped = [];
+            foreach ($type as $t) {
+                if (array_key_exists($t, self::$NATIVE_TYPE_MAP)) {
+                    $t = self::$NATIVE_TYPE_MAP[$t];
+                    if (is_array($t)) {
+                        $t = $t[0];
+                    }
+                }
+                $mapped[] = $t;
+            }
+
+            $schema->type = $mapped;
+
+            return true;
+        }
+
         if (!array_key_exists($type, self::$NATIVE_TYPE_MAP)) {
             return false;
         }
