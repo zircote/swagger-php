@@ -30,6 +30,7 @@ class AttachableTest extends OpenApiTestCase
     {
         $analysis = new Analysis([], $this->getContext());
         (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
             ->addAlias('oaf', 'OpenApi\Tests\Fixtures\Annotations')
             ->addNamespace('OpenApi\Tests\Fixtures\Annotations\\')
             ->withProcessorPipeline(function (Pipeline $processor) { $processor->remove(null, function ($pipe) { return !$pipe instanceof CleanUnusedComponents; }); })

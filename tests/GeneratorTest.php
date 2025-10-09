@@ -49,6 +49,7 @@ class GeneratorTest extends OpenApiTestCase
 
         $analyzer = $this->getAnalyzer();
         $processor = (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
             ->getProcessorPipeline();
 
         $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);

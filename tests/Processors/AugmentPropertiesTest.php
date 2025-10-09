@@ -101,7 +101,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'example' => 'Unknown',
             'description' => 'The unknown name of the customer.',
             'type' => Generator::UNDEFINED,
-            'nullable' => true,
+            'nullable' => Generator::UNDEFINED,
         ];
         $this->assertName($fourthName, $expectedValues);
 
@@ -342,7 +342,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
     protected function assertName(OA\Property $property, array $expectedValues): void
     {
         foreach ($expectedValues as $key => $val) {
-            $this->assertSame($val, $property->$key, '@OA\Property()->property based on propertyname');
+            $this->assertSame($val, $property->$key, '@OA\Property()->' . $key);
         }
     }
 }

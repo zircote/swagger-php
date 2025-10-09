@@ -34,9 +34,14 @@ class LegacyTypeResolver implements TypeResolverInterface
                 if (!array_key_exists(strtolower($type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
                     if (($resolved = $this->context->fullyQualifiedName($type)) && class_exists($resolved)) {
                         $types[$ii] = ltrim($resolved, '\\');
+                    } else {
+                        // invalid type
+                        unset($types[$ii]);
                     }
                 }
             }
+            // ensure we reset numeric keys
+            $types = array_values($types);
         }
 
         $explicitType = $explicitType ?: ($types ? $types[0] : null);
