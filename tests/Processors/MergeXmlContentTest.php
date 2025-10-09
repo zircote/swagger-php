@@ -29,7 +29,8 @@ END;
         $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
         $this->assertSame(Generator::UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
-        $analysis->process([new MergeXmlContent()]);
+
+        $this->processorPipeline([new MergeXmlContent()])->process($analysis);
 
         $this->assertIsArray($response->content);
         $this->assertCount(1, (array) $response->content);
@@ -52,7 +53,8 @@ END;
         /** @var OA\Response $response */
         $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
         $this->assertCount(1, $response->content);
-        $analysis->process([new MergeXmlContent()]);
+
+        $this->processorPipeline([new MergeXmlContent()])->process($analysis);
         $this->assertCount(2, $response->content);
     }
 
@@ -70,7 +72,8 @@ END;
         $parameter = $analysis->getAnnotationsOfType(OA\Parameter::class)[0];
         $this->assertSame(Generator::UNDEFINED, $parameter->content);
         $this->assertCount(1, $parameter->_unmerged);
-        $analysis->process([new MergeXmlContent()]);
+
+        $this->processorPipeline([new MergeXmlContent()])->process($analysis);
 
         $this->assertIsArray($parameter->content);
         $this->assertCount(1, (array) $parameter->content);
@@ -90,7 +93,7 @@ END;
             )
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
-        $analysis->process([new MergeXmlContent()]);
+        $this->processorPipeline([new MergeXmlContent()])->process($analysis);
     }
 
     public function testInvalidParent(): void
@@ -104,6 +107,6 @@ END;
             )
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
-        $analysis->process([new MergeXmlContent()]);
+        $this->processorPipeline([new MergeXmlContent()])->process($analysis);
     }
 }

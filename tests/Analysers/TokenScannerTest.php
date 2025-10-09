@@ -13,23 +13,21 @@ class TokenScannerTest extends OpenApiTestCase
 {
     public static function scanCases(): iterable
     {
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'abstract' => [
-                'PHP/AbstractKeyword.php',
-                [
-                    'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
-                        'uses' => [
-                            'OAT' => 'OpenApi\Attributes',
-                        ],
-                        'interfaces' => [],
-                        'traits' => [],
-                        'enums' => [],
-                        'methods' => ['stuff', 'other', 'another'],
-                        'properties' => [],
+        yield 'abstract' => [
+            'PHP/AbstractKeyword.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
+                    'uses' => [
+                        'OAT' => 'OpenApi\Attributes',
                     ],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => ['stuff', 'other', 'another'],
+                    'properties' => [],
                 ],
-            ];
-        }
+            ],
+        ];
 
         yield 'references' => [
             'PHP/References.php',
@@ -355,39 +353,37 @@ class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'enum' => [
-                'PHP/Enums/StatusEnum.php',
-                [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
-                        'uses' => [
-                            'OAT' => 'OpenApi\\Attributes',
-                        ],
-                        'interfaces' => [],
-                        'enums' => [],
-                        'traits' => [],
-                        'methods' => [],
-                        'properties' => [],
+        yield 'enum' => [
+            'PHP/Enums/StatusEnum.php',
+            [
+                'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
+                    'uses' => [
+                        'OAT' => 'OpenApi\\Attributes',
                     ],
+                    'interfaces' => [],
+                    'enums' => [],
+                    'traits' => [],
+                    'methods' => [],
+                    'properties' => [],
                 ],
-            ];
+            ],
+        ];
 
-            yield 'enum-backed' => [
-                'PHP/Enums/StatusEnumBacked.php',
-                [
-                    'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
-                        'uses' => [
-                            'OAT' => 'OpenApi\\Attributes',
-                        ],
-                        'interfaces' => [],
-                        'enums' => [],
-                        'traits' => [],
-                        'methods' => [],
-                        'properties' => [],
+        yield 'enum-backed' => [
+            'PHP/Enums/StatusEnumBacked.php',
+            [
+                'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
+                    'uses' => [
+                        'OAT' => 'OpenApi\\Attributes',
                     ],
+                    'interfaces' => [],
+                    'enums' => [],
+                    'traits' => [],
+                    'methods' => [],
+                    'properties' => [],
                 ],
-            ];
-        }
+            ],
+        ];
     }
 
     /**
