@@ -30,16 +30,20 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
 
         $customer = $analysis->openapi->components->schemas[0];
-        $firstName = $customer->properties[0];
-        $secondName = $customer->properties[1];
-        $thirdName = $customer->properties[2];
-        $fourthName = $customer->properties[3];
-        $lastName = $customer->properties[4];
-        $tags = $customer->properties[5];
-        $submittedBy = $customer->properties[6];
-        $friends = $customer->properties[7];
-        $bestFriend = $customer->properties[8];
-        $endorsedFriends = $customer->properties[9];
+
+        [
+            $firstName,
+            $secondName,
+            $thirdName,
+            $fourthName,
+            $iq,
+            $lastName,
+            $tags,
+            $submittedBy,
+            $friends,
+            $bestFriend,
+            $endorsedFriends
+        ] = $customer->properties;
 
         // Verify no values where defined in the annotation.
         $this->assertSame(Generator::UNDEFINED, $firstName->property);
@@ -104,6 +108,16 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'nullable' => Generator::UNDEFINED,
         ];
         $this->assertName($fourthName, $expectedValues);
+
+        $expectedValues = [
+            'property' => 'iq',
+            'example' => '0.00',
+            'description' => Generator::UNDEFINED,
+            'type' => 'string',
+            'nullable' => false,
+        ];
+
+        $this->assertName($iq, $expectedValues);
 
         $expectedValues = [
             'property' => 'lastname',
