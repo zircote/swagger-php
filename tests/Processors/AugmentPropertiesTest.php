@@ -30,16 +30,20 @@ class AugmentPropertiesTest extends OpenApiTestCase
         ]);
 
         $customer = $analysis->openapi->components->schemas[0];
-        $firstName = $customer->properties[0];
-        $secondName = $customer->properties[1];
-        $thirdName = $customer->properties[2];
-        $fourthName = $customer->properties[3];
-        $lastName = $customer->properties[4];
-        $tags = $customer->properties[5];
-        $submittedBy = $customer->properties[6];
-        $friends = $customer->properties[7];
-        $bestFriend = $customer->properties[8];
-        $endorsedFriends = $customer->properties[9];
+
+        [
+            $firstName,
+            $secondName,
+            $thirdName,
+            $fourthName,
+            $iq,
+            $lastName,
+            $tags,
+            $submittedBy,
+            $friends,
+            $bestFriend,
+            $endorsedFriends
+        ] = $customer->properties;
 
         // Verify no values where defined in the annotation.
         $this->assertSame(Generator::UNDEFINED, $firstName->property);
@@ -68,7 +72,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
         $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
 
-        $analysis->process(new AugmentProperties());
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $expectedValues = [
             'property' => 'firstname',
@@ -101,9 +105,19 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'example' => 'Unknown',
             'description' => 'The unknown name of the customer.',
             'type' => Generator::UNDEFINED,
-            'nullable' => true,
+            'nullable' => Generator::UNDEFINED,
         ];
         $this->assertName($fourthName, $expectedValues);
+
+        $expectedValues = [
+            'property' => 'iq',
+            'example' => '0.00',
+            'description' => Generator::UNDEFINED,
+            'type' => 'string',
+            'nullable' => false,
+        ];
+
+        $this->assertName($iq, $expectedValues);
 
         $expectedValues = [
             'property' => 'lastname',
@@ -152,6 +166,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $nullableString,
             $arrayType,
             $dateTime,
+            $dateTimeTimestamp,
             $qualified,
             $namespaced,
             $importedNamespace,
@@ -186,6 +201,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertName($dateTime, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => Generator::UNDEFINED,
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => Generator::UNDEFINED,
@@ -240,7 +259,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
 
-        $analysis->process([new AugmentProperties()]);
+        $analysis->process($this->initializeProcessors([new AugmentProperties()]));
 
         $this->assertName($stringType, [
             'property' => 'stringType',
@@ -268,6 +287,10 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'dateTime',
             'type' => 'string',
             'format' => 'date-time',
+        ]);
+        $this->assertName($dateTimeTimestamp, [
+            'property' => 'dateTimeTimestamp',
+            'type' => 'integer',
         ]);
         $this->assertName($qualified, [
             'property' => 'qualified',
@@ -333,7 +356,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
     protected function assertName(OA\Property $property, array $expectedValues): void
     {
         foreach ($expectedValues as $key => $val) {
-            $this->assertSame($val, $property->$key, '@OA\Property()->property based on propertyname');
+            $this->assertSame($val, $property->$key, '@OA\Property()->' . $key);
         }
     }
 }

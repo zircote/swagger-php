@@ -15,7 +15,9 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
 use OpenApi\Pipeline;
+use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -99,6 +101,25 @@ class OpenApiTestCase extends TestCase
         return new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
     }
 
+    public function getTypeResolver(): TypeResolverInterface
+    {
+        return new ComparingResolver($this);
+    }
+
+    public function initializeProcessors(array $processors): array
+    {
+        $generator = (new Generator())
+            ->setTypeResolver($this->getTypeResolver());
+
+        array_walk($processors, function ($processor) use ($generator) {
+            if (is_a($processor, GeneratorAwareInterface::class)) {
+                $processor->setGenerator($generator);
+            }
+        });
+
+        return $processors;
+    }
+
     public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
     {
         $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message): void {
@@ -117,7 +138,7 @@ class OpenApiTestCase extends TestCase
      * @param bool                              $normalized flag indicating whether the inputs are already normalized or
      *                                                      not
      */
-    protected function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
+    public function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {
         $formattedValue = function ($value): string {
             if (is_bool($value)) {
@@ -231,6 +252,7 @@ class OpenApiTestCase extends TestCase
         (new Generator($this->getTrackingLogger()))
             ->setConfig($config)
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
+            ->setTypeResolver($this->getTypeResolver())
             ->setProcessorPipeline(new Pipeline($processors))
             ->generate($this->fixtures($files), $analysis, false);
 
@@ -240,6 +262,7 @@ class OpenApiTestCase extends TestCase
     protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
     {
         return (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
             ->setVersion($version)
             ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
                 $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);

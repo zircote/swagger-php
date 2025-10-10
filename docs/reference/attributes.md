@@ -1480,14 +1480,14 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 #### Parameters
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
 <br />
 A version specified via <code>Generator::setVersion()</code> will overwrite this value.<br />
 <br />
-This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+NOTE: This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>info</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Info|null</span></dt>
   <dd><p>Provides metadata about the API. The metadata may be used by tooling as required.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>

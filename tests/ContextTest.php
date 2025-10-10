@@ -19,6 +19,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setAnalyser($this->getAnalyzer())
+            ->setTypeResolver($this->getTypeResolver())
             ->generate([$this->fixture('Customer.php')]);
         $context = $openapi->components->schemas[0]->_context;
         // resolve with namespace
@@ -54,6 +55,7 @@ class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $openapi = (new Generator($this->getTrackingLogger()))
+            ->setTypeResolver($this->getTypeResolver())
             ->generate([$this->fixture('Customer.php')]);
 
         $customerSchema = $openapi->components->schemas[0];

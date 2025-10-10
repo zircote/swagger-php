@@ -39,7 +39,7 @@ class ExpandClassesTest extends OpenApiTestCase
                 'ExpandClasses/Ancestor.php',
             ]
         );
-        $analysis->process([
+        $analysis->process($this->initializeProcessors([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
             new ExpandInterfaces(),
@@ -47,7 +47,7 @@ class ExpandClassesTest extends OpenApiTestCase
             new AugmentSchemas(),
             new AugmentProperties(),
             new BuildPaths(),
-        ]);
+        ]));
         $this->validate($analysis);
 
         /** @var OA\Schema[] $schemas */

@@ -38,11 +38,13 @@ class ProcGenerator extends DocGenerator
 
                 // default is set on the constructor only
                 $rp = null;
-                $cc = $rc->getMethod('__construct');
-                foreach ($cc->getParameters() as $parameter) {
-                    if ($parameter->getName() === $pname) {
-                        $rp = $parameter;
-                        break;
+                if ($rc->hasMethod('__construct')) {
+                    $cc = $rc->getMethod('__construct');
+                    foreach ($cc->getParameters() as $parameter) {
+                        if ($parameter->getName() === $pname) {
+                            $rp = $parameter;
+                            break;
+                        }
                     }
                 }
                 $default = 'N/A';

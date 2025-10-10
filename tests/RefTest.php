@@ -41,7 +41,10 @@ END;
         $openapi->merge($this->annotationsFromDocBlockParser($comment));
         $analysis = new Analysis([], $this->getContext());
         $analysis->addAnnotation($openapi, $this->getContext());
-        (new Generator())->getProcessorPipeline()->process($analysis);
+        (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
+            ->getProcessorPipeline()
+            ->process($analysis);
 
         $analysis->validate();
         // escape / as ~1

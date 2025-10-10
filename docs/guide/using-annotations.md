@@ -1,9 +1,20 @@
 # Annotations
 
+Annotations are PHP comments (docblocks) containing [doctrine style annotations](https://www.doctrine-project.org/projects/annotations.html).
+With the introduction of support of PHP Attributes as of PHP 8.1, annotations are now deprecated in favor of attributes.
+
 ::: tip Namespace
 Using a namespace alias simplifies typing and improves readability.
 
 All annotations are in the `OpenApi\Annotations` namespace.
+
+```php
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(...)
+ */
+```
 :::
 
 Since Annotations are technically PHP comments, adding `use OpenApi\Annotations as OA;` is strictly speaking not necessary.

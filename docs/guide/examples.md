@@ -302,7 +302,7 @@ Classic petstore sample app. Uses `OAuth`
 
 ## Polymorphism
 
-Demonstrates the use of `Discriminator`
+Demonstrates the use of `OA\Discriminator`
 
 ### Controller.php
 
