@@ -100,6 +100,16 @@ Use the RequestBody context to extract useful information and inject that into t
 ### [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 
 Use the property context to extract useful information and inject that into the annotation.
+#### Config settings
+**augmentProperties.generator**
+: <span style="font-family: monospace;">OpenApi\Generator</span>
+<br>**default**
+: <span style="font-family: monospace;">N/A</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
+
+
+
 ### [AugmentDiscriminators](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentDiscriminators.php)
 
 Use the property context to extract useful information and inject that into the annotation.

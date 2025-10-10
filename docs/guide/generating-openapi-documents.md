@@ -1,6 +1,6 @@
 # Generating OpenAPI documents
 
-## `./vendor/bin/openapi`
+## Using the command line
 
 `swagger-php` includes a command line tool `./vendor/bin/openapi`. This can be used to generate OpenAPI documents.
 
