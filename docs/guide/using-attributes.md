@@ -1,9 +1,17 @@
 # Attributes
 
+PHP Attributes are the preferred way to annotate your code.
+
 ::: tip Namespace
 Using a namespace alias simplifies typing and improves readability.
 
 All attributes are in the `OpenApi\Attributes` namespace.
+
+```php
+use OpenApi\Attributes as OA;
+
+#[OA\Info(/*...*/)]
+```
 :::
 
 ## Nesting
