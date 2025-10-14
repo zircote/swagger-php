@@ -151,6 +151,7 @@ components:
               example: null
             colour:
               $ref: '#/components/schemas/Colour'
+              description: 'The colour'
             kind:
               description: 'The kind.'
               type: string

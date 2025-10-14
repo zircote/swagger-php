@@ -34,7 +34,7 @@ class Product implements ProductInterface
         public int $quantity,
         #[OAT\Property(default: null, example: null)]
         public ?string $brand,
-        #[OAT\Property()]
+        #[OAT\Property(description: 'The colour')]
         public Colour $colour,
         #[OAT\Property(type: 'string')]
         public \DateTimeInterface $releasedAt,
