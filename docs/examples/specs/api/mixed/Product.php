@@ -43,6 +43,6 @@ class Product implements ProductInterface
     #[OAT\Property(nullable: true, default: null, example: null)]
     public string $brand;
 
-    /** @OA\Property */
+    /** @OA\Property(description="The colour") */
     public Colour $colour;
 }
