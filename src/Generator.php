@@ -310,17 +310,19 @@ class Generator
 
     public function getTypeResolver(): TypeResolverInterface
     {
-        return $this->typeResolver ?:
-            (
-                class_exists(StringTypeResolver::class)
-                ? new TypeInfoTypeResolver()
-                : new LegacyTypeResolver()
-            );
+        $this->typeResolver ??=                class_exists(StringTypeResolver::class)
+                    ? new TypeInfoTypeResolver()
+                    : new LegacyTypeResolver();
+        ;
+
+        return $this->typeResolver;
     }
 
     public function getLogger(): ?LoggerInterface
     {
-        return $this->logger ?: new DefaultLogger();
+        $this->logger ??= new DefaultLogger();
+
+        return $this->logger;
     }
 
     public function getVersion(): ?string
