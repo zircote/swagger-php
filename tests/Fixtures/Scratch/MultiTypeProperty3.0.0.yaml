@@ -16,4 +16,5 @@ components:
       properties:
         value:
           example: true
+          nullable: true
       type: object

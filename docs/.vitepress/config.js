@@ -11,10 +11,14 @@ function getGuideSidebar() {
     {
       text: 'Annotating your code',
       items: [
-        { text: 'Attributes', link: '/guide/attributes' },
-        { text: 'Annotations', link: '/guide/annotations' },
-        { text: 'Required elements', link: '/guide/required-elements' },
-        { text: 'Common techniques', link: '/guide/common-techniques' },
+        { text: 'Using Attributes', link: '/guide/using-attributes' },
+        { text: 'Using Annotations', link: '/guide/using-annotations' },
+        { text: 'Minimum requirements', link: '/guide/minimum-requirements' },
+        { text: 'Augmentation', link: '/guide/augmentation' },
+        { text: 'References', link: '/guide/references' },
+        { text: 'Enums', link: '/guide/enums' },
+        { text: 'Shortcuts', link: '/guide/shortcuts' },
+        { text: 'Vendor extensions', link: '/guide/vendor-extensions' },
       ]
     },
     {
@@ -64,7 +68,7 @@ module.exports = {
   srcExclude: [
       'examples/Readme.md'
   ],
-  themeConfig: {    
+  themeConfig: {
     socialLinks: [
       { icon: 'github', link: 'https://github.com/zircote/swagger-php' },
     ],
@@ -86,7 +90,7 @@ module.exports = {
     },
 
     outline: {
-      level: [2, 3]
+      level: [2, 3, 4]
     }
   }
 };

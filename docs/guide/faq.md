@@ -22,7 +22,7 @@ Most commonly this manifests with a warning about the required `@OA\Info` not be
 related code, the info annotation (and a few more) is kind of global.
 
 The simplest solution to avoid this issue is to add a 'dummy' class to the docblock and add
-all 'global' annotations (e.g. `Tag`, `Server`, `SecurityScheme`, etc.) **in a single docblock** to that class.
+all 'global' annotations (e.g. `OA\Tag`, `OA\Server`, `OA\SecurityScheme`, etc.) **in a single docblock** to that class.
 
 <codeblock id="dummy-class">
   <template v-slot:at>

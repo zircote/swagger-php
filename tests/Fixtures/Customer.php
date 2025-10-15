@@ -60,6 +60,11 @@ class Customer
     public $fourthname;
 
     /**
+     * @OA\Property(nullable=false, format="number", example="0.00")
+     */
+    public ?string $iq;
+
+    /**
      * @var string the lastname of the customer
      * @OA\Property
      */

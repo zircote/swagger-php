@@ -12,7 +12,10 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
+use OpenApi\Type\LegacyTypeResolver;
+use OpenApi\Type\TypeInfoTypeResolver;
 use Psr\Log\LoggerInterface;
+use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 
 /**
  * OpenApi spec generator.
@@ -49,6 +52,8 @@ class Generator
     protected array $config = [];
 
     protected ?Pipeline $processorPipeline = null;
+
+    protected ?TypeResolverInterface $typeResolver = null;
 
     protected ?LoggerInterface $logger = null;
 
@@ -296,9 +301,28 @@ class Generator
         return $this->withProcessorPipeline($with);
     }
 
+    public function setTypeResolver(?TypeResolverInterface $typeResolver): Generator
+    {
+        $this->typeResolver = $typeResolver;
+
+        return $this;
+    }
+
+    public function getTypeResolver(): TypeResolverInterface
+    {
+        $this->typeResolver ??=                class_exists(StringTypeResolver::class)
+                    ? new TypeInfoTypeResolver()
+                    : new LegacyTypeResolver();
+        ;
+
+        return $this->typeResolver;
+    }
+
     public function getLogger(): ?LoggerInterface
     {
-        return $this->logger ?: new DefaultLogger();
+        $this->logger ??= new DefaultLogger();
+
+        return $this->logger;
     }
 
     public function getVersion(): ?string

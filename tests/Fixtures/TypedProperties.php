@@ -41,6 +41,11 @@ class TypedProperties
     public \DateTime $dateTime;
 
     /**
+     * @OA\Property(type="integer")
+     */
+    public \DateTime $dateTimeTimestamp;
+
+    /**
      * @OA\Property
      */
     public \DateTimeInterface $qualified;

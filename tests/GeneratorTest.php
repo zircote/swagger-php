@@ -34,6 +34,7 @@ class GeneratorTest extends OpenApiTestCase
 
         $openapi = (new Generator())
             ->setAnalyser($this->getAnalyzer())
+            ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
         $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
@@ -48,6 +49,7 @@ class GeneratorTest extends OpenApiTestCase
 
         $analyzer = $this->getAnalyzer();
         $processor = (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
             ->getProcessorPipeline();
 
         $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
@@ -63,6 +65,7 @@ class GeneratorTest extends OpenApiTestCase
 
         (new Generator($this->getTrackingLogger()))
             ->setAnalyser($this->getAnalyzer())
+            ->setTypeResolver($this->getTypeResolver())
             ->generate(['/tmp/__swagger_php_does_not_exist__']);
     }
 

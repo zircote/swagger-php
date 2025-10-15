@@ -185,12 +185,15 @@ trait DocblockTrait
     {
         $comment = str_replace("\r\n", "\n", (string) $docblock);
         $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
-        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $matches);
 
-        return array_merge(
+        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?+$/im', $comment, $matches);
+
+        $result = array_merge(
             ['type' => null, 'description' => null],
             array_filter($matches, fn ($key): bool => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
         );
+
+        return array_map(fn (?string $value): ?string => null !== $value ? trim($value) : null, $result);
     }
 
     /**

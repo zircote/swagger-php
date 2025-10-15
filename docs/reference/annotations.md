@@ -567,14 +567,14 @@ This is the root document object for the API specification.
 #### Properties
 ---
 <dl>
-  <dt><strong>openapi</strong> : <span style="font-family: monospace;">&#039;3.0.0&#039;|&#039;3.1.0&#039;</span></dt>
+  <dt><strong>openapi</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The semantic version number of the OpenAPI Specification version that the OpenAPI document uses.<br />
 <br />
 The openapi field should be used by tooling specifications and clients to interpret the OpenAPI document.<br />
 <br />
 A version specified via <code>Generator::setVersion()</code> will overwrite this value.<br />
 <br />
-This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+NOTE: This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">array</span></dt>
   <dd><p>A declaration of which security mechanisms can be used across the API.<br />
 <br />

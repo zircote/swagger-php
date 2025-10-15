@@ -24,5 +24,8 @@ jobs:
         with:
           dependency-versions: 'highest'
 
+      - name: Require type-info-extras
+        run: composer require radebatz/type-info-extras -W
+
       - name: Static Code Analysis
         run: composer analyse

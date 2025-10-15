@@ -387,7 +387,7 @@ The API does include basic support for callbacks. However, this needs to be set 
 Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
 to the individually declared class properties.
 
-It is possible, however, to nest `O@\Property` annotations inside a schema even without properties. In fact, all that is needed
+It is possible, however, to nest `@\Property` annotations inside a schema even without properties. In fact, all that is needed
 is a code anchor - e.g. an empty class.
 
 <codeblock id="virtual-model">
