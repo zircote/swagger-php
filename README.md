@@ -44,6 +44,22 @@ For cli usage from anywhere install swagger-php globally and make sure to place 
 composer global require zircote/swagger-php
 ```
 
+### radebatz/type-info-extras
+`swagger-php` version `5.5` introduces a new type resolver that is used internally to determine the schema type
+of properties (and other elements with a schema).
+
+By default, a custom `LegacyTypeResolver` is used. If you are on PHP 8.2 or higher,
+the `TypeInfoTypeResolver` can be used instead.
+For this the [radebatz/type-info-extras](https://github.com/DerManoMann/type-info-extras) package is required.
+Since it is optional, it needs to be installed manually. It will also add `symfony/type-info` as a dependency:
+
+```shell
+composer require radebatz/type-info-extras
+```
+
+If the library code is detected, `swagger-php` will automatically use it.
+Advantages are re-use of 3rd party code, better stability and compatibility with future PHP versions.
+
 ### doctrine/annotations
 As of version `4.8` the [doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) library **is optional** and **no longer installed by default**.
 
