@@ -75,6 +75,10 @@ class AugmentProperties implements GeneratorAwareInterface
             $typeResolver->setContext($context);
         }
 
+        if (!$context->reflector) {
+            return;
+        }
+
         $docblockDetails = $typeResolver->getDocblockTypeDetails($context->reflector);
         $reflectionTypeDetails = $typeResolver->getReflectionTypeDetails($context->reflector);
 
