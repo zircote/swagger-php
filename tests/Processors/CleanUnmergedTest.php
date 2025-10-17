@@ -32,7 +32,7 @@ class CleanUnmergedTest extends OpenApiTestCase
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $this->assertCount(4, $analysis->annotations);
-        $analysis->process([new MergeIntoOpenApi()]);
+        $this->processorPipeline([new MergeIntoOpenApi()])->process($analysis);
 
         $this->assertCount(5, $analysis->annotations);
         $before = $analysis->split();
@@ -42,7 +42,7 @@ END;
         $analysis->validate(); // Validation fails to detect the unmerged annotations.
 
         // CleanUnmerged should place the unmerged annotions into the swagger->_unmerged array.
-        $analysis->process([new CleanUnmerged()]);
+        $this->processorPipeline([new CleanUnmerged()])->process($analysis);
 
         $between = $analysis->split();
         $this->assertCount(3, $between->merged->annotations, 'Generated @OA\OpenApi, @OA\PathItem and @OA\Info');
@@ -58,7 +58,8 @@ END;
         $contact = $analysis->getAnnotationsOfType(OA\Contact::class)[0];
         $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);
-        $analysis->process([new CleanUnmerged()]);
+
+        $this->processorPipeline([new CleanUnmerged()])->process($analysis);
 
         $this->assertCount(0, $license->_unmerged);
         $after = $analysis->split();

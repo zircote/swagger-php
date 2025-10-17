@@ -44,7 +44,7 @@ use Psr\Log\LoggerInterface;
  * @property string|null                  $version     The OpenAPI version in use
  */
 #[\AllowDynamicProperties]
-class Context
+class Context implements \Stringable
 {
     /**
      * Prototypical inheritance for properties.
@@ -204,7 +204,7 @@ class Context
     /**
      * Traverse the context tree to get the property value.
      */
-    public function __get(string $property)
+    public function __get(string $property): mixed
     {
         if ($this->parent instanceof Context) {
             return $this->parent->{$property};
@@ -257,7 +257,7 @@ class Context
         } elseif ($this->uses) {
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
-                if (strcasecmp($alias, $source) === 0) {
+                if (strcasecmp((string) $alias, $source) === 0) {
                     return '\\' . $aliasedNamespace;
                 }
             }

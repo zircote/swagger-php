@@ -20,7 +20,7 @@ trait TypesTrait
         if (is_array($type)) {
             $mapped = [];
             foreach ($type as $t) {
-                $t = strtolower($t);
+                $t = strtolower((string) $t);
 
                 if (array_key_exists($t, TypeResolverInterface::NATIVE_TYPE_MAP)) {
                     $t = TypeResolverInterface::NATIVE_TYPE_MAP[$t];

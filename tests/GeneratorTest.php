@@ -8,8 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
+use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Util;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -21,8 +21,8 @@ class GeneratorTest extends OpenApiTestCase
         $sourceDir = static::examplePath("$name/annotations");
 
         yield 'dir-list' => [$name, [$sourceDir]];
-        yield 'finder' => [$name, Util::finder($sourceDir)];
-        yield 'finder-list' => [$name, [Util::finder($sourceDir)]];
+        yield 'finder' => [$name, new SourceFinder($sourceDir)];
+        yield 'finder-list' => [$name, [new SourceFinder($sourceDir)]];
     }
 
     /**
@@ -36,23 +36,6 @@ class GeneratorTest extends OpenApiTestCase
             ->setAnalyser($this->getAnalyzer())
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
-
-        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
-    }
-
-    /**
-     * @dataProvider sourcesProvider
-     */
-    public function testScan(string $name, iterable $sources): void
-    {
-        $this->registerExampleClassloader($name);
-
-        $analyzer = $this->getAnalyzer();
-        $processor = (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline();
-
-        $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
 
         $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
     }

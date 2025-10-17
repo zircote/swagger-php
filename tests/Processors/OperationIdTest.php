@@ -7,19 +7,22 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Processors\OperationId;
 use OpenApi\Tests\OpenApiTestCase;
 
 class OperationIdTest extends OpenApiTestCase
 {
     public function testGeneratedOperationId(): void
     {
-        $analysis = $this->analysisFromFixtures([
-            'Processors/EntityControllerClass.php',
-            'Processors/EntityControllerInterface.php',
-            'Processors/EntityControllerTrait.php',
-        ]);
-        $analysis->process([new OperationId(false)]);
+        $analysis = $this->analysisFromFixtures(
+            [
+                'Processors/EntityControllerClass.php',
+                'Processors/EntityControllerInterface.php',
+                'Processors/EntityControllerTrait.php',
+            ],
+            $this->processorPipeline(),
+            config: ['operationId' => ['hash' => false]]
+        );
+
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 

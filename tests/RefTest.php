@@ -8,7 +8,6 @@ namespace OpenApi\Tests;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 
 class RefTest extends OpenApiTestCase
 {
@@ -41,10 +40,7 @@ END;
         $openapi->merge($this->annotationsFromDocBlockParser($comment));
         $analysis = new Analysis([], $this->getContext());
         $analysis->addAnnotation($openapi, $this->getContext());
-        (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline()
-            ->process($analysis);
+        $this->processorPipeline()->process($analysis);
 
         $analysis->validate();
         // escape / as ~1
