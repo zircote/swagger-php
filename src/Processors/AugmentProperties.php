@@ -71,7 +71,7 @@ class AugmentProperties implements GeneratorAwareInterface
     {
         $context = $schema->_context;
 
-        if (!$context->reflector || $context->is('nested')) {
+        if (null === $context->reflector || $context->is('nested')) {
             return;
         }
 
