@@ -10,7 +10,7 @@ By adding your API documentation next to the corresponding source code (same fil
 as all details can be modified in one place.
 
 ::: tip Annotating vs. Annotations
-When talking about annotating your code we mean the act of adding meta-data to your codebase. This can be done by
+When talking about annotating your code, we mean the act of adding meta-data to your codebase. This can be done by
 either adding [`Annotations`](using-annotations.md) or [`Attributes`](using-attributes.md).
 :::
 

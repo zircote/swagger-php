@@ -136,7 +136,7 @@ An API might have zero or more security schemes. These are defined at the top le
   </template>
 </codeblock>
 
-To declare an endpoint as secure and define what security schemes are available to authenticate a client it needs to be
+To declare an endpoint as secure and define what security schemes are available to authenticate a client, it needs to be
 added to the operation, for example:
 
 <codeblock id="secure-endpoint">
@@ -216,7 +216,7 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
 </codeblock>
 
 ## Default security scheme for all endpoints
-Unless specified each endpoint needs to declare what security schemes it supports. However, there is a way
+Unless specified, each endpoint needs to declare what security schemes it supports. However, there is a way
 to also configure security schemes globally for the whole API.
 
 This is done on the `@OA\OpenApi` annotation:
@@ -306,7 +306,7 @@ Using just `*` or `application/octet-stream` might be usable workarounds.
 ## Warning about `Multiple response with same response="200"`
 There are two scenarios where this can happen
 1. A single endpoint contains two responses with the same `response` value.
-2. There are multiple global response declared, again more than one with the same `response` value.
+2. There are multiple global responses declared, again more than one with the same `response` value.
 
 ## Callbacks
 The API does include basic support for callbacks. However, this needs to be set up mostly manually.
@@ -404,7 +404,7 @@ is a code anchor - e.g. an empty class.
 </codeblock>
 
 
-## Using class name as type instead of references
+## Using class name as a type instead of references
 Typically, when referencing schemas this is done using `$ref`'s
 
 ```php
@@ -424,12 +424,12 @@ class Book
 }
 ```
 
-This works, but is not very convenient.
+This works but is not very convenient.
 
 First, when using custom schema names (`schema: 'user'`), this needs to be taken into account everywhere.
 Secondly, having to write `ref: '#/components/schemas/user'` is tedious and error-prone.
 
-Using attributes all this changes as we can take advantage of PHP itself by referring to a schema by its (fully qualified)
+Using attributes, all this changes as we can take advantage of PHP itself by referring to a schema by its (fully qualified)
 class name.
 
 With the same `User` schema as before, the `Book::author` property could be written in a few different ways
@@ -521,7 +521,7 @@ components:
 
 ## Multi value query parameter: `&q[]=1&q[]=1`
 
-PHP allows to have query parameters multiple times in the url and will combine the values to an array if the parameter
+PHP allows having query parameters multiple times in the url and will combine the values to an array if the parameter
 name uses trailing `[]`. In fact, it is possible to create nested arrays too by using more than one pair of `[]`.
 
 In terms of OpenAPI, the parameters can be considered a single parameter with a list of values.
@@ -555,12 +555,12 @@ The corresponding bit of the spec will look like this:
               type: integer
 ```
 
-`swagger-ui` will show  a form that allows to add/remove items (`integer`  values in this case) to/from a list
+`swagger-ui` will show a form that allows to add/remove items (`integer`  values in this case) to/from a list
 and post those values as something like ```?things[]=1&things[]=2&things[]=0```
 
 ## Custom response classes
 
-Even with using refs there is a bit of overhead in sharing responses. One way around that is to write
+Even with using refs, there is a bit of overhead in sharing responses. One way around that is to write
 your own response classes.
 The beauty is that in your custom `__construct()` method you can prefill as much as you need.
 
@@ -610,7 +610,7 @@ class Controller
 ```
 
 ::: tip Annotations only?
-If you are only interested in annotations you canleave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
+If you are only interested in annotations, you can leave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
 
 Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace.
 :::

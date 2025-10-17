@@ -9,7 +9,7 @@ The endpoint, in turn, needs to have a path and at least one response.
 
 ## Minimum required annotations
 
-With the above in mind a minimal API with a single endpoint could look like this:
+With the above in mind, a minimal API with a single endpoint could look like this:
 
 <codeblock id="minimal">
   <template v-slot:at>
@@ -41,7 +41,7 @@ when they are missing.
 
 For the most part those are `@OA\OpenApi`, `@OA\Components` and `@OA\PathItem`. These are defined by the OpenAPI specification
 for grouping and as give the generated JSON/Yaml some more structure.
-Unless there are specific reasons to add them manually, you should not never need to add them yourself.
+Unless there are specific reasons to add them manually, you should not need to add them yourself.
 
 ## Annotation placement
 

@@ -1,6 +1,6 @@
 # Augmentation
 
-One benefit of using `swagger-php` is that the library will use a number strategies to augment your
+One benefit of using `swagger-php` is that the library will use a number of strategies to augment your
 annotations.
 
 This includes things like:
@@ -73,8 +73,8 @@ In particular, the following schema elements may be augmented:
 
 Data types that are not recognized and cannot be resolved to a class-like name (`class`, `interface`, `enum`, etc.) will be ignored.
 
-Mots of these schema elements will be resolved in isolation. For example, `nullable` may be enfored by the OpenApi annotation
-while the actual data type may be resolved from the docklock (or type-hint).
+Mots of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
+while the actual data type may be resolved from the docblock (or type-hint).
 
 ## Summary and description
 

@@ -7,23 +7,23 @@
 Generate interactive [OpenAPI](https://www.openapis.org) documentation for your RESTful API using [PHP attributes](https://www.php.net/manual/en/language.attributes.overview.php) (preferred) or
 [doctrine annotations](https://www.doctrine-project.org/projects/annotations.html) (requires additional `doctrine/annotations` library).
 
-See the [documentation website](https://zircote.github.io/swagger-php/guide/attributes.html) for supported attributes and annotations.
+See the [documentation website](https://zircote.github.io/swagger-php/guide/using-attributes.html) for supported attributes and annotations.
 
 Annotations are deprecated and may be removed in a future release of swagger-php.
 
 ## Features
 
 - Compatible with the OpenAPI **3.0** and **3.1** specification.
-- Extracts information from code & existing phpdoc annotations.
+- Extracts information from code and existing phpdoc annotations.
 - Command-line interface available.
 - [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Exceptional error reporting (with hints, context)
-- As of PHP 8.1 all annotations are also available as PHP attributes
+- As of PHP 8.1, all annotations are also available as PHP attributes
 
 ## OpenAPI version support
 
 `swagger-php` allows to generate specs either for **OpenAPI 3.0.0** or **OpenAPI 3.1.0**.
-By default the spec will be in version `3.0.0`. The command line option `--version` may be used to change this
+By default, the spec will be in version `3.0.0`. The command line option `--version` may be used to change this
 to `3.1.0`.
 
 Programmatically, the method `Generator::setVersion()` can be used to change the version.
@@ -38,14 +38,14 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 composer require zircote/swagger-php
 ```
 
-For cli usage from anywhere install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `openapi` executable can be located by your system.
+For cli usage from anywhere, install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `openapi` executable can be located by your system.
 
 ```shell
 composer global require zircote/swagger-php
 ```
 
 ### radebatz/type-info-extras
-`swagger-php` version `5.5` introduces a new type resolver that is used internally to determine the schema type
+`swagger-php` version `5.5` introduces a new type resolver used internally to determine the schema type
 of properties (and other elements with a schema).
 
 By default, a custom `LegacyTypeResolver` is used. If you are on PHP 8.2 or higher,

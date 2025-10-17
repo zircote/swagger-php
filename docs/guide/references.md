@@ -68,5 +68,5 @@ This doesn't do anything by itself, but now you can reference this fragment by i
 </codeblock>
 
 ::: info Examples
-There are more uses cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/examples/specs/using-refs).
+There are more use cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/examples/specs/using-refs).
 :::
