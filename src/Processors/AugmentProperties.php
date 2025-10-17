@@ -70,13 +70,14 @@ class AugmentProperties implements GeneratorAwareInterface
     protected function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
     {
         $context = $schema->_context;
+
+        if (!$context->reflector || $context->is('nested')) {
+            return;
+        }
+
         $typeResolver = $this->generator->getTypeResolver();
         if (method_exists($typeResolver, 'setContext')) {
             $typeResolver->setContext($context);
-        }
-
-        if (!$context->reflector) {
-            return;
         }
 
         $docblockDetails = $typeResolver->getDocblockTypeDetails($context->reflector);
