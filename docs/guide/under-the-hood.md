@@ -2,7 +2,7 @@
 
 ## Processing flow
 
-- The `Generator` iterates over the given sources (Symfony `Finder`, file/directory list, etc)
+- The `Generator` iterates over the given sources (Symfony `Finder`, file/directory list, etc.)
 - The configured analyser (`AnalyserInterface`) reads the files and builds an `Analysis` object.
   Default (as of v4) is the `ReflectionAnalyser`. Alternatively, there is the `TokenAnalyser` which was the default in v3.
 - The legacy `TokenAnalyser` was removed in v5.
@@ -42,10 +42,10 @@ npm install
 ### Workflow
 
 * Edit `.md` files in the `docs` folder
-* Update annotation / attribute PHP docblocks.<br>These will be extracted during publishing into the  [reference](../reference/) section.
+* Update annotation / attribute PHP docblocks.<br>These will be extracted during publishing into the [reference](../reference/) section.
 * Run 'composer docs:build' to check for any errors
 * Run 'composer docs:dev' to test the generated documentation locally (`localhost:3000`)
 * Create PR and update `master`
 * Manually trigger the `gh-pages` workflow to update the online docs.
 
-The last step requires commit rights on `zircote/swagger-php`.
+The last step requires committing rights on `zircote/swagger-php`.

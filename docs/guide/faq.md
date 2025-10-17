@@ -8,7 +8,7 @@ architectural changes had to be made.
 One of those changes is that placing annotations in your source files is now subject to the same limitations as attributes.
 These limits are dictated by the PHP reflection API, specifically where it provides access to attributes and doc comments.
 
-This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot _"see"_ them any more.
+This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot _"see"_ them anymore.
 
 Supported locations:
 * class
@@ -46,7 +46,7 @@ composer require doctrine/annotations
 
 ## Annotations missing
 
-Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks any more as the PHP reflection API only provides access to the docblock closest to a given structural element.
+Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks anymore as the PHP reflection API only provides access to the docblock closest to a given structural element.
 
 ```php
 class Controller
@@ -76,7 +76,7 @@ class Controller
 }
 ```
 
-In this case the simplest solution is to merge both docblocks. As an additional benefit the duplication of the summary can be avoided.
+In this case the simplest solution is to merge both docblocks. As an additional benefit, the duplication of the summary can be avoided.
 
 In this improved version `swagger-php` will automatically use the docblock summary just as explicitly done above.
 
@@ -163,7 +163,7 @@ openapi -b src/test.php src/test.php
 
 Another reason for this error could be that your class actually has the wrong namespace (or no namespace at all!).
 
-Depending on your framework this might still work in the context of your app, but the composer autoloader
+Depending on your framework, this might still work in the context of your app, but the composer autoloader
 alone might not be able to load your class (assuming you are using composer).
 
 ## No output from `openapi` command line tool

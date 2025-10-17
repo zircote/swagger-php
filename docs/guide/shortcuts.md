@@ -1,7 +1,7 @@
 # Shortcuts
 
 To help keeping your annotations simple, there are a few shortcut annotations available in `swagger-php`.
-Typically, these safe you from creating boilerplate nested `OA\Schema` annotations.
+Typically, these save you from creating boilerplate nested `OA\Schema` annotations.
 
 ## `OA\MediaType`
 

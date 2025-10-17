@@ -9,7 +9,7 @@
 ```
 
 ::: tip Output Format
-By default the output format is YAML. If a filename is given (via `--output` or `-o`)
+By default, the output format is YAML. If a filename is given (via `--output` or `-o`)
 the tool will use the file extension to determine the format.
 
 The `--format` option can be used to force a specific format.
@@ -18,7 +18,9 @@ The `--format` option can be used to force a specific format.
 ::: tip Bootstrap
 The bootstrap option `-b` is useful when trying to use `swagger-php` without proper autoloading.
 
-For example, you might want to evaluate the library using a single file with just a few annotations. In this case telling swagger-php to bootstrap (pre-load) the file prior to processing it will ensure PHP's `reflection` code will be able to inspect your code.
+For example, you might want to evaluate the library using a single file with just a few annotations.
+In this case telling swagger-php to bootstrap (preload) the file prior to processing it will ensure
+PHP's `reflection` code will be able to inspect your code.
 
 ```shell
 > ./vendor/bin/openapi -b my_file.php my_file.php
@@ -53,7 +55,7 @@ Options:
 
 ## Using PHP
 
-Depending on your use case PHP code can also be used to generate OpenAPI documents in a more dynamic way.
+Depending on your use case, PHP code can also be used to generate OpenAPI documents in a more dynamic way.
 
 In its simplest form this may look something like
 

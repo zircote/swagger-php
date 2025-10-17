@@ -20,7 +20,7 @@ use OpenApi\Annotations as OA;
 Since Annotations are technically PHP comments, adding `use OpenApi\Annotations as OA;` is strictly speaking not necessary.
 However, doctrine will be quite specific about whether an alias is valid or not.
 
-`swagger-php` will automatically register the `@OA` alias so all annotations can be used using the `@OA` shortcut without
+`swagger-php` will automatically register the `@OA` alias so all annotations can be used with the `@OA` shortcut without
 any additional work.
 
 ## Doctrine
