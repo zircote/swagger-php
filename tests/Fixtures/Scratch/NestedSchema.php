@@ -8,12 +8,39 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
+#[OAT\Schema]
+class NestedSchemaOne
+{
+}
+
+#[OAT\Schema]
+class NestedSchemaTwo
+{
+}
+
 #[OAT\Info(
     title: 'Parameter Content Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OAT\Post(
     path: '/api/endpoint',
+    requestBody: new OAT\RequestBody(content: [new OAT\MediaType(
+        mediaType: 'application/json',
+        schema: new OAT\Schema(
+            required: ['note'],
+            properties: [
+                new OAT\Property(property: 'note', example: 'My note'),
+                new OAT\Property(
+                    property: 'other',
+                    description: 'other',
+                    oneOf: [
+                        new OAT\Schema(type: NestedSchemaOne::class),
+                        new OAT\Schema(type: NestedSchemaTwo::class),
+                    ]
+                ),
+            ]
+        )
+    )]),
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 #[OAT\Schema(

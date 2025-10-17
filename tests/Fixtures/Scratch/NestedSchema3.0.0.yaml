@@ -4,13 +4,28 @@ info:
   version: '1.0'
 paths:
   /api/endpoint:
-    get:
-      operationId: b870e13084c8a89270151bb3e43f215a
+    post:
+      operationId: 4dcf657dcdcd504467bc7a4ac7d21084
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - note
+              properties:
+                note:
+                  example: 'My note'
+                other:
+                  description: other
+                  oneOf: [{ $ref: '#/components/schemas/NestedSchemaOne' }, { $ref: '#/components/schemas/NestedSchemaTwo' }]
+              type: object
       responses:
         '200':
           description: OK
 components:
   schemas:
+    NestedSchemaOne: {  }
+    NestedSchemaTwo: {  }
     NestedSchema:
       required:
         - errors
