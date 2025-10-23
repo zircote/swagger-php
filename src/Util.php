@@ -36,7 +36,7 @@ class Util
         } else { // an array of paths
             foreach ($basePaths as $basePath) {
                 $relativePath = self::removePrefix($fullPath, $basePath);
-                if ($relativePath !== null && $relativePath !== '' && $relativePath !== '0') {
+                if (!in_array($relativePath, [null, '', '0'], true)) {
                     break;
                 }
             }
