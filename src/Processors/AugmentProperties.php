@@ -39,17 +39,15 @@ class AugmentProperties implements GeneratorAwareInterface
                 continue;
             }
 
-            $typeAndDescription = $this->parseVarLine((string) $context->comment);
-
             if (Generator::isDefault($property->type)) {
                 $this->augmentSchemaType($analysis, $property);
             }
 
-            if (!is_array($property->type)) {
-                $this->mapNativeType($property, $property->type);
-            }
+            $this->mapNativeType($property, $property->type);
 
             if (Generator::isDefault($property->description)) {
+                $typeAndDescription = $this->parseVarLine((string) $context->comment);
+
                 if ($typeAndDescription['description']) {
                     $property->description = $typeAndDescription['description'];
                 } elseif ($this->isDocblockRoot($property)) {
