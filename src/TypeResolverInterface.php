@@ -31,7 +31,9 @@ interface TypeResolverInterface
         'object' => 'object',
     ];
 
+    /** @deprecated  */
     public function getReflectionTypeDetails(\Reflector $reflector): \stdClass;
 
+    /** @deprecated  */
     public function getDocblockTypeDetails(\Reflector $reflector): \stdClass;
 }
