@@ -6,6 +6,8 @@
 
 namespace OpenApi\Type;
 
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 use OpenApi\TypeResolverInterface;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -31,6 +33,11 @@ use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 class TypeInfoTypeResolver implements TypeResolverInterface
 {
+    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
+    {
+
+    }
+
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */

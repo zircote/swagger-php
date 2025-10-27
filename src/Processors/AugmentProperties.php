@@ -40,7 +40,8 @@ class AugmentProperties implements GeneratorAwareInterface
             }
 
             if (Generator::isDefault($property->type)) {
-                $this->augmentSchemaType($analysis, $property);
+                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $property);
+                // $this->augmentSchemaType($analysis, $property);
             }
 
             $this->mapNativeType($property, $property->type);

@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Annotations as OA;
+
 interface TypeResolverInterface
 {
     public const NATIVE_TYPE_MAP = [
@@ -30,6 +32,8 @@ interface TypeResolverInterface
         'number' => 'number',
         'object' => 'object',
     ];
+
+    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void;
 
     /** @deprecated  */
     public function getReflectionTypeDetails(\Reflector $reflector): \stdClass;

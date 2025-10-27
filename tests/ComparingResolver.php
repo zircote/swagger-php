@@ -2,6 +2,8 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
@@ -29,6 +31,11 @@ class ComparingResolver implements TypeResolverInterface
         $this->legacyTypeResolver = new LegacyTypeResolver($context);
 
         return $this;
+    }
+
+    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
+    {
+
     }
 
     /**

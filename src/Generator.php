@@ -310,10 +310,9 @@ class Generator
 
     public function getTypeResolver(): TypeResolverInterface
     {
-        $this->typeResolver ??=                class_exists(StringTypeResolver::class)
+        $this->typeResolver ??= class_exists(StringTypeResolver::class)
                     ? new TypeInfoTypeResolver()
                     : new LegacyTypeResolver();
-        ;
 
         return $this->typeResolver;
     }
