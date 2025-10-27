@@ -10,7 +10,6 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\TypeResolverInterface;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
@@ -27,6 +26,7 @@ use Symfony\Component\TypeInfo\Exception\UnsupportedException;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\Type\CompositeTypeInterface;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
@@ -38,61 +38,63 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
     /** @inheritdoc */
     protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void
     {
-        $context = $schema->_context;
-        $docblockDetails = $this->getDocblockTypeDetails($reflector);
-        $reflectionTypeDetails = $this->getReflectionTypeDetails($reflector);
-
-        $type2ref = function (OA\Schema $schema) use ($analysis): void {
-            if (!Generator::isDefault($schema->type)) {
-                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
-                    $schema->type = Generator::UNDEFINED;
-                    $schema->ref = OA\Components::ref($typeSchema);
-                }
-            }
-        };
+        $docblockType = $this->getDocblockType($reflector);
+        $reflectionType = $this->getReflectionType($reflector);
 
         // we only consider nullable hints if the type is explicitly set
         if (Generator::isDefault($schema->nullable)
-            && (($docblockDetails->types && $docblockDetails->nullable)
-                || ($reflectionTypeDetails->types && $reflectionTypeDetails->nullable))
+            && (($docblockType && $docblockType->isNullable())
+                || ($reflectionType && $reflectionType->isNullable()))
         ) {
             $schema->nullable = true;
         }
 
-        if (Generator::isDefault($schema->type) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
-            $details = $docblockDetails->types && $docblockDetails->isArray
-                // for arrays, we prefer the docblock type
-                ? $docblockDetails
-                // otherwise, use the reflection type if possible
-                : ($reflectionTypeDetails->types ? $reflectionTypeDetails : $docblockDetails);
+        $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
+        $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
-            // for now
-            if (1 === count($details->types)) {
-                $schema->type = $details->types[0];
+        if (Generator::isDefault($schema->type) && ($docblockType || $reflectionType)) {
+            $type = $docblockType instanceof CollectionType
+                // for arrays, we prefer the docblock type
+                ? $docblockType
+                // otherwise, use the reflection type if possible
+                : ($reflectionType ?: $docblockType);
+
+            $isNonZeroInt = false;
+            if ($type instanceof CompositeTypeInterface && 2 === count($type->getTypes())) {
+                $types = $type->getTypes();
+                $isNonZeroInt = $types[0] instanceof IntRangeType && $types[1] instanceof IntRangeType;
             }
 
-            if ('int' === $schema->type && is_array($details->explicitDetails)) {
-                if (array_key_exists('min', $details->explicitDetails)) {
-                    $schema->minimum = $details->explicitDetails['min'];
-                    $schema->maximum = $details->explicitDetails['max'];
-                } elseif ('non-zero-int' === $details->explicitType) {
+            if (!$type instanceof CompositeTypeInterface || $isNonZeroInt) {
+                if ($isNonZeroInt) {
+                    $schema->type = 'int';
                     $schema->not = $schema->_context->isVersion('3.1.x')
                         ? ['const' => 0]
                         : ['enum' => [0]];
+                } elseif ($type instanceof BuiltinType || $type instanceof ObjectType) {
+                    $schema->type = (string) $type;
+                } elseif ($type instanceof IntRangeType) {
+                    $schema->type = $type->getTypeIdentifier()->value;
+
+                    $schema->minimum = $type->getFrom();
+                    $schema->maximum = $type->getTo();
+
+                } elseif ($type instanceof ExplicitType) {
+                    $schema->type = $type->getTypeIdentifier()->value;
+                } elseif ($type instanceof CollectionType) {
+                    $schema->type = (string) $type->getCollectionValueType();
                 }
             }
         }
 
-        if ($docblockDetails->isArray || $reflectionTypeDetails->isArray) {
+        if ($docblockType instanceof CollectionType || $reflectionType instanceof CollectionType) {
             if (Generator::isDefault($schema->items)) {
-                $schema->items = new OA\Items(
-                    [
+                $schema->items = new OA\Items([
                         'type' => $schema->type,
-                        '_context' => new Context(['generated' => true], $context),
-                    ]
-                );
+                        '_context' => new Context(['generated' => true], $schema->_context),
+                    ]);
 
-                $type2ref($schema->items);
+                $this->type2ref($schema->items, $analysis);
 
                 $analysis->addAnnotation($schema->items, $schema->items->_context);
 
@@ -104,7 +106,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
             $schema->type = 'array';
         } else {
-            $type2ref($schema);
+            $this->type2ref($schema, $analysis);
         }
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
@@ -118,6 +120,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $schema->type = Generator::UNDEFINED;
         }
     }
+
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
@@ -203,7 +206,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
+    protected function getReflectionType(\Reflector $reflector): ?Type
     {
         $subject = $reflector instanceof \ReflectionClass
             ? $reflector->getName()
@@ -214,18 +217,27 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             );
         try {
             $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
-            $resolved = (new ReflectionTypeResolver())->resolve($subject, $typeContext);
+
+            return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
         } catch (UnsupportedException $unsupportedException) {
-            $resolved = null;
+            // ignore
         }
 
-        return $this->normaliseTypeResult($reflector, $resolved);
+        return null;
     }
 
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
+    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
+    {
+        return $this->normaliseTypeResult($reflector, $this->getReflectionType($reflector));
+    }
+
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
+    public function getDocblockType(\Reflector $reflector): ?Type
     {
         switch (true) {
             case $reflector instanceof \ReflectionProperty:
@@ -245,7 +257,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         if (!$docComment) {
-            return $this->normaliseTypeResult($reflector, null);
+            return null;
         }
 
         $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
@@ -285,15 +297,21 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 || $tagValue instanceof ReturnTagValueNode
             ) {
                 try {
-                    $resolved = (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
-
-                    return $this->normaliseTypeResult($reflector, $resolved);
+                    return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
                 } catch (UnsupportedException $e) {
                     // ignore
                 }
             }
         }
 
-        return $this->normaliseTypeResult($reflector, null);
+        return null;
+    }
+
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
+    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
+    {
+        return $this->normaliseTypeResult($reflector, $this->getDocblockType($reflector));
     }
 }

@@ -31,18 +31,11 @@ class LegacyTypeResolver extends AbstractTypeResolver
     /** @inheritdoc */
     protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void
     {
-        $this->context = $context = $schema->_context;
+        $this->context = $schema->_context;
+        $context = $schema->_context;
+
         $docblockDetails = $this->getDocblockTypeDetails($reflector);
         $reflectionTypeDetails = $this->getReflectionTypeDetails($reflector);
-
-        $type2ref = function (OA\Schema $schema) use ($analysis): void {
-            if (!Generator::isDefault($schema->type)) {
-                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
-                    $schema->type = Generator::UNDEFINED;
-                    $schema->ref = OA\Components::ref($typeSchema);
-                }
-            }
-        };
 
         // we only consider nullable hints if the type is explicitly set
         if (Generator::isDefault($schema->nullable)
@@ -78,14 +71,12 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
         if ($docblockDetails->isArray || $reflectionTypeDetails->isArray) {
             if (Generator::isDefault($schema->items)) {
-                $schema->items = new OA\Items(
-                    [
+                $schema->items = new OA\Items([
                         'type' => $schema->type,
                         '_context' => new Context(['generated' => true], $context),
-                    ]
-                );
+                    ]);
 
-                $type2ref($schema->items);
+                $this->type2ref($schema->items, $analysis);
 
                 $analysis->addAnnotation($schema->items, $schema->items->_context);
 
@@ -97,7 +88,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
             $schema->type = 'array';
         } else {
-            $type2ref($schema);
+            $this->type2ref($schema, $analysis);
         }
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
