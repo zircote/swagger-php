@@ -8,6 +8,8 @@ namespace OpenApi\Type;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
+use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -31,13 +33,91 @@ use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
-class TypeInfoTypeResolver implements TypeResolverInterface
+class TypeInfoTypeResolver extends AbstractTypeResolver
 {
-    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
+    /** @inheritdoc */
+    protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void
     {
+        $context = $schema->_context;
+        $docblockDetails = $this->getDocblockTypeDetails($reflector);
+        $reflectionTypeDetails = $this->getReflectionTypeDetails($reflector);
 
+        $type2ref = function (OA\Schema $schema) use ($analysis): void {
+            if (!Generator::isDefault($schema->type)) {
+                if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
+                    $schema->type = Generator::UNDEFINED;
+                    $schema->ref = OA\Components::ref($typeSchema);
+                }
+            }
+        };
+
+        // we only consider nullable hints if the type is explicitly set
+        if (Generator::isDefault($schema->nullable)
+            && (($docblockDetails->types && $docblockDetails->nullable)
+                || ($reflectionTypeDetails->types && $reflectionTypeDetails->nullable))
+        ) {
+            $schema->nullable = true;
+        }
+
+        if (Generator::isDefault($schema->type) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
+            $details = $docblockDetails->types && $docblockDetails->isArray
+                // for arrays, we prefer the docblock type
+                ? $docblockDetails
+                // otherwise, use the reflection type if possible
+                : ($reflectionTypeDetails->types ? $reflectionTypeDetails : $docblockDetails);
+
+            // for now
+            if (1 === count($details->types)) {
+                $schema->type = $details->types[0];
+            }
+
+            if ('int' === $schema->type && is_array($details->explicitDetails)) {
+                if (array_key_exists('min', $details->explicitDetails)) {
+                    $schema->minimum = $details->explicitDetails['min'];
+                    $schema->maximum = $details->explicitDetails['max'];
+                } elseif ('non-zero-int' === $details->explicitType) {
+                    $schema->not = $schema->_context->isVersion('3.1.x')
+                        ? ['const' => 0]
+                        : ['enum' => [0]];
+                }
+            }
+        }
+
+        if ($docblockDetails->isArray || $reflectionTypeDetails->isArray) {
+            if (Generator::isDefault($schema->items)) {
+                $schema->items = new OA\Items(
+                    [
+                        'type' => $schema->type,
+                        '_context' => new Context(['generated' => true], $context),
+                    ]
+                );
+
+                $type2ref($schema->items);
+
+                $analysis->addAnnotation($schema->items, $schema->items->_context);
+
+                if (!Generator::isDefault($schema->ref)) {
+                    $schema->items->ref = $schema->ref;
+                    $schema->ref = Generator::UNDEFINED;
+                }
+            }
+
+            $schema->type = 'array';
+        } else {
+            $type2ref($schema);
+        }
+
+        if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
+            if (!$this->mapNativeType($schema, gettype($schema->const))) {
+                $schema->type = Generator::UNDEFINED;
+            }
+        }
+
+        // final sanity check
+        if (!Generator::isDefault($schema->type) && !$this->mapNativeType($schema, $schema->type)) {
+            $schema->type = Generator::UNDEFINED;
+        }
     }
-
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */

@@ -28,11 +28,12 @@ class LegacyTypeResolver extends AbstractTypeResolver
         return $this;
     }
 
-    protected function doAugment(Analysis $analysis, OA\Schema $schema): void
+    /** @inheritdoc */
+    protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void
     {
         $this->context = $context = $schema->_context;
-        $docblockDetails = $this->getDocblockTypeDetails($context->reflector);
-        $reflectionTypeDetails = $this->getReflectionTypeDetails($context->reflector);
+        $docblockDetails = $this->getDocblockTypeDetails($reflector);
+        $reflectionTypeDetails = $this->getReflectionTypeDetails($reflector);
 
         $type2ref = function (OA\Schema $schema) use ($analysis): void {
             if (!Generator::isDefault($schema->type)) {

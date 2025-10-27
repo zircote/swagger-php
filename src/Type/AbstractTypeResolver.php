@@ -24,10 +24,14 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
             return;
         }
 
-        $this->doAugment($analysis, $schema);
+        /** @phpstan-ignore argument.type */
+        $this->doAugment($analysis, $schema, $context->reflector);
 
         $this->mapNativeType($schema, $schema->type);
     }
 
-    abstract protected function doAugment(Analysis $analysis, OA\Schema $schema): void;
+    /**
+     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
+     */
+    abstract protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void;
 }
