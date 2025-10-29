@@ -49,7 +49,7 @@ class AugmentProperties implements GeneratorAwareInterface
                 $typeAndDescription = $this->parseVarLine((string) $context->comment);
 
                 if ($typeAndDescription['description']) {
-                    $property->description = $typeAndDescription['description'];
+                    $property->description = trim($typeAndDescription['description']);
                 } elseif ($this->isDocblockRoot($property)) {
                     $property->description = $this->parseDocblock($context->comment);
                 }
