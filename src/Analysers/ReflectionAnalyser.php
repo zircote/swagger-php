@@ -135,7 +135,15 @@ class ReflectionAnalyser implements AnalyserInterface
                     'reflector' => $method,
                 ], $context);
                 foreach ($this->annotationFactories as $annotationFactory) {
-                    $analysis->addAnnotations($annotationFactory->build($method, $ctx), $ctx);
+                    $annotations = $annotationFactory->build($method, $ctx);
+                    foreach ($annotations as $annotation) {
+                        if ($annotation instanceof OA\Property) {
+                            if (Generator::isDefault($annotation->property)) {
+                                $annotation->property = $method->getName();
+                            }
+                        }
+                    }
+                    $analysis->addAnnotations($annotations, $ctx);
                 }
             }
         }

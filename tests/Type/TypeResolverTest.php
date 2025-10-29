@@ -52,8 +52,8 @@ class TypeResolverTest extends OpenApiTestCase
             'nonzeroint' => '{ "type": "integer", "property": "nonZeroInt" }',
             'arrayshape' => '{ "type": "array", "items": { "type": "bool" }, "property": "arrayShape" }',
             'uniontype' => '{ "property": "unionType" }',
-            '__construct' => '{ "type": "string", "property": null }',
-            'getstring' => '{ "type": "string", "property": null }',
+            'promotedstring' => '{ "type": "string", "property": "promotedString" }',
+            'getstring' => '{ "type": "string", "property": "getString" }',
         ];
 
         foreach ($typeResolvers as $key => $typeResolver) {
@@ -68,7 +68,9 @@ class TypeResolverTest extends OpenApiTestCase
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
             foreach ($schema->properties as $property) {
-                $property->property = $property->_context->property;
+                if (Generator::isDefault($property->property)) {
+                    $property->property = $property->_context->property;
+                }
 
                 $context = $property->_context;
                 $caseName = strtolower($property->property ?? $context->function ?? $context->method ?? $context->class ?? '');
@@ -91,6 +93,6 @@ class TypeResolverTest extends OpenApiTestCase
     {
         $typeResolver->augmentSchemaType($analysis, $schema);
 
-        $this->assertSpecEquals($expected, $schema->toJson());
+        $this->assertSpecEquals($schema->toJson(), $expected, $schema->toJson());
     }
 }
