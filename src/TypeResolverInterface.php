@@ -34,10 +34,4 @@ interface TypeResolverInterface
     ];
 
     public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void;
-
-    /** @deprecated  */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass;
-
-    /** @deprecated  */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass;
 }

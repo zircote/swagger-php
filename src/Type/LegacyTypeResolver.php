@@ -137,7 +137,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
+    protected function getReflectionTypeDetails(\Reflector $reflector): \stdClass
     {
         $rtype = $reflector instanceof \ReflectionClass
             ? $reflector->getName()
@@ -176,7 +176,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
+    protected function getDocblockTypeDetails(\Reflector $reflector): \stdClass
     {
         switch (true) {
             case $reflector instanceof \ReflectionProperty:

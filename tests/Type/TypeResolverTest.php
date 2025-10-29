@@ -25,7 +25,7 @@ use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
  */
 class TypeResolverTest extends OpenApiTestCase
 {
-     public static function resolverAugmentCases(): iterable
+    public static function resolverAugmentCases(): iterable
     {
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
 

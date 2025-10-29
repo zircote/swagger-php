@@ -29,7 +29,6 @@ use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\CompositeTypeInterface;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
-use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
@@ -124,88 +123,6 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    protected function normaliseTypeResult(\Reflector $reflector, ?Type $resolved): \stdClass
-    {
-        $details = (object) [
-            'explicitType' => null,
-            'explicitDetails' => null,
-            'types' => [],
-            'name' => $reflector->getName(),
-            'nullable' => false,
-            'isArray' => false,
-        ];
-
-        if (!$resolved) {
-            $details->nullable = true;
-
-            return $details;
-        }
-
-        $fromType = function (Type $type, $details): void {
-            if ($type instanceof BuiltinType || $type instanceof ObjectType) {
-                $details->types[] = (string) $type;
-            } elseif ($type instanceof CollectionType) {
-                $details->isArray = true;
-                $details->types[] = (string) $type->getCollectionValueType();
-            } elseif ($type instanceof IntRangeType) {
-                // use just `int` for custom `int<..>`
-                $details->explicitType = str_contains($type->getExplicitType(), '<')
-                    ? $type->getTypeIdentifier()->value
-                    : $type->getExplicitType();
-                $details->explicitDetails = [
-                    'min' => $type->getFrom(),
-                    'max' => $type->getTo(),
-                ];
-                $details->types[] = $type->getTypeIdentifier()->value;
-            } elseif ($type instanceof ExplicitType) {
-                $details->explicitType = $type->getExplicitType();
-                $details->types[] = $type->getTypeIdentifier()->value;
-            }
-        };
-
-        $handleNonZeroInt = function (array $utypes) use ($details): void {
-            // non-zero-int
-            if (2 === count($utypes) && $utypes[0] instanceof IntRangeType && $utypes[1] instanceof IntRangeType) {
-                $details->explicitType = 'non-zero-int';
-                $details->explicitDetails = [['min' => \PHP_INT_MIN, 'max' => -1], ['min' => 1, 'max' => \PHP_INT_MAX]];
-                $details->types = array_unique($details->types);
-            }
-        };
-
-        if ($resolved instanceof NullableType) {
-            $details->nullable = true;
-            $fromType($wrapped = $resolved->getWrappedType(), $details);
-            if ($wrapped instanceof UnionType) {
-                foreach (($utypes = $wrapped->getTypes()) as $utype) {
-                    $fromType($utype, $details);
-                }
-
-                $handleNonZeroInt($utypes);
-            }
-        } elseif ($resolved instanceof UnionType) {
-            foreach (($utypes = $resolved->getTypes()) as $utype) {
-                $fromType($utype, $details);
-            }
-
-            $handleNonZeroInt($utypes);
-        } else {
-            $fromType($resolved, $details);
-        }
-
-        if (in_array('null', $details->types)) {
-            $details->nullable = true;
-            // @phpstan-ignore notIdentical.alwaysTrue
-            $details->types = array_filter($details->types, fn ($t): bool => 'null' !== $t);
-        }
-
-        $details->explicitType ??= $details->types[0] ?? null;
-
-        return $details;
-    }
-
-    /**
-     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
-     */
     protected function getReflectionType(\Reflector $reflector): ?Type
     {
         $subject = $reflector instanceof \ReflectionClass
@@ -224,14 +141,6 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         return null;
-    }
-
-    /**
-     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
-     */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass
-    {
-        return $this->normaliseTypeResult($reflector, $this->getReflectionType($reflector));
     }
 
     /**
@@ -305,13 +214,5 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         return null;
-    }
-
-    /**
-     * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
-     */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass
-    {
-        return $this->normaliseTypeResult($reflector, $this->getDocblockType($reflector));
     }
 }
