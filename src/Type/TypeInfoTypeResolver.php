@@ -101,6 +101,10 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     $schema->items->ref = $schema->ref;
                     $schema->ref = Generator::UNDEFINED;
                 }
+            } elseif (Generator::isDefault($schema->items->type)) {
+                $schema->items->type = $schema->type;
+
+                $this->type2ref($schema->items, $analysis);
             }
 
             $schema->type = 'array';

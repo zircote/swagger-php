@@ -39,6 +39,12 @@ class DocblockAndTypehintTypes
     public array $stringList;
 
     /**
+     * @var array<string>
+     */
+    #[OAT\Property(items: new OAT\Items(example: 'foo'))]
+    public array $stringListExplicit;
+
+    /**
      * @var ?array<string>
      */
     #[OAT\Property]

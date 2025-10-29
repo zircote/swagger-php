@@ -40,6 +40,7 @@ class TypeResolverTest extends OpenApiTestCase
             'nullablestring' => '{ "type": "string", "nullable": true, "property": "nullableString" }',
             'stringarray' => '{ "type": "array", "items": { "type": "string" }, "property": "stringArray" }',
             'stringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "stringList" }',
+            'stringlistexplicit' => '{ "type": "array", "items": { "type": "string", "example": "foo" }, "property": "stringListExplicit" }',
             'nullablestringlist' => '{ "type": "array", "items": { "type": "string" }, "nullable": true, "property": "nullableStringList" }',
             'nullablestringlistunion' => '{ "type": "array", "items": { "type": "string" }, "nullable": true, "property": "nullableStringListUnion" }',
             'class' => '{ "$ref": "#/components/schemas/DocblockAndTypehintTypes" }',
