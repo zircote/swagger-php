@@ -79,14 +79,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                             if ($instance instanceof OA\RequestBody) {
                                 $instance->required = !$nullable;
                             } elseif ($instance instanceof OA\Property) {
+                                // todo: resolve
                                 if (Generator::isDefault($instance->property)) {
                                     $instance->property = $rp->getName();
-                                }
-                                if (Generator::isDefault($instance->type)) {
-                                    $instance->type = $type;
-                                }
-                                if (Generator::isDefault($instance->nullable)) {
-                                    $instance->nullable = $nullable ?: Generator::UNDEFINED;
                                 }
 
                                 if ($rp->isPromoted()) {
@@ -99,13 +94,16 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                     }
                                 }
                             } else {
+                                // todo: resolve
                                 if (!$instance->name || Generator::isDefault($instance->name)) {
                                     $instance->name = $rp->getName();
                                 }
+                                // todo: resolve
                                 $instance->required = !$nullable;
-                                $context = new Context(['nested' => $this, 'reflector' => $rp], $context);
-                                $context->comment = null;
-                                $instance->merge([new OA\Schema(['type' => $type, '_context' => $context])]);
+                                $instance->merge([new OA\Schema([
+                                    'type' => $type,
+                                    '_context' => new Context(['nested' => $this, 'comment' => null, 'reflector' => $rp], $context)]),
+                                ]);
                             }
                             $annotations[] = $instance;
                         }
@@ -114,9 +112,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
                 if (($rrt = $reflector->getReturnType()) && $rrt instanceof \ReflectionNamedType) {
                     foreach ($annotations as $annotation) {
-                        if ($annotation instanceof OA\Property && Generator::isDefault($annotation->type)) {
-                            // pick up simple return types
-                            $annotation->type = $rrt->getName();
+                        if ($annotation instanceof OA\Property) {
                             $annotation->_context->reflector = $reflector;
                         }
                     }

@@ -27,6 +27,21 @@ class DocblockAndTypehintTypes
     public ?string $nullableString;
 
     /**
+     * @var string|null
+     */
+    #[OAT\Property(nullable: false)]
+    public ?string $nullableStringExplicit;
+
+    /**
+     * @var string|null
+     */
+    #[OAT\Property()]
+    public mixed $nullableStringDocblock;
+
+    #[OAT\Property()]
+    public ?string $nullableStringNative;
+
+    /**
      * @var string[]
      */
     #[OAT\Property]
@@ -125,7 +140,9 @@ class DocblockAndTypehintTypes
         private OAT\Tag $tag,
         #[OAT\Property]
         protected string $promotedString,
-        bool $bool = true
+        bool $bool = true,
+        #[OAT\Property(example: 'My value')]
+        public string|array $mixedUnion = [],
     )
     {
     }
@@ -138,4 +155,17 @@ class DocblockAndTypehintTypes
     {
         return 'string';
     }
+
+    /**
+     * @param \DateTimeImmutable[] $paramDateTimeList
+     * @param string[] $paramStringList
+     */
+    public function paramMethod(
+        #[OAT\Property]
+        array $paramDateTimeList,
+        #[OAT\Property]
+        array $paramStringList,
+    ): void
+        {
+        }
 }

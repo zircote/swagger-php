@@ -38,6 +38,9 @@ class TypeResolverTest extends OpenApiTestCase
             'nothing' => '{ "property": "nothing" }',
             'string' => '{ "type": "string", "property": "string" }',
             'nullablestring' => '{ "type": "string", "nullable": true, "property": "nullableString" }',
+            'nullablestringexplicit' => '{ "type": "string", "nullable": false, "property": "nullableStringExplicit" }',
+            'nullablestringdocblock' => '{ "type": "string", "nullable": false, "property": "nullableStringDocblock" }',
+            'nullablestringnative' => '{ "type": "string", "nullable": true, "property": "nullableStringNative" }',
             'stringarray' => '{ "type": "array", "items": { "type": "string" }, "property": "stringArray" }',
             'stringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "stringList" }',
             'stringlistexplicit' => '{ "type": "array", "items": { "type": "string", "example": "foo" }, "property": "stringListExplicit" }',
@@ -51,10 +54,13 @@ class TypeResolverTest extends OpenApiTestCase
             'intrange' => '{ "type": "integer", "property": "intRange" }',
             'positiveint' => '{ "type": "integer", "property": "positiveInt" }',
             'nonzeroint' => '{ "type": "integer", "property": "nonZeroInt" }',
-            'arrayshape' => '{ "type": "array", "items": { "type": "bool" }, "property": "arrayShape" }',
+            'arrayshape' => '{ "type": "array", "items": { "type": "boolean" }, "property": "arrayShape" }',
             'uniontype' => '{ "property": "unionType" }',
             'promotedstring' => '{ "type": "string", "property": "promotedString" }',
+            'mixedunion' => '{ "example": "My value", "property": "mixedUnion" }',
             'getstring' => '{ "type": "string", "property": "getString" }',
+            'paramdatetimelist' => '{ "type": "array", "items": { "type": "string", "format": "date-time" }, "property": "paramDateTimeList" }',
+            'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
         ];
 
         foreach ($typeResolvers as $key => $typeResolver) {
@@ -68,13 +74,13 @@ class TypeResolverTest extends OpenApiTestCase
 
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
+            //foreach ([$schema->properties[4]] as $property) {
             foreach ($schema->properties as $property) {
                 if (Generator::isDefault($property->property)) {
                     $property->property = $property->_context->property;
                 }
 
-                $context = $property->_context;
-                $caseName = strtolower($property->property ?? $context->function ?? $context->method ?? $context->class ?? '');
+                $caseName = strtolower($property->property);
                 $case = "$key-$caseName";
 
                 yield $case => [

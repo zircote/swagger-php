@@ -8,7 +8,6 @@ namespace OpenApi\Type;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
 use OpenApi\Generator;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -87,30 +86,10 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         if ($docblockType instanceof CollectionType || $reflectionType instanceof CollectionType) {
-            if (Generator::isDefault($schema->items)) {
-                $schema->items = new OA\Items([
-                        'type' => $schema->type,
-                        '_context' => new Context(['generated' => true], $schema->_context),
-                    ]);
-
-                $this->type2ref($schema->items, $analysis);
-
-                $analysis->addAnnotation($schema->items, $schema->items->_context);
-
-                if (!Generator::isDefault($schema->ref)) {
-                    $schema->items->ref = $schema->ref;
-                    $schema->ref = Generator::UNDEFINED;
-                }
-            } elseif (Generator::isDefault($schema->items->type)) {
-                $schema->items->type = $schema->type;
-
-                $this->type2ref($schema->items, $analysis);
-            }
-
-            $schema->type = 'array';
-        } else {
-            $this->type2ref($schema, $analysis);
+            $this->augmentItems($schema, $analysis);
         }
+
+        $this->type2ref($schema, $analysis);
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {
@@ -206,7 +185,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
             if (
                 $tagValue instanceof VarTagValueNode
-                || $tagValue instanceof ParamTagValueNode && $tagName && '$' . $reflector->getName() === $tagValue->parameterName
+                || ($tagValue instanceof ParamTagValueNode && $tagName && '$' . $reflector->getName() === $tagValue->parameterName)
                 || $tagValue instanceof ReturnTagValueNode
             ) {
                 try {
