@@ -45,9 +45,33 @@ class AugmentParameters implements GeneratorAwareInterface
 
     public function __invoke(Analysis $analysis): void
     {
+        $this->augmentParameters($analysis);
         $this->augmentSharedParameters($analysis);
         if ($this->augmentOperationParameters) {
             $this->augmentOperationParameters($analysis);
+        }
+    }
+
+    protected function augmentParameters(Analysis $analysis): void
+    {
+        $parameters = $analysis->getAnnotationsOfType(OA\Parameter::class);
+
+        foreach ($parameters as $parameter) {
+            $context = $parameter->_context;
+
+            if (Generator::isDefault($parameter->name) && method_exists($context->reflector, 'getName')) {
+                $parameter->name = $context->reflector->getName();
+            }
+
+            if ($context->reflector instanceof \ReflectionParameter) {
+                $rnt = $context->reflector->getType();
+                $nullable = $rnt ? $rnt->allowsNull() : true;
+                $parameter->required = !$nullable;
+            }
+
+            if (!Generator::isDefault($parameter->schema)) {
+                $this->generator->getTypeResolver()->mapNativeType($parameter->schema, $parameter->schema->type);
+            }
         }
     }
 
@@ -95,10 +119,6 @@ class AugmentParameters implements GeneratorAwareInterface
                                 $parameter->description = $details['description'];
                             }
                         }
-                    }
-
-                    if (!Generator::isDefault($parameter->schema)) {
-                        $this->generator->getTypeResolver()->mapNativeType($parameter->schema, $parameter->schema->type);
                     }
                 }
             }

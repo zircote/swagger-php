@@ -95,11 +95,6 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                 }
                             } else {
                                 // todo: resolve
-                                if (!$instance->name || Generator::isDefault($instance->name)) {
-                                    $instance->name = $rp->getName();
-                                }
-                                // todo: resolve
-                                $instance->required = !$nullable;
                                 $instance->merge([new OA\Schema([
                                     'type' => $type,
                                     '_context' => new Context(['nested' => $this, 'comment' => null, 'reflector' => $rp], $context)]),
