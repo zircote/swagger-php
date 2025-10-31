@@ -18,10 +18,9 @@ use OpenApi\GeneratorAwareTrait;
  */
 class AugmentProperties implements GeneratorAwareInterface
 {
-    use GeneratorAwareTrait;
     use Concerns\DocblockTrait;
     use Concerns\RefTrait;
-    use Concerns\TypesTrait;
+    use GeneratorAwareTrait;
 
     public function __invoke(Analysis $analysis): void
     {
@@ -48,7 +47,7 @@ class AugmentProperties implements GeneratorAwareInterface
                 $this->generator->getTypeResolver()->augmentSchemaType($analysis, $property);
             }
 
-            $this->mapNativeType($property, $property->type);
+            $this->generator->getTypeResolver()->mapNativeType($property, $property->type);
 
             if (Generator::isDefault($property->description)) {
                 $typeAndDescription = $this->parseVarLine((string) $context->comment);

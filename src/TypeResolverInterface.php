@@ -33,5 +33,9 @@ interface TypeResolverInterface
         'object' => 'object',
     ];
 
+    public function mapNativeType(OA\Schema $schema, $type): bool;
+
+    public function native2spec(string $type): string;
+
     public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void;
 }

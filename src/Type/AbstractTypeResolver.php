@@ -10,14 +10,10 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Processors\Concerns\TypesTrait;
 use OpenApi\TypeResolverInterface;
 
 abstract class AbstractTypeResolver implements TypeResolverInterface
 {
-    // todo: move
-    use TypesTrait;
-
     protected function type2ref(OA\Schema $schema, Analysis $analysis): void
     {
         if (!Generator::isDefault($schema->type)) {
@@ -54,6 +50,49 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
 
         $this->mapNativeType($schema->items, $schema->items->type);
         $schema->type = 'array';
+    }
+
+    /**
+     * @param string|array $type
+     */
+    public function mapNativeType(OA\Schema $schema, $type): bool
+    {
+        if (is_array($type)) {
+            $mapped = [];
+            foreach ($type as $t) {
+                $mapped[] = $this->native2spec(strtolower($t));
+            }
+
+            $schema->type = $mapped;
+
+            return true;
+        }
+
+        $type = strtolower($type);
+        if (!array_key_exists($type, TypeResolverInterface::NATIVE_TYPE_MAP)) {
+            return false;
+        }
+
+        $type = TypeResolverInterface::NATIVE_TYPE_MAP[$type];
+        if (is_array($type)) {
+            if (Generator::isDefault($schema->format)) {
+                $schema->format = $type[1];
+            }
+            $type = $type[0];
+        }
+
+        $schema->type = $type;
+
+        return true;
+    }
+
+    public function native2spec(string $type): string
+    {
+        $mapped = array_key_exists($type, TypeResolverInterface::NATIVE_TYPE_MAP)
+            ? TypeResolverInterface::NATIVE_TYPE_MAP[$type]
+            : $type;
+
+        return is_array($mapped) ? $mapped[0] : $mapped;
     }
 
     public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void

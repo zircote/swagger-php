@@ -9,16 +9,17 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
+use OpenApi\GeneratorAwareTrait;
 use OpenApi\Processors\Concerns\DocblockTrait;
-use OpenApi\Processors\Concerns\TypesTrait;
 
 /**
  * Augments shared and operations parameters from docblock comments.
  */
-class AugmentParameters
+class AugmentParameters implements GeneratorAwareInterface
 {
     use DocblockTrait;
-    use TypesTrait;
+    use GeneratorAwareTrait;
 
     protected bool $augmentOperationParameters;
 
@@ -97,7 +98,7 @@ class AugmentParameters
                     }
 
                     if (!Generator::isDefault($parameter->schema)) {
-                        $this->mapNativeType($parameter->schema, $parameter->schema->type);
+                        $this->generator->getTypeResolver()->mapNativeType($parameter->schema, $parameter->schema->type);
                     }
                 }
             }

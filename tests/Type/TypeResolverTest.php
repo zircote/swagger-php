@@ -74,7 +74,7 @@ class TypeResolverTest extends OpenApiTestCase
 
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
-            //foreach ([$schema->properties[4]] as $property) {
+            // foreach ([$schema->properties[4]] as $property) {
             foreach ($schema->properties as $property) {
                 if (Generator::isDefault($property->property)) {
                     $property->property = $property->_context->property;
