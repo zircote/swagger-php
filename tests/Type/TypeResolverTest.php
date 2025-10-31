@@ -75,11 +75,10 @@ class TypeResolverTest extends OpenApiTestCase
 
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
-            // foreach ([$schema->properties[$ii = 9]] as $property) {
             foreach ($schema->properties as $ii => $property) {
-                if (Generator::isDefault($property->property)) {
-                    $property->property = $property->_context->property;
-                }
+                $property->property = $property->_context->property
+                    // promoted properties might not have a name!
+                    ?? $property->_context->method;
 
                 $caseName = strtolower($property->property);
                 $case = "$key-[$ii]-$caseName";

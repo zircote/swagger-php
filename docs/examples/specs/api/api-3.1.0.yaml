@@ -27,7 +27,7 @@ paths:
           name: product_id
           in: path
           description: 'the product id'
-          required: false
+          required: true
           schema:
             type: integer
       responses:

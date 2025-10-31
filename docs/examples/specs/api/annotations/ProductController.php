@@ -22,7 +22,6 @@ class ProductController
      *     operationId="getProducts",
      *     @OA\PathParameter(
      *         name="product_id",
-     *         required=false,
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(

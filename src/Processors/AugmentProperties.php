@@ -31,8 +31,8 @@ class AugmentProperties implements GeneratorAwareInterface
             $context = $property->_context;
             $reflector = $context->reflector;
 
-            if (Generator::isDefault($property->property) && method_exists($reflector, 'getName')) {
-                $property->property = $reflector->getName();
+            if (Generator::isDefault($property->property)) {
+                $property->property = $property->_context->property;
             }
 
             if (Generator::isDefault($property->const) && $reflector instanceof \ReflectionClassConstant) {

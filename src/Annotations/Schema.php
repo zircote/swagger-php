@@ -479,6 +479,16 @@ class Schema extends AbstractAnnotation
     ];
 
     /**
+     * Type safe nullable check.
+     *
+     * Defaults to `false` when nullable is not set.
+     */
+    public function isNullable(): bool
+    {
+        return !Generator::isDefault($this->nullable) && $this->nullable;
+    }
+
+    /**
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]

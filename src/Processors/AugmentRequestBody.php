@@ -8,39 +8,54 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
+use OpenApi\GeneratorAwareTrait;
 
 /**
  * Use the RequestBody context to extract useful information and inject that into the annotation.
  */
-class AugmentRequestBody
+class AugmentRequestBody implements GeneratorAwareInterface
 {
+    use GeneratorAwareTrait;
+
     public function __invoke(Analysis $analysis): void
     {
-        /** @var array<OA\RequestBody> $requests */
-        $requests = $analysis->getAnnotationsOfType(OA\RequestBody::class);
+        $requestBodies = $analysis->getAnnotationsOfType(OA\RequestBody::class);
 
-        $this->augmentRequestBody($requests);
+        $this->augmentRequestBody($analysis, $requestBodies);
     }
 
     /**
-     * @param array<OA\RequestBody> $requests
+     * @param array<OA\RequestBody> $requestBodies
      */
-    protected function augmentRequestBody(array $requests): void
+    protected function augmentRequestBody(Analysis $analysis, array $requestBodies): void
     {
-        foreach ($requests as $request) {
-            if (!$request->isRoot(OA\RequestBody::class)) {
+        foreach ($requestBodies as $requestBody) {
+            if (!$requestBody->isRoot(OA\RequestBody::class)) {
                 continue;
             }
-            if (Generator::isDefault($request->request)) {
-                if ($request->_context->is('class')) {
-                    $request->request = $request->_context->class;
-                } elseif ($request->_context->is('interface')) {
-                    $request->request = $request->_context->interface;
-                } elseif ($request->_context->is('trait')) {
-                    $request->request = $request->_context->trait;
-                } elseif ($request->_context->is('enum')) {
-                    $request->request = $request->_context->enum;
+
+            $context = $requestBody->_context;
+            if (Generator::isDefault($requestBody->request)) {
+                if ($context->is('class')) {
+                    $requestBody->request = $requestBody->_context->class;
+                } elseif ($context->is('interface')) {
+                    $requestBody->request = $requestBody->_context->interface;
+                } elseif ($context->is('trait')) {
+                    $requestBody->request = $requestBody->_context->trait;
+                } elseif ($context->is('enum')) {
+                    $requestBody->request = $requestBody->_context->enum;
+                }
+            }
+
+            if ($context->reflector instanceof \ReflectionParameter) {
+                $schema = new OA\Schema(['_context' => new Context(['reflector' => $context->reflector], $context)]);
+                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema);
+
+                if (Generator::isDefault($requestBody->required)) {
+                    $requestBody->required = !$schema->isNullable();
                 }
             }
         }
