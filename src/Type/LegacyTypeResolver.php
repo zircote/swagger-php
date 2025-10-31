@@ -29,11 +29,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         if (Generator::isDefault($schema->type) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
-            $details = $docblockDetails->types && $docblockDetails->isArray
-                // for arrays, we prefer the docblock type
-                ? $docblockDetails
-                // otherwise, use the reflection type if possible
-                : ($reflectionTypeDetails->types ? $reflectionTypeDetails : $docblockDetails);
+            $details = $docblockDetails->types ? $docblockDetails : $reflectionTypeDetails;
 
             // for now
             if (1 === count($details->types)) {
@@ -186,7 +182,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         if (!$tagName) {
-            return $this->normaliseTypeResult(null, null, [], $name, $context);
+            return $this->normaliseTypeResult(null, null, [], $name, null, null, $context);
         }
 
         $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?/im";

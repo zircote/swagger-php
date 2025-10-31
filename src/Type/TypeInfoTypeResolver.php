@@ -51,11 +51,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
         if (Generator::isDefault($schema->type) && ($docblockType || $reflectionType)) {
-            $type = $docblockType instanceof CollectionType
-                // for arrays, we prefer the docblock type
-                ? $docblockType
-                // otherwise, use the reflection type if possible
-                : ($reflectionType ?: $docblockType);
+            $type = $docblockType ?? $reflectionType;
 
             $isNonZeroInt = false;
             if ($type instanceof CompositeTypeInterface && 2 === count($type->getTypes())) {

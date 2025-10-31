@@ -103,12 +103,6 @@ parameters:
 			path: src/Type/LegacyTypeResolver.php
 
 		-
-			message: '#^Parameter \#5 \$nullable of method OpenApi\\Type\\LegacyTypeResolver\:\:normaliseTypeResult\(\) expects bool\|null, OpenApi\\Context\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Type/LegacyTypeResolver.php
-
-		-
 			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2

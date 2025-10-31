@@ -20,18 +20,12 @@ use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 
-/**
- * @requires PHP 8.1
- */
 class TypeResolverTest extends OpenApiTestCase
 {
     public static function resolverAugmentCases(): iterable
     {
-        $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
-
-        $typeResolvers = ['legacy' => new LegacyTypeResolver()];
-        if (class_exists(StringTypeResolver::class)) {
-            $typeResolvers['type-info'] = new TypeInfoTypeResolver();
+        if (\PHP_VERSION_ID < 80100) {
+            return [];
         }
 
         $expectations = [
@@ -39,7 +33,7 @@ class TypeResolverTest extends OpenApiTestCase
             'string' => '{ "type": "string", "property": "string" }',
             'nullablestring' => '{ "type": "string", "nullable": true, "property": "nullableString" }',
             'nullablestringexplicit' => '{ "type": "string", "nullable": false, "property": "nullableStringExplicit" }',
-            'nullablestringdocblock' => '{ "type": "string", "nullable": false, "property": "nullableStringDocblock" }',
+            'nullablestringdocblock' => '{ "type": "string", "nullable": true, "property": "nullableStringDocblock" }',
             'nullablestringnative' => '{ "type": "string", "nullable": true, "property": "nullableStringNative" }',
             'stringarray' => '{ "type": "array", "items": { "type": "string" }, "property": "stringArray" }',
             'stringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "stringList" }',
@@ -51,9 +45,9 @@ class TypeResolverTest extends OpenApiTestCase
             'namespacedglobalclass' => '{ "type": "string", "format": "date-time", "property": "namespacedGlobalClass" }',
             'nullablenamespacedglobalclass' => '{ "type": "string", "format": "date-time", "nullable": true, "property": "nullableNamespacedGlobalClass" }',
             'alsonullablenamespacedglobalclass' => '{ "type": "string", "format": "date-time", "nullable": true, "property": "alsoNullableNamespacedGlobalClass" }',
-            'intrange' => '{ "type": "integer", "property": "intRange" }',
-            'positiveint' => '{ "type": "integer", "property": "positiveInt" }',
-            'nonzeroint' => '{ "type": "integer", "property": "nonZeroInt" }',
+            'intrange' => '{ "type": "integer", "maximum": 10, "minimum": -9223372036854775808, "property": "intRange" }',
+            'positiveint' => '{ "type": "integer", "maximum": 9223372036854775807, "minimum": 1, "property": "positiveInt" }',
+            'nonzeroint' => '{ "type": "integer", "not": { "enum": [ 0 ] }, "property": "nonZeroInt" }',
             'arrayshape' => '{ "type": "array", "items": { "type": "boolean" }, "property": "arrayShape" }',
             'uniontype' => '{ "property": "unionType" }',
             'promotedstring' => '{ "type": "string", "property": "promotedString" }',
@@ -62,6 +56,13 @@ class TypeResolverTest extends OpenApiTestCase
             'paramdatetimelist' => '{ "type": "array", "items": { "type": "string", "format": "date-time" }, "property": "paramDateTimeList" }',
             'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
         ];
+
+        $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
+
+        $typeResolvers = ['legacy' => new LegacyTypeResolver()];
+        if (class_exists(StringTypeResolver::class)) {
+            $typeResolvers['type-info'] = new TypeInfoTypeResolver();
+        }
 
         foreach ($typeResolvers as $key => $typeResolver) {
             $analysis = (new Generator())
@@ -74,14 +75,14 @@ class TypeResolverTest extends OpenApiTestCase
 
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
-            // foreach ([$schema->properties[4]] as $property) {
-            foreach ($schema->properties as $property) {
+            // foreach ([$schema->properties[$ii = 9]] as $property) {
+            foreach ($schema->properties as $ii => $property) {
                 if (Generator::isDefault($property->property)) {
                     $property->property = $property->_context->property;
                 }
 
                 $caseName = strtolower($property->property);
-                $case = "$key-$caseName";
+                $case = "$key-[$ii]-$caseName";
 
                 yield $case => [
                     $typeResolver,

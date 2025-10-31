@@ -137,10 +137,12 @@ class ReflectionAnalyser implements AnalyserInterface
                 foreach ($this->annotationFactories as $annotationFactory) {
                     $annotations = $annotationFactory->build($method, $ctx);
                     foreach ($annotations as $annotation) {
-                        // todo: workaround for test?
+                        // default to method name if no property name set
                         if ($annotation instanceof OA\Property) {
                             if (Generator::isDefault($annotation->property)) {
                                 $annotation->property = $method->getName();
+                                // can do this once only
+                                break;
                             }
                         }
                     }

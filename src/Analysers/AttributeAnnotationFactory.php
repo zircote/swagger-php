@@ -109,14 +109,6 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                         }
                     }
                 }
-
-                if (($rrt = $reflector->getReturnType()) && $rrt instanceof \ReflectionNamedType) {
-                    foreach ($annotations as $annotation) {
-                        if ($annotation instanceof OA\Property) {
-                            $annotation->_context->reflector = $reflector;
-                        }
-                    }
-                }
             }
         } finally {
             Generator::$context = null;

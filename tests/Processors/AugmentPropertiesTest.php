@@ -170,7 +170,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             $qualified,
             $namespaced,
             $importedNamespace,
-            $nativeTrumpsVar,
+            $varTrumpsNative,
             $annotationTrumpsNative,
             $annotationTrumpsAll,
             $undefined,
@@ -218,7 +218,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
-        $this->assertName($nativeTrumpsVar, [
+        $this->assertName($varTrumpsNative, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
@@ -305,9 +305,9 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'importedNamespace',
             'ref' => '#/components/schemas/TypedProperties',
         ]);
-        $this->assertName($nativeTrumpsVar, [
-            'property' => 'nativeTrumpsVar',
-            'type' => 'string',
+        $this->assertName($varTrumpsNative, [
+            'property' => 'varTrumpsNative',
+            'type' => 'integer',
         ]);
         $this->assertName($annotationTrumpsNative, [
             'property' => 'annotationTrumpsNative',
