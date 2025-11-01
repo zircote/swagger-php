@@ -17,11 +17,14 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareInterface;
 use OpenApi\Pipeline;
+use OpenApi\Type\LegacyTypeResolver;
+use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -103,7 +106,9 @@ class OpenApiTestCase extends TestCase
 
     public function getTypeResolver(): TypeResolverInterface
     {
-        return new ComparingResolver($this);
+        return class_exists(StringTypeResolver::class)
+            ? new TypeInfoTypeResolver()
+            : new LegacyTypeResolver();
     }
 
     public function initializeProcessors(array $processors): array

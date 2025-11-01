@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Annotations as OA;
+
 interface TypeResolverInterface
 {
     public const NATIVE_TYPE_MAP = [
@@ -31,9 +33,9 @@ interface TypeResolverInterface
         'object' => 'object',
     ];
 
-    /** @deprecated  */
-    public function getReflectionTypeDetails(\Reflector $reflector): \stdClass;
+    public function mapNativeType(OA\Schema $schema, $type): bool;
 
-    /** @deprecated  */
-    public function getDocblockTypeDetails(\Reflector $reflector): \stdClass;
+    public function native2spec(string $type): string;
+
+    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void;
 }

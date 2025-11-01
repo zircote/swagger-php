@@ -65,10 +65,10 @@ class TypedProperties
      *
      * @OA\Property
      */
-    public string $nativeTrumpsVar;
+    public string $varTrumpsNative;
 
     /**
-     * @var int
+     * @var bool
      *
      * @OA\Property(
      *     type="integer",

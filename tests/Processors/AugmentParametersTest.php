@@ -71,12 +71,12 @@ class AugmentParametersTest extends OpenApiTestCase
     public function testParameterNativeType(): void
     {
         $analysis = $this->analysisFromFixtures(['RequestUsingAttribute.php']);
-        $analysis->process([
+        $analysis->process($this->initializeProcessors([
             new MergeIntoOpenApi(),
             new MergeIntoComponents(),
             new BuildPaths(),
             new AugmentParameters(),
-        ]);
+        ]));
 
         $findPathItemByPath = function (string $path) use ($analysis): PathItem {
             foreach ($analysis->openapi->paths as $pathItem) {

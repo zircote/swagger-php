@@ -9,16 +9,17 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
+use OpenApi\GeneratorAwareTrait;
 use OpenApi\Processors\Concerns\DocblockTrait;
-use OpenApi\Processors\Concerns\TypesTrait;
 
 /**
  * Augments shared and operations parameters from docblock comments.
  */
-class AugmentParameters
+class AugmentParameters implements GeneratorAwareInterface
 {
     use DocblockTrait;
-    use TypesTrait;
+    use GeneratorAwareTrait;
 
     protected bool $augmentOperationParameters;
 
@@ -44,9 +45,33 @@ class AugmentParameters
 
     public function __invoke(Analysis $analysis): void
     {
+        $this->augmentParameters($analysis);
         $this->augmentSharedParameters($analysis);
         if ($this->augmentOperationParameters) {
             $this->augmentOperationParameters($analysis);
+        }
+    }
+
+    protected function augmentParameters(Analysis $analysis): void
+    {
+        $parameters = $analysis->getAnnotationsOfType(OA\Parameter::class);
+
+        foreach ($parameters as $parameter) {
+            $context = $parameter->_context;
+
+            if (Generator::isDefault($parameter->name) && method_exists($context->reflector, 'getName')) {
+                $parameter->name = $context->reflector->getName();
+            }
+
+            if ($context->reflector instanceof \ReflectionParameter) {
+                $rnt = $context->reflector->getType();
+                $nullable = $rnt ? $rnt->allowsNull() : true;
+                $parameter->required = !$nullable;
+            }
+
+            if (!Generator::isDefault($parameter->schema)) {
+                $this->generator->getTypeResolver()->mapNativeType($parameter->schema, $parameter->schema->type);
+            }
         }
     }
 
@@ -94,10 +119,6 @@ class AugmentParameters
                                 $parameter->description = $details['description'];
                             }
                         }
-                    }
-
-                    if (!Generator::isDefault($parameter->schema)) {
-                        $this->mapNativeType($parameter->schema, $parameter->schema->type);
                     }
                 }
             }
