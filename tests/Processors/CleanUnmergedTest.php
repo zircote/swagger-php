@@ -54,7 +54,6 @@ END;
 
         // When a processor places a previously unmerged annotation into the swagger obect.
         $license = $analysis->getAnnotationsOfType(OA\License::class)[0];
-        /** @var OA\Contact $contact */
         $contact = $analysis->getAnnotationsOfType(OA\Contact::class)[0];
         $analysis->openapi->info->contact = $contact;
         $this->assertCount(1, $license->_unmerged);

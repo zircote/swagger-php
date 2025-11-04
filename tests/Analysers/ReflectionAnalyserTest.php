@@ -88,7 +88,6 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
         ;
 
-        /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
 
         [$tags, $id, $labels] = $properties;

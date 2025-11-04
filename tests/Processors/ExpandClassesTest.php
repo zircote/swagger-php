@@ -47,7 +47,6 @@ class ExpandClassesTest extends OpenApiTestCase
             ]));
         $this->validate($analysis);
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
         $this->assertCount(4, $schemas);
         $childSchema = $schemas[0];
@@ -78,9 +77,9 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
         $this->validate($analysis);
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
         $this->assertCount(2, $schemas);
+
         $childSchema = $schemas[0];
         $this->assertSame('ChildWithDocBlocks', $childSchema->schema);
         $this->assertCount(1, $childSchema->properties);
@@ -104,7 +103,6 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
         $this->validate($analysis);
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(4, $schemas);
 
@@ -132,7 +130,6 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
         $this->validate($analysis);
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(4, $schemas);
 
@@ -159,7 +156,6 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
         $this->validate($analysis);
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(7, $schemas);
 
@@ -196,7 +192,6 @@ class ExpandClassesTest extends OpenApiTestCase
         $analysis->openapi->paths = [new OA\PathItem(['path' => '/test', '_context' => $this->getContext()])];
         $analysis->validate();
 
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
         $this->assertCount(9, $schemas);
 

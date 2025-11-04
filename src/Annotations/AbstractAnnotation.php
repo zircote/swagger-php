@@ -140,15 +140,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 }
             }
         }
-
-        if ($this instanceof OpenApi) {
-            if ($this->_context->root()->version) {
-                // override via `Generator::setVersion()`
-                $this->openapi = $this->_context->root()->version;
-            } else {
-                $this->_context->root()->version = $this->openapi;
-            }
-        }
     }
 
     /**

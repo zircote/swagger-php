@@ -63,7 +63,6 @@ class ExpandEnums implements GeneratorAwareInterface
 
     protected function expandContextEnum(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         foreach ($schemas as $schema) {
@@ -101,7 +100,6 @@ class ExpandEnums implements GeneratorAwareInterface
 
     protected function expandSchemaEnum(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([OA\Schema::class, OA\ServerVariable::class]);
 
         foreach ($schemas as $schema) {

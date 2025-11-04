@@ -25,7 +25,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             $this->processorPipeline([new ExpandEnums()]),
         );
 
-        $schema = $analysis->getSchemaForSource(StatusEnum::class);
+        $schema = $analysis->getAnnotationForSource(StatusEnum::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -38,7 +38,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             $this->processorPipeline([new ExpandEnums()]),
         );
 
-        $schema = $analysis->getSchemaForSource(StatusEnumBacked::class);
+        $schema = $analysis->getAnnotationForSource(StatusEnumBacked::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -51,7 +51,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             $this->processorPipeline([new ExpandEnums()]),
         );
 
-        $schema = $analysis->getSchemaForSource(StatusEnumIntegerBacked::class);
+        $schema = $analysis->getAnnotationForSource(StatusEnumIntegerBacked::class);
 
         $this->assertEquals([1, 2, 3], $schema->enum);
         $this->assertEquals('integer', $schema->type);
@@ -64,7 +64,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             $this->processorPipeline([new ExpandEnums()]),
         );
 
-        $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+        $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
 
         $this->assertEquals(['draft', 'published', 'archived'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -77,7 +77,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             $this->processorPipeline([new ExpandEnums('enumNames')]),
         );
 
-        $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+        $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->x['enumNames']);
     }

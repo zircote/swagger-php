@@ -23,7 +23,6 @@ class OperationIdTest extends OpenApiTestCase
             config: ['operationId' => ['hash' => false]]
         );
 
-        /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         $this->assertCount(3, $operations);

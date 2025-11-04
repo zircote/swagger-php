@@ -137,6 +137,18 @@ class OpenApi extends AbstractAnnotation
      */
     public static $_types = [];
 
+    public function __construct(array $properties)
+    {
+        parent::__construct($properties);
+
+        if ($this->_context->root()->version) {
+            // override via `Generator::setVersion()`
+            $this->openapi = $this->_context->root()->version;
+        } else {
+            $this->_context->root()->version = $this->openapi;
+        }
+    }
+
     /**
      * @inheritdoc
      */

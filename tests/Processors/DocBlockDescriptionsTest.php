@@ -25,7 +25,6 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
             ])
         );
 
-        /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         $this->assertSame('api/test1', $operations[0]->path);

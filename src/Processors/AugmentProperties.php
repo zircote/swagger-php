@@ -24,7 +24,6 @@ class AugmentProperties implements GeneratorAwareInterface
 
     public function __invoke(Analysis $analysis): void
     {
-        /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
 
         foreach ($properties as $property) {

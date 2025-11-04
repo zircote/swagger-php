@@ -26,7 +26,6 @@ class AugmentRefs
      */
     protected function resolveAllOfRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // ref rewriting
@@ -58,7 +57,6 @@ class AugmentRefs
 
     protected function resolveFQCNRefs(Analysis $analysis): void
     {
-        /** @var OA\AbstractAnnotation[] $annotations */
         $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
 
         foreach ($annotations as $annotation) {
@@ -80,7 +78,6 @@ class AugmentRefs
 
     protected function removeDuplicateRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($schemas as $schema) {
