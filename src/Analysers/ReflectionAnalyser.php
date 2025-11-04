@@ -135,7 +135,8 @@ class ReflectionAnalyser implements AnalyserInterface
                     'reflector' => $method,
                 ], $context);
                 foreach ($this->annotationFactories as $annotationFactory) {
-                    $analysis->addAnnotations($annotationFactory->build($method, $ctx), $ctx);
+                    $annotations = $annotationFactory->build($method, $ctx);
+                    $analysis->addAnnotations($annotations, $ctx);
                 }
             }
         }
@@ -150,16 +151,6 @@ class ReflectionAnalyser implements AnalyserInterface
                 ], $context);
                 if ($property->isStatic()) {
                     $ctx->static = true;
-                }
-                if ($type = $property->getType()) {
-                    $ctx->nullable = $type->allowsNull();
-                    if ($type instanceof \ReflectionNamedType) {
-                        $ctx->type = $type->getName();
-                        // Context::fullyQualifiedName(...) expects this
-                        if (class_exists($absFqn = '\\' . $ctx->type)) {
-                            $ctx->type = $absFqn;
-                        }
-                    }
                 }
                 foreach ($this->annotationFactories as $annotationFactory) {
                     $analysis->addAnnotations($annotationFactory->build($property, $ctx), $ctx);
@@ -177,12 +168,6 @@ class ReflectionAnalyser implements AnalyserInterface
                 ], $context);
                 foreach ($annotationFactory->build($constant, $ctx) as $annotation) {
                     if ($annotation instanceof OA\Property) {
-                        if (Generator::isDefault($annotation->property)) {
-                            $annotation->property = $constant->getName();
-                        }
-                        if (Generator::isDefault($annotation->const)) {
-                            $annotation->const = $constant->getValue();
-                        }
                         $analysis->addAnnotation($annotation, $ctx);
                     }
                 }

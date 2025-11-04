@@ -25,12 +25,6 @@ parameters:
 			path: src/Analysers/ReflectionAnalyser.php
 
 		-
-			message: '#^Trait OpenApi\\Analysers\\TypeResolverTrait is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: src/Analysers/TypeResolverTrait.php
-
-		-
 			message: '#^Call to function property_exists\(\) with OpenApi\\Annotations\\AbstractAnnotation and ''_context'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1

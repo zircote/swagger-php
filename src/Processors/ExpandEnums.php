@@ -9,6 +9,8 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\GeneratorAwareInterface;
+use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
 
 /**
@@ -16,9 +18,9 @@ use OpenApi\OpenApiException;
  *
  * Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
  */
-class ExpandEnums
+class ExpandEnums implements GeneratorAwareInterface
 {
-    use Concerns\TypesTrait;
+    use GeneratorAwareTrait;
 
     protected ?string $enumNames;
 
@@ -79,7 +81,7 @@ class ExpandEnums
                 }
 
                 // no (or invalid) schema type means name
-                $useName = Generator::isDefault($schemaType) || ($enumType && $this->native2spec($enumType) != $schemaType);
+                $useName = Generator::isDefault($schemaType) || ($enumType && $this->generator->getTypeResolver()->native2spec($enumType) != $schemaType);
 
                 $schema->enum = array_map(fn (\ReflectionEnumUnitCase $case) => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
 
@@ -92,7 +94,7 @@ class ExpandEnums
 
                 $schema->type = $useName ? 'string' : $enumType;
 
-                $this->mapNativeType($schema, $schemaType);
+                $this->generator->getTypeResolver()->mapNativeType($schema, $schemaType);
             }
         }
     }

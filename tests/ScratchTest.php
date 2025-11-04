@@ -49,7 +49,7 @@ class ScratchTest extends OpenApiTestCase
      *
      * @dataProvider scratchTestProvider
      *
-     * @requires     PHP 8.1
+     * @requires     PHP 8.2
      */
     public function testScratch(string $scratch, string $spec, string $version, array $expectedLogs): void
     {

@@ -64,7 +64,14 @@ class RepositoriesController
         path: '/2.0/repositories/{username}/{slug}/{state}/pullrequests',
         operationId: 'getPullRequestsByRepository',
         responses: [
-            new OAT\Response(response: 200, description: 'An array of pull request objects', content: new OAT\JsonContent(type: 'array', items: new OAT\Items(ref: '#/components/schemas/pullrequest'))),
+            new OAT\Response(
+                response: 200,
+                description: 'An array of pull request objects',
+                content: new OAT\JsonContent(
+                    type: 'array',
+                    items: new OAT\Items(ref: '#/components/schemas/pullrequest')
+                )
+            ),
         ]
     )
     ]
@@ -86,7 +93,8 @@ class RepositoriesController
         operationId: 'getPullRequestsById',
         parameters: [
             new OAT\Parameter(name: 'username', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
-            new OAT\Parameter(name: 'slug', in: 'path', required: true, schema: new OAT\Schema(type: 'string')), new OAT\Parameter(name: 'pid', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
+            new OAT\Parameter(name: 'slug', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
+            new OAT\Parameter(name: 'pid', in: 'path', required: true, schema: new OAT\Schema(type: 'string')),
         ],
         responses: [
             new OAT\Response(response: 200, description: 'A pull request object', content: new OAT\JsonContent(ref: '#/components/schemas/pullrequest'), links: [new OAT\Link(link: 'pullRequestMerge', ref: '#/components/links/PullRequestMerge')]),
@@ -110,8 +118,14 @@ class RepositoriesController
         ]
     )
     ]
-    #[OAT\Link(link: 'PullRequestMerge', operationId: 'mergePullRequest', parameters: ['username' => '$response.body#/author/username', 'slug' => '$response.body#/repository/slug', 'pid' => '$response.body#/id'])]
-    public function mergePullRequest(#[OAT\HeaderParameter(name: 'X-NONCE-ID')] string $nonceId, #[OAT\CookieParameter(name: 'User-Bind-Session')] ?string $bindCookie)
-    {
+    #[OAT\Link(
+        link: 'PullRequestMerge',
+        operationId: 'mergePullRequest',
+        parameters: ['username' => '$response.body#/author/username', 'slug' => '$response.body#/repository/slug', 'pid' => '$response.body#/id']
+    )]
+    public function mergePullRequest(
+        #[OAT\HeaderParameter(name: 'X-NONCE-ID')] string $nonceId,
+        #[OAT\CookieParameter(name: 'User-Bind-Session')] ?string $bindCookie
+    ) {
     }
 }

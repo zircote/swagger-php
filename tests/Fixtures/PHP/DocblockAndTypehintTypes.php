@@ -11,86 +11,124 @@ use OpenApi\Attributes as OAT;
 #[OAT\Schema()]
 class DocblockAndTypehintTypes
 {
+    #[OAT\Property]
     public $nothing;
 
     /**
-     * @var string $string
+     * @var string
      */
+    #[OAT\Property]
     public string $string;
 
     /**
      * @var string|null
      */
+    #[OAT\Property]
     public ?string $nullableString;
+
+    /**
+     * @var string|null
+     */
+    #[OAT\Property(nullable: false)]
+    public ?string $nullableStringExplicit;
+
+    /**
+     * @var string|null
+     */
+    #[OAT\Property()]
+    public mixed $nullableStringDocblock;
+
+    #[OAT\Property()]
+    public ?string $nullableStringNative;
 
     /**
      * @var string[]
      */
+    #[OAT\Property]
     public array $stringArray;
 
     /**
      * @var array<string>
      */
+    #[OAT\Property]
     public array $stringList;
+
+    /**
+     * @var array<string>
+     */
+    #[OAT\Property(items: new OAT\Items(example: 'foo'))]
+    public array $stringListExplicit;
 
     /**
      * @var ?array<string>
      */
+    #[OAT\Property]
     public ?array $nullableStringList;
 
     /**
      * @var array<string>|null
      */
+    #[OAT\Property]
     public array|null $nullableStringListUnion;
 
     /**
      * @var DocblockAndTypehintTypes
      */
+    #[OAT\Property]
     public DocblockAndTypehintTypes $class;
 
     /**
      * @var DocblockAndTypehintTypes|null
      */
+    #[OAT\Property]
     public ?DocblockAndTypehintTypes $nullableClass;
 
     /**
      * @var \DateTime
      */
+    #[OAT\Property]
     public \DateTime $namespacedGlobalClass;
 
     /**
      * @var \DateTime|null
      */
+    #[OAT\Property]
     public \DateTime|null $nullableNamespacedGlobalClass;
 
     /**
      * @var \DateTime|null
      */
+    #[OAT\Property]
     public null|\DateTime $alsoNullableNamespacedGlobalClass;
 
     /**
      * @var int<min,10> An int range
      */
+    #[OAT\Property]
     public int $intRange;
 
     /**
      * @var positive-int The positive integer
      */
+    #[OAT\Property]
     public int $positiveInt;
 
     /**
      * @var non-zero-int The non-zero integer
      */
+    #[OAT\Property]
     public int $nonZeroInt;
 
     /**
      * @var array{foo:bool}
      */
+    #[OAT\Property]
     public array $arrayShape;
 
     /**
      * @var int|string
      */
+    #[OAT\Property]
     public int|string $unionType;
 
     /**
@@ -100,8 +138,11 @@ class DocblockAndTypehintTypes
      */
     public function __construct(
         private OAT\Tag $tag,
+        #[OAT\Property]
         protected string $promotedString,
-        bool $bool = true
+        bool $bool = true,
+        #[OAT\Property(example: 'My value')]
+        public string|array $mixedUnion = [],
     )
     {
     }
@@ -109,8 +150,22 @@ class DocblockAndTypehintTypes
     /**
      * @return string
      */
+    #[OAT\Property]
     public function getString(): string
     {
         return 'string';
     }
+
+    /**
+     * @param \DateTimeImmutable[] $paramDateTimeList
+     * @param string[] $paramStringList
+     */
+    public function paramMethod(
+        #[OAT\Property]
+        array $paramDateTimeList,
+        #[OAT\Property]
+        array $paramStringList,
+    ): void
+        {
+        }
 }
