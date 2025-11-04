@@ -14,10 +14,10 @@ use OpenApi\TypeResolverInterface;
 
 abstract class AbstractTypeResolver implements TypeResolverInterface
 {
-    protected function type2ref(OA\Schema $schema, Analysis $analysis): void
+    protected function type2ref(OA\Schema $schema, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
         if (!Generator::isDefault($schema->type)) {
-            if ($typeSchema = $analysis->getSchemaForSource($schema->type)) {
+            if ($typeSchema = $analysis->getAnnotationForSource($schema->type, $sourceClass)) {
                 $schema->type = Generator::UNDEFINED;
                 $schema->ref = OA\Components::ref($typeSchema);
             }
@@ -95,7 +95,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
         return is_array($mapped) ? $mapped[0] : $mapped;
     }
 
-    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema): void
+    public function augmentSchemaType(Analysis $analysis, OA\Schema $schema, string $sourceClass = OA\Schema::class): void
     {
         $context = $schema->_context;
 
@@ -104,7 +104,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
         }
 
         /* @phpstan-ignore argument.type */
-        $this->doAugment($analysis, $schema, $context->reflector);
+        $this->doAugment($analysis, $schema, $context->reflector, $sourceClass);
 
         $this->mapNativeType($schema, $schema->type);
     }
@@ -112,5 +112,5 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
     /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
-    abstract protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void;
+    abstract protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector, string $sourceClass = OA\Schema::class): void;
 }

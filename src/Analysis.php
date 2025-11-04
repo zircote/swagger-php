@@ -318,11 +318,11 @@ class Analysis
     /**
      * @template T of OA\AbstractAnnotation
      *
-     * @param  string          $fqdn  the source class/interface/trait
-     * @param  class-string<T> $class
+     * @param  string          $fqdn        the source class/interface/trait
+     * @param  class-string<T> $sourceClass
      * @return T|null
      */
-    public function getAnnotationForSource(string $fqdn, string $class): ?OA\AbstractAnnotation
+    public function getAnnotationForSource(string $fqdn, string $sourceClass = OA\Schema::class): ?OA\AbstractAnnotation
     {
         $fqdn = '\\' . ltrim($fqdn, '\\');
 
@@ -332,7 +332,7 @@ class Analysis
                 if (is_iterable($definition['context']->annotations)) {
                     /** @var OA\AbstractAnnotation $annotation */
                     foreach (array_reverse($definition['context']->annotations) as $annotation) {
-                        if ($annotation instanceof $class && $annotation->isRoot($class) && !$annotation->_context->is('generated')) {
+                        if ($annotation instanceof $sourceClass && $annotation->isRoot($sourceClass) && !$annotation->_context->is('generated')) {
                             return $annotation;
                         }
                     }

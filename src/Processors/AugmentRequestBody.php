@@ -52,7 +52,11 @@ class AugmentRequestBody implements GeneratorAwareInterface
 
             if ($context->reflector instanceof \ReflectionParameter) {
                 $schema = new OA\Schema(['_context' => new Context(['reflector' => $context->reflector], $context)]);
-                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema);
+                $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema, OA\RequestBody::class);
+
+                if (Generator::isDefault($requestBody->ref)) {
+                    $requestBody->ref = $schema->ref;
+                }
 
                 if (Generator::isDefault($requestBody->required)) {
                     $requestBody->required = !$schema->isNullable();

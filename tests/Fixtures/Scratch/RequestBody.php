@@ -79,7 +79,6 @@ class RequestBodyController
 
     #[OAT\Post(
         path: '/endpoint/ref-foo',
-        requestBody: new OAT\RequestBody(ref: RequestBodyRefFoo::class),
         responses: [
             new OAT\Response(
                 response: 200,
@@ -87,7 +86,7 @@ class RequestBodyController
             ),
         ]
     )]
-    public function postRefFoo()
+    public function postRefFoo(#[OAT\RequestBody] RequestBodyRefFoo $body)
     {
     }
 }

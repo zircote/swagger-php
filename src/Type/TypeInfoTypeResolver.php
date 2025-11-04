@@ -34,7 +34,7 @@ use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 class TypeInfoTypeResolver extends AbstractTypeResolver
 {
     /** @inheritdoc */
-    protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector): void
+    protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector, string $sourceClass = OA\Schema::class): void
     {
         $docblockType = $this->getDocblockType($reflector);
         $reflectionType = $this->getReflectionType($reflector);
@@ -85,7 +85,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $this->augmentItems($schema, $analysis);
         }
 
-        $this->type2ref($schema, $analysis);
+        $this->type2ref($schema, $analysis, $sourceClass);
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {
