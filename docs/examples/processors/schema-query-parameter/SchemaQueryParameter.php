@@ -34,7 +34,7 @@ class SchemaQueryParameter
                     throw new \InvalidArgumentException('Value of `x.' . self::REF . '` must be a string');
                 }
 
-                $schema = $analysis->getSchemaForSource($operation->x[self::REF]);
+                $schema = $analysis->getAnnotationForSource($operation->x[self::REF]);
                 if (!$schema instanceof Schema) {
                     throw new \InvalidArgumentException('Value of `x.' . self::REF . "` contains reference to unknown schema: `{$operation->x[self::REF]}`");
                 }

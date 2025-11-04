@@ -41,7 +41,7 @@ class ExpandInterfaces
                 $existing = [];
                 foreach ($interfaces as $interface) {
                     $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
-                    $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
+                    $interfaceSchema = $analysis->getAnnotationForSource($interfaceName);
                     if ($interfaceSchema) {
                         $refPath = Generator::isDefault($interfaceSchema->schema) ? $interface['interface'] : $interfaceSchema->schema;
                         $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);

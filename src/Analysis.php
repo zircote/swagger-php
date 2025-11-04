@@ -308,15 +308,6 @@ class Analysis
     }
 
     /**
-     * @param string $fqdn the source class/interface/trait
-     * @deprecated use getAnnotationForSource() instead
-     */
-    public function getSchemaForSource(string $fqdn): ?OA\Schema
-    {
-        return $this->getAnnotationForSource($fqdn, OA\Schema::class);
-    }
-
-    /**
      * @template T of OA\AbstractAnnotation
      *
      * @param  string          $fqdn        the source class/interface/trait
