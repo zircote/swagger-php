@@ -309,6 +309,7 @@ class Analysis
 
     /**
      * @param string $fqdn the source class/interface/trait
+     * @deprecated use getAnnotationForSource() instead
      */
     public function getSchemaForSource(string $fqdn): ?OA\Schema
     {
