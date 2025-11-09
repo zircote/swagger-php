@@ -24,6 +24,7 @@ class Attachable extends AbstractAnnotation
         Contact::class,
         Delete::class,
         Discriminator::class,
+        Encoding::class,
         Examples::class,
         ExternalDocumentation::class,
         Flow::class,

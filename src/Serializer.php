@@ -21,6 +21,7 @@ class Serializer
         OA\Contact::class,
         OA\Delete::class,
         OA\Discriminator::class,
+        OA\Encoding::class,
         OA\Examples::class,
         OA\ExternalDocumentation::class,
         OA\Flow::class,

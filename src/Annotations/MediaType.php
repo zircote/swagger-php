@@ -61,7 +61,7 @@ class MediaType extends AbstractAnnotation
      * The encoding object shall only apply to requestBody objects when the media type is multipart or
      * application/x-www-form-urlencoded.
      *
-     * @var array<string,mixed>
+     * @var Encoding[]
      */
     public $encoding = Generator::UNDEFINED;
 
@@ -71,6 +71,7 @@ class MediaType extends AbstractAnnotation
     public static $_nested = [
         Schema::class => 'schema',
         Examples::class => ['examples', 'example'],
+        Encoding::class => ['encoding', 'property'],
         Attachable::class => ['attachables'],
     ];
 

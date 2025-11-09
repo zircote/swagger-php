@@ -14,7 +14,7 @@ class MediaType extends OA\MediaType
 {
     /**
      * @param array<Examples>          $examples
-     * @param array<string,mixed>      $encoding
+     * @param Encoding[]               $encoding
      * @param array<string,mixed>|null $x
      * @param Attachable[]|null        $attachables
      */

@@ -85,6 +85,12 @@ parameters:
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
+			message: '#^Property OpenApi\\Annotations\\JsonContent\:\:\$encoding \(array\<OpenApi\\Annotations\\Encoding\>\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Processors/MergeJsonContent.php
+
+		-
 			message: '#^Property OpenApi\\Annotations\\Schema\:\:\$examples \(array\<OpenApi\\Annotations\\Examples\>\) does not accept string\.$#'
 			identifier: assign.propertyType
 			count: 1

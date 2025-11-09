@@ -24,6 +24,7 @@ class XmlContent extends OA\XmlContent
      * @param array<Schema|OA\Schema>                                       $allOf
      * @param array<Schema|OA\Schema>                                       $anyOf
      * @param array<Schema|OA\Schema>                                       $oneOf
+     * @param Encoding[]                                                    $encoding
      * @param array<string,mixed>|null                                      $x
      * @param Attachable[]|null                                             $attachables
      */
@@ -66,6 +67,7 @@ class XmlContent extends OA\XmlContent
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $encoding = null,
         ?string $contentEncoding = null,
         ?string $contentMediaType = null,
         // annotation
@@ -108,6 +110,7 @@ class XmlContent extends OA\XmlContent
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'encoding' => $encoding ?? Generator::UNDEFINED,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
             'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
             // annotation

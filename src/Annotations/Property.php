@@ -21,6 +21,11 @@ class Property extends Schema
     public $property = Generator::UNDEFINED;
 
     /**
+     * @var Encoding
+     */
+    public $encoding = Generator::UNDEFINED;
+
+    /**
      * @inheritdoc
      */
     public static $_parents = [
@@ -42,6 +47,20 @@ class Property extends Schema
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
+        Encoding::class => 'encoding',
         Attachable::class => ['attachables'],
     ];
+
+    /**
+     * @inheritdoc
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+
+        unset($data->encoding);
+
+        return $data;
+    }
 }
