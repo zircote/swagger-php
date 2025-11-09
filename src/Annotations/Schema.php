@@ -429,6 +429,22 @@ class Schema extends AbstractAnnotation
     public $const = Generator::UNDEFINED;
 
     /**
+     * https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads
+     * https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.
+     *
+     * @var string
+     */
+    public $contentEncoding = Generator::UNDEFINED;
+
+    /**
+     * https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads
+     * https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.
+     *
+     * @var string
+     */
+    public $contentMediaType = Generator::UNDEFINED;
+
+    /**
      * @inheritdoc
      */
     public static $_types = [
@@ -451,6 +467,8 @@ class Schema extends AbstractAnnotation
         'allOf' => '[' . Schema::class . ']',
         'oneOf' => '[' . Schema::class . ']',
         'anyOf' => '[' . Schema::class . ']',
+        'contentEncoding' => 'string',
+        'contentMediaType' => 'string',
     ];
 
     /**
