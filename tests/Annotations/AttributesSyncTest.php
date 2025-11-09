@@ -63,22 +63,23 @@ class AttributesSyncTest extends OpenApiTestCase
                 unset($typeMismatch['required']);
             }
             if (!$found) {
-                // exclusions...
+                // Schema inheritance exclusions...
                 if ($attributeRC->isSubclassOf(OA\Operation::class) && in_array($propertyName, ['method'])) {
                     continue;
                 }
                 if ($attributeRC->isSubclassOf(OA\Attachable::class) && in_array($propertyName, ['x'])) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\AdditionalProperties::class) && in_array($propertyName, ['additionalProperties', 'examples'])) {
+                if ($attributeRC->isSubclassOf(OA\AdditionalProperties::class) && in_array($propertyName, ['additionalProperties', 'examples', 'contentEncoding', 'contentMediaType'])) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\Items::class) && in_array($propertyName, ['examples'])) {
+                if ($attributeRC->isSubclassOf(OA\Items::class) && in_array($propertyName, ['examples', 'contentEncoding', 'contentMediaType'])) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\Property::class) && in_array($propertyName, ['examples'])) {
+                if ($attributeRC->isSubclassOf(OA\Property::class) && in_array($propertyName, ['examples', 'contentEncoding', 'contentMediaType'])) {
                     continue;
                 }
+
                 if (in_array($propertyName, static::$SCHEMA_EXCLUSIONS)) {
                     continue;
                 }

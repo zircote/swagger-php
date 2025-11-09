@@ -87,6 +87,8 @@ class JsonContent extends OA\JsonContent
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?string $contentEncoding = null,
+        ?string $contentMediaType = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -127,6 +129,8 @@ class JsonContent extends OA\JsonContent
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
+            'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
