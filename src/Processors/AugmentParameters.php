@@ -60,7 +60,7 @@ class AugmentParameters implements GeneratorAwareInterface
         foreach ($parameters as $parameter) {
             $context = $parameter->_context;
 
-            if (Generator::isDefault($parameter->name) && method_exists($context->reflector, 'getName')) {
+            if (Generator::isDefault($parameter->name) && null !== $context->reflector && method_exists($context->reflector, 'getName')) {
                 $parameter->name = $context->reflector->getName();
             }
 
