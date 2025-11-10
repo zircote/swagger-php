@@ -14,6 +14,10 @@ paths:
             encoding:
               metadata:
                 contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+                headers:
+                  X-Rate-Limit-Limit: { description: 'The number of allowed requests in the current period', schema: { type: integer } }
       responses:
         '200':
           description: 'All good'
@@ -28,6 +32,10 @@ paths:
             encoding:
               metadata:
                 contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+                headers:
+                  X-Rate-Limit-Limit: { description: 'The number of allowed requests in the current period', schema: { type: integer } }
       responses:
         '200':
           description: 'All good'

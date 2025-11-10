@@ -31,12 +31,12 @@ class Encoding extends OA\Encoding
         parent::__construct([
             'property' => $property ?? Generator::UNDEFINED,
             'contentType' => $contentType ?? Generator::UNDEFINED,
-            'headers' => $headers ?? Generator::UNDEFINED,
             'style' => $style ?? Generator::UNDEFINED,
             'explode' => $explode ?? Generator::UNDEFINED,
             'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
+            'value' => $this->combine($headers),
         ]);
     }
 }

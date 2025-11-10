@@ -67,6 +67,7 @@ class Encoding extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_nested = [
+        Header::class => ['headers', 'header'],
         Attachable::class => ['attachables'],
     ];
 

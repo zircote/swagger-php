@@ -20,10 +20,15 @@ class AugmentMediaType
         $mediaTypes = $analysis->getAnnotationsOfType(OA\MediaType::class);
 
         foreach ($mediaTypes as $mediaType) {
-            if ($mediaType->schema instanceof OA\Schema) {
-                $schema = $mediaType->schema;
+            $schema = $mediaType->schema;
+            if ($schema instanceof OA\Schema) {
                 if (!Generator::isDefault($schema->properties)) {
                     $this->mergePropertyEncodings($mediaType, $schema->properties);
+                } elseif (!Generator::isDefault($schema->ref)) {
+                    $refSchema = $analysis->openapi->ref($schema->ref);
+                    if ($refSchema instanceof OA\Schema && !Generator::isDefault($refSchema->properties)) {
+                        $this->mergePropertyEncodings($mediaType, $refSchema->properties);
+                    }
                 }
             }
         }
