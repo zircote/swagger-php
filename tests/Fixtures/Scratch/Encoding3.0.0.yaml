@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Encoding
+  version: '1.0'
+paths:
+  /endpoint/multipart-form-data-ref:
+    post:
+      operationId: 3ed6d7b4d6050aad4152388e6e154a55
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MultipartFormData'
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/multipart-form-data-ref-json-content:
+    post:
+      operationId: 62590046a8aac464222d8c2b19ac4644
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultipartFormData'
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/multipart-form-data-json-content:
+    post:
+      operationId: 6208fbaa6292638cc112e0b1d5fd2e3e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  format: uuid
+                metadata:
+                  $ref: '#/components/schemas/EncodingMetadata'
+                avatar:
+                  type: object
+              type: object
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+      responses:
+        '200':
+          description: 'All good'
+components:
+  schemas:
+    EncodingMetadata: {  }
+    MultipartFormData:
+      properties:
+        name:
+          type: string
+          format: uuid
+        metadata:
+          $ref: '#/components/schemas/EncodingMetadata'
+        avatar: {  }
+      type: object

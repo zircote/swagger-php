@@ -23,8 +23,21 @@ class MultipartFormData
     public EncodingMetadata $metadata;
 
     #[OAT\Property(
+        /*
+         * This encoding is not going to show in #/components/schemas/EncodingMetadata
+         * as Property::encoding is transient and expected under the media type
+         */
         encoding: new OAT\Encoding(
             contentType: 'image/png, image/jpeg',
+            headers: [
+                new OAT\Header(
+                    header: 'X-Rate-Limit-Limit',
+                    description: 'The number of allowed requests in the current period',
+                    schema: new OAT\Schema(
+                        type: 'integer',
+                    ),
+                ),
+            ],
         ),
     )]
     public \stdClass $avatar;
