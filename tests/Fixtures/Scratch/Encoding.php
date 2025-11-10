@@ -93,9 +93,13 @@ class EncodingController
                 properties: [
                     new OAT\Property(property: 'name', type: 'string', format: 'uuid'),
                     new OAT\Property(property: 'metadata', type: EncodingMetadata::class),
-                    new OAT\Property(property: 'avatar', type: 'object', encoding: new OAT\Encoding(
-                        contentType: 'image/png, image/jpeg',
-                    )),
+                    new OAT\Property(
+                        property: 'avatar',
+                        type: 'object',
+                        encoding: new OAT\Encoding(
+                            contentType: 'image/png, image/jpeg',
+                        )
+                    ),
                 ],
                 encoding: [
                     new OAT\Encoding(

@@ -64,7 +64,7 @@ class ScratchTest extends OpenApiTestCase
             ->setVersion($version)
             ->generate([$scratch]);
 
-        file_put_contents($spec, $openapi->toYaml());
+        // file_put_contents($spec, $openapi->toYaml());
         $this->assertSpecEquals($openapi, file_get_contents($spec));
     }
 }

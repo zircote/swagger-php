@@ -50,6 +50,8 @@ paths:
             encoding:
               metadata:
                 contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
       responses:
         '200':
           description: 'All good'

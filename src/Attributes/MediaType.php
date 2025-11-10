@@ -31,10 +31,9 @@ class MediaType extends OA\MediaType
         parent::__construct([
                 'mediaType' => $mediaType ?? Generator::UNDEFINED,
                 'example' => $example,
-                'encoding' => $encoding ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'attachables' => $attachables ?? Generator::UNDEFINED,
-                'value' => $this->combine($schema, $examples),
+                'value' => $this->combine($schema, $examples, $encoding),
             ]);
     }
 }

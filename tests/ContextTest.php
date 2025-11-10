@@ -71,8 +71,6 @@ class ContextTest extends OpenApiTestCase
         );
     }
 
-    // -------------------------------------------------------------------------
-
     public function testSerialize(): void
     {
         $context = new Context(['filename' => __FILE__], $this->getContext());
