@@ -65,9 +65,6 @@ class AugmentParametersTest extends OpenApiTestCase
         $this->assertEquals($expected, $tags);
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testParameterNativeType(): void
     {
         $analysis = $this->analysisFromFixtures([
