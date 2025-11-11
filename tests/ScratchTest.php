@@ -9,6 +9,9 @@ namespace OpenApi\Tests;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
+/**
+ * @requires PHP 8.1
+ */
 class ScratchTest extends OpenApiTestCase
 {
     public static function scratchTestProvider(): iterable

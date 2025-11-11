@@ -14,7 +14,7 @@ class MediaType extends OA\MediaType
 {
     /**
      * @param array<Examples>          $examples
-     * @param array<string,mixed>      $encoding
+     * @param Encoding[]               $encoding
      * @param array<string,mixed>|null $x
      * @param Attachable[]|null        $attachables
      */
@@ -31,10 +31,9 @@ class MediaType extends OA\MediaType
         parent::__construct([
                 'mediaType' => $mediaType ?? Generator::UNDEFINED,
                 'example' => $example,
-                'encoding' => $encoding ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
                 'attachables' => $attachables ?? Generator::UNDEFINED,
-                'value' => $this->combine($schema, $examples),
+                'value' => $this->combine($schema, $examples, $encoding),
             ]);
     }
 }

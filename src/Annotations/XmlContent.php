@@ -7,6 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 /**
  * Shorthand for a xml response.
@@ -17,6 +18,13 @@ use OpenApi\Annotations as OA;
  */
 class XmlContent extends Schema
 {
+    /**
+     * A map between a property name and its encoding information.
+     *
+     * @var Encoding[]
+     */
+    public $encoding = Generator::UNDEFINED;
+
     /**
      * @inheritdoc
      */
@@ -32,6 +40,7 @@ class XmlContent extends Schema
         ExternalDocumentation::class => 'externalDocs',
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
+        Encoding::class => ['encoding', 'property'],
         Examples::class => ['examples', 'example'],
         Attachable::class => ['attachables'],
     ];

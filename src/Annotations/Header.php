@@ -95,6 +95,7 @@ class Header extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_parents = [
+        Encoding::class,
         Components::class,
         Response::class,
     ];

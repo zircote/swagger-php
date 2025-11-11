@@ -35,6 +35,10 @@ class AugmentProperties implements GeneratorAwareInterface
                 $property->property = $property->_context->property;
             }
 
+            if ($property->encoding instanceof OA\Encoding) {
+                $property->encoding->property = $property->property;
+            }
+
             if (Generator::isDefault($property->const) && $reflector instanceof \ReflectionClassConstant) {
                 $property->const = $reflector->getValue();
             }

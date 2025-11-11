@@ -7,6 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 /**
  * Shorthand for a json response.
@@ -32,6 +33,13 @@ use OpenApi\Annotations as OA;
 class JsonContent extends Schema
 {
     /**
+     * A map between a property name and its encoding information.
+     *
+     * @var Encoding[]
+     */
+    public $encoding = Generator::UNDEFINED;
+
+    /**
      * @inheritdoc
      */
     public static $_parents = [];
@@ -45,6 +53,7 @@ class JsonContent extends Schema
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
         AdditionalProperties::class => 'additionalProperties',
+        Encoding::class => ['encoding', 'property'],
         Examples::class => ['examples', 'example'],
         Attachable::class => ['attachables'],
     ];

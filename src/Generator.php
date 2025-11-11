@@ -233,6 +233,7 @@ class Generator
                 new Processors\AugmentRefs(),
                 new Processors\MergeJsonContent(),
                 new Processors\MergeXmlContent(),
+                new Processors\AugmentMediaType(),
                 new Processors\OperationId(),
                 new Processors\CleanUnmerged(),
                 new Processors\PathFilter(),

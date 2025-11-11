@@ -38,6 +38,7 @@ class MergeJsonContent
                 'schema' => $jsonContent,
                 'example' => $jsonContent->example,
                 'examples' => $jsonContent->examples,
+                'encoding' => $jsonContent->encoding,
                 '_context' => new Context(['generated' => true], $jsonContent->_context),
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
@@ -46,6 +47,7 @@ class MergeJsonContent
             }
             $jsonContent->example = Generator::UNDEFINED;
             $jsonContent->examples = Generator::UNDEFINED;
+            $jsonContent->encoding = Generator::UNDEFINED;
 
             $index = array_search($jsonContent, $parent->_unmerged, true);
             if ($index !== false) {
