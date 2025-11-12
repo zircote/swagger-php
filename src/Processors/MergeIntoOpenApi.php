@@ -57,8 +57,12 @@ class MergeIntoOpenApi
 
         // merge Components
         $componentsList = array_filter($merge, fn (OA\AbstractAnnotation $annotation): bool => $annotation instanceof OA\Components);
-        if (count($componentsList) > 1) {
-            $firstComponents = array_shift($componentsList);
+        $firstComponents = $openapi->components;
+
+        if ((!Generator::isDefault($firstComponents) && count($componentsList) > 0) || count($merge) > 1) {
+            if (Generator::isDefault($firstComponents)) {
+                $firstComponents = array_shift($componentsList);
+            }
 
             foreach ($componentsList as $components) {
                 foreach (OA\Components::$_nested as $nested) {

@@ -33,7 +33,10 @@ class ComponentsClass2
 {
 }
 
-#[OAT\Info(title: 'Components', version: '1.0')]
+#[OAT\OpenApi(
+    info: new OAT\Info(title: 'Components', version: '1.0'),
+    components: new OAT\Components(),
+)]
 #[OAT\Get(
     path: '/endpoint',
     responses: [
