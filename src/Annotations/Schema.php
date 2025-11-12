@@ -445,6 +445,11 @@ class Schema extends AbstractAnnotation
     public $contentMediaType = Generator::UNDEFINED;
 
     /**
+     * @var string
+     */
+    public $encoding = Generator::UNDEFINED;
+
+    /**
      * @inheritdoc
      */
     public static $_types = [
