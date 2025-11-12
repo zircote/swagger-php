@@ -23,6 +23,7 @@ class MergeIntoOpenApi
             $context = new Context(['generated' => true], $analysis->context);
             $analysis->addAnnotation(new OA\OpenApi(['_context' => $context]), $context);
         }
+
         $openapi = $analysis->openapi;
         $openapi->_analysis = $analysis;
 
@@ -33,6 +34,7 @@ class MergeIntoOpenApi
             if ($annotation === $openapi) {
                 continue;
             }
+
             if ($annotation instanceof OA\OpenApi) {
                 $paths = $annotation->paths;
                 unset($annotation->paths);
@@ -45,14 +47,36 @@ class MergeIntoOpenApi
                         $openapi->paths[] = $path;
                     }
                 }
-            } elseif (
-                $annotation instanceof OA\AbstractAnnotation
-                && in_array(OA\OpenApi::class, $annotation::$_parents)
-                && false === $annotation->_context->is('nested')) {
-                // A top level annotation.
+            } elseif ($annotation instanceof OA\AbstractAnnotation
+                    && in_array(OA\OpenApi::class, $annotation::$_parents)
+                    && false === $annotation->_context->is('nested')) {
+                // A top-level annotation.
                 $merge[] = $annotation;
             }
         }
+
+        // merge Components
+        $componentsList = array_filter($merge, fn (OA\AbstractAnnotation $annotation): bool => $annotation instanceof OA\Components);
+        if (count($componentsList) > 1) {
+            $firstComponents = array_shift($componentsList);
+
+            foreach ($componentsList as $components) {
+                foreach (OA\Components::$_nested as $nested) {
+                    if (2 == count($nested)) {
+                        $property = $nested[0];
+                        if (!Generator::isDefault($components->{$property})) {
+                            $firstComponents->merge($components->{$property});
+                        }
+                    }
+                }
+
+                $analysis->annotations->detach($components);
+            }
+
+            $merge = array_filter($merge, fn (OA\AbstractAnnotation $annotation): bool => !$annotation instanceof OA\Components);
+            $merge[] = $firstComponents;
+        }
+
         $openapi->merge($merge, true);
     }
 }
