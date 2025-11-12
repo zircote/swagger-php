@@ -65,7 +65,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                 }
             }
 
-            if ($reflector instanceof \ReflectionMethod) {
+            if ($reflector instanceof \ReflectionFunctionAbstract) {
                 // also look at parameter attributes
                 foreach ($reflector->getParameters() as $rp) {
                     foreach ([OA\Property::class, OAT\Parameter::class, OA\RequestBody::class] as $attributeName) {

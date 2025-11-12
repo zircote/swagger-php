@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Functions
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      parameters:
+        -
+          name: name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'All good'
