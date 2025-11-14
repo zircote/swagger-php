@@ -28,7 +28,7 @@ class AugmentMediaType
                 } elseif (!Generator::isDefault($schema->ref)) {
                     try {
                         $refSchema = $analysis->openapi->ref($schema->ref);
-                    } catch (OpenApiException $openApiException) {
+                    } catch (OpenApiException) {
                         // ignore
                         $refSchema = null;
                     }

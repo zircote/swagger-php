@@ -32,7 +32,7 @@ class ExpandInterfaces
                 if (class_exists($className) && ($parent = get_parent_class($className)) && ($inherited = array_keys(class_implements($parent)))) {
                     // strip interfaces we inherit from ancestor
                     foreach (array_keys($interfaces) as $interface) {
-                        if (in_array(ltrim($interface, '\\'), $inherited)) {
+                        if (in_array(ltrim((string) $interface, '\\'), $inherited)) {
                             unset($interfaces[$interface]);
                         }
                     }
@@ -41,7 +41,7 @@ class ExpandInterfaces
                 $existing = [];
                 foreach ($interfaces as $interface) {
                     $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
-                    $interfaceSchema = $analysis->getSchemaForSource($interfaceName);
+                    $interfaceSchema = $analysis->getAnnotationForSource($interfaceName);
                     if ($interfaceSchema) {
                         $refPath = Generator::isDefault($interfaceSchema->schema) ? $interface['interface'] : $interfaceSchema->schema;
                         $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);

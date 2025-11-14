@@ -12,9 +12,6 @@ use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\TypeResolverInterface;
 
-/**
- * @requires PHP 8.1
- */
 class ExamplesTest extends OpenApiTestCase
 {
     use UsesExamples;

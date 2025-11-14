@@ -33,7 +33,9 @@ class ItemsTest extends OpenApiTestCase
 
     public function testRefDefinitionInProperty(): void
     {
-        $analysis = $this->analysisFromFixtures(['UsingVar.php'], $this->processors([CleanUnusedComponents::class]));
+        $analysis = $this->analysisFromFixtures([
+            'UsingVar.php',
+        ], $this->processorPipeline(strip: [CleanUnusedComponents::class]));
 
         $this->assertCount(2, $analysis->openapi->components->schemas);
         $this->assertEquals('UsingVar', $analysis->openapi->components->schemas[0]->schema);

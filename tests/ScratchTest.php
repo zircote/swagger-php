@@ -10,9 +10,6 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
 
-/**
- * @requires PHP 8.1
- */
 class ScratchTest extends OpenApiTestCase
 {
     public static function scratchTestProvider(): iterable

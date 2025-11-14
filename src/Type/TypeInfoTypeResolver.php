@@ -115,7 +115,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
             return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
-        } catch (UnsupportedException $unsupportedException) {
+        } catch (UnsupportedException) {
             // ignore
         }
 
@@ -127,22 +127,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
      */
     public function getDocblockType(\Reflector $reflector): ?Type
     {
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $docComment = $reflector->getDeclaringFunction()->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $docComment = $reflector->getDocComment();
-                break;
-            default:
-                $docComment = null;
-        }
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
 
         if (!$docComment) {
             return null;
@@ -150,21 +143,14 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
         $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                    ? '@param'
-                    : '@var';
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $tagName = '@param';
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $tagName = '@return';
-                break;
-            default:
-                $tagName = null;
-        }
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
 
         $lexer = new Lexer(new ParserConfig([]));
         $phpDocParser = new PhpDocParser(
@@ -186,7 +172,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             ) {
                 try {
                     return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
-                } catch (UnsupportedException $e) {
+                } catch (UnsupportedException) {
                     // ignore
                 }
             }
