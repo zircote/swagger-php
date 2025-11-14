@@ -188,7 +188,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?/im";
         if ('@param' === $tagName) {
             // need to match on $name too
-            $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?\\$$name/im";
+            $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?\\$$name([\s\r\n])/im";
         }
 
         $docComment = str_replace("\r\n", "\n", $docComment);
