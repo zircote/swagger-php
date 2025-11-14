@@ -8,10 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Type\LegacyTypeResolver;
-use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
-use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 
 /**
  * @requires PHP 8.1

@@ -38,24 +38,24 @@ class ExamplesTest extends OpenApiTestCase
 
         foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
-            foreach ($implementations as $implementation) {
-                if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
-                    continue;
-                }
-
-                foreach ($versions as $version) {
-                    if (!file_exists($this->getSpecFilename($example, $implementation, $version))) {
+                foreach ($implementations as $implementation) {
+                    if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
                         continue;
                     }
 
-                    yield "$example:$resolverName-$implementation-$version" => [
-                        $typeResolver,
-                        $example,
-                        $implementation,
-                        $version,
-                    ];
+                    foreach ($versions as $version) {
+                        if (!file_exists($this->getSpecFilename($example, $implementation, $version))) {
+                            continue;
+                        }
+
+                        yield "$example:$resolverName-$implementation-$version" => [
+                            $typeResolver,
+                            $example,
+                            $implementation,
+                            $version,
+                        ];
+                    }
                 }
-            }
             }
         }
     }
