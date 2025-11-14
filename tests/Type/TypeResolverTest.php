@@ -55,6 +55,8 @@ class TypeResolverTest extends OpenApiTestCase
             'getstring' => '{ "type": "string", "property": "getString" }',
             'paramdatetimelist' => '{ "type": "array", "items": { "type": "string", "format": "date-time" }, "property": "paramDateTimeList" }',
             'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
+            'blah' => '{ "type": "string", "example": "My blah", "nullable": true, "property": "blah" }',
+            'blah_values' => '{ "type": "array", "items": { "type": "string", "example": "hello" }, "nullable": true, "property": "blah_values" }',
         ];
 
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);

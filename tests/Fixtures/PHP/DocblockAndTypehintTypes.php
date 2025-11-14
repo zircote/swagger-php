@@ -168,4 +168,15 @@ class DocblockAndTypehintTypes
     ): void
         {
         }
+
+    /**
+     * @param ?string[] $blah_values
+     */
+    public function blah(
+        #[OAT\Property(example: 'My blah')]
+        ?string $blah,
+        #[OAT\Property(nullable: true, items: new OAT\Items(type: 'string', example: 'hello'))]
+        ?array $blah_values,
+    ) {
+    }
 }
