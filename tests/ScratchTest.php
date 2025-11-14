@@ -8,6 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use OpenApi\TypeResolverInterface;
 
 /**
  * @requires PHP 8.1
@@ -16,32 +17,37 @@ class ScratchTest extends OpenApiTestCase
 {
     public static function scratchTestProvider(): iterable
     {
-        foreach (glob(static::fixture('Scratch/*.php')) as $fixture) {
-            $name = pathinfo($fixture, PATHINFO_FILENAME);
+        foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
+            foreach (glob(static::fixture('Scratch/*.php')) as $fixture) {
+                $name = pathinfo($fixture, PATHINFO_FILENAME);
 
-            if (0 === strpos($name, 'Abstract')) {
-                continue;
-            }
+                if (0 === strpos($name, 'Abstract')) {
+                    continue;
+                }
 
-            $scratch = static::fixture("Scratch/$name.php");
-            $specs = [
-                static::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
-                static::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
-            ];
+                $scratch = static::fixture("Scratch/$name.php");
+                $specs = [
+                    static::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
+                    static::fixture("Scratch/{$name}3.1.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_1_0,
+                    static::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
+                    static::fixture("Scratch/{$name}3.0.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_0_0,
+                ];
 
-            $expectedLogs = [
-                'Examples-3.0.0' => ['@OA\Schema() is only allowed for 3.1.x'],
-            ];
+                $expectedLogs = [
+                    'Examples-3.0.0' => ['@OA\Schema() is only allowed for 3.1.x'],
+                ];
 
-            foreach ($specs as $spec => $version) {
-                if (file_exists($spec)) {
-                    $dataSet = "$name-$version";
-                    yield $dataSet => [
-                        $scratch,
-                        $spec,
-                        $version,
-                        array_key_exists($dataSet, $expectedLogs) ? $expectedLogs[$dataSet] : [],
-                    ];
+                foreach ($specs as $spec => $version) {
+                    if (file_exists($spec)) {
+                        $dataSet = "$resolverName-$name-$version";
+                        yield $dataSet => [
+                            $typeResolver,
+                            $scratch,
+                            $spec,
+                            $version,
+                            array_key_exists($dataSet, $expectedLogs) ? $expectedLogs[$dataSet] : [],
+                        ];
+                    }
                 }
             }
         }
@@ -54,7 +60,7 @@ class ScratchTest extends OpenApiTestCase
      *
      * @requires     PHP 8.2
      */
-    public function testScratch(string $scratch, string $spec, string $version, array $expectedLogs): void
+    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {
             $this->assertOpenApiLogEntryContains($logLine);
@@ -63,7 +69,7 @@ class ScratchTest extends OpenApiTestCase
         require_once $scratch;
 
         $openapi = (new Generator($this->getTrackingLogger()))
-            ->setTypeResolver($this->getTypeResolver())
+            ->setTypeResolver($typeResolver)
             ->setVersion($version)
             ->generate([$scratch]);
 
