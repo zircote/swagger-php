@@ -111,6 +111,18 @@ class OpenApiTestCase extends TestCase
             : new LegacyTypeResolver();
     }
 
+    public static function getTypeResolvers(): array
+    {
+        $typeResolvers = [
+            'legacy' => new LegacyTypeResolver(),
+        ];
+        if (class_exists(StringTypeResolver::class)) {
+            $typeResolvers['type-info'] = new TypeInfoTypeResolver();
+        }
+
+        return $typeResolvers;
+    }
+
     public function initializeProcessors(array $processors): array
     {
         $generator = (new Generator())

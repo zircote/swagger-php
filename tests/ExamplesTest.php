@@ -10,6 +10,7 @@ use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
+use OpenApi\TypeResolverInterface;
 
 /**
  * @requires PHP 8.1
@@ -35,7 +36,8 @@ class ExamplesTest extends OpenApiTestCase
         $implementations = ['annotations', 'attributes', 'mixed'];
         $versions = [OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0];
 
-        foreach ($examples as $example) {
+        foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
+            foreach ($examples as $example) {
             foreach ($implementations as $implementation) {
                 if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
                     continue;
@@ -46,12 +48,14 @@ class ExamplesTest extends OpenApiTestCase
                         continue;
                     }
 
-                    yield "$example:$implementation;$version" => [
+                    yield "$example:$resolverName-$implementation-$version" => [
+                        $typeResolver,
                         $example,
                         $implementation,
                         $version,
                     ];
                 }
+            }
             }
         }
     }
@@ -61,7 +65,7 @@ class ExamplesTest extends OpenApiTestCase
      *
      * @dataProvider exampleSpecs
      */
-    public function testExample(string $name, string $implementation, string $version): void
+    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
         $this->registerExampleClassloader($name, $implementation);
 
@@ -70,7 +74,7 @@ class ExamplesTest extends OpenApiTestCase
 
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
-            ->setTypeResolver($this->getTypeResolver())
+            ->setTypeResolver($typeResolver)
             ->generate([$path]);
         // file_put_contents($specFilename, $openapi->toYaml());
         $this->assertSpecEquals(
@@ -83,7 +87,7 @@ class ExamplesTest extends OpenApiTestCase
     /**
      * @dataProvider exampleSpecs
      */
-    public function testSerializer(string $name, string $implementation, string $version): void
+    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
         $specFilename = $this->getSpecFilename($name, $implementation, $version);
 
