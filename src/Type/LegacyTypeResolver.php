@@ -192,6 +192,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         $docComment = str_replace("\r\n", "\n", $docComment);
+        $docComment = str_replace('list', 'array', $docComment);
         $docComment = preg_replace('/\*\/[ \t]*$/', '', $docComment); // strip '*/'
         preg_match($pattern, $docComment, $matches);
 
@@ -201,6 +202,11 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $nullable = in_array('null', explode('|', strtolower($type))) || str_contains($type, '?');
         $isArray = str_contains($type, '[]') || str_contains($type, 'array');
         $type = str_replace(['|null', 'null|', '?', 'null', '[]'], '', $type);
+        $isUnion = count(explode('|', $type)) > 1;
+        if ($isUnion && $isArray) {
+            $type = '';
+            $isArray = false;
+        }
 
         // typed array
         $result = preg_match('/([^<]+)<([^>]+)>/', $type, $matches);

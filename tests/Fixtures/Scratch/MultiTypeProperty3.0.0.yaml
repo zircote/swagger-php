@@ -14,7 +14,11 @@ components:
   schemas:
     MultiTypeProperty:
       properties:
+        otherValue:
+          example: 'My value'
         value:
           example: true
           nullable: true
+        mixedUnion:
+          example: 'My value'
       type: object
