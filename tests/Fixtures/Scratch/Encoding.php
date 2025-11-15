@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema()]
@@ -135,16 +136,18 @@ class EncodingController
     }
 
     #[OAT\Post(
-        path: '/endpoint/bc-encoding',
+        path: '/endpoint/bc-encoding-attr',
         requestBody: new OAT\RequestBody(
             content: new OAT\MediaType(
                 mediaType: 'multipart/form-data',
                 schema: new OAT\Schema(
-                    ref: MultipartFormData::class,
+                    properties: [
+                        new OAT\Property(property: 'encname', type: 'string'),
+                        ],
                 ),
                 encoding: [
-                    'metadata' => [
-                       'contentType' => 'application/xml; charset=utf-8',
+                    'encname' => [
+                       'contentType' => 'application/json',
                     ],
                 ],
             ),
@@ -156,7 +159,31 @@ class EncodingController
             ),
         ]
     )]
-    public function bcEncoding()
+    public function bcEncodingAttr()
+    {
+
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/endpoint/bc-encoding-annot",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart-form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="encname")
+     *             ),
+     *             encoding={
+     *                 "encname": {
+     *                     "contentType": "application/json"
+     *                 }
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="OK")
+     * )
+     */
+    public function bcEncodingAnnot()
     {
 
     }
