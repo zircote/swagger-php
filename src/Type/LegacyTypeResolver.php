@@ -192,6 +192,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         $docComment = str_replace("\r\n", "\n", $docComment);
+        $docComment = str_replace('list', 'array', $docComment);
         $docComment = preg_replace('/\*\/[ \t]*$/', '', $docComment); // strip '*/'
         preg_match($pattern, $docComment, $matches);
 
