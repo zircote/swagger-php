@@ -202,6 +202,11 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $nullable = in_array('null', explode('|', strtolower($type))) || str_contains($type, '?');
         $isArray = str_contains($type, '[]') || str_contains($type, 'array');
         $type = str_replace(['|null', 'null|', '?', 'null', '[]'], '', $type);
+        $isUnion = count(explode('|', $type)) > 1;
+        if ($isUnion && $isArray) {
+            $type = '';
+            $isArray = false;
+        }
 
         // typed array
         $result = preg_match('/([^<]+)<([^>]+)>/', $type, $matches);

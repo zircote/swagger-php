@@ -15,7 +15,7 @@ class MultiTypeProperty
     public int|bool|null $value;
 
     /**
-     * @var string|list<string> $mixedUnion
+     * @var string|list<string>
      */
     #[OAT\Property(example: 'My value')]
     public string|array $mixedUnion;
