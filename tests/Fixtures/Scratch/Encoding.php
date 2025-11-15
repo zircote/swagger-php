@@ -133,4 +133,31 @@ class EncodingController
     {
 
     }
+
+    #[OAT\Post(
+        path: '/endpoint/bc-encoding',
+        requestBody: new OAT\RequestBody(
+            content: new OAT\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OAT\Schema(
+                    ref: MultipartFormData::class,
+                ),
+                encoding: [
+                    'metadata' => [
+                       'contentType' => 'application/xml; charset=utf-8',
+                    ],
+                ],
+            ),
+        ),
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'All good',
+            ),
+        ]
+    )]
+    public function bcEncoding()
+    {
+
+    }
 }
