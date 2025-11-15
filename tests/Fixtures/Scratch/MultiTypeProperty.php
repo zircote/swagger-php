@@ -13,6 +13,21 @@ class MultiTypeProperty
 {
     #[OAT\Property(example: true)]
     public int|bool|null $value;
+
+    /**
+     * @var string|list<string> $mixedUnion
+     */
+    #[OAT\Property(example: 'My value')]
+    public string|array $mixedUnion;
+
+    /**
+     * @param string|list<string> $otherValue
+     */
+    public function __construct(
+        #[OAT\Property(example: 'My value')]
+        public string|array $otherValue,
+    ) {
+    }
 }
 
 #[OAT\Info(
