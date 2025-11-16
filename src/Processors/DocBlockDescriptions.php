@@ -14,7 +14,7 @@ use OpenApi\Generator;
  * Checks if the annotation has a summary and/or description property
  * and uses the text in the comment block (above the annotations) as summary and/or description.
  *
- * Use <code>null</code>, for example: <code>@Annotation(description=null)</code>, if you don't want the annotation to have a description.
+ * Use <code>''</code>, for example: <code>@Annotation(description="")</code>, if you don't want the annotation to have a description.
  */
 class DocBlockDescriptions
 {

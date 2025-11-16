@@ -174,3 +174,14 @@ The reason for this is that `openapi` currently uses the [`error_log`](https://w
 function for all output.
 
 So if this is configured to write to a file, then it will seem like the command is broken.
+
+## How to force overriding `swagger-php` augmentation
+
+There are number of processors that will try to 'enhance' the generated spec by adding additional details.
+
+This can be looking at PHP typehints, PHP docblocks for summary/description and other things. Usually this is fine; however,
+there might be times, where this is not desirable.
+
+For `string` based properties, the empty string `''` can be used to force ommission of a property, even if a `swagger-php` processor
+would have found a way to add a default value to this property.
+This can be useful, for example, for summary and description fields.

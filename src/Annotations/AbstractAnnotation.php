@@ -298,7 +298,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // Strip undefined values.
         foreach (get_object_vars($this) as $property => $value) {
-            if (!Generator::isDefault($value)) {
+            if (!Generator::isDefault($value) || '' === $value) {
                 $data->{$property} = $value;
             }
         }
