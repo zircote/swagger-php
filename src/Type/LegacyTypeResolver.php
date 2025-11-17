@@ -28,7 +28,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
             $schema->nullable = true;
         }
 
-        if (Generator::isDefault($schema->type) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
+        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
             $details = $docblockDetails->types ? $docblockDetails : $reflectionTypeDetails;
 
             // for now

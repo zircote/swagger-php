@@ -57,6 +57,8 @@ class TypeResolverTest extends OpenApiTestCase
             'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
             'blah' => '{ "type": "string", "example": "My blah", "nullable": true, "property": "blah" }',
             'blah_values' => '{ "type": "array", "items": { "type": "string", "example": "hello" }, "nullable": true, "property": "blah_values" }',
+            'oneofvar' => '{ "oneOf": [ { "type": "string" }, { "type": "bool" } ], "property": "oneOfVar" }',
+            'oneoflist' => '{ "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "bool" } ] }, "property": "oneOfList" }',
         ];
 
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);

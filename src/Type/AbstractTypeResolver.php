@@ -41,7 +41,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
                     $schema->items->ref = $schema->ref;
                     $schema->ref = Generator::UNDEFINED;
                 }
-            } elseif (Generator::isDefault($schema->items->type)) {
+            } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
                 $schema->items->type = $schema->type;
 
                 $this->type2ref($schema->items, $analysis);

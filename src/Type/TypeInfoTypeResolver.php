@@ -50,7 +50,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
         $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
-        if (Generator::isDefault($schema->type) && ($docblockType || $reflectionType)) {
+        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockType || $reflectionType)) {
             $type = $docblockType ?? $reflectionType;
 
             $isNonZeroInt = false;
