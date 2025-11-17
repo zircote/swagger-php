@@ -183,7 +183,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Parameters
 ---
@@ -476,6 +476,42 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>The name of the property in the payload that will hold the discriminator value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>mapping</strong> : <span style="font-family: monospace;">string[]|null</span></dt>
   <dd><p>An object to hold mappings between payload values and schema names or references.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
+For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dd><p>Arbitrary attachables for this annotation.<br />
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+</dl>
+
+### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Encoding.php)
+
+
+
+#### Allowed in
+---
+<a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>, <a href="#mediatype">MediaType</a>, <a href="#property">Property</a>
+
+#### Nested elements
+---
+<a href="#header">Header</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The property name to which the encoding applies.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The content type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
+  <dd><p>Additional headers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -794,7 +830,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#response">Response</a>
+<a href="#encoding">Encoding</a>, <a href="#components">Components</a>, <a href="#response">Response</a>
 
 #### Nested elements
 ---
@@ -1169,7 +1205,7 @@ vs.
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1325,6 +1361,14 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
+  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -1430,7 +1474,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1453,7 +1497,7 @@ the example value shall override the example provided by the schema.</p><table c
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
   <dd><p>A map between a property name and its encoding information.<br />
 <br />
 The key, being the property name, must exist in the schema as a property.<br />
@@ -2067,7 +2111,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -2219,6 +2263,8 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Encoding|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -2685,6 +2731,12 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -3050,7 +3102,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -3206,6 +3258,14 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
+  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />

@@ -28,7 +28,7 @@ These will be ignored by `swagger-php` but can be used for custom processing.
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
@@ -150,6 +150,37 @@ On top of this subset, there are extensions provided by this specification to al
 ---
 - [Discriminator Object](https://spec.openapis.org/oas/v3.1.1.html#discriminator-object)
 - [JSON Schema](http://json-schema.org/)
+
+### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Encoding.php)
+
+A single encoding definition applied to a single schema property.
+
+#### Allowed in
+---
+<a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>, <a href="#mediatype">MediaType</a>, <a href="#property">Property</a>
+
+#### Nested elements
+---
+<a href="#header">Header</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>property</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>The property name to which the encoding applies.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentType</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>The content type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+</dl>
+
+#### Reference
+---
+- [Encoding Object](https://spec.openapis.org/oas/v3.1.0.html#encoding-object)
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
 
@@ -305,7 +336,7 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#response">Response</a>
+<a href="#encoding">Encoding</a>, <a href="#components">Components</a>, <a href="#response">Response</a>
 
 #### Nested elements
 ---
@@ -429,7 +460,7 @@ vs.
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
 
@@ -528,7 +559,7 @@ Each Media Type object provides schema and examples for the media type identifie
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -543,13 +574,6 @@ The example object is mutually exclusive of the examples object.<br />
 <br />
 Furthermore, if referencing a schema which contains an example,<br />
 the example value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;</span></dt>
-  <dd><p>A map between a property name and its encoding information.<br />
-<br />
-The key, being the property name, must exist in the schema as a property.<br />
-<br />
-The encoding object shall only apply to requestBody objects when the media type is multipart or<br />
-application/x-www-form-urlencoded.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 #### Reference
@@ -818,7 +842,7 @@ A <code>@OA\Request</code> path parameter.
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -1095,6 +1119,12 @@ defined by this property's value.</p><table class="table-plain"><tbody><tr><td><
   <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>const</strong></dt>
   <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 #### Reference
@@ -1326,5 +1356,5 @@ Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaTyp
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
