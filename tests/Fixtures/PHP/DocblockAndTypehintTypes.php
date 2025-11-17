@@ -137,10 +137,10 @@ class DocblockAndTypehintTypes
      * @param bool $bool
      */
     public function __construct(
-        private OAT\Tag $tag,
+        private OAT\Tag     $tag,
         #[OAT\Property]
-        protected string $promotedString,
-        bool $bool = true,
+        protected string    $promotedString,
+        bool                $bool = true,
         #[OAT\Property(example: 'My value')]
         public string|array $mixedUnion = [],
     )
@@ -155,6 +155,28 @@ class DocblockAndTypehintTypes
     {
         return 'string';
     }
+
+    /**
+     * @var DocblockAndTypehintTypes
+     */
+    #[OAT\Property(
+        oneOf: [
+            new OAT\Schema(type: 'string'),
+            new OAT\Schema(type: 'bool'),
+        ]
+    )]
+    public $oneOfVar;
+
+    /**
+     * @var array<DocblockAndTypehintTypes>
+     */
+    #[OAT\Property(
+        items: new OAT\Items(oneOf: [
+            new OAT\Schema(type: 'string'),
+            new OAT\Schema(type: 'bool'),
+        ])
+    )]
+    public array $oneOfList;
 
     /**
      * @param \DateTimeImmutable[] $paramDateTimeList
@@ -176,7 +198,7 @@ class DocblockAndTypehintTypes
         #[OAT\Property(example: 'My blah')]
         ?string $blah,
         #[OAT\Property(nullable: true, items: new OAT\Items(type: 'string', example: 'hello'))]
-        ?array $blah_values,
+        ?array  $blah_values,
     ) {
     }
 }
