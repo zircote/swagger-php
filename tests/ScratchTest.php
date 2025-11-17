@@ -71,6 +71,7 @@ class ScratchTest extends OpenApiTestCase
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setTypeResolver($typeResolver)
             ->setVersion($version)
+            ->setConfig(['mergeIntoOpenApi' => ['mergeComponents' => true]])
             ->generate([$scratch]);
 
         // file_put_contents($spec, $openapi->toYaml());

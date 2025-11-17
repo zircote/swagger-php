@@ -45,6 +45,16 @@ Use <code>null</code>, for example: <code>@Annotation(description=null)</code>, 
 ### [MergeIntoOpenApi](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoOpenApi.php)
 
 Merge all <code>@OA\OpenApi</code> annotations into one.
+#### Config settings
+**mergeIntoOpenApi.mergeComponents**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">false</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code>, allow multiple `@OA\Components` annotations to be merged.<br>
+
+
+
 ### [MergeIntoComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoComponents.php)
 
 Merge reusable annotation into <code>@OA\Schemas</code>.
@@ -87,6 +97,13 @@ Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
     - NAME2
 ```
 
+**expandEnums.generator**
+: <span style="font-family: monospace;">OpenApi\Generator</span>
+<br>**default**
+: <span style="font-family: monospace;">N/A</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
+
 
 
 ### [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
@@ -97,6 +114,16 @@ Merges properties.
 ### [AugmentRequestBody](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRequestBody.php)
 
 Use the RequestBody context to extract useful information and inject that into the annotation.
+#### Config settings
+**augmentRequestBody.generator**
+: <span style="font-family: monospace;">OpenApi\Generator</span>
+<br>**default**
+: <span style="font-family: monospace;">N/A</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
+
+
+
 ### [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 
 Use the property context to extract useful information and inject that into the annotation.
@@ -127,6 +154,13 @@ Augments shared and operations parameters from docblock comments.
 
 &nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.<br>
 
+**augmentParameters.generator**
+: <span style="font-family: monospace;">OpenApi\Generator</span>
+<br>**default**
+: <span style="font-family: monospace;">N/A</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
+
 
 
 ### [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
@@ -138,6 +172,9 @@ Split JsonContent into Schema and MediaType.
 ### [MergeXmlContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeXmlContent.php)
 
 Split XmlContent into Schema and MediaType.
+### [AugmentMediaType](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentMediaType.php)
+
+Augment media type encodings.
 ### [OperationId](https://github.com/zircote/swagger-php/tree/master/src/Processors/OperationId.php)
 
 Generate the OperationId based on the context of the OpenApi annotation.
