@@ -83,17 +83,6 @@ class MediaType extends AbstractAnnotation
         RequestBody::class,
     ];
 
-    public function __construct(array $properties)
-    {
-        if (array_key_exists('encoding', $properties)) {
-            $properties['encoding'] = $this->encodingCompat(
-                $properties['encoding'],
-                fn (array $args): Encoding => new Encoding($args),
-            );
-        }
-        parent::__construct($properties);
-    }
-
     protected function encodingCompat($encoding, callable $factory)
     {
         if (!is_array($encoding)) {
