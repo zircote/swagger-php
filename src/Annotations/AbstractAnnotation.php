@@ -372,6 +372,13 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
+            if (isset($data->type) && is_array($data->type)) {
+                if (1 === count($data->type)) {
+                    $data->type = array_pop($data->type);
+                } else {
+                    unset($data->type);
+                }
+            }
         }
 
         if ($this->_context->isVersion('3.1.x')) {
