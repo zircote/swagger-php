@@ -61,9 +61,9 @@ In its simplest form this may look something like
 
 ```php
 <?php
-require("vendor/autoload.php");
+require('vendor/autoload.php');
 
-$openapi = \OpenApi\Generator::scan(['/path/to/project']);
+$openapi = (new \OpenApi\Generator)->generate(['/path/to/project']);
 
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();

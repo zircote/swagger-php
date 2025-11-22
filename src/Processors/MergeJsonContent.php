@@ -18,7 +18,6 @@ class MergeJsonContent
 {
     public function __invoke(Analysis $analysis): void
     {
-        /** @var OA\JsonContent[] $annotations */
         $annotations = $analysis->getAnnotationsOfType(OA\JsonContent::class);
 
         foreach ($annotations as $jsonContent) {

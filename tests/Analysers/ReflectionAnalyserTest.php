@@ -79,18 +79,15 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testPhp8PromotedProperties(): void
     {
         $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
-        $analysis->process($this->processors([CleanUnusedComponents::class]));
+        $this->processorPipeline(strip: [CleanUnusedComponents::class])->process($analysis);
+        ;
 
-        /** @var OA\Property[] $properties */
         $properties = $analysis->getAnnotationsOfType(OA\Property::class);
 
         [$tags, $id, $labels] = $properties;

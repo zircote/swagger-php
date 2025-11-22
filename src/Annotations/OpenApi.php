@@ -9,7 +9,6 @@ namespace OpenApi\Annotations;
 use OpenApi\Analysis;
 use OpenApi\Generator;
 use OpenApi\OpenApiException;
-use OpenApi\Util;
 
 /**
  * This is the root document object for the API specification.
@@ -138,6 +137,18 @@ class OpenApi extends AbstractAnnotation
      */
     public static $_types = [];
 
+    public function __construct(array $properties)
+    {
+        parent::__construct($properties);
+
+        if ($this->_context->root()->version) {
+            // override via `Generator::setVersion()`
+            $this->openapi = $this->_context->root()->version;
+        } else {
+            $this->_context->root()->version = $this->openapi;
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -218,7 +229,7 @@ class OpenApi extends AbstractAnnotation
      */
     public function ref(string $ref)
     {
-        if (substr($ref, 0, 2) !== '#/') {
+        if (!str_starts_with($ref, '#/')) {
             throw new OpenApiException('Unsupported $ref "' . $ref . '", it should start with "#/"');
         }
 
@@ -240,12 +251,12 @@ class OpenApi extends AbstractAnnotation
         $slash = strpos($path, '/');
 
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
-        $property = Util::refDecode($subpath);
+        $property = Components::refDecode($subpath);
         $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
 
         if (is_object($container)) {
             // support use x-* in ref
-            $xKey = strpos($property, 'x-') === 0 ? substr($property, 2) : null;
+            $xKey = str_starts_with($property, 'x-') ? substr($property, 2) : null;
             if ($xKey) {
                 if (!is_array($container->x) || !array_key_exists($xKey, $container->x)) {
                     $xKey = null;

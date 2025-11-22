@@ -30,7 +30,7 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 
 ## Requirements
 
-`swagger-php` requires at least PHP 7.4 for annotations and PHP 8.1 for using attributes.
+`swagger-php` requires at least PHP 8.1.
 
 ## Installation (with [Composer](https://getcomposer.org))
 
@@ -96,7 +96,7 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = \OpenApi\Generator::scan(['/path/to/project']);
+$openapi = (new \OpenApi\Generator->generate(['/path/to/project']);
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```

@@ -63,7 +63,6 @@ class ExpandEnums implements GeneratorAwareInterface
 
     protected function expandContextEnum(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         foreach ($schemas as $schema) {
@@ -83,7 +82,7 @@ class ExpandEnums implements GeneratorAwareInterface
                 // no (or invalid) schema type means name
                 $useName = Generator::isDefault($schemaType) || ($enumType && $this->generator->getTypeResolver()->native2spec($enumType) != $schemaType);
 
-                $schema->enum = array_map(fn (\ReflectionEnumUnitCase $case) => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
+                $schema->enum = array_map(fn (\ReflectionEnumUnitCase $case): int|string => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
 
                 if ($this->enumNames !== null && !$useName) {
                     $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
@@ -101,7 +100,6 @@ class ExpandEnums implements GeneratorAwareInterface
 
     protected function expandSchemaEnum(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType([OA\Schema::class, OA\ServerVariable::class]);
 
         foreach ($schemas as $schema) {

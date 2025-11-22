@@ -33,10 +33,7 @@ class MediaType extends OA\MediaType
                 'example' => $example,
                 'x' => $x ?? Generator::UNDEFINED,
                 'attachables' => $attachables ?? Generator::UNDEFINED,
-                'value' => $this->combine($schema, $examples, $this->encodingCompat(
-                    $encoding,
-                    fn (array $args): Encoding => new Encoding(...$args),
-                )),
+                'value' => $this->combine($schema, $examples, $encoding),
             ]);
     }
 }

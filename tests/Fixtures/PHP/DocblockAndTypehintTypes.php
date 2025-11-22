@@ -179,6 +179,21 @@ class DocblockAndTypehintTypes
     public array $oneOfList;
 
     /**
+     * @var null|DocblockAndTypehintTypes|array<DocblockAndTypehintTypes>
+     */
+    #[OAT\Property()]
+    public ?array $nullableTypedListUnion;
+
+    /**
+     * @var null|DocblockAndTypehintTypes|array<DocblockAndTypehintTypes>|array<array<int,DocblockAndTypehintTypes>>
+     */
+    #[OAT\Property()]
+    public ?array $nullableNestedTypedListUnion;
+
+    #[\OpenApi\Attributes\Property(example: true)]
+    public int|bool|null $reflectionValue;
+
+    /**
      * @param \DateTimeImmutable[] $paramDateTimeList
      * @param string[] $paramStringList
      */
@@ -201,4 +216,7 @@ class DocblockAndTypehintTypes
         ?array  $blah_values,
     ) {
     }
+
+    #[OAT\Property]
+    public FirstInterface&SecondInterface $intersectionVar;
 }
