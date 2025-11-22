@@ -48,7 +48,6 @@ class ProductController
         content: [new OAT\MediaType(
             mediaType: 'application/json',
             schema: new OAT\Schema(
-                type: 'array',
                 items: new OAT\Items(type: Product::class)
             )
         )]
