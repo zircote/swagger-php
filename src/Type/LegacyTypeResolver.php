@@ -29,7 +29,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
-            $details = $docblockDetails->types ? $docblockDetails : $reflectionTypeDetails;
+            $details = ($docblockDetails->types || $docblockDetails->unsupported) ? $docblockDetails : $reflectionTypeDetails;
 
             // for now
             if (1 === count($details->types)) {
@@ -48,7 +48,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
             }
         }
 
-        if ($docblockDetails->isArray || $reflectionTypeDetails->isArray) {
+        if ($docblockDetails->isArray || ($reflectionTypeDetails->isArray  && !$docblockDetails->unsupported)) {
             $this->augmentItems($schema, $analysis);
         }
 
@@ -66,13 +66,13 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
     }
 
-    protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null, ?Context $context = null): \stdClass
+    protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null, bool $unsupported = false, ?Context $context = null): \stdClass
     {
         $types = array_filter($types, fn (string $t): bool => !in_array($t, ['null', '']));
 
         if ($context) {
             foreach ($types as $ii => $type) {
-                if (!array_key_exists(strtolower($type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
+                if (!array_key_exists(strtolower((string) $type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
                     if (($resolved = $context->fullyQualifiedName($type)) && class_exists($resolved)) {
                         $types[$ii] = ltrim($resolved, '\\');
                     } else {
@@ -94,6 +94,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
             'name' => $name,
             'nullable' => $explicitType ? $nullable : true,
             'isArray' => $isArray,
+            'unsupported' => $unsupported,
         ];
     }
 
@@ -133,7 +134,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
         $nullable = (is_object($rtype) ? $rtype->allowsNull() : true) || in_array('null', $types);
 
-        return $this->normaliseTypeResult(null, null, array_reverse($types), $name, $nullable, $isArray, $context);
+        return $this->normaliseTypeResult(null, null, array_reverse($types), $name, $nullable, $isArray, false, $context);
     }
 
     /**
@@ -162,7 +163,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $name = $reflector->getName();
 
         if (!$docComment) {
-            return $this->normaliseTypeResult(null, null, [], $name, null, null, $context);
+            return $this->normaliseTypeResult(null, null, [], $name, null, null, false, $context);
         }
 
         switch (true) {
@@ -182,7 +183,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         if (!$tagName) {
-            return $this->normaliseTypeResult(null, null, [], $name, null, null, $context);
+            return $this->normaliseTypeResult(null, null, [], $name, null, null, false, $context);
         }
 
         $pattern = "/$tagName\s+(?<type>[^\s]+)([ \t])?/im";
@@ -194,7 +195,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $docComment = str_replace("\r\n", "\n", $docComment);
         $docComment = str_replace('list', 'array', $docComment);
         $docComment = preg_replace('/\*\/[ \t]*$/', '', $docComment); // strip '*/'
-        preg_match($pattern, $docComment, $matches);
+        preg_match($pattern, (string) $docComment, $matches);
 
         $explicitType = null;
         $explicitDetails = null;
@@ -202,10 +203,12 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $nullable = in_array('null', explode('|', strtolower($type))) || str_contains($type, '?');
         $isArray = str_contains($type, '[]') || str_contains($type, 'array');
         $type = str_replace(['|null', 'null|', '?', 'null', '[]'], '', $type);
+        $unsupported = false;
         $isUnion = count(explode('|', $type)) > 1;
         if ($isUnion && $isArray) {
             $type = '';
             $isArray = false;
+            $unsupported = true;
         }
 
         // typed array
@@ -268,6 +271,6 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $type = ltrim($type, '\\');
         $types = explode('|', $type);
 
-        return $this->normaliseTypeResult($explicitType, $explicitDetails, $types, $name, $nullable, $isArray, $context);
+        return $this->normaliseTypeResult($explicitType, $explicitDetails, $types, $name, $nullable, $isArray, $unsupported, $context);
     }
 }
