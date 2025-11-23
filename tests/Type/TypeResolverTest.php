@@ -17,16 +17,10 @@ use OpenApi\Tests\Fixtures\PHP\DocblockAndTypehintTypes;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\TypeResolverInterface;
 
-use const PHP_VERSION_ID;
-
 class TypeResolverTest extends OpenApiTestCase
 {
     public static function resolverAugmentCases(): iterable
     {
-        if (PHP_VERSION_ID < 80100) {
-            return [];
-        }
-
         $expectations = [
             OA\OpenApi::VERSION_3_0_0 => [
                 'nothing' => '{ "property": "nothing" }',

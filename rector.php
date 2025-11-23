@@ -53,5 +53,5 @@ return RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
     )
-    ->withPhpVersion(PhpVersion::PHP_81)
+    ->withPhpVersion(PhpVersion::PHP_82)
     ->withPhpSets();

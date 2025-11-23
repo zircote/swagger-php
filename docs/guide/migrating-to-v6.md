@@ -4,7 +4,7 @@
 
 v6 is mostly a cleanup release with updated dependencies. The main changes are:
 
-* Minimum required PHP version is now 8.1
+* Minimum required PHP version is now 8.2
 * ...
 
 For most installations upgrading should not require any changes.

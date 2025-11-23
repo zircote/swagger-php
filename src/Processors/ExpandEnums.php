@@ -73,10 +73,7 @@ class ExpandEnums implements GeneratorAwareInterface
                 $schemaType = $schema->type;
                 $enumType = null;
                 if ($re->isBacked()) {
-                    $backingType = $re->getBackingType();
-                    if ($backingType instanceof \ReflectionNamedType) {
-                        $enumType = $backingType->getName();
-                    }
+                    $enumType = $re->getBackingType()->getName();
                 }
 
                 // no (or invalid) schema type means name

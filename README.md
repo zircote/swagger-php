@@ -30,7 +30,7 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 
 ## Requirements
 
-`swagger-php` requires at least PHP 8.1.
+`swagger-php` requires at least PHP 8.2.
 
 ## Installation (with [Composer](https://getcomposer.org))
 
@@ -75,6 +75,9 @@ composer require doctrine/annotations
 Add annotations to your php files.
 
 ```php
+
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(title="My First API", version="0.1")
  */
