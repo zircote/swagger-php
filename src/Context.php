@@ -183,7 +183,7 @@ class Context implements \Stringable
 
     public function __serialize(): array
     {
-        return array_filter(get_object_vars($this), function ($value): bool {
+        return array_filter(get_object_vars($this), static function ($value): bool {
             $rc = is_object($value) ? new \ReflectionClass($value) : null;
 
             return (!$rc || !$rc->isAnonymous())

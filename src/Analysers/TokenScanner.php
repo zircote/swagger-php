@@ -52,14 +52,14 @@ class TokenScanner
     {
         /** @var array $uses */
         $uses = [];
-        $resolve = function (string $name) use ($namespace, &$uses) {
+        $resolve = static function (string $name) use ($namespace, &$uses) {
             if (array_key_exists($name, $uses)) {
                 return $uses[$name];
             }
 
             return $namespace . '\\' . $name;
         };
-        $details = function () use (&$uses): array {
+        $details = static function () use (&$uses): array {
             return [
                 'uses' => $uses,
                 'interfaces' => [],

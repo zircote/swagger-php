@@ -74,9 +74,8 @@
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^1.6 || ^2.0",
-        "phpunit/phpunit": "^9.0",
-        "rector/rector": "^1.0 || ^2.0",
-        "vimeo/psalm": "^4.30 || ^5.0"
+        "phpunit/phpunit": "^10.5",
+        "rector/rector": "^1.0 || ^2.0"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
@@ -89,7 +88,7 @@
         "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run all PHP, codestyle and rector tests",
-        "analyse": "Run static analysis (phpstan/psalm)",
+        "analyse": "Run static analysis (phpstan)",
         "spectral-examples": "Run spectral lint over all .yaml files in the docs/examples folder",
         "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
         "spectral": "Run all spectral tests",
@@ -112,8 +111,7 @@
             "@lint"
         ],
         "analyse": [
-            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
-            "export XDEBUG_MODE=off && psalm --threads=1"
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=3G"
         ],
         "spectral-examples": "for ff in `find docs/examples -name '*.yaml'`; do npm run spectral lint $ff; done",
         "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do npm run spectral lint $ff; done",

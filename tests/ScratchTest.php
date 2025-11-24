@@ -9,6 +9,8 @@ namespace OpenApi\Tests;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 class ScratchTest extends OpenApiTestCase
 {
@@ -52,11 +54,9 @@ class ScratchTest extends OpenApiTestCase
 
     /**
      * Test scratch fixtures.
-     *
-     * @dataProvider scratchTestProvider
-     *
-     * @requires     PHP 8.2
      */
+    #[DataProvider('scratchTestProvider')]
+    #[RequiresPhp('8.2')]
     public function testScratch(TypeResolverInterface $typeResolver, string $scratch, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {

@@ -80,7 +80,7 @@ class MergeIntoOpenApi
         if ($this->isMergeComponents()) {
 
             // merge Components
-            $componentsList = array_filter($merge, fn (OA\AbstractAnnotation $annotation): bool => $annotation instanceof OA\Components);
+            $componentsList = array_filter($merge, static fn (OA\AbstractAnnotation $annotation): bool => $annotation instanceof OA\Components);
             $firstComponents = $openapi->components;
 
             if ((!Generator::isDefault($firstComponents) && $componentsList !== []) || count($merge) > 1) {
@@ -101,7 +101,7 @@ class MergeIntoOpenApi
                     $analysis->annotations->detach($components);
                 }
 
-                $merge = array_filter($merge, fn (OA\AbstractAnnotation $annotation): bool => !$annotation instanceof OA\Components);
+                $merge = array_filter($merge, static fn (OA\AbstractAnnotation $annotation): bool => !$annotation instanceof OA\Components);
                 $merge[] = $firstComponents;
             }
         }

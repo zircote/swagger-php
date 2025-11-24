@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OperationTest extends OpenApiTestCase
 {
@@ -37,9 +38,7 @@ class OperationTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider securityData
-     */
+    #[DataProvider('securityData')]
     public function testSecuritySerialization(array $security, string $docBlock, string $expected): void
     {
         // test with Get implementation...

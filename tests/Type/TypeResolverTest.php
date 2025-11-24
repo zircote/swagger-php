@@ -16,6 +16,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\Fixtures\PHP\DocblockAndTypehintTypes;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\TypeResolverInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TypeResolverTest extends OpenApiTestCase
 {
@@ -151,9 +152,7 @@ class TypeResolverTest extends OpenApiTestCase
         }
     }
 
-    /**
-     * @dataProvider resolverAugmentCases
-     */
+    #[DataProvider('resolverAugmentCases')]
     public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, array $expected): void
     {
         $typeResolver->augmentSchemaType($analysis, $schema);

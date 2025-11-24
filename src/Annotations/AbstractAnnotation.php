@@ -366,7 +366,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if (isset($data->type) && is_array($data->type)) {
                 if (in_array('null', $data->type)) {
                     $data->nullable = true;
-                    $data->type = array_filter($data->type, fn ($v): bool => $v !== 'null');
+                    $data->type = array_filter($data->type, static fn ($v): bool => $v !== 'null');
                     if (1 === count($data->type)) {
                         $data->type = array_pop($data->type);
                     }
@@ -677,7 +677,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * @param string $type  The annotations property type
      * @param mixed  $value The property value
      */
-    private function validateType(string $type, $value): bool
+    private function validateType(string $type, mixed $value): bool
     {
         if (str_starts_with($type, '[') && str_ends_with($type, ']')) { // Array of a specified type?
             if ($this->validateType('array', $value) === false) {
@@ -706,7 +706,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * @param string $type  The property type
      * @param mixed  $value The value to validate
      */
-    private function validateDefaultTypes(string $type, $value): bool
+    private function validateDefaultTypes(string $type, mixed $value): bool
     {
         if (str_contains($type, '|')) {
             $types = explode('|', $type);
@@ -745,7 +745,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if ($count !== $i) {
                 return false;
             }
-            $count++;
+            ++$count;
         }
 
         return true;
@@ -753,11 +753,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Wrap the context with a reference to the annotation it is nested in.
-     *
-     *
-     * @return AbstractAnnotation
      */
-    protected function nested(AbstractAnnotation $annotation, Context $nestedContext)
+    protected function nested(AbstractAnnotation $annotation, Context $nestedContext): self
     {
         if (property_exists($annotation, '_context') && $annotation->_context === $this->_context) {
             $annotation->_context = $nestedContext;
@@ -777,7 +774,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+        return array_filter($combined, static fn ($value): bool => !Generator::isDefault($value) && $value !== null);
     }
 
     /**
@@ -794,7 +791,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             $short[] = '@' . str_replace([
                     'OpenApi\\Annotations\\',
                     'OpenApi\\Attributes\\',
-                ], 'OA\\', $class);
+                ], 'OA\\', (string) $class);
         }
 
         return is_array($classes) ? $short : array_pop($short);

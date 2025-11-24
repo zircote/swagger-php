@@ -190,10 +190,10 @@ trait DocblockTrait
 
         $result = array_merge(
             ['type' => null, 'description' => null],
-            array_filter($matches, fn ($key): bool => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
+            array_filter($matches, static fn ($key): bool => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
         );
 
-        return array_map(fn (?string $value): ?string => null !== $value ? trim($value) : null, $result);
+        return array_map(static fn (?string $value): ?string => null !== $value ? trim($value) : null, $result);
     }
 
     /**

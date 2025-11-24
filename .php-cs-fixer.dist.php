@@ -90,6 +90,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_alias_tag' => true,
         'phpdoc_param_order' => true,
 
-        // 'php_unit_attributes' => true,
+        'php_unit_attributes' => true,
     ])
     ->setFinder($finder);

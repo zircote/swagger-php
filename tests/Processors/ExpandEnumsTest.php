@@ -15,6 +15,7 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ExpandEnumsTest extends OpenApiTestCase
 {
@@ -164,9 +165,7 @@ class ExpandEnumsTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider expandEnumClassStringFixtures
-     */
+    #[DataProvider('expandEnumClassStringFixtures')]
     public function testExpandEnumClassString(array $files, string $title, mixed $expected): void
     {
         $analysis = $this->analysisFromFixtures(

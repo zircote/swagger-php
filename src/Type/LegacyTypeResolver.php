@@ -99,7 +99,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
     protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null, bool $unsupported = false, ?Context $context = null): \stdClass
     {
-        $types = array_filter($types, fn (string $t): bool => !in_array($t, ['null', '']));
+        $types = array_filter($types, static fn (string $t): bool => !in_array($t, ['null', '']));
 
         if ($context) {
             foreach ($types as $ii => $type) {

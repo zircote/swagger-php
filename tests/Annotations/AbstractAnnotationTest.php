@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AbstractAnnotationTest extends OpenApiTestCase
 {
@@ -109,9 +110,7 @@ END;
         ];
     }
 
-    /**
-     * @dataProvider nestedMatches
-     */
+    #[DataProvider('nestedMatches')]
     public function testMatchNested(string $class, $expected): void
     {
         $this->assertEquals($expected, (new OA\Get([]))->matchNested(new $class([])));

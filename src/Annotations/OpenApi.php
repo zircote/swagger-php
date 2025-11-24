@@ -191,14 +191,13 @@ class OpenApi extends AbstractAnnotation
      */
     public static function versionMatch(string $version1, string $version2): bool
     {
-        $expand = function (string $v): array {
+        $expand = static function (string $v): array {
             if (!str_ends_with($v, '.x')) {
                 return [$v];
             }
-
             $minor = str_replace('.x', '', $v);
 
-            return array_filter(self::SUPPORTED_VERSIONS, fn (string $sv): bool => str_starts_with($sv, $minor));
+            return array_filter(self::SUPPORTED_VERSIONS, static fn (string $sv): bool => str_starts_with($sv, $minor));
         };
         $versions1 = $expand($version1);
         $versions2 = $expand($version2);

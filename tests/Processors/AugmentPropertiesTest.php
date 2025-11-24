@@ -13,10 +13,9 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group Properties
- */
+#[Group('Properties')]
 class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties(): void

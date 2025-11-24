@@ -10,6 +10,7 @@ use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
 use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -25,9 +26,7 @@ class GeneratorTest extends OpenApiTestCase
         yield 'finder-list' => [$name, [new SourceFinder($sourceDir)]];
     }
 
-    /**
-     * @dataProvider sourcesProvider
-     */
+    #[DataProvider('sourcesProvider')]
     public function testGenerate(string $name, iterable $sources): void
     {
         $this->registerExampleClassloader($name);
@@ -37,7 +36,7 @@ class GeneratorTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
-        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
+        $this->assertSpecEquals(file_get_contents(static::getSpecFilename($name)), $openapi);
     }
 
     public function testScanInvalidSource(): void
@@ -96,9 +95,7 @@ class GeneratorTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider configCases
-     */
+    #[DataProvider('configCases')]
     public function testConfig(array $config, bool $expected): void
     {
         $generator = new Generator();

@@ -8,12 +8,11 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AnnotationPropertiesDefinedTest extends OpenApiTestCase
 {
-    /**
-     * @dataProvider allAnnotationClasses
-     */
+    #[DataProvider('allAnnotationClasses')]
     public function testPropertiesAreNotUndefined(string $annotation): void
     {
         $properties = get_class_vars($annotation);

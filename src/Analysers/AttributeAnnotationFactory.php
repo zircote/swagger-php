@@ -106,10 +106,9 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         }
 
         // merge backwards into parents...
-        $isParent = function (OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $possibleParent): bool {
+        $isParent = static function (OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $possibleParent): bool {
             // regular annotation hierarchy
             $explicitParent = null !== $possibleParent->matchNested($annotation) && !$annotation instanceof OA\Attachable;
-
             $isParentAllowed = false;
             // support Attachable subclasses
             if ($isAttachable = $annotation instanceof OA\Attachable) {

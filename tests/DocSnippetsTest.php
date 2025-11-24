@@ -12,12 +12,13 @@ use OpenApi\Pipeline;
 use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DocSnippetsTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    public function snippetSets(): iterable
+    public static function snippetSets(): iterable
     {
         $finder = (new Finder())
             ->in(__DIR__ . '/../docs/snippets/')
@@ -38,9 +39,8 @@ class DocSnippetsTest extends OpenApiTestCase
 
     /**
      * Compare snippets and ensure they result in the same spec fragment.
-     *
-     * @dataProvider snippetSets
      */
+    #[DataProvider('snippetSets')]
     public function testSnippets(array $filenames, string $version): void
     {
         $lastSpec = null;

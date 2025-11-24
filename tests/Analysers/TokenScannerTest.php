@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysers\TokenScanner;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TokenScannerTest extends OpenApiTestCase
 {
@@ -386,9 +387,7 @@ class TokenScannerTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider scanCases
-     */
+    #[DataProvider('scanCases')]
     public function testScanFile(string $fixture, array $expected): void
     {
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));

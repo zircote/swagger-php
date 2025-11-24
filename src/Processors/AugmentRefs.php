@@ -46,8 +46,8 @@ class AugmentRefs
             foreach ($analysis->annotations as $annotation) {
                 if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && $annotation->ref !== null) {
                     foreach ($updatedRefs as $origRef => $updatedRef) {
-                        if (str_starts_with($annotation->ref, $origRef)) {
-                            $annotation->ref = str_replace($origRef, $updatedRef, $annotation->ref);
+                        if (str_starts_with((string) $annotation->ref, $origRef)) {
+                            $annotation->ref = str_replace($origRef, $updatedRef, (string) $annotation->ref);
                         }
                     }
                 }

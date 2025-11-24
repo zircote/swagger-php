@@ -84,21 +84,21 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     ? ['const' => 0]
                     : ['enum' => [0]];
             } else {
-                $allBuiltin = array_reduce($types, fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
+                $allBuiltin = array_reduce($types, static fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
 
                 if ($type instanceof UnionType) {
                     if ($allBuiltin) {
-                        $schema->type = array_map(fn (Type $t): string => (string) $t, $types);
+                        $schema->type = array_map(static fn (Type $t): string => (string) $t, $types);
                     } else {
-                        $builtinTypes = array_filter($types, fn (Type $t): bool => $t instanceof BuiltinType);
-                        $otherTypes = array_filter($types, fn (Type $t): bool => !$t instanceof BuiltinType);
+                        $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
+                        $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
 
                         $schema->type = Generator::UNDEFINED;
                         $schema->oneOf = [];
 
                         if ($builtinTypes) {
                             $schema->oneOf[] = $builtinSchema = new OA\Schema([
-                                'type' => array_values(array_map(fn (Type $t): string => (string) $t, $builtinTypes)),
+                                'type' => array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
                                 '_context' => new Context(['generated' => true], $schema->_context),
                             ]);
                             $this->type2ref($builtinSchema, $analysis);

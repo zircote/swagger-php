@@ -11,12 +11,13 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\TypeResolverInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ExamplesTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    public function exampleSpecs(): iterable
+    public static function exampleSpecs(): iterable
     {
         $examples = [
             'api',
@@ -36,12 +37,12 @@ class ExamplesTest extends OpenApiTestCase
         foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
                 foreach ($implementations as $implementation) {
-                    if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
+                    if (!file_exists(static::examplePath($example) . '/' . $implementation)) {
                         continue;
                     }
 
                     foreach ($versions as $version) {
-                        if (!file_exists($this->getSpecFilename($example, $implementation, $version))) {
+                        if (!file_exists(static::getSpecFilename($example, $implementation, $version))) {
                             continue;
                         }
 
@@ -59,15 +60,14 @@ class ExamplesTest extends OpenApiTestCase
 
     /**
      * Validate openapi definitions of the included examples.
-     *
-     * @dataProvider exampleSpecs
      */
+    #[DataProvider('exampleSpecs')]
     public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
         $this->registerExampleClassloader($name, $implementation);
 
-        $path = $this->examplePath("$name/$implementation");
-        $specFilename = $this->getSpecFilename($name, $implementation, $version);
+        $path = static::examplePath("$name/$implementation");
+        $specFilename = static::getSpecFilename($name, $implementation, $version);
 
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
@@ -81,12 +81,10 @@ class ExamplesTest extends OpenApiTestCase
         );
     }
 
-    /**
-     * @dataProvider exampleSpecs
-     */
+    #[DataProvider('exampleSpecs')]
     public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
-        $specFilename = $this->getSpecFilename($name, $implementation, $version);
+        $specFilename = static::getSpecFilename($name, $implementation, $version);
 
         $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();
 
