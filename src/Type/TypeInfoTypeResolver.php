@@ -8,6 +8,7 @@ namespace OpenApi\Type;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -26,8 +27,10 @@ use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\CompositeTypeInterface;
+use Symfony\Component\TypeInfo\Type\IntersectionType;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
@@ -51,38 +54,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
         if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockType || $reflectionType)) {
-            $type = $docblockType ?? $reflectionType;
-
-            $isNonZeroInt = false;
-            if ($type instanceof CompositeTypeInterface && 2 === count($type->getTypes())) {
-                $types = $type->getTypes();
-                $isNonZeroInt = $types[0] instanceof IntRangeType && $types[1] instanceof IntRangeType;
-            }
-
-            if (!$type instanceof CompositeTypeInterface || $isNonZeroInt) {
-                if ($isNonZeroInt) {
-                    $schema->type = 'int';
-                    $schema->not = $schema->_context->isVersion('3.1.x')
-                        ? ['const' => 0]
-                        : ['enum' => [0]];
-                } elseif ($type instanceof BuiltinType || $type instanceof ObjectType) {
-                    $schema->type = (string) $type;
-                } elseif ($type instanceof IntRangeType) {
-                    $schema->type = $type->getTypeIdentifier()->value;
-
-                    $schema->minimum = $type->getFrom();
-                    $schema->maximum = $type->getTo();
-
-                } elseif ($type instanceof ExplicitType) {
-                    $schema->type = $type->getTypeIdentifier()->value;
-                } elseif ($type instanceof CollectionType) {
-                    $schema->type = (string) $type->getCollectionValueType();
-                }
-            }
-        }
-
-        if ($docblockType instanceof CollectionType || $reflectionType instanceof CollectionType) {
-            $this->augmentItems($schema, $analysis);
+            $this->setSchemaType($schema, $docblockType ?? $reflectionType, $analysis, $sourceClass);
         }
 
         $this->type2ref($schema, $analysis, $sourceClass);
@@ -99,7 +71,94 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
     }
 
-    /**
+    protected function setSchemaType(OA\Schema $schema, Type $type, Analysis $analysis, string $sourceClass = OA\Schema::class): OA\Schema
+    {
+        if ($type instanceof CompositeTypeInterface) {
+            $types = $type->getTypes();
+
+            $isNonZeroInt = 2 === count($types) && $types[0] instanceof IntRangeType && $types[1] instanceof IntRangeType;
+
+            if ($isNonZeroInt) {
+                $schema->type = 'int';
+                $schema->not = $schema->_context->isVersion('3.1.x')
+                    ? ['const' => 0]
+                    : ['enum' => [0]];
+            } else {
+                $allBuiltin = array_reduce($types, static fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
+
+                if ($type instanceof UnionType) {
+                    if ($allBuiltin) {
+                        $schema->type = array_map(static fn (Type $t): string => (string) $t, $types);
+                    } else {
+                        $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
+                        $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
+
+                        $schema->type = Generator::UNDEFINED;
+                        $schema->oneOf = [];
+
+                        if ($builtinTypes) {
+                            $schema->oneOf[] = $builtinSchema = new OA\Schema([
+                                'type' => array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
+                                '_context' => new Context(['generated' => true], $schema->_context),
+                            ]);
+                            $this->type2ref($builtinSchema, $analysis);
+                            $analysis->addAnnotation($builtinSchema, $builtinSchema->_context);
+                        }
+
+                        foreach ($otherTypes as $otherType) {
+                            $otherSchema = new OA\Schema([
+                                '_context' => new Context(['generated' => true], $schema->_context),
+                            ]);
+                            $schema->oneOf[] = $this->setSchemaType($otherSchema, $otherType, $analysis);
+                            $this->type2ref($otherSchema, $analysis);
+                            $analysis->addAnnotation($otherSchema, $otherSchema->_context);
+                        }
+                    }
+                } elseif ($type instanceof IntersectionType) {
+                    $schema->type = Generator::UNDEFINED;
+                    $schema->allOf = [];
+
+                    foreach ($types as $intersectionType) {
+                        $intersectionSchema = new OA\Schema([
+                            '_context' => new Context(['generated' => true], $schema->_context),
+                        ]);
+                        $schema->allOf[] = $this->setSchemaType($intersectionSchema, $intersectionType, $analysis);
+                        $this->type2ref($intersectionSchema, $analysis);
+                        $analysis->addAnnotation($intersectionSchema, $intersectionSchema->_context);
+                    }
+                }
+            }
+        } else {
+            if ($type instanceof BuiltinType || $type instanceof ObjectType) {
+                $schema->type = (string) $type;
+            } elseif ($type instanceof IntRangeType) {
+                $schema->type = $type->getTypeIdentifier()->value;
+
+                $schema->minimum = $type->getFrom();
+                $schema->maximum = $type->getTo();
+            } elseif ($type instanceof ExplicitType) {
+                $schema->type = $type->getTypeIdentifier()->value;
+            } elseif ($type instanceof CollectionType) {
+                $schema->type = 'array';
+
+                if (Generator::isDefault($schema->items)) {
+                    $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
+                    $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                    $this->type2ref($schema->items, $analysis);
+                    $analysis->addAnnotation($schema->items, $schema->items->_context);
+                } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+                    $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                    $this->type2ref($schema->items, $analysis);
+                }
+
+                $this->mapNativeType($schema->items, $schema->items->type);
+            }
+        }
+
+        return $schema;
+    }
+
+    /**645 1050272  02 1268 0026220 00
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
     protected function getReflectionType(\Reflector $reflector): ?Type
@@ -115,7 +174,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
             return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
-        } catch (UnsupportedException $unsupportedException) {
+        } catch (UnsupportedException) {
             // ignore
         }
 
@@ -127,22 +186,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
      */
     public function getDocblockType(\Reflector $reflector): ?Type
     {
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $docComment = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $docComment = $reflector->getDeclaringFunction()->getDocComment();
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $docComment = $reflector->getDocComment();
-                break;
-            default:
-                $docComment = null;
-        }
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
 
         if (!$docComment) {
             return null;
@@ -150,21 +202,14 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
         $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
-        switch (true) {
-            case $reflector instanceof \ReflectionProperty:
-                $tagName = (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
-                    ? '@param'
-                    : '@var';
-                break;
-            case $reflector instanceof \ReflectionParameter:
-                $tagName = '@param';
-                break;
-            case $reflector instanceof \ReflectionFunctionAbstract:
-                $tagName = '@return';
-                break;
-            default:
-                $tagName = null;
-        }
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
 
         $lexer = new Lexer(new ParserConfig([]));
         $phpDocParser = new PhpDocParser(
@@ -186,7 +231,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             ) {
                 try {
                     return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
-                } catch (UnsupportedException $e) {
+                } catch (UnsupportedException) {
                     // ignore
                 }
             }

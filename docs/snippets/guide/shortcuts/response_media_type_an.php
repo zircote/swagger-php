@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Shortcuts\MediaType;
+
 use OpenApi\Annotations as OA;
 
 class Controller

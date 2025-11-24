@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\ReusingResponse;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Response(

@@ -15,17 +15,18 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @requires PHP 8.1
- */
 class ExpandEnumsTest extends OpenApiTestCase
 {
     public function testExpandUnitEnum(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnum.php']);
-        $analysis->process($this->initializeProcessors([new ExpandEnums()]));
-        $schema = $analysis->getSchemaForSource(StatusEnum::class);
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnum.php'],
+            $this->processorPipeline([new ExpandEnums()]),
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnum::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -33,9 +34,12 @@ class ExpandEnumsTest extends OpenApiTestCase
 
     public function testExpandBackedEnum(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumBacked.php']);
-        $analysis->process($this->initializeProcessors([new ExpandEnums()]));
-        $schema = $analysis->getSchemaForSource(StatusEnumBacked::class);
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnumBacked.php'],
+            $this->processorPipeline([new ExpandEnums()]),
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnumBacked::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -43,9 +47,12 @@ class ExpandEnumsTest extends OpenApiTestCase
 
     public function testExpandBackedIntegerEnum(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumIntegerBacked.php']);
-        $analysis->process($this->initializeProcessors([new ExpandEnums()]));
-        $schema = $analysis->getSchemaForSource(StatusEnumIntegerBacked::class);
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnumIntegerBacked.php'],
+            $this->processorPipeline([new ExpandEnums()]),
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnumIntegerBacked::class);
 
         $this->assertEquals([1, 2, 3], $schema->enum);
         $this->assertEquals('integer', $schema->type);
@@ -53,9 +60,12 @@ class ExpandEnumsTest extends OpenApiTestCase
 
     public function testExpandBackedStringEnum(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumStringBacked.php']);
-        $analysis->process($this->initializeProcessors([new ExpandEnums()]));
-        $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnumStringBacked.php'],
+            $this->processorPipeline([new ExpandEnums()]),
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
 
         $this->assertEquals(['draft', 'published', 'archived'], $schema->enum);
         $this->assertEquals('string', $schema->type);
@@ -63,9 +73,12 @@ class ExpandEnumsTest extends OpenApiTestCase
 
     public function testEnumNamesInBackedStringEnum(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumStringBacked.php']);
-        $analysis->process($this->initializeProcessors([new ExpandEnums('enumNames')]));
-        $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnumStringBacked.php'],
+            $this->processorPipeline([new ExpandEnums('enumNames')]),
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->x['enumNames']);
     }
@@ -152,15 +165,14 @@ class ExpandEnumsTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @requires     PHP 8.1
-     *
-     * @dataProvider expandEnumClassStringFixtures
-     */
+    #[DataProvider('expandEnumClassStringFixtures')]
     public function testExpandEnumClassString(array $files, string $title, mixed $expected): void
     {
-        $analysis = $this->analysisFromFixtures($files);
-        $analysis->process($this->initializeProcessors([new ExpandEnums()]));
+        $analysis = $this->analysisFromFixtures(
+            $files,
+            $this->processorPipeline([new ExpandEnums()]),
+        );
+
         $schemas = $analysis->getAnnotationsOfType([OA\Property::class, OA\Items::class], true);
 
         foreach ($schemas as $schema) {

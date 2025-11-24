@@ -8,8 +8,9 @@ namespace OpenApi\Tests;
 
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
+use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Util;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class GeneratorTest extends OpenApiTestCase
 {
@@ -21,13 +22,11 @@ class GeneratorTest extends OpenApiTestCase
         $sourceDir = static::examplePath("$name/annotations");
 
         yield 'dir-list' => [$name, [$sourceDir]];
-        yield 'finder' => [$name, Util::finder($sourceDir)];
-        yield 'finder-list' => [$name, [Util::finder($sourceDir)]];
+        yield 'finder' => [$name, new SourceFinder($sourceDir)];
+        yield 'finder-list' => [$name, [new SourceFinder($sourceDir)]];
     }
 
-    /**
-     * @dataProvider sourcesProvider
-     */
+    #[DataProvider('sourcesProvider')]
     public function testGenerate(string $name, iterable $sources): void
     {
         $this->registerExampleClassloader($name);
@@ -37,24 +36,7 @@ class GeneratorTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
-        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
-    }
-
-    /**
-     * @dataProvider sourcesProvider
-     */
-    public function testScan(string $name, iterable $sources): void
-    {
-        $this->registerExampleClassloader($name);
-
-        $analyzer = $this->getAnalyzer();
-        $processor = (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline();
-
-        $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
-
-        $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
+        $this->assertSpecEquals(file_get_contents(static::getSpecFilename($name)), $openapi);
     }
 
     public function testScanInvalidSource(): void
@@ -113,9 +95,7 @@ class GeneratorTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider configCases
-     */
+    #[DataProvider('configCases')]
     public function testConfig(array $config, bool $expected): void
     {
         $generator = new Generator();

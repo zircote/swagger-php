@@ -33,7 +33,6 @@ class BuildPaths
             }
         }
 
-        /** @var OA\Operation[] $operations */
         $operations = $analysis->unmerged()->getAnnotationsOfType(OA\Operation::class);
 
         // Merge @OA\Operations into existing @OA\PathItems or create a new one.

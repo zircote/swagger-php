@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\DefaultSecurity;
+
 use OpenApi\Attributes as OAT;
 
 #[OAT\OpenApi(

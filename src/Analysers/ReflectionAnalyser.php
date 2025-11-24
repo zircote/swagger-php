@@ -113,7 +113,7 @@ class ReflectionAnalyser implements AnalyserInterface
             'methods' => [],
             'context' => $context,
         ];
-        $normaliseClass = fn (string $name): string => '\\' . ltrim($name, '\\');
+        $normaliseClass = static fn (string $name): string => '\\' . ltrim($name, '\\');
         if ($parentClass = $rc->getParentClass()) {
             $definition['extends'] = $normaliseClass($parentClass->getName());
         }

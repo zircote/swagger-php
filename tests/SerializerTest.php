@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SerializerTest extends OpenApiTestCase
 {
@@ -151,7 +152,7 @@ JSON;
     public function testPetstoreExample(): void
     {
         $serializer = new Serializer();
-        $spec = $this->examplePath('petstore/petstore-3.0.0.yaml');
+        $spec = static::examplePath('petstore/petstore-3.0.0.yaml');
         $openapi = $serializer->deserializeFile($spec, 'yaml');
         $this->assertInstanceOf(OA\OpenApi::class, $openapi);
         $this->assertSpecEquals(file_get_contents($spec), $openapi->toYaml());
@@ -204,9 +205,7 @@ JSON;
         }
     }
 
-    /**
-     * @dataProvider allAnnotationClasses
-     */
+    #[DataProvider('allAnnotationClasses')]
     public function testValidAnnotationsListComplete(string $annotation): void
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();

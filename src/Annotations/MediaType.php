@@ -11,6 +11,8 @@ use OpenApi\Generator;
 /**
  * Each Media Type object provides schema and examples for the media type identified by its key.
  *
+ * Parameter encodings can be set either here, or on nested `Property` annotations directly.
+ *
  * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  *
  * @Annotation
@@ -82,17 +84,6 @@ class MediaType extends AbstractAnnotation
         Response::class,
         RequestBody::class,
     ];
-
-    public function __construct(array $properties)
-    {
-        if (array_key_exists('encoding', $properties)) {
-            $properties['encoding'] = $this->encodingCompat(
-                $properties['encoding'],
-                fn (array $args): Encoding => new Encoding($args),
-            );
-        }
-        parent::__construct($properties);
-    }
 
     protected function encodingCompat($encoding, callable $factory)
     {

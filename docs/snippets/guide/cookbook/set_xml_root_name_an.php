@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\XmlRootName;
+
 use OpenApi\Annotations as OA;
 
 /**

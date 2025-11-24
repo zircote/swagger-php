@@ -64,7 +64,7 @@ return (new PhpCsFixer\Config())
         'trim_array_spaces' => true,
         'single_space_around_construct' => true,
         'single_line_comment_spacing' => true,
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => null, 'import_functions' => null],
 
         'nullable_type_declaration_for_default_null_value' => true,
@@ -89,5 +89,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_empty_return' => true,
         'phpdoc_no_alias_tag' => true,
         'phpdoc_param_order' => true,
+
+        'php_unit_attributes' => true,
     ])
     ->setFinder($finder);

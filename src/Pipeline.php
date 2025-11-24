@@ -34,10 +34,10 @@ class Pipeline
             throw new OpenApiException('pipe or callable must not be empty');
         }
 
-        // allow matching on class name in $pipe in a string
+        // allow matching on class name if $pipe in a string
         if (is_string($pipe) && !$matcher) {
             $pipeClass = $pipe;
-            $matcher = (fn ($pipe): bool => !$pipe instanceof $pipeClass);
+            $matcher = (static fn ($pipe): bool => !$pipe instanceof $pipeClass);
         }
 
         if ($matcher) {
@@ -71,7 +71,7 @@ class Pipeline
     {
         if (is_string($matcher)) {
             $before = $matcher;
-            $matcher = function (array $pipes) use ($before) {
+            $matcher = static function (array $pipes) use ($before): int|string|null {
                 foreach ($pipes as $ii => $current) {
                     if ($current instanceof $before) {
                         return $ii;
@@ -102,14 +102,11 @@ class Pipeline
     }
 
     /**
-     * @param mixed $payload
-     *
      * @return mixed
      */
-    public function process($payload)
+    public function process(mixed $payload)
     {
         foreach ($this->pipes as $pipe) {
-            /** @deprecated null payload returned from pipe */
             $payload = $pipe($payload) ?: $payload;
         }
 

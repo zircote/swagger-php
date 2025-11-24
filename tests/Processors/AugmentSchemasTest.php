@@ -16,19 +16,21 @@ class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas(): void
     {
-        $analysis = $this->analysisFromFixtures(['Customer.php']);
-        $analysis->process([
+        $analysis = $this->analysisFromFixtures([
+            'Customer.php',
+        ], $this->processorPipeline([
             // create openapi->components
             new MergeIntoOpenApi(),
             // Merge standalone Scheme's into openapi->components
             new MergeIntoComponents(),
-        ]);
+        ]));
 
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertSame(Generator::UNDEFINED, $customer->schema, 'Sanity check. No scheme was defined');
         $this->assertSame(Generator::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
-        $analysis->process([new AugmentSchemas()]);
+
+        $this->processorPipeline([new AugmentSchemas()])->process($analysis);
 
         $this->assertSame('Customer', $customer->schema, '@OA\Schema()->schema based on classname');
         $this->assertIsArray($customer->properties);
@@ -37,18 +39,20 @@ class AugmentSchemasTest extends OpenApiTestCase
 
     public function testAugmentSchemasForInterface(): void
     {
-        $analysis = $this->analysisFromFixtures(['CustomerInterface.php']);
-        $analysis->process([
+        $analysis = $this->analysisFromFixtures([
+            'CustomerInterface.php',
+        ], $this->processorPipeline([
             // create openapi->components
             new MergeIntoOpenApi(),
             // Merge standalone Scheme's into openapi->components
             new MergeIntoComponents(),
-        ]);
+        ]));
 
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
         $this->assertSame(Generator::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
-        $analysis->process([new AugmentSchemas()]);
+
+        $this->processorPipeline([new AugmentSchemas()])->process($analysis);
 
         $this->assertIsArray($customer->properties);
         $this->assertCount(9, (array) $customer->properties, '@OA\Property()s are merged into the @OA\Schema of the class');

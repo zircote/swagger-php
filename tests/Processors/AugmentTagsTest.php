@@ -10,59 +10,48 @@ use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentTagsTest extends OpenApiTestCase
 {
-    /**
-     * @requires PHP 8.1
-     */
     public function testFilteredAugmentTags(): void
     {
         $config = [
             'pathFilter' => ['paths' => ['#^/hello/#']],
             'cleanUnusedComponents' => ['enabled' => true],
         ];
-        $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors(), null, $config);
+        $analysis = $this->analysisFromFixtures(
+            ['SurplusTag.php'],
+            $this->processorPipeline(),
+            config: $config
+        );
 
         $this->assertCount(1, $analysis->openapi->tags);
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testDedupedAugmentTags(): void
     {
-        $analysis = $this->analysisFromFixtures(['SurplusTag.php'], static::processors());
+        $analysis = $this->analysisFromFixtures(
+            ['SurplusTag.php'],
+            $this->processorPipeline()
+        );
 
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting 3 unique tags');
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testAllowUnusedTags(): void
     {
         $analysis = $this->analysisFromFixtures(
             ['UnusedTags.php'],
-            static::processors(),
-            null,
-            [
-                'augmentTags' => ['whitelist' => ['fancy']],
-            ]
+            $this->processorPipeline(),
+            config: ['augmentTags' => ['whitelist' => ['fancy']]]
         );
 
         $this->assertCount(2, $analysis->openapi->tags, 'Expecting fancy tag to be preserved');
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testAllowUnusedTagsWildcard(): void
     {
         $analysis = $this->analysisFromFixtures(
             ['UnusedTags.php'],
-            static::processors(),
-            null,
-            [
-                'augmentTags' => ['whitelist' => ['*']],
-            ]
+            $this->processorPipeline(),
+            config: ['augmentTags' => ['whitelist' => ['*']]]
         );
 
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting all tags to be preserved');

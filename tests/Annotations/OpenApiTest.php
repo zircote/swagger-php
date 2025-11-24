@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class OpenApiTest extends OpenApiTestCase
 {
@@ -55,9 +56,7 @@ class OpenApiTest extends OpenApiTestCase
         yield '3.0.3-3.1.x' => ['3.0.3', '3.1.x', false];
     }
 
-    /**
-     * @dataProvider versionMatchProvider
-     */
+    #[DataProvider('versionMatchProvider')]
     public function testVersionMatch(string $given, string $compare, bool $expected): void
     {
         $this->assertEquals($expected, OA\OpenApi::versionMatch($given, $compare));

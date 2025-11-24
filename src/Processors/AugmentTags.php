@@ -35,7 +35,6 @@ class AugmentTags
 
     public function __invoke(Analysis $analysis): void
     {
-        /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         $usedTagNames = [];

@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CleanUnusedComponentsTest extends OpenApiTestCase
 {
@@ -23,12 +24,14 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
         ];
     }
 
-    /**
-     * @dataProvider countCases
-     */
+    #[DataProvider('countCases')]
     public function testCounts(array $config, string $fixture, int $expectedSchemaCount, int $expectedAnnotationCount): void
     {
-        $analysis = $this->analysisFromFixtures([$fixture], static::processors(), null, $config);
+        $analysis = $this->analysisFromFixtures(
+            [$fixture],
+            $this->processorPipeline(),
+            config: $config
+        );
 
         if ($expectedSchemaCount === 0) {
             $this->assertTrue(Generator::isDefault($analysis->openapi->components->schemas));

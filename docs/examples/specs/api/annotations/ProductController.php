@@ -68,7 +68,6 @@ class ProductController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 type="array",
      *                 @OA\Items(ref="#/components/schemas/Product")
      *             )
      *         )

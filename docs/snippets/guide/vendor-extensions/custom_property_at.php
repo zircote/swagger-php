@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\VendorExtensions\CustomProperty;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Info(

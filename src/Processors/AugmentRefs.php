@@ -26,7 +26,6 @@ class AugmentRefs
      */
     protected function resolveAllOfRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         // ref rewriting
@@ -47,8 +46,8 @@ class AugmentRefs
             foreach ($analysis->annotations as $annotation) {
                 if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && $annotation->ref !== null) {
                     foreach ($updatedRefs as $origRef => $updatedRef) {
-                        if (0 === strpos($annotation->ref, $origRef)) {
-                            $annotation->ref = str_replace($origRef, $updatedRef, $annotation->ref);
+                        if (str_starts_with((string) $annotation->ref, $origRef)) {
+                            $annotation->ref = str_replace($origRef, $updatedRef, (string) $annotation->ref);
                         }
                     }
                 }
@@ -58,7 +57,6 @@ class AugmentRefs
 
     protected function resolveFQCNRefs(Analysis $analysis): void
     {
-        /** @var OA\AbstractAnnotation[] $annotations */
         $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
 
         foreach ($annotations as $annotation) {
@@ -71,7 +69,7 @@ class AugmentRefs
                         $annotation->ref = OA\Components::ref($refSchema);
                     }
                 }
-                if (!$resolved && ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, get_class($annotation)))) {
+                if (!$resolved && ($refAnnotation = $analysis->getAnnotationForSource($annotation->ref, $annotation::class))) {
                     $annotation->ref = OA\Components::ref($refAnnotation);
                 }
             }
@@ -80,7 +78,6 @@ class AugmentRefs
 
     protected function removeDuplicateRefs(Analysis $analysis): void
     {
-        /** @var OA\Schema[] $schemas */
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($schemas as $schema) {

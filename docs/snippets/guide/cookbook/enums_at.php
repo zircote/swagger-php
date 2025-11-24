@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\Enums;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema()]

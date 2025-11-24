@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\NestedObjects;
+
 use OpenApi\Annotations as OA;
 
 /**

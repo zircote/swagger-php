@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\MinimalApi;
+
 use OpenApi\Annotations as OA;
 
 /**

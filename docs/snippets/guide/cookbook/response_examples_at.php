@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\ResponseExamples;
+
 use OpenApi\Attributes as OA;
 
 class Controller

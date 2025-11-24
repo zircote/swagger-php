@@ -16,14 +16,14 @@ trait UsesExamples
         return sprintf('%s/docs/examples/specs/%s', dirname(__DIR__, 2), $name);
     }
 
-    public function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
+    public static function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
     {
         $specs = [
             "$name-$version.yaml",
             "$name-$implementation-$version.yaml",
         ];
 
-        $basePath = $this->examplePath($name);
+        $basePath = static::examplePath($name);
         foreach ($specs as $spec) {
             $specFilename = "$basePath/$spec";
             if (file_exists($specFilename)) {
@@ -39,7 +39,7 @@ trait UsesExamples
         $packageName = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $name)));
         $packageName = str_replace(' ', '\\', ucwords(str_replace('/', ' ', $packageName)));
 
-        $basePath = $this->examplePath($name);
+        $basePath = static::examplePath($name);
         $path = "$basePath/$implementation";
         $namerspaceBase = sprintf('OpenApi\\Examples\\Specs\\%s\\', $packageName);
         $implementationNamerspaceBase = sprintf("{$namerspaceBase}%s\\", ucfirst($implementation));

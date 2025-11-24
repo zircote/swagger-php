@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\ExternalDocumentation;
+
 use OpenApi\Attributes as OA;
 
 #[OA\OpenApi(

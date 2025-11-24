@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test if the annotation class nesting parent/child relations are coherent.
@@ -15,10 +16,9 @@ use OpenApi\Tests\OpenApiTestCase;
 class ValidateRelationsTest extends OpenApiTestCase
 {
     /**
-     * @dataProvider allAnnotationClasses
-     *
      * @param string $class
      */
+    #[DataProvider('allAnnotationClasses')]
     public function testAncestors($class): void
     {
         foreach ($class::$_parents as $parent) {
@@ -36,10 +36,9 @@ class ValidateRelationsTest extends OpenApiTestCase
     }
 
     /**
-     * @dataProvider allAnnotationClasses
-     *
      * @param class-string<OA\AbstractAnnotation> $class
      */
+    #[DataProvider('allAnnotationClasses')]
     public function testNested($class): void
     {
         foreach (array_keys($class::$_nested) as $nestedClass) {

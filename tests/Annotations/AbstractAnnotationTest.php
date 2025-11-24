@@ -7,8 +7,8 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AbstractAnnotationTest extends OpenApiTestCase
 {
@@ -18,15 +18,6 @@ class AbstractAnnotationTest extends OpenApiTestCase
         $output = $annotations[0]->jsonSerialize();
         $prefixedProperty = 'x-internal-id';
         $this->assertSame(123, $output->$prefixedProperty);
-    }
-
-    /**
-     * @requires PHP < 8.2
-     */
-    public function testInvalidField(): void
-    {
-        $this->assertOpenApiLogEntryContains('Ignoring unexpected property "doesnot" for @OA\Get(), expecting');
-        $this->annotationsFromDocBlockParser('@OA\Get(doesnot="exist")');
     }
 
     public function testUmergedAnnotation(): void
@@ -119,9 +110,7 @@ END;
         ];
     }
 
-    /**
-     * @dataProvider nestedMatches
-     */
+    #[DataProvider('nestedMatches')]
     public function testMatchNested(string $class, $expected): void
     {
         $this->assertEquals($expected, (new OA\Get([]))->matchNested(new $class([])));
@@ -129,11 +118,9 @@ END;
 
     public function testDuplicateOperationIdValidation(): void
     {
-        $analysis = $this->analysisFromFixtures(['DuplicateOperationId.php']);
-        (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline()
-            ->process($analysis);
+        $analysis = $this->analysisFromFixtures([
+                'DuplicateOperationId.php',
+            ], $this->processorPipeline());
 
         $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
         $this->assertFalse($analysis->validate());
@@ -146,16 +133,11 @@ END;
         $this->assertTrue((new SubSchema([]))->isRoot(OA\Schema::class));
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testValidateExamples(): void
     {
-        $analysis = $this->analysisFromFixtures(['BadExampleParameter.php']);
-        (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->getProcessorPipeline()
-            ->process($analysis);
+        $analysis = $this->analysisFromFixtures([
+            'BadExampleParameter.php',
+        ], $this->processorPipeline());
 
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');

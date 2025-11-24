@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Enums\BackedNameAsSchema;
+
 use OpenApi\Annotations as OA;
 
 /**

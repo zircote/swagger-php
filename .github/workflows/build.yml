@@ -17,7 +17,7 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         dependencies: [ 'lowest', 'highest' ]
 
     name: PHP ${{ matrix.php }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
@@ -37,10 +37,6 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: "${{ matrix.composer-options }}"
-
-      - name: Require type-info-extras
-        if: ${{ matrix.php >= '8.2' }}
-        run: composer require radebatz/type-info-extras -W
 
       - name: PHPUnit Tests
         run: bin/phpunit --configuration phpunit.xml.dist --coverage-text

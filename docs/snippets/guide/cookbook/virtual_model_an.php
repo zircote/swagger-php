@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\VirtualModel;
+
 use OpenApi\Annotations as OA;
 
 /**

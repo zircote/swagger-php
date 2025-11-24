@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\UnionTypes;
+
 use OpenApi\Annotations as OA;
 
 /**

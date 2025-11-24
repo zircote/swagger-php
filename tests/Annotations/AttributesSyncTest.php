@@ -8,10 +8,8 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @requires PHP 8.1
- */
 class AttributesSyncTest extends OpenApiTestCase
 {
     public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];
@@ -23,9 +21,7 @@ class AttributesSyncTest extends OpenApiTestCase
         $this->assertSameSize($this->allAnnotationClasses(), $this->allAttributeClasses());
     }
 
-    /**
-     * @dataProvider allAnnotationClasses
-     */
+    #[DataProvider('allAnnotationClasses')]
     public function testParameterCompleteness(string $annotation): void
     {
         $annotationRC = new \ReflectionClass($annotation);
@@ -188,9 +184,7 @@ class AttributesSyncTest extends OpenApiTestCase
         return $var;
     }
 
-    /**
-     * @dataProvider allAttributeClasses
-     */
+    #[DataProvider('allAttributeClasses')]
     public function testPropertyCompleteness(string $attribute): void
     {
         $attributeRC = new \ReflectionClass($attribute);
