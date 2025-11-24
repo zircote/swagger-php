@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Shortcuts\ResponseJson;
+
 use OpenApi\Attributes as OA;
 
 class Controller

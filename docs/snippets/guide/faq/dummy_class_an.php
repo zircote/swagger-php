@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Faq\DummyClass;
+
 use OpenApi\Annotations as OA;
 
 /**

@@ -29,7 +29,7 @@ class DocSnippetsTest extends OpenApiTestCase
                 if (file_exists($other)) {
                     $key = str_replace('_an', '', $file->getBasename('.php'));
                     foreach ([OpenApi::VERSION_3_0_0, OpenApi::VERSION_3_1_0] as $version) {
-                        yield "$key-$version" => [[$file->getPathname(), $other], $version];
+                        yield "$key-$version" => [['an' => $file->getPathname(), 'at' => $other], $version];
                     }
                 }
             }
@@ -37,18 +37,21 @@ class DocSnippetsTest extends OpenApiTestCase
     }
 
     /**
-     * Compare at/an snippets and ensure they result in the same spec fragment.
+     * Compare snippets and ensure they result in the same spec fragment.
      *
      * @dataProvider snippetSets
      */
     public function testSnippets(array $filenames, string $version): void
     {
         $lastSpec = null;
-        foreach ($filenames as $filename) {
+        foreach ($filenames as $type => $filename) {
+            $contents = preg_replace('/(namespace [^;]+);/', "\\1\\$type;", file_get_contents($filename));
             $namespace = basename($filename, '.php');
+
             $tmp = sys_get_temp_dir() . "/$namespace.php";
-            file_put_contents($tmp, "<?php namespace $namespace; ?>" . file_get_contents($filename));
+            file_put_contents($tmp, $contents);
             require_once $tmp;
+
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
                 ->setTypeResolver($this->getTypeResolver())

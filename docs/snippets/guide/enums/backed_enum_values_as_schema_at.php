@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Enums\BackedValueAsSchema;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(type: 'integer')]

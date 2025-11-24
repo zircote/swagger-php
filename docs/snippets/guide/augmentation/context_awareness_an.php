@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Augmentation\Aware;
+
 use OpenApi\Annotations as OA;
 
 /**

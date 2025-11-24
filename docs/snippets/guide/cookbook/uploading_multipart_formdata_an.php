@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\UploadingMultipartFormData;
+
 use OpenApi\Annotations as OA;
 
 class OpenApiSpec

@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\XmlRootName;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(

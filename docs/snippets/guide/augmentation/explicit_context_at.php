@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Augmentation\Explicit;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema()]

@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Faq\DummyClass;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'user', description: 'User related operations')]

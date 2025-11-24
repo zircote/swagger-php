@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\MultiValueQueryParameter;
+
 use OpenApi\Annotations as OA;
 
 class Controller

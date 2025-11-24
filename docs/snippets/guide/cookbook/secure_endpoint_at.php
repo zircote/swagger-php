@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\SecureEndpoint;
+
 use OpenApi\Attributes as OA;
 
 class Controller

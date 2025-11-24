@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Enums\Value;
+
 use OpenApi\Attributes as OA;
 
 enum Suit

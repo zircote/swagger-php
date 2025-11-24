@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Enums\AsSchema;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema()]

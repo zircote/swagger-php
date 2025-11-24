@@ -1,5 +1,7 @@
 <?php
 
+namespace Openapi\Snippets\Cookbook\SecuritySchemas;
+
 use OpenApi\Annotations as OA;
 
 /**
