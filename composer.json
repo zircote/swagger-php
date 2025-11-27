@@ -51,8 +51,8 @@
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "radebatz/type-info-extras": "^1.0.2",
         "symfony/deprecation-contracts": "^2 || ^3",
-        "symfony/finder": "^5.0 || ^6.0 || ^7.0",
-        "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
+        "symfony/finder": "^5.0 || ^6.0 || ^7.0 || ^8.0",
+        "symfony/yaml": "^5.4 || ^6.0 || ^7.0 || ^8.0"
     },
     "autoload": {
         "psr-4": {
