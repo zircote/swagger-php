@@ -9,6 +9,8 @@
 * `TypeInfoTypeResolver` now properly handles composite types (unions and intersections)
 * Some deprecations have been removed (see below)
 * The `MediaType::encoding` property now only accepts `Encoding` objects (BC break)
+* The CLI option for adding a processor has been renamed from `--processor` to `--add-processor (-a)`
+* A new CLI option for removing a processor has been added `--remove-processor (-r)`
 
 For most installations upgrading should not require any changes.
 

@@ -54,7 +54,16 @@ class CommandlineTest extends OpenApiTestCase
     {
         $basePath = static::examplePath('petstore');
         $path = "$basePath/annotations";
-        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . __DIR__ . '/cl_bootstrap.php --processor OperationId --format yaml ' . escapeshellarg($path);
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . __DIR__ . '/cl_bootstrap.php --add-processor OperationId --format yaml ' . escapeshellarg($path);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+    }
+
+    public function testRemoveProcessor(): void
+    {
+        $basePath = static::examplePath('petstore');
+        $path = "$basePath/annotations";
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . __DIR__ . '/cl_bootstrap.php --remove-processor OperationId --format yaml ' . escapeshellarg($path);
         exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
         $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
     }
