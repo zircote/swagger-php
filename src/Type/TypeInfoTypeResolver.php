@@ -187,7 +187,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
     public function getDocblockType(\Reflector $reflector): ?Type
     {
         $docComment = match (true) {
-            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
             && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
                 ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
                 : $reflector->getDocComment(),
@@ -203,7 +203,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
 
         $tagName = match (true) {
-            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
                 ? '@param'
                 : '@var',
             $reflector instanceof \ReflectionParameter => '@param',

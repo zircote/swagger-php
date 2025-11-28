@@ -30,11 +30,11 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
 
     public function build(\Reflector $reflector, Context $context): array
     {
-        if (!$this->isSupported() || !method_exists($reflector, 'getAttributes')) {
+        if (!$this->isSupported()) {
             return [];
         }
 
-        if ($reflector instanceof \ReflectionProperty && method_exists($reflector, 'isPromoted') && $reflector->isPromoted()) {
+        if ($reflector instanceof \ReflectionProperty && $reflector->isPromoted()) {
             // handled via __construct() parameter
             return [];
         }

@@ -91,7 +91,9 @@ class ReflectionAnalyser implements AnalyserInterface
         }
 
         $rc = new \ReflectionClass($fqdn);
-        $contextType = $rc->isInterface() ? 'interface' : ($rc->isTrait() ? 'trait' : ((method_exists($rc, 'isEnum') && $rc->isEnum()) ? 'enum' : 'class'));
+        $contextType = $rc->isInterface()
+            ? 'interface'
+            : ($rc->isTrait() ? 'trait' : ($rc->isEnum() ? 'enum' : 'class'));
         $context = new Context([
             $contextType => $rc->getShortName(),
             'namespace' => $rc->getNamespaceName() ?: null,
