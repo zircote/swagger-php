@@ -16,11 +16,13 @@ use OpenApi\Generator;
 class AugmentTags
 {
     /** @var array<string> */
-    protected array $whitelist = [];
+    protected array $whitelist;
+    protected bool $withDescription;
 
-    public function __construct(array $whitelist = [])
+    public function __construct(array $whitelist = [], bool $withDescription = true)
     {
         $this->whitelist = $whitelist;
+        $this->withDescription = $withDescription;
     }
 
     /**
@@ -29,6 +31,16 @@ class AugmentTags
     public function setWhitelist(array $whitelist): AugmentTags
     {
         $this->whitelist = $whitelist;
+
+        return $this;
+    }
+
+    /**
+     * Enables/disables generation of default tag descriptions.
+     */
+    public function setWithDescription(bool $withDescription): AugmentTags
+    {
+        $this->withDescription = $withDescription;
 
         return $this;
     }
@@ -61,7 +73,12 @@ class AugmentTags
             $declatedTagNames = array_keys($declaredTags);
             foreach ($usedTagNames as $tagName) {
                 if (!in_array($tagName, $declatedTagNames)) {
-                    $analysis->openapi->merge([new OA\Tag(['name' => $tagName, 'description' => $tagName])]);
+                    $analysis->openapi->merge([new OA\Tag([
+                        'name' => $tagName,
+                        'description' => $this->withDescription
+                            ? $tagName
+                            : Generator::UNDEFINED,
+                    ])]);
                 }
             }
         }

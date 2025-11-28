@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AugmentTagsTest extends OpenApiTestCase
@@ -55,5 +56,24 @@ class AugmentTagsTest extends OpenApiTestCase
         );
 
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting all tags to be preserved');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testWithoutDescriptions(): void
+    {
+        $analysis = $this->analysisFromFixtures(
+            ['Processors/EntityControllerClass.php'],
+            $this->processorPipeline(),
+            null,
+            [
+                'augmentTags' => ['withDescription' => false],
+            ]
+        );
+
+        $this->assertNotEmpty($analysis->openapi->tags);
+        $firstTag = $analysis->openapi->tags[0];
+        $this->assertEquals(Generator::UNDEFINED, $firstTag->description);
     }
 }
