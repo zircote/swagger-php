@@ -58,9 +58,6 @@ class AugmentTagsTest extends OpenApiTestCase
         $this->assertCount(3, $analysis->openapi->tags, 'Expecting all tags to be preserved');
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testWithoutDescriptions(): void
     {
         $analysis = $this->analysisFromFixtures(
