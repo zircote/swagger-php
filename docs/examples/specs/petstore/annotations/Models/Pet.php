@@ -25,9 +25,11 @@ use OpenApi\Annotations as OA;
 class Pet
 {
     /**
+     * The description.
+     *
      * @OA\Property(
      *     format="int64",
-     *     description="ID",
+     *     description="",
      *     title="ID",
      * )
      *
