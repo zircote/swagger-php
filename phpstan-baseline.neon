@@ -13,16 +13,10 @@ parameters:
 			path: docs/examples/specs/using-links/attributes/User.php
 
 		-
-			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Call to an undefined method Reflector\:\:getAttributes\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Analysers/AttributeAnnotationFactory.php
-
-		-
-			message: '#^Call to function method_exists\(\) with ReflectionClass\<object\> and ''isEnum'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Analysers/ReflectionAnalyser.php
 
 		-
 			message: '#^Call to function property_exists\(\) with OpenApi\\Annotations\\AbstractAnnotation and ''_context'' will always evaluate to true\.$#'
@@ -101,18 +95,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/Processors/MergeXmlContent.php
-
-		-
-			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: src/Type/LegacyTypeResolver.php
-
-		-
-			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: src/Type/TypeInfoTypeResolver.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function spl_autoload_register expects \(callable\(string\)\: void\)\|null, array\{Composer\\Autoload\\ClassLoader, ''findFile''\} given\.$#'
