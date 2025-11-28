@@ -5,6 +5,7 @@ use Rector\CodeQuality\Rector\For_\ForRepeatedCountToOwnVariableRector;
 use Rector\CodeQuality\Rector\If_\CombineIfRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\If_\ShortenElseIfRector;
+use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
@@ -19,6 +20,7 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
     ->withSkip([
+        NewlineBeforeNewAssignSetRector::class,
         CombineIfRector::class,
         ExplicitBoolCompareRector::class,
         ForRepeatedCountToOwnVariableRector::class,

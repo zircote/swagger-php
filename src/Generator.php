@@ -34,6 +34,7 @@ class Generator
 
     /** @var array<string,string> */
     public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
+
     /** @var array<string> */
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
