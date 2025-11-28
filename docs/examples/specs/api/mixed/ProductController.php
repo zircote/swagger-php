@@ -57,7 +57,6 @@ class ProductController
      *         description="New product",
      *         required=true,
      *         @OA\JsonContent(
-     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Product")
      *         )
      *     )

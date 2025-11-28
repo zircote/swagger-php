@@ -237,6 +237,7 @@ class Generator
                 new Processors\BuildPaths(),
                 new Processors\AugmentParameters(),
                 new Processors\AugmentRefs(),
+                new Processors\AugmentItems(),
                 new Processors\MergeJsonContent(),
                 new Processors\MergeXmlContent(),
                 new Processors\AugmentMediaType(),
