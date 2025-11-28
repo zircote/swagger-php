@@ -174,7 +174,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
     protected function getDocblockTypeDetails(\Reflector $reflector, ?Context $context): \stdClass
     {
         $docComment = match (true) {
-            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
             && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
                 ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
                 : $reflector->getDocComment(),
@@ -191,7 +191,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         $tagName = match (true) {
-            $reflector instanceof \ReflectionProperty => (method_exists($reflector, 'isPromoted') && $reflector->isPromoted())
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
                 ? '@param'
                 : '@var',
             $reflector instanceof \ReflectionParameter => '@param',
