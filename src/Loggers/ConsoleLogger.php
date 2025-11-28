@@ -13,7 +13,9 @@ use Psr\Log\LogLevel;
 class ConsoleLogger extends AbstractLogger implements LoggerInterface
 {
     public const COLOR_ERROR = "\033[31m";
+
     public const COLOR_WARNING = "\033[33m";
+
     public const COLOR_STOP = "\033[0m";
 
     private const LOG_LEVELS_UP_TO_NOTICE = [

@@ -19,7 +19,9 @@ use OpenApi\GeneratorAwareTrait;
 class AugmentProperties implements GeneratorAwareInterface
 {
     use Concerns\DocblockTrait;
+
     use Concerns\RefTrait;
+
     use GeneratorAwareTrait;
 
     public function __invoke(Analysis $analysis): void
