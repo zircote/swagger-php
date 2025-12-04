@@ -91,7 +91,7 @@ class AugmentRefs
                     if (!Generator::isDefault($allOfSchema->ref)) {
                         if (in_array($allOfSchema->ref, $refs)) {
                             $dupes[] = $allOfSchema->ref;
-                            $analysis->annotations->detach($allOfSchema);
+                            $analysis->annotations->offsetUnset($allOfSchema);
                             unset($schema->allOf[$ii]);
                             continue;
                         }
