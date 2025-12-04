@@ -26,8 +26,11 @@ use OpenApi\Attributes as OAT;
 )]
 class Pet
 {
+    /**
+     * The description.
+     */
     #[OAT\Property(
-        description: 'ID',
+        description: '',
         title: 'ID',
         format: 'int64'
     )]

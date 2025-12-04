@@ -592,7 +592,7 @@ components:
       properties:
         id:
           title: ID
-          description: ID
+          description: ''
           type: integer
           format: int64
         category:
