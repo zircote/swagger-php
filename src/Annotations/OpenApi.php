@@ -22,10 +22,12 @@ class OpenApi extends AbstractAnnotation
 {
     public const VERSION_3_0_0 = '3.0.0';
     public const VERSION_3_1_0 = '3.1.0';
+    public const VERSION_3_2_0 = '3.2.0';
     public const DEFAULT_VERSION = self::VERSION_3_0_0;
     public const SUPPORTED_VERSIONS = [
         self::VERSION_3_0_0, '3.0.1',  '3.0.2', '3.0.3', '3.0.4',
-        self::VERSION_3_1_0, '3.1.1',
+        self::VERSION_3_1_0, '3.1.1', '3.1.2',
+        self::VERSION_3_2_0,
     ];
 
     /**
