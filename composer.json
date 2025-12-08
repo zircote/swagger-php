@@ -80,9 +80,6 @@
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
     },
-    "suggest": {
-        "doctrine/annotations": "^2.0"
-    },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
         "rector": "Automatic refactoring",
