@@ -1,6 +1,11 @@
 includes:
 	- phpstan-baseline.neon
 
+services:
+    - Symplify\PHPStanRules\TypeAnalyzer\CallableTypeAnalyzer
+rules:
+    - Symplify\PHPStanRules\Rules\NoDynamicNameRule
+
 parameters:
     phpVersion: 80200
     level: 5
