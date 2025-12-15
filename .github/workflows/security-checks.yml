@@ -36,7 +36,7 @@ jobs:
           composer-options: ${{ matrix.composer-options }} --no-dev
 
       - name: Cache security checker dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.symfony/cache
           key: security-checker-db
