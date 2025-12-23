@@ -21,6 +21,7 @@ use OpenApi\Attributes as OAT;
     additionalProperties: new OAT\AdditionalProperties(
         additionalProperties: new OAT\AdditionalProperties(
             type: 'string',
+            additionalProperties: false,
         )
     ),
     type: 'object'

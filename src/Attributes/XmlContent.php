@@ -110,6 +110,7 @@ class XmlContent extends OA\XmlContent
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'encoding' => $encoding ?? Generator::UNDEFINED,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
@@ -117,7 +118,7 @@ class XmlContent extends OA\XmlContent
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),
+            'value' => $this->combine($items, $discriminator, $externalDocs),
         ]);
     }
 }
