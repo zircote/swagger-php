@@ -107,13 +107,15 @@ class Schema extends OA\Schema
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'const' => $const,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
             'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
+            // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $examples, $additionalProperties),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $examples),
         ]);
     }
 }
