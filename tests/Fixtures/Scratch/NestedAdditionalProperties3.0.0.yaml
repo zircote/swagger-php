@@ -17,3 +17,4 @@ components:
       additionalProperties:
         additionalProperties:
           type: string
+          additionalProperties: false
