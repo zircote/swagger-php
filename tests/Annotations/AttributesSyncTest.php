@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class AttributesSyncTest extends OpenApiTestCase
 {
-    public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'patternProperties', 'dependencies', 'propertyNames'];
+    public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'dependencies', 'propertyNames'];
     public static $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
     public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple', 'deepObject'];
 
