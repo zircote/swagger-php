@@ -66,6 +66,7 @@ class Schema extends OA\Schema
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $patternProperties = null,
         mixed $const = Generator::UNDEFINED,
         ?string $contentEncoding = null,
         ?string $contentMediaType = null,
@@ -106,13 +107,13 @@ class Schema extends OA\Schema
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
-            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'const' => $const,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
             'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $examples),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $examples, $additionalProperties),
         ]);
     }
 }

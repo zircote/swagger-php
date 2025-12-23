@@ -65,6 +65,7 @@ class Property extends OA\Property
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $patternProperties = null,
         ?Encoding $encoding = null,
         // annotation
         ?array $x = null,
@@ -105,12 +106,12 @@ class Property extends OA\Property
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
-            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'encoding' => $encoding ?? Generator::UNDEFINED,
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),
         ]);
     }
 }

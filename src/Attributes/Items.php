@@ -64,6 +64,7 @@ class Items extends OA\Items
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $patternProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -102,11 +103,11 @@ class Items extends OA\Items
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
-            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),
         ]);
     }
 }

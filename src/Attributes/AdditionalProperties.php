@@ -64,6 +64,7 @@ class AdditionalProperties extends OA\AdditionalProperties
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $patternProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -101,6 +102,7 @@ class AdditionalProperties extends OA\AdditionalProperties
             'allOf' => $allOf ?? Generator::UNDEFINED,
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs, $additionalProperties),

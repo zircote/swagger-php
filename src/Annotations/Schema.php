@@ -410,6 +410,8 @@ class Schema extends AbstractAnnotation
 
     /**
      * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19.
+     *
+     * @var array
      */
     public $patternProperties = Generator::UNDEFINED;
 
