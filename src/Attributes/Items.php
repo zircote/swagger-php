@@ -64,6 +64,7 @@ class Items extends OA\Items
         ?array $anyOf = null,
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
+        ?array $patternProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
