@@ -73,9 +73,9 @@
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.62.0",
-        "phpstan/phpstan": "^1.6 || ^2.0",
+        "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^10.5",
-        "rector/rector": "^1.0 || ^2.0"
+        "rector/rector": "2.2.14"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
