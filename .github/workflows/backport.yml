@@ -17,3 +17,10 @@ jobs:
         uses: korthout/backport-action@v4
         with:
           target_branches: 5.x
+          pull_description: |
+            ### Automated backport of #${pull_number} to branch `${target_branch}`.
+
+            > **Do not modify this pull request.**
+
+            ${pull_description}
+          pull_title: "${pull_title} [Backport #${pull_number} to ${target_branch}]"
