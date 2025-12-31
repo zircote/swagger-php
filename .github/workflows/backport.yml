@@ -23,4 +23,4 @@ jobs:
             > **Do not modify this pull request.**
 
             ${pull_description}
-          pull_title: "${pull_title} [Backport #${pull_number} to ${target_branch}]"
+          pull_title: "[Backport #${pull_number} to ${target_branch}] ${pull_title}"
