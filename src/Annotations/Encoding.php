@@ -78,11 +78,7 @@ class Encoding extends AbstractAnnotation
         'contentType' => 'string',
     ];
 
-    /**
-     * @inheritdoc
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
 
