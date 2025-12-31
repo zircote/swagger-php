@@ -508,11 +508,7 @@ class Schema extends AbstractAnnotation
         return !Generator::isDefault($this->nullable) && $this->nullable;
     }
 
-    /**
-     * @inheritdoc
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
 

@@ -91,11 +91,7 @@ class Flow extends AbstractAnnotation
         Attachable::class => ['attachables'],
     ];
 
-    /**
-     * @inheritdoc
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): \stdClass
     {
         if ($this->scopes === []) {
             $this->scopes = new \stdClass();

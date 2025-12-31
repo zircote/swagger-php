@@ -263,11 +263,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         return $properties;
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): \stdClass
     {
         $data = new \stdClass();
 

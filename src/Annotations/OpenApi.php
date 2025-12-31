@@ -300,11 +300,7 @@ class OpenApi extends AbstractAnnotation
         throw new OpenApiException('$ref "' . $unresolved . '" not found');
     }
 
-    /**
-     * @inheritdoc
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): \stdClass
     {
         $data = parent::jsonSerialize();
 
