@@ -18,7 +18,7 @@ class Info extends OA\Info
      */
     public function __construct(
         ?string $version = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?string $title = null,
         ?string $termsOfService = null,
         ?Contact $contact = null,
@@ -29,7 +29,7 @@ class Info extends OA\Info
     ) {
         parent::__construct([
                 'version' => $version ?? Generator::UNDEFINED,
-                'description' => $description ?? Generator::UNDEFINED,
+                'description' => $description,
                 'title' => $title ?? Generator::UNDEFINED,
                 'termsOfService' => $termsOfService ?? Generator::UNDEFINED,
                 'x' => $x ?? Generator::UNDEFINED,
