@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - 5.x
   pull_request:
     branches:
       - master
+      - 5.x
 
 jobs:
   security-checker:
