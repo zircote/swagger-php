@@ -5,7 +5,21 @@ info:
 paths:
   /api/endpoint:
     get:
-      operationId: 9ed0ad39e1cf5baebc3c0e2c101c9cad
+      operationId: 4ca93475da117d3dea32e60d75f92fec
+      parameters:
+        -
+          name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: limit
+          in: query
+          description: 'Optional limit'
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: 'successful operation'
@@ -71,4 +85,6 @@ components:
             id:
               description: 'The id'
               type: integer
+            someOtherName:
+              type: string
           type: object

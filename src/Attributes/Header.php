@@ -19,7 +19,7 @@ class Header extends OA\Header
     public function __construct(
         string|object|null $ref = null,
         ?string $header = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?bool $required = null,
         ?Schema $schema = null,
         ?bool $deprecated = null,
@@ -31,7 +31,7 @@ class Header extends OA\Header
         parent::__construct([
             'ref' => $ref ?? Generator::UNDEFINED,
             'header' => $header ?? Generator::UNDEFINED,
-            'description' => $description ?? Generator::UNDEFINED,
+            'description' => $description,
             'required' => $required ?? Generator::UNDEFINED,
             'deprecated' => $deprecated ?? Generator::UNDEFINED,
             'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
