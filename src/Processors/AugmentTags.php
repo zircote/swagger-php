@@ -17,6 +17,7 @@ class AugmentTags
 {
     /** @var array<string> */
     protected array $whitelist;
+
     protected bool $withDescription;
 
     public function __construct(array $whitelist = [], bool $withDescription = true)
