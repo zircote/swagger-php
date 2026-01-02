@@ -44,6 +44,18 @@ class AugmentProperties implements GeneratorAwareInterface
                 $property->const = $reflector->getValue();
             }
 
+            if (Generator::isDefault($property->description)) {
+                $typeAndDescription = $this->parseVarLine((string) $context->comment);
+
+                if ($typeAndDescription['description']) {
+                    $property->description = trim($typeAndDescription['description']);
+                } elseif ($this->isDocblockRoot($property)) {
+                    $property->description = $this->parseDocblock($context->comment);
+                }
+            } elseif (null === $property->description) {
+                $property->description = Generator::UNDEFINED;
+            }
+
             if (!Generator::isDefault($property->ref)) {
                 continue;
             }
@@ -53,16 +65,6 @@ class AugmentProperties implements GeneratorAwareInterface
             }
 
             $this->generator->getTypeResolver()->mapNativeType($property, $property->type);
-
-            if (Generator::isDefault($property->description)) {
-                $typeAndDescription = $this->parseVarLine((string) $context->comment);
-
-                if ($typeAndDescription['description']) {
-                    $property->description = trim($typeAndDescription['description']);
-                } elseif ($this->isDocblockRoot($property)) {
-                    $property->description = $this->parseDocblock($context->comment);
-                }
-            }
 
             if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
                 $property->example = $example;

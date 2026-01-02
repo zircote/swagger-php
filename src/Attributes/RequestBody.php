@@ -21,7 +21,7 @@ class RequestBody extends OA\RequestBody
     public function __construct(
         string|object|null $ref = null,
         ?string $request = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?bool $required = null,
         array|MediaType|JsonContent|XmlContent|Attachable|null $content = null,
         // annotation
@@ -31,7 +31,7 @@ class RequestBody extends OA\RequestBody
         parent::__construct([
             'ref' => $ref ?? Generator::UNDEFINED,
             'request' => $request ?? Generator::UNDEFINED,
-            'description' => $description ?? Generator::UNDEFINED,
+            'description' => $description,
             'required' => $required ?? Generator::UNDEFINED,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,

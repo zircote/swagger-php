@@ -18,7 +18,7 @@ class Tag extends OA\Tag
      */
     public function __construct(
         ?string $name = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?ExternalDocumentation $externalDocs = null,
         // annotation
         ?array $x = null,
@@ -26,7 +26,7 @@ class Tag extends OA\Tag
     ) {
         parent::__construct([
                 'name' => $name ?? Generator::UNDEFINED,
-                'description' => $description ?? Generator::UNDEFINED,
+                'description' => $description,
                 'x' => $x ?? Generator::UNDEFINED,
                 'attachables' => $attachables ?? Generator::UNDEFINED,
                 'value' => $this->combine($externalDocs),

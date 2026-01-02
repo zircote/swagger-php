@@ -139,6 +139,8 @@ class AugmentParameters implements GeneratorAwareInterface
                                 $parameter->description = $details['description'];
                             }
                         }
+                    } elseif (null === $parameter->description) {
+                        $parameter->description = Generator::UNDEFINED;
                     }
                 }
             }

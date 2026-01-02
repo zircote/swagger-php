@@ -19,7 +19,7 @@ class Server extends OA\Server
      */
     public function __construct(
         ?string $url = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?array $variables = null,
         // annotation
         ?array $x = null,
@@ -27,7 +27,7 @@ class Server extends OA\Server
     ) {
         parent::__construct([
                 'url' => $url ?? Generator::UNDEFINED,
-                'description' => $description ?? Generator::UNDEFINED,
+                'description' => $description,
                 'x' => $x ?? Generator::UNDEFINED,
                 'attachables' => $attachables ?? Generator::UNDEFINED,
                 'value' => $this->combine($variables),
