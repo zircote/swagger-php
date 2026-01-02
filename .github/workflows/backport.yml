@@ -1,7 +1,7 @@
 name: Backport merged pull request
 on:
   pull_request_target:
-    types: [closed]
+    types: [ closed ]
 permissions:
   contents: write # so it can comment
   pull-requests: write # so it can create pull requests
@@ -17,6 +17,9 @@ jobs:
         uses: korthout/backport-action@v4
         with:
           target_branches: 5.x
+          experimental: '{
+              "conflict_resolution": "draft_commit_conflicts"
+          }'
           pull_description: |
             ### Automated backport of #${pull_number} to branch `${target_branch}`.
 
