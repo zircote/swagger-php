@@ -19,8 +19,8 @@ class Examples extends OA\Examples
      */
     public function __construct(
         ?string $example = null,
-        ?string $summary = null,
-        ?string $description = null,
+        ?string $summary = Generator::UNDEFINED,
+        ?string $description = Generator::UNDEFINED,
         int|string|array|null $value = null,
         ?string $externalValue = null,
         string|object|null $ref = null,
@@ -30,8 +30,8 @@ class Examples extends OA\Examples
     ) {
         parent::__construct([
             'example' => $example ?? Generator::UNDEFINED,
-            'summary' => $summary ?? Generator::UNDEFINED,
-            'description' => $description ?? Generator::UNDEFINED,
+            'summary' => $summary,
+            'description' => $description,
             'value' => $value ?? Generator::UNDEFINED,
             'externalValue' => $externalValue ?? Generator::UNDEFINED,
             'ref' => $ref ?? Generator::UNDEFINED,

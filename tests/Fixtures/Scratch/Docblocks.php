@@ -87,18 +87,31 @@ class DocblockSchemaChild extends DocblocksSchema
     /** @var int The id */
     #[OAT\Property]
     public $id;
+
+    /**
+     * Some other name.
+     */
+    #[OAT\Property(description: null)]
+    public string $someOtherName;
 }
 
 /**
  * @OA\Info(title="Docblocks", version="1.0")
- * @OA\Get(
- *     path="/api/endpoint",
- *     @OA\Response(
- *         response=200,
- *         description="successful operation"
- *     )
- * )
  */
 class DocblocksEndpoint
 {
+    /**
+     * @param string|null $filter Optional filter
+     * @param int|null    $limit  Optional limit
+     */
+    #[OAT\Get(
+        path: '/api/endpoint',
+    )]
+    #[OAT\Response(response: 200, description: 'successful operation')]
+    public function endpoint(
+        #[OAT\QueryParameter(description: null)] ?string $filter,
+        #[OAT\QueryParameter] ?int $limit,
+    ) {
+
+    }
 }

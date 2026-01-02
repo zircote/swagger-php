@@ -23,7 +23,7 @@ class Response extends OA\Response
     public function __construct(
         string|object|null $ref = null,
         int|string|null $response = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?array $headers = null,
         MediaType|JsonContent|XmlContent|Attachable|array|null $content = null,
         ?array $links = null,
@@ -34,7 +34,7 @@ class Response extends OA\Response
         parent::__construct([
             'ref' => $ref ?? Generator::UNDEFINED,
             'response' => $response ?? Generator::UNDEFINED,
-            'description' => $description ?? Generator::UNDEFINED,
+            'description' => $description,
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($headers, $content, $links),

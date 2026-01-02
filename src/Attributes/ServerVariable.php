@@ -19,7 +19,7 @@ class ServerVariable extends OA\ServerVariable
      */
     public function __construct(
         ?string $serverVariable = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?string $default = null,
         array|string|null $enum = null,
         ?array $variables = null,
@@ -29,7 +29,7 @@ class ServerVariable extends OA\ServerVariable
     ) {
         parent::__construct([
                 'serverVariable' => $serverVariable ?? Generator::UNDEFINED,
-                'description' => $description ?? Generator::UNDEFINED,
+                'description' => $description,
                 'default' => $default ?? Generator::UNDEFINED,
                 'enum' => $enum ?? Generator::UNDEFINED,
                 'variables' => $variables ?? Generator::UNDEFINED,

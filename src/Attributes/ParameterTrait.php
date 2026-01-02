@@ -21,7 +21,7 @@ trait ParameterTrait
     public function __construct(
         ?string $parameter = null,
         ?string $name = null,
-        ?string $description = null,
+        ?string $description = Generator::UNDEFINED,
         ?string $in = null,
         ?bool $required = null,
         ?bool $deprecated = null,
@@ -43,7 +43,7 @@ trait ParameterTrait
         parent::__construct([
                 'parameter' => $parameter ?? Generator::UNDEFINED,
                 'name' => $name ?? Generator::UNDEFINED,
-                'description' => $description ?? Generator::UNDEFINED,
+                'description' => $description,
                 // next two are special as we override the default value for specific Parameter subclasses
                 'in' => $in ?? (Generator::isDefault($this->in) ? Generator::UNDEFINED : $this->in),
                 'required' => $required ?? (Generator::isDefault($this->required) ? Generator::UNDEFINED : $this->required),
