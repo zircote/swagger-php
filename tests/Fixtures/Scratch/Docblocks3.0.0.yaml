@@ -72,4 +72,6 @@ components:
             id:
               description: 'The id'
               type: integer
+            someOtherName:
+              type: string
           type: object

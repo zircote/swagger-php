@@ -35,6 +35,11 @@ class DocBlockDescriptions
                 continue;
             }
 
+            if ($annotation instanceof OA\Parameter || $annotation instanceof OA\Property) {
+                // they have their dedicated processor
+                continue;
+            }
+
             $hasSummary = property_exists($annotation, 'summary');
             $hasDescription = property_exists($annotation, 'description');
             if (!$hasSummary && !$hasDescription) {

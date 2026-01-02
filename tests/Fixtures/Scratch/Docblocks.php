@@ -87,6 +87,12 @@ class DocblockSchemaChild extends DocblocksSchema
     /** @var int The id */
     #[OAT\Property]
     public $id;
+
+    /**
+     * Some other name.
+     */
+    #[OAT\Property(description: null)]
+    public string $someOtherName;
 }
 
 /**
