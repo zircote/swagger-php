@@ -217,7 +217,10 @@ foreach ($options["processor"] as $processor) {
     $generator->getProcessorPipeline()->add($processor);
 }
 
-$analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+$analyser = new ReflectionAnalyser([
+        new AttributeAnnotationFactory(),
+        new DocBlockAnnotationFactory(),
+]);
 $analyser->setGenerator($generator);
 
 $openapi = $generator
