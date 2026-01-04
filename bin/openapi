@@ -232,7 +232,10 @@ foreach ($options["remove-processor"] as $processor) {
     $generator->getProcessorPipeline()->remove($class);
 }
 
-$analyser = new ReflectionAnalyser([new DocBlockAnnotationFactory(), new AttributeAnnotationFactory()]);
+$analyser = new ReflectionAnalyser([
+        new AttributeAnnotationFactory(),
+        new DocBlockAnnotationFactory(),
+]);
 $analyser->setGenerator($generator);
 
 $openapi = $generator
