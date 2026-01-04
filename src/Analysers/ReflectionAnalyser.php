@@ -38,6 +38,7 @@ class ReflectionAnalyser implements AnalyserInterface
                 $this->annotationFactories[] = $annotationFactory;
             }
         }
+
         if (!$this->annotationFactories) {
             throw new OpenApiException('No suitable annotation factory found. At least one of "Doctrine Annotations" or PHP 8.1 are required');
         }
