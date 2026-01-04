@@ -12,6 +12,8 @@ paths:
       tags:
         - sandbox
         - other
+        - nested
+        - invalidparent
       description: 'Sandbox endpoint'
       operationId: f1c7f5a59b9708596c2bc955017002e6
       responses:
@@ -21,6 +23,11 @@ tags:
   -
     name: sandbox
     description: 'Sandbox tag'
+  -
+    name: nested
+    description: 'Nested tag as of 3.2.0'
+  -
+    name: invalidparent
   -
     name: other
     description: other

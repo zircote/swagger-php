@@ -10,6 +10,8 @@ use OpenApi\Attributes as OAT;
 
 #[OAT\Tag(name: 'sandbox', description: 'Sandbox tag')]
 #[OAT\Tag(name: 'unused', description: 'Not used')]
+#[OAT\Tag(name: 'nested', description: 'Nested tag as of 3.2.0', summary: 'Nested tag', parent: 'sandbox')]
+#[OAT\Tag(name: 'invalidparent', parent: 'nah')]
 #[OAT\Info(
     title: 'Tags',
     description: 'Tag Scratch',
@@ -20,7 +22,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Get(
     path: '/endpoint',
     description: 'Sandbox endpoint',
-    tags: ['sandbox', 'other'],
+    tags: ['sandbox', 'other', 'nested', 'invalidparent'],
     responses: [
         new OAT\Response(
             response: 200,
