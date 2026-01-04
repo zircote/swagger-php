@@ -22,9 +22,9 @@ Annotations are deprecated and may be removed in a future release of swagger-php
 
 ## OpenAPI version support
 
-`swagger-php` allows to generate specs either for **OpenAPI 3.0.0** or **OpenAPI 3.1.0**.
-By default, the spec will be in version `3.0.0`. The command line option `--version` may be used to change this
-to `3.1.0`.
+`swagger-php` allows to generate specs either for **OpenAPI 3.0.0**, **OpenAPI 3.1.0** and **OpenAPI 3.2.0**.
+By default, the spec will be in version `3.0.0`. The command line option `--version` may be used to change to
+any other supported version.
 
 Programmatically, the method `Generator::setVersion()` can be used to change the version.
 
