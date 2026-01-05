@@ -25,6 +25,8 @@ class ScratchTest extends OpenApiTestCase
 
                 $scratch = static::fixture("Scratch/$name.php");
                 $specs = [
+                    static::fixture("Scratch/{$name}3.2.0.yaml") => OA\OpenApi::VERSION_3_2_0,
+                    static::fixture("Scratch/{$name}3.2.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_2_0,
                     static::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
                     static::fixture("Scratch/{$name}3.1.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_1_0,
                     static::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
