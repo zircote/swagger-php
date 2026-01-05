@@ -85,6 +85,13 @@ class AugmentTags
             }
         }
 
+        // clear invalid parents
+        foreach ($declaredTags as $tag) {
+            if (!array_key_exists($tag->parent, $declaredTags)) {
+                $tag->parent = Generator::UNDEFINED;
+            }
+        }
+
         $this->removeUnusedTags($usedTagNames, $declaredTags, $analysis);
     }
 
