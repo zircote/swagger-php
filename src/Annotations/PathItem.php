@@ -105,6 +105,14 @@ class PathItem extends AbstractAnnotation
     public $trace = Generator::UNDEFINED;
 
     /**
+     * A definition of a QUERY operation on this path.
+     *
+     * @since 3.2.0
+     * @var Query
+     */
+    public $query = Generator::UNDEFINED;
+
+    /**
      * An alternative server array to service all operations in this path.
      *
      * @var Server[]
@@ -143,6 +151,7 @@ class PathItem extends AbstractAnnotation
         Trace::class => 'trace',
         Head::class => 'head',
         Options::class => 'options',
+        Query::class => 'query',
         Parameter::class => ['parameters'],
         PathParameter::class => ['parameters'],
         Server::class => ['servers'],
@@ -171,5 +180,16 @@ class PathItem extends AbstractAnnotation
         }
 
         return $operations;
+    }
+
+    public function jsonSerialize(): \stdClass
+    {
+        $data = parent::jsonSerialize();
+
+        if (!$this->_context->isVersion('3.2.x')) {
+            unset($data->query);
+        }
+
+        return $data;
     }
 }

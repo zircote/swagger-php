@@ -47,6 +47,7 @@ class Serializer
         OA\Post::class,
         OA\Property::class,
         OA\Put::class,
+        OA\Query::class,
         OA\RequestBody::class,
         OA\Response::class,
         OA\Schema::class,
