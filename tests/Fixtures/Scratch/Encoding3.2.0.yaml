@@ -63,22 +63,36 @@ paths:
       responses:
         '200':
           description: 'All good'
-  /multipart-form-data-annot:
+  /endpoint/bc-encoding-attr:
     post:
-      operationId: 8088dd671fb2ee88b83b2ea51c3458c2
+      operationId: 93c969c0f67dc55b9f7f88f6e46d4230
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                encname:
+                  type: string
+              type: object
+            encoding:
+              encname:
+                contentType: application/json
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/bc-encoding-annot:
+    post:
+      operationId: efe7afb9b99c111a0d781e14982abcdf
       requestBody:
         content:
           multipart-form-data:
             schema:
               properties:
                 encname: {  }
-                other: {  }
               type: object
             encoding:
               encname:
                 contentType: application/json
-              other:
-                contentType: application/xml
       responses:
         '200':
           description: OK
