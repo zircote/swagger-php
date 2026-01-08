@@ -138,11 +138,17 @@ class Context implements \Stringable
     /**
      * Check if one of the given version numbers matches the current OpenAPI version.
      *
-     * @param string $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
+     * @param string|array $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
      */
-    public function isVersion(string $version): bool
+    public function isVersion(string|array $version): bool
     {
-        return OA\OpenApi::versionMatch($this->getVersion(), $version);
+        foreach ((array) $version as $v) {
+            if (OA\OpenApi::versionMatch($this->getVersion(), $v)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

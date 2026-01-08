@@ -27,7 +27,7 @@ class License extends AbstractAnnotation
     /**
      * An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.
      *
-     * @since 3.1.0
+     * @since OpenAPI 3.1.0
      * @var string
      */
     public $identifier = Generator::UNDEFINED;
@@ -87,7 +87,7 @@ class License extends AbstractAnnotation
     {
         $valid = parent::validate($stack, $skip, $ref, $context);
 
-        if ($this->_context->isVersion('3.1.x')) {
+        if (!$this->_context->isVersion('3.0.x')) {
             if (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
                 $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
                 $valid = false;

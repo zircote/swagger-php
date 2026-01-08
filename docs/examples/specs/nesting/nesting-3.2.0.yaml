@@ -1,0 +1,68 @@
+openapi: 3.2.0
+info:
+  title: 'Nested schemas'
+  description: 'Example info'
+  contact:
+    name: 'Swagger API Team'
+  version: 1.0.0
+servers:
+  -
+    url: 'https://example.localhost'
+    description: 'API server'
+paths:
+  '/entity/{id}':
+    get:
+      tags:
+        - api
+      description: 'Get the entity'
+      operationId: 7b9aa57df112f7e2940c95632a59f78d
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActualModel'
+components:
+  schemas:
+    ActualModel:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/AlmostModel'
+        -
+          properties:
+            soClose:
+              type: string
+            actual:
+              type: string
+          type: object
+    AlmostModel:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/BaseModel'
+        -
+          properties:
+            intermediate:
+              type: string
+            almost:
+              type: string
+          type: object
+    BaseModel:
+      properties:
+        base:
+          type: string
+      type: object
+tags:
+  -
+    name: api
+    description: 'All API endpoints'

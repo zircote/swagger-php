@@ -32,7 +32,7 @@ class Tag extends AbstractAnnotation
     /**
      * A short summary for display purposes.
      *
-     * @since 3.2.0
+     * @since OpenAPI 3.2.0
      * @var string
      */
     public $summary = Generator::UNDEFINED;
@@ -47,7 +47,7 @@ class Tag extends AbstractAnnotation
     /**
      * Name of the parent tag.
      *
-     * @since 3.2.0
+     * @since OpenAPI 3.2.0
      * @var string
      */
     public $parent = Generator::UNDEFINED;
@@ -55,7 +55,7 @@ class Tag extends AbstractAnnotation
     /**
      * Machine-readable category.
      *
-     * @since 3.2.0
+     * @since OpenAPI 3.2.0
      * @var string
      */
     public $kind = Generator::UNDEFINED;
@@ -95,7 +95,7 @@ class Tag extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion('3.2.x')) {
+        if ($this->_context->isVersion(['3.0.x', '3.1.x'])) {
             unset($data->summary);
             unset($data->parent);
             unset($data->kind);

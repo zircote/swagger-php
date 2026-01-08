@@ -1,0 +1,45 @@
+openapi: 3.2.0
+info:
+  title: 'Parameter Content Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    post:
+      operationId: 4dcf657dcdcd504467bc7a4ac7d21084
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - note
+              properties:
+                note:
+                  example: 'My note'
+                other:
+                  description: other
+                  oneOf: [{ $ref: '#/components/schemas/NestedSchemaOne' }, { $ref: '#/components/schemas/NestedSchemaTwo' }]
+              type: object
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    NestedSchemaOne: {  }
+    NestedSchemaTwo: {  }
+    NestedSchema:
+      required:
+        - errors
+      properties:
+        errors:
+          description: 'Validation errors'
+          type: object
+          minItems: 1
+          uniqueItems: true
+          additionalProperties:
+            description: 'Array of error messages for property'
+            type: array
+            items:
+              type: string
+            minItems: 1
+            uniqueItems: true
+      type: object

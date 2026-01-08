@@ -335,7 +335,7 @@ class Schema extends AbstractAnnotation
      * The examples object is mutually exclusive of the example object.
      * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
-     * @since 3.1.0
+     * @since OpenAPI 3.1.0
      * @var array<Examples>
      */
     public $examples = Generator::UNDEFINED;
@@ -427,7 +427,7 @@ class Schema extends AbstractAnnotation
     /**
      * http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.
      *
-     * @since 3.1.0
+     * @since OpenAPI 3.1.0
      */
     public $const = Generator::UNDEFINED;
 
@@ -537,7 +537,7 @@ class Schema extends AbstractAnnotation
 
         if ($this->_context->isVersion('3.0.x')) {
             if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed for 3.1.x');
+                $this->_context->logger->warning($this->identity() . ' is only allowed as of 3.1.0');
 
                 return false;
             }

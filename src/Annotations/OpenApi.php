@@ -110,7 +110,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available webhooks for the API.
      *
-     * @since 3.1.0
+     * @since OpenAPI 3.1.0
      * @var Webhook[]
      */
     public $webhooks = Generator::UNDEFINED;
@@ -305,7 +305,7 @@ class OpenApi extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion('3.1.x')) {
+        if ($this->_context->isVersion('3.0.x')) {
             unset($data->webhooks);
         }
 
