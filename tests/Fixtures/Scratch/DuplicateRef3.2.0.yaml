@@ -1,0 +1,29 @@
+openapi: 3.2.0
+info:
+  title: DuplicateRef
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 3f9d6af187f46eeacb56ecc9ebbf5fba
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    abstract-user:
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      type: object
+    create-user:
+      allOf:
+        -
+          $ref: '#/components/schemas/abstract-user'
+        -
+          required:
+            - name
+            - email

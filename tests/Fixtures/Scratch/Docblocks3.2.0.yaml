@@ -1,0 +1,90 @@
+openapi: 3.2.0
+info:
+  title: Docblocks
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      operationId: 4ca93475da117d3dea32e60d75f92fec
+      parameters:
+        -
+          name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: limit
+          in: query
+          description: 'Optional limit'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'successful operation'
+components:
+  schemas:
+    DocblocksSchema:
+      properties:
+        name:
+          description: 'The name'
+          type: string
+        oldName:
+          description: 'The name (old)'
+          type: string
+          deprecated: true
+        rangeInt:
+          description: 'The range integer'
+          type: integer
+          maximum: 25
+          minimum: 5
+        minRangeInt:
+          description: 'The minimum range integer'
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 2
+        maxRangeInt:
+          description: 'The maximum range integer'
+          type: integer
+          maximum: 10
+          minimum: -9223372036854775808
+        positiveInt:
+          description: 'The positive integer'
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+        negativeInt:
+          description: 'The negative integer'
+          type: integer
+          maximum: -1
+          minimum: -9223372036854775808
+        nonPositiveInt:
+          description: 'The non-positive integer'
+          type: integer
+          maximum: 0
+          minimum: -9223372036854775808
+        nonNegativeInt:
+          description: 'The non-negative integer'
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+        nonZeroInt:
+          description: 'The non-zero integer'
+          type: integer
+          not:
+            const: 0
+      type: object
+    DocblockSchemaChild:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/DocblocksSchema'
+        -
+          properties:
+            id:
+              description: 'The id'
+              type: integer
+            someOtherName:
+              type: string
+          type: object

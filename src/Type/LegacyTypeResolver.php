@@ -41,9 +41,9 @@ class LegacyTypeResolver extends AbstractTypeResolver
                     $schema->minimum = $details->explicitDetails['min'];
                     $schema->maximum = $details->explicitDetails['max'];
                 } elseif ('non-zero-int' === $details->explicitType) {
-                    $schema->not = $schema->_context->isVersion('3.1.x')
-                        ? ['const' => 0]
-                        : ['enum' => [0]];
+                    $schema->not = $schema->_context->isVersion('3.0.x')
+                        ? ['enum' => [0]]
+                        : ['const' => 0];
                 }
             }
         }

@@ -36,7 +36,7 @@ class ScratchTest extends OpenApiTestCase
                 ];
 
                 $expectedLogs = [
-                    'Examples-3.0.0' => ['@OA\Schema() is only allowed for 3.1.x'],
+                    'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
                 ];
 
                 foreach ($specs as $spec => $version) {

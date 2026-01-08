@@ -1,0 +1,102 @@
+openapi: 3.2.0
+info:
+  title: 'Example of using references in swagger-php'
+  version: 1.0.0
+paths:
+  '/products/{product_id}':
+    get:
+      tags:
+        - Products
+      operationId: f5eb54ff316bd7b5255abc39c03636c3
+      responses:
+        default:
+          $ref: '#/components/responses/product'
+    patch:
+      tags:
+        - Products
+      operationId: 8324867747a5d4de63ad0910f1e69188
+      requestBody:
+        $ref: '#/components/requestBodies/product_in_body'
+      responses:
+        default:
+          $ref: '#/components/responses/product'
+    parameters:
+      -
+        $ref: '#/components/parameters/product_id_in_path_required'
+  '/products/{product_id}/do-other-stuff':
+    get:
+      tags:
+        - Products
+      operationId: 94496bbfc18b0bb7d67302b6bafd6548
+      parameters:
+        -
+          $ref: '#/components/schemas/Product/allOf/1/properties/id'
+      responses:
+        default:
+          $ref: '#/components/responses/todo'
+components:
+  schemas:
+    Model:
+      description: 'A model'
+    product_status:
+      description: 'The status of a product'
+      type: string
+      default: available
+      enum:
+        - available
+        - discontinued
+    Product:
+      title: 'Product model'
+      description: 'Product model'
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Model'
+        -
+          properties:
+            id:
+              description: 'The unique identifier of a product in our catalog.'
+              type: integer
+              format: int64
+              example: 1
+            status:
+              $ref: '#/components/schemas/product_status'
+            stockLevel:
+              $ref: '#/components/schemas/StockLevel'
+          type: object
+    StockLevel:
+      type: string
+      enum:
+        - AVAILABLE
+        - SOLD_OUT
+        - BACK_ORDER
+  responses:
+    product:
+      description: 'All information about a product'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    todo:
+      description: 'This API call has no documentated response (yet)'
+  parameters:
+    product_id_in_path_required:
+      name: product_id
+      in: path
+      description: 'The ID of the product'
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBodies:
+    product_in_body:
+      description: product_request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+tags:
+  -
+    name: Products
+    description: Products
