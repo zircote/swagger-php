@@ -95,7 +95,7 @@ class Tag extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion('3.2.x')) {
+        if ($this->_context->isVersion(['3.0.x', '3.1.x'])) {
             unset($data->summary);
             unset($data->parent);
             unset($data->kind);

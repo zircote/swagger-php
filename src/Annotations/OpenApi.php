@@ -305,7 +305,7 @@ class OpenApi extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion('3.1.x')) {
+        if ($this->_context->isVersion('3.0.x')) {
             unset($data->webhooks);
         }
 
