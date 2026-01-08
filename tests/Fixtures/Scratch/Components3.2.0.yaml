@@ -1,0 +1,17 @@
+openapi: 3.2.0
+info:
+  title: Components
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: 676d6dc70d1dd9076e4bfe370247839e
+      responses:
+        '200':
+          description: 'All good'
+components:
+  schemas:
+    'first schema': {  }
+    'second schema': {  }
+  requestBodies:
+    'first request body': {  }

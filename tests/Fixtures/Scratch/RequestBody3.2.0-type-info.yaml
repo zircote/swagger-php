@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: RequestBody
+  version: '1.0'
+paths:
+  /endpoint/schema-ref-json:
+    post:
+      operationId: 8d1f9c9f0437712695d337f1c11badc7
+      requestBody:
+        description: 'Information about a new pet in the system'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodySchema'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/schema-ref:
+    post:
+      operationId: 7fa3f3456b14a4a8eb3a0357283ecd15
+      requestBody:
+        description: 'Information about a new pet in the system'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodySchema'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/ref:
+    post:
+      operationId: 4250dd87e4e3872a8f2e481532cbc245
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBodyRef'
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/ref-foo:
+    post:
+      operationId: 344406e28927343e4e9e4f39bd6c385b
+      requestBody:
+        $ref: '#/components/requestBodies/foo'
+      responses:
+        '200':
+          description: 'All good'
+components:
+  schemas:
+    RequestBodySchema: {  }
+  requestBodies:
+    RequestBodyRef: {  }
+    foo: {  }

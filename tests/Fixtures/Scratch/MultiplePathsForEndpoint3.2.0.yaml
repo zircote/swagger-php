@@ -1,0 +1,33 @@
+openapi: 3.2.0
+info:
+  title: 'Multiple Paths For Endpoint Scratch'
+  version: '1.0'
+paths:
+  /api/class/endpoint:
+    get:
+      description: 'A class endpoint'
+      operationId: f6fa254544c561ced460509c98adbc8b
+      responses:
+        '200':
+          description: OK
+  /api/class/endpoint2:
+    get:
+      description: 'Another class endpoint'
+      operationId: 7816e3a6652e1e4782355ec5675e75f8
+      responses:
+        '200':
+          description: OK
+  /api/method/endpoint:
+    get:
+      description: 'A method endpoint'
+      operationId: b134e3908c5787b578f7faaa63283168
+      responses:
+        '200':
+          description: OK
+  /api/method/endpoint2:
+    get:
+      description: 'Another method endpoint'
+      operationId: ff3758f75b33d1e680c47e92ed39844f
+      responses:
+        '200':
+          description: OK
