@@ -107,7 +107,7 @@ class PathItem extends AbstractAnnotation
     /**
      * A definition of a QUERY operation on this path.
      *
-     * @since 3.2.0
+     * @since OpenAPI 3.2.0
      * @var Query
      */
     public $query = Generator::UNDEFINED;
@@ -186,7 +186,7 @@ class PathItem extends AbstractAnnotation
     {
         $data = parent::jsonSerialize();
 
-        if (!$this->_context->isVersion('3.2.x')) {
+        if ($this->_context->isVersion(['3.0.x', '3.1.x'])) {
             unset($data->query);
         }
 

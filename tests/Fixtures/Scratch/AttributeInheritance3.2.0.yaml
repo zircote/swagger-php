@@ -1,0 +1,39 @@
+openapi: 3.2.0
+info:
+  title: 'Attribute Inheritance Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 6e8c7c1a5488a11e2b1bf5f3b726c29c
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Base:
+      properties:
+        id:
+          type: integer
+      type: object
+    Child1:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Base'
+        -
+          properties:
+            name:
+              type: string
+          type: object
+    Child2:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Base'
+        -
+          properties:
+            title:
+              type: string
+          type: object

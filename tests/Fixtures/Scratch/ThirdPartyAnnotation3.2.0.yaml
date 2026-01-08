@@ -1,0 +1,18 @@
+openapi: 3.2.0
+info:
+  title: API
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      operationId: 4d13477a1abdf05116ad243f8d869c0a
+      responses:
+        '200':
+          description: 'successful operation'
+components:
+  schemas:
+    SomeParent: {  }
+    Child:
+      allOf:
+        -
+          $ref: '#/components/schemas/SomeParent'

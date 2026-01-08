@@ -1,0 +1,30 @@
+openapi: 3.2.0
+info:
+  title: 'List of types'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 04621eecf5d57d633b0be3e42a30a379
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Types:
+      properties:
+        stringInteger:
+          type:
+            - string
+            - integer
+        massiveTypes:
+          type:
+            - string
+            - number
+            - integer
+            - boolean
+            - array
+            - object
+            - 'null'
+      type: object

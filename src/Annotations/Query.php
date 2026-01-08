@@ -7,7 +7,7 @@
 namespace OpenApi\Annotations;
 
 /**
- * @since 3.2.0
+ * @since OpenAPI 3.2.0
  *
  * @Annotation
  */

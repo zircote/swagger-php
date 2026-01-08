@@ -11,7 +11,7 @@ use OpenApi\Generator;
 /**
  * Acts like a <code>PathItem</code> with the main difference being that it requires <code>webhook</code> instead of <code>path</code>.
  *
- * @since 3.1.0
+ * @since OpenAPI 3.1.0
  *
  * @Annotation
  */

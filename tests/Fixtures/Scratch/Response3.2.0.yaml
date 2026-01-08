@@ -1,0 +1,16 @@
+openapi: 3.2.0
+info:
+  title: Response
+  version: '1.0'
+paths:
+  /endpoint/response-schema:
+    post:
+      operationId: 1c263833c8db6ca090be27b517d92017
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte

@@ -34,7 +34,11 @@ class ExamplesTest extends OpenApiTestCase
             'webhooks',
         ];
         $implementations = ['annotations', 'attributes', 'mixed'];
-        $versions = [OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0];
+        $versions = [
+            OA\OpenApi::VERSION_3_0_0,
+            OA\OpenApi::VERSION_3_1_0,
+            OA\OpenApi::VERSION_3_2_0,
+        ];
 
         foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
