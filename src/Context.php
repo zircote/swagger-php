@@ -140,7 +140,7 @@ class Context
      *
      * @param string|array $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
      */
-    public function isVersion(string|array $version): bool
+    public function isVersion($version): bool
     {
         foreach ((array) $version as $v) {
             if (OA\OpenApi::versionMatch($this->getVersion(), $v)) {
