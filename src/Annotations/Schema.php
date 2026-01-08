@@ -537,7 +537,7 @@ class Schema extends AbstractAnnotation
 
         if ($this->_context->isVersion('3.0.x')) {
             if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed for 3.1.x');
+                $this->_context->logger->warning($this->identity() . ' is only allowed as of 3.1.0');
 
                 return false;
             }
