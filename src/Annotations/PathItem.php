@@ -107,7 +107,7 @@ class PathItem extends AbstractAnnotation
     /**
      * A definition of a QUERY operation on this path.
      *
-     * @since 3.2.0
+     * @since OpenAPI 3.2.0
      * @var Query
      */
     public $query = Generator::UNDEFINED;

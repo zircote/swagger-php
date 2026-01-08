@@ -103,7 +103,7 @@ EOT;
                         continue;
                     }
                 }
-                if (in_array(substr($line, 0), ['@Annotation', '@inheritdoc', '@since 3.1.0'])) {
+                if (in_array(substr($line, 0), ['@Annotation', '@inheritdoc'])) {
                     continue;
                 }
             }

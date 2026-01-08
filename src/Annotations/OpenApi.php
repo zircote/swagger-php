@@ -110,7 +110,7 @@ class OpenApi extends AbstractAnnotation
     /**
      * The available webhooks for the API.
      *
-     * @since 3.1.0
+     * @since OpenAPI 3.1.0
      * @var Webhook[]
      */
     public $webhooks = Generator::UNDEFINED;
