@@ -16,28 +16,8 @@ components:
       properties:
         otherValue:
           example: 'My value'
-          oneOf:
-            -
-              type:
-                - string
-            -
-              type: array
-              items:
-                type: string
         value:
-          type:
-            - boolean
-            - integer
-            - 'null'
           example: true
         mixedUnion:
           example: 'My value'
-          oneOf:
-            -
-              type:
-                - string
-            -
-              type: array
-              items:
-                type: string
       type: object
