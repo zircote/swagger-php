@@ -54,6 +54,8 @@ return RectorConfig::configure()
         codeQuality: true,
         codingStyle: true,
         typeDeclarations: true,
+        phpunitCodeQuality: true,
     )
+    ->withAttributesSets(phpunit: true)
     ->withPhpVersion(PhpVersion::PHP_82)
     ->withPhpSets();
