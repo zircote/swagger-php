@@ -41,6 +41,18 @@ return RectorConfig::configure()
             __DIR__ . '/src/Serializer.php',
         ],
     ])
+<<<<<<< HEAD
     ->withPreparedSets(true, true, true, true)
     ->withPhpVersion(PhpVersion::PHP_74)
+=======
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        codingStyle: true,
+        typeDeclarations: true,
+        phpunitCodeQuality: true,
+    )
+    ->withAttributesSets(phpunit: true)
+    ->withPhpVersion(PhpVersion::PHP_82)
+>>>>>>> 6f91cf3 (Tweak rector config (#1903))
     ->withPhpSets();
