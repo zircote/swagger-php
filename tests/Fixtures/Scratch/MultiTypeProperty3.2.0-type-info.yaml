@@ -16,8 +16,35 @@ components:
       properties:
         otherValue:
           example: 'My value'
+<<<<<<< HEAD
         value:
           example: true
         mixedUnion:
           example: 'My value'
+=======
+          oneOf:
+            -
+              type:
+                - string
+            -
+              type: array
+              items:
+                type: string
+        value:
+          type:
+            - boolean
+            - integer
+            - 'null'
+          example: true
+        mixedUnion:
+          example: 'My value'
+          oneOf:
+            -
+              type:
+                - string
+            -
+              type: array
+              items:
+                type: string
+>>>>>>> 3131713 (Fix version check to handle more than two versions (#1900))
       type: object

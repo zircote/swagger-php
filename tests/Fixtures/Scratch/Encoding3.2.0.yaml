@@ -63,6 +63,7 @@ paths:
       responses:
         '200':
           description: 'All good'
+<<<<<<< HEAD
   /endpoint/bc-encoding-attr:
     post:
       operationId: 93c969c0f67dc55b9f7f88f6e46d4230
@@ -83,16 +84,30 @@ paths:
   /endpoint/bc-encoding-annot:
     post:
       operationId: efe7afb9b99c111a0d781e14982abcdf
+=======
+  /multipart-form-data-annot:
+    post:
+      operationId: 8088dd671fb2ee88b83b2ea51c3458c2
+>>>>>>> 3131713 (Fix version check to handle more than two versions (#1900))
       requestBody:
         content:
           multipart-form-data:
             schema:
               properties:
                 encname: {  }
+<<<<<<< HEAD
+=======
+                other: {  }
+>>>>>>> 3131713 (Fix version check to handle more than two versions (#1900))
               type: object
             encoding:
               encname:
                 contentType: application/json
+<<<<<<< HEAD
+=======
+              other:
+                contentType: application/xml
+>>>>>>> 3131713 (Fix version check to handle more than two versions (#1900))
       responses:
         '200':
           description: OK

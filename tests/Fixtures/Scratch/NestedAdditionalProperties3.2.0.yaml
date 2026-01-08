@@ -17,3 +17,7 @@ components:
       additionalProperties:
         additionalProperties:
           type: string
+<<<<<<< HEAD
+=======
+          additionalProperties: false
+>>>>>>> 3131713 (Fix version check to handle more than two versions (#1900))
