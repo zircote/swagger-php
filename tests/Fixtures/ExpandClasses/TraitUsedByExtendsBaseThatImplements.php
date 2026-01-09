@@ -6,18 +6,15 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 trait TraitUsedByExtendsBaseThatImplements
 {
     /**
-     * @OA\Property(property="traitProperty");
-     *
      * @var string
      */
+    #[OAT\Property(property: 'traitProperty')]
     public function getTraitProperty()
     {
         return 'bar';

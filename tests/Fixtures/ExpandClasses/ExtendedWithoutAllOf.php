@@ -6,17 +6,14 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 class ExtendedWithoutAllOf extends Base
 {
     /**
-     * @OA\Property
-     *
      * @var string
      */
+    #[OAT\Property]
     public $extendedProperty;
 }

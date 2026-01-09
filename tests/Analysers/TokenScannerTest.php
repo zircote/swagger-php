@@ -236,7 +236,7 @@ class TokenScannerTest extends OpenApiTestCase
             [
                 'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
                     'uses' => [
-                        'OA' => 'OpenApi\Annotations',
+                        'OAT' => 'OpenApi\Attributes',
                     ],
                     'interfaces' => [],
                     'traits' => [],
@@ -260,7 +260,7 @@ class TokenScannerTest extends OpenApiTestCase
             [
                 'OpenApi\Tests\Fixtures\PHP\MultipleFunctions' => [
                     'uses' => [
-                        'OA' => 'OpenApi\Annotations',
+                        'OAT' => 'OpenApi\Attributes',
                     ],
                     'interfaces' => [],
                     'traits' => [],

@@ -4,24 +4,18 @@
  * @license Apache 2.0
  */
 
-// NOTE: this file uses "\r\n" linebreaks on purpose
-
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\RequestBody
- */
+#[OAT\RequestBody]
 class Request
 {
-    /**
-     * @OA\Post(
-     *     path="/",
-     *     @OA\RequestBody(ref=OpenApi\Tests\Fixtures\Request::class),
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
+    #[OAT\Post(
+        path: '/',
+        requestBody: new OAT\RequestBody(ref: Request::class),
+        responses: [new OAT\Response(response: 200, description: 'An example resource')],
+    )]
     public function post()
     {
 

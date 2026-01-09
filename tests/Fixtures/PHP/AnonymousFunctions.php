@@ -6,11 +6,9 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(title="Foobar", version="1.0")
- */
+#[OAT\Info(title: 'Foobar', version: '1.0')]
 class AnonymousFunctions
 {
     public function index($ding)
