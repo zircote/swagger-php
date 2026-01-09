@@ -6,17 +6,14 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 interface BaseInterface
 {
     /**
-     * @OA\Property(property="interfaceProperty");
-     *
      * @var string
      */
+    #[OAT\Property(property: 'interfaceProperty')]
     public function getInterfaceProperty();
 }

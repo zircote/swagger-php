@@ -6,12 +6,11 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 #[OAT\OpenApi(
     info: new OAT\Info(title: 'Unreferenced', version: '1.0'),
-    security: [[ 'bearerAuth' ]],
+    security: [['bearerAuth']],
 )]
 #[OAT\SecurityScheme(
     securityScheme: 'bearerAuth',
@@ -58,7 +57,7 @@ class Unreferenced
                 required: true,
             ),
         ],
-        security: [[ 'bearerAuth' ]]
+        security: [['bearerAuth']]
     )]
     public function someEndpoint()
     {
