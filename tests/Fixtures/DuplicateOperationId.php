@@ -6,35 +6,25 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(title="Duplicate operationId", version="unittest")
- */
+#[OAT\Info(title: 'Duplicate operationId', version: 'unittest')]
 class DuplicateOperationId
 {
-    /**
-     * @OA\Get(
-     *     path="/items/{item_name}",
-     *     summary="Get item",
-     *     operationId="getItem",
-     *     @OA\PathParameter(name="item_name"),
-     *     @OA\Response(response="default", description="OK")
-     * )
-     */
+    #[OAT\Get(
+        path: '/items/{item_name}',
+        operationId: 'getItem',
+        responses: [new OAT\Response(response: 'default', description: 'OK')]
+    )]
     public function getItem()
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/admin/items/{item_name}",
-     *     summary="Get item",
-     *     operationId="getItem",
-     *     @OA\PathParameter(name="item_name"),
-     *     @OA\Response(response="default", description="OK")
-     * )
-     */
+    #[OAT\Get(
+        path: '/admin/items/{item_name}',
+        operationId: 'getItem',
+        responses: [new OAT\Response(response: 'default', description: 'OK')]
+    )]
     public function getAdminItem()
     {
     }
