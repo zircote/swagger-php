@@ -13,7 +13,7 @@ class RequestBodySchema
 {
 }
 
-#[OAT\RequestBody()]
+#[OAT\RequestBody]
 class RequestBodyRef
 {
 }

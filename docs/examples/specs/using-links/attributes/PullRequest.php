@@ -36,7 +36,7 @@ class PullRequest
     public $author;
 
     public function __construct(
-        #[OAT\Property()]
+        #[OAT\Property]
         public State $state
     ) {
     }

@@ -30,7 +30,7 @@ class Product implements ProductInterface
     public $id;
 
     public function __construct(
-        #[OAT\Property()]
+        #[OAT\Property]
         public int $quantity,
         #[OAT\Property(default: null, example: null)]
         public ?string $brand,

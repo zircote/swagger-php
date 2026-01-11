@@ -6,9 +6,9 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
-/**
- * @OA\Schema(schema="as")
- */
+use OpenApi\Attributes as OAT;
+
+#[OAT\Schema(schema: 'as')]
 trait AsTrait
 {
     use OtherTrait;

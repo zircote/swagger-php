@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema(type: 'string')]
@@ -45,24 +44,22 @@ class PromotedPropertyDescription
          * Property meta.
          *
          * @var string
-         *
-         * @OA\Property(property="themeta")
          */
+        #[OAT\Property(property: 'themeta')]
         public string $meta = '',
 
         /**
          * Property different.
          *
          * @var string
-         *
-         * @OA\Property()
          */
+        #[OAT\Property]
         public string $different = '',
 
         /*
          * Intentionally not promoted!
          */
-        #[OAT\Property()]
+        #[OAT\Property]
         MyEnum $myEnum = MyEnum::AA,
     ) {
     }

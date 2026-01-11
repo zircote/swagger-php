@@ -6,121 +6,80 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema()]
 class TypedProperties
 {
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public string $stringType;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public int $intType;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public ?string $nullableString;
 
     /**
      * @var TypedProperties[]
-     *
-     * @OA\Property()
      */
+    #[OAT\Property]
     public array $arrayType;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public \DateTime $dateTime;
 
-    /**
-     * @OA\Property(type="integer")
-     */
+    #[OAT\Property(type: 'integer')]
     public \DateTime $dateTimeTimestamp;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public \DateTimeInterface $qualified;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public TypedProperties $namespaced;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public TypedProperties $importedNamespace;
 
     /**
      * @var int
-     *
-     * @OA\Property
      */
+    #[OAT\Property]
     public string $varTrumpsNative;
 
     /**
      * @var bool
-     *
-     * @OA\Property(
-     *     type="integer",
-     * )
      */
+    #[OAT\Property(type: 'integer')]
     public string $annotationTrumpsNative;
 
-    /**
-     * @OA\Property(
-     *     type="integer",
-     * )
-     */
+    #[OAT\Property(type: 'integer')]
     public string $annotationTrumpsAll;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public $undefined;
 
-    /**
-     * @OA\Property(
-     *     type="integer",
-     * )
-     */
+    #[OAT\Property(type: 'integer')]
     public $onlyAnnotated;
 
     /**
      * @var int
-     *
-     * @OA\Property
      */
+    #[OAT\Property]
     public $onlyVar;
 
-    /**
-     * @OA\Property()
-     */
+    #[OAT\Property]
     public static $staticUndefined;
 
-    /**
-     * @OA\Property()
-     */
+    #[OAT\Property]
     public static string $staticString;
 
-    /**
-     * @OA\Property()
-     */
+    #[OAT\Property]
     public static ?string $staticNullableString;
 
     /**
      * @var string[]
-     *
-     * @OA\Property()
      */
+    #[OAT\Property]
     public array $nativeArray;
 }

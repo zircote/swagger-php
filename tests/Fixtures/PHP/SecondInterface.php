@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\Parser;
+namespace OpenApi\Tests\Fixtures\PHP;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema(schema: 'stale')]
-trait StaleTrait
+#[OAT\Schema]
+interface SecondInterface
 {
     #[OAT\Property]
-    public $expired = true;
+    public function foo(): string;
 }

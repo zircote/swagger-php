@@ -6,37 +6,20 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 trait HasId
 {
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     readOnly=true,
-     * )
-     */
+    #[OAT\Property(format: 'int64', readOnly: true)]
     public int $id;
 }
 
 trait HasTimestamps
 {
-    /**
-     * @OA\Property(
-     *     format="date-time",
-     *     type="string",
-     *     readOnly=true,
-     * )
-     */
+    #[OAT\Property(format: 'date-time', type: 'string', readOnly: true)]
     public \DateTime $created_at;
 
-    /**
-     * @OA\Property(
-     *     format="date-time",
-     *     type="string",
-     *     readOnly=true,
-     * )
-     */
+    #[OAT\Property(format: 'date-time', type: 'string', readOnly: true)]
     public \DateTime $updated_at;
 }
 
@@ -45,33 +28,25 @@ abstract class Model
     use HasId;
 }
 
-/**
- * @OA\Schema(
- *     required={"street"},
- *     @OA\Xml(
- *         name="Address"
- *     )
- * )
- */
+#[OAT\Schema(
+    required: ['street'],
+    xml: new OAT\Xml(name: 'Address'),
+)]
 class Address extends Model
 {
     use HasTimestamps;
 
-    /** @OA\Property */
+    #[OAT\Property]
     public string $street;
 }
 
-/**
- * @OA\Info(title="API", version="1.0")
- * @OA\Get(
- *     path="/api/endpoint",
- *     @OA\Response(
- *         response=200,
- *         description="successful operation",
- *         @OA\JsonContent(ref="#/components/schemas/Address")
- *     )
- * )
- */
+#[OAT\Info(title: 'API', version: '1.0')]
+#[OAT\Get(path: '/api/endpoint')]
+#[OAT\Response(
+    response: 200,
+    description: 'successful operation',
+    content: new OAT\JsonContent(ref: Address::class)
+)]
 class MergeTraitsEndpoint
 {
 }

@@ -6,23 +6,18 @@
 
 namespace OpenApi\Tests\Fixtures\Processors;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * Entity controller trait.
  */
 trait EntityControllerTrait
 {
-    /**
-     * @OA\Delete(
-     *     tags={"EntityController"},
-     *     path="entities/{id}",
-     *     @OA\Response(
-     *         response="default",
-     *         description="successful operation"
-     *     )
-     * )
-     */
+    #[OAT\Delete(
+        path: '/entities/{id}',
+        tags: ['EntityController'],
+    )]
+    #[OAT\Response(response: 'default', description: 'successful operation')]
     public function deleteEntity($id)
     {
     }

@@ -9,13 +9,6 @@ namespace OpenApi\Tests\Fixtures\PHP;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema]
-class References
+interface FirstInterface
 {
-    #[OAT\Property]
-    public function &return_ref()
-    {
-        $var = 1;
-
-        return $var;
-    }
 }

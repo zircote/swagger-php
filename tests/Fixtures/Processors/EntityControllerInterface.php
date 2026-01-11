@@ -6,22 +6,17 @@
 
 namespace OpenApi\Tests\Fixtures\Processors;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * Entity controller interface.
  */
 interface EntityControllerInterface
 {
-    /**
-     * @OA\Post(
-     *     tags={"EntityController"},
-     *     path="entity/{id}",
-     *     @OA\Response(
-     *         response="default",
-     *         description="successful operation"
-     *     )
-     * )
-     */
+    #[OAT\Post(
+        path: '/entities/{id}',
+        tags: ['EntityController'],
+    )]
+    #[OAT\Response(response: 'default', description: 'successful operation')]
     public function updateEntity($id);
 }

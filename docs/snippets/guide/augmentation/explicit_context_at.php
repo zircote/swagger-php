@@ -2,7 +2,7 @@
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
+#[OA\Schema]
 class Product
 {
     /**

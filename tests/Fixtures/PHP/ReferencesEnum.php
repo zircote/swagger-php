@@ -14,7 +14,7 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 class ReferencesEnum
 {
     #[OAT\Property(title: 'statusEnum', description: 'Status enum', type: 'string', enum: StatusEnum::class, nullable: false)]

@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Pipeline;
 use OpenApi\Processors\CleanUnusedComponents;
-use OpenApi\Tests\Fixtures\Annotations\CustomAttachable;
+use OpenApi\Tests\Fixtures\Attributes\CustomAttachable;
 use OpenApi\Tests\OpenApiTestCase;
 
 class AttachableTest extends OpenApiTestCase

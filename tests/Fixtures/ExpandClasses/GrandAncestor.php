@@ -6,21 +6,19 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 class GrandAncestor
 {
     /**
-     * @OA\Property
-     *
      * @var string
      */
+    #[OAT\Property]
     public $firstname;
 
     /**
-     * @OA\Property(property="lastname");
-     *
      * @var string
      */
+    #[OAT\Property(property: 'lastname')]
     public $lastname;
 }

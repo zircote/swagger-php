@@ -6,22 +6,17 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(
- *     schema="ExtendedModel",
- *     allOf={
- *         @OA\Schema(ref="#/components/schemas/Base"),
- *     }
- * )
- */
+#[OAT\Schema(
+    schema: 'ExtendedModel',
+    allOf: [new OAT\Schema(ref: '#/components/schemas/Base')]
+)]
 class Extended extends Base
 {
     /**
-     * @OA\Property
-     *
      * @var string
      */
+    #[OAT\Property]
     public $extendedProperty;
 }

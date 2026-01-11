@@ -6,39 +6,35 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(
- *     schema="UsingVar",
- *     required={"name"},
- *     @OA\Attachable,
- *     @OA\Attachable
- * )
- */
+#[OAT\Schema(
+    schema: 'UsingVar',
+    required: ['name'],
+    attachables: [
+        new OAT\Attachable(),
+        new OAT\Attachable(),
+    ]
+)]
 class UsingVar
 {
     /**
      * @var string
-     *
-     * @OA\Property
      */
+    #[OAT\Property]
     private $name;
 
     /**
      * @var \DateTimeInterface
-     *
-     * @OA\Property(ref="#/components/schemas/date")
      */
+    #[OAT\Property(ref: '#/components/schemas/date')]
     private $createdAt;
 }
 
-/**
- * @OA\Schema(
- *     schema="date",
- *     type="datetime"
- * )
- */
+#[OAT\Schema(
+    schema: 'date',
+    type: 'datetime',
+)]
 class UsingVarSchema
 {
 }

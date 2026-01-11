@@ -6,19 +6,16 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 class ExtendsBaseThatImplements extends BaseThatImplements
 {
     use TraitUsedByExtendsBaseThatImplements;
 
     /**
-     * @OA\Property
-     *
      * @var string
      */
+    #[OAT\Property]
     public $extendsProperty;
 }

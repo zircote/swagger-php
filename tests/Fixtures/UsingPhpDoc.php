@@ -6,11 +6,9 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(title="Fixture for AugmentOperationTest", version="test")
- */
+#[OAT\Info(title: 'Fixture for AugmentOperationTest', version: 'test')]
 class UsingPhpDoc
 {
     /**
@@ -18,18 +16,18 @@ class UsingPhpDoc
      *
      * Example description...
      * More description...
-     *
-     * @OA\Get(path="api/test1", @OA\Response(response="200", description="a response"))
      */
+    #[OAT\Get(path: '/api/test1')]
+    #[OAT\Response(response: 200, description: 'a response')]
     public function methodWithDescription()
     {
     }
 
     /**
      * Example summary.
-     *
-     * @OA\Get(path="api/test2", @OA\Response(response="200", description="a response"))
      */
+    #[OAT\Get(path: '/api/test2')]
+    #[OAT\Response(response: 200, description: 'a response')]
     public function methodWithSummary()
     {
     }

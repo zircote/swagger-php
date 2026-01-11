@@ -6,11 +6,9 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(title="Test", version="1.0")
- */
+#[OAT\Info(title: 'Test', version: '1.0')]
 class MultipleFunctions
 {
     public function first()

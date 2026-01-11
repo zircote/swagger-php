@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 interface UserInterface extends OtherInterface
 {
@@ -14,10 +14,8 @@ interface UserInterface extends OtherInterface
      * The first name of the user.
      *
      * @return string
-     *
-     * @example John
-     *
-     * @OA\Property
+     *@example John
      */
+    #[OAT\Property]
     public function getFirstName();
 }

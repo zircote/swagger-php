@@ -18,8 +18,8 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
         return [
             'var-default' => [[], 'UsingVar.php', 2, 5],
             'var-clean' => [$configEnable, 'UsingVar.php', 0, 2],
-            'unreferenced-default' => [[], 'Unreferenced.php', 2, 11],
-            'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 5],
+            'unreferenced-default' => [[], 'Unreferenced.php', 2, 14],
+            'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 6],
         ];
     }
 

@@ -11,7 +11,7 @@ use OpenApi\Attributes as OAT;
 /**
  * A Name.
  */
-#[OAT\Schema()]
+#[OAT\Schema]
 trait NameTrait
 {
     #[OAT\Property(description: 'The name.')]
