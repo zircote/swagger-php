@@ -15,6 +15,6 @@ final class Fl extends AbstractResponsible
 {
     public const TYPE = 'fl';
 
-    #[OAT\Property()]
+    #[OAT\Property]
     public ?string $property3;
 }

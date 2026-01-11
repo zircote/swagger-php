@@ -28,9 +28,9 @@ class Php8PromotedProperties
          *
          * @var array<int,string>
          */
-        #[OAT\Property()]
+        #[OAT\Property]
         public array $tags,
-        #[OAT\Property()]
+        #[OAT\Property]
         public int $id,
     ) {
     }

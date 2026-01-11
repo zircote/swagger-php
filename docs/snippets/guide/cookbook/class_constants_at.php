@@ -4,7 +4,7 @@ namespace Openapi\Snippets\Cookbook\ClassConstants;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
+#[OA\Schema]
 class Airport
 {
     #[OA\Property(property: 'kind')]

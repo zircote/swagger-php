@@ -4,13 +4,13 @@ namespace Openapi\Snippets\Augmentation\Aware;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
+#[OA\Schema]
 class Product
 {
     /**
      * The product name,.
      * @var string
      */
-    #[OA\Property()]
+    #[OA\Property]
     public $name;
 }

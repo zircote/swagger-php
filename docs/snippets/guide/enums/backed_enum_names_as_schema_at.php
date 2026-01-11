@@ -4,7 +4,7 @@ namespace Openapi\Snippets\Enums\BackedNameAsSchema;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
+#[OA\Schema]
 enum Colour: int
 {
     case GREEN = 1;
@@ -12,9 +12,9 @@ enum Colour: int
     case RED = 3;
 }
 
-#[OA\Schema()]
+#[OA\Schema]
 class Product
 {
-    #[OA\Property()]
+    #[OA\Property]
     public Colour $colour;
 }

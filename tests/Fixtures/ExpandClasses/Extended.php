@@ -17,6 +17,6 @@ class Extended extends Base
     /**
      * @var string
      */
-    #[OAT\Property()]
+    #[OAT\Property]
     public $extendedProperty;
 }

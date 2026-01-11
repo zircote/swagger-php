@@ -21,7 +21,7 @@ class UsingVar
     /**
      * @var string
      */
-    #[OAT\Property()]
+    #[OAT\Property]
     private $name;
 
     /**

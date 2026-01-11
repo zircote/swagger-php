@@ -17,6 +17,6 @@ class Repository
     #[OAT\Property(type: 'string')]
     public $slug;
 
-    #[OAT\Property()]
+    #[OAT\Property]
     public User $owner;
 }

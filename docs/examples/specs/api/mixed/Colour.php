@@ -11,7 +11,7 @@ use OpenApi\Attributes as OAT;
 /**
  * A Colour.
  */
-#[OAT\Schema()]
+#[OAT\Schema]
 enum Colour
 {
     case GREEN;

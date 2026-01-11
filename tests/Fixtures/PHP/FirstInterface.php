@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\PHP;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 interface FirstInterface
 {
 }

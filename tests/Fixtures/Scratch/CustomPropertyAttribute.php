@@ -24,7 +24,7 @@ class Controller
 class CustomPropertyAttribute
 {
     public function __construct(
-        #[CustomOpenApiProperty()]
+        #[CustomOpenApiProperty]
         public ?int $number,
     ) {
     }

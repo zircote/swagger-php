@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 class NestedProperty
 {
     /**

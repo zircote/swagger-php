@@ -67,6 +67,9 @@ return (new PhpCsFixer\Config())
         'fully_qualified_strict_types' => ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => null, 'import_functions' => null],
 
+        'attribute_empty_parentheses' => [
+                'use_parentheses' => false,
+        ],
         'nullable_type_declaration_for_default_null_value' => true,
 
         'no_empty_phpdoc' => true,

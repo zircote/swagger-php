@@ -9,18 +9,18 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 class EncodingMetadata
 {
 }
 
-#[OAT\Schema()]
+#[OAT\Schema]
 class MultipartFormData
 {
     #[OAT\Property(format: 'uuid')]
     public string $name;
 
-    #[OAT\Property()]
+    #[OAT\Property]
     public EncodingMetadata $metadata;
 
     #[OAT\Property(

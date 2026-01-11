@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\PHP\Enums;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 enum StatusEnum
 {
     case DRAFT;

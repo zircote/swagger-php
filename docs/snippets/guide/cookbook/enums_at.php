@@ -4,7 +4,7 @@ namespace Openapi\Snippets\Cookbook\Enums;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema()]
+#[OA\Schema]
 enum State
 {
     case OPEN;
@@ -12,9 +12,9 @@ enum State
     case DECLINED;
 }
 
-#[OA\Schema()]
+#[OA\Schema]
 class PullRequest
 {
-    #[OA\Property()]
+    #[OA\Property]
     public State $state;
 }
