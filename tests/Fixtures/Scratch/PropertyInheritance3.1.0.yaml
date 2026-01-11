@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: API
+  title: 'Property Inheritance Scratch'
   version: '1.0'
 paths:
   /api/endpoint:

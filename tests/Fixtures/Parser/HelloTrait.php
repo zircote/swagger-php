@@ -6,17 +6,14 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
+use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\Parser\AsTrait as Aliased;
 
-/**
- * @OA\Schema(schema="hello")
- */
+#[OAT\Schema(schema: 'hello')]
 trait HelloTrait
 {
     use OtherTrait, Aliased;
 
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public $greet = 'Hello!';
 }

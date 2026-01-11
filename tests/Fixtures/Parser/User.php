@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Tests\Fixtures\Parser\HelloTrait as Hello;
 use OpenApi\Tests\Fixtures\Parser\Sub\SubClass as ParentClass;
 

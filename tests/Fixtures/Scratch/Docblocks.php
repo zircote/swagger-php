@@ -6,78 +6,72 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
-/**
- * @OA\OpenApi(
- *     openapi="3.0.0"
- * )
- *
- * @OA\Schema
- */
+#[OAT\OpenApi(openapi: '3.0.0')]
+#[OAT\Schema]
 class DocblocksSchema
 {
     /**
-     * @OA\Property
      * @var string The name
      */
+    #[OAT\Property]
     public $name;
 
     /**
-     * @OA\Property
      * @var string The name (old)
      *
      * @deprecated
      */
+    #[OAT\Property]
     public $oldName;
 
     /**
-     * @OA\Property
      * @var int<5,25> The range integer
      */
+    #[OAT\Property]
     public $rangeInt;
 
     /**
-     * @OA\Property
      * @var int<2,max> The minimum range integer
      */
+    #[OAT\Property]
     public $minRangeInt;
 
     /**
-     * @OA\Property
      * @var int<min,10> The maximum range integer
      */
+    #[OAT\Property]
     public $maxRangeInt;
 
     /**
-     * @OA\Property
      * @var positive-int The positive integer
      */
+    #[OAT\Property]
     public $positiveInt;
 
     /**
-     * @OA\Property
      * @var negative-int The negative integer
      */
+    #[OAT\Property]
     public $negativeInt;
 
     /**
-     * @OA\Property
      * @var non-positive-int The non-positive integer
      */
+    #[OAT\Property]
     public $nonPositiveInt;
 
     /**
-     * @OA\Property
      * @var non-negative-int The non-negative integer
      */
+    #[OAT\Property]
     public $nonNegativeInt;
 
     /**
-     * @OA\Property
      * @var non-zero-int The non-zero integer
      */
+    #[OAT\Property]
     public $nonZeroInt;
 }
 
@@ -95,9 +89,7 @@ class DocblockSchemaChild extends DocblocksSchema
     public string $someOtherName;
 }
 
-/**
- * @OA\Info(title="Docblocks", version="1.0")
- */
+#[OAT\Info(title: 'Docblocks', version: '1.0')]
 class DocblocksEndpoint
 {
     /**

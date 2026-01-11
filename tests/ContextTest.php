@@ -32,7 +32,7 @@ class ContextTest extends OpenApiTestCase
         $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('Generator'));
         $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('gEnerator')); // php has case-insensitive class names :-(
         $this->assertSame('\\OpenApi\\Generator', $context->fullyQualifiedName('OpenApiGenerator'));
-        $this->assertSame('\\OpenApi\\Annotations\\QualifiedAlias', $context->fullyQualifiedName('OA\\QualifiedAlias'));
+        $this->assertSame('\\OpenApi\\Attributes\\QualifiedAlias', $context->fullyQualifiedName('OAT\\QualifiedAlias'));
     }
 
     public function testEnsureRoot(): void

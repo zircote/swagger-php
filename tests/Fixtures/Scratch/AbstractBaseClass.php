@@ -6,10 +6,10 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 abstract class AbstractBaseClass
 {
-    /** @OA\Property(property="basefilter") */
+    #[OAT\Property(property: 'basefilter')]
     public string $filters;
 }

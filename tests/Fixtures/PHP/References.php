@@ -6,16 +6,12 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 class References
 {
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public function &return_ref()
     {
         $var = 1;
