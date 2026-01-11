@@ -98,6 +98,8 @@ class AugmentSchemas
                     $schema->type = 'object';
                 } elseif (is_array($schema->patternProperties) && $schema->patternProperties !== []) {
                     $schema->type = 'object';
+                } elseif (is_array($schema->unevaluatedProperties) && $schema->unevaluatedProperties !== []) {
+                    $schema->type = 'object';
                 } elseif (is_array($schema->propertyNames) && $schema->propertyNames !== []) {
                     $schema->type = 'object';
                 }

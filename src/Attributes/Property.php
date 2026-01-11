@@ -66,6 +66,7 @@ class Property extends OA\Property
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
         ?array $patternProperties = null,
+        ?array $unevaluatedProperties = null,
         ?Encoding $encoding = null,
         // annotation
         ?array $x = null,
@@ -108,6 +109,7 @@ class Property extends OA\Property
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
+            'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
             'encoding' => $encoding ?? Generator::UNDEFINED,
             // annotation
             'x' => $x ?? Generator::UNDEFINED,

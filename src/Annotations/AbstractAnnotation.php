@@ -375,6 +375,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     unset($data->type);
                 }
             }
+
+            unset($data->unevaluatedProperties);
         }
 
         if (!$this->_context->isVersion('3.0.x')) {
