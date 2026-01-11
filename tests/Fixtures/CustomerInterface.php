@@ -6,87 +6,76 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="Customer", description="Fixture for Interface Test")
- */
+#[OAT\Schema(
+    schema: 'Customer',
+    description: 'Fixture for Interface Test',
+)]
 interface CustomerInterface
 {
     /**
      * The first name of the customer.
      *
-     * @var string
-     *
      * @example John
-     *
-     * @OA\Property
+     * @var string
      */
+    #[OAT\Property]
     public function firstname();
 
     /**
      * @var null|string the second name of the customer
      *
      * @example Allan
-     *
-     * @OA\Property
      */
+    #[OAT\Property]
     public function secondname();
 
     /**
      * The third name of the customer.
      *
-     * @var string|null
-     *
      * @example Peter
-     *
-     * @OA\Property
+     * @var string|null
      */
+    #[OAT\Property]
     public function thirdname();
 
     /**
      * The unknown name of the customer.
      *
-     * @var unknown|null
-     *
      * @example Unknown
-     *
-     * @OA\Property
+     * @var unknown|null
      */
+    #[OAT\Property]
     public function fourthname();
 
     /**
      * @var string the lastname of the customer
-     *
-     * @OA\Property
      */
+    #[OAT\Property]
     public function lastname();
 
     /**
-     * @OA\Property
-     *
      * @var string[]
      */
+    #[OAT\Property]
     public function tags();
 
     /**
-     * @OA\Property
-     *
      * @var Customer
      */
+    #[OAT\Property]
     public function submittedBy();
 
     /**
-     * @OA\Property
-     *
      * @var Customer[]
      */
+    #[OAT\Property]
     public function friends();
 
     /**
-     * @OA\Property
-     *
      * @var Customer|null
      */
+    #[OAT\Property]
     public function bestFriend();
 }

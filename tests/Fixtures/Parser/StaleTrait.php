@@ -6,15 +6,11 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="stale")
- */
+#[OAT\Schema(schema: 'stale')]
 trait StaleTrait
 {
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public $expired = true;
 }

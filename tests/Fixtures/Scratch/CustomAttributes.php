@@ -62,12 +62,12 @@ class CustomGet extends OAT\Get
 
 // ======== application code =======================
 
-#[CustomSchema()]
+#[CustomSchema]
 class CAItemModel
 {
 }
 
-#[CustomSchema()]
+#[CustomSchema]
 class CAModel
 {
     #[CustomProperty]

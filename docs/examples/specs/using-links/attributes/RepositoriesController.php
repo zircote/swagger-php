@@ -77,13 +77,13 @@ class RepositoriesController
     ]
     #[OAT\Link(link: 'RepositoryPullRequests', operationId: 'getPullRequestsByRepository', parameters: ['username' => '$response.body#/owner/username', 'slug' => '$response.body#/slug'])]
     public function getPullRequestsByRepository(
-        #[OAT\PathParameter()]
+        #[OAT\PathParameter]
         string $username,
-        #[OAT\PathParameter()]
+        #[OAT\PathParameter]
         string $slug,
-        #[OAT\PathParameter()]
+        #[OAT\PathParameter]
         State $state,
-        #[OAT\QueryParameter()]
+        #[OAT\QueryParameter]
         ?string $label
     ) {
     }

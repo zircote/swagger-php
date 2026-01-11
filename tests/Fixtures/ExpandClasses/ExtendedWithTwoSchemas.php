@@ -6,18 +6,15 @@
 
 namespace OpenApi\Tests\Fixtures\ExpandClasses;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(@OA\Property(property="nested", ref="#/components/schemas/NestedSchema")),
- * @OA\Schema(schema="NestedSchema", @OA\Property(property="nestedProperty", type="string"))
- */
+#[OAT\Schema(properties: [new OAT\Property(property: 'nested', ref: '#/components/schemas/NestedSchema')])]
+#[OAT\Schema(schema: 'NestedSchema', properties: [new OAT\Property(property: 'nestedProperty', type: 'string')])]
 class ExtendedWithTwoSchemas extends Base
 {
     /**
-     * @OA\Property
-     *
      * @var string
      */
+    #[OAT\Property]
     public $extendedProperty;
 }

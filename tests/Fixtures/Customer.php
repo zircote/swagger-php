@@ -9,100 +9,88 @@
 namespace OpenApi\Tests\Fixtures;
 
 use Exception;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use OpenApi\Generator;
 use OpenApi\Generator as OpenApiGenerator;
 
 /**
  * A customer.
- *
- * @OA\Info(title="Fixture for ClassPropertiesTest", version="test")
- * @OA\Schema
  */
+#[OAT\Info(title: 'Fixture for ClassPropertiesTest', version: 'test')]
+#[OAT\Schema]
 class Customer
 {
     /**
      * The first name of the customer.
      *
-     * @var string
-     *
      * @example John
-     * @OA\Property
+     * @var string
      */
+    #[OAT\Property]
     public $firstname;
 
     /**
-     * @var null|string the second name of the customer
-     *
      * @example Allan
-     * @OA\Property
+     * @var null|string the second name of the customer
      */
+    #[OAT\Property]
     public $secondname;
 
     /**
      * The third name of the customer.
      *
-     * @var string|null
-     *
      * @example Peter
-     * @OA\Property
+     * @var string|null
      */
+    #[OAT\Property]
     public $thirdname;
 
     /**
      * The unknown name of the customer.
      *
-     * @var unknown|null
-     *
      * @example Unknown
-     * @OA\Property
+     * @var unknown|null
      */
+    #[OAT\Property]
     public $fourthname;
 
-    /**
-     * @OA\Property(nullable=false, format="number", example="0.00")
-     */
+    #[OAT\Property(nullable: false, format: 'number', example: '0.00')]
     public ?string $iq;
 
     /**
      * @var string the lastname of the customer
-     * @OA\Property
      */
+    #[OAT\Property]
     public $lastname;
 
     /**
-     * @OA\Property
-     *
      * @var string[]
      */
+    #[OAT\Property]
     public $tags;
 
     /**
-     * @OA\Property
-     *
      * @var Customer
      */
+    #[OAT\Property]
     public $submittedBy;
 
     /**
-     * @OA\Property
-     *
      * @var Customer[]
      */
+    #[OAT\Property]
     public $friends;
 
     /**
-     * @OA\Property
-     *
      * @var Customer|null
      */
+    #[OAT\Property]
     public $bestFriend;
 
     /**
-     * @OA\Property
-     *
      * @var Customer[]|null
      */
+    #[OAT\Property]
     public $endorsedFriends;
 
     /**
@@ -112,7 +100,7 @@ class Customer
     {
         (new OpenApiGenerator())->getLogger();
         (new Generator())->getLogger();
-        new OA\Contact([]);
+        new OAT\Contact();
         throw new Exception();
     }
 }

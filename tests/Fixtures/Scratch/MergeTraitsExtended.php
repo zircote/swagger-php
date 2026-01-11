@@ -6,57 +6,46 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 trait HasIdExtended
 {
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     readOnly=true
-     * )
-     */
+    #[OAT\Property(
+        format: 'int64',
+        readOnly: true,
+    )]
     public int $id;
 }
 
 trait HasTimestampsExtended
 {
-    /**
-     * @OA\Property(
-     *     format="date-time",
-     *     type="string",
-     *     readOnly=true
-     * )
-     */
+    #[OAT\Property(
+        format: 'date-time',
+        type: 'string',
+        readOnly: true,
+    )]
     public \DateTime $created_at;
 
-    /**
-     * @OA\Property(
-     *     format="date-time",
-     *     type="string",
-     *     readOnly=true
-     * )
-     */
+    #[OAT\Property(
+        format: 'date-time',
+        type: 'string',
+        readOnly: true,
+    )]
     public \DateTime $updated_at;
 }
 
 trait HasSoftDeleteExtended
 {
-    /**
-     * @OA\Property(
-     *     format="date-time",
-     *     type="string",
-     *     readOnly=true
-     * )
-     */
+    #[OAT\Property(
+        format: 'date-time',
+        type: 'string',
+        readOnly: true,
+    )]
     public ?\DateTime $deleted_at;
 }
 
+#[OAT\Schema(description: 'This model can be ignored, it is just used for inheritance.')]
 /**
- * @OA\Schema(
- *     description="This model can be ignored, it is just used for inheritance."
- * )
- *
  * @see BaseModel
  */
 abstract class ModelExtended
@@ -65,42 +54,32 @@ abstract class ModelExtended
     use HasTimestampsExtended;
 }
 
+#[OAT\Schema(
+    description: 'Product',
+    required: ['number', 'name'],
+    xml: new OAT\Xml(name: 'Product'),
+)]
 /**
- * @OA\Schema(
- *     description="Product",
- *     required={
- *         "number",
- *         "name"
- *     },
- *     @OA\Xml(
- *         name="Product"
- *     )
- * )
- *
  * @see ProductModel
  */
 class Product extends ModelExtended
 {
     use HasSoftDeleteExtended;
 
-    /** @OA\Property */
+    #[OAT\Property]
     public string $number;
 
-    /** @OA\Property */
+    #[OAT\Property]
     public string $name;
 }
 
-/**
- * @OA\Info(title="API", version="1.0")
- * @OA\Get(
- *     path="/api/endpoint",
- *     @OA\Response(
- *         response=200,
- *         description="successful operation",
- *         @OA\JsonContent(ref="#/components/schemas/Product")
- *     )
- * )
- */
+#[OAT\Info(title: 'API', version: '1.0')]
+#[OAT\Get(path: '/api/endpoint')]
+#[OAT\Response(
+    response: 200,
+    description: 'successful operation',
+    content: new OAT\JsonContent(ref: Product::class),
+)]
 class EndpointExtended
 {
 }

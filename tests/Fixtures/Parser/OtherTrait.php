@@ -6,15 +6,11 @@
 
 namespace OpenApi\Tests\Fixtures\Parser;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(schema="other")
- */
+#[OAT\Schema(schema: 'other')]
 trait OtherTrait
 {
-    /**
-     * @OA\Property
-     */
+    #[OAT\Property]
     public $so = 'what?';
 }

@@ -6,27 +6,21 @@
 
 namespace OpenApi\Tests\Fixtures\Processors;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * An entity controller class.
- *
- * @OA\Info(version="1.0.0")
  */
+#[OAT\Info(version: '1.0.0')]
 class EntityControllerClass implements EntityControllerInterface
 {
     use EntityControllerTrait;
 
-    /**
-     * @OA\Get(
-     *     tags={"EntityController"},
-     *     path="entity/{id}",
-     *     @OA\Response(
-     *         response="default",
-     *         description="successful operation"
-     *     )
-     * )
-     */
+    #[OAT\Get(
+        path: '/entities/{id}',
+        tags: ['EntityController'],
+    )]
+    #[OAT\Response(response: 'default', description: 'successful operation')]
     public function getEntry($id)
     {
     }

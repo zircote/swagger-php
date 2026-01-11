@@ -6,25 +6,28 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 class NestedProperty
 {
     /**
      * @var bool
-     *
-     * @OA\Property(
-     *     @OA\Property(
-     *         property="babyProperty",
-     *         @OA\Property(
-     *             property="theBabyOfBaby",
-     *             properties={@OpenApi\Annotations\Property(type="string", property="theBabyOfBabyBaby")}
-     *         )
-     *     ),
-     * )
      */
+    #[OAT\Property(
+        properties: [
+            new OAT\Property(
+                property: 'babyProperty',
+                properties: [
+                    new OAT\Property(
+                        property: 'theBabyOfBaby',
+                        properties: [
+                            new OAT\Property(property: 'theBabyOfBabyBaby', type: 'string'),
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )]
     public $parentProperty;
 }

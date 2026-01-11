@@ -13,7 +13,7 @@ class CustomAttributeSchema extends OAT\Schema
 {
 }
 
-#[CustomAttributeSchema()]
+#[CustomAttributeSchema]
 class MyClass
 {
 }

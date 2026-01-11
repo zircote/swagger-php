@@ -6,19 +6,19 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
-use OpenApi\Tests\Fixtures\Annotations as OAF;
+use OpenApi\Tests\Fixtures\Attributes as OAF;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Info(title="Custom annotation attributes", version="1.0")
- * @OA\PathItem(path="/")
- * @OA\Schema(
- *     schema="UsingCustomAttachables",
- *     required={"name"},
- *     @OAF\CustomAttachable(value=1),
- *     @OAF\CustomAttachable(value={"foo": false, "ping": "pong"})
- * )
- */
+#[OAT\Info(title: 'Custom annotation attributes', version: '1.0')]
+#[OAT\Schema(
+    schema: 'UsingCustomAttachables',
+    required: ['name'],
+    attachables: [
+        new OAF\CustomAttachable(value: 1),
+        new OAF\CustomAttachable(value: ['foo' => false, 'ping' => 'pong']),
+    ]
+)]
+#[OAT\PathItem(path: '/')]
 class UsingCustomAttachables
 {
 }

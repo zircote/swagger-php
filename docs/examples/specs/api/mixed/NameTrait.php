@@ -11,12 +11,12 @@ use OpenApi\Attributes as OAT;
 /**
  * A Name.
  */
-#[OAT\Schema()]
+#[OAT\Schema]
 trait NameTrait
 {
     /**
      * The name.
      */
-    #[OAT\Property()]
+    #[OAT\Property]
     public $name;
 }

@@ -10,7 +10,7 @@ use OpenApi\Attributes as OAT;
 use OpenApi\Tests\Fixtures\PHP\Label;
 
 #[Label(name: 'custom')]
-#[OAT\Response()]
+#[OAT\Response]
 #[OAT\Header(header: 'X-Rate-Limit', allowEmptyValue: true)]
 class UsingAttributes
 {

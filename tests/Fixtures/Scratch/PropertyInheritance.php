@@ -6,28 +6,22 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema
- */
+#[OAT\Schema]
 class PropertyInheritance extends AbstractBaseClass
 {
-    /** @OA\Property(property="inheritedfilter") */
+    #[OAT\Property(property: 'inheritedfilter')]
     public string $filters;
 }
 
-/**
- * @OA\Info(title="API", version="1.0")
- * @OA\Get(
- *     path="/api/endpoint",
- *     @OA\Response(
- *         response=200,
- *         description="successful operation",
- *         @OA\JsonContent(ref="#/components/schemas/PropertyInheritance")
- *     )
- * )
- */
+#[OAT\Info(title: 'Property Inheritance Scratch', version: '1.0')]
+#[OAT\Get(path: '/api/endpoint')]
+#[OAT\Response(
+    response: 200,
+    description: 'successful operation',
+    content: new OAT\JsonContent(ref: PropertyInheritance::class)
+)]
 class PropertyInheritanceEndpoint
 {
 }
