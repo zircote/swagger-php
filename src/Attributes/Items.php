@@ -65,6 +65,7 @@ class Items extends OA\Items
         ?array $oneOf = null,
         AdditionalProperties|bool|null $additionalProperties = null,
         ?array $patternProperties = null,
+        ?array $unevaluatedProperties = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
@@ -105,6 +106,7 @@ class Items extends OA\Items
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
+            'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
