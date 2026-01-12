@@ -105,7 +105,15 @@ class AdditionalProperties extends OA\AdditionalProperties
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
+<<<<<<< HEAD
             'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
+=======
+<<<<<<< HEAD
+            // annotation
+=======
+            'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
+>>>>>>> 2835140 (Add support for 3.1 `unevaluatedProperties` support (#1907))
+>>>>>>> 6724373 ( BACKPORT-CONFLICT)
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs),

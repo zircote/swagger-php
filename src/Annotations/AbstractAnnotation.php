@@ -397,7 +397,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 6724373 ( BACKPORT-CONFLICT)
             if (isset($data->type) && is_array($data->type)) {
                 if (1 === count($data->type)) {
                     $data->type = array_pop($data->type);
@@ -407,7 +412,11 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
 
             unset($data->unevaluatedProperties);
+<<<<<<< HEAD
             unset($data->unevaluatedItems);
+=======
+>>>>>>> 2835140 (Add support for 3.1 `unevaluatedProperties` support (#1907))
+>>>>>>> 6724373 ( BACKPORT-CONFLICT)
         }
 
         if (!$this->_context->isVersion('3.0.x')) {
