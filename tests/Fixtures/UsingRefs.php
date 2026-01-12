@@ -15,7 +15,7 @@ class UsingRefs
         path: '/pi/{item_name}',
         summary: 'Get protected item',
         parameters: [new OAT\Parameter(ref: '#/components/parameters/ItemName')],
-        responses: [new OAT\Response(response: 'Item', ref: '#/components/responses/Item')],
+        responses: [new OAT\Response(response: 'default', ref: '#/components/responses/default')],
     )]
     public function getProtectedItem()
     {
@@ -27,7 +27,7 @@ class UsingRefsParameter
 {
 }
 
-#[OAT\Response(response: 'Item', description: 'A protected item')]
+#[OAT\Response(response: 'default', description: 'A protected item')]
 class UsingRefsResponse
 {
 }

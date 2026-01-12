@@ -74,7 +74,7 @@
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^2.0",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^11.5",
         "rector/rector": "2.2.14"
     },
     "conflict": {
@@ -104,7 +104,7 @@
             "@rector --dry-run"
         ],
         "test": [
-            "export XDEBUG_MODE=off && phpunit",
+            "export XDEBUG_MODE=off && phpunit --display-all-issues",
             "@lint"
         ],
         "analyse": [

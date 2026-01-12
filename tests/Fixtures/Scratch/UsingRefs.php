@@ -13,7 +13,7 @@ class UsingRefsParameter
 {
 }
 
-#[OAT\Response(response: 'item', description: 'Item response')]
+#[OAT\Response(response: 'default', description: 'Item response')]
 class UsingRefsResponse
 {
 }
@@ -25,7 +25,7 @@ class UsingRefsResponse
         new OAT\Parameter(ref: '#/components/parameters/item_name'),
     ],
     responses: [
-        new OAT\Response(response: 200, ref: '#/components/responses/item'),
+        new OAT\Response(response: 200, ref: '#/components/responses/default'),
     ]
 )]
 class UsingRefsController
