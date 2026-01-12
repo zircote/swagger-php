@@ -397,6 +397,18 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+            if (isset($data->type) && is_array($data->type)) {
+                if (1 === count($data->type)) {
+                    $data->type = array_pop($data->type);
+                } else {
+                    unset($data->type);
+                }
+            }
+
+            unset($data->unevaluatedProperties);
+>>>>>>> 2835140 (Add support for 3.1 `unevaluatedProperties` support (#1907))
         }
 
         if (!$this->_context->isVersion('3.0.x')) {
