@@ -11,10 +11,10 @@ paths:
           $ref: '#/components/parameters/item_name'
       responses:
         '200':
-          $ref: '#/components/responses/item'
+          $ref: '#/components/responses/default'
 components:
   responses:
-    item:
+    default:
       description: 'Item response'
   parameters:
     item_name:

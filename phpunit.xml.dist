@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false"
          colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
          convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false"
@@ -8,6 +9,13 @@
             <directory>src</directory>
         </include>
     </coverage>
+=======
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" colors="true"
+         processIsolation="false" stopOnFailure="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd" cacheDirectory=".phpunit.cache"
+         backupStaticProperties="false">
+    <coverage/>
+>>>>>>> 8cc63b7 (Update `phpunit` deps and some related issues (#1909))
     <testsuites>
         <testsuite name="Swagger PHP Test Suite">
             <directory>tests</directory>

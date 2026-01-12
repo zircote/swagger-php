@@ -25,7 +25,7 @@ use OpenApi\Attributes as OAT;
 )]
 class UnusedTags
 {
-    #[OAT\Get(path: '/other/', tags: ['other'], responses: [new OAT\Response(response: '200', description: 'success')])]
+    #[OAT\Get(path: '/other/', tags: ['other'], responses: [new OAT\Response(response: 200, description: 'success')])]
     public function hello(): void
     {
     }

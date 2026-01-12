@@ -13,6 +13,7 @@ use OpenApi\Annotations as OA;
  */
 class UsingRefs
 {
+<<<<<<< HEAD
     /**
      * @OA\Get(
      *     path="/pi/{item_name}",
@@ -24,6 +25,14 @@ class UsingRefs
      *     )
      * )
      */
+=======
+    #[OAT\Get(
+        path: '/pi/{item_name}',
+        summary: 'Get protected item',
+        parameters: [new OAT\Parameter(ref: '#/components/parameters/ItemName')],
+        responses: [new OAT\Response(response: 'default', ref: '#/components/responses/default')],
+    )]
+>>>>>>> 8cc63b7 (Update `phpunit` deps and some related issues (#1909))
     public function getProtectedItem()
     {
     }
@@ -41,12 +50,16 @@ class UsingRefsParameter
 {
 }
 
+<<<<<<< HEAD
 /**
  * @OA\Response(
  *     response="Item",
  *     description="A protected item"
  * )
  */
+=======
+#[OAT\Response(response: 'default', description: 'A protected item')]
+>>>>>>> 8cc63b7 (Update `phpunit` deps and some related issues (#1909))
 class UsingRefsResponse
 {
 }
