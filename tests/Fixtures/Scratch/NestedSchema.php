@@ -18,6 +18,23 @@ class NestedSchemaTwo
 {
 }
 
+#[OAT\Schema]
+class MultipleOneOf
+{
+    /**
+     * @param array<MultipleOneOf>|array<NestedSchemaTwo> $values
+     */
+    public function __construct(
+        #[OAT\Property(items: new OAT\Items(oneOf: [
+            new OAT\Schema(type: MultipleOneOf::class, description: 'Recursive nested item'),
+            new OAT\Schema(type: NestedSchemaTwo::class, description: 'Another item'),
+        ]))]
+        public array $values
+    )
+    {
+    }
+}
+
 #[OAT\Info(
     title: 'Parameter Content Scratch',
     version: '1.0'
