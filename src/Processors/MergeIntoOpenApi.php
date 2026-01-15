@@ -71,7 +71,8 @@ class MergeIntoOpenApi
                 }
             } elseif ($annotation instanceof OA\AbstractAnnotation
                 && in_array(OA\OpenApi::class, $annotation::$_parents)
-                && false === $annotation->_context->is('nested')) {
+                && false === $annotation->_context->is('nested')
+                && false === $annotation instanceof OA\Webhook) {
                 // A top-level annotation.
                 $merge[] = $annotation;
             }
