@@ -49,8 +49,8 @@ class SourceFinder extends Finder
     private function getRelativePath(string $fullPath, array $directories): string
     {
         foreach ($directories as $directory) {
-            if (str_starts_with((string) $directory, $fullPath)) {
-                $relativePath = substr((string) $directory, strlen($fullPath));
+            if (str_starts_with($fullPath, (string) $directory)) {
+                $relativePath = substr($fullPath, strlen((string) $directory));
 
                 if ($relativePath !== '' && $relativePath !== '0') {
                     return trim($relativePath, '/');
