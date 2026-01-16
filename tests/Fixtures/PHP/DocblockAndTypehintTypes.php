@@ -219,4 +219,19 @@ class DocblockAndTypehintTypes
 
     #[OAT\Property]
     public FirstInterface&SecondInterface $intersectionVar;
+
+    /**
+     * @var array<DocblockAndTypehintTypes>|array<string>
+     */
+    #[OAT\Property]
+    public array $nestedOneOf;
+
+    /**
+     * @var array<DocblockAndTypehintTypes>|array<string>
+     */
+    #[OAT\Property(items: new OAT\Items(oneOf: [
+        new OAT\Schema(type: DocblockAndTypehintTypes::class),
+        new OAT\Schema(type: 'string'),
+    ]))]
+    public array $nestedOneOfWithItems;
 }
