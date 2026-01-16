@@ -201,4 +201,25 @@ class DocblockAndTypehintTypes
         ?array  $blah_values,
     ) {
     }
+<<<<<<< HEAD
+=======
+
+    #[OAT\Property]
+    public FirstInterface&SecondInterface $intersectionVar;
+
+    /**
+     * @var array<DocblockAndTypehintTypes>|array<string>
+     */
+    #[OAT\Property]
+    public array $nestedOneOf;
+
+    /**
+     * @var array<DocblockAndTypehintTypes>|array<string>
+     */
+    #[OAT\Property(items: new OAT\Items(oneOf: [
+        new OAT\Schema(type: DocblockAndTypehintTypes::class),
+        new OAT\Schema(type: 'string'),
+    ]))]
+    public array $nestedOneOfWithItems;
+>>>>>>> 0e20d17 (Skip type resolving on `Schema` with `items` set (#1916) the )
 }
