@@ -31,7 +31,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
             $schema->nullable = true;
         }
 
-        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf, $schema->items) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
+        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
             $details = ($docblockDetails->types || $docblockDetails->unsupported) ? $docblockDetails : $reflectionTypeDetails;
 
             // for now
@@ -56,6 +56,10 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
 
         $this->type2ref($schema, $analysis);
+
+        if ($schema->items instanceof OA\Items) {
+            $schema->type = 'array';
+        }
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {

@@ -30,8 +30,7 @@ class MultipleOneOf
             new OAT\Schema(type: NestedSchemaTwo::class, description: 'Another item'),
         ]))]
         public array $values
-    )
-    {
+    ) {
     }
 }
 

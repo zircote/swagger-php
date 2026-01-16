@@ -53,11 +53,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
         $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
-        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf, $schema->items) && ($docblockType || $reflectionType)) {
+        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockType || $reflectionType)) {
             $this->setSchemaType($schema, $docblockType ?? $reflectionType, $analysis, $sourceClass);
         }
 
         $this->type2ref($schema, $analysis, $sourceClass);
+
+        if ($schema->items instanceof OA\Items) {
+            $schema->type = 'array';
+        }
 
         if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {
@@ -92,6 +96,11 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     } else {
                         $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
                         $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
+
+                        if ($schema->items instanceof OA\Items) {
+                            // nothing more we can do here
+                            return $schema;
+                        }
 
                         $schema->type = Generator::UNDEFINED;
                         $schema->oneOf = [];
