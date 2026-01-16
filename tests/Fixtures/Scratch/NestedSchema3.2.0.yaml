@@ -26,6 +26,19 @@ components:
   schemas:
     NestedSchemaOne: {  }
     NestedSchemaTwo: {  }
+    MultipleOneOf:
+      properties:
+        values:
+          type: array
+          items:
+            oneOf:
+              -
+                $ref: '#/components/schemas/MultipleOneOf'
+                description: 'Recursive nested item'
+              -
+                $ref: '#/components/schemas/NestedSchemaTwo'
+                description: 'Another item'
+      type: object
     NestedSchema:
       required:
         - errors
