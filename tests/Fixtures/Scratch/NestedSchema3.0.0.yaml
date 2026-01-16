@@ -26,6 +26,17 @@ components:
   schemas:
     NestedSchemaOne: {  }
     NestedSchemaTwo: {  }
+    MultipleOneOf:
+      properties:
+        values:
+          type: array
+          items:
+            oneOf:
+              -
+                $ref: '#/components/schemas/MultipleOneOf'
+              -
+                $ref: '#/components/schemas/NestedSchemaTwo'
+      type: object
     NestedSchema:
       required:
         - errors

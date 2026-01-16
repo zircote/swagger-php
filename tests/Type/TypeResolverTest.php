@@ -62,6 +62,10 @@ class TypeResolverTest extends OpenApiTestCase
                 'reflectionvalue' => '{ "example": true, "nullable": true, "property": "reflectionValue" }',
                 'legacy:intersectionvar' => '{ "property": "intersectionVar" }',
                 'type-info:intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
+                'legacy:nestedoneof' => '{ "property": "nestedOneOf" }',
+                'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
+                'legacy:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
             ],
             OA\OpenApi::VERSION_3_1_0 => [
                 'nothing' => '{ "property": "nothing" }',
@@ -104,6 +108,10 @@ class TypeResolverTest extends OpenApiTestCase
                 'type-info:reflectionvalue' => '{ "type": [ "boolean", "integer", "null" ], "example": true, "property": "reflectionValue" }',
                 'legacy:intersectionvar' => '{ "property": "intersectionVar" }',
                 'type-info:intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
+                'legacy:nestedoneof' => '{ "property": "nestedOneOf" }',
+                'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
+                'legacy:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
             ],
         ];
 
