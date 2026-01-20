@@ -22,7 +22,7 @@ class NestedSchemaTwo
 class MultipleOneOf
 {
     /**
-     * @param array<MultipleOneOf>|array<NestedSchemaTwo> $values
+     * @param array<MultipleOneOf|NestedSchemaTwo> $values
      */
     public function __construct(
         #[OAT\Property(items: new OAT\Items(oneOf: [
