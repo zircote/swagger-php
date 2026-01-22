@@ -157,6 +157,27 @@ class Generator
             'generator' => [
                 'ignoreOtherAttributes' => false,
             ],
+            'mergeIntoOpenApi' => [
+                'mergeComponents' => false,
+            ],
+            'expandEnums' => [
+                'enumNames' => null,
+            ],
+            'augmentParameters' => [
+                'augmentOperationParameters' => true,
+            ],
+            'pathFilter' => [
+                'tags' => [],
+                'paths' => [],
+                'recurseCleanup' => false,
+            ],
+            'cleanUnusedComponents' => [
+                'enabled' => false,
+            ],
+            'augmentTags' => [
+                'whitelist' => [],
+                'withDescription' => true,
+            ],
             'operationId' => [
                 'hash' => true,
             ],
@@ -320,8 +341,8 @@ class Generator
     public function getTypeResolver(): TypeResolverInterface
     {
         $this->typeResolver ??= class_exists(StringTypeResolver::class)
-                    ? new TypeInfoTypeResolver()
-                    : new LegacyTypeResolver();
+            ? new TypeInfoTypeResolver()
+            : new LegacyTypeResolver();
 
         return $this->typeResolver;
     }

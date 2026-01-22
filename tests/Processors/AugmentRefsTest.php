@@ -32,9 +32,13 @@ class AugmentRefsTest extends OpenApiTestCase
 
         $this->assertSame($analysis->openapi->paths[0]->post->requestBody->ref, 'OpenApi\Tests\Fixtures\Request');
 
+<<<<<<< HEAD
         $analysis->process([
             new AugmentRefs(),
         ]);
+=======
+        $this->processorPipeline([new AugmentRefs()])->process($analysis);
+>>>>>>> 5d7d737 (Verify the `Generator` default config and allow to show in CLI (#1925))
 
         $this->assertSame($analysis->openapi->paths[0]->post->requestBody->ref, '#/components/requestBodies/Request');
     }

@@ -63,9 +63,19 @@ class ExpandEnumsTest extends OpenApiTestCase
 
     public function testEnumNamesInBackedStringEnum(): void
     {
+<<<<<<< HEAD
         $analysis = $this->analysisFromFixtures(['PHP/Enums/StatusEnumStringBacked.php']);
         $analysis->process($this->initializeProcessors([new ExpandEnums('enumNames')]));
         $schema = $analysis->getSchemaForSource(StatusEnumStringBacked::class);
+=======
+        $analysis = $this->analysisFromFixtures(
+            ['PHP/Enums/StatusEnumStringBacked.php'],
+            $this->processorPipeline([new ExpandEnums()]),
+            config: ['expandEnums' => ['enumNames' => 'enumNames']],
+        );
+
+        $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
+>>>>>>> 5d7d737 (Verify the `Generator` default config and allow to show in CLI (#1925))
 
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->x['enumNames']);
     }

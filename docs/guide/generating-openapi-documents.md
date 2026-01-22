@@ -36,21 +36,23 @@ For a list of all available options use the `-h` option
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
-  --config (-c)     Generator config
-                    ex: -c operationId.hash=false
-  --output (-o)     Path to store the generated documentation.
-                    ex: --output openapi.yaml
-  --exclude (-e)    Exclude path(s).
-                    ex: --exclude vendor,library/Zend
-  --pattern (-n)    Pattern of files to scan.
-                    ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
-  --bootstrap (-b)  Bootstrap a php file for defining constants, etc.
-                    ex: --bootstrap config/constants.php
-  --processor (-p)  Register an additional processor.
-  --format (-f)     Force yaml or json.
-  --debug (-d)      Show additional error information.
-  --version         The OpenAPI version; defaults to 3.0.0.
-  --help (-h)       Display this help message.
+  --config (-c)               Generator config.
+                              ex: -c operationId.hash=false
+  --defaults (-D)             Show default config.
+  --output (-o)               Path to store the generated documentation.
+                              ex: --output openapi.yaml
+  --exclude (-e)              Exclude path(s).
+                              ex: --exclude vendor,library/Zend
+  --pattern (-n)              Pattern of files to scan.
+                              ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
+  --bootstrap (-b)            Bootstrap php file(s) for defining constants, etc.
+                              ex: --bootstrap config/constants.php
+  --add-processor (-a)        Register an additional processor (allows multiple).
+  --remove-processor (-r)     Remove an existing processor (allows multiple).
+  --format (-f)               Force yaml or json.
+  --debug (-d)                Show additional error information.
+  --version                   The OpenAPI version; defaults to 3.0.0.
+  --help (-h)                 Display this help message.
 ```
 
 ## Using PHP

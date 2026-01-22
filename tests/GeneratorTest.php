@@ -124,4 +124,32 @@ class GeneratorTest extends OpenApiTestCase
         $generator->setConfig($config);
         $this->assertOperationIdHash($generator, $expected);
     }
+
+    public function testDefaultConfig(): void
+    {
+        $walker = function (callable $pipe) use (&$collectedConfig): void {
+            $rc = new \ReflectionClass($pipe);
+            $ctorparams = [];
+            foreach ($rc->getConstructor()?->getParameters() ?? [] as $rparam) {
+                $ctorparams[$rparam->getName()] = $rparam;
+            }
+
+            $processorKey = lcfirst($rc->getShortName());
+            foreach ($rc->getMethods() as $rm) {
+                if ($rm->isPublic() && str_starts_with($rm->getName(), 'set')) {
+                    $name = lcfirst(substr($rm->getName(), 3));
+                    if (array_key_exists($name, $ctorparams)) {
+                        $collectedConfig[$processorKey][$name] = $ctorparams[$name]->getDefaultValue();
+                    }
+                }
+            }
+        };
+
+        $collectedConfig = [];
+        $generator = new Generator();
+        $generator->getProcessorPipeline()->walk($walker);
+
+        // excludes generator config
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($generator->getDefaultConfig(), $collectedConfig, ['generator']);
+    }
 }

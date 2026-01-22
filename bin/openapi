@@ -22,6 +22,7 @@ error_reporting(E_ALL);
 // Possible options and their default values.
 $options = [
     'config' => [],
+    'defaults' => false,
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
@@ -34,6 +35,7 @@ $options = [
 ];
 $aliases = [
     'c' => 'config',
+    'D' => 'defaults',
     'o' => 'output',
     'e' => 'exclude',
     'n' => 'pattern',
@@ -110,6 +112,13 @@ if (!$error && $options['bootstrap']) {
         }
     }
 }
+
+if ($options['defaults']) {
+    $logger->info('Default config');
+    $logger->info(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
+    exit(1);
+}
+
 if (count($paths) === 0) {
     $error = 'Specify at least one path.';
 }
@@ -127,6 +136,7 @@ if ($options['help']) {
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
+<<<<<<< HEAD
   --config (-c)     Generator config
                     ex: -c operationId.hash=false
   --output (-o)     Path to store the generated documentation.
@@ -142,6 +152,25 @@ Options:
   --debug (-d)      Show additional error information.
   --version         The OpenAPI version; defaults to {$defaultVersion}.
   --help (-h)       Display this help message.
+=======
+  --config (-c)               Generator config.
+                              ex: -c operationId.hash=false
+  --defaults (-D)             Show default config.
+  --output (-o)               Path to store the generated documentation.
+                              ex: --output openapi.yaml
+  --exclude (-e)              Exclude path(s).
+                              ex: --exclude vendor,library/Zend
+  --pattern (-n)              Pattern of files to scan.
+                              ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
+  --bootstrap (-b)            Bootstrap php file(s) for defining constants, etc.
+                              ex: --bootstrap config/constants.php
+  --add-processor (-a)        Register an additional processor (allows multiple).
+  --remove-processor (-r)     Remove an existing processor (allows multiple).
+  --format (-f)               Force yaml or json.
+  --debug (-d)                Show additional error information.
+  --version                   The OpenAPI version; defaults to {$defaultVersion}.
+  --help (-h)                 Display this help message.
+>>>>>>> 5d7d737 (Verify the `Generator` default config and allow to show in CLI (#1925))
 
 
 EOF;
