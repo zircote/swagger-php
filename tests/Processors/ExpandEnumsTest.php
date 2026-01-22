@@ -75,7 +75,8 @@ class ExpandEnumsTest extends OpenApiTestCase
     {
         $analysis = $this->analysisFromFixtures(
             ['PHP/Enums/StatusEnumStringBacked.php'],
-            $this->processorPipeline([new ExpandEnums('enumNames')]),
+            $this->processorPipeline([new ExpandEnums()]),
+            config: ['expandEnums' => ['enumNames' => 'enumNames']],
         );
 
         $schema = $analysis->getAnnotationForSource(StatusEnumStringBacked::class);
