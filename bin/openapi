@@ -22,6 +22,7 @@ error_reporting(E_ALL);
 // Possible options and their default values.
 $options = [
     'config' => [],
+    'defaults' => false,
     'output' => false,
     'format' => 'auto',
     'exclude' => [],
@@ -35,6 +36,7 @@ $options = [
 ];
 $aliases = [
     'c' => 'config',
+    'D' => 'defaults',
     'o' => 'output',
     'e' => 'exclude',
     'n' => 'pattern',
@@ -118,6 +120,13 @@ if (!$error && $options['bootstrap']) {
         }
     }
 }
+
+if ($options['defaults']) {
+    $logger->info('Default config');
+    $logger->info(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
+    exit(1);
+}
+
 if (count($paths) === 0) {
     $error = 'Specify at least one path.';
 }
@@ -137,6 +146,7 @@ Usage: openapi [--option value] [/path/to/project ...]
 Options:
   --config (-c)               Generator config.
                               ex: -c operationId.hash=false
+  --defaults (-D)             Show default config.
   --output (-o)               Path to store the generated documentation.
                               ex: --output openapi.yaml
   --exclude (-e)              Exclude path(s).
