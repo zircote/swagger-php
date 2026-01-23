@@ -14,6 +14,16 @@ parameters:
         - 'tests/Fixtures/*'
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - '#does not accept default value of type #'
-        ## Examples
-        - '#^Property [a-zA-Z0-9\\]+::\$[a-zA-Z]+ is unused.$#'
+        -
+            # ignore Generator::UNDEFINED default value
+            message: '#OpenApi\\Annotations#'
+            identifier: property.defaultValue
+        -
+            # ignore unused example fixtures
+            message: '#OpenApi\\Examples#'
+            identifier: property.unused
+        -
+            # ignore assigning Generator::UNDEFINED as property value
+        	message: '#Property OpenApi\\Annotations.*::\$.* does not accept string.#'
+        	identifier: assign.propertyType
+
