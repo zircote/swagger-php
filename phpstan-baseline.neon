@@ -1,6 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
+<<<<<<< HEAD
 			message: '#^Property OpenApi\\Annotations\\AbstractAnnotation\:\:\$x \(array\<string, mixed\>\) does not accept string\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -15,6 +16,10 @@ parameters:
 		-
 			message: '#^Call to function method_exists\(\) with ReflectionProperty and ''isPromoted'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
+=======
+			message: '#^Call to an undefined method Reflector\:\:getAttributes\(\)\.$#'
+			identifier: method.notFound
+>>>>>>> 9cdd14a (Improve phpstan config (#1928))
 			count: 1
 			path: src/Analysers/AttributeAnnotationFactory.php
 
@@ -61,12 +66,6 @@ parameters:
 			path: src/Processors/AugmentProperties.php
 
 		-
-			message: '#^Property OpenApi\\Annotations\\Schema\:\:\$properties \(array\<OpenApi\\Annotations\\Property\>\) does not accept string\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Processors/AugmentSchemas.php
-
-		-
 			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:description\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
 			identifier: argument.type
 			count: 1
@@ -85,6 +84,7 @@ parameters:
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
+<<<<<<< HEAD
 			message: '#^Property OpenApi\\Annotations\\JsonContent\:\:\$encoding \(array\<OpenApi\\Annotations\\Encoding\>\) does not accept string\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -115,6 +115,8 @@ parameters:
 			path: src/Type/TypeInfoTypeResolver.php
 
 		-
+=======
+>>>>>>> 9cdd14a (Improve phpstan config (#1928))
 			message: '#^Parameter \#1 \$callback of function spl_autoload_register expects \(callable\(string\)\: void\)\|null, array\{Composer\\Autoload\\ClassLoader, ''findFile''\} given\.$#'
 			identifier: argument.type
 			count: 1
