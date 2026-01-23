@@ -25,6 +25,7 @@ class User
     #[MyAttribute]
     public $uuid;
 
+    /** @phpstan-ignore attribute.notFound */
     #[ArrayShape(['ping' => 'pong'])]
     public array $arrayShape;
 }
