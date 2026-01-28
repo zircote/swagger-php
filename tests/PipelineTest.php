@@ -95,9 +95,7 @@ class PipelineTest extends OpenApiTestCase
         $pipeline->add($this->pipe('z'));
         $this->assertEquals('xz', $pipeline->process(''));
 
-        $pipeline->insert($this->pipe('y'), function ($pipes) {
-            return 1;
-        });
+        $pipeline->insert($this->pipe('y'), fn ($pipes) => 1);
         $this->assertEquals('xyz', $pipeline->process(''));
     }
 
