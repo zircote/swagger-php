@@ -70,7 +70,7 @@ class MultipleOneOf
             uniqueItems: true,
             additionalProperties: new OAT\AdditionalProperties(
                 description: 'Array of error messages for property',
-                type: 'array',
+                type: ['array'],
                 items: new OAT\Items(
                     type: 'string',
                 ),

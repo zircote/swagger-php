@@ -23,9 +23,13 @@ $insertMatch = function (array $pipes) {
 };
 
 $openapi = (new Generator())
+<<<<<<< HEAD
     ->withProcessorPipeline(function (Pipeline $pipeline) use ($insertMatch) {
         $pipeline->insert(new SchemaQueryParameter(), $insertMatch);
     })
+=======
+    ->withProcessorPipeline(fn (Pipeline $pipeline) => $pipeline->insert(new SchemaQueryParameter(), $insertMatch))
+>>>>>>> 09610b2 (Add `Schema::hasType()` to encapsulate `string|array` duality of schema type (#1936))
     ->generate([__DIR__ . '/app']);
 // file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
 echo $openapi->toYaml();

@@ -33,7 +33,7 @@ class PropertyItems
         items: new OAT\Items(type: ItemDto::class),
         minItems: 2,
     )]
-    public array $list1;
+    public ?array $list1;
 
     /**
      * @var ItemDto[] $list2

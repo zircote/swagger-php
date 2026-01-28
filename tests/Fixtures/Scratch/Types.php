@@ -14,7 +14,7 @@ class Types
     #[OAT\Property(type: ['string', 'integer'])]
     public string|int $stringInteger = '';
 
-    #[OAT\Property(type: ['string', 'number', 'integer', 'boolean', 'array', 'object', 'null'])]
+    #[OAT\Property(type: ['string', 'number', 'integer', 'boolean', 'object', 'null'])]
     public mixed $massiveTypes = '';
 }
 

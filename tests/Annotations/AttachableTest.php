@@ -33,11 +33,15 @@ class AttachableTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->addAlias('oaf', 'OpenApi\Tests\Fixtures\Annotations')
             ->addNamespace('OpenApi\Tests\Fixtures\Annotations\\')
+<<<<<<< HEAD
             ->withProcessorPipeline(function (Pipeline $processor) {
                 $processor->remove(null, function ($pipe) {
                     return !$pipe instanceof CleanUnusedComponents;
                 });
             })
+=======
+            ->withProcessorPipeline(fn (Pipeline $processor) => $processor->remove(null, fn ($pipe) => !$pipe instanceof CleanUnusedComponents))
+>>>>>>> 09610b2 (Add `Schema::hasType()` to encapsulate `string|array` duality of schema type (#1936))
             ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);

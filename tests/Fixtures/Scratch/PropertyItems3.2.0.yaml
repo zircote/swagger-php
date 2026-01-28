@@ -28,7 +28,9 @@ components:
       properties:
         list1:
           description: 'Missing docblock'
-          type: array
+          type:
+            - array
+            - 'null'
           items:
             $ref: '#/components/schemas/ItemDto'
           minItems: 2

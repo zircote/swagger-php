@@ -515,10 +515,21 @@ class Schema extends AbstractAnnotation
     }
 
     /**
+<<<<<<< HEAD
      * @inheritdoc
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
+=======
+     * Check if the given type is valid for this schema.
+     */
+    public function hasType(string $type): bool
+    {
+        return in_array($type, (array) $this->type, true);
+    }
+
+    public function jsonSerialize(): \stdClass
+>>>>>>> 09610b2 (Add `Schema::hasType()` to encapsulate `string|array` duality of schema type (#1936))
     {
         $data = parent::jsonSerialize();
 
@@ -538,7 +549,7 @@ class Schema extends AbstractAnnotation
      */
     public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
     {
-        if ($this->type === 'array' && Generator::isDefault($this->items)) {
+        if ($this->hasType('array') && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             return false;

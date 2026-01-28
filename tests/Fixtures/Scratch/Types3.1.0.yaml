@@ -24,7 +24,6 @@ components:
             - number
             - integer
             - boolean
-            - array
             - object
             - 'null'
       type: object
