@@ -71,7 +71,7 @@ class PipelineTest extends OpenApiTestCase
         $pipeline->add($this->pipe('d'));
         $this->assertEquals('cd', $pipeline->process(''));
 
-        $pipeline->remove(null, function ($pipe) use ($pipec) { return $pipe !== $pipec; });
+        $pipeline->remove(null, fn ($pipe) => $pipe !== $pipec);
         $this->assertEquals('d', $pipeline->process(''));
     }
 
@@ -95,7 +95,7 @@ class PipelineTest extends OpenApiTestCase
         $pipeline->add($this->pipe('z'));
         $this->assertEquals('xz', $pipeline->process(''));
 
-        $pipeline->insert($this->pipe('y'), function ($pipes) { return 1; });
+        $pipeline->insert($this->pipe('y'), fn ($pipes) => 1);
         $this->assertEquals('xyz', $pipeline->process(''));
     }
 
