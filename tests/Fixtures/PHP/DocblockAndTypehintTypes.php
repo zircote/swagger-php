@@ -201,8 +201,6 @@ class DocblockAndTypehintTypes
         ?array  $blah_values,
     ) {
     }
-<<<<<<< HEAD
-=======
 
     #[OAT\Property]
     public FirstInterface&SecondInterface $intersectionVar;
@@ -221,5 +219,4 @@ class DocblockAndTypehintTypes
         new OAT\Schema(type: 'string'),
     ]))]
     public array $nestedOneOfWithItems;
->>>>>>> 0e20d17 (Skip type resolving on `Schema` with `items` set (#1916) the )
 }
