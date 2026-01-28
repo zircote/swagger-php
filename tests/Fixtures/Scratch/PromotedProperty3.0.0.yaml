@@ -24,15 +24,15 @@ components:
         other:
           description: 'Other value.'
           type: string
-        myEnum:
-          $ref: '#/components/schemas/MyEnum'
-        thename:
-          description: 'Property name.'
-          type: string
         themeta:
           description: 'Property meta.'
           type: string
         different:
           description: 'Property different.'
+          type: string
+        myEnum:
+          $ref: '#/components/schemas/MyEnum'
+        thename:
+          description: 'Property name.'
           type: string
       type: object
