@@ -59,6 +59,9 @@ class TypeResolverTest extends OpenApiTestCase
             'blah_values' => '{ "type": "array", "items": { "type": "string", "example": "hello" }, "nullable": true, "property": "blah_values" }',
             'oneofvar' => '{ "oneOf": [ { "type": "string" }, { "type": "bool" } ], "property": "oneOfVar" }',
             'oneoflist' => '{ "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "bool" } ] }, "property": "oneOfList" }',
+            'intersectionvar' => '{ "property": "intersectionVar" }',
+            'nestedoneof' => '{ "property": "nestedOneOf" }',
+            'nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
         ];
 
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);

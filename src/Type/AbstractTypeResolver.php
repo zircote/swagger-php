@@ -48,8 +48,10 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
             }
         }
 
-        $this->mapNativeType($schema->items, $schema->items->type);
-        $schema->type = 'array';
+        if (!Generator::isDefault($schema->items)) {
+            $this->mapNativeType($schema->items, $schema->items->type);
+            $schema->type = 'array';
+        }
     }
 
     /**
