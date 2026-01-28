@@ -71,13 +71,7 @@ class PipelineTest extends OpenApiTestCase
         $pipeline->add($this->pipe('d'));
         $this->assertEquals('cd', $pipeline->process(''));
 
-<<<<<<< HEAD
-        $pipeline->remove(null, function ($pipe) use ($pipec) {
-            return $pipe !== $pipec;
-        });
-=======
         $pipeline->remove(null, fn ($pipe) => $pipe !== $pipec);
->>>>>>> 09610b2 (Add `Schema::hasType()` to encapsulate `string|array` duality of schema type (#1936))
         $this->assertEquals('d', $pipeline->process(''));
     }
 
@@ -101,13 +95,7 @@ class PipelineTest extends OpenApiTestCase
         $pipeline->add($this->pipe('z'));
         $this->assertEquals('xz', $pipeline->process(''));
 
-<<<<<<< HEAD
-        $pipeline->insert($this->pipe('y'), function ($pipes) {
-            return 1;
-        });
-=======
         $pipeline->insert($this->pipe('y'), fn ($pipes) => 1);
->>>>>>> 09610b2 (Add `Schema::hasType()` to encapsulate `string|array` duality of schema type (#1936))
         $this->assertEquals('xyz', $pipeline->process(''));
     }
 
