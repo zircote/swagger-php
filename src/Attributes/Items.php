@@ -105,11 +105,8 @@ class Items extends OA\Items
             'anyOf' => $anyOf ?? Generator::UNDEFINED,
             'oneOf' => $oneOf ?? Generator::UNDEFINED,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
-<<<<<<< HEAD
-=======
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
->>>>>>> 2835140 (Add support for 3.1 `unevaluatedProperties` support (#1907))
             // annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
