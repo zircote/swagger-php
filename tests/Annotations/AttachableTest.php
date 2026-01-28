@@ -33,7 +33,11 @@ class AttachableTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->addAlias('oaf', 'OpenApi\Tests\Fixtures\Annotations')
             ->addNamespace('OpenApi\Tests\Fixtures\Annotations\\')
-            ->withProcessorPipeline(function (Pipeline $processor) { $processor->remove(null, function ($pipe) { return !$pipe instanceof CleanUnusedComponents; }); })
+            ->withProcessorPipeline(function (Pipeline $processor) {
+                $processor->remove(null, function ($pipe) {
+                    return !$pipe instanceof CleanUnusedComponents;
+                });
+            })
             ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);

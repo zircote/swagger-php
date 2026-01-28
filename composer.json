@@ -74,7 +74,7 @@
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^1.6 || ^2.0",
         "phpunit/phpunit": "^9.0",
-        "rector/rector": "^1.0 || 2.2.14",
+        "rector/rector": "^1.0 || ^2.3.1",
         "vimeo/psalm": "^4.30 || ^5.0"
     },
     "conflict": {
