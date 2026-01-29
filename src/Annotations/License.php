@@ -92,7 +92,7 @@ class License extends AbstractAnnotation
         $valid = parent::validate($stack, $skip, $ref, $context);
 
         if (!$this->_context->isVersion('3.0.x')) {
-            if (!Generator::isDefault($this->url) && $this->identifier !== Generator::UNDEFINED) {
+            if (!Generator::isDefault($this->url) && !Generator::isDefault($this->identifier)) {
                 $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
                 $valid = false;
             }
