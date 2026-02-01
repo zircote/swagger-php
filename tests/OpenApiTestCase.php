@@ -24,7 +24,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -103,21 +102,15 @@ class OpenApiTestCase extends TestCase
 
     public function getTypeResolver(): TypeResolverInterface
     {
-        return class_exists(StringTypeResolver::class)
-            ? new TypeInfoTypeResolver()
-            : new LegacyTypeResolver();
+        return new TypeInfoTypeResolver();
     }
 
     public static function getTypeResolvers(): array
     {
-        $typeResolvers = [
+        return [
             'legacy' => new LegacyTypeResolver(),
+            'type-info' => new TypeInfoTypeResolver(),
         ];
-        if (class_exists(StringTypeResolver::class)) {
-            $typeResolvers['type-info'] = new TypeInfoTypeResolver();
-        }
-
-        return $typeResolvers;
     }
 
     public function initializeProcessors(array $processors): array
