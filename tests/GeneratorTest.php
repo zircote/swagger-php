@@ -12,14 +12,14 @@ use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class GeneratorTest extends OpenApiTestCase
+final class GeneratorTest extends OpenApiTestCase
 {
     use UsesExamples;
 
     public static function sourcesProvider(): iterable
     {
         $name = 'petstore';
-        $sourceDir = static::examplePath("$name/annotations");
+        $sourceDir = self::examplePath("{$name}/annotations");
 
         yield 'dir-list' => [$name, [$sourceDir]];
         yield 'finder' => [$name, new SourceFinder($sourceDir)];
@@ -36,7 +36,7 @@ class GeneratorTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
-        $this->assertSpecEquals(file_get_contents(static::getSpecFilename($name)), $openapi);
+        $this->assertSpecEquals(file_get_contents(self::getSpecFilename($name)), $openapi);
     }
 
     public function testScanInvalidSource(): void
@@ -65,7 +65,7 @@ class GeneratorTest extends OpenApiTestCase
         $generator = new Generator();
         $generator->addAlias('foo', 'Foo\\Bar');
 
-        $this->assertEquals(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
+        $this->assertSame(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
     }
 
     public function testAddNamespace(): void
@@ -73,26 +73,24 @@ class GeneratorTest extends OpenApiTestCase
         $generator = new Generator();
         $generator->addNamespace('Foo\\Bar\\');
 
-        $this->assertEquals(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
+        $this->assertSame(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
     }
 
     protected function assertOperationIdHash(Generator $generator, bool $expected): void
     {
-        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected) {
+        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected): void {
             if ($processor instanceof OperationId) {
-                $this->assertEquals($expected, $processor->isHash());
+                $this->assertSame($expected, $processor->isHash());
             }
         });
     }
 
-    public static function configCases(): iterable
+    public static function configCases(): \Iterator
     {
-        return [
-            'default' => [[], true],
-            'nested' => [['operationId' => ['hash' => false]], false],
-            'dots-kv' => [['operationId.hash' => false], false],
-            'dots-string' => [['operationId.hash=false'], false],
-        ];
+        yield 'default' => [[], true];
+        yield 'nested' => [['operationId' => ['hash' => false]], false];
+        yield 'dots-kv' => [['operationId.hash' => false], false];
+        yield 'dots-string' => [['operationId.hash=false'], false];
     }
 
     #[DataProvider('configCases')]

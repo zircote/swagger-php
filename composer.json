@@ -98,7 +98,7 @@
     },
     "scripts": {
         "cs": "export XDEBUG_MODE=off && php-cs-fixer fix --allow-risky=yes",
-        "rector": "rector process src docs/examples",
+        "rector": "rector process src tests docs/examples",
         "lint": [
             "@cs --dry-run",
             "@rector --dry-run"

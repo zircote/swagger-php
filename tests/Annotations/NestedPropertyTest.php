@@ -13,7 +13,7 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class NestedPropertyTest extends OpenApiTestCase
+final class NestedPropertyTest extends OpenApiTestCase
 {
     public function testNestedProperties(): void
     {

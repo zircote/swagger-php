@@ -12,7 +12,7 @@ use OpenApi\Generator;
 use OpenApi\Processors\MergeXmlContent;
 use OpenApi\Tests\OpenApiTestCase;
 
-class MergeXmlContentTest extends OpenApiTestCase
+final class MergeXmlContentTest extends OpenApiTestCase
 {
     public function testXmlContent(): void
     {

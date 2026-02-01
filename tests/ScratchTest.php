@@ -11,26 +11,26 @@ use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class ScratchTest extends OpenApiTestCase
+final class ScratchTest extends OpenApiTestCase
 {
     public static function scratchTestProvider(): iterable
     {
-        foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
-            foreach (glob(static::fixture('Scratch/*.php')) as $fixture) {
+        foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
+            foreach (glob(self::fixture('Scratch/*.php')) as $fixture) {
                 $name = pathinfo($fixture, PATHINFO_FILENAME);
 
-                if (0 === strpos($name, 'Abstract')) {
+                if (str_starts_with($name, 'Abstract')) {
                     continue;
                 }
 
-                $scratch = static::fixture("Scratch/$name.php");
+                $scratch = self::fixture("Scratch/{$name}.php");
                 $specs = [
-                    static::fixture("Scratch/{$name}3.2.0.yaml") => OA\OpenApi::VERSION_3_2_0,
-                    static::fixture("Scratch/{$name}3.2.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_2_0,
-                    static::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
-                    static::fixture("Scratch/{$name}3.1.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_1_0,
-                    static::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
-                    static::fixture("Scratch/{$name}3.0.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_0_0,
+                    self::fixture("Scratch/{$name}3.2.0.yaml") => OA\OpenApi::VERSION_3_2_0,
+                    self::fixture("Scratch/{$name}3.2.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_2_0,
+                    self::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
+                    self::fixture("Scratch/{$name}3.1.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_1_0,
+                    self::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
+                    self::fixture("Scratch/{$name}3.0.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_0_0,
                 ];
 
                 $expectedLogs = [
@@ -39,7 +39,7 @@ class ScratchTest extends OpenApiTestCase
 
                 foreach ($specs as $spec => $version) {
                     if (file_exists($spec)) {
-                        $dataSet = "$resolverName-$name-$version";
+                        $dataSet = "{$resolverName}-{$name}-{$version}";
                         yield $dataSet => [
                             $typeResolver,
                             $scratch,

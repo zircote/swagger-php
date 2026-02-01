@@ -14,7 +14,7 @@ use OpenApi\Tests\OpenApiTestCase;
  *
  * Security openapi test
  */
-class SecuritySchemesTest extends OpenApiTestCase
+final class SecuritySchemesTest extends OpenApiTestCase
 {
     /**
      * Test parse servers.

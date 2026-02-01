@@ -10,10 +10,12 @@ use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class AttributesSyncTest extends OpenApiTestCase
+final class AttributesSyncTest extends OpenApiTestCase
 {
     public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'dependencies', 'propertyNames'];
+
     public static $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+
     public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple', 'deepObject'];
 
     public function testCounts(): void
@@ -43,7 +45,7 @@ class AttributesSyncTest extends OpenApiTestCase
                     $annotationType = $this->propertyType($property);
                     $attributeType = $this->parameterType($propertyName, $attributeParameter);
 
-                    if ($annotationType != $attributeType) {
+                    if ($annotationType !== $attributeType) {
                         $typeMismatch[$propertyName] = [$annotationRC->getName(), $annotationType, $attributeType];
                     }
 
@@ -60,10 +62,10 @@ class AttributesSyncTest extends OpenApiTestCase
             }
             if (!$found) {
                 // Schema inheritance exclusions...
-                if ($attributeRC->isSubclassOf(OA\Operation::class) && in_array($propertyName, ['method'])) {
+                if ($attributeRC->isSubclassOf(OA\Operation::class) && $propertyName == 'method') {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\Attachable::class) && in_array($propertyName, ['x'])) {
+                if ($attributeRC->isSubclassOf(OA\Attachable::class) && $propertyName == 'x') {
                     continue;
                 }
                 if ($attributeRC->isSubclassOf(OA\AdditionalProperties::class) && in_array($propertyName, ['additionalProperties', 'examples', 'contentEncoding', 'contentMediaType'])) {
@@ -76,13 +78,13 @@ class AttributesSyncTest extends OpenApiTestCase
                     continue;
                 }
 
-                if (in_array($propertyName, static::$SCHEMA_EXCLUSIONS)) {
+                if (in_array($propertyName, self::$SCHEMA_EXCLUSIONS)) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\PathItem::class) && in_array($propertyName, static::$PATHITEM_EXCLUSIONS)) {
+                if ($attributeRC->isSubclassOf(OA\PathItem::class) && in_array($propertyName, self::$PATHITEM_EXCLUSIONS)) {
                     continue;
                 }
-                if ($attributeRC->isSubclassOf(OA\Parameter::class) && in_array($propertyName, static::$PARAMETER_EXCLUSIONS)) {
+                if ($attributeRC->isSubclassOf(OA\Parameter::class) && in_array($propertyName, self::$PARAMETER_EXCLUSIONS)) {
                     continue;
                 }
                 $missing[] = $propertyName;
@@ -108,27 +110,27 @@ class AttributesSyncTest extends OpenApiTestCase
         $lines = preg_split('/(\n|\r\n)/', $docComment);
         $lines[0] = preg_replace('/[ \t]*\\/\*\*/', '', $lines[0]); // strip '/**'
         $i = count($lines) - 1;
-        $lines[$i] = preg_replace('/\*\/[ \t]*$/', '', $lines[$i]); // strip '*/'
+        $lines[$i] = preg_replace('/\*\/[ \t]*$/', '', (string) $lines[$i]); // strip '*/'
 
         foreach ($lines as $ii => $line) {
-            $lines[$ii] = ltrim($line, "\t *");
+            $lines[$ii] = ltrim((string) $line, "\t *");
         }
 
         return $lines;
     }
 
-    protected function propertyType(\ReflectionProperty $property): ?string
+    protected function propertyType(\ReflectionProperty $property): string
     {
         $var = 'mixed';
         foreach ($this->prepDocComment($property->getDocComment()) as $line) {
-            if (substr($line, 0, 5) === '@var ') {
-                $var = trim(substr($line, 5));
+            if (str_starts_with((string) $line, '@var ')) {
+                $var = trim(substr((string) $line, 5));
             }
         }
 
         if ($var) {
             $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], '', $var);
-            if (false === strpos($var, '<')) {
+            if (!str_contains($var, '<')) {
                 $var = explode('|', $var);
                 sort($var);
                 $var = implode('|', $var);
@@ -158,13 +160,13 @@ class AttributesSyncTest extends OpenApiTestCase
         }
 
         foreach ($this->prepDocComment($parameter->getDeclaringFunction()->getDocComment()) as $line) {
-            if (substr($line, 0, 1) === '@') {
-                if (substr($line, 0, 7) === '@param ') {
-                    $line = preg_replace('/ +/', ' ', $line);
-                    $token = explode(' ', trim(substr($line, 7)));
-                    if (2 == count($token)) {
+            if (str_starts_with((string) $line, '@')) {
+                if (str_starts_with((string) $line, '@param ')) {
+                    $line = preg_replace('/ +/', ' ', (string) $line);
+                    $token = explode(' ', trim(substr((string) $line, 7)));
+                    if (2 === count($token)) {
                         [$type, $name] = $token;
-                        if (str_replace('$', '', $name) == $parameterName) {
+                        if (str_replace('$', '', $name) === $parameterName) {
                             $var = str_replace(['|null', 'null|'], '', $type);
                         }
                     }
@@ -174,7 +176,7 @@ class AttributesSyncTest extends OpenApiTestCase
 
         if ($var) {
             $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\', 'OA'], '', $var);
-            if (false === strpos($var, '<')) {
+            if (!str_contains($var, '<')) {
                 $var = explode('|', $var);
                 sort($var);
                 $var = implode('|', $var);

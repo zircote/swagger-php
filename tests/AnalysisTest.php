@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests;
 
-class AnalysisTest extends OpenApiTestCase
+final class AnalysisTest extends OpenApiTestCase
 {
     public function testGetSubclasses(): void
     {
@@ -16,7 +16,7 @@ class AnalysisTest extends OpenApiTestCase
             'ExpandClasses/Ancestor.php',
         ]);
 
-        $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
+        $this->assertCount(3, $analysis->classes, "3 classes should've been detected");
 
         $subclasses = $analysis->getSubClasses('\\OpenApi\\Tests\\Fixtures\\ExpandClasses\\GrandAncestor');
         $this->assertCount(2, $subclasses, 'GrandAncestor has 2 subclasses');
@@ -38,7 +38,7 @@ class AnalysisTest extends OpenApiTestCase
             'ExpandClasses/Ancestor.php',
         ]);
 
-        $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
+        $this->assertCount(3, $analysis->classes, "3 classes should've been detected");
 
         $superclasses = $analysis->getSuperClasses('\AnotherNamespace\Child');
         $this->assertCount(2, $superclasses, 'Child has a chain of 2 super classes');
@@ -60,7 +60,7 @@ class AnalysisTest extends OpenApiTestCase
             'ExpandClasses/Ancestor.php',
         ]);
 
-        $this->assertCount(3, $analysis->classes, '3 classes should\'ve been detected');
+        $this->assertCount(3, $analysis->classes, "3 classes should've been detected");
 
         $superclasses = $analysis->getSuperClasses('\AnotherNamespace\Child', true);
         $this->assertCount(1, $superclasses, 'Child has 1 parent class');

@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class AnnotationPropertiesDefinedTest extends OpenApiTestCase
+final class AnnotationPropertiesDefinedTest extends OpenApiTestCase
 {
     #[DataProvider('allAnnotationClasses')]
     public function testPropertiesAreNotUndefined(string $annotation): void

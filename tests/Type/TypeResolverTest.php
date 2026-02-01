@@ -18,7 +18,7 @@ use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class TypeResolverTest extends OpenApiTestCase
+final class TypeResolverTest extends OpenApiTestCase
 {
     public static function resolverAugmentCases(): iterable
     {
@@ -119,16 +119,16 @@ class TypeResolverTest extends OpenApiTestCase
         $fixtureFolder = dirname($rc->getFileName());
         $sources = [
             $rc->getFileName(),
-            "$fixtureFolder/FirstInterface.php",
-            "$fixtureFolder/SecondInterface.php",
+            "{$fixtureFolder}/FirstInterface.php",
+            "{$fixtureFolder}/SecondInterface.php",
         ];
 
-        foreach (static::getTypeResolvers() as $key => $typeResolver) {
+        foreach (self::getTypeResolvers() as $key => $typeResolver) {
             foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0] as $version) {
                 $analysis = (new Generator())
                     ->setVersion($version)
                     ->setProcessorPipeline(new Pipeline([new MergeIntoOpenApi(), new AugmentSchemas()]))
-                    ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($sources) {
+                    ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($sources): Analysis {
                         $generator->generate($sources, $analysis, false);
 
                         return $analysis;
@@ -141,9 +141,9 @@ class TypeResolverTest extends OpenApiTestCase
                         // promoted properties might not have a name!
                         ?? $property->_context->method;
 
-                    $caseName = strtolower($property->property);
-                    $resolverCaseName = "$key:$caseName";
-                    $fullCase = "$key:{$version}[$ii]-$caseName";
+                    $caseName = strtolower((string) $property->property);
+                    $resolverCaseName = "{$key}:{$caseName}";
+                    $fullCase = "{$key}:{$version}[{$ii}]-{$caseName}";
 
                     $json = $expectations[$version][$caseName] ?? $expectations[$version][$resolverCaseName] ?? null;
 

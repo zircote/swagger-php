@@ -15,10 +15,12 @@ use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
+    ->withSkipPath(__DIR__ . '/tests/Fixtures')
     ->withSkip([
         NewlineBeforeNewAssignSetRector::class,
         CombineIfRector::class,
@@ -36,6 +38,9 @@ return RectorConfig::configure()
         StringClassNameToClassConstantRector::class => [
             __DIR__ . '/src/Analysers/DocBlockParser.php',
             __DIR__ . '/src/Analysers/TypeResolverTrait.php',
+            __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+            __DIR__ . '/tests/AnalysisTest.php',
+            __DIR__ . '/tests/ContextTest.php',
         ],
         WrapEncapsedVariableInCurlyBracesRector::class => [
             __DIR__ . '/src/Type/LegacyTypeResolver.php',
@@ -47,6 +52,9 @@ return RectorConfig::configure()
         ClassPropertyAssignToConstructorPromotionRector::class,
         CompleteDynamicPropertiesRector::class => [
             __DIR__ . '/src/Annotations/AbstractAnnotation.php',
+        ],
+        ArrayToFirstClassCallableRector::class => [
+            __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
         ],
     ])
     ->withPreparedSets(

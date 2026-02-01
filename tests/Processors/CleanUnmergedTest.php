@@ -12,7 +12,7 @@ use OpenApi\Processors\CleanUnmerged;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class CleanUnmergedTest extends OpenApiTestCase
+final class CleanUnmergedTest extends OpenApiTestCase
 {
     public function testCleanUnmergedProcessor(): void
     {

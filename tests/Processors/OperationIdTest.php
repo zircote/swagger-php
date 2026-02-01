@@ -8,8 +8,11 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Tests\Fixtures\Processors\EntityControllerClass;
+use OpenApi\Tests\Fixtures\Processors\EntityControllerInterface;
+use OpenApi\Tests\Fixtures\Processors\EntityControllerTrait;
 
-class OperationIdTest extends OpenApiTestCase
+final class OperationIdTest extends OpenApiTestCase
 {
     public function testGeneratedOperationId(): void
     {
@@ -29,14 +32,14 @@ class OperationIdTest extends OpenApiTestCase
 
         $this->assertSame('/entities/{id}', $operations[0]->path);
         $this->assertInstanceOf(OA\Get::class, $operations[0]);
-        $this->assertSame('GET::/entities/{id}::OpenApi\Tests\Fixtures\Processors\EntityControllerClass::getEntry', $operations[0]->operationId);
+        $this->assertSame('GET::/entities/{id}::' . EntityControllerClass::class . '::getEntry', $operations[0]->operationId);
 
         $this->assertSame('/entities/{id}', $operations[1]->path);
         $this->assertInstanceOf(OA\Post::class, $operations[1]);
-        $this->assertSame('POST::/entities/{id}::OpenApi\Tests\Fixtures\Processors\EntityControllerInterface::updateEntity', $operations[1]->operationId);
+        $this->assertSame('POST::/entities/{id}::' . EntityControllerInterface::class . '::updateEntity', $operations[1]->operationId);
 
         $this->assertSame('/entities/{id}', $operations[2]->path);
         $this->assertInstanceOf(OA\Delete::class, $operations[2]);
-        $this->assertSame('DELETE::/entities/{id}::OpenApi\Tests\Fixtures\Processors\EntityControllerTrait::deleteEntity', $operations[2]->operationId);
+        $this->assertSame('DELETE::/entities/{id}::' . EntityControllerTrait::class . '::deleteEntity', $operations[2]->operationId);
     }
 }

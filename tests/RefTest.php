@@ -9,7 +9,7 @@ namespace OpenApi\Tests;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
-class RefTest extends OpenApiTestCase
+final class RefTest extends OpenApiTestCase
 {
     public function testRef(): void
     {
