@@ -22,15 +22,15 @@ use OpenApi\Attributes as OAT;
 class Pet
 {
     #[OAT\Property(title: 'ID', description: 'ID', format: 'int64')]
-    private readonly int $id;
+    private int $id;
 
     #[OAT\Property(
         title: 'Category'
     )]
-    private readonly Category $category;
+    private Category $category;
 
     #[OAT\Property(title: 'Pet name', description: 'Pet name', format: 'int64')]
-    private readonly string $name;
+    private string $name;
 
     #[OAT\Property(title: 'Photo urls', description: 'Photo urls', items: new OAT\Items(
         type: 'string',
@@ -39,7 +39,7 @@ class Pet
         name: 'photoUrl',
         wrapped: true
     ))]
-    private readonly array $photoUrls;
+    private array $photoUrls;
 
     #[OAT\Property(title: 'Pet tags', description: 'Pet tags', items: new OAT\Items(
         type: Tag::class
@@ -50,5 +50,5 @@ class Pet
     /**
      * @var array<Tag>
      */
-    private readonly array $tags;
+    private array $tags;
 }

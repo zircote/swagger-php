@@ -17,20 +17,20 @@ use OpenApi\Attributes as OAT;
 class Order
 {
     #[OAT\Property(title: 'ID', description: 'ID', format: 'int64', default: 1)]
-    private readonly int $id;
+    private int $id;
 
     #[OAT\Property(title: 'Pet ID', description: 'Pet ID', format: 'int64', default: 1)]
-    private readonly int $petId;
+    private int $petId;
 
     #[OAT\Property(title: 'Quantity', description: 'Quantity', format: 'int32', default: 12)]
-    private readonly int $quantity;
+    private int $quantity;
 
     #[OAT\Property(title: 'Shipping date', description: 'Shipping date', type: 'string', format: 'datetime', default: '2017-02-02 18:31:45')]
-    private readonly \DateTime $shipDate;
+    private \DateTime $shipDate;
 
     #[OAT\Property(title: 'Order status', description: 'Order status', default: 'placed', enum: ['placed', 'approved', 'delivered'])]
-    private readonly string $status;
+    private string $status;
 
     #[OAT\Property(title: 'Complete status', description: 'Complete status', type: 'boolean', default: false)]
-    private readonly bool $complete;
+    private bool $complete;
 }

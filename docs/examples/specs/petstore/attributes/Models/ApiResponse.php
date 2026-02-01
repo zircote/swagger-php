@@ -17,11 +17,11 @@ use OpenApi\Attributes as OAT;
 class ApiResponse
 {
     #[OAT\Property(title: 'Code', description: 'Code', format: 'int32')]
-    private readonly int $code;
+    private int $code;
 
     #[OAT\Property(title: 'Type', description: 'Type')]
-    private readonly string $type;
+    private string $type;
 
     #[OAT\Property(title: 'Message', description: 'Message')]
-    private readonly string $message;
+    private string $message;
 }

@@ -16,6 +16,7 @@ use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\ValueObject\PhpVersion;
 
@@ -26,6 +27,7 @@ return RectorConfig::configure()
         CombineIfRector::class,
         ExplicitBoolCompareRector::class,
         ForRepeatedCountToOwnVariableRector::class,
+        ReadOnlyPropertyRector::class,
         RemoveAlwaysTrueIfConditionRector::class => [
             __DIR__ . '/src/Processors/ExpandEnums.php',
         ],
@@ -39,6 +41,7 @@ return RectorConfig::configure()
             __DIR__ . '/src/Analysers/DocBlockParser.php',
             __DIR__ . '/src/Analysers/TypeResolverTrait.php',
             __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+            __DIR__ . '/tests/Analysers/TokenScannerTest.php',
             __DIR__ . '/tests/AnalysisTest.php',
             __DIR__ . '/tests/ContextTest.php',
         ],
