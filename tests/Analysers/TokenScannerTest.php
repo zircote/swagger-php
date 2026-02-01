@@ -10,7 +10,7 @@ use OpenApi\Analysers\TokenScanner;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class TokenScannerTest extends OpenApiTestCase
+final class TokenScannerTest extends OpenApiTestCase
 {
     public static function scanCases(): iterable
     {

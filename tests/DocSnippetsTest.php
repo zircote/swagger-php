@@ -14,7 +14,7 @@ use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class DocSnippetsTest extends OpenApiTestCase
+final class DocSnippetsTest extends OpenApiTestCase
 {
     use UsesExamples;
 
@@ -30,7 +30,7 @@ class DocSnippetsTest extends OpenApiTestCase
                 if (file_exists($other)) {
                     $key = str_replace('_an', '', $file->getBasename('.php'));
                     foreach ([OpenApi::VERSION_3_0_0, OpenApi::VERSION_3_1_0] as $version) {
-                        yield "$key-$version" => [['an' => $file->getPathname(), 'at' => $other], $version];
+                        yield "{$key}-{$version}" => [['an' => $file->getPathname(), 'at' => $other], $version];
                     }
                 }
             }
@@ -45,23 +45,23 @@ class DocSnippetsTest extends OpenApiTestCase
     {
         $lastSpec = null;
         foreach ($filenames as $type => $filename) {
-            $contents = preg_replace('/(namespace [^;]+);/', "\\1\\$type;", file_get_contents($filename));
-            $namespace = basename($filename, '.php');
+            $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$type};", file_get_contents($filename));
+            $namespace = basename((string) $filename, '.php');
 
-            $tmp = sys_get_temp_dir() . "/$namespace.php";
+            $tmp = sys_get_temp_dir() . "/{$namespace}.php";
             file_put_contents($tmp, $contents);
             require_once $tmp;
 
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
                 ->setTypeResolver($this->getTypeResolver())
-                 ->withProcessorPipeline(fn (Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
+                 ->withProcessorPipeline(fn (Pipeline $processorPipeline): Pipeline => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
             if ($lastSpec) {
                 $this->assertSpecEquals(
                     $openapi,
                     $lastSpec,
-                    "Snippet: $$filename"
+                    "Snippet: \${$filename}"
                 );
 
             }

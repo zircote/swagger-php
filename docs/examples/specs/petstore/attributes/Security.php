@@ -8,27 +8,17 @@ namespace OpenApi\Examples\Specs\Petstore\Attributes;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\SecurityScheme(
-    type: 'oauth2',
-    name: 'petstore_auth',
-    securityScheme: 'petstore_auth',
-    flows: [
-        new OAT\Flow(
-            flow: 'implicit',
-            authorizationUrl: 'http://petstore.swagger.io/oauth/dialog',
-            scopes: [
-                'write:pets' => 'modify pets in your account',
-                'read:pets' => 'read your pets',
-            ]
-        ),
-    ]
-)]
-#[OAT\SecurityScheme(
-    type: 'apiKey',
-    name: 'api_key',
-    in: 'header',
-    securityScheme: 'api_key',
-)]
+#[OAT\SecurityScheme(securityScheme: 'petstore_auth', type: 'oauth2', name: 'petstore_auth', flows: [
+    new OAT\Flow(
+        authorizationUrl: 'http://petstore.swagger.io/oauth/dialog',
+        flow: 'implicit',
+        scopes: [
+            'write:pets' => 'modify pets in your account',
+            'read:pets' => 'read your pets',
+        ]
+    ),
+])]
+#[OAT\SecurityScheme(securityScheme: 'api_key', type: 'apiKey', name: 'api_key', in: 'header')]
 class Security
 {
 }

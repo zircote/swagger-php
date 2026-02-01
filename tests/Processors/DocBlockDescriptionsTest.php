@@ -12,7 +12,7 @@ use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Processors\DocBlockDescriptions;
 use OpenApi\Tests\OpenApiTestCase;
 
-class DocBlockDescriptionsTest extends OpenApiTestCase
+final class DocBlockDescriptionsTest extends OpenApiTestCase
 {
     use DocblockTrait;
 
@@ -44,7 +44,7 @@ class DocBlockDescriptionsTest extends OpenApiTestCase
      */
 END
         ]);
-        $this->assertEquals('A single line.', $this->parseDocblock($singleLine->comment));
+        $this->assertSame('A single line.', $this->parseDocblock($singleLine->comment));
 
         $multiline = $this->getContext(['comment' => <<<END
 /**
@@ -57,7 +57,7 @@ END
  */
 END
         ]);
-        $this->assertEquals("A description spread across\nmultiple lines.\n\neven blank lines", $this->parseDocblock($multiline->comment));
+        $this->assertSame("A description spread across\nmultiple lines.\n\neven blank lines", $this->parseDocblock($multiline->comment));
 
         $escapedLinebreak = $this->getContext(['comment' => <<<END
 /**
@@ -68,7 +68,7 @@ END
  */
 END
         ]);
-        $this->assertEquals('A single line spread across multiple lines.', $this->parseDocblock($escapedLinebreak->comment));
+        $this->assertSame('A single line spread across multiple lines.', $this->parseDocblock($escapedLinebreak->comment));
     }
 
     /**
@@ -77,9 +77,9 @@ END
     public function testExtractDocblockSummaryAndDescription(): void
     {
         $single = $this->getContext(['comment' => '/** This is a single line DocComment. */']);
-        $this->assertEquals('This is a single line DocComment.', $this->parseDocblock($single->comment));
+        $this->assertSame('This is a single line DocComment.', $this->parseDocblock($single->comment));
         $multi = $this->getContext(['comment' => "/**\n * This is a multi-line DocComment.\n */"]);
-        $this->assertEquals('This is a multi-line DocComment.', $this->parseDocblock($multi->comment));
+        $this->assertSame('This is a multi-line DocComment.', $this->parseDocblock($multi->comment));
 
         $emptyWhiteline = $this->getContext(['comment' => <<<END
     /**
@@ -89,7 +89,7 @@ END
      */
 END
         ]);
-        $this->assertEquals('This is a summary', $this->extractCommentSummary($this->parseDocblock($emptyWhiteline->comment)));
+        $this->assertSame('This is a summary', $this->extractCommentSummary($this->parseDocblock($emptyWhiteline->comment)));
         $periodNewline = $this->getContext(['comment' => <<<END
      /**
      * This is a summary.
@@ -97,7 +97,7 @@ END
      */
 END
         ]);
-        $this->assertEquals('This is a summary.', $this->extractCommentSummary($this->parseDocblock($periodNewline->comment)));
+        $this->assertSame('This is a summary.', $this->extractCommentSummary($this->parseDocblock($periodNewline->comment)));
         $multilineSummary = $this->getContext(['comment' => <<<END
      /**
      * This is a summary
@@ -105,6 +105,6 @@ END
      */
 END
         ]);
-        $this->assertEquals("This is a summary\nbut this is part of the summary", $this->parseDocblock($this->extractCommentSummary($multilineSummary->comment)));
+        $this->assertSame("This is a summary\nbut this is part of the summary", $this->parseDocblock($this->extractCommentSummary($multilineSummary->comment)));
     }
 }

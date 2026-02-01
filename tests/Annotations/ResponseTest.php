@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Tests\OpenApiTestCase;
 
-class ResponseTest extends OpenApiTestCase
+final class ResponseTest extends OpenApiTestCase
 {
     public function testMisspelledDefault(): void
     {

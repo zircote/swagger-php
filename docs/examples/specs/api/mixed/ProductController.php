@@ -19,22 +19,17 @@ class ProductController
      *
      * @param ?int $product_id ignored product id docblock typehint
      */
-    #[OAT\Get(
-        path: '/products/{product_id}',
-        tags: ['products'],
-        operationId: 'getProducts',
-        responses: [
-            new OAT\Response(
-                response: 200,
-                description: 'successful operation',
-                content: new OAT\JsonContent(ref: Product::class),
-                headers: [
-                    new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
-                ]
-            ),
-            new OAT\Response(response: 401, description: 'oops'),
-        ],
-    )]
+    #[OAT\Get(path: '/products/{product_id}', operationId: 'getProducts', tags: ['products'], responses: [
+        new OAT\Response(
+            response: 200,
+            description: 'successful operation',
+            headers: [
+                new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+            ],
+            content: new OAT\JsonContent(ref: Product::class)
+        ),
+        new OAT\Response(response: 401, description: 'oops'),
+    ])]
     #[OAT\PathParameter(name: 'product_id', description: 'the product id', schema: new OAT\Schema(type: 'integer'))]
     public function getProduct(?int $product_id)
     {
@@ -69,12 +64,11 @@ class ProductController
     /**
      * Get all.
      */
-    #[OAT\Get(path: '/products', tags: ['products', 'catalog'], operationId: 'getAll')]
+    #[OAT\Get(path: '/products', operationId: 'getAll', tags: ['products', 'catalog'])]
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
         content: new OAT\JsonContent(
-            type: 'object',
             required: ['data'],
             properties: [
                 new OAT\Property(
@@ -82,7 +76,8 @@ class ProductController
                     type: 'array',
                     items: new OAT\Items(ref: Product::class)
                 ),
-            ]
+            ],
+            type: 'object'
         )
     )]
     #[OAT\Response(response: 401, description: 'oops')]

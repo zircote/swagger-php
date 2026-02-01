@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Tests\OpenApiTestCase;
 
-class LicenseTest extends OpenApiTestCase
+final class LicenseTest extends OpenApiTestCase
 {
     public function testValidation3_0_0(): void
     {

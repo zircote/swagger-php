@@ -16,7 +16,7 @@ use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('Properties')]
-class AugmentPropertiesTest extends OpenApiTestCase
+final class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties(): void
     {

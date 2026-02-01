@@ -10,7 +10,7 @@ use Composer\Autoload\ClassLoader;
 use OpenApi\Analysers\ComposerAutoloaderScanner;
 use OpenApi\Tests\OpenApiTestCase;
 
-class ComposerAutoloaderScannerTest extends OpenApiTestCase
+final class ComposerAutoloaderScannerTest extends OpenApiTestCase
 {
     protected function setUp(): void
     {
@@ -33,6 +33,6 @@ class ComposerAutoloaderScannerTest extends OpenApiTestCase
             'OpenApi\Tests\\Scanners\\Bar',
         ];
         $result = (new ComposerAutoloaderScanner())->scan(['OpenApi\Tests']);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 }

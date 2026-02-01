@@ -18,7 +18,7 @@ use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class AugmentParametersTest extends OpenApiTestCase
+final class AugmentParametersTest extends OpenApiTestCase
 {
     use DocblockTrait;
 
@@ -58,7 +58,7 @@ class AugmentParametersTest extends OpenApiTestCase
     #[DataProvider('tagCases')]
     public function testParseTags(string $params, array $expected): void
     {
-        $mixed = $this->getContext(['comment' => "/**\n$params\n  *"]);
+        $mixed = $this->getContext(['comment' => "/**\n{$params}\n  *"]);
         $tags = [];
         $this->parseDocblock($mixed->comment, $tags);
         $this->assertEquals($expected, $tags);

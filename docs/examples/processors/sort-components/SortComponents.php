@@ -13,12 +13,10 @@ use OpenApi\Analysis;
  */
 class SortComponents
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         if (is_object($analysis->openapi->components) && is_iterable($analysis->openapi->components->schemas)) {
-            usort($analysis->openapi->components->schemas, function ($a, $b) {
-                return strcmp($a->schema, $b->schema);
-            });
+            usort($analysis->openapi->components->schemas, fn ($a, $b): int => strcmp((string) $a->schema, (string) $b->schema));
         }
     }
 }

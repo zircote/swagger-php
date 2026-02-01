@@ -7,7 +7,7 @@ use OpenApi\Tests\Concerns\UsesExamples;
 (new class () {
     use UsesExamples;
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $this->registerExampleClassloader('petstore');
     }
