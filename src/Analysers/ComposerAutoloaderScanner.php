@@ -19,9 +19,9 @@ class ComposerAutoloaderScanner
     /**
      * Collect all classes/interfaces/traits known by composer.
      *
-     * @param array<string> $namespaces
+     * @param list<string> $namespaces
      *
-     * @return array<string>
+     * @return list<string>
      */
     public function scan(array $namespaces): array
     {

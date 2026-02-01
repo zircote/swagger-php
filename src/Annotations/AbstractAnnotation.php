@@ -34,10 +34,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public $attachables = Generator::UNDEFINED;
 
-    /**
-     * @var Context|null
-     */
-    public $_context;
+    public ?Context $_context;
 
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
@@ -57,9 +54,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * Specify the type of the property.
      *
      * Examples:
-     *   'name' => 'string' // a string
-     *   'required' => 'boolean', // true or false
-     *   'tags' => '[string]', // array containing strings
+     *   'name' => 'string'         // a string
+     *   'required' => 'boolean',   // true or false
+     *   'tags' => '[string]',      // string array
      *   'in' => ["query", "header", "path", "formData", "body"] // must be one on these
      *   'oneOf' => [Schema::class] // array of schema objects.
      *
@@ -71,9 +68,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
      * Declarative mapping of Annotation types to properties.
      *
      * Examples:
-     *   Info::clas => 'info',                // Set @OA\Info annotation as the info property.
-     *   Parameter::clas => ['parameters'],   // Append @OA\Parameter annotations the parameters array.
-     *   PathItem::clas => ['paths', 'path'], // Append @OA\PathItem annotations the paths array and use path as key.
+     *   Info::class => 'info',                // Set @OA\Info annotation as the info property.
+     *   Parameter::class => ['parameters'],   // Append @OA\Parameter annotations the parameters list.
+     *   PathItem::class => ['paths', 'path'], // Add @OA\PathItem annotation to the `paths` map and use `path` as key.
      *
      * @var array<class-string<AbstractAnnotation>,string|array<string>>
      */
@@ -87,7 +84,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public static $_parents = [];
 
     /**
-     * List of properties are blacklisted from the JSON output.
+     * Properties that are blacklisted from the JSON output.
      *
      * @var array<string>
      */

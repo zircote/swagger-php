@@ -228,12 +228,14 @@ class Context implements \Stringable
     }
 
     /**
-     * Resolve the fully qualified name.
+     * Resolve the given `source` to a fully qualified name.
+     *
+     * @return class-string|null
      */
-    public function fullyQualifiedName(?string $source): string
+    public function fullyQualifiedName(?string $source): ?string
     {
         if ($source === null) {
-            return '';
+            return null;
         }
 
         $namespace = $this->namespace ? str_replace('\\\\', '\\', '\\' . $this->namespace . '\\') : '\\';
