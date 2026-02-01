@@ -21,16 +21,9 @@ use OpenApi\Attributes as OAT;
 )]
 class Category
 {
-    #[OAT\Property(
-        description: 'ID',
-        title: 'ID',
-        format: 'int64'
-    )]
-    private int $id;
+    #[OAT\Property(title: 'ID', description: 'ID', format: 'int64')]
+    private readonly int $id;
 
-    #[OAT\Property(
-        description: 'Category name',
-        title: 'Category name'
-    )]
-    private string $name;
+    #[OAT\Property(title: 'Category name', description: 'Category name')]
+    private readonly string $name;
 }

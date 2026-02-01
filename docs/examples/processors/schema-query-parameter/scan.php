@@ -12,7 +12,7 @@ $classLoader->addPsr4('App\\', __DIR__ . '/app');
 // and our custom processor
 $classLoader->addPsr4('SchemaQueryParameterProcessor\\', __DIR__);
 
-$insertMatch = function (array $pipes) {
+$insertMatch = function (array $pipes): int|string|null {
     foreach ($pipes as $ii => $pipe) {
         if ($pipe instanceof BuildPaths) {
             return $ii;
@@ -23,7 +23,7 @@ $insertMatch = function (array $pipes) {
 };
 
 $openapi = (new Generator())
-    ->withProcessorPipeline(fn (Pipeline $pipeline) => $pipeline->insert(new SchemaQueryParameter(), $insertMatch))
+    ->withProcessorPipeline(fn (Pipeline $pipeline): Pipeline => $pipeline->insert(new SchemaQueryParameter(), $insertMatch))
     ->generate([__DIR__ . '/app']);
 // file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
 echo $openapi->toYaml();

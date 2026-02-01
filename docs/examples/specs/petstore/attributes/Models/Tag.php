@@ -26,11 +26,11 @@ class Tag
         description: 'ID',
         format: 'int64'
     )]
-    private int $id;
+    private readonly int $id;
 
     #[OAT\Property(
         title: 'Name',
         description: 'Name'
     )]
-    private string $name;
+    private readonly string $name;
 }

@@ -24,51 +24,51 @@ class User
         description: 'ID',
         format: 'int64'
     )]
-    private int $id;
+    private readonly int $id;
 
     #[OAT\Property(
         title: 'Username',
         description: 'Username'
     )]
-    private string $username;
+    private readonly string $username;
 
     #[OAT\Property(
         title: 'First name',
         description: 'First name'
     )]
-    private string $firstName;
+    private readonly string $firstName;
 
     #[OAT\Property(
         title: 'Last name',
         description: 'Last name'
     )]
-    private string $lastName;
+    private readonly string $lastName;
 
     #[OAT\Property(
         title: 'Email',
         description: 'Email',
         format: 'email'
     )]
-    private string $email;
+    private readonly string $email;
 
     #[OAT\Property(
         title: 'Password',
         description: 'Password',
         maximum: 255
     )]
-    private string $password;
+    private readonly string $password;
 
     #[OAT\Property(
         title: 'Phone',
         description: 'Phone',
         format: 'msisdn'
     )]
-    private string $phone;
+    private readonly string $phone;
 
     #[OAT\Property(
         title: 'User status',
         description: 'User status',
         format: 'int32'
     )]
-    private int $userStatus;
+    private readonly int $userStatus;
 }

@@ -25,7 +25,7 @@ class Product implements ProductInterface
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'kettle';
     }

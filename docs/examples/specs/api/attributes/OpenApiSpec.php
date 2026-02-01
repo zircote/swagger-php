@@ -19,7 +19,7 @@ use OpenApi\Attributes as OAT;
 )]
 #[OAT\License(name: 'MIT', identifier: 'MIT')]
 #[OAT\Server(url: 'https://localhost/api', description: 'API server')]
-#[OAT\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer', description: 'Basic Auth')]
+#[OAT\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', description: 'Basic Auth', scheme: 'bearer')]
 #[OAT\Tag(name: 'products', description: 'All about products')]
 #[OAT\Tag(name: 'catalog', description: 'Catalog API')]
 class OpenApiSpec

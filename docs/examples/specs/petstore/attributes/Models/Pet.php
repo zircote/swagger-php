@@ -13,65 +13,42 @@ use OpenApi\Attributes as OAT;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
-#[OAT\Schema(
-    description: 'Pet model',
-    title: 'Pet model',
-    required: [
-        'name',
-        'photoUrls',
-    ],
-    xml: new OAT\Xml(
-        name: 'Pet'
-    )
-)]
+#[OAT\Schema(title: 'Pet model', description: 'Pet model', required: [
+    'name',
+    'photoUrls',
+], xml: new OAT\Xml(
+    name: 'Pet'
+))]
 class Pet
 {
-    #[OAT\Property(
-        description: 'ID',
-        title: 'ID',
-        format: 'int64'
-    )]
-    private int $id;
+    #[OAT\Property(title: 'ID', description: 'ID', format: 'int64')]
+    private readonly int $id;
 
     #[OAT\Property(
         title: 'Category'
     )]
-    private Category $category;
+    private readonly Category $category;
 
-    #[OAT\Property(
-        description: 'Pet name',
-        title: 'Pet name',
-        format: 'int64'
-    )]
-    private string $name;
+    #[OAT\Property(title: 'Pet name', description: 'Pet name', format: 'int64')]
+    private readonly string $name;
 
-    #[OAT\Property(
-        description: 'Photo urls',
-        title: 'Photo urls',
-        xml: new OAT\Xml(
-            name: 'photoUrl',
-            wrapped: true
-        ),
-        items: new OAT\Items(
-            type: 'string',
-            default: 'images/image-1.png'
-        )
-    )]
-    private array $photoUrls;
+    #[OAT\Property(title: 'Photo urls', description: 'Photo urls', items: new OAT\Items(
+        type: 'string',
+        default: 'images/image-1.png'
+    ), xml: new OAT\Xml(
+        name: 'photoUrl',
+        wrapped: true
+    ))]
+    private readonly array $photoUrls;
 
-    #[OAT\Property(
-        description: 'Pet tags',
-        title: 'Pet tags',
-        xml: new OAT\Xml(
-            name: 'tag',
-            wrapped: true
-        ),
-        items: new OAT\Items(
-            type: Tag::class
-        )
-    )]
+    #[OAT\Property(title: 'Pet tags', description: 'Pet tags', items: new OAT\Items(
+        type: Tag::class
+    ), xml: new OAT\Xml(
+        name: 'tag',
+        wrapped: true
+    ))]
     /**
      * @var array<Tag>
      */
-    private array $tags;
+    private readonly array $tags;
 }

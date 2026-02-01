@@ -13,28 +13,15 @@ use OpenApi\Attributes as OAT;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
-#[OAT\Schema(
-    description: 'Api response',
-    title: 'Api response'
-)]
+#[OAT\Schema(title: 'Api response', description: 'Api response')]
 class ApiResponse
 {
-    #[OAT\Property(
-        description: 'Code',
-        title: 'Code',
-        format: 'int32'
-    )]
-    private int $code;
+    #[OAT\Property(title: 'Code', description: 'Code', format: 'int32')]
+    private readonly int $code;
 
-    #[OAT\Property(
-        description: 'Type',
-        title: 'Type'
-    )]
-    private string $type;
+    #[OAT\Property(title: 'Type', description: 'Type')]
+    private readonly string $type;
 
-    #[OAT\Property(
-        description: 'Message',
-        title: 'Message'
-    )]
-    private string $message;
+    #[OAT\Property(title: 'Message', description: 'Message')]
+    private readonly string $message;
 }
