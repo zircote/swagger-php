@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
-class OpenApiTest extends OpenApiTestCase
+final class OpenApiTest extends OpenApiTestCase
 {
     public function testValidVersion(): void
     {
@@ -60,6 +60,6 @@ class OpenApiTest extends OpenApiTestCase
      */
     public function testVersionMatch(string $given, string $compare, bool $expected): void
     {
-        $this->assertEquals($expected, OA\OpenApi::versionMatch($given, $compare));
+        $this->assertSame($expected, OA\OpenApi::versionMatch($given, $compare));
     }
 }

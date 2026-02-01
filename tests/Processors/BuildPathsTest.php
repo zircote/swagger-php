@@ -13,7 +13,7 @@ use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class BuildPathsTest extends OpenApiTestCase
+final class BuildPathsTest extends OpenApiTestCase
 {
     public function testMergePathsWithSamePath(): void
     {

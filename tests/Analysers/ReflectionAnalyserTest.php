@@ -19,7 +19,7 @@ use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsTrait;
 use OpenApi\Tests\OpenApiTestCase;
 
-class ReflectionAnalyserTest extends OpenApiTestCase
+final class ReflectionAnalyserTest extends OpenApiTestCase
 {
     protected function collectingAnnotationFactory(): AnnotationFactoryInterface
     {
@@ -51,11 +51,11 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $analyser->fromFqdn(ExtendsClass::class, new Analysis([], $this->getContext()));
 
         $expected = [
-            'OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass',
+            ExtendsClass::class,
             'extendsClassFunc',
             'extendsClassProp',
         ];
-        $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
+        $this->assertSame($expected, array_keys($annotationFactory->reflectors));
     }
 
     public function testTraitInheritance(): void
@@ -64,11 +64,11 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $analyser->fromFqdn(ExtendsTrait::class, new Analysis([], $this->getContext()));
 
         $expected = [
-            'OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsTrait',
+            ExtendsTrait::class,
             'extendsTraitFunc',
             'extendsTraitProp',
         ];
-        $this->assertEquals($expected, array_keys($annotationFactory->reflectors));
+        $this->assertSame($expected, array_keys($annotationFactory->reflectors));
     }
 
     public static function analysers(): iterable
@@ -101,8 +101,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertEquals('labels', $labels->property);
 
         // regression: check doc blocks
-        $this->assertStringContainsString('Label List', $labels->_context->comment);
-        $this->assertStringContainsString('Tag List', $tags->_context->comment);
+        $this->assertStringContainsString('Label List', (string) $labels->_context->comment);
+        $this->assertStringContainsString('Tag List', (string) $tags->_context->comment);
         $this->assertEmpty($id->_context->comment);
     }
 }

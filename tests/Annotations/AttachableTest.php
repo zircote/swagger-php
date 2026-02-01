@@ -14,7 +14,7 @@ use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\Fixtures\Annotations\CustomAttachable;
 use OpenApi\Tests\OpenApiTestCase;
 
-class AttachableTest extends OpenApiTestCase
+final class AttachableTest extends OpenApiTestCase
 {
     public function testAttachablesAreAttached(): void
     {
@@ -33,7 +33,7 @@ class AttachableTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->addAlias('oaf', 'OpenApi\Tests\Fixtures\Annotations')
             ->addNamespace('OpenApi\Tests\Fixtures\Annotations\\')
-            ->withProcessorPipeline(fn (Pipeline $processor) => $processor->remove(null, fn ($pipe) => !$pipe instanceof CleanUnusedComponents))
+            ->withProcessorPipeline(fn (Pipeline $processor): Pipeline => $processor->remove(null, fn ($pipe): bool => !$pipe instanceof CleanUnusedComponents))
             ->generate($this->fixtures(['UsingCustomAttachables.php']), $analysis);
 
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);

@@ -12,7 +12,7 @@ use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\Customer;
 use Psr\Log\NullLogger;
 
-class ContextTest extends OpenApiTestCase
+final class ContextTest extends OpenApiTestCase
 {
     public function testFullyQualifiedName(): void
     {
@@ -42,13 +42,13 @@ class ContextTest extends OpenApiTestCase
 
         // assert defaults set
         $this->assertNotInstanceOf(NullLogger::class, $context->logger);
-        $this->assertEquals(OA\OpenApi::VERSION_3_0_0, $context->getVersion());
+        $this->assertSame(OA\OpenApi::VERSION_3_0_0, $context->getVersion());
 
         $context->ensureRoot($root);
 
         // assert inheriting from root
         $this->assertInstanceOf(NullLogger::class, $context->logger);
-        $this->assertEquals(OA\OpenApi::VERSION_3_1_0, $context->getVersion());
+        $this->assertSame(OA\OpenApi::VERSION_3_1_0, $context->getVersion());
     }
 
     public function testDebugLocation(): void
@@ -77,7 +77,7 @@ class ContextTest extends OpenApiTestCase
         $serialized = serialize($context);
         $unserialized = unserialize($serialized);
 
-        $this->assertEquals($serialized, serialize($unserialized));
+        $this->assertSame($serialized, serialize($unserialized));
         $this->assertInstanceOf(Context::class, $unserialized->root());
         $this->assertNotSame($unserialized, $unserialized->root());
         $this->assertEquals(__FILE__, $unserialized->filename);

@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
-class AugmentTagsTest extends OpenApiTestCase
+final class AugmentTagsTest extends OpenApiTestCase
 {
     /**
      * @requires PHP 8.1

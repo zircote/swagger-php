@@ -10,11 +10,16 @@ use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Tests\Fixtures\UsingAttributes;
 use OpenApi\Tests\Fixtures\InvalidPropertyAttribute;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Attributes\Property;
 
+<<<<<<< HEAD
 /**
  * @requires PHP 8.1
  */
 class AttributeAnnotationFactoryTest extends OpenApiTestCase
+=======
+final class AttributeAnnotationFactoryTest extends OpenApiTestCase
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 {
     public function testReturnedAnnotationsCount(): void
     {
@@ -30,7 +35,7 @@ class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $rm = new \ReflectionMethod($instance, 'post');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('OpenApi\Attributes\Property::__construct(): Argument #8 ($required) must be of type ?array');
+        $this->expectExceptionMessage(Property::class . '::__construct(): Argument #8 ($required) must be of type ?array');
 
         (new AttributeAnnotationFactory())->build($rm, $this->getContext());
     }

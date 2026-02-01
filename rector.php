@@ -12,14 +12,22 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+<<<<<<< HEAD
+=======
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
+    ->withSkipPath(__DIR__ . '/tests/Fixtures')
     ->withSkip([
         CombineIfRector::class,
         ExplicitBoolCompareRector::class,
         ForRepeatedCountToOwnVariableRector::class,
+        ReadOnlyPropertyRector::class,
         RemoveAlwaysTrueIfConditionRector::class => [
             __DIR__ . '/src/Processors/ExpandEnums.php',
         ],
@@ -32,6 +40,10 @@ return RectorConfig::configure()
         StringClassNameToClassConstantRector::class => [
             __DIR__ . '/src/Analysers/DocBlockParser.php',
             __DIR__ . '/src/Analysers/TypeResolverTrait.php',
+            __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+            __DIR__ . '/tests/Analysers/TokenScannerTest.php',
+            __DIR__ . '/tests/AnalysisTest.php',
+            __DIR__ . '/tests/ContextTest.php',
         ],
         WrapEncapsedVariableInCurlyBracesRector::class => [
             __DIR__ . '/src/Type/LegacyTypeResolver.php',
@@ -40,6 +52,16 @@ return RectorConfig::configure()
         ParamTypeByMethodCallTypeRector::class => [
             __DIR__ . '/src/Serializer.php',
         ],
+<<<<<<< HEAD
+=======
+        ClassPropertyAssignToConstructorPromotionRector::class,
+        CompleteDynamicPropertiesRector::class => [
+            __DIR__ . '/src/Annotations/AbstractAnnotation.php',
+        ],
+        ArrayToFirstClassCallableRector::class => [
+            __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+        ],
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     ])
     ->withPreparedSets(true, true, true, true)
     ->withPhpVersion(PhpVersion::PHP_74)

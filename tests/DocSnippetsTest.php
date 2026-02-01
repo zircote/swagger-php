@@ -13,10 +13,14 @@ use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use Symfony\Component\Finder\Finder;
 
+<<<<<<< HEAD
 /**
  * @requires PHP 8.1
  */
 class DocSnippetsTest extends OpenApiTestCase
+=======
+final class DocSnippetsTest extends OpenApiTestCase
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 {
     use UsesExamples;
 
@@ -32,7 +36,11 @@ class DocSnippetsTest extends OpenApiTestCase
                 if (file_exists($other)) {
                     $key = str_replace('_an', '', $file->getBasename('.php'));
                     foreach ([OpenApi::VERSION_3_0_0, OpenApi::VERSION_3_1_0] as $version) {
+<<<<<<< HEAD
                         yield "$key-$version" => [[$file->getPathname(), $other], $version];
+=======
+                        yield "{$key}-{$version}" => [['an' => $file->getPathname(), 'at' => $other], $version];
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
                     }
                 }
             }
@@ -47,21 +55,30 @@ class DocSnippetsTest extends OpenApiTestCase
     public function testSnippets(array $filenames, string $version): void
     {
         $lastSpec = null;
+<<<<<<< HEAD
         foreach ($filenames as $filename) {
             $namespace = basename($filename, '.php');
             $tmp = sys_get_temp_dir() . "/$namespace.php";
             file_put_contents($tmp, "<?php namespace $namespace; ?>" . file_get_contents($filename));
+=======
+        foreach ($filenames as $type => $filename) {
+            $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$type};", file_get_contents($filename));
+            $namespace = basename((string) $filename, '.php');
+
+            $tmp = sys_get_temp_dir() . "/{$namespace}.php";
+            file_put_contents($tmp, $contents);
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
             require_once $tmp;
             $openapi = (new Generator($this->getTrackingLogger()))
                 ->setVersion($version)
                 ->setTypeResolver($this->getTypeResolver())
-                 ->withProcessorPipeline(fn (Pipeline $processorPipeline) => $processorPipeline->remove(OperationId::class))
+                 ->withProcessorPipeline(fn (Pipeline $processorPipeline): Pipeline => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
             if ($lastSpec) {
                 $this->assertSpecEquals(
                     $openapi,
                     $lastSpec,
-                    "Snippet: $$filename"
+                    "Snippet: \${$filename}"
                 );
 
             }

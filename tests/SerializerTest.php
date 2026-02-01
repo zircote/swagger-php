@@ -10,12 +10,17 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
+<<<<<<< HEAD
+=======
+use PHPUnit\Framework\Attributes\DataProvider;
+use OpenApi\Annotations\OpenApi;
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 
-class SerializerTest extends OpenApiTestCase
+final class SerializerTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    private function getExpected(): OA\OpenApi
+    private function getExpected(): OpenApi
     {
         $path = new OA\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';
@@ -51,8 +56,8 @@ class SerializerTest extends OpenApiTestCase
 
         $path->post->responses = [$resp, $respRange];
 
-        $expected = new OA\OpenApi(['_context' => $this->getContext()]);
-        $expected->openapi = OA\OpenApi::VERSION_3_0_0;
+        $expected = new OpenApi(['_context' => $this->getContext()]);
+        $expected->openapi = OpenApi::VERSION_3_0_0;
         $expected->paths = [
             $path,
         ];
@@ -135,10 +140,10 @@ class SerializerTest extends OpenApiTestCase
 }
 JSON;
 
-        /** @var OA\OpenApi $annotation */
-        $annotation = $serializer->deserialize($json, 'OpenApi\\Annotations\\OpenApi');
+        /** @var OpenApi $annotation */
+        $annotation = $serializer->deserialize($json, OpenApi::class);
 
-        $this->assertInstanceOf('OpenApi\\Annotations\\OpenApi', $annotation);
+        $this->assertInstanceOf(OpenApi::class, $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->toJson(),
             $this->getExpected()->toJson()
@@ -151,9 +156,13 @@ JSON;
     public function testPetstoreExample(): void
     {
         $serializer = new Serializer();
+<<<<<<< HEAD
         $spec = $this->examplePath('petstore/petstore-3.0.0.yaml');
+=======
+        $spec = self::examplePath('petstore/petstore-3.0.0.yaml');
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
         $openapi = $serializer->deserializeFile($spec, 'yaml');
-        $this->assertInstanceOf(OA\OpenApi::class, $openapi);
+        $this->assertInstanceOf(OpenApi::class, $openapi);
         $this->assertSpecEquals(file_get_contents($spec), $openapi->toYaml());
     }
 
@@ -188,18 +197,18 @@ JSON;
             	}
             }
 JSON;
-        /** @var OA\OpenApi $annotation */
-        $annotation = $serializer->deserialize($json, OA\OpenApi::class);
+        /** @var OpenApi $annotation */
+        $annotation = $serializer->deserialize($json, OpenApi::class);
 
         foreach ($annotation->components->schemas as $schemaObject) {
             $this->assertIsObject($schemaObject);
             $this->assertTrue(property_exists($schemaObject, 'allOf'));
-            $this->assertNotSame($schemaObject->allOf, Generator::UNDEFINED);
+            $this->assertNotSame(Generator::UNDEFINED, $schemaObject->allOf);
             $this->assertIsArray($schemaObject->allOf);
             $allOfItem = current($schemaObject->allOf);
             $this->assertIsObject($allOfItem);
             $this->assertInstanceOf(OA\Schema::class, $allOfItem);
-            $this->assertNotSame($allOfItem->ref, Generator::UNDEFINED);
+            $this->assertNotSame(Generator::UNDEFINED, $allOfItem->ref);
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
         }
     }

@@ -13,8 +13,9 @@ use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Tests\Fixtures\Request;
 
-class AugmentRefsTest extends OpenApiTestCase
+final class AugmentRefsTest extends OpenApiTestCase
 {
     use DocblockTrait;
 
@@ -30,12 +31,12 @@ class AugmentRefsTest extends OpenApiTestCase
             new AugmentRequestBody(),
         ]);
 
-        $this->assertSame($analysis->openapi->paths[0]->post->requestBody->ref, 'OpenApi\Tests\Fixtures\Request');
+        $this->assertSame(Request::class, $analysis->openapi->paths[0]->post->requestBody->ref);
 
         $analysis->process([
             new AugmentRefs(),
         ]);
 
-        $this->assertSame($analysis->openapi->paths[0]->post->requestBody->ref, '#/components/requestBodies/Request');
+        $this->assertSame('#/components/requestBodies/Request', $analysis->openapi->paths[0]->post->requestBody->ref);
     }
 }

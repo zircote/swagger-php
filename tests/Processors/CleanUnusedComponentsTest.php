@@ -9,11 +9,12 @@ namespace OpenApi\Tests\Processors;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
-class CleanUnusedComponentsTest extends OpenApiTestCase
+final class CleanUnusedComponentsTest extends OpenApiTestCase
 {
-    public static function countCases(): iterable
+    public static function countCases(): \Iterator
     {
         $configEnable = ['cleanUnusedComponents' => ['enabled' => true]];
+<<<<<<< HEAD
 
         return [
             'var-default' => [[], 'UsingVar.php', 2, 5],
@@ -21,6 +22,12 @@ class CleanUnusedComponentsTest extends OpenApiTestCase
             'unreferenced-default' => [[], 'Unreferenced.php', 2, 11],
             'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 5],
         ];
+=======
+        yield 'var-default' => [[], 'UsingVar.php', 2, 5];
+        yield 'var-clean' => [$configEnable, 'UsingVar.php', 0, 2];
+        yield 'unreferenced-default' => [[], 'Unreferenced.php', 2, 14];
+        yield 'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 6];
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     }
 
     /**

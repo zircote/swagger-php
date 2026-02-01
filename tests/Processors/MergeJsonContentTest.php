@@ -12,7 +12,7 @@ use OpenApi\Generator;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Tests\OpenApiTestCase;
 
-class MergeJsonContentTest extends OpenApiTestCase
+final class MergeJsonContentTest extends OpenApiTestCase
 {
     public function testJsonContent(): void
     {

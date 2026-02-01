@@ -12,14 +12,19 @@ use OpenApi\Tests\OpenApiTestCase;
 /**
  * Test if the annotation class nesting parent/child relations are coherent.
  */
-class ValidateRelationsTest extends OpenApiTestCase
+final class ValidateRelationsTest extends OpenApiTestCase
 {
+<<<<<<< HEAD
     /**
      * @dataProvider allAnnotationClasses
      *
      * @param string $class
      */
     public function testAncestors($class): void
+=======
+    #[DataProvider('allAnnotationClasses')]
+    public function testAncestors(string $class): void
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     {
         foreach ($class::$_parents as $parent) {
             $found = false;
@@ -40,7 +45,12 @@ class ValidateRelationsTest extends OpenApiTestCase
      *
      * @param class-string<OA\AbstractAnnotation> $class
      */
+<<<<<<< HEAD
     public function testNested($class): void
+=======
+    #[DataProvider('allAnnotationClasses')]
+    public function testNested(string $class): void
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     {
         foreach (array_keys($class::$_nested) as $nestedClass) {
             $found = false;

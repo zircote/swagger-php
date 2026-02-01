@@ -15,10 +15,15 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
+<<<<<<< HEAD
 /**
  * @group Properties
  */
 class AugmentPropertiesTest extends OpenApiTestCase
+=======
+#[Group('Properties')]
+final class AugmentPropertiesTest extends OpenApiTestCase
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 {
     public function testAugmentProperties(): void
     {

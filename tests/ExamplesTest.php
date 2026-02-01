@@ -12,10 +12,14 @@ use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\TypeResolverInterface;
 
+<<<<<<< HEAD
 /**
  * @requires PHP 8.1
  */
 class ExamplesTest extends OpenApiTestCase
+=======
+final class ExamplesTest extends OpenApiTestCase
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 {
     use UsesExamples;
 
@@ -40,19 +44,27 @@ class ExamplesTest extends OpenApiTestCase
             OA\OpenApi::VERSION_3_2_0,
         ];
 
-        foreach (static::getTypeResolvers() as $resolverName => $typeResolver) {
+        foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
                 foreach ($implementations as $implementation) {
+<<<<<<< HEAD
                     if (!file_exists($this->examplePath($example) . '/' . $implementation)) {
+=======
+                    if (!file_exists(self::examplePath($example) . '/' . $implementation)) {
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
                         continue;
                     }
 
                     foreach ($versions as $version) {
+<<<<<<< HEAD
                         if (!file_exists($this->getSpecFilename($example, $implementation, $version))) {
+=======
+                        if (!file_exists(self::getSpecFilename($example, $implementation, $version))) {
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
                             continue;
                         }
 
-                        yield "$example:$resolverName-$implementation-$version" => [
+                        yield "{$example}:{$resolverName}-{$implementation}-{$version}" => [
                             $typeResolver,
                             $example,
                             $implementation,
@@ -73,8 +85,13 @@ class ExamplesTest extends OpenApiTestCase
     {
         $this->registerExampleClassloader($name, $implementation);
 
+<<<<<<< HEAD
         $path = $this->examplePath("$name/$implementation");
         $specFilename = $this->getSpecFilename($name, $implementation, $version);
+=======
+        $path = self::examplePath("{$name}/{$implementation}");
+        $specFilename = self::getSpecFilename($name, $implementation, $version);
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 
         $openapi = (new Generator($this->getTrackingLogger()))
             ->setVersion($version)
@@ -84,7 +101,7 @@ class ExamplesTest extends OpenApiTestCase
         $this->assertSpecEquals(
             $openapi,
             file_get_contents($specFilename),
-            "Example: $name/$implementation/" . basename($specFilename)
+            "Example: {$name}/{$implementation}/" . basename($specFilename)
         );
     }
 
@@ -93,7 +110,11 @@ class ExamplesTest extends OpenApiTestCase
      */
     public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
+<<<<<<< HEAD
         $specFilename = $this->getSpecFilename($name, $implementation, $version);
+=======
+        $specFilename = self::getSpecFilename($name, $implementation, $version);
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 
         $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();
 

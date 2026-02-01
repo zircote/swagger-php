@@ -21,7 +21,7 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class ExpandClassesTest extends OpenApiTestCase
+final class ExpandClassesTest extends OpenApiTestCase
 {
     protected function validate(Analysis $analysis): void
     {
@@ -115,7 +115,7 @@ class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
 
         $this->assertArrayHasKey(0, $extendedSchema->allOf);
-        $this->assertEquals($extendedSchema->allOf[1]->properties[0]->property, 'extendedProperty');
+        $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
 
         $includeSchemaWithRef = $schemas[1];
         $this->assertSame(Generator::UNDEFINED, $includeSchemaWithRef->properties);
@@ -204,7 +204,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         $baseInterface = $schemas[0];
         $this->assertSame('BaseInterface', $baseInterface->schema);
-        $this->assertEquals($baseInterface->properties[0]->property, 'interfaceProperty');
+        $this->assertEquals('interfaceProperty', $baseInterface->properties[0]->property);
         $this->assertEquals(Generator::UNDEFINED, $baseInterface->allOf);
 
         $extendsBaseThatImplements = $schemas[1];
@@ -222,7 +222,7 @@ class ExpandClassesTest extends OpenApiTestCase
 
         $traitUsedByExtendsBaseThatImplements = $schemas[3];
         $this->assertSame('TraitUsedByExtendsBaseThatImplements', $traitUsedByExtendsBaseThatImplements->schema);
-        $this->assertEquals($traitUsedByExtendsBaseThatImplements->properties[0]->property, 'traitProperty');
+        $this->assertEquals('traitProperty', $traitUsedByExtendsBaseThatImplements->properties[0]->property);
         $this->assertEquals(Generator::UNDEFINED, $traitUsedByExtendsBaseThatImplements->allOf);
     }
 }

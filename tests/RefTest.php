@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class RefTest extends OpenApiTestCase
+final class RefTest extends OpenApiTestCase
 {
     public function testRef(): void
     {

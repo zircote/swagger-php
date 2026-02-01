@@ -12,7 +12,7 @@ use OpenApi\Generator;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class MergeIntoOpenApiTest extends OpenApiTestCase
+final class MergeIntoOpenApiTest extends OpenApiTestCase
 {
     public function testProcessor(): void
     {

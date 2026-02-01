@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\OpenApiTestCase;
 
-class ItemsTest extends OpenApiTestCase
+final class ItemsTest extends OpenApiTestCase
 {
     public function testItemTypeArray(): void
     {

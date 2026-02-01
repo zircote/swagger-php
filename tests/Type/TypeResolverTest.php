@@ -20,7 +20,7 @@ use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 
-class TypeResolverTest extends OpenApiTestCase
+final class TypeResolverTest extends OpenApiTestCase
 {
     public static function resolverAugmentCases(): iterable
     {
@@ -65,11 +65,28 @@ class TypeResolverTest extends OpenApiTestCase
         ];
 
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
+<<<<<<< HEAD
 
         $typeResolvers = ['legacy' => new LegacyTypeResolver()];
         if (class_exists(StringTypeResolver::class)) {
             $typeResolvers['type-info'] = new TypeInfoTypeResolver();
         }
+=======
+        $fixtureFolder = dirname($rc->getFileName());
+        $sources = [
+            $rc->getFileName(),
+            "{$fixtureFolder}/FirstInterface.php",
+            "{$fixtureFolder}/SecondInterface.php",
+        ];
+
+        foreach (self::getTypeResolvers() as $key => $typeResolver) {
+            foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0] as $version) {
+                $analysis = (new Generator())
+                    ->setVersion($version)
+                    ->setProcessorPipeline(new Pipeline([new MergeIntoOpenApi(), new AugmentSchemas()]))
+                    ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($sources): Analysis {
+                        $generator->generate($sources, $analysis, false);
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 
         foreach ($typeResolvers as $key => $typeResolver) {
             $analysis = (new Generator())
@@ -82,10 +99,16 @@ class TypeResolverTest extends OpenApiTestCase
 
             $schema = $analysis->getSchemaForSource(DocblockAndTypehintTypes::class);
 
+<<<<<<< HEAD
             foreach ($schema->properties as $ii => $property) {
                 $property->property = $property->_context->property
                     // promoted properties might not have a name!
                     ?? $property->_context->method;
+=======
+                    $caseName = strtolower((string) $property->property);
+                    $resolverCaseName = "{$key}:{$caseName}";
+                    $fullCase = "{$key}:{$version}[{$ii}]-{$caseName}";
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 
                 $caseName = strtolower($property->property);
                 $case = "$key-[$ii]-$caseName";

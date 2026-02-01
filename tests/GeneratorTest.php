@@ -11,14 +11,14 @@ use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Util;
 
-class GeneratorTest extends OpenApiTestCase
+final class GeneratorTest extends OpenApiTestCase
 {
     use UsesExamples;
 
     public static function sourcesProvider(): iterable
     {
         $name = 'petstore';
-        $sourceDir = static::examplePath("$name/annotations");
+        $sourceDir = self::examplePath("{$name}/annotations");
 
         yield 'dir-list' => [$name, [$sourceDir]];
         yield 'finder' => [$name, Util::finder($sourceDir)];
@@ -37,6 +37,7 @@ class GeneratorTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
+<<<<<<< HEAD
         $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
     }
 
@@ -55,6 +56,9 @@ class GeneratorTest extends OpenApiTestCase
         $openapi = Generator::scan($sources, ['processor' => $processor, 'analyser' => $analyzer]);
 
         $this->assertSpecEquals(file_get_contents($this->getSpecFilename($name)), $openapi);
+=======
+        $this->assertSpecEquals(file_get_contents(self::getSpecFilename($name)), $openapi);
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     }
 
     public function testScanInvalidSource(): void
@@ -83,7 +87,7 @@ class GeneratorTest extends OpenApiTestCase
         $generator = new Generator();
         $generator->addAlias('foo', 'Foo\\Bar');
 
-        $this->assertEquals(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
+        $this->assertSame(['oa' => 'OpenApi\\Annotations', 'foo' => 'Foo\\Bar'], $generator->getAliases());
     }
 
     public function testAddNamespace(): void
@@ -91,26 +95,24 @@ class GeneratorTest extends OpenApiTestCase
         $generator = new Generator();
         $generator->addNamespace('Foo\\Bar\\');
 
-        $this->assertEquals(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
+        $this->assertSame(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
     }
 
     protected function assertOperationIdHash(Generator $generator, bool $expected): void
     {
-        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected) {
+        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected): void {
             if ($processor instanceof OperationId) {
-                $this->assertEquals($expected, $processor->isHash());
+                $this->assertSame($expected, $processor->isHash());
             }
         });
     }
 
-    public static function configCases(): iterable
+    public static function configCases(): \Iterator
     {
-        return [
-            'default' => [[], true],
-            'nested' => [['operationId' => ['hash' => false]], false],
-            'dots-kv' => [['operationId.hash' => false], false],
-            'dots-string' => [['operationId.hash=false'], false],
-        ];
+        yield 'default' => [[], true];
+        yield 'nested' => [['operationId' => ['hash' => false]], false];
+        yield 'dots-kv' => [['operationId.hash' => false], false];
+        yield 'dots-string' => [['operationId.hash=false'], false];
     }
 
     /**

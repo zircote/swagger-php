@@ -9,31 +9,29 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
-class OperationTest extends OpenApiTestCase
+final class OperationTest extends OpenApiTestCase
 {
-    public static function securityData(): iterable
+    public static function securityData(): \Iterator
     {
-        return [
-            'empty' => [
-                [],
-                '/** @OA\Get(security={ }) */',
-                '{"security":[]}',
-            ],
-            'basic' => [
-                [['api_key' => []]],
-                '/** @OA\Get(security={ {"api_key":{}} }) */',
-                '{"security":[{"api_key":[]}]}',
-            ],
-            'optional' => [
-                [[]],
-                '/** @OA\Get(security={ {} }) */',
-                '{"security":[{}]}',
-            ],
-            'optional-oauth2' => [
-                [[], ['petstore_auth' => ['write:pets', 'read:pets']]],
-                '/** @OA\Get(security={ {}, {"petstore_auth":{"write:pets","read:pets"}} }) */',
-                '{"security":[{},{"petstore_auth":["write:pets","read:pets"]}]}',
-            ],
+        yield 'empty' => [
+            [],
+            '/** @OA\Get(security={ }) */',
+            '{"security":[]}',
+        ];
+        yield 'basic' => [
+            [['api_key' => []]],
+            '/** @OA\Get(security={ {"api_key":{}} }) */',
+            '{"security":[{"api_key":[]}]}',
+        ];
+        yield 'optional' => [
+            [[]],
+            '/** @OA\Get(security={ {} }) */',
+            '{"security":[{}]}',
+        ];
+        yield 'optional-oauth2' => [
+            [[], ['petstore_auth' => ['write:pets', 'read:pets']]],
+            '/** @OA\Get(security={ {}, {"petstore_auth":{"write:pets","read:pets"}} }) */',
+            '{"security":[{},{"petstore_auth":["write:pets","read:pets"]}]}',
         ];
     }
 
@@ -49,7 +47,7 @@ class OperationTest extends OpenApiTestCase
         ]);
         $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         $json = $operation->toJson($flags);
-        $this->assertEquals($expected, $json);
+        $this->assertSame($expected, $json);
 
         $annotations = $this->annotationsFromDocBlockParser($docBlock);
         $this->assertCount(1, $annotations);

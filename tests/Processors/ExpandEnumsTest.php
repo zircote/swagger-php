@@ -16,10 +16,14 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
 
+<<<<<<< HEAD
 /**
  * @requires PHP 8.1
  */
 class ExpandEnumsTest extends OpenApiTestCase
+=======
+final class ExpandEnumsTest extends OpenApiTestCase
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
 {
     public function testExpandUnitEnum(): void
     {
@@ -77,11 +81,7 @@ class ExpandEnumsTest extends OpenApiTestCase
             return [];
         }
 
-        $mapValues = function (array $enums): array {
-            return array_map(function ($c) {
-                return is_a($c, \UnitEnum::class) ? $c->value ?? $c->name : $c;
-            }, $enums);
-        };
+        $mapValues = (fn (array $enums): array => array_map(fn ($c) => is_a($c, \UnitEnum::class) ? $c->value ?? $c->name : $c, $enums));
 
         return [
             'statusEnum' => [

@@ -19,15 +19,10 @@ class ProductController
      *
      * @param ?int $product_id the product id
      */
-    #[OAT\Get(path: '/products/{product_id}', tags: ['products'], operationId: 'getProducts')]
-    #[OAT\Response(
-        response: 200,
-        description: 'successful operation',
-        content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: Product::class))],
-        headers: [
-            new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
-        ]
-    )]
+    #[OAT\Get(path: '/products/{product_id}', operationId: 'getProducts', tags: ['products'])]
+    #[OAT\Response(response: 200, description: 'successful operation', headers: [
+        new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+    ], content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: Product::class))])]
     #[OAT\Response(response: 401, description: 'oops')]
     #[OAF\CustomAttachable(value: 'operation')]
     public function getProduct(
@@ -36,22 +31,18 @@ class ProductController
     ) {
     }
 
-    #[OAT\Post(path: '/products', tags: ['products'], operationId: 'addProducts', summary: 'Add products')]
+    #[OAT\Post(path: '/products', operationId: 'addProducts', summary: 'Add products', tags: ['products'])]
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
         content: new OAT\JsonContent(ref: Product::class)
     )]
-    #[OAT\RequestBody(
-        required: true,
-        description: 'New product',
-        content: [new OAT\MediaType(
-            mediaType: 'application/json',
-            schema: new OAT\Schema(
-                items: new OAT\Items(type: Product::class)
-            )
-        )]
-    )]
+    #[OAT\RequestBody(description: 'New product', required: true, content: [new OAT\MediaType(
+        mediaType: 'application/json',
+        schema: new OAT\Schema(
+            items: new OAT\Items(type: Product::class)
+        )
+    )])]
     /**
      * Add a product.
      */
@@ -59,12 +50,11 @@ class ProductController
     {
     }
 
-    #[OAT\Get(path: '/products', tags: ['products', 'catalog'], operationId: 'getAll')]
+    #[OAT\Get(path: '/products', operationId: 'getAll', tags: ['products', 'catalog'])]
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
         content: new OAT\JsonContent(
-            type: 'object',
             required: ['data'],
             properties: [
                 new OAT\Property(
@@ -72,7 +62,8 @@ class ProductController
                     type: 'array',
                     items: new OAT\Items(ref: Product::class)
                 ),
-            ]
+            ],
+            type: 'object'
         )
     )]
     /**

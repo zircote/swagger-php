@@ -12,7 +12,7 @@ use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
 
-class AugmentSchemasTest extends OpenApiTestCase
+final class AugmentSchemasTest extends OpenApiTestCase
 {
     public function testAugmentSchemas(): void
     {

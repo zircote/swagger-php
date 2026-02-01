@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 
-class AbstractAnnotationTest extends OpenApiTestCase
+final class AbstractAnnotationTest extends OpenApiTestCase
 {
     public function testVendorFields(): void
     {
@@ -60,7 +60,7 @@ END;
 )
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
-        $this->assertEquals('{"headers":{"X-CSRF-Token":{"description":"Token to prevent Cross Site Request Forgery"}}}', json_encode($annotations[0]));
+        $this->assertSame('{"headers":{"X-CSRF-Token":{"description":"Token to prevent Cross Site Request Forgery"}}}', json_encode($annotations[0]));
     }
 
     public function testConflictingKey(): void
@@ -106,17 +106,14 @@ END;
         $parameter->validate();
     }
 
-    public static function nestedMatches(): iterable
+    public static function nestedMatches(): \Iterator
     {
         $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
-
-        return [
-            'simple-match' => [OA\Parameter::class, $parameterMatch],
-            'invalid-annotation' => [OA\Schema::class, null],
-            'sub-annotation' => [SubParameter::class, $parameterMatch],
-            'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch],
-            'sub-invalid' => [SubSchema::class, null],
-        ];
+        yield 'simple-match' => [OA\Parameter::class, $parameterMatch];
+        yield 'invalid-annotation' => [OA\Schema::class, null];
+        yield 'sub-annotation' => [SubParameter::class, $parameterMatch];
+        yield 'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch];
+        yield 'sub-invalid' => [SubSchema::class, null];
     }
 
     /**

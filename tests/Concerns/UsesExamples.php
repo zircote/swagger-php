@@ -19,13 +19,13 @@ trait UsesExamples
     public function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
     {
         $specs = [
-            "$name-$version.yaml",
-            "$name-$implementation-$version.yaml",
+            "{$name}-{$version}.yaml",
+            "{$name}-{$implementation}-{$version}.yaml",
         ];
 
         $basePath = $this->examplePath($name);
         foreach ($specs as $spec) {
-            $specFilename = "$basePath/$spec";
+            $specFilename = "{$basePath}/{$spec}";
             if (file_exists($specFilename)) {
                 break;
             }
@@ -39,8 +39,13 @@ trait UsesExamples
         $packageName = str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $name)));
         $packageName = str_replace(' ', '\\', ucwords(str_replace('/', ' ', $packageName)));
 
+<<<<<<< HEAD
         $basePath = $this->examplePath($name);
         $path = "$basePath/$implementation";
+=======
+        $basePath = static::examplePath($name);
+        $path = "{$basePath}/{$implementation}";
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
         $namerspaceBase = sprintf('OpenApi\\Examples\\Specs\\%s\\', $packageName);
         $implementationNamerspaceBase = sprintf("{$namerspaceBase}%s\\", ucfirst($implementation));
 

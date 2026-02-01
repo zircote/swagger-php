@@ -16,7 +16,7 @@ class GreenProduct extends Product implements ColorInterface
     /**
      * @inheritDoc
      */
-    public function getColor()
+    public function getColor(): string
     {
         return 'green';
     }

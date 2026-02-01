@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Analysers;
 use OpenApi\Analysers\TokenScanner;
 use OpenApi\Tests\OpenApiTestCase;
 
-class TokenScannerTest extends OpenApiTestCase
+final class TokenScannerTest extends OpenApiTestCase
 {
     public static function scanCases(): iterable
     {

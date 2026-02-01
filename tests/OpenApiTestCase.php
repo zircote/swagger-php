@@ -48,9 +48,7 @@ class OpenApiTestCase extends TestCase
             $this->expectedLogMessages,
             implode(PHP_EOL . '  => ', array_merge(
                 ['OpenApi\Logger messages were not triggered:'],
-                array_map(function (array $value) {
-                    return $value[1];
-                }, $this->expectedLogMessages)
+                array_map(fn (array $value) => $value[1], $this->expectedLogMessages)
             ))
         );
 
@@ -60,10 +58,9 @@ class OpenApiTestCase extends TestCase
     public function getTrackingLogger(bool $debug = false): ?LoggerInterface
     {
         return new class ($this, $debug) extends AbstractLogger {
-            /** @var OpenApiTestCase */
-            protected $testCase;
+            protected OpenApiTestCase $testCase;
 
-            protected $debug;
+            protected bool $debug;
 
             public function __construct(OpenApiTestCase $testCase, bool $debug = false)
             {
@@ -74,13 +71,13 @@ class OpenApiTestCase extends TestCase
             public function log($level, $message, array $context = []): void
             {
                 if (LogLevel::DEBUG == $level) {
-                    if (!$this->debug || 0 === strpos($message, 'Analysing source:')) {
+                    if (str_starts_with((string) $message, 'Analysing source:') || str_contains((string) $message, 'JetBrains')) {
                         return;
                     }
                 }
 
                 if (count($this->testCase->expectedLogMessages)) {
-                    list($assertion, $needle) = array_shift($this->testCase->expectedLogMessages);
+                    [$assertion] = array_shift($this->testCase->expectedLogMessages);
                     $assertion($message, $level);
                 } else {
                     $this->testCase->fail('Unexpected log line: ' . $level . '("' . $message . '")');
@@ -128,7 +125,7 @@ class OpenApiTestCase extends TestCase
         $generator = (new Generator())
             ->setTypeResolver($this->getTypeResolver());
 
-        array_walk($processors, function ($processor) use ($generator) {
+        array_walk($processors, function ($processor) use ($generator): void {
             if (is_a($processor, GeneratorAwareInterface::class)) {
                 $processor->setGenerator($generator);
             }
@@ -143,7 +140,7 @@ class OpenApiTestCase extends TestCase
             if ($entry instanceof \Exception) {
                 $entry = $entry->getMessage();
             }
-            $this->assertStringContainsString($needle, $entry, $message);
+            $this->assertStringContainsString($needle, (string) $entry, $message);
         }, $needle];
     }
 
@@ -168,7 +165,7 @@ class OpenApiTestCase extends TestCase
                 return '"' . $value . '"';
             }
             if (is_object($value)) {
-                return get_class($value);
+                return $value::class;
             }
 
             return gettype($value);
@@ -242,9 +239,7 @@ class OpenApiTestCase extends TestCase
      */
     public static function fixtures(array $files): array
     {
-        return array_map(function ($file) {
-            return __DIR__ . '/Fixtures/' . $file;
-        }, $files);
+        return array_map(fn (string $file): string => __DIR__ . '/Fixtures/' . $file, $files);
     }
 
     public static function processors(array $strip = []): array
@@ -259,7 +254,12 @@ class OpenApiTestCase extends TestCase
                 }
             });
 
+<<<<<<< HEAD
         return $processors;
+=======
+        return $generator->getProcessorPipeline()
+            ->remove(fn ($processor): bool => is_object($processor) && in_array($processor::class, $strip));
+>>>>>>> 09b3543 (Subject examples and tests to rector rules (#1942))
     }
 
     public function analysisFromFixtures(array $files, array $processors = [], ?AnalyserInterface $analyzer = null, array $config = []): Analysis
@@ -281,7 +281,7 @@ class OpenApiTestCase extends TestCase
         return (new Generator())
             ->setTypeResolver($this->getTypeResolver())
             ->setVersion($version)
-            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases) {
+            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases): array {
                 $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
 
                 return $docBlockParser->fromComment($docBlock, $this->getContext([], $generator->getVersion()));
@@ -296,7 +296,7 @@ class OpenApiTestCase extends TestCase
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Annotations');
         foreach ($dir as $entry) {
-            if (!$entry->isFile() || $entry->getExtension() != 'php') {
+            if (!$entry->isFile() || $entry->getExtension() !== 'php') {
                 continue;
             }
             $class = $entry->getBasename('.php');
@@ -317,7 +317,7 @@ class OpenApiTestCase extends TestCase
         $classes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../src/Attributes');
         foreach ($dir as $entry) {
-            if (!$entry->isFile() || $entry->getExtension() != 'php') {
+            if (!$entry->isFile() || $entry->getExtension() !== 'php') {
                 continue;
             }
             $class = $entry->getBasename('.php');

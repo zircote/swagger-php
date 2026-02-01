@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
-class AnnotationPropertiesDefinedTest extends OpenApiTestCase
+final class AnnotationPropertiesDefinedTest extends OpenApiTestCase
 {
     /**
      * @dataProvider allAnnotationClasses
