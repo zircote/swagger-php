@@ -12,10 +12,8 @@ use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
-use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
 use Psr\Log\LoggerInterface;
-use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 
 /**
  * OpenApi spec generator.
@@ -319,9 +317,13 @@ class Generator
 
     public function getTypeResolver(): TypeResolverInterface
     {
+<<<<<<< HEAD
         $this->typeResolver ??= class_exists(StringTypeResolver::class)
                     ? new TypeInfoTypeResolver()
                     : new LegacyTypeResolver();
+=======
+        $this->typeResolver ??= new TypeInfoTypeResolver();
+>>>>>>> 01a7fcd (Remove obsolete conditionals around `TypeInfoTypeResolver` (#1945))
 
         return $this->typeResolver;
     }
