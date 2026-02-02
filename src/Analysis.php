@@ -168,14 +168,14 @@ class Analysis
     /**
      * Get a list of all super classes for the given class.
      *
-     * @param class-string $class  the class name
-     * @param bool         $direct flag to find only the actual class parents
+     * @param class-string|null $class  the class name
+     * @param bool              $direct flag to find only the actual class parents
      *
      * @return array map of class => definition pairs of parent classes
      */
-    public function getSuperClasses(string $class, bool $direct = false): array
+    public function getSuperClasses(?string $class, bool $direct = false): array
     {
-        $classDefinition = $this->classes[$class] ?? null;
+        $classDefinition = $this->classes[$class ?? ''] ?? null;
         if (!$classDefinition || empty($classDefinition['extends'])) {
             // unknown class, or no inheritance
             return [];
@@ -199,12 +199,12 @@ class Analysis
     /**
      * Get the list of interfaces used by the given class or by classes which it extends.
      *
-     * @param class-string $class  the class name
-     * @param bool         $direct flag to find only the actual class interfaces
+     * @param class-string|null $class  the class name
+     * @param bool              $direct flag to find only the actual class interfaces
      *
      * @return array map of class => definition pairs of interfaces
      */
-    public function getInterfacesOfClass(string $class, bool $direct = false): array
+    public function getInterfacesOfClass(?string $class, bool $direct = false): array
     {
         $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
         // add self
@@ -245,12 +245,12 @@ class Analysis
     /**
      * Get the list of traits used by the given class/trait or by classes which it extends.
      *
-     * @param string $source the source name
-     * @param bool   $direct flag to find only the actual class traits
+     * @param string|null $source the source name
+     * @param bool        $direct flag to find only the actual class traits
      *
      * @return array map of class => definition pairs of traits
      */
-    public function getTraitsOfClass(string $source, bool $direct = false): array
+    public function getTraitsOfClass(?string $source, bool $direct = false): array
     {
         $sources = $direct ? [] : array_keys($this->getSuperClasses($source));
         // add self

@@ -67,7 +67,7 @@ class ExpandEnums implements GeneratorAwareInterface
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('enum')) {
-                $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($schema->_context->enum));
+                $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($schema->_context->enum) ?? '');
                 $schema->schema = Generator::isDefault($schema->schema) ? $re->getShortName() : $schema->schema;
 
                 $schemaType = $schema->type;
