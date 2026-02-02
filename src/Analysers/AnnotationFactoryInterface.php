@@ -18,7 +18,7 @@ interface AnnotationFactoryInterface extends GeneratorAwareInterface
     public function isSupported(): bool;
 
     /**
-     * @return array<OA\AbstractAnnotation> top level annotations
+     * @return list<OA\AbstractAnnotation> top level annotations
      */
     public function build(\Reflector $reflector, Context $context): array;
 }

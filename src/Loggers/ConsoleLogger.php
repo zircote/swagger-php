@@ -24,8 +24,7 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         LogLevel::NOTICE,
     ];
 
-    /** @var bool */
-    protected $loggedMessageAboveNotice = false;
+    protected bool $loggedMessageAboveNotice = false;
 
     protected bool $debug;
 
