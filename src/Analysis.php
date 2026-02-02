@@ -11,11 +11,11 @@ use OpenApi\Annotations as OA;
 /**
  * Result of the analyser.
  *
- * Pretends to be an array of annotations, but also contains detected classes
- * and helper functions for the processors.
+ * Pretends to be an array of annotations but also contains detected classes and helper functions for the processors.
  */
 class Analysis
 {
+    /** @var \SplObjectStorage<OA\AbstractAnnotation, Context> */
     public \SplObjectStorage $annotations;
 
     /**
@@ -45,6 +45,9 @@ class Analysis
 
     public ?Context $context = null;
 
+    /**
+     * @param list<OA\AbstractAnnotation> $annotations
+     */
     public function __construct(array $annotations = [], ?Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();
@@ -53,7 +56,7 @@ class Analysis
         $this->addAnnotations($annotations, $context);
     }
 
-    public function addAnnotation(object $annotation, Context $context): void
+    public function addAnnotation(OA\AbstractAnnotation $annotation, Context $context): void
     {
         if ($this->annotations->offsetExists($annotation)) {
             return;
@@ -72,10 +75,11 @@ class Analysis
                 $context->annotations[] = $annotation;
             }
         }
+
         $this->annotations->offsetSet($annotation, $context);
-        $blacklist = property_exists($annotation, '_blacklist') ? $annotation::$_blacklist : [];
-        foreach ($annotation as $property => $value) {
-            if (in_array($property, $blacklist)) {
+
+        foreach (get_object_vars($annotation) as $property => $value) {
+            if (in_array($property, $annotation::$_blacklist)) {
                 if ($property === '_unmerged') {
                     foreach ($value as $item) {
                         $this->addAnnotation($item, $context);
@@ -93,6 +97,9 @@ class Analysis
         }
     }
 
+    /**
+     * @param list<OA\AbstractAnnotation> $annotations
+     */
     public function addAnnotations(array $annotations, Context $context): void
     {
         foreach ($annotations as $annotation) {
@@ -141,7 +148,7 @@ class Analysis
     /**
      * Get all subclasses of the given parent class.
      *
-     * @param string $parent the parent class
+     * @param class-string $parent the parent class
      *
      * @return array map of class => definition pairs of sub-classes
      */
@@ -161,14 +168,14 @@ class Analysis
     /**
      * Get a list of all super classes for the given class.
      *
-     * @param string $class  the class name
-     * @param bool   $direct flag to find only the actual class parents
+     * @param class-string|null $class  the class name
+     * @param bool              $direct flag to find only the actual class parents
      *
      * @return array map of class => definition pairs of parent classes
      */
-    public function getSuperClasses(string $class, bool $direct = false): array
+    public function getSuperClasses(?string $class, bool $direct = false): array
     {
-        $classDefinition = $this->classes[$class] ?? null;
+        $classDefinition = $this->classes[$class ?? ''] ?? null;
         if (!$classDefinition || empty($classDefinition['extends'])) {
             // unknown class, or no inheritance
             return [];
@@ -192,12 +199,12 @@ class Analysis
     /**
      * Get the list of interfaces used by the given class or by classes which it extends.
      *
-     * @param string $class  the class name
-     * @param bool   $direct flag to find only the actual class interfaces
+     * @param class-string|null $class  the class name
+     * @param bool              $direct flag to find only the actual class interfaces
      *
      * @return array map of class => definition pairs of interfaces
      */
-    public function getInterfacesOfClass(string $class, bool $direct = false): array
+    public function getInterfacesOfClass(?string $class, bool $direct = false): array
     {
         $classes = $direct ? [] : array_keys($this->getSuperClasses($class));
         // add self
@@ -238,12 +245,12 @@ class Analysis
     /**
      * Get the list of traits used by the given class/trait or by classes which it extends.
      *
-     * @param string $source the source name
-     * @param bool   $direct flag to find only the actual class traits
+     * @param string|null $source the source name
+     * @param bool        $direct flag to find only the actual class traits
      *
      * @return array map of class => definition pairs of traits
      */
-    public function getTraitsOfClass(string $source, bool $direct = false): array
+    public function getTraitsOfClass(?string $source, bool $direct = false): array
     {
         $sources = $direct ? [] : array_keys($this->getSuperClasses($source));
         // add self
@@ -284,10 +291,10 @@ class Analysis
     /**
      * @template T extends OA\AbstractAnnotation
      *
-     * @param class-string<T>|array<class-string<T>> $classes one or more class names
-     * @param bool                                   $strict  in non-strict mode child classes are also detected
+     * @param class-string<T>|list<class-string<T>> $classes one or more class names
+     * @param bool                                  $strict  in non-strict mode child classes are also detected
      *
-     * @return array<T>
+     * @return list<T>
      */
     public function getAnnotationsOfType($classes, bool $strict = false): array
     {
@@ -342,22 +349,6 @@ class Analysis
         }
 
         return null;
-    }
-
-    public function getContext(object $annotation): ?Context
-    {
-        if ($annotation instanceof OA\AbstractAnnotation) {
-            return $annotation->_context;
-        }
-        if ($this->annotations->offsetExists($annotation) === false) {
-            throw new OpenApiException('Annotation not found');
-        }
-        $context = $this->annotations[$annotation];
-        if ($context instanceof Context) {
-            return $context;
-        }
-
-        throw new OpenApiException('Annotation has no context - did you use addAnnotation()/addAnnotations()');
     }
 
     /**

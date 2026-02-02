@@ -12,7 +12,7 @@ trait RefTrait
 {
     protected function toRefKey(Context $context, ?string $name): string
     {
-        $fqn = strtolower($context->fullyQualifiedName($name));
+        $fqn = strtolower($context->fullyQualifiedName($name) ?? '');
 
         return ltrim($fqn, '\\');
     }

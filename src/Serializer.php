@@ -61,6 +61,9 @@ class Serializer
         OA\XmlContent::class,
     ];
 
+    /**
+     * @param class-string<OA\AbstractAnnotation> $className
+     */
     protected static function isValidAnnotationClass(string $className): bool
     {
         return in_array($className, self::$VALID_ANNOTATIONS);
@@ -68,6 +71,8 @@ class Serializer
 
     /**
      * Deserialize a string.
+     *
+     * @param class-string<OA\AbstractAnnotation> $className
      */
     public function deserialize(string $jsonString, string $className): OA\AbstractAnnotation
     {
@@ -80,6 +85,8 @@ class Serializer
 
     /**
      * Deserialize a file.
+     *
+     * @param class-string<OA\AbstractAnnotation> $className
      */
     public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class): OA\AbstractAnnotation
     {
@@ -99,10 +106,12 @@ class Serializer
 
     /**
      * Do deserialization.
+     *
+     * @param class-string<OA\AbstractAnnotation> $className
      */
-    protected function doDeserialize(\stdClass $c, string $class, Context $context): OA\AbstractAnnotation
+    protected function doDeserialize(\stdClass $c, string $className, Context $context): OA\AbstractAnnotation
     {
-        $annotation = new $class(['_context' => $context]);
+        $annotation = new $className(['_context' => $context]);
         foreach ((array) $c as $property => $value) {
             if ($property === '$ref') {
                 $property = 'ref';

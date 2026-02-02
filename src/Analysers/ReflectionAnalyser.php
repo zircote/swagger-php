@@ -18,18 +18,17 @@ use OpenApi\OpenApiException;
  *
  * Can read either PHP <code>DocBlock</code>s or <code>Attribute</code>s.
  *
- * Due to the nature of reflection this requires all related classes
- * to be auto-loadable.
+ * Due to the nature of reflection, this requires all related classes to be auto-loadable.
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
     use GeneratorAwareTrait;
 
-    /** @var AnnotationFactoryInterface[] */
+    /** @var list<AnnotationFactoryInterface> */
     protected array $annotationFactories = [];
 
     /**
-     * @param array<AnnotationFactoryInterface> $annotationFactories
+     * @param list<AnnotationFactoryInterface> $annotationFactories
      */
     public function __construct(array $annotationFactories = [])
     {

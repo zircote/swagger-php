@@ -38,7 +38,7 @@ class Generator
     /** @var array<string,string> */
     public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
 
-    /** @var array<string> */
+    /** @var list<string> */
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
 
     /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
@@ -88,7 +88,7 @@ class Generator
     }
 
     /**
-     * @return array<string>
+     * @return array<string, string>
      */
     public function getAliases(): array
     {
@@ -110,7 +110,7 @@ class Generator
     }
 
     /**
-     * @return array<string>|null
+     * @return list<string>|null
      */
     public function getNamespaces(): ?array
     {
