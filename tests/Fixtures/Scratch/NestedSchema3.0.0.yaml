@@ -5,7 +5,7 @@ info:
 paths:
   /api/endpoint:
     post:
-      operationId: 4dcf657dcdcd504467bc7a4ac7d21084
+      operationId: post
       requestBody:
         content:
           application/json:

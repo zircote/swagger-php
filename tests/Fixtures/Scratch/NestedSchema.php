@@ -38,27 +38,6 @@ class MultipleOneOf
     title: 'Parameter Content Scratch',
     version: '1.0'
 )]
-#[OAT\Post(
-    path: '/api/endpoint',
-    requestBody: new OAT\RequestBody(content: [new OAT\MediaType(
-        mediaType: 'application/json',
-        schema: new OAT\Schema(
-            required: ['note'],
-            properties: [
-                new OAT\Property(property: 'note', example: 'My note'),
-                new OAT\Property(
-                    property: 'other',
-                    description: 'other',
-                    oneOf: [
-                        new OAT\Schema(type: NestedSchemaOne::class),
-                        new OAT\Schema(type: NestedSchemaTwo::class),
-                    ]
-                ),
-            ]
-        )
-    )]),
-    responses: [new OAT\Response(response: 200, description: 'OK')]
-)]
 #[OAT\Schema(
     required: ['errors'],
     properties: [
@@ -83,4 +62,46 @@ class MultipleOneOf
 )]
 class NestedSchema
 {
+}
+
+class NestedSchemaController
+{
+    #[OAT\Post(
+        path: '/api/endpoint',
+        operationId: 'post',
+        requestBody: new OAT\RequestBody(content: [new OAT\MediaType(
+            mediaType: 'application/json',
+            schema: new OAT\Schema(
+                required: ['note'],
+                properties: [
+                    new OAT\Property(property: 'note', example: 'My note'),
+                    new OAT\Property(
+                        property: 'other',
+                        description: 'other',
+                        oneOf: [
+                            new OAT\Schema(type: NestedSchemaOne::class),
+                            new OAT\Schema(type: NestedSchemaTwo::class),
+                        ]
+                    ),
+                ]
+            )
+        )]),
+        responses: [new OAT\Response(response: 200, description: 'OK')]
+    )]
+    public function post()
+    {
+
+    }
+
+    /**
+     * @param string[] $tags List of tags
+     */
+//    #[OAT\Get(
+//        path: '/api/endpoint',
+//    )]
+//    #[OAT\Response(response: 200, description: 'successful operation')]
+//    public function endpoint(
+//        #[OAT\QueryParameter(schema: new OAT\Schema(type: 'array', items: new OAT\Items(type: 'string')))] array $tags,
+//    ) {
+//    }
 }
