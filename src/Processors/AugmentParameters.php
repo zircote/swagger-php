@@ -66,12 +66,15 @@ class AugmentParameters implements GeneratorAwareInterface
             }
 
             if ($context->reflector instanceof \ReflectionParameter) {
-                $schema = new OA\Schema([
-                    '_context' => new Context([
-                        'generated' => true,
-                        'reflector' => $context->reflector,
-                    ], $context),
-                ]);
+                $schema = Generator::isDefault($parameter->schema)
+                    ? new OA\Schema([
+                        '_context' => new Context([
+                            'generated' => true,
+                            'reflector' => $context->reflector,
+                        ], $context),
+                    ])
+                    : $parameter->schema;
+
                 $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema);
 
                 $parameter->merge([new OA\Schema([

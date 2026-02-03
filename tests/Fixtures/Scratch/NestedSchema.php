@@ -94,14 +94,20 @@ class NestedSchemaController
     }
 
     /**
-     * @param string[] $tags List of tags
+     * @param string[] $tags
      */
-//    #[OAT\Get(
-//        path: '/api/endpoint',
-//    )]
-//    #[OAT\Response(response: 200, description: 'successful operation')]
-//    public function endpoint(
-//        #[OAT\QueryParameter(schema: new OAT\Schema(type: 'array', items: new OAT\Items(type: 'string')))] array $tags,
-//    ) {
-//    }
+    #[OAT\Get(
+        path: '/api/endpoint',
+        operationId: 'get',
+    )]
+    #[OAT\Response(response: 200, description: 'successful operation')]
+    public function get(
+        #[OAT\QueryParameter(
+            schema: new OAT\Schema(
+                type: 'array',
+                items: new OAT\Items(type: 'string')
+            )
+        )] array $tags,
+    ) {
+    }
 }

@@ -4,6 +4,20 @@ info:
   version: '1.0'
 paths:
   /api/endpoint:
+    get:
+      operationId: get
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
     post:
       operationId: post
       requestBody:
