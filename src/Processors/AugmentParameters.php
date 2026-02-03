@@ -65,21 +65,6 @@ class AugmentParameters implements GeneratorAwareInterface
             }
 
             if ($context->reflector instanceof \ReflectionParameter) {
-<<<<<<< HEAD
-                if (Generator::isDefault($parameter->schema)) {
-                    $schema = new OA\Schema(['_context' => new Context(['reflector' => $context->reflector], $context)]);
-                    $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema);
-
-                    $parameter->merge([new OA\Schema([
-                        'type' => $schema->type,
-                        'format' => $schema->format,
-                        'ref' => $schema->ref,
-                        '_context' => new Context(['nested' => $this, 'comment' => null, 'reflector' => $context->reflector], $context)]),
-                    ]);
-                } else {
-                    $schema = $parameter->schema;
-                }
-=======
                 $schema = Generator::isDefault($parameter->schema)
                     ? new OA\Schema([
                         '_context' => new Context([
@@ -105,7 +90,6 @@ class AugmentParameters implements GeneratorAwareInterface
                         'reflector' => $context->reflector,
                     ], $context)]),
                 ]);
->>>>>>> f0717a5 (Fix regression about unexpected items when augmenting parameters (#1949))
 
                 if (Generator::isDefault($parameter->required)) {
                     $parameter->required = !$schema->isNullable();
