@@ -3,21 +3,7 @@ info:
   title: 'Parameter Content Scratch'
   version: '1.0'
 paths:
-  /api/endpoint:
-    get:
-      operationId: get
-      parameters:
-        -
-          name: tags
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: 'successful operation'
+  /api/post:
     post:
       operationId: post
       requestBody:
@@ -36,6 +22,51 @@ paths:
       responses:
         '200':
           description: OK
+  /api/get:
+    get:
+      operationId: get
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
+  /api/put:
+    put:
+      operationId: put
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
+  /api/delete:
+    delete:
+      operationId: delete
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
 components:
   schemas:
     NestedSchemaOne: {  }

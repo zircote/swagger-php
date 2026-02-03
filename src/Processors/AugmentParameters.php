@@ -80,6 +80,10 @@ class AugmentParameters implements GeneratorAwareInterface
                 $parameter->merge([new OA\Schema([
                     'type' => $schema->type,
                     'format' => $schema->format,
+                    'items' => $schema->items,
+                    'oneOf' => $schema->oneOf,
+                    'allOf' => $schema->allOf,
+                    'anyOf' => $schema->anyOf,
                     'ref' => $schema->ref,
                     '_context' => new Context([
                         'nested' => $this,

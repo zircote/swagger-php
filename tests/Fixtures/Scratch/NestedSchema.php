@@ -67,7 +67,7 @@ class NestedSchema
 class NestedSchemaController
 {
     #[OAT\Post(
-        path: '/api/endpoint',
+        path: '/api/post',
         operationId: 'post',
         requestBody: new OAT\RequestBody(content: [new OAT\MediaType(
             mediaType: 'application/json',
@@ -97,7 +97,7 @@ class NestedSchemaController
      * @param string[] $tags
      */
     #[OAT\Get(
-        path: '/api/endpoint',
+        path: '/api/get',
         operationId: 'get',
     )]
     #[OAT\Response(response: 200, description: 'successful operation')]
@@ -108,6 +108,34 @@ class NestedSchemaController
                 items: new OAT\Items(type: 'string')
             )
         )] array $tags,
+    ) {
+    }
+
+    #[OAT\Put(
+        path: '/api/put',
+        operationId: 'put',
+    )]
+    #[OAT\Response(response: 200, description: 'successful operation')]
+    public function put(
+        #[OAT\QueryParameter(
+            schema: new OAT\Schema(
+                type: 'array',
+                items: new OAT\Items(type: 'string')
+            )
+        )] array $tags,
+    ) {
+    }
+
+    /**
+     * @param string[] $tags
+     */
+    #[OAT\Delete(
+        path: '/api/delete',
+        operationId: 'delete',
+    )]
+    #[OAT\Response(response: 200, description: 'successful operation')]
+    public function delete(
+        #[OAT\QueryParameter] array $tags,
     ) {
     }
 }
