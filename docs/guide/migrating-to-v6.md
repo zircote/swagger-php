@@ -15,7 +15,7 @@
 For most installations upgrading should not require any changes.
 
 ## Type resolvers
-With `radebatz/type-info-extras` now being a required dependency, the `TypeInfoTypeResolver` is not the de-facto default
+With `radebatz/type-info-extras` now being a required dependency, the `TypeInfoTypeResolver` is now the de-facto default
 resolver.
 
 The `LegacyTypeResolver` can still be used as a drop-in replacement, but is now marked `deprecated` and will be removed
