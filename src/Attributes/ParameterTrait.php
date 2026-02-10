@@ -36,29 +36,31 @@ trait ParameterTrait
         ?bool $allowReserved = null,
         ?array $spaceDelimited = null,
         ?array $pipeDelimited = null,
+        mixed $deepObject = null,
         // annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
         parent::__construct([
-                'parameter' => $parameter ?? Generator::UNDEFINED,
-                'name' => $name ?? Generator::UNDEFINED,
-                'description' => $description,
-                // next two are special as we override the default value for specific Parameter subclasses
-                'in' => $in ?? (Generator::isDefault($this->in) ? Generator::UNDEFINED : $this->in),
-                'required' => $required ?? (Generator::isDefault($this->required) ? Generator::UNDEFINED : $this->required),
-                'deprecated' => $deprecated ?? Generator::UNDEFINED,
-                'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
-                'ref' => $ref ?? Generator::UNDEFINED,
-                'example' => $example,
-                'style' => $style ?? Generator::UNDEFINED,
-                'explode' => $explode ?? Generator::UNDEFINED,
-                'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
-                'spaceDelimited' => $spaceDelimited ?? Generator::UNDEFINED,
-                'pipeDelimited' => $pipeDelimited ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
-                'value' => $this->combine($schema, $examples, $content),
-            ]);
+            'parameter' => $parameter ?? Generator::UNDEFINED,
+            'name' => $name ?? Generator::UNDEFINED,
+            'description' => $description,
+            // next two are special as we override the default value for specific Parameter subclasses
+            'in' => $in ?? (Generator::isDefault($this->in) ? Generator::UNDEFINED : $this->in),
+            'required' => $required ?? (Generator::isDefault($this->required) ? Generator::UNDEFINED : $this->required),
+            'deprecated' => $deprecated ?? Generator::UNDEFINED,
+            'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
+            'ref' => $ref ?? Generator::UNDEFINED,
+            'example' => $example,
+            'style' => $style ?? Generator::UNDEFINED,
+            'explode' => $explode ?? Generator::UNDEFINED,
+            'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
+            'spaceDelimited' => $spaceDelimited ?? Generator::UNDEFINED,
+            'pipeDelimited' => $pipeDelimited ?? Generator::UNDEFINED,
+            'deepObject' => $deepObject ?? Generator::UNDEFINED,
+            'x' => $x ?? Generator::UNDEFINED,
+            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'value' => $this->combine($schema, $examples, $content),
+        ]);
     }
 }
