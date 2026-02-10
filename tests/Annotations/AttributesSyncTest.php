@@ -16,12 +16,7 @@ class AttributesSyncTest extends OpenApiTestCase
 {
     public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'dependencies', 'propertyNames'];
     public static $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-<<<<<<< HEAD
-    public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple', 'deepObject'];
-=======
-
     public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple'];
->>>>>>> 9a0a612 (Add missing `deepObject` parameter to attribute `Parameter` (#1957))
 
     public function testCounts(): void
     {
