@@ -21,7 +21,8 @@ class Server extends OA\Server
         ?string $url = null,
         ?string $description = Generator::UNDEFINED,
         ?array $variables = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

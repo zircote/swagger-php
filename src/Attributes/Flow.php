@@ -23,7 +23,8 @@ class Flow extends OA\Flow
         ?string $refreshUrl = null,
         ?string $flow = null,
         ?array $scopes = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

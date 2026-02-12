@@ -24,7 +24,8 @@ class Examples extends OA\Examples
         int|string|array|null $value = null,
         ?string $externalValue = null,
         string|object|null $ref = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

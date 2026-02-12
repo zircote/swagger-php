@@ -32,7 +32,8 @@ trait OperationTrait
         ?array $callbacks = null,
         ?ExternalDocumentation $externalDocs = null,
         ?bool $deprecated = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

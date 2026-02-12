@@ -30,7 +30,8 @@ class SecurityScheme extends OA\SecurityScheme
         ?string $scheme = null,
         ?string $openIdConnectUrl = null,
         ?array $flows = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

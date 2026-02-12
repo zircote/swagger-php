@@ -275,7 +275,9 @@ class OpenApiTestCase extends TestCase
     }
 
     /**
-     * Collect list of all non-abstract annotation classes.
+     * Collect a list of all non-abstract annotation classes.
+     *
+     * @return array<string, array<class-string<OA\AbstractAnnotation>>>
      */
     public static function allAnnotationClasses(): array
     {
@@ -286,7 +288,7 @@ class OpenApiTestCase extends TestCase
                 continue;
             }
             $class = $entry->getBasename('.php');
-            if (in_array($class, ['AbstractAnnotation', 'Operation'])) {
+            if (in_array($class, ['AbstractAnnotation', 'JsonSchemaTrait', 'Operation'])) {
                 continue;
             }
             $classes[$class] = ['OpenApi\\Annotations\\' . $class];

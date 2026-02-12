@@ -24,7 +24,8 @@ class Header extends OA\Header
         ?Schema $schema = null,
         ?bool $deprecated = null,
         ?bool $allowEmptyValue = null,
-        // annotation4
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

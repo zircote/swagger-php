@@ -20,7 +20,8 @@ class Discriminator extends OA\Discriminator
     public function __construct(
         ?string $propertyName = null,
         ?array $mapping = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

@@ -22,7 +22,8 @@ class Xml extends OA\Xml
         ?string $prefix = null,
         ?bool $attribute = null,
         ?bool $wrapped = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

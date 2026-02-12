@@ -20,7 +20,8 @@ class Contact extends OA\Contact
         ?string $name = null,
         ?string $url = null,
         ?string $email = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

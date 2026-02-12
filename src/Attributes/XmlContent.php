@@ -13,20 +13,20 @@ use OpenApi\Annotations as OA;
 class XmlContent extends OA\XmlContent
 {
     /**
-     * @param array<Examples>                                               $examples
-     * @param string|class-string|object|null                               $ref
-     * @param string[]                                                      $required
-     * @param Property[]                                                    $properties
-     * @param string|non-empty-array<string>|null                           $type
-     * @param int|float                                                     $maximum
-     * @param int|float                                                     $minimum
-     * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<Schema|OA\Schema>                                       $allOf
-     * @param array<Schema|OA\Schema>                                       $anyOf
-     * @param array<Schema|OA\Schema>                                       $oneOf
-     * @param Encoding[]                                                    $encoding
-     * @param array<string,mixed>|null                                      $x
-     * @param Attachable[]|null                                             $attachables
+     * @param array<Examples>                                              $examples
+     * @param string|class-string|object|null                              $ref
+     * @param string[]                                                     $required
+     * @param Property[]                                                   $properties
+     * @param string|non-empty-array<string>|null                          $type
+     * @param int|float                                                    $maximum
+     * @param int|float                                                    $minimum
+     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+     * @param array<Schema|OA\Schema>                                      $allOf
+     * @param array<Schema|OA\Schema>                                      $anyOf
+     * @param array<Schema|OA\Schema>                                      $oneOf
+     * @param Encoding[]                                                   $encoding
+     * @param array<string,mixed>|null                                     $x
+     * @param Attachable[]|null                                            $attachables
      */
     public function __construct(
         ?array $examples = null,
@@ -72,7 +72,8 @@ class XmlContent extends OA\XmlContent
         ?array $encoding = null,
         ?string $contentEncoding = null,
         ?string $contentMediaType = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
@@ -117,7 +118,8 @@ class XmlContent extends OA\XmlContent
             'encoding' => $encoding ?? Generator::UNDEFINED,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
             'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
-            // annotation
+
+            // abstract annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs),

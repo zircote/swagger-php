@@ -35,7 +35,8 @@ class PathItem extends OA\PathItem
         ?Query $query = null,
         ?array $servers = null,
         ?array $parameters = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

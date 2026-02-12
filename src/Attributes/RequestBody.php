@@ -24,7 +24,8 @@ class RequestBody extends OA\RequestBody
         ?string $description = Generator::UNDEFINED,
         ?bool $required = null,
         array|MediaType|JsonContent|XmlContent|Attachable|null $content = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

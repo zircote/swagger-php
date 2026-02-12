@@ -27,7 +27,8 @@ class Response extends OA\Response
         ?array $headers = null,
         MediaType|JsonContent|XmlContent|Attachable|array|null $content = null,
         ?array $links = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

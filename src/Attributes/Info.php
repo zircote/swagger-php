@@ -23,7 +23,8 @@ class Info extends OA\Info
         ?string $termsOfService = null,
         ?Contact $contact = null,
         ?License $license = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

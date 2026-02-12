@@ -13,18 +13,18 @@ use OpenApi\Annotations as OA;
 class AdditionalProperties extends OA\AdditionalProperties
 {
     /**
-     * @param string|class-string|object|null                               $ref
-     * @param string[]                                                      $required
-     * @param Property[]                                                    $properties
-     * @param string|non-empty-array<string>|null                           $type
-     * @param int|float                                                     $maximum
-     * @param int|float                                                     $minimum
-     * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<Schema|OA\Schema>                                       $allOf
-     * @param array<Schema|OA\Schema>                                       $anyOf
-     * @param array<Schema|OA\Schema>                                       $oneOf
-     * @param array<string,mixed>|null                                      $x
-     * @param Attachable[]|null                                             $attachables
+     * @param string|class-string|object|null                              $ref
+     * @param string[]                                                     $required
+     * @param Property[]                                                   $properties
+     * @param string|non-empty-array<string>|null                          $type
+     * @param int|float                                                    $maximum
+     * @param int|float                                                    $minimum
+     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+     * @param array<Schema|OA\Schema>                                      $allOf
+     * @param array<Schema|OA\Schema>                                      $anyOf
+     * @param array<Schema|OA\Schema>                                      $oneOf
+     * @param array<string,mixed>|null                                     $x
+     * @param Attachable[]|null                                            $attachables
      */
     public function __construct(
         // schema
@@ -66,7 +66,8 @@ class AdditionalProperties extends OA\AdditionalProperties
         AdditionalProperties|bool|null $additionalProperties = null,
         ?array $patternProperties = null,
         ?array $unevaluatedProperties = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

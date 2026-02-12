@@ -13,19 +13,19 @@ use OpenApi\Annotations as OA;
 class Schema extends OA\Schema
 {
     /**
-     * @param string|class-string|object|null                               $ref
-     * @param string[]                                                      $required
-     * @param Property[]                                                    $properties
-     * @param string|non-empty-array<string>|null                           $type
-     * @param int|float                                                     $maximum
-     * @param int|float                                                     $minimum
-     * @param array<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<Examples>                                               $examples
-     * @param array<Schema|OA\Schema>                                       $allOf
-     * @param array<Schema|OA\Schema>                                       $anyOf
-     * @param array<Schema|OA\Schema>                                       $oneOf
-     * @param array<string,mixed>|null                                      $x
-     * @param Attachable[]|null                                             $attachables
+     * @param string|class-string|object|null                              $ref
+     * @param string[]                                                     $required
+     * @param Property[]                                                   $properties
+     * @param string|non-empty-array<string>|null                          $type
+     * @param int|float                                                    $maximum
+     * @param int|float                                                    $minimum
+     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+     * @param array<Examples>                                              $examples
+     * @param array<Schema|OA\Schema>                                      $allOf
+     * @param array<Schema|OA\Schema>                                      $anyOf
+     * @param array<Schema|OA\Schema>                                      $oneOf
+     * @param array<string,mixed>|null                                     $x
+     * @param Attachable[]|null                                            $attachables
      */
     public function __construct(
         // schema
@@ -71,7 +71,7 @@ class Schema extends OA\Schema
         mixed $const = Generator::UNDEFINED,
         ?string $contentEncoding = null,
         ?string $contentMediaType = null,
-        // annotation
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
@@ -114,7 +114,7 @@ class Schema extends OA\Schema
             'const' => $const,
             'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
             'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
-            // annotation
+            // abstract annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
             'value' => $this->combine($items, $discriminator, $externalDocs, $examples),

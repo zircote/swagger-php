@@ -19,7 +19,8 @@ class ExternalDocumentation extends OA\ExternalDocumentation
     public function __construct(
         ?string $description = Generator::UNDEFINED,
         ?string $url = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

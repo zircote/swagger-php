@@ -34,7 +34,8 @@ class Components extends OA\Components
         ?array $securitySchemes = null,
         ?array $links = null,
         ?array $callbacks = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

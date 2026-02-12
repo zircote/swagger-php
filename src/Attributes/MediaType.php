@@ -24,7 +24,8 @@ class MediaType extends OA\MediaType
         mixed $example = Generator::UNDEFINED,
         ?array $examples = null,
         ?array $encoding = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

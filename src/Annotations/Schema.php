@@ -23,6 +23,8 @@ use OpenApi\Generator;
  */
 class Schema extends AbstractAnnotation
 {
+    use JsonSchemaTrait;
+
     /**
      * The relative or absolute path to the endpoint.
      *
@@ -134,129 +136,11 @@ class Schema extends AbstractAnnotation
     public $collectionFormat = Generator::UNDEFINED;
 
     /**
-     * Sets a default value to the parameter. The type of the value depends on the defined type.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor101)
-     */
-    public $default = Generator::UNDEFINED;
-
-    /**
-     * The maximum value allowed for a numeric property. This value must be a number.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
-     *
-     * @var int|float
-     */
-    public $maximum = Generator::UNDEFINED;
-
-    /**
-     * A boolean indicating whether the maximum value is excluded from the set of valid values.
-     *
-     * When set to true, the maximum value is excluded, and when false or not specified, it is included.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor17)
-     *
-     * @var bool|int|float
-     */
-    public $exclusiveMaximum = Generator::UNDEFINED;
-
-    /**
-     * The minimum value allowed for a numeric property. This value must be a number.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
-     *
-     * @var int|float
-     */
-    public $minimum = Generator::UNDEFINED;
-
-    /**
-     * A boolean indicating whether the minimum value is excluded from the set of valid values.
-     *
-     * When set to true, the minimum value is excluded, and when false or not specified, it is included.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor21)
-     *
-     * @var bool|int|float
-     */
-    public $exclusiveMinimum = Generator::UNDEFINED;
-
-    /**
-     * The maximum length of a string property.
-     *
-     * A string instance is valid against this property if its length is less than, or equal to, the value of this
-     * attribute.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor26)
-     *
-     * @var int
-     */
-    public $maxLength = Generator::UNDEFINED;
-
-    /**
-     * The minimum length of a string property.
-     *
-     * A string instance is valid against this property if its length is greater than, or equal to, the value of this
-     * attribute.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor29)
-     *
-     * @var int
-     */
-    public $minLength = Generator::UNDEFINED;
-
-    /**
      * A string instance is considered valid if the regular expression matches the instance successfully.
      *
      * @var string
      */
     public $pattern = Generator::UNDEFINED;
-
-    /**
-     * The maximum number of items allowed in an array property.
-     *
-     * An array instance is valid against this property if its number of items is less than, or equal to, the value of
-     * this attribute.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor42)
-     *
-     * @var int
-     */
-    public $maxItems = Generator::UNDEFINED;
-
-    /**
-     * The minimum number of items allowed in an array property.
-     *
-     * An array instance is valid against this property if its number of items is greater than, or equal to, the value
-     * of this attribute.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor45)
-     *
-     * @var int
-     */
-    public $minItems = Generator::UNDEFINED;
-
-    /**
-     * A boolean value indicating whether all items in an array property must be unique.
-     *
-     * If this attribute is set to true, then all items in the array must be unique.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor49)
-     *
-     * @var bool
-     */
-    public $uniqueItems = Generator::UNDEFINED;
-
-    /**
-     * A collection of allowable values for a property.
-     *
-     * A property instance is valid against this attribute if its value is one of the values specified in this
-     * collection.
-     *
-     * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html#anchor76)
-     *
-     * @var array<string|int|float|bool|\UnitEnum>|class-string
-     */
-    public $enum = Generator::UNDEFINED;
 
     /**
      * A numeric instance is valid against "multipleOf" if the result of the division of the instance by this
@@ -386,57 +270,6 @@ class Schema extends AbstractAnnotation
     public $oneOf = Generator::UNDEFINED;
 
     /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29.
-     */
-    public $not = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#anchor64.
-     *
-     * @var bool|AdditionalProperties
-     */
-    public $additionalProperties = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10.
-     */
-    public $additionalItems = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14.
-     */
-    public $contains = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19.
-     *
-     * @var array
-     */
-    public $patternProperties = Generator::UNDEFINED;
-
-    /**
-     * @var array
-     */
-    public $unevaluatedProperties = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21.
-     */
-    public $dependencies = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22.
-     */
-    public $propertyNames = Generator::UNDEFINED;
-
-    /**
-     * http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.
-     *
-     * @since OpenAPI 3.1.0
-     */
-    public $const = Generator::UNDEFINED;
-
-    /**
      * https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads
      * https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.
      *
@@ -462,9 +295,9 @@ class Schema extends AbstractAnnotation
         'format' => 'string',
         'collectionFormat' => ['csv', 'ssv', 'tsv', 'pipes', 'multi'],
         'maximum' => 'number',
-        'exclusiveMaximum' => 'boolean|integer|number',
+        'exclusiveMaximum' => 'boolean|number',
         'minimum' => 'number',
-        'exclusiveMinimum' => 'boolean|integer|number',
+        'exclusiveMinimum' => 'boolean|number',
         'maxLength' => 'integer',
         'minLength' => 'integer',
         'pattern' => 'string',

@@ -37,7 +37,8 @@ trait ParameterTrait
         ?array $spaceDelimited = null,
         ?array $pipeDelimited = null,
         mixed $deepObject = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

@@ -24,7 +24,8 @@ class Encoding extends OA\Encoding
         ?string $style = null,
         ?bool $explode = null,
         ?bool $allowReserved = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

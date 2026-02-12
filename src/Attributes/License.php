@@ -20,7 +20,8 @@ class License extends OA\License
         ?string $name = null,
         ?string $identifier = null,
         ?string $url = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

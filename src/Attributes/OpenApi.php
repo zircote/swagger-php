@@ -30,7 +30,8 @@ class OpenApi extends OA\OpenApi
         ?array $paths = null,
         ?Components $components = null,
         ?array $webhooks = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

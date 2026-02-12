@@ -23,7 +23,8 @@ class Tag extends OA\Tag
         ?string $parent = null,
         ?string $kind = null,
         ?ExternalDocumentation $externalDocs = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

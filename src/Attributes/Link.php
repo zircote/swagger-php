@@ -27,7 +27,8 @@ class Link extends OA\Link
         mixed $requestBody = null,
         ?string $description = Generator::UNDEFINED,
         ?Server $server = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
