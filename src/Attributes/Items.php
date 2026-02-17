@@ -82,6 +82,7 @@ class Items extends OA\Items
         ?array $attachables = null
     ) {
         parent::__construct([
+            // Schema
             'ref' => $ref ?? Generator::UNDEFINED,
             'schema' => $schema ?? Generator::UNDEFINED,
             'title' => $title ?? Generator::UNDEFINED,
