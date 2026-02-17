@@ -106,8 +106,6 @@ class JsonContent extends OA\JsonContent
         ?array $attachables = null
     ) {
         parent::__construct([
-            'examples' => $examples ?? Generator::UNDEFINED,
-
             // Schema
             'ref' => $ref ?? Generator::UNDEFINED,
             'schema' => $schema ?? Generator::UNDEFINED,
@@ -158,7 +156,7 @@ class JsonContent extends OA\JsonContent
             // abstract annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $encoding),
+            'value' => $this->combine($items, $discriminator, $externalDocs, $examples, $encoding),
         ]);
     }
 }
