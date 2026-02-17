@@ -17,18 +17,16 @@ class Schema extends OA\Schema
      * @param string[]                                                     $required
      * @param Property[]                                                   $properties
      * @param string|non-empty-array<string>|null                          $type
-     * @param int|float                                                    $maximum
-     * @param int|float                                                    $minimum
-     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
      * @param array<Examples>                                              $examples
      * @param array<Schema|OA\Schema>                                      $allOf
      * @param array<Schema|OA\Schema>                                      $anyOf
      * @param array<Schema|OA\Schema>                                      $oneOf
+     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
      * @param array<string,mixed>|null                                     $x
      * @param Attachable[]|null                                            $attachables
      */
     public function __construct(
-        // schema
+        // Schema
         string|object|null $ref = null,
         ?string $schema = null,
         ?string $title = null,
@@ -41,18 +39,7 @@ class Schema extends OA\Schema
         ?string $format = null,
         ?Items $items = null,
         ?string $collectionFormat = null,
-        mixed $default = Generator::UNDEFINED,
-        $maximum = null,
-        bool|int|float|null $exclusiveMaximum = null,
-        $minimum = null,
-        bool|int|float|null $exclusiveMinimum = null,
-        ?int $maxLength = null,
-        ?int $minLength = null,
-        ?int $maxItems = null,
-        ?int $minItems = null,
-        ?bool $uniqueItems = null,
         ?string $pattern = null,
-        array|string|null $enum = null,
         ?Discriminator $discriminator = null,
         ?bool $readOnly = null,
         ?bool $writeOnly = null,
@@ -65,12 +52,31 @@ class Schema extends OA\Schema
         ?array $allOf = null,
         ?array $anyOf = null,
         ?array $oneOf = null,
-        AdditionalProperties|bool|null $additionalProperties = null,
-        ?array $patternProperties = null,
-        ?array $unevaluatedProperties = null,
-        mixed $const = Generator::UNDEFINED,
         ?string $contentEncoding = null,
         ?string $contentMediaType = null,
+
+        // JSON Schema
+        mixed $default = Generator::UNDEFINED,
+        int|float|null $maximum = null,
+        bool|int|float|null $exclusiveMaximum = null,
+        int|float|null $minimum = null,
+        bool|int|float|null $exclusiveMinimum = null,
+        int|null $maxLength = null,
+        int|null $minLength = null,
+        int|null $maxItems = null,
+        int|null $minItems = null,
+        bool|null $uniqueItems = null,
+        array|string|null $enum = null,
+        mixed $not = Generator::UNDEFINED,
+        bool|AdditionalProperties|null $additionalProperties = null,
+        array|null $additionalItems = null,
+        array|null $contains = null,
+        array|null $patternProperties = null,
+        array|null $unevaluatedProperties = null,
+        mixed $dependencies = Generator::UNDEFINED,
+        mixed $propertyNames = Generator::UNDEFINED,
+        mixed $const = Generator::UNDEFINED,
+
         // abstract annotation
         ?array $x = null,
         ?array $attachables = null
@@ -87,6 +93,20 @@ class Schema extends OA\Schema
             'type' => $type ?? Generator::UNDEFINED,
             'format' => $format ?? Generator::UNDEFINED,
             'collectionFormat' => $collectionFormat ?? Generator::UNDEFINED,
+            'pattern' => $pattern ?? Generator::UNDEFINED,
+            'readOnly' => $readOnly ?? Generator::UNDEFINED,
+            'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
+            'xml' => $xml ?? Generator::UNDEFINED,
+            'example' => $example,
+            'nullable' => $nullable ?? Generator::UNDEFINED,
+            'deprecated' => $deprecated ?? Generator::UNDEFINED,
+            'allOf' => $allOf ?? Generator::UNDEFINED,
+            'anyOf' => $anyOf ?? Generator::UNDEFINED,
+            'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
+            'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
+
+            // JSON Schema
             'default' => $default,
             'maximum' => $maximum ?? Generator::UNDEFINED,
             'exclusiveMaximum' => $exclusiveMaximum ?? Generator::UNDEFINED,
@@ -97,23 +117,17 @@ class Schema extends OA\Schema
             'maxItems' => $maxItems ?? Generator::UNDEFINED,
             'minItems' => $minItems ?? Generator::UNDEFINED,
             'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
-            'pattern' => $pattern ?? Generator::UNDEFINED,
             'enum' => $enum ?? Generator::UNDEFINED,
-            'readOnly' => $readOnly ?? Generator::UNDEFINED,
-            'writeOnly' => $writeOnly ?? Generator::UNDEFINED,
-            'xml' => $xml ?? Generator::UNDEFINED,
-            'example' => $example,
-            'nullable' => $nullable ?? Generator::UNDEFINED,
-            'deprecated' => $deprecated ?? Generator::UNDEFINED,
-            'allOf' => $allOf ?? Generator::UNDEFINED,
-            'anyOf' => $anyOf ?? Generator::UNDEFINED,
-            'oneOf' => $oneOf ?? Generator::UNDEFINED,
+            'not' => $not,
             'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'additionalItems' => $additionalItems ?? Generator::UNDEFINED,
+            'contains' => $contains ?? Generator::UNDEFINED,
             'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
             'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
+            'dependencies' => $dependencies,
+            'propertyNames' => $propertyNames,
             'const' => $const,
-            'contentEncoding' => $contentEncoding ?? Generator::UNDEFINED,
-            'contentMediaType' => $contentMediaType ?? Generator::UNDEFINED,
+
             // abstract annotation
             'x' => $x ?? Generator::UNDEFINED,
             'attachables' => $attachables ?? Generator::UNDEFINED,

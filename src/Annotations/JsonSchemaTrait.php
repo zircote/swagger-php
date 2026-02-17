@@ -163,25 +163,58 @@ trait JsonSchemaTrait
 }
 
 /*
-mixed $default = null,
-int|float|null $maximum = null,
-bool|int|float|null $exclusiveMaximum = null,
-int|float|null $minimum = null,
-bool|int|float|null $exclusiveMinimum = null,
-int|null $maxLength = null,
-int|null $minLength = null,
-int|null $maxItems = null,
-int|null $minItems = null,
-bool|null $uniqueItems = null,
-/** @param list<string|int|float|bool|\UnitEnum>|class-string #enum *
-array|null $enum = null,
-mixed $not = null,
-bool|AdditionalProperties|null $additionalProperties = null,
-array|null $additionalItems = null,
-array|null $contains = null,
-array|null $patternProperties = null,
-array|null $unevaluatedProperties = null,
-mixed $dependencies = null,
-mixed $propertyNames = null,
-mixed $const = null,
+** TYPE-HINTS:
+
+     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+
+
+** PARAMETERS:
+
+        // JSON Schema
+        mixed $default = Generator::UNDEFINED,
+        int|float|null $maximum = null,
+        bool|int|float|null $exclusiveMaximum = null,
+        int|float|null $minimum = null,
+        bool|int|float|null $exclusiveMinimum = null,
+        int|null $maxLength = null,
+        int|null $minLength = null,
+        int|null $maxItems = null,
+        int|null $minItems = null,
+        bool|null $uniqueItems = null,
+        array|string|null $enum = null,
+        mixed $not = Generator::UNDEFINED,
+        bool|AdditionalProperties|null $additionalProperties = null,
+        array|null $additionalItems = null,
+        array|null $contains = null,
+        array|null $patternProperties = null,
+        array|null $unevaluatedProperties = null,
+        mixed $dependencies = Generator::UNDEFINED,
+        mixed $propertyNames = Generator::UNDEFINED,
+        mixed $const = Generator::UNDEFINED,
+
+
+** PARENT-PARAMS:
+
+            // JSON Schema
+            'default' => $default,
+            'maximum' => $maximum ?? Generator::UNDEFINED,
+            'exclusiveMaximum' => $exclusiveMaximum ?? Generator::UNDEFINED,
+            'minimum' => $minimum ?? Generator::UNDEFINED,
+            'exclusiveMinimum' => $exclusiveMinimum ?? Generator::UNDEFINED,
+            'maxLength' => $maxLength ?? Generator::UNDEFINED,
+            'minLength' => $minLength ?? Generator::UNDEFINED,
+            'maxItems' => $maxItems ?? Generator::UNDEFINED,
+            'minItems' => $minItems ?? Generator::UNDEFINED,
+            'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
+            'enum' => $enum ?? Generator::UNDEFINED,
+            'not' => $not,
+            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
+            'additionalItems' => $additionalItems ?? Generator::UNDEFINED,
+            'contains' => $contains ?? Generator::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
+            'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
+            'dependencies' => $dependencies,
+            'propertyNames' => $propertyNames,
+            'const' => $const,
+
 */
