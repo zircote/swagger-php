@@ -32,7 +32,7 @@ class Product implements ProductInterface
     public function __construct(
         #[OAT\Property]
         public int $quantity,
-        #[OAT\Property(default: null, example: null)]
+        #[OAT\Property(example: null, default: null)]
         public ?string $brand,
         #[OAT\Property(description: 'The colour')]
         public Colour $colour,
