@@ -15,7 +15,7 @@ class Flow extends OA\Flow
     /**
      * @param 'implicit'|'password'|'authorizationCode'|'clientCredentials'|null $flow
      * @param array<string,mixed>|null                                           $x
-     * @param Attachable[]|null                                                  $attachables
+     * @param list<Attachable>|null                                              $attachables
      */
     public function __construct(
         ?string $authorizationUrl = null,

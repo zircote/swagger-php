@@ -13,10 +13,10 @@ use OpenApi\Annotations as OA;
 class XmlContent extends OA\XmlContent
 {
     /**
-     * @param Encoding[]                                                   $encoding
+     * @param list<Encoding>                                               $encoding
      * @param string|class-string|object|null                              $ref
-     * @param string[]                                                     $required
-     * @param Property[]                                                   $properties
+     * @param list<string>                                                 $required
+     * @param list<Property>                                               $properties
      * @param string|non-empty-array<string>|null                          $type
      * @param array<Examples>                                              $examples
      * @param array<Schema|OA\Schema>                                      $allOf
@@ -24,7 +24,7 @@ class XmlContent extends OA\XmlContent
      * @param array<Schema|OA\Schema>                                      $oneOf
      * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
      * @param array<string,mixed>|null                                     $x
-     * @param Attachable[]|null                                            $attachables
+     * @param list<Attachable>|null                                        $attachables
      */
     public function __construct(
         ?array $encoding = null,

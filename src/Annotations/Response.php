@@ -54,7 +54,7 @@ class Response extends AbstractAnnotation
      *
      * @see [RFC7230](https://tools.ietf.org/html/rfc7230#page-22)
      *
-     * @var Header[]
+     * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
 
@@ -76,7 +76,7 @@ class Response extends AbstractAnnotation
      * The key of the map is a short name for the link, following the naming constraints of the names for Component
      * Objects.
      *
-     * @var Link[]
+     * @var list<Link>
      */
     public $links = Generator::UNDEFINED;
 

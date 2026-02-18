@@ -14,10 +14,10 @@ class Webhook extends OA\Webhook
 {
     /**
      * @param string|class-string|object|null $ref
-     * @param Server[]|null                   $servers
-     * @param Parameter[]|null                $parameters
+     * @param list<Server>|null               $servers
+     * @param list<Parameter>|null            $parameters
      * @param array<string,mixed>|null        $x
-     * @param Attachable[]|null               $attachables
+     * @param list<Attachable>|null           $attachables
      */
     public function __construct(
         ?string $webhook = null,

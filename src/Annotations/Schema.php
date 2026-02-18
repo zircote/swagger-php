@@ -79,7 +79,7 @@ class Schema extends AbstractAnnotation
      * An object instance is valid against this property if its property set contains all elements in this property's
      * array value.
      *
-     * @var string[]
+     * @var list<string>
      */
     public $required = Generator::UNDEFINED;
 
@@ -88,7 +88,7 @@ class Schema extends AbstractAnnotation
      *
      * Each property is represented as an instance of the <a href="#property">Property</a> class.
      *
-     * @var Property[]
+     * @var list<Property>
      */
     public $properties = Generator::UNDEFINED;
 

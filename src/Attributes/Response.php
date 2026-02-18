@@ -14,11 +14,11 @@ class Response extends OA\Response
 {
     /**
      * @param string|class-string|object|null                                                                $ref
-     * @param Header[]                                                                                       $headers
+     * @param list<Header>                                                                                   $headers
      * @param MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable> $content
-     * @param Link[]                                                                                         $links
+     * @param list<Link>                                                                                     $links
      * @param array<string,mixed>|null                                                                       $x
-     * @param Attachable[]|null                                                                              $attachables
+     * @param list<Attachable>|null                                                                          $attachables
      */
     public function __construct(
         string|object|null $ref = null,

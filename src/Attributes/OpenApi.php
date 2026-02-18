@@ -13,12 +13,12 @@ use OpenApi\Annotations as OA;
 class OpenApi extends OA\OpenApi
 {
     /**
-     * @param Server[]|null            $servers
-     * @param Tag[]|null               $tags
-     * @param PathItem[]|null          $paths
-     * @param Webhook[]|null           $webhooks
+     * @param list<Server>|null        $servers
+     * @param list<Tag>|null           $tags
+     * @param array<PathItem>|null     $paths
+     * @param list<Webhook>|null       $webhooks
      * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param list<Attachable>|null    $attachables
      */
     public function __construct(
         string $openapi = self::DEFAULT_VERSION,

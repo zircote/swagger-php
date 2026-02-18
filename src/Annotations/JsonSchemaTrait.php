@@ -163,6 +163,9 @@ trait JsonSchemaTrait
 }
 
 /*
+ * Template code to be used by all attributes extending OA\Schema.
+ *
+ *
 ** TYPE-HINTS:
 
      * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum

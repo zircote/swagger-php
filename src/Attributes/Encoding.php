@@ -13,9 +13,9 @@ use OpenApi\Generator;
 class Encoding extends OA\Encoding
 {
     /**
-     * @param Header[]                 $headers
+     * @param list<Header>             $headers
      * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param list<Attachable>|null    $attachables
      */
     public function __construct(
         ?string $property = null,

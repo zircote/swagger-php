@@ -32,7 +32,7 @@ class Discriminator extends AbstractAnnotation
     /**
      * An object to hold mappings between payload values and schema names or references.
      *
-     * @var string[]
+     * @var array<string,string>
      */
     public $mapping = Generator::UNDEFINED;
 

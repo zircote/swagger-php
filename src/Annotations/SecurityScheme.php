@@ -62,7 +62,7 @@ class SecurityScheme extends AbstractAnnotation
     /**
      * The flow used by the OAuth2 security scheme.
      *
-     * @var Flow[]
+     * @var list<Flow>
      */
     public $flows = Generator::UNDEFINED;
 

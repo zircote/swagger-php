@@ -140,6 +140,7 @@ class AugmentSchemas
                     $schema->allOf[] = $allOfPropertiesSchema;
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
+                /* @phpstan-ignore assign.propertyType */
                 $schema->properties = Generator::UNDEFINED;
             }
         }

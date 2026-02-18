@@ -39,14 +39,14 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Responses.
      *
-     * @var Response[]
+     * @var list<Response>
      */
     public $responses = Generator::UNDEFINED;
 
     /**
      * Reusable Parameters.
      *
-     * @var Parameter[]
+     * @var list<Parameter>
      */
     public $parameters = Generator::UNDEFINED;
 
@@ -60,28 +60,28 @@ class Components extends AbstractAnnotation
     /**
      * Reusable Request Bodies.
      *
-     * @var RequestBody[]
+     * @var list<RequestBody>
      */
     public $requestBodies = Generator::UNDEFINED;
 
     /**
      * Reusable Headers.
      *
-     * @var Header[]
+     * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
 
     /**
      * Reusable Security Schemes.
      *
-     * @var SecurityScheme[]
+     * @var list<SecurityScheme>
      */
     public $securitySchemes = Generator::UNDEFINED;
 
     /**
      * Reusable Links.
      *
-     * @var Link[]
+     * @var list<Link>
      */
     public $links = Generator::UNDEFINED;
 

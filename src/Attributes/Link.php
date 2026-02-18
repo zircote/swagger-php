@@ -16,7 +16,7 @@ class Link extends OA\Link
      * @param string|class-string|object|null $ref
      * @param array<string,mixed>             $parameters
      * @param array<string,mixed>|null        $x
-     * @param Attachable[]|null               $attachables
+     * @param list<Attachable>|null           $attachables
      */
     public function __construct(
         ?string $link = null,
