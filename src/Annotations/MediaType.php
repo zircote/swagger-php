@@ -61,7 +61,7 @@ class MediaType extends AbstractAnnotation
      * The encoding object shall only apply to requestBody objects when the media type is multipart or
      * application/x-www-form-urlencoded.
      *
-     * @var Encoding[]
+     * @var list<Encoding>
      */
     public $encoding = Generator::UNDEFINED;
 

@@ -11,12 +11,12 @@ use OpenApi\Generator;
 trait OperationTrait
 {
     /**
-     * @param Server[]                 $servers
-     * @param string[]                 $tags
-     * @param Parameter[]              $parameters
-     * @param Response[]               $responses
+     * @param list<Server>             $servers
+     * @param list<string>             $tags
+     * @param list<Parameter>          $parameters
+     * @param list<Response>           $responses
      * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param list<Attachable>|null    $attachables
      */
     public function __construct(
         ?string $path = null,
@@ -32,7 +32,8 @@ trait OperationTrait
         ?array $callbacks = null,
         ?ExternalDocumentation $externalDocs = null,
         ?bool $deprecated = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

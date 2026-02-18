@@ -115,7 +115,7 @@ class PathItem extends AbstractAnnotation
     /**
      * An alternative server array to service all operations in this path.
      *
-     * @var Server[]
+     * @var list<Server>
      */
     public $servers = Generator::UNDEFINED;
 
@@ -127,7 +127,7 @@ class PathItem extends AbstractAnnotation
      * A unique parameter is defined by a combination of a name and location.
      * The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's components/parameters.
      *
-     * @var Parameter[]
+     * @var list<Parameter>
      */
     public $parameters = Generator::UNDEFINED;
 
@@ -168,7 +168,7 @@ class PathItem extends AbstractAnnotation
     /**
      * Returns a list of all operations (all methods) for this path item.
      *
-     * @return Operation[]
+     * @return list<Operation>
      */
     public function operations(): array
     {

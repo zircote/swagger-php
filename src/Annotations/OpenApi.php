@@ -59,14 +59,14 @@ class OpenApi extends AbstractAnnotation
      *
      * If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.
      *
-     * @var Server[]
+     * @var list<Server>
      */
     public $servers = Generator::UNDEFINED;
 
     /**
      * The available paths and operations for the API.
      *
-     * @var PathItem[]
+     * @var array<PathItem>
      */
     public $paths = Generator::UNDEFINED;
 
@@ -97,7 +97,7 @@ class OpenApi extends AbstractAnnotation
      * The tags that are not declared may be organized randomly or based on the tools' logic.
      * Each tag name in the list must be unique.
      *
-     * @var Tag[]
+     * @var list<Tag>
      */
     public $tags = Generator::UNDEFINED;
 
@@ -112,7 +112,7 @@ class OpenApi extends AbstractAnnotation
      * The available webhooks for the API.
      *
      * @since OpenAPI 3.1.0
-     * @var Webhook[]
+     * @var list<Webhook>
      */
     public $webhooks = Generator::UNDEFINED;
 

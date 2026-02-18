@@ -14,7 +14,7 @@ class Xml extends OA\Xml
 {
     /**
      * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param list<Attachable>|null    $attachables
      */
     public function __construct(
         ?string $name = null,
@@ -22,7 +22,8 @@ class Xml extends OA\Xml
         ?string $prefix = null,
         ?bool $attribute = null,
         ?bool $wrapped = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

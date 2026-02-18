@@ -14,7 +14,12 @@ use OpenApi\Tests\OpenApiTestCase;
  */
 class AttributesSyncTest extends OpenApiTestCase
 {
+<<<<<<< HEAD
     public static $SCHEMA_EXCLUSIONS = ['const', 'multipleOf', 'not', 'additionalItems', 'contains', 'dependencies', 'propertyNames'];
+=======
+    public static $SCHEMA_EXCLUSIONS = ['multipleOf', 'dependencies', 'propertyNames'];
+
+>>>>>>> ec21679 (Centralize all pure JSON Schema properties (#1960))
     public static $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
     public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple'];
 

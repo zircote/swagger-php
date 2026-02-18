@@ -16,7 +16,7 @@ class RequestBody extends OA\RequestBody
      * @param string|class-string|object|null                                                          $ref
      * @param array<MediaType|JsonContent|XmlContent>|MediaType|JsonContent|XmlContent|Attachable|null $content
      * @param array<string,mixed>|null                                                                 $x
-     * @param Attachable[]|null                                                                        $attachables
+     * @param list<Attachable>|null                                                                    $attachables
      */
     public function __construct(
         string|object|null $ref = null,
@@ -24,7 +24,8 @@ class RequestBody extends OA\RequestBody
         ?string $description = Generator::UNDEFINED,
         ?bool $required = null,
         array|MediaType|JsonContent|XmlContent|Attachable|null $content = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

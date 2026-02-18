@@ -17,14 +17,21 @@ use PhpParser\Node\Stmt\Use_;
 use PhpParser\ParserFactory;
 
 /**
- * High level, PHP token based, scanner.
+ * High-level, PHP-token-based, scanner.
  */
 class TokenScanner
 {
     /**
-     * Scan file for all classes, interfaces and traits.
+     * Scan a given file for all classes, interfaces, and traits.
      *
-     * @return string[][] File details
+     * @return array{
+     *     'uses': array<string, class-string>,
+     *     'interfaces': list<class-string>,
+     *     'traits': list<class-string>,
+     *     'enums': list<class-string>,
+     *     'methods': list<string>,
+     *     'properties': list<string>,
+     * } File details
      */
     public function scanFile(string $filename): array
     {

@@ -42,7 +42,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         // no proper way to inject
         Generator::$context = $context;
 
-        /** @var OA\AbstractAnnotation[] $annotations */
+        /** @var list<OA\AbstractAnnotation> $annotations */
         $annotations = [];
         try {
             $attributeName = $this->ignoreOtherAttributes

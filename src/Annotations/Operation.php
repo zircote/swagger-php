@@ -32,7 +32,7 @@ abstract class Operation extends AbstractAnnotation
      *
      * Tags can be used for logical grouping of operations by resources or any other qualifier.
      *
-     * @var string[]
+     * @var list<string>
      */
     public $tags = Generator::UNDEFINED;
 
@@ -90,7 +90,7 @@ abstract class Operation extends AbstractAnnotation
      * The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's
      * components/parameters.
      *
-     * @var Parameter[]
+     * @var list<Parameter>
      */
     public $parameters = Generator::UNDEFINED;
 
@@ -108,7 +108,7 @@ abstract class Operation extends AbstractAnnotation
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
-     * @var Response[]
+     * @var list<Response>
      */
     public $responses = Generator::UNDEFINED;
 
@@ -156,7 +156,7 @@ abstract class Operation extends AbstractAnnotation
      * If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by
      * this value.
      *
-     * @var Server[]
+     * @var list<Server>
      */
     public $servers = Generator::UNDEFINED;
 

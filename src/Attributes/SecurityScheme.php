@@ -15,9 +15,9 @@ class SecurityScheme extends OA\SecurityScheme
     /**
      * @param string|class-string|object|null     $ref
      * @param string|non-empty-array<string>|null $type
-     * @param Flow[]                              $flows
+     * @param list<Flow>                          $flows
      * @param array<string,mixed>|null            $x
-     * @param Attachable[]|null                   $attachables
+     * @param list<Attachable>|null               $attachables
      */
     public function __construct(
         string|object|null $ref = null,
@@ -30,7 +30,8 @@ class SecurityScheme extends OA\SecurityScheme
         ?string $scheme = null,
         ?string $openIdConnectUrl = null,
         ?array $flows = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

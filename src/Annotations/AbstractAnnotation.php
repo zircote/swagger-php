@@ -50,7 +50,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md).
      *
-     * @var string[]
+     * @var list<string>
      */
     public static $_required = [];
 
@@ -172,10 +172,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
-     * @param AbstractAnnotation[] $annotations
-     * @param bool                 $ignore      Ignore unmerged annotations
+     * @param list<AbstractAnnotation> $annotations
+     * @param bool                     $ignore      Ignore unmerged annotations
      *
-     * @return AbstractAnnotation[] The unmerged annotations
+     * @return list<AbstractAnnotation> The unmerged annotations
      */
     public function merge(array $annotations, bool $ignore = false): array
     {
@@ -815,6 +815,30 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
+<<<<<<< HEAD
         return array_filter($combined, fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+=======
+        return array_filter($combined, static fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+    }
+
+    /**
+     * Shorten class name(s).
+     *
+     * @param array|object|string $classes Class(es) to shorten
+     *
+     * @return string|list<string> One or more shortened class names
+     */
+    protected static function shorten($classes)
+    {
+        $short = [];
+        foreach ((array) $classes as $class) {
+            $short[] = '@' . str_replace([
+                    'OpenApi\\Annotations\\',
+                    'OpenApi\\Attributes\\',
+                ], 'OA\\', (string) $class);
+        }
+
+        return is_array($classes) ? $short : array_pop($short);
+>>>>>>> ec21679 (Centralize all pure JSON Schema properties (#1960))
     }
 }

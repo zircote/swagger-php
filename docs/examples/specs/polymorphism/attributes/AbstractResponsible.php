@@ -26,10 +26,14 @@ abstract class AbstractResponsible
 {
     protected const TYPE = null;
 
+<<<<<<< HEAD
     #[OAT\Property(
         nullable: false,
         enum: ['employee', 'assignee', 'fl']
     )]
+=======
+    #[OAT\Property(nullable: false, enum: ['employee', 'assignee', 'fl'])]
+>>>>>>> ec21679 (Centralize all pure JSON Schema properties (#1960))
     protected string $type;
 
     public function __construct()

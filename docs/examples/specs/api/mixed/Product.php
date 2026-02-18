@@ -40,7 +40,11 @@ class Product implements ProductInterface
         return 1;
     }
 
+<<<<<<< HEAD
     #[OAT\Property(nullable: true, default: null, example: null)]
+=======
+    #[OAT\Property(example: null, nullable: true, default: null)]
+>>>>>>> ec21679 (Centralize all pure JSON Schema properties (#1960))
     public string $brand;
 
     /** @OA\Property(description="The colour") */

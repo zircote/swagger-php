@@ -21,7 +21,7 @@ class XmlContent extends Schema
     /**
      * A map between a property name and its encoding information.
      *
-     * @var Encoding[]
+     * @var list<Encoding>
      */
     public $encoding = Generator::UNDEFINED;
 

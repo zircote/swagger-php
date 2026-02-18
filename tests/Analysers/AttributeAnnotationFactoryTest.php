@@ -30,7 +30,11 @@ class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $rm = new \ReflectionMethod($instance, 'post');
 
         $this->expectException(\TypeError::class);
+<<<<<<< HEAD
         $this->expectExceptionMessage('OpenApi\Attributes\Property::__construct(): Argument #8 ($required) must be of type ?array');
+=======
+        $this->expectExceptionMessage(Property::class . '::__construct(): Argument #9 ($required) must be of type ?array');
+>>>>>>> ec21679 (Centralize all pure JSON Schema properties (#1960))
 
         (new AttributeAnnotationFactory())->build($rm, $this->getContext());
     }
