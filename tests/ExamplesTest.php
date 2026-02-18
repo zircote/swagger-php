@@ -92,6 +92,6 @@ final class ExamplesTest extends OpenApiTestCase
 
         $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();
 
-        $this->assertEquals(file_get_contents($specFilename), $reserialized);
+        $this->assertSpecEquals(file_get_contents($specFilename), $reserialized);
     }
 }

@@ -22,7 +22,7 @@ abstract class AbstractResponsible
 {
     protected const TYPE = null;
 
-    #[OAT\Property(enum: ['employee', 'assignee', 'fl'], nullable: false)]
+    #[OAT\Property(nullable: false, enum: ['employee', 'assignee', 'fl'])]
     protected string $type;
 
     public function __construct()

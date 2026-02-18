@@ -46,7 +46,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * The properties which are required by [the spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md).
      *
-     * @var string[]
+     * @var list<string>
      */
     public static $_required = [];
 
@@ -144,10 +144,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * Annotations that couldn't be merged are added to the _unmerged array.
      *
-     * @param AbstractAnnotation[] $annotations
-     * @param bool                 $ignore      Ignore unmerged annotations
+     * @param list<AbstractAnnotation> $annotations
+     * @param bool                     $ignore      Ignore unmerged annotations
      *
-     * @return AbstractAnnotation[] The unmerged annotations
+     * @return list<AbstractAnnotation> The unmerged annotations
      */
     public function merge(array $annotations, bool $ignore = false): array
     {
@@ -777,7 +777,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @param array|object|string $classes Class(es) to shorten
      *
-     * @return string|string[] One or more shortened class names
+     * @return string|list<string> One or more shortened class names
      */
     protected static function shorten($classes)
     {

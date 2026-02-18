@@ -34,7 +34,7 @@ class Encoding extends AbstractAnnotation
     /**
      * Additional headers.
      *
-     * @var Header[]
+     * @var list<Header>
      */
     public $headers = Generator::UNDEFINED;
 

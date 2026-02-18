@@ -13,15 +13,16 @@ use OpenApi\Annotations as OA;
 class Server extends OA\Server
 {
     /**
-     * @param ServerVariable[]         $variables
+     * @param list<ServerVariable>     $variables
      * @param array<string,mixed>|null $x
-     * @param Attachable[]|null        $attachables
+     * @param list<Attachable>|null    $attachables
      */
     public function __construct(
         ?string $url = null,
         ?string $description = Generator::UNDEFINED,
         ?array $variables = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {

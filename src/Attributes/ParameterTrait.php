@@ -16,7 +16,7 @@ trait ParameterTrait
      * @param array<Examples>                                         $examples
      * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
      * @param array<string,mixed>|null                                $x
-     * @param Attachable[]|null                                       $attachables
+     * @param list<Attachable>|null                                   $attachables
      */
     public function __construct(
         ?string $parameter = null,
@@ -37,7 +37,8 @@ trait ParameterTrait
         ?array $spaceDelimited = null,
         ?array $pipeDelimited = null,
         mixed $deepObject = null,
-        // annotation
+
+        // abstract annotation
         ?array $x = null,
         ?array $attachables = null
     ) {
