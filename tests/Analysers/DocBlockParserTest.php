@@ -6,10 +6,10 @@
 
 namespace OpenApi\Tests\Analysers;
 
-use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Annotations\Contact;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Tests\ConstantsTest;
+use OpenApi\Tests\OpenApiTestCase;
 
 final class DocBlockParserTest extends OpenApiTestCase
 {

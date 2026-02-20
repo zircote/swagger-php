@@ -11,8 +11,8 @@ use OpenApi\Generator;
 use OpenApi\Pipeline;
 use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
-use Symfony\Component\Finder\Finder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Finder\Finder;
 
 final class DocSnippetsTest extends OpenApiTestCase
 {

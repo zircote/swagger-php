@@ -7,7 +7,6 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Response;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -146,9 +145,9 @@ END;
 
     public static function identityCases(): iterable
     {
-        yield 'default' => [new Response(['response' => 200]), null, '@OA\Response(response=200)'];
-        yield '[]' => [new Response(['response' => 200]), [], '@OA\Response()'];
-        yield 'custom' => [new Response(['response' => 200]), ['response'], '@OA\Response(response=200)'];
+        yield 'default' => [new OA\Response(['response' => 200]), null, '@OA\Response(response=200)'];
+        yield '[]' => [new OA\Response(['response' => 200]), [], '@OA\Response()'];
+        yield 'custom' => [new OA\Response(['response' => 200]), ['response'], '@OA\Response(response=200)'];
     }
 
     #[DataProvider('identityCases')]

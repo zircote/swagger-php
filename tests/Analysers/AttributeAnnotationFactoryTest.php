@@ -7,10 +7,10 @@
 namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Tests\Fixtures\UsingAttributes;
-use OpenApi\Tests\Fixtures\InvalidPropertyAttribute;
-use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Attributes\Property;
+use OpenApi\Tests\Fixtures\InvalidPropertyAttribute;
+use OpenApi\Tests\Fixtures\UsingAttributes;
+use OpenApi\Tests\OpenApiTestCase;
 
 final class AttributeAnnotationFactoryTest extends OpenApiTestCase
 {

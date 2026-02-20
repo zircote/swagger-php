@@ -6,9 +6,9 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Annotations as OA;
 use OpenApi\OpenApiException;
 use Symfony\Component\Yaml\Yaml;
 

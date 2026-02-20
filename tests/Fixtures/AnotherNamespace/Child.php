@@ -6,9 +6,9 @@
 
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\ExpandClasses\Ancestor;
-
 use OpenApi\Attributes as OAT;
+
+use OpenApi\Tests\Fixtures\ExpandClasses\Ancestor;
 
 #[OAT\Schema]
 class Child extends Ancestor

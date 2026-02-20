@@ -7,11 +7,11 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
 use PHPUnit\Framework\Attributes\DataProvider;
-use OpenApi\Annotations\OpenApi;
 
 final class SerializerTest extends OpenApiTestCase
 {
