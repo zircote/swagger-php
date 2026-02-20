@@ -6,10 +6,11 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\OpenApiException;
+use OpenApi\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -28,9 +29,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
     /**
      * Arbitrary attachables for this annotation.
+     *
      * These will be ignored but can be used for custom processing.
      *
-     * @var array
+     * @var list<Attachable>
      */
     public $attachables = Generator::UNDEFINED;
 
@@ -39,7 +41,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
      *
-     * @var array
+     * @var list<AbstractAnnotation>
      */
     public $_unmerged = [];
 
@@ -415,171 +417,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
         return $data;
     }
 
-    /**
-     * Validate annotation tree, and log notices & warnings.
-     *
-     * @param array  $stack   the path of annotations above this annotation in the tree
-     * @param array  $skip    (prevent stack overflow, when traversing an infinite dependency graph)
-     * @param string $ref     Current ref path?
-     * @param object $context a free-form context contains
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
+    // todo: remove
+    public function validate(): bool
     {
-        if (in_array($this, $skip, true)) {
-            return true;
-        }
-
-        $valid = true;
-
-        // Report orphaned annotations
-        foreach ($this->_unmerged as $annotation) {
-            if (!is_object($annotation)) {
-                $this->_context->logger->warning('Unexpected type: "' . gettype($annotation) . '" in ' . $this->identity() . '->_unmerged, expecting a Annotation object');
-                break;
-            }
-
-            $class = $annotation::class;
-            if ($details = $this->matchNested($annotation)) {
-                $property = $details->value;
-                if (is_array($property)) {
-                    $this->_context->logger->warning('Only one ' . static::shorten($annotation::class) . '() allowed for ' . $this->identity() . ' multiple found, skipped: ' . $annotation->_context);
-                } else {
-                    $this->_context->logger->warning('Only one ' . static::shorten($annotation::class) . '() allowed for ' . $this->identity() . " multiple found in:\n    Using: " . $this->{$property}->_context . "\n  Skipped: " . $annotation->_context);
-                }
-            } elseif ($annotation instanceof AbstractAnnotation) {
-                $message = 'Unexpected ' . $annotation->identity();
-                if ($class::$_parents) {
-                    $message .= ', expected to be inside ' . implode(', ', static::shorten($class::$_parents));
-                }
-                $this->_context->logger->warning($message . ' in ' . $annotation->_context);
-            }
-            $valid = false;
-        }
-
-        // Report conflicting key
-        foreach (static::$_nested as $annotationClass => $nested) {
-            if (is_string($nested) || count($nested) === 1) {
-                continue;
-            }
-            $property = $nested[0];
-            if (Generator::isDefault($this->{$property})) {
-                continue;
-            }
-            $keys = [];
-            $keyField = $nested[1];
-            foreach ($this->{$property} as $key => $item) {
-                if (is_array($item) && is_numeric($key) === false) {
-                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . static::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
-                    $keys[$key] = $item;
-                } elseif (Generator::isDefault($item->{$keyField})) {
-                    $this->_context->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
-                } elseif (isset($keys[$item->{$keyField}])) {
-                    $this->_context->logger->error('Multiple ' . $item->identity([]) . ' with the same ' . $keyField . '="' . $item->{$keyField} . "\":\n  " . $item->_context . "\n  " . $keys[$item->{$keyField}]->_context);
-                } else {
-                    $keys[$item->{$keyField}] = $item;
-                }
-            }
-        }
-
-        if (property_exists($this, 'ref') && !Generator::isDefault($this->ref) && is_string($this->ref)) {
-            if (str_starts_with($this->ref, '#/') && $stack !== [] && $stack[0] instanceof OpenApi) {
-                // Internal reference
-                try {
-                    $stack[0]->ref($this->ref);
-                } catch (\Exception $e) {
-                    $this->_context->logger->warning($e->getMessage() . ' for ' . $this->identity() . ' in ' . $this->_context, ['exception' => $e]);
-                }
-            }
-        } else {
-            // Report missing required fields (when not a $ref)
-            foreach (static::$_required as $property) {
-                if (Generator::isDefault($this->{$property})) {
-                    $message = 'Missing required field "' . $property . '" for ' . $this->identity() . ' in ' . $this->_context;
-                    foreach (static::$_nested as $class => $nested) {
-                        $nestedProperty = is_array($nested) ? $nested[0] : $nested;
-                        if ($property === $nestedProperty) {
-                            if ($this instanceof OpenApi) {
-                                $message = 'Required ' . static::shorten($class) . '() not found';
-                            } elseif (is_array($nested)) {
-                                $message = $this->identity() . ' requires at least one ' . static::shorten($class) . '() in ' . $this->_context;
-                            } else {
-                                $message = $this->identity() . ' requires a ' . static::shorten($class) . '() in ' . $this->_context;
-                            }
-                            break;
-                        }
-                    }
-                    $this->_context->logger->warning($message);
-                }
-            }
-        }
-
-        // Report invalid types
-        foreach (static::$_types as $property => $type) {
-            $value = $this->{$property};
-            if (Generator::isDefault($value) || $value === null) {
-                continue;
-            }
-            if (is_string($type)) {
-                if ($this->validateType($type, $value) === false) {
-                    $valid = false;
-                    $this->_context->logger->warning($this->identity() . '->' . $property . ' is a "' . gettype($value) . '", expecting a "' . $type . '" in ' . $this->_context);
-                }
-            } elseif (is_array($type)) { // enum?
-                if (in_array($value, $type) === false) {
-                    $this->_context->logger->warning($this->identity() . '->' . $property . ' "' . $value . '" is invalid, expecting "' . implode('", "', $type) . '" in ' . $this->_context);
-                }
-            } else {
-                throw new OpenApiException('Invalid ' . static::class . '::$_types[' . $property . ']');
-            }
-        }
-        $stack[] = $this;
-
-        if (property_exists($this, 'example') && property_exists($this, 'examples')) {
-            if (!Generator::isDefault($this->example) && !Generator::isDefault($this->examples)) {
-                $valid = false;
-                $this->_context->logger->warning($this->identity() . ': "example" and "examples" are mutually exclusive');
-            }
-        }
-
-        return self::_validate($this, $stack, $skip, $ref, $context) && $valid;
-    }
-
-    /**
-     * Recursively validate all annotation properties.
-     *
-     * @param array|object $fields
-     */
-    private static function _validate($fields, array $stack, array $skip, string $baseRef, ?object $context): bool
-    {
-        $valid = true;
-        $blacklist = [];
-        if (is_object($fields)) {
-            if (in_array($fields, $skip, true)) {
-                return true;
-            }
-            $skip[] = $fields;
-            $blacklist = property_exists($fields, '_blacklist') ? $fields::$_blacklist : [];
-        }
-
-        foreach ($fields as $field => $value) {
-            if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
-                continue;
-            }
-            $ref = $baseRef !== '' ? $baseRef . '/' . urlencode((string) $field) : urlencode((string) $field);
-            if (is_object($value)) {
-                if (method_exists($value, 'validate')) {
-                    if (!$value->validate($stack, $skip, $ref, $context)) {
-                        $valid = false;
-                    }
-                } elseif (!self::_validate($value, $stack, $skip, $ref, $context)) {
-                    $valid = false;
-                }
-            } elseif (is_array($value) && !self::_validate($value, $stack, $skip, $ref, $context)) {
-                $valid = false;
-            }
-        }
-
-        return $valid;
+        return (new Validator($this->_context->logger))->validate(new Analysis([], $this->_context), $this);
     }
 
     /**
@@ -590,14 +431,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function identity(?array $properties = null): string
     {
-        $class = static::class;
-
         if (null === $properties) {
             $properties = [];
             /** @var class-string<AbstractAnnotation> $parent */
             foreach (static::$_parents as $parent) {
                 foreach ($parent::$_nested as $annotationClass => $entry) {
-                    if ($annotationClass === $class && is_array($entry) && !Generator::isDefault($this->{$entry[1]})) {
+                    if ($annotationClass === static::class && is_array($entry) && !Generator::isDefault($this->{$entry[1]})) {
                         $properties[] = $entry[1];
                         break 2;
                     }
@@ -664,86 +503,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-     * Validates the matching of the property value to a annotation type.
-     *
-     * @param string $type  The annotations property type
-     * @param mixed  $value The property value
-     */
-    private function validateType(string $type, mixed $value): bool
-    {
-        if (str_starts_with($type, '[') && str_ends_with($type, ']')) { // Array of a specified type?
-            if ($this->validateType('array', $value) === false) {
-                return false;
-            }
-            $itemType = substr($type, 1, -1);
-            foreach ($value as $item) {
-                if ($this->validateType($itemType, $item) === false) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        if (is_subclass_of($type, AbstractAnnotation::class)) {
-            $type = 'object';
-        }
-
-        return $this->validateDefaultTypes($type, $value);
-    }
-
-    /**
-     * Validates default Open Api types.
-     *
-     * @param string $type  The property type
-     * @param mixed  $value The value to validate
-     */
-    private function validateDefaultTypes(string $type, mixed $value): bool
-    {
-        if (str_contains($type, '|')) {
-            $types = explode('|', $type);
-            foreach ($types as $type) {
-                if ($this->validateDefaultTypes($type, $value)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        return match ($type) {
-            'string' => is_string($value),
-            'boolean' => is_bool($value),
-            'integer' => is_int($value),
-            'number' => is_numeric($value),
-            'object' => is_object($value),
-            'array' => $this->validateArrayType($value),
-            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], true),
-            default => throw new OpenApiException('Invalid type "' . $type . '"'),
-        };
-    }
-
-    /**
-     * Validate array type.
-     */
-    private function validateArrayType($value): bool
-    {
-        if (is_array($value) === false) {
-            return false;
-        }
-        $count = 0;
-        foreach (array_keys($value) as $i) {
-            // not a array, but a hash/map
-            if ($count !== $i) {
-                return false;
-            }
-            ++$count;
-        }
-
-        return true;
-    }
-
-    /**
      * Wrap the context with a reference to the annotation it is nested in.
      */
     protected function nested(AbstractAnnotation $annotation, Context $nestedContext): self
@@ -772,12 +531,15 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Shorten class name(s).
      *
-     * @param array|object|string $classes Class(es) to shorten
+     * @param array|object|string|null $classes Class(es) to shorten
      *
      * @return string|list<string> One or more shortened class names
      */
-    protected static function shorten($classes)
+    public static function shorten($classes = null)
     {
+        $classes ??= [static::class];
+        $classes = is_object($classes) ? get_class($classes) : $classes;
+
         $short = [];
         foreach ((array) $classes as $class) {
             $short[] = '@' . str_replace([

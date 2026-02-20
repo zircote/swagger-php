@@ -386,10 +386,12 @@ class Analysis
         return $result;
     }
 
-    public function validate(): bool
+    public function validate(?Validator $validator = null): bool
     {
         if ($this->openapi instanceof OA\OpenApi) {
-            return $this->openapi->validate();
+            $validator ??= new Validator($this->context->logger);
+
+            return $validator->validate($this, $this->openapi);
         }
 
         $this->context->logger->warning('No openapi target set. Run the MergeIntoOpenApi processor before validate()');

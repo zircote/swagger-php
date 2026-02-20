@@ -369,26 +369,4 @@ class Schema extends AbstractAnnotation
 
         return $data;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
-    {
-        if ($this->hasType('array') && Generator::isDefault($this->items)) {
-            $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
-
-            return false;
-        }
-
-        if ($this->_context->isVersion('3.0.x')) {
-            if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed as of 3.1.0');
-
-                return false;
-            }
-        }
-
-        return parent::validate($stack, $skip, $ref, $context);
-    }
 }

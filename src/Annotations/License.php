@@ -79,21 +79,4 @@ class License extends AbstractAnnotation
 
         return $data;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
-    {
-        $valid = parent::validate($stack, $skip, $ref, $context);
-
-        if (!$this->_context->isVersion('3.0.x')) {
-            if (!Generator::isDefault($this->url) && !Generator::isDefault($this->identifier)) {
-                $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
-                $valid = false;
-            }
-        }
-
-        return $valid;
-    }
 }

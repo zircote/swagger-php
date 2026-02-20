@@ -206,40 +206,4 @@ abstract class Operation extends AbstractAnnotation
 
         return $data;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
-    {
-        if (in_array($this, $skip, true)) {
-            return true;
-        }
-
-        $valid = parent::validate($stack, $skip, $ref, $context);
-
-        if (!Generator::isDefault($this->responses)) {
-            foreach ($this->responses as $response) {
-                if (!Generator::isDefault($response->response) && $response->response !== 'default' && preg_match('/^([12345]{1}\d{2})|([12345]{1}XX)$/', (string) $response->response) === 0) {
-                    $this->_context->logger->warning('Invalid value "' . $response->response . '" for ' . $response->identity([]) . '->response, expecting "default", a HTTP Status Code or HTTP Status Code range definition in ' . $response->_context);
-                    $valid = false;
-                }
-            }
-        }
-
-        if (is_object($context) && !Generator::isDefault($this->operationId)) {
-            if (!property_exists($context, 'operationIds')) {
-                $context->operationIds = [];
-            }
-
-            if (in_array($this->operationId, $context->operationIds)) {
-                $this->_context->logger->warning('operationId must be unique. Duplicate value found: "' . $this->operationId . '"');
-                $valid = false;
-            }
-
-            $context->operationIds[] = $this->operationId;
-        }
-
-        return $valid;
-    }
 }

@@ -51,6 +51,8 @@ class Generator
 
     protected ?TypeResolverInterface $typeResolver = null;
 
+    protected ?Validator $validator = null;
+
     protected ?LoggerInterface $logger = null;
 
     /**
@@ -144,6 +146,16 @@ class Generator
         $this->analyser = $analyser;
 
         return $this;
+    }
+
+    public function getValidator(): Validator
+    {
+        return $this->validator ?? new Validator($this->getLogger());
+    }
+
+    public function setValidator(?Validator $validator): void
+    {
+        $this->validator = $validator;
     }
 
     public function getDefaultConfig(): array
@@ -397,15 +409,14 @@ class Generator
         $this->getProcessorPipeline()->process($analysis);
 
         if ($analysis->openapi) {
-            // overwrite default/annotated version
+            // overwrite version
             $analysis->openapi->openapi = $this->getVersion() ?: $analysis->openapi->openapi;
-            // update context to provide the same to validation/serialisation code
+            // update context to provide the same to validation/serialization code
             $rootContext->version = $analysis->openapi->openapi;
         }
 
-        // validation
         if ($validate) {
-            $analysis->validate();
+            $analysis->validate($this->getValidator());
         }
 
         return $analysis->openapi;

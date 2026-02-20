@@ -112,19 +112,4 @@ class Response extends AbstractAnnotation
         Options::class,
         Trace::class,
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
-    {
-        $valid = parent::validate($stack, $skip, $ref, $context);
-
-        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
-            $this->_context->logger->warning($this->identity() . ' One of description or ref is required in ' . $this->_context->getDebugLocation());
-            $valid = false;
-        }
-
-        return $valid;
-    }
 }
