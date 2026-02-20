@@ -6,8 +6,8 @@
 
 namespace OpenApi\Examples\Specs\UsingTraits\Annotations;
 
-use OpenApi\Examples\Specs\UsingTraits\Annotations\Blink as TheBlink;
 use OpenApi\Annotations as OA;
+use OpenApi\Examples\Specs\UsingTraits\Annotations\Blink as TheBlink;
 
 /**
  * @OA\Schema(title="TrickyProduct model")

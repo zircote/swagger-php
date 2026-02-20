@@ -6,9 +6,9 @@
 
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\ExpandClasses\Ancestor;
-
 use OpenApi\Annotations as OA;
+
+use OpenApi\Tests\Fixtures\ExpandClasses\Ancestor;
 
 /**
  * @OA\Schema
