@@ -289,11 +289,9 @@ class Parameter extends AbstractAnnotation
         return $valid;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function identity(): string
+    #[\Override]
+    public function identity(?array $properties = []): string
     {
-        return parent::_identity(['name', 'in']);
+        return parent::identity(['name', 'in']);
     }
 }

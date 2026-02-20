@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Annotations\Response;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -141,6 +142,19 @@ END;
         $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
 
         $analysis->validate();
+    }
+
+    public static function identityCases(): iterable
+    {
+        yield 'default' => [new Response(['response' => 200]), null, '@OA\Response(response=200)'];
+        yield '[]' => [new Response(['response' => 200]), [], '@OA\Response()'];
+        yield 'custom' => [new Response(['response' => 200]), ['response'], '@OA\Response(response=200)'];
+    }
+
+    #[DataProvider('identityCases')]
+    public function testIdentity(OA\AbstractAnnotation $annotation, ?array $identityArgs, string $expected): void
+    {
+        $this->assertSame($expected, $annotation->identity($identityArgs));
     }
 }
 
