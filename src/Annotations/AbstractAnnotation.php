@@ -625,16 +625,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public function identity(?array $properties = null): string
     {
-<<<<<<< HEAD
-        $class = get_class($this);
-        $properties = [];
-        /** @var class-string<AbstractAnnotation> $parent */
-        foreach (static::$_parents as $parent) {
-            foreach ($parent::$_nested as $annotationClass => $entry) {
-                if ($annotationClass === $class && is_array($entry) && !Generator::isDefault($this->{$entry[1]})) {
-                    $properties[] = $entry[1];
-                    break 2;
-=======
         $class = static::class;
 
         if (null === $properties) {
@@ -646,7 +636,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
                         $properties[] = $entry[1];
                         break 2;
                     }
->>>>>>> 82710a1 (Refactor AbstractAnnotation::identity())
                 }
             }
         }
@@ -659,7 +648,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return static::shorten(static::class) . '(' . implode(',', $details) . ')';
+        return Util::shorten(static::class) . '(' . implode(',', $details) . ')';
     }
 
     /**
@@ -710,25 +699,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
     }
 
     /**
-<<<<<<< HEAD
-     * Helper for generating the identity().
-     */
-    protected function _identity(array $properties): string
-    {
-        $fields = [];
-        foreach ($properties as $property) {
-            $value = $this->{$property};
-            if ($value !== null && !Generator::isDefault($value)) {
-                $fields[] = $property . '=' . (is_string($value) ? '"' . $value . '"' : $value);
-            }
-        }
-
-        return Util::shorten(get_class($this)) . '(' . implode(',', $fields) . ')';
-    }
-
-    /**
-=======
->>>>>>> 82710a1 (Refactor AbstractAnnotation::identity())
      * Validates the matching of the property value to a annotation type.
      *
      * @param string $type  The annotations property type

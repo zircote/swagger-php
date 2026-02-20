@@ -7,11 +7,7 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
-<<<<<<< HEAD
 use OpenApi\Generator;
-=======
-use OpenApi\Annotations\Response;
->>>>>>> 82710a1 (Refactor AbstractAnnotation::identity())
 use OpenApi\Tests\OpenApiTestCase;
 
 class AbstractAnnotationTest extends OpenApiTestCase
@@ -171,13 +167,15 @@ END;
     public static function identityCases(): array
     {
         return [
-            'default' => [new Response(['response' => 200]), null, '@OA\Response(response=200)'],
-            '[]' => [new Response(['response' => 200]), [], '@OA\Response()'],
-            'custom' => [new Response(['response' => 200]), ['response'], '@OA\Response(response=200)'],
+            'default' => [new OA\Response(['response' => 200]), null, '@OA\Response(response=200)'],
+            '[]' => [new OA\Response(['response' => 200]), [], '@OA\Response()'],
+            'custom' => [new OA\Response(['response' => 200]), ['response'], '@OA\Response(response=200)'],
         ];
     }
 
-    #[DataProvider('identityCases')]
+    /**
+     * @dataProvider identityCases
+     */
     public function testIdentity(OA\AbstractAnnotation $annotation, ?array $identityArgs, string $expected): void
     {
         $this->assertSame($expected, $annotation->identity($identityArgs));
