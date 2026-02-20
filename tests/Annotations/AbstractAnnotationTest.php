@@ -163,6 +163,23 @@ END;
 
         $analysis->validate();
     }
+
+    public static function identityCases(): array
+    {
+        return [
+            'default' => [new OA\Response(['response' => 200]), null, '@OA\Response(response=200)'],
+            '[]' => [new OA\Response(['response' => 200]), [], '@OA\Response()'],
+            'custom' => [new OA\Response(['response' => 200]), ['response'], '@OA\Response(response=200)'],
+        ];
+    }
+
+    /**
+     * @dataProvider identityCases
+     */
+    public function testIdentity(OA\AbstractAnnotation $annotation, ?array $identityArgs, string $expected): void
+    {
+        $this->assertSame($expected, $annotation->identity($identityArgs));
+    }
 }
 
 class SubSchema extends OA\Schema
