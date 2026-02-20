@@ -6,8 +6,8 @@
 
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
 use OpenApi\Annotations as OA;
+use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
 
 /**
  * @OA\Schema

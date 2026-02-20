@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures\PHP;
 
-use OpenApi\Attributes as OAT;
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 /**
  * @OA\Schema

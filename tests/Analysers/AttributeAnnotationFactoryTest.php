@@ -7,8 +7,8 @@
 namespace OpenApi\Tests\Analysers;
 
 use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Tests\Fixtures\UsingAttributes;
 use OpenApi\Tests\Fixtures\InvalidPropertyAttribute;
+use OpenApi\Tests\Fixtures\UsingAttributes;
 use OpenApi\Tests\OpenApiTestCase;
 
 /**

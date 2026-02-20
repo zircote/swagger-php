@@ -6,8 +6,8 @@
 
 namespace OpenApi\Attributes;
 
-use OpenApi\Generator;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 /**
  * Shorthand for a json response.
