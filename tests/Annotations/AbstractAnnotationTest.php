@@ -144,13 +144,11 @@ END;
         $analysis->validate();
     }
 
-    public static function identityCases(): array
+    public static function identityCases(): iterable
     {
-        return [
-            'default' => [new Response(['response' => 200]), null, '@OA\Response(response=200)'],
-            '[]' => [new Response(['response' => 200]), [], '@OA\Response()'],
-            'custom' => [new Response(['response' => 200]), ['response'], '@OA\Response(response=200)'],
-        ];
+        yield 'default' => [new Response(['response' => 200]), null, '@OA\Response(response=200)'];
+        yield '[]' => [new Response(['response' => 200]), [], '@OA\Response()'];
+        yield 'custom' => [new Response(['response' => 200]), ['response'], '@OA\Response(response=200)'];
     }
 
     #[DataProvider('identityCases')]
