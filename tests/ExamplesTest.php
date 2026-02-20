@@ -6,10 +6,10 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\Serializer;
+use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 

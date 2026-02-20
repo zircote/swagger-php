@@ -35,6 +35,7 @@ return (new PhpCsFixer\Config())
         'OpenApi/declare_strict_types' => true,
         'blank_line_after_opening_tag' => false,
         'array_syntax' => ['syntax' => 'short'],
+        'ordered_imports' => true,
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],
         'visibility_required' => true,

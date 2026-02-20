@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tests\Fixtures;
 
-use OpenApi\Tests\Fixtures\Attributes as OAF;
 use OpenApi\Attributes as OAT;
+use OpenApi\Tests\Fixtures\Attributes as OAF;
 
 #[OAT\Info(title: 'Custom annotation attributes', version: '1.0')]
 #[OAT\Schema(

@@ -7,10 +7,10 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Tests\Fixtures\Processors\EntityControllerClass;
 use OpenApi\Tests\Fixtures\Processors\EntityControllerInterface;
 use OpenApi\Tests\Fixtures\Processors\EntityControllerTrait;
+use OpenApi\Tests\OpenApiTestCase;
 
 final class OperationIdTest extends OpenApiTestCase
 {

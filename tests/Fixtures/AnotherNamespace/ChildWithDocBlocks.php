@@ -6,8 +6,8 @@
 
 namespace AnotherNamespace;
 
-use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
 use OpenApi\Attributes as OAT;
+use OpenApi\Tests\Fixtures\ExpandClasses\AncestorWithoutDocBlocks;
 
 #[OAT\Schema]
 class ChildWithDocBlocks extends AncestorWithoutDocBlocks

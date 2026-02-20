@@ -12,8 +12,8 @@ use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\Concerns\DocblockTrait;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
-use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Tests\Fixtures\Request;
+use OpenApi\Tests\OpenApiTestCase;
 
 final class AugmentRefsTest extends OpenApiTestCase
 {

@@ -10,9 +10,9 @@ namespace SchemaQueryParameterProcessor;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
-use OpenApi\Generator;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Schema;
+use OpenApi\Generator;
 
 /**
  * Custom processor to translate the vendor tag `query-args-$ref` into query parameter annotations.
