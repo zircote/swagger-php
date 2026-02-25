@@ -136,8 +136,8 @@ END;
             'BadExampleParameter.php',
         ], $this->processorPipeline());
 
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
 
         $analysis->validate();

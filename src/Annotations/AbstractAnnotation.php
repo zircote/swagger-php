@@ -420,6 +420,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     // todo: remove
     public function validate(): bool
     {
+        //throw new \RuntimeException('Not implemented');
         return (new Validator($this->_context->logger))->validate(new Analysis([], $this->_context), $this);
     }
 

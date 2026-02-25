@@ -94,8 +94,8 @@ class DefaultValidator extends AbstractValidator
                 }
             } elseif ($annotation instanceof OA\AbstractAnnotation) {
                 $message = 'Unexpected ' . $annotation->identity();
-                if ($root::$_parents) {
-                    $message .= ', expected to be inside ' . implode(', ', OA\AbstractAnnotation::shorten($root::$_parents));
+                if ($annotation::$_parents) {
+                    $message .= ', expected to be inside ' . implode(', ', OA\AbstractAnnotation::shorten($annotation::$_parents));
                 }
                 $this->logger->warning($message . ' in ' . $annotation->_context);
             }
@@ -128,7 +128,7 @@ class DefaultValidator extends AbstractValidator
                 } elseif (Generator::isDefault($item->{$keyField})) {
                     $this->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->{$keyField}])) {
-                    $this->logger->error('Multiple ' . $item->identity() . ' with the same ' . $keyField . '="' . $item->{$keyField} . "\":\n  " . $item->_context . "\n  " . $keys[$item->{$keyField}]->_context);
+                    $this->logger->error('Multiple ' . $item->identity([]) . ' with the same ' . $keyField . '="' . $item->{$keyField} . "\":\n  " . $item->_context . "\n  " . $keys[$item->{$keyField}]->_context);
                 } else {
                     $keys[$item->{$keyField}] = $item;
                 }

@@ -17,8 +17,10 @@ class OpenApiValidator extends AbstractValidator
 {
     public function validate(Analysis $analysis, OA\AbstractAnnotation $root, \stdClass $context): bool
     {
-        return $this->validateType($root)
-            && $this->validateForVersion($root, $this->version($analysis));
+        $isValid = $this->validateType($root);
+        $isValid = $this->validateForVersion($root, $this->version($analysis)) && $isValid;
+
+        return $isValid;
     }
 
     protected function validateType(OA\OpenApi $root): bool
@@ -48,7 +50,7 @@ class OpenApiValidator extends AbstractValidator
             && Generator::isDefault($root->webhooks)
             && Generator::isDefault($root->components)
         ) {
-            $this->logger->warning("At least one of 'Required @OA\PathItem(), @OA\Components() or @OA\Webhook() not found'");
+            $this->logger->warning('At least one of @OA\PathItem(), @OA\Components() or @OA\Webhook() required');
             $isValid = false;
         }
 

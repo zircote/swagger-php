@@ -17,8 +17,10 @@ class SchemaValidator extends AbstractValidator
 {
     public function validate(Analysis $analysis, OA\AbstractAnnotation $root, \stdClass $context): bool
     {
-        return $this->validateType($root)
-            && $this->validateForVersion($root, $this->version($analysis));
+        $isValid = $this->validateType($root);
+        $isValid = $this->validateForVersion($root, $this->version($analysis)) && $isValid;
+
+        return $isValid;
     }
 
     protected function validateType(OA\Schema $root): bool
