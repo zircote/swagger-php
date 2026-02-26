@@ -6,8 +6,6 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 
 final class LicenseTest extends OpenApiTestCase
@@ -15,7 +13,7 @@ final class LicenseTest extends OpenApiTestCase
     public function testValidation3_0_0(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\License(name="MIT", identifier="MIT", url="http://localhost")', [], '3.0.4');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testValidation3_1_0(): void
@@ -24,6 +22,6 @@ final class LicenseTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('@OA\License() url and identifier are mutually exclusive');
 
         $annotations = $this->annotationsFromDocBlockParser('@OA\OpenApi(openapi="3.1.1", @OA\Info(title="foo", version="1.0.0", @OA\License(name="MIT", identifier="MIT", url="http://localhost")))', version: '3.1.1');
-        (new Analysis($annotations, $this->getContext()))->validate();
+        $this->validateAnnotations($annotations, version: '3.1.1', raw: true);
     }
 }

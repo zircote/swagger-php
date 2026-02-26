@@ -20,6 +20,7 @@ use OpenApi\Pipeline;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -111,6 +112,32 @@ class OpenApiTestCase extends TestCase
             'legacy' => new LegacyTypeResolver(),
             'type-info' => new TypeInfoTypeResolver(),
         ];
+    }
+
+    protected function validateSingle(OA\AbstractAnnotation $annotation, string $version = OA\OpenApi::DEFAULT_VERSION): bool
+    {
+        return (new Validator($this->getTrackingLogger()))->validate(new Analysis([], $this->getContext()), $annotation);
+    }
+
+    protected function validateAnnotations(array $annotations, string $version = OA\OpenApi::DEFAULT_VERSION, bool $raw = false): void
+    {
+        $types = array_map(get_class(...), $annotations);
+
+        if (!$raw && !in_array(OA\OpenApi::class, $types)) {
+            $annotations[] = new OA\OpenApi(['openapi' => $version, '_context' => $this->getContext()]);
+        }
+        if (!$raw && !in_array(OA\Info::class, $types)) {
+            $annotations[] = new OA\Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
+        }
+        if (!$raw && !in_array(OA\PathItem::class, $types)) {
+            $annotations[] = new OA\PathItem(['path' => '/test', '_context' => $this->getContext()]);
+        }
+
+        $analysis = new Analysis($annotations, $this->getContext());
+
+        (new Generator($this->getTrackingLogger()))
+            ->setVersion($version)
+            ->generate(sources: [], analysis: $analysis);
     }
 
     public function initializeProcessors(array $processors): array

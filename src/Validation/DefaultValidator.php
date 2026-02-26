@@ -25,9 +25,8 @@ class DefaultValidator extends AbstractValidator
         $isValid = $this->validateRefs($analysis, $root) && $isValid;
         $isValid = $this->validateRequiredFields($root) && $isValid;
         $isValid = $this->validateTypes($root) && $isValid;
-        $isValid = $this->validateExamples($root) && $isValid;
 
-        return $isValid;
+        return $this->validateExamples($root) && $isValid;
     }
 
     /**

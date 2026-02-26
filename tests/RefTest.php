@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
 final class RefTest extends OpenApiTestCase
@@ -38,11 +37,8 @@ final class RefTest extends OpenApiTestCase
 )
 END;
         $openapi->merge($this->annotationsFromDocBlockParser($comment));
-        $analysis = new Analysis([], $this->getContext());
-        $analysis->addAnnotation($openapi, $this->getContext());
-        $this->processorPipeline()->process($analysis);
+        $this->validateAnnotations([$openapi], raw: true);
 
-        $analysis->validate();
         // escape / as ~1
         // escape ~ as ~0
         $response = $openapi->ref('#/paths/~1api~1~0~1endpoint/post/responses/default');

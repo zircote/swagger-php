@@ -25,11 +25,13 @@ final class AbstractAnnotationTest extends OpenApiTestCase
         $openapi = $this->createOpenApiWithInfo();
         $openapi->merge($this->annotationsFromDocBlockParser('@OA\Items()'));
         $this->assertOpenApiLogEntryContains('Unexpected @OA\Items(), expected to be inside @OA\\');
-        $openapi->validate();
+        $this->validateSingle($openapi);
     }
 
     public function testConflictedNesting(): void
     {
+        $this->assertOpenApiLogEntryContains('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
+
         $comment = <<<END
 @OA\Info(
     title="Info only has one contact field..",
@@ -39,8 +41,7 @@ final class AbstractAnnotationTest extends OpenApiTestCase
 )
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
-        $this->assertOpenApiLogEntryContains('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testKey(): void
@@ -65,7 +66,7 @@ END;
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
         $this->assertOpenApiLogEntryContains('Multiple @OA\Header() with the same header="X-CSRF-Token":');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testRequiredFields(): void
@@ -74,7 +75,7 @@ END;
         $info = $annotations[0];
         $this->assertOpenApiLogEntryContains('Missing required field "title" for @OA\Info() in ');
         $this->assertOpenApiLogEntryContains('Missing required field "version" for @OA\Info() in ');
-        $info->validate();
+        $this->validateSingle($info);
     }
 
     public function testTypeValidation(): void
@@ -94,7 +95,7 @@ END;
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "cookie" in ');
         $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
-        $parameter->validate();
+        $this->validateSingle($parameter);
     }
 
     public static function nestedMatches(): \Iterator
@@ -115,11 +116,12 @@ END;
 
     public function testDuplicateOperationIdValidation(): void
     {
+        $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
+
         $analysis = $this->analysisFromFixtures([
                 'DuplicateOperationId.php',
             ], $this->processorPipeline());
 
-        $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
         $this->assertFalse($analysis->validate());
     }
 
@@ -132,13 +134,13 @@ END;
 
     public function testValidateExamples(): void
     {
-        $analysis = $this->analysisFromFixtures([
-            'BadExampleParameter.php',
-        ], $this->processorPipeline());
-
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
+
+        $analysis = $this->analysisFromFixtures([
+            'BadExampleParameter.php',
+        ], $this->processorPipeline());
 
         $analysis->validate();
     }

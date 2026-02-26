@@ -6,11 +6,9 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -417,13 +415,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         return $data;
     }
 
-    // todo: remove
-    public function validate(): bool
-    {
-        //throw new \RuntimeException('Not implemented');
-        return (new Validator($this->_context->logger))->validate(new Analysis([], $this->_context), $this);
-    }
-
     /**
      * Return a simple string representation of the annotation.
      *
@@ -539,7 +530,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     public static function shorten($classes = null)
     {
         $classes ??= [static::class];
-        $classes = is_object($classes) ? get_class($classes) : $classes;
+        $classes = is_object($classes) ? $classes::class : $classes;
 
         $short = [];
         foreach ((array) $classes as $class) {

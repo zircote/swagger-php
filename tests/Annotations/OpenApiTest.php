@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,7 +19,7 @@ final class OpenApiTest extends OpenApiTestCase
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.3';
-        $openapi->validate();
+        $this->validateSingle($openapi);
     }
 
     public function testValidVersion3_1_0(): void
@@ -29,8 +28,7 @@ final class OpenApiTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('At least one of @OA\PathItem(), @OA\Components() or @OA\Webhook() required');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
-        $openapi->openapi = '3.1.1';
-        (new Analysis([$openapi], $this->getContext()))->validate();
+        $this->validateAnnotations([$openapi], version: '3.1.1', raw: true);
     }
 
     public function testInvalidVersion(): void
@@ -41,7 +39,7 @@ final class OpenApiTest extends OpenApiTestCase
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '2';
-        $openapi->validate();
+        $this->validateSingle($openapi);
     }
 
     public function testSerialize(): void

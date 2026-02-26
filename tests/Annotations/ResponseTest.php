@@ -37,6 +37,6 @@ final class ResponseTest extends OpenApiTestCase
             'Invalid value "' . $response . '" for @OA\Response()->response, expecting "default"'
             . ', a HTTP Status Code or HTTP '
         );
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 }

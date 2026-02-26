@@ -15,20 +15,20 @@ final class ItemsTest extends OpenApiTestCase
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Items(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testSchemaTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Schema(type="array")');
         $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testParentTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Items() parent type must be "array"');
-        $annotations[0]->validate();
+        $this->validateSingle($annotations[0]);
     }
 
     public function testRefDefinitionInProperty(): void
