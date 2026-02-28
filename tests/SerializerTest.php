@@ -8,6 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -17,7 +18,7 @@ final class SerializerTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    private function getExpected(): OpenApi
+    private function getPetstoreExpected(): OpenApi
     {
         $path = new OA\PathItem(['_context' => $this->getContext()]);
         $path->path = '/products';
@@ -54,7 +55,7 @@ final class SerializerTest extends OpenApiTestCase
         $path->post->responses = [$resp, $respRange];
 
         $expected = new OpenApi(['_context' => $this->getContext()]);
-        $expected->openapi = OpenApi::VERSION_3_0_0;
+        $expected->openapi = OpenApi::VERSION_3_1_0;
         $expected->paths = [
             $path,
         ];
@@ -74,68 +75,68 @@ final class SerializerTest extends OpenApiTestCase
         return $expected;
     }
 
-    public function testDeserializeAnnotation(): void
+    public function testDeserializePetstore(): void
     {
-        $serializer = new Serializer();
-
         $json = <<<JSON
 {
-	"openapi": "3.0.0",
-	"info": {
-		"title": "Pet store",
-		"version": "1.0"
-	},
-	"paths": {
-		"/products": {
-			"post": {
-				"tags": [
-					"products"
-				],
-				"summary": "s1",
-				"description": "d1",
-				"requestBody": {
-					"description": "data in body",
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"additionalProperties": true
-							}
-						}
-					},
-					"x-repository": "def"
-				},
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"\$ref": "#/components/schemas/Pet"
-								}
-							}
-						},
-						"x-repository": "def"
-					},
-					"4XX": {
-						"description": "Client error response"
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"Pet": {
-				"required": [
-					"name",
-					"photoUrls"
-				]
-			}
-		}
-	}
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Pet store",
+        "version": "1.0"
+    },
+    "paths": {
+        "/products": {
+            "post": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "s1",
+                "description": "d1",
+                "requestBody": {
+                    "description": "data in body",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "x-repository": "def"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "\$ref": "#/components/schemas/Pet"
+                                }
+                            }
+                        },
+                        "x-repository": "def"
+                    },
+                    "4XX": {
+                        "description": "Client error response"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Pet": {
+                "required": [
+                    "name",
+                    "photoUrls"
+                ]
+            }
+        }
+    }
 }
 JSON;
+
+        $serializer = new Serializer();
 
         /** @var OpenApi $annotation */
         $annotation = $serializer->deserialize($json, OpenApi::class);
@@ -143,7 +144,7 @@ JSON;
         $this->assertInstanceOf(OpenApi::class, $annotation);
         $this->assertJsonStringEqualsJsonString(
             $annotation->toJson(),
-            $this->getExpected()->toJson()
+            $this->getPetstoreExpected()->toJson()
         );
 
         $schema = $annotation->paths['/products']->post->requestBody->content['application/json']->schema;
@@ -153,7 +154,7 @@ JSON;
     public function testPetstoreExample(): void
     {
         $serializer = new Serializer();
-        $spec = self::examplePath('petstore/petstore-3.0.0.yaml');
+        $spec = self::examplePath('petstore/petstore-3.1.0.yaml');
         $openapi = $serializer->deserializeFile($spec, 'yaml');
         $this->assertInstanceOf(OpenApi::class, $openapi);
         $this->assertSpecEquals(file_get_contents($spec), $openapi->toYaml());
@@ -166,30 +167,32 @@ JSON;
      */
     public function testDeserializeAllOfProperty(): void
     {
-        $serializer = new Serializer();
         $json = <<<JSON
             {
-            	"openapi": "3.0.0",
-            	"info": {
-            		"title": "Pet store",
-            		"version": "1.0"
-            	},
-            	"components": {
-            		"schemas": {
-            			"Dog": {
-            				"allOf": [{
-            					"\$ref": "#/components/schemas/SomeSchema"
-            				}]
-            			},
-            			"Cat": {
-            				"allOf": [{
-            					"\$ref": "#/components/schemas/SomeSchema"
-            				}]
-            			}
-            		}
-            	}
+                "openapi": "3.0.0",
+                "info": {
+                    "title": "Pet store",
+                    "version": "1.0"
+                },
+                "components": {
+                    "schemas": {
+                        "Dog": {
+                            "allOf": [{
+                                "\$ref": "#/components/schemas/SomeSchema"
+                            }]
+                        },
+                        "Cat": {
+                            "allOf": [{
+                                "\$ref": "#/components/schemas/SomeSchema"
+                            }]
+                        }
+                    }
+                }
             }
 JSON;
+
+        $serializer = new Serializer();
+
         /** @var OpenApi $annotation */
         $annotation = $serializer->deserialize($json, OpenApi::class);
 
@@ -211,5 +214,29 @@ JSON;
     {
         $staticProperties = (new \ReflectionClass((Serializer::class)))->getStaticProperties();
         $this->assertArrayHasKey($annotation, array_flip($staticProperties['VALID_ANNOTATIONS']));
+    }
+
+    public function testSerializeWithContext(): void
+    {
+        $json = <<<JSON
+            {
+                "tags": [
+                    {
+                        "name": "Foo",
+                        "summary": "Foo stuff"
+                    }
+                ]
+            }
+JSON;
+
+        $serializer = new Serializer();
+
+        /** @var OpenApi $annotation */
+        $annotation = $serializer->deserialize($json, OpenApi::class, new Context(['version' => '3.2.0', 'generated' => true]));
+
+        $this->assertJsonStringEqualsJsonString(
+            str_replace('"tags"', '"openapi":"3.2.0", "tags"', $json),
+            $annotation->toJson(),
+        );
     }
 }
