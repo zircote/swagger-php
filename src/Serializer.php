@@ -74,13 +74,13 @@ class Serializer
      *
      * @param class-string<OA\AbstractAnnotation> $className
      */
-    public function deserialize(string $jsonString, string $className): OA\AbstractAnnotation
+    public function deserialize(string $jsonString, string $className, ?Context $context = null): OA\AbstractAnnotation
     {
         if (!static::isValidAnnotationClass($className)) {
             throw new OpenApiException($className . ' is not defined in OpenApi PHP Annotations');
         }
 
-        return $this->doDeserialize(json_decode($jsonString), $className, new Context(['generated' => true]));
+        return $this->doDeserialize(json_decode($jsonString), $className, $context ?? new Context(['generated' => true]));
     }
 
     /**
@@ -88,7 +88,7 @@ class Serializer
      *
      * @param class-string<OA\AbstractAnnotation> $className
      */
-    public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class): OA\AbstractAnnotation
+    public function deserializeFile(string $filename, string $format = 'json', string $className = OA\OpenApi::class, ?Context $context = null): OA\AbstractAnnotation
     {
         if (!static::isValidAnnotationClass($className)) {
             throw new OpenApiException($className . ' is not a valid OpenApi PHP Annotations');
@@ -101,7 +101,7 @@ class Serializer
             $contents = json_encode(Yaml::parse($contents));
         }
 
-        return $this->doDeserialize(json_decode($contents), $className, new Context(['generated' => true]));
+        return $this->doDeserialize(json_decode($contents), $className, $context ?? new Context(['generated' => true]));
     }
 
     /**
