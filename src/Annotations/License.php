@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Generator;
 
 /**
@@ -80,20 +81,18 @@ class License extends AbstractAnnotation
         return $data;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
     {
-        $valid = parent::validate($stack, $skip, $ref, $context);
+        $isValid = parent::validate($analysis, $version, $context);
 
-        if (!$this->_context->isVersion('3.0.x')) {
+        if (!OpenApi::versionMatch($version, '3.0.x')) {
             if (!Generator::isDefault($this->url) && !Generator::isDefault($this->identifier)) {
-                $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive');
-                $valid = false;
+                $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive in ' . $this->_context);
+                $isValid = false;
             }
         }
 
-        return $valid;
+        return $isValid;
     }
 }

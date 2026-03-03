@@ -100,6 +100,7 @@ END;
     public static function nestedMatches(): \Iterator
     {
         $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
+
         yield 'simple-match' => [OA\Parameter::class, $parameterMatch];
         yield 'invalid-annotation' => [OA\Schema::class, null];
         yield 'sub-annotation' => [SubParameter::class, $parameterMatch];
@@ -136,8 +137,8 @@ END;
             'BadExampleParameter.php',
         ], $this->processorPipeline());
 
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
 
         $analysis->validate();
