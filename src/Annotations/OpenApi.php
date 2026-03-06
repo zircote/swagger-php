@@ -145,39 +145,51 @@ class OpenApi extends AbstractAnnotation
      */
     public static $_types = [];
 
+<<<<<<< HEAD
     /**
      * @inheritdoc
      */
     public function validate(?array $stack = null, ?array $skip = null, string $ref = '', $context = null): bool
+=======
+    public function __construct(array $properties)
     {
-        if ($stack !== null || $skip !== null || $ref !== '') {
-            $this->_context->logger->warning('Nested validation for ' . $this->identity() . ' not allowed');
+        parent::__construct($properties);
 
-            return false;
+        if ($this->_context->root()->version) {
+            // override via `Generator::setVersion()`
+            $this->openapi = $this->_context->root()->version;
+        } else {
+            $this->_context->root()->version = $this->openapi;
         }
+    }
 
-        if (!in_array($this->openapi, self::SUPPORTED_VERSIONS)) {
-            $this->_context->logger->warning('Unsupported OpenAPI version "' . $this->openapi . '". Allowed versions are: ' . implode(', ', self::SUPPORTED_VERSIONS));
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+>>>>>>> e7fa8bb (Refactor annotation validation (#1971))
+    {
+        $isValid = parent::validate($analysis, $version, $context);
 
-            return false;
+        if (!in_array($this->openapi, OpenApi::SUPPORTED_VERSIONS)) {
+            $this->_context->logger->warning('Unsupported OpenAPI version "' . $this->openapi . '". Allowed versions are: ' . implode(', ', OpenApi::SUPPORTED_VERSIONS));
+            $isValid = false;
         }
 
         /* paths is optional in 3.1.x */
-        if (self::versionMatch($this->openapi, '3.0.x') && Generator::isDefault($this->paths)) {
+        if (OpenApi::versionMatch($version, '3.0.x') && Generator::isDefault($this->paths)) {
             $this->_context->logger->warning('Required @OA\PathItem() not found');
+            $isValid = false;
         }
 
-        if (self::versionMatch($this->openapi, '3.1.x')
+        if (OpenApi::versionMatch($version, '3.1.x')
             && Generator::isDefault($this->paths)
             && Generator::isDefault($this->webhooks)
             && Generator::isDefault($this->components)
         ) {
-            $this->_context->logger->warning("At least one of 'Required @OA\PathItem(), @OA\Components() or @OA\Webhook() not found'");
-
-            return false;
+            $this->_context->logger->warning('At least one of @OA\PathItem(), @OA\Components() or @OA\Webhook() required');
+            $isValid = false;
         }
 
-        return parent::validate([], [], '#', new \stdClass());
+        return $isValid;
     }
 
     /**

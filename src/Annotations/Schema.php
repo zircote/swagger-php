@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Generator;
 
 /**
@@ -541,25 +542,24 @@ class Schema extends AbstractAnnotation
         return $data;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
     {
+        $isValid = parent::validate($analysis, $version, $context);
+
         if ($this->hasType('array') && Generator::isDefault($this->items)) {
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
-            return false;
+            $isValid = false;
         }
 
-        if ($this->_context->isVersion('3.0.x')) {
+        if (OpenApi::versionMatch($version, '3.0.x')) {
             if (!Generator::isDefault($this->examples)) {
-                $this->_context->logger->warning($this->identity() . ' is only allowed as of 3.1.0');
-
-                return false;
+                $this->_context->logger->warning(static::shorten(static::class) . '::examples is only allowed as of 3.1.0 in ' . $this->_context);
+                $isValid = false;
             }
         }
 
-        return parent::validate($stack, $skip, $ref, $context);
+        return $isValid;
     }
 }

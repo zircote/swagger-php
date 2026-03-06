@@ -37,6 +37,7 @@ class Items extends Schema
         XmlContent::class,
         Items::class,
     ];
+<<<<<<< HEAD
 
     /**
      * @inheritdoc
@@ -58,4 +59,6 @@ class Items extends Schema
 
         return $valid;
     }
+=======
+>>>>>>> e7fa8bb (Refactor annotation validation (#1971))
 }

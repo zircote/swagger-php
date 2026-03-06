@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Generator;
 
 /**
@@ -266,27 +267,21 @@ class Parameter extends AbstractAnnotation
         Trace::class,
     ];
 
-    /**
-     * @inheritdoc
-     */
-    public function validate(array $stack = [], array $skip = [], string $ref = '', ?object $context = null): bool
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
     {
-        if (in_array($this, $skip, true)) {
-            return true;
-        }
-
-        $valid = parent::validate($stack, $skip, $ref, $context);
+        $isValid = parent::validate($analysis, $version, $context);
 
         if (Generator::isDefault($this->ref)) {
             if ($this->in === 'body') {
                 if (Generator::isDefault($this->schema)) {
                     $this->_context->logger->warning('Field "schema" is required when ' . $this->identity() . ' is in "' . $this->in . '" in ' . $this->_context);
-                    $valid = false;
+                    $isValid = false;
                 }
             }
         }
 
-        return $valid;
+        return $isValid;
     }
 
     #[\Override]

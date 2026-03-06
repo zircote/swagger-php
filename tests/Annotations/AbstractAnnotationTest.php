@@ -110,6 +110,7 @@ END;
     {
         $parameterMatch = (object) ['key' => OA\Parameter::class, 'value' => ['parameters']];
 
+<<<<<<< HEAD
         return [
             'simple-match' => [OA\Parameter::class, $parameterMatch],
             'invalid-annotation' => [OA\Schema::class, null],
@@ -117,6 +118,13 @@ END;
             'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch],
             'sub-invalid' => [SubSchema::class, null],
         ];
+=======
+        yield 'simple-match' => [OA\Parameter::class, $parameterMatch];
+        yield 'invalid-annotation' => [OA\Schema::class, null];
+        yield 'sub-annotation' => [SubParameter::class, $parameterMatch];
+        yield 'sub-sub-annotation' => [SubSubParameter::class, $parameterMatch];
+        yield 'sub-invalid' => [SubSchema::class, null];
+>>>>>>> e7fa8bb (Refactor annotation validation (#1971))
     }
 
     /**
@@ -157,8 +165,8 @@ END;
             ->getProcessorPipeline()
             ->process($analysis);
 
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
+        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
 
         $analysis->validate();
