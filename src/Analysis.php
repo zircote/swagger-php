@@ -388,12 +388,47 @@ class Analysis
 
     public function validate(): bool
     {
-        if ($this->openapi instanceof OA\OpenApi) {
-            return $this->openapi->validate();
+        if (!$this->openapi instanceof OA\OpenApi) {
+            $this->context->logger->warning('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+
+            return false;
         }
 
-        $this->context->logger->warning('No openapi target set. Run the MergeIntoOpenApi processor before validate()');
+        $isValid = true;
+        $version = $this->openapi->openapi;
+        $context = new \stdClass();
 
-        return false;
+        foreach ($this->collectAnnotations($this->openapi) as $annotation) {
+            $isValid = $annotation->validate($this, $version, $context) && $isValid;
+        }
+
+        return $isValid;
+
+    }
+
+    /**
+     * @return array<OA\AbstractAnnotation>
+     */
+    protected function collectAnnotations(OA\AbstractAnnotation $root): array
+    {
+        $annotations = [$root];
+
+        foreach (get_object_vars($root) as $field => $value) {
+            if (null === $value || Generator::isDefault($value) || is_scalar($value) || in_array($field, $root::$_blacklist)) {
+                continue;
+            }
+
+            if ($value instanceof OA\AbstractAnnotation) {
+                $annotations = array_merge($annotations, $this->collectAnnotations($value));
+            } elseif (is_array($value)) {
+                foreach ($value as $item) {
+                    if ($item instanceof OA\AbstractAnnotation) {
+                        $annotations = array_merge($annotations, $this->collectAnnotations($item));
+                    }
+                }
+            }
+        }
+
+        return $annotations;
     }
 }

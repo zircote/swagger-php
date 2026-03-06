@@ -21,6 +21,6 @@ final class LicenseTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('@OA\License() url and identifier are mutually exclusive');
 
         $annotations = $this->annotationsFromDocBlockParser('@OA\License(name="MIT", identifier="MIT", url="http://localhost")', [], '3.1.1');
-        $annotations[0]->validate();
+        $annotations[0]->validate(version: '3.1.1');
     }
 }
