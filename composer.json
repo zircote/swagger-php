@@ -44,8 +44,12 @@
         }
     },
     "require": {
+<<<<<<< HEAD
         "php": ">=7.4",
         "ext-json": "*",
+=======
+        "php": ">=8.2",
+>>>>>>> 6ffe469 (Remove obsolete dependency on `ext-json` (#1974))
         "nikic/php-parser": "^4.19 || ^5.0",
         "phpstan/phpdoc-parser": "^2.0",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
