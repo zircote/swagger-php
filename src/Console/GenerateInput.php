@@ -22,19 +22,19 @@ class GenerateInput
     #[Option('Show default config', shortcut: 'D')]
     public bool $defaults = false;
 
-    #[Option('Path to store the generated documentation', shortcut: 'o')]
+    #[Option('Path to store the generated documentation (e.g. -o openapi.yaml)', shortcut: 'o')]
     public ?string $output = null;
 
     #[Option('Force yaml or json', shortcut: 'f')]
-    public string $format = 'auto';
+    public GenerateFormat $format = GenerateFormat::AUTO;
 
-    #[Option('Exclude path(s)', shortcut: 'e')]
+    #[Option('Exclude path(s) (e.g. -e vendor -e library/Zend)', shortcut: 'e')]
     public array $exclude = [];
 
-    #[Option('Pattern of files to scan', shortcut: 'n')]
+    #[Option('Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', shortcut: 'n')]
     public string $pattern = '*.php';
 
-    #[Option('Bootstrap php file(s) for defining constants, etc.', shortcut: 'b')]
+    #[Option('Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)', shortcut: 'b')]
     public array $bootstrap = [];
 
     #[Option('Register an additional processor', shortcut: 'a')]

@@ -51,7 +51,7 @@ class GenerateCommand
         $openapi = $this->generate($input);
 
         if (!$input->output) {
-            if (strtolower($input->format) === 'json') {
+            if ($input->format->isJson()) {
                 echo $openapi->toJson();
             } else {
                 echo $openapi->toYaml();
@@ -62,7 +62,7 @@ class GenerateCommand
             if (is_dir($outputPath)) {
                 $outputPath .= '/openapi.yaml';
             }
-            $openapi->saveAs($outputPath, $input->format);
+            $openapi->saveAs($outputPath, $input->format->value);
         }
 
         return $this->logger->hasErrored() ? 1 : 0;
