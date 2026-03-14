@@ -9,6 +9,7 @@ namespace OpenApi\Console;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\Option;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 class GenerateInput
 {
@@ -47,4 +48,20 @@ class GenerateInput
 
     #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
+
+    /**
+     * @return iterable<string>
+     */
+    public function getBootstrapFilenames(): iterable
+    {
+        foreach ($this->bootstrap as $bootstrapPattern) {
+            $filenames = glob($bootstrapPattern);
+
+            if (!$filenames) {
+                throw new InvalidArgumentException('Invalid `--bootstrap` value: "' . $bootstrapPattern . '"');
+            }
+
+            yield from $filenames;
+        }
+    }
 }

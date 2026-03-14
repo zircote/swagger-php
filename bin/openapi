@@ -18,14 +18,26 @@ if (class_exists(Generator::class) === false) {
     }
 }
 
-$input = new ArgvInput();
+$input = new class extends ArgvInput
+{
+    public function hasParameterOption(array|string $values, bool $onlyParams = false): bool
+    {
+        // Skip the built-in version option check
+        // thus the command can use it for its own purpose
+        if (['--version', '-V'] === $values) {
+            return false;
+        }
+
+        return parent::hasParameterOption($values, $onlyParams);
+    }
+};
 $output = new ConsoleOutput();
 $logger = new ConsoleLogger($output);
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new ErrorListener($logger));
 
-$app = new Application('openapi');
+$app = new Application();
 $app->setDispatcher($dispatcher);
 
 // Remove Symfony's built-in options that conflict with our command options:
@@ -36,7 +48,6 @@ $options = $definition->getOptions();
 unset($options['version'], $options['no-interaction']);
 $definition->setOptions($options);
 
-$command = new GenerateCommand($logger);
-$app->addCommand($command);
-$app->setDefaultCommand('generate', true);
+$app->addCommand(new GenerateCommand($logger));
+$app->setDefaultCommand('openapi', true);
 $app->run($input, $output);
