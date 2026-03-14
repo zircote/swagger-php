@@ -76,6 +76,6 @@ class CommandlineTest extends OpenApiTestCase
         exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi ' . escapeshellarg($path) . ' -e 2>&1'), $output, $retval);
         $this->assertSame(1, $retval);
         $output = implode(PHP_EOL, $output);
-        $this->assertStringContainsString('Error: Missing argument for "-e"', $output);
+        $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
 }

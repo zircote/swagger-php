@@ -1,13 +1,14 @@
 #!/usr/bin/env php
 <?php
 
-use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Analysers\DocBlockAnnotationFactory;
-use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Console\GenerateCommand;
 use OpenApi\Generator;
+<<<<<<< HEAD
 use OpenApi\Util;
 use OpenApi\Loggers\ConsoleLogger;
+=======
+use Symfony\Component\Console\Application;
+>>>>>>> ce85d8e (Implement Symfony Console integration for OpenAPI command generation)
 
 if (class_exists(Generator::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
@@ -17,8 +18,9 @@ if (class_exists(Generator::class) === false) {
     }
 }
 
-error_reporting(E_ALL);
+$app = new Application('openapi');
 
+<<<<<<< HEAD
 // Possible options and their default values.
 $options = [
     'config' => [],
@@ -243,3 +245,17 @@ if ($options['output'] === false) {
     $openapi->saveAs($options['output'], $options['format']);
 }
 exit($logger->loggedMessageAboveNotice() ? 1 : 0);
+=======
+// Remove Symfony's built-in options that conflict with our command options:
+// --version (-V): conflicts with our --version (VALUE_REQUIRED for OpenAPI spec version)
+// --no-interaction (-n): conflicts with our --pattern (-n)
+$definition = $app->getDefinition();
+$options = $definition->getOptions();
+unset($options['version'], $options['no-interaction']);
+$definition->setOptions($options);
+
+$command = new GenerateCommand();
+$app->addCommand($command);
+$app->setDefaultCommand($command->getName(), true);
+$app->run();
+>>>>>>> ce85d8e (Implement Symfony Console integration for OpenAPI command generation)
