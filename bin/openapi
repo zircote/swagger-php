@@ -4,6 +4,8 @@
 use OpenApi\Console\GenerateCommand;
 use OpenApi\Generator;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\EventListener\ErrorListener;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 if (class_exists(Generator::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
@@ -13,7 +15,11 @@ if (class_exists(Generator::class) === false) {
     }
 }
 
+$dispatcher = new EventDispatcher();
+$dispatcher->addSubscriber(new ErrorListener());
+
 $app = new Application('openapi');
+$app->setDispatcher($dispatcher);
 
 // Remove Symfony's built-in options that conflict with our command options:
 // --version (-V): conflicts with our --version (VALUE_REQUIRED for OpenAPI spec version)
