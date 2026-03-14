@@ -13,31 +13,32 @@ use OpenApi\Generator;
 use OpenApi\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\MapInput;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Logger\ConsoleLogger;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'generate',
     description: 'Generate OpenAPI documentation',
 )]
-final class GenerateCommand extends Command
+final class GenerateCommand
 {
-    public function __invoke(#[MapInput] GenerateInput $input, SymfonyStyle $io): int
-    {
-        $logger = new ConsoleLogger($io);
+    public function __construct(
+        private ConsoleLogger $logger,
+    ) {
+    }
 
+    public function __invoke(#[MapInput] GenerateInput $input): int
+    {
         // Bootstrap
         foreach ($input->bootstrap as $bootstrapPattern) {
             $filenames = glob($bootstrapPattern);
             if (false === $filenames) {
-                $logger->error('Invalid `--bootstrap` value: "' . $bootstrapPattern . '"');
+                $this->logger->error('Invalid `--bootstrap` value: "' . $bootstrapPattern . '"');
 
                 return 1;
             }
             foreach ($filenames as $filename) {
                 if ($input->debug) {
-                    $logger->debug('Bootstrapping: ' . $filename);
+                    $this->logger->debug('Bootstrapping: ' . $filename);
                 }
                 require_once($filename);
             }
@@ -45,8 +46,8 @@ final class GenerateCommand extends Command
 
         // Defaults
         if ($input->defaults) {
-            $logger->info('Default config');
-            $logger->info(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
+            $this->logger->info('Default config');
+            $this->logger->info(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
 
             return 1;
         }
@@ -55,13 +56,13 @@ final class GenerateCommand extends Command
         $exclude = $input->exclude ?: null;
         if ($exclude && str_contains((string) $exclude[0], ',')) {
             $exploded = explode(',', (string) $exclude[0]);
-            $logger->error('Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude ' . $exploded[0] . ' --exclude ' . $exploded[1]);
+            $this->logger->error('Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude ' . $exploded[0] . ' --exclude ' . $exploded[1]);
             $exclude[0] = array_shift($exploded);
             $exclude = array_merge($exclude, $exploded);
         }
 
         // Generator
-        $generator = new Generator($logger);
+        $generator = new Generator($this->logger);
         foreach ($input->addProcessor as $processor) {
             $class = '\OpenApi\Processors\\' . ucfirst((string) $processor);
             if (class_exists($class)) {
@@ -108,6 +109,6 @@ final class GenerateCommand extends Command
             $openapi->saveAs($outputPath, $input->format);
         }
 
-        return $logger->hasErrored() ? 1 : 0;
+        return $this->logger->hasErrored() ? 1 : 0;
     }
 }

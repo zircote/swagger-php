@@ -5,6 +5,9 @@ use OpenApi\Console\GenerateCommand;
 use OpenApi\Generator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\EventListener\ErrorListener;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 if (class_exists(Generator::class) === false) {
@@ -15,8 +18,12 @@ if (class_exists(Generator::class) === false) {
     }
 }
 
+$input = new ArgvInput();
+$output = new ConsoleOutput();
+$logger = new ConsoleLogger($output);
+
 $dispatcher = new EventDispatcher();
-$dispatcher->addSubscriber(new ErrorListener());
+$dispatcher->addSubscriber(new ErrorListener($logger));
 
 $app = new Application('openapi');
 $app->setDispatcher($dispatcher);
@@ -29,7 +36,7 @@ $options = $definition->getOptions();
 unset($options['version'], $options['no-interaction']);
 $definition->setOptions($options);
 
-$command = new GenerateCommand();
+$command = new GenerateCommand($logger);
 $app->addCommand($command);
-$app->setDefaultCommand($command->getName(), true);
-$app->run();
+$app->setDefaultCommand('generate', true);
+$app->run($input, $output);
