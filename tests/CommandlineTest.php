@@ -68,16 +68,6 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
     }
 
-    public function testExcludeListWarning(): void
-    {
-        $basePath = self::examplePath('petstore');
-        $path = "{$basePath}/annotations";
-        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi -e foo,bar ' . escapeshellarg($path) . ' 2>&1'), $output, $retval);
-        $this->assertSame(1, $retval);
-        $output = implode(PHP_EOL, $output);
-        $this->assertStringContainsString('Comma-separated exclude paths are deprecated', $output);
-    }
-
     public function testMissingArg(): void
     {
         $basePath = self::examplePath('petstore');

@@ -6,10 +6,7 @@
 
 namespace OpenApi\Console;
 
-use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Analysers\DocBlockAnnotationFactory;
-use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use OpenApi\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -68,7 +65,7 @@ class GenerateCommand
         return $this->logger->hasErrored() ? 1 : 0;
     }
 
-    private function generate(GenerateInput $input): OpenApi
+    private function generate(GenerateInput $input): OA\OpenApi
     {
         $generator = new Generator($this->logger);
 
@@ -89,37 +86,9 @@ class GenerateCommand
             $generator->getProcessorPipeline()->remove($class);
         }
 
-        $analyser = new ReflectionAnalyser([
-            new AttributeAnnotationFactory(),
-            new DocBlockAnnotationFactory(),
-        ]);
-        $analyser->setGenerator($generator);
-
         return $generator
             ->setVersion($input->version)
             ->setConfig($input->config)
-            ->setAnalyser($analyser)
-            ->generate(new SourceFinder($input->paths, $this->normalizeExcludePaths($input->exclude), $input->pattern));
-    }
-
-    /**
-     * @param list<string> $exclude
-     *
-     * @return list<string>
-     */
-    private function normalizeExcludePaths(array $exclude): array
-    {
-        if (!$exclude) {
-            return [];
-        }
-
-        if (str_contains($exclude[0], ',')) {
-            $exploded = explode(',', $exclude[0]);
-            $this->logger->error('Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude ' . $exploded[0] . ' --exclude ' . $exploded[1]);
-            $exclude[0] = array_shift($exploded);
-            $exclude = array_merge($exclude, $exploded);
-        }
-
-        return $exclude;
+            ->generate(new SourceFinder($input->paths, $input->exclude, $input->pattern));
     }
 }

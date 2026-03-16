@@ -6,7 +6,7 @@
 
 namespace OpenApi\Console;
 
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -44,7 +44,7 @@ class GenerateInput
     public array $removeProcessor = [];
 
     #[Option('The OpenAPI version')]
-    public string $version = OpenApi::DEFAULT_VERSION;
+    public string $version = OA\OpenApi::DEFAULT_VERSION;
 
     #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
