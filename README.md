@@ -96,7 +96,11 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
+<<<<<<< HEAD
 $openapi = \OpenApi\Generator::scan(['/path/to/project']);
+=======
+$openapi = (new \OpenApi\Generator())->generate(['/path/to/project']);
+>>>>>>> 7f6f6ab (Fixed README.md (#1976))
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();
 ```
