@@ -38,7 +38,7 @@ return (new PhpCsFixer\Config())
         'ordered_imports' => true,
         'no_unused_imports' => true,
         'blank_line_before_statement' => ['statements' => ['return']],
-        'visibility_required' => true,
+        'modifier_keywords' => true,
         'cast_spaces' => ['space' => 'single'],
         'concat_space' => ['spacing' => 'one'],
         'type_declaration_spaces' => true,

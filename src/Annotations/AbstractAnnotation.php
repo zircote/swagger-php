@@ -465,7 +465,35 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         $valid = true;
 
+<<<<<<< HEAD
         // Report orphaned annotations
+=======
+        $isValidType = fn (string $type, mixed $value): bool => match ($type) {
+            'string' => is_string($value),
+            'boolean' => is_bool($value),
+            'integer' => is_int($value),
+            'number' => is_numeric($value),
+            'object' => is_object($value),
+            'array' => is_array($value) && array_is_list($value),
+            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], strict: true),
+            default => throw new OpenApiException('Invalid type "' . $type . '"'),
+        };
+
+        foreach (explode('|', $type) as $tt) {
+            if ($isValidType(trim($tt), $value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    {
+        $isValid = true;
+
+        // validate unmerged
+>>>>>>> 5957b9d (Rector / CS fixes (#1979))
         foreach ($this->_unmerged as $annotation) {
             if (!is_object($annotation)) {
                 $this->_context->logger->warning('Unexpected type: "' . gettype($annotation) . '" in ' . $this->identity() . '->_unmerged, expecting a Annotation object');

@@ -67,7 +67,7 @@ class ConsoleLogger extends AbstractLogger implements LoggerInterface
         }
         $stop = empty($color) ? '' : static::COLOR_STOP;
 
-        if (!in_array($level, self::LOG_LEVELS_UP_TO_NOTICE, true)) {
+        if (!in_array($level, self::LOG_LEVELS_UP_TO_NOTICE, strict: true)) {
             $this->loggedMessageAboveNotice = true;
         }
 
