@@ -71,7 +71,7 @@ class Analysis
                 $context->annotations = [];
             }
 
-            if (in_array($annotation, $context->annotations, true) === false) {
+            if (in_array($annotation, $context->annotations, strict: true) === false) {
                 $context->annotations[] = $annotation;
             }
         }
