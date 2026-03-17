@@ -448,7 +448,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             'number' => is_numeric($value),
             'object' => is_object($value),
             'array' => is_array($value) && array_is_list($value),
-            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], true),
+            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], strict: true),
             default => throw new OpenApiException('Invalid type "' . $type . '"'),
         };
 

@@ -40,7 +40,7 @@ trait MergePropertiesTrait
         foreach ($from['properties'] as $context) {
             if (is_iterable($context->annotations)) {
                 foreach ($context->annotations as $annotation) {
-                    if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
+                    if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, strict: true)) {
                         $existing[] = $annotation->_context->property;
                         $schema->merge([$annotation], true);
                     }
@@ -54,7 +54,7 @@ trait MergePropertiesTrait
         foreach ($from['methods'] as $context) {
             if (is_iterable($context->annotations)) {
                 foreach ($context->annotations as $annotation) {
-                    if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, true)) {
+                    if ($annotation instanceof OA\Property && !in_array($annotation->_context->property, $existing, strict: true)) {
                         $existing[] = $annotation->_context->property;
                         $schema->merge([$annotation], true);
                     }

@@ -353,7 +353,7 @@ class Schema extends AbstractAnnotation
      */
     public function hasType(string $type): bool
     {
-        return in_array($type, (array) $this->type, true);
+        return in_array($type, (array) $this->type, strict: true);
     }
 
     public function jsonSerialize(): \stdClass
