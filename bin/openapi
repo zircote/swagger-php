@@ -1,13 +1,12 @@
 #!/usr/bin/env php
 <?php
 
-use OpenApi\Analysers\AttributeAnnotationFactory;
-use OpenApi\Analysers\DocBlockAnnotationFactory;
-use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Console\GenerateCommand;
 use OpenApi\Generator;
-use OpenApi\SourceFinder;
-use OpenApi\Loggers\ConsoleLogger;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 if (class_exists(Generator::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
@@ -17,254 +16,31 @@ if (class_exists(Generator::class) === false) {
     }
 }
 
-error_reporting(E_ALL);
-
-// Possible options and their default values.
-$options = [
-    'config' => [],
-    'defaults' => false,
-    'output' => false,
-    'format' => 'auto',
-    'exclude' => [],
-    'pattern' => '*.php',
-    'bootstrap' => [],
-    'help' => false,
-    'debug' => false,
-    'add-processor' => [],
-    'remove-processor' => [],
-    'version' => null,
-];
-$aliases = [
-    'c' => 'config',
-    'D' => 'defaults',
-    'o' => 'output',
-    'e' => 'exclude',
-    'n' => 'pattern',
-    'b' => 'bootstrap',
-    'h' => 'help',
-    'd' => 'debug',
-    'a' => 'add-processor',
-    'r' => 'remove-processor',
-    'f' => 'format'
-];
-$needsArgument = [
-    'config',
-    'output',
-    'format',
-    'exclude',
-    'pattern',
-    'bootstrap',
-    'add-processor',
-    'remove-processor',
-    'version',
-];
-$paths = [];
-$error = false;
-
-try {
-    // Parse cli arguments
-    for ($i = 1; $i < $argc; $i++) {
-        $arg = $argv[$i];
-
-        if (substr($arg, 0, 2) === '--') {
-            // longopt
-            $option = substr($arg, 2);
-        } elseif ($arg[0] === '-') {
-            // shortopt
-            if (array_key_exists(substr($arg, 1), $aliases)) {
-                $option = $aliases[$arg[1]];
-            } else {
-                throw new Exception('Unknown option: "' . $arg . '"');
-            }
-        } else {
-            $paths[] = $arg;
-            continue;
+$input = new class extends ArgvInput
+{
+    public function hasParameterOption(array|string $values, bool $onlyParams = false): bool
+    {
+        // Skip the built-in version option check
+        // thus the command can use it for its own purpose
+        if (['--version', '-V'] === $values) {
+            return false;
         }
 
-        if (false === array_key_exists($option, $options)) {
-            throw new Exception('Unknown option: "' . $arg . '"');
-        }
-
-        if (in_array($option, $needsArgument)) {
-            if (empty($argv[$i + 1]) || $argv[$i + 1][0] === '-') {
-                throw new Exception('Missing argument for "' . $arg . '"');
-            }
-            if (is_array($options[$option])) {
-                $options[$option][] = $argv[$i + 1];
-            } else {
-                $options[$option] = $argv[$i + 1];
-            }
-            $i++;
-        } else {
-            $options[$option] = true;
-        }
+        return parent::hasParameterOption($values, $onlyParams);
     }
-} catch (\Exception $e) {
-    $error = $e->getMessage();
-}
+};
+$output = new ConsoleOutput();
+$logger = new ConsoleLogger($output);
+$app = new Application();
 
-$logger = new ConsoleLogger($options['debug']);
+// Remove Symfony's built-in options that conflict with our command options:
+// --version (-V): conflicts with our --version (VALUE_REQUIRED for OpenAPI spec version)
+// --no-interaction (-n): conflicts with our --pattern (-n)
+$definition = $app->getDefinition();
+$options = $definition->getOptions();
+unset($options['version'], $options['no-interaction']);
+$definition->setOptions($options);
 
-if (!$error && $options['bootstrap']) {
-    foreach ($options['bootstrap'] as $bootstrap) {
-        $filenames = glob($bootstrap);
-        if (false === $filenames) {
-            $error = 'Invalid `--bootstrap` value: "' . $bootstrap . '"';
-            break;
-        }
-        foreach ($filenames as $filename) {
-            if ($options['debug']) {
-                $logger->debug('Bootstrapping: ' . $filename);
-            }
-            require_once($filename);
-        }
-    }
-}
-
-if ($options['defaults']) {
-    $logger->info('Default config');
-    $logger->info(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
-    exit(1);
-}
-
-if (count($paths) === 0) {
-    $error = 'Specify at least one path.';
-}
-
-if ($options['help'] === false && $error) {
-    $logger->error('', ['prefix' => '']);
-    $logger->error($error);
-    // Show help
-    $options['help'] = true;
-}
-$defaultVersion = OpenApi::DEFAULT_VERSION;
-if ($options['help']) {
-    $help = <<<EOF
-
-Usage: openapi [--option value] [/path/to/project ...]
-
-Options:
-  --config (-c)               Generator config.
-                              ex: -c operationId.hash=false
-  --defaults (-D)             Show default config.
-  --output (-o)               Path to store the generated documentation.
-                              ex: --output openapi.yaml
-  --exclude (-e)              Exclude path(s).
-                              ex: --exclude vendor,library/Zend
-  --pattern (-n)              Pattern of files to scan.
-                              ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
-  --bootstrap (-b)            Bootstrap php file(s) for defining constants, etc.
-                              ex: --bootstrap config/constants.php
-  --add-processor (-a)        Register an additional processor (allows multiple).
-  --remove-processor (-r)     Remove an existing processor (allows multiple).
-  --format (-f)               Force yaml or json.
-  --debug (-d)                Show additional error information.
-  --version                   The OpenAPI version; defaults to {$defaultVersion}.
-  --help (-h)                 Display this help message.
-
-
-EOF;
-    $logger->info($help);
-    exit(1);
-}
-
-$errorTypes = [
-    E_ERROR => 'Error',
-    E_WARNING => 'Warning',
-    E_PARSE => 'Parser error',
-    E_NOTICE => 'Notice',
-    E_DEPRECATED => 'Deprecated',
-    E_CORE_ERROR => 'Error(Core)',
-    E_CORE_WARNING => 'Warning(Core)',
-    E_COMPILE_ERROR => 'Error(compile)',
-    E_COMPILE_WARNING => 'Warning(Compile)',
-    E_RECOVERABLE_ERROR => 'Error(Recoverable)',
-    E_USER_ERROR => 'Error',
-    E_USER_WARNING => 'Warning',
-    E_USER_NOTICE => 'Notice',
-    E_USER_DEPRECATED => 'Deprecated',
-];
-set_error_handler(function ($errno, $errstr, $file, $line) use ($errorTypes, $options, $logger) {
-    if (!(error_reporting() & $errno)) {
-        // This error code is not included in error_reporting
-        return;
-    }
-    $type = array_key_exists($errno, $errorTypes) ? $errorTypes[$errno] : 'Error';
-    if ($type === 'Deprecated') {
-        $logger->info($errstr, ['prefix' => $type . ': ']);
-    } else {
-        $logger->error($errstr, ['prefix' => $type . ': ']);
-    }
-
-    if ($options['debug']) {
-        $logger->info(' in '.$file.' on line '.$line);
-    }
-    if (substr($type, 0, 5) === 'Error') {
-        exit($errno);
-    }
-});
-
-set_exception_handler(function ($exception) use ($logger) {
-    $logger->error($exception);
-    exit($exception->getCode() ?: 1);
-});
-
-$exclude = null;
-if ($options['exclude']) {
-    $exclude = $options['exclude'];
-    if (strpos($exclude[0], ',') !== false) {
-        $exploded = explode(',', $exclude[0]);
-        $logger->error('Comma-separated exclude paths are deprecated, use multiple --exclude statements: --exclude '.$exploded[0].' --exclude '.$exploded[1]);
-        $exclude[0] = array_shift($exploded);
-        $exclude = array_merge($exclude, $exploded);
-    }
-}
-
-$pattern = "*.php";
-if ($options['pattern']) {
-    $pattern = $options['pattern'];
-}
-
-$generator = new Generator($logger);
-foreach ($options["add-processor"] as $processor) {
-    $class = '\OpenApi\Processors\\'.ucfirst($processor);
-    if (class_exists($class)) {
-        $processor = new $class();
-    } elseif (class_exists($processor)) {
-        $processor = new $processor();
-    }
-    $generator->getProcessorPipeline()->add($processor);
-}
-foreach ($options["remove-processor"] as $processor) {
-    $class = class_exists($processor)
-        ? $class
-        : '\OpenApi\Processors\\'.ucfirst($processor);
-    $generator->getProcessorPipeline()->remove($class);
-}
-
-$analyser = new ReflectionAnalyser([
-        new AttributeAnnotationFactory(),
-        new DocBlockAnnotationFactory(),
-]);
-$analyser->setGenerator($generator);
-
-$openapi = $generator
-    ->setVersion($options['version'])
-    ->setConfig($options['config'])
-    ->setAnalyser($analyser)
-    ->generate(new SourceFinder($paths, $exclude, $pattern));
-
-if ($options['output'] === false) {
-    if (strtolower($options['format']) === 'json') {
-        echo $openapi->toJson();
-    } else {
-        echo $openapi->toYaml();
-    }
-    echo "\n";
-} else {
-    if (is_dir($options['output'])) {
-        $options['output'] .= '/openapi.yaml';
-    }
-    $openapi->saveAs($options['output'], $options['format']);
-}
-exit($logger->loggedMessageAboveNotice() ? 1 : 0);
+$app->addCommand(new GenerateCommand($logger));
+$app->setDefaultCommand('openapi', true);
+$app->run($input, $output);
