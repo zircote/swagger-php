@@ -75,7 +75,8 @@
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^11.5",
-        "rector/rector": "^2.3.1"
+        "rector/rector": "^2.3.1",
+        "symplify/phpstan-rules": "^14.9"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
