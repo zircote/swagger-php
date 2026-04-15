@@ -45,6 +45,7 @@ class Property extends Schema
         Items::class => 'items',
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
+        Examples::class => ['examples', 'example'],
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
         Encoding::class => 'encoding',
