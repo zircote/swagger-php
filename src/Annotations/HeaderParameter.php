@@ -16,8 +16,7 @@ use OpenApi\Annotations as OA;
 class HeaderParameter extends Parameter
 {
     /**
-     * @inheritdoc
-     * This takes 'header' as the default location.
+     * @var string
      */
     public $in = 'header';
 }

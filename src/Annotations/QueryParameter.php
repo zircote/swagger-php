@@ -16,8 +16,8 @@ use OpenApi\Annotations as OA;
 class QueryParameter extends Parameter
 {
     /**
-     * @inheritdoc
-     * This takes 'query' as the default location.
+     * @var string
+     *             This takes 'query' as the default location
      */
     public $in = 'query';
 }
