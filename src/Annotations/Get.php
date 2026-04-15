@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
 class Get extends Operation
 {
     /**
-     * @inheritdoc
+     * @var string
      */
     public $method = 'get';
 

@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
 class Options extends Operation
 {
     /**
-     * @inheritdoc
+     * @var string
      */
     public $method = 'options';
 

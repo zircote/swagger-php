@@ -12,7 +12,7 @@ namespace OpenApi\Annotations;
 class Post extends Operation
 {
     /**
-     * @inheritdoc
+     * @var string
      */
     public $method = 'post';
 
