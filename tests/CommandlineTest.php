@@ -77,4 +77,13 @@ final class CommandlineTest extends OpenApiTestCase
         $output = implode(PHP_EOL, $output);
         $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
+
+    public function testVersionDefault(): void
+    {
+        $fixture = $this->fixture('Explicit310.php');
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . ' ' . escapeshellarg($fixture);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+        $this->assertStringContainsString('openapi: 3.1.0', implode(PHP_EOL, $output));
+    }
 }
