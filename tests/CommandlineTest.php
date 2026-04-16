@@ -89,9 +89,9 @@ final class CommandlineTest extends OpenApiTestCase
     public function testVersionDefault(string $args, string $expectedVersion): void
     {
         $fixture = $this->fixture('Explicit310.php');
-        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . " $args " . escapeshellarg($fixture);
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . " {$args} " . escapeshellarg((string) $fixture);
         exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
         $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
-        $this->assertStringContainsString("openapi: $expectedVersion", implode(PHP_EOL, $output));
+        $this->assertStringContainsString("openapi: {$expectedVersion}", implode(PHP_EOL, $output));
     }
 }
