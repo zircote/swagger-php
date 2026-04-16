@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Tests\Concerns\UsesExamples;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CommandlineTest extends OpenApiTestCase
 {
@@ -77,5 +78,21 @@ class CommandlineTest extends OpenApiTestCase
         $this->assertSame(1, $retval);
         $output = implode(PHP_EOL, $output);
         $this->assertStringContainsString('Error: Missing argument for "-e"', $output);
+    }
+
+    public static function versionCases(): iterable
+    {
+        yield 'default' => ['', '3.1.0'];
+        yield 'override' => ['--version=3.0.3', '3.0.3'];
+    }
+
+    #[DataProvider('versionCases')]
+    public function testVersionDefault(string $args, string $expectedVersion): void
+    {
+        $fixture = $this->fixture('Explicit310.php');
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . " {$args} " . escapeshellarg((string) $fixture);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+        $this->assertStringContainsString("openapi: {$expectedVersion}", implode(PHP_EOL, $output));
     }
 }
