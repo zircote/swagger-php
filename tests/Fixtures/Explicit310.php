@@ -36,4 +36,6 @@ use OpenApi\Attributes as OAT;
         ),
     ],
 )]
-class Explicit310 { }
+class Explicit310
+{
+}

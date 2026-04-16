@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Tests\Concerns\UsesExamples;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class CommandlineTest extends OpenApiTestCase
 {
@@ -78,12 +79,19 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
 
-    public function testVersionDefault(): void
+    public static function versionCases(): iterable
+    {
+        yield 'default' => ['', '3.1.0'];
+        yield 'override' => ['--version=3.0.3', '3.0.3'];
+    }
+
+    #[DataProvider('versionCases')]
+    public function testVersionDefault(string $args, string $expectedVersion): void
     {
         $fixture = $this->fixture('Explicit310.php');
-        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . ' ' . escapeshellarg($fixture);
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . $fixture . " $args " . escapeshellarg($fixture);
         exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
         $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
-        $this->assertStringContainsString('openapi: 3.1.0', implode(PHP_EOL, $output));
+        $this->assertStringContainsString("openapi: $expectedVersion", implode(PHP_EOL, $output));
     }
 }
