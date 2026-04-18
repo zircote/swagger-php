@@ -144,6 +144,8 @@ class Parameter extends AbstractAnnotation
      * The example object is mutually exclusive of the examples object.
      * Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.
      * To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 
@@ -172,6 +174,8 @@ class Parameter extends AbstractAnnotation
      * Path-style parameters defined by RFC6570.
      *
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.7)
+     *
+     * @var string
      */
     public $matrix = Generator::UNDEFINED;
 
@@ -179,6 +183,8 @@ class Parameter extends AbstractAnnotation
      * Label style parameters defined by RFC6570.
      *
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.5)
+     *
+     * @var string
      */
     public $label = Generator::UNDEFINED;
 
@@ -188,6 +194,8 @@ class Parameter extends AbstractAnnotation
      * This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.
      *
      * @see [RFC6570](https://tools.ietf.org/html/rfc6570#section-3.2.8)
+     *
+     * @var mixed
      */
     public $form = Generator::UNDEFINED;
 
@@ -222,6 +230,8 @@ class Parameter extends AbstractAnnotation
 
     /**
      * Provides a simple way of rendering nested objects using form parameters.
+     *
+     * @var mixed
      */
     public $deepObject = Generator::UNDEFINED;
 

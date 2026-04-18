@@ -9,6 +9,9 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Annotations as OA;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 
 /**
  * Test if the annotation class nesting parent/child relations are coherent.
@@ -49,6 +52,33 @@ final class ValidateRelationsTest extends OpenApiTestCase
             if ($found === false) {
                 $this->fail($class . ' not found in ' . $nestedClass . "::\$parent. Found:\n  " . implode("\n  ", $nestedClass::$_parents));
             }
+        }
+
+        // check via property type too
+        $typeResolver = TypeResolver::create();
+        foreach ((new \ReflectionClass($class))->getProperties() as $rp) {
+            if (in_array($rp->getName(), $class::$_blacklist, strict: true) || $rp->getName()[0] === '_') {
+                continue;
+            }
+
+            $type = $typeResolver->resolve($rp);
+
+            if ($type instanceof CollectionType) {
+                $type = $type->getCollectionValueType();
+            }
+
+            if ($type instanceof ObjectType) {
+                $nested = $type->getClassName();
+
+                if ($class === OA\JsonContent::class && $nested === OA\Xml::class) {
+                    continue;
+                }
+
+                if (!array_key_exists($nested, $class::$_nested)) {
+                    $this->fail($nested . ' not found in ' . $class . "::\$nested. Found:\n  " . implode("\n  ", array_keys($class::$_nested)));
+                }
+            }
+
         }
     }
 }

@@ -210,6 +210,8 @@ class Schema extends AbstractAnnotation
      *
      * To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to
      * contain the example with escaping where necessary.
+     *
+     * @var mixed
      */
     public $example = Generator::UNDEFINED;
 
