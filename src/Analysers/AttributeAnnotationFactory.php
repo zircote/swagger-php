@@ -94,6 +94,10 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                     }
                                 } else {
                                     $instance->_context->property = $rp->getName();
+                                    if (method_exists($rp, 'getDocComment')) {
+                                        $comment = $rp->getDocComment();
+                                        $instance->_context->comment = false !== $comment ? $comment : null;
+                                    }
                                 }
                             }
                             $annotations[] = $instance;
