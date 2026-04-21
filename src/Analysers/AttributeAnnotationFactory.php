@@ -94,12 +94,15 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                                     }
                                 } else {
                                     $instance->_context->property = $rp->getName();
-                                    if (method_exists($rp, 'getDocComment')) {
-                                        $comment = $rp->getDocComment();
-                                        $instance->_context->comment = false !== $comment ? $comment : null;
+                                }
+                            } elseif ($instance instanceof OAT\Parameter) {
+                                if (method_exists($rp, 'getDocComment')) {
+                                    if ($comment = $rp->getDocComment()) {
+                                        $instance->_context->comment = $comment;
                                     }
                                 }
                             }
+
                             $annotations[] = $instance;
                         }
                     }
