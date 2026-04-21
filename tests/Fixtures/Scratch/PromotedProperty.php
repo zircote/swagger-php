@@ -56,7 +56,7 @@ class PromotedPropertyDescription
         #[OAT\Property]
         public string $different = '',
 
-        /*
+        /**
          * Intentionally not promoted!
          */
         #[OAT\Property]

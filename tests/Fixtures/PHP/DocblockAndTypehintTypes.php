@@ -210,6 +210,7 @@ class DocblockAndTypehintTypes
      * @param ?string[] $blah_values
      */
     public function blah(
+        /** @var string|null The blah */
         #[OAT\Property(example: 'My blah')]
         ?string $blah,
         #[OAT\Property(nullable: true, items: new OAT\Items(type: 'string', example: 'hello'))]
