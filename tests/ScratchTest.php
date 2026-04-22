@@ -13,9 +13,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ScratchTest extends OpenApiTestCase
 {
-    public static function scratchTestProvider(): iterable
+    public static function scratchTestCases(): iterable
     {
-        foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
+        // scratch (.php) iterator
+        $scratchIterator = function (): iterable {
             foreach (glob(self::fixture('Scratch/*.php')) as $fixture) {
                 $name = pathinfo($fixture, PATHINFO_FILENAME);
 
@@ -23,32 +24,49 @@ final class ScratchTest extends OpenApiTestCase
                     continue;
                 }
 
-                $scratch = self::fixture("Scratch/{$name}.php");
-                $specs = [
-                    self::fixture("Scratch/{$name}3.2.0.yaml") => OA\OpenApi::VERSION_3_2_0,
-                    self::fixture("Scratch/{$name}3.2.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_2_0,
-                    self::fixture("Scratch/{$name}3.1.0.yaml") => OA\OpenApi::VERSION_3_1_0,
-                    self::fixture("Scratch/{$name}3.1.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_1_0,
-                    self::fixture("Scratch/{$name}3.0.0.yaml") => OA\OpenApi::VERSION_3_0_0,
-                    self::fixture("Scratch/{$name}3.0.0-{$resolverName}.yaml") => OA\OpenApi::VERSION_3_0_0,
-                ];
+                yield $name => self::fixture("Scratch/{$name}.php");
+            }
+        };
 
-                $expectedLogs = [
-                    'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
-                ];
-
-                foreach ($specs as $spec => $version) {
-                    if (file_exists($spec)) {
-                        $dataSet = "{$resolverName}-{$name}-{$version}";
-                        yield $dataSet => [
-                            $typeResolver,
-                            $scratch,
-                            $spec,
-                            $version,
-                            array_key_exists($dataSet, $expectedLogs) ? $expectedLogs[$dataSet] : [],
-                        ];
+        // spec iterator (most specific) for a given scratch name
+        $specIterator = function (string $scratchName): iterable {
+            foreach ([OA\OpenApi::VERSION_3_2_0, OA\OpenApi::VERSION_3_1_0, OA\OpenApi::VERSION_3_0_0] as $version) {
+                foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
+                    $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+                    $caseName = "{$resolverName}-{$scratchName}-{$version}-{$phpVersion}";
+                    $specs = [
+                        self::fixture("Scratch/{$scratchName}{$version}{$resolverName}-{$phpVersion}.yaml"),
+                        self::fixture("Scratch/{$scratchName}{$version}-{$phpVersion}.yaml"),
+                        self::fixture("Scratch/{$scratchName}{$version}{$resolverName}.yaml"),
+                        self::fixture("Scratch/{$scratchName}{$version}.yaml"),
+                    ];
+                    foreach ($specs as $spec) {
+                        if (file_exists($spec)) {
+                            yield $caseName => [
+                                'spec' => $spec,
+                                'typeResolver' => $typeResolver,
+                                'version' => $version,
+                            ];
+                            break;
+                        }
                     }
                 }
+            }
+        };
+
+        $expectedLogs = [
+            'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
+        ];
+
+        foreach ($scratchIterator() as $scratchName => $scratch) {
+            foreach ($specIterator($scratchName) as $caseName => $details) {
+                yield $caseName => [
+                    $details['typeResolver'],
+                    $scratch,
+                    $details['spec'],
+                    $details['version'],
+                    array_key_exists($caseName, $expectedLogs) ? $expectedLogs[$caseName] : [],
+                ];
             }
         }
     }
@@ -56,7 +74,7 @@ final class ScratchTest extends OpenApiTestCase
     /**
      * Test scratch fixtures.
      */
-    #[DataProvider('scratchTestProvider')]
+    #[DataProvider('scratchTestCases')]
     public function testScratch(TypeResolverInterface $typeResolver, string $scratch, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {
