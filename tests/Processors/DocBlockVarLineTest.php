@@ -44,6 +44,14 @@ END,
                 'description' => null,
             ],
         ];
+
+        yield 'single-full-line' => [
+            '/* @var string|null $limit An optional limit */',
+            [
+                'type' => 'string|null',
+                'description' => 'An optional limit',
+            ],
+        ];
     }
 
     #[DataProvider('varLineCases')]
