@@ -169,7 +169,7 @@ trait DocblockTrait
         }
 
         $description = '';
-        if (!empty($substr = substr($content, strlen($summary)))) {
+        if (($substr = substr($content, strlen((string) $summary))) !== '') {
             $description = trim($substr);
         }
 
