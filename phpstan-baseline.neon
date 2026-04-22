@@ -31,18 +31,6 @@ parameters:
 			path: src/Annotations/Flow.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Processors/AugmentParameters.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Processors/AugmentProperties.php
-
-		-
 			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:description\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
 			identifier: argument.type
 			count: 1
@@ -51,12 +39,6 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:summaryAndDescription\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Processors/DocBlockDescriptions.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Processors/DocBlockDescriptions.php
 
@@ -83,21 +65,3 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: tests/Annotations/AttributesSyncTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/AugmentParametersTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/AugmentRefsTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between false and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: tests/Processors/DocBlockDescriptionsTest.php
