@@ -186,14 +186,38 @@ trait DocblockTrait
         $comment = str_replace("\r\n", "\n", (string) $docblock);
         $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
 
-        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?+$/im', (string) $comment, $matches);
+        if (!preg_match('/@var\s+(.+)$/im', (string) $comment, $matches)) {
+            return ['type' => null, 'description' => null];
+        }
 
-        $result = array_merge(
-            ['type' => null, 'description' => null],
-            array_filter($matches, static fn ($key): bool => in_array($key, ['type', 'description']), ARRAY_FILTER_USE_KEY)
-        );
+        $rest = $matches[1];
+        $type = '';
+        $depth = 0;
+        $len = strlen($rest);
+        $pos = 0;
 
-        return array_map(static fn (?string $value): ?string => null !== $value ? trim($value) : null, $result);
+        while ($pos < $len) {
+            $char = $rest[$pos];
+            if ('<' === $char || '{' === $char) {
+                ++$depth;
+                $type .= $char;
+            } elseif ('>' === $char || '}' === $char) {
+                --$depth;
+                $type .= $char;
+            } elseif (0 === $depth && ctype_space($char)) {
+                break;
+            } else {
+                $type .= $char;
+            }
+            ++$pos;
+        }
+
+        $description = trim(substr($rest, $pos));
+
+        return [
+            'type' => '' !== $type ? trim($type) : null,
+            'description' => '' !== $description ? $description : null,
+        ];
     }
 
     /**
