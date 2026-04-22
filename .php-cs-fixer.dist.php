@@ -19,6 +19,8 @@ $finder = PhpCsFixer\Finder::create()
             && !strpos($file->getPathname(), 'tests/Fixtures/TypedProperties.php')
             // FQDN in docblock
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/DocblockAndTypehintTypes.php')
+            // parameter docblock for PHP 8.6
+            && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks.php')
         ;
     })
     ->in(__DIR__);

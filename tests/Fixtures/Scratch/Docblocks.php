@@ -101,9 +101,9 @@ class DocblocksEndpoint
     )]
     #[OAT\Response(response: 200, description: 'successful operation')]
     public function endpoint(
-        /* @var string|null $filter An optional filter */
+        /** @var string|null $filter An optional filter */
         #[OAT\QueryParameter(description: null)] ?string $filter,
-        /* @var string|null $limit An optional limit */
+        /** @var string|null $limit An optional limit */
         #[OAT\QueryParameter] ?int $limit,
     ) {
 
