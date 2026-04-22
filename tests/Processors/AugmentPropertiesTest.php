@@ -350,6 +350,41 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         );
     }
 
+    public function testComplexVarTypeDescription(): void
+    {
+        $analysis = $this->analysisFromFixtures([
+            'ComplexVarTypes.php',
+        ], $this->processorPipeline([
+            new MergeIntoOpenApi(),
+            new MergeIntoComponents(),
+            new AugmentSchemas(),
+            new AugmentProperties(),
+        ]));
+
+        [
+            $map,
+            $userMap,
+            $inlineGenericDesc,
+            $namespacedMap,
+            $intList,
+            $arrayOrStringList,
+            $nullableMap,
+            $mixedUserList,
+            $nullableInlineDesc
+        ] = $analysis->openapi->components->schemas[0]->properties;
+
+        // Description should come from docblock text, not the generic type fragment
+        $this->assertSame('An associative array with string values.', $map->description);
+        $this->assertSame('A map from int to user objects.', $userMap->description);
+        $this->assertSame('Inline generic with description', $inlineGenericDesc->description);
+        $this->assertSame('A map using namespaced class.', $namespacedMap->description);
+        $this->assertSame('List of integer IDs.', $intList->description);
+        $this->assertSame('Either an array or a string list.', $arrayOrStringList->description);
+        $this->assertSame('Nullable map of strings.', $nullableMap->description);
+        $this->assertSame('A collection of users or a single user array.', $mixedUserList->description);
+        $this->assertSame('Nullable inline with description', $nullableInlineDesc->description);
+    }
+
     protected function assertName(OA\Property $property, array $expectedValues): void
     {
         foreach ($expectedValues as $key => $val) {
