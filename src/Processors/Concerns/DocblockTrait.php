@@ -184,9 +184,9 @@ trait DocblockTrait
     public function parseVarLine(?string $docblock): array
     {
         $comment = str_replace("\r\n", "\n", (string) $docblock);
-        $comment = preg_replace('/\*\/[ \t]*$/', '', $comment); // strip '*/'
+        $comment = preg_replace(['/[ \t]*\\/\*\*/', '/\*\/[ \t]*$/'], '', $comment); // '/**', '*/'
 
-        preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?+$/im', (string) $comment, $matches);
+        preg_match('/@var[ \t]+(?<type>[^\s]+)(?:[ \t]+\$(?<name>\w+))?(?:[ \t]+(?<description>.+))?$/im', (string) $comment, $matches);
 
         $result = array_merge(
             ['type' => null, 'description' => null],

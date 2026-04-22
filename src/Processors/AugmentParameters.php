@@ -140,6 +140,13 @@ class AugmentParameters implements GeneratorAwareInterface
 
                 foreach ($operation->parameters as $parameter) {
                     if (Generator::isDefault($parameter->description)) {
+                        $typeAndDescription = $this->parseVarLine((string) $parameter->_context->comment);
+                        if ($typeAndDescription['description']) {
+                            $parameter->description = trim($typeAndDescription['description']);
+                        }
+                    }
+
+                    if (Generator::isDefault($parameter->description)) {
                         if (array_key_exists($parameter->name, $operationDocblockParams)) {
                             $details = $operationDocblockParams[$parameter->name];
                             if ($details['description']) {
