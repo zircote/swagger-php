@@ -61,7 +61,9 @@ class AugmentTags
         $declaredTags = [];
         if (!Generator::isDefault($analysis->openapi->tags)) {
             foreach ($analysis->openapi->tags as $tag) {
-                $declaredTags[$tag->name] = $tag;
+                if ($tag->name !== null) {
+                    $declaredTags[$tag->name] = $tag;
+                }
             }
         }
         if ($declaredTags) {
