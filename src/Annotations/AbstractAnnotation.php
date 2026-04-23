@@ -309,7 +309,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     $object->{$key} = $item;
                 } else {
                     $key = $item->{$keyField};
-                    if (!Generator::isDefault($key) && empty($object->{$key})) {
+                    if (!Generator::isDefault($key) && $key !== null && empty($object->{$key})) {
                         $object->{$key} = $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
                         unset($object->{$key}->{$keyField});
                     }
@@ -506,7 +506,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if (is_array($item) && !is_numeric($key)) {
                     $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . AbstractAnnotation::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
-                } elseif (Generator::isDefault($item->{$keyField})) {
+                } elseif (Generator::isDefault($item->{$keyField}) || $item->{$keyField} === null) {
                     $this->_context->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->{$keyField}])) {
                     $this->_context->logger->error('Multiple ' . $item->identity([]) . ' with the same ' . $keyField . '="' . $item->{$keyField} . "\":\n  " . $item->_context . "\n  " . $keys[$item->{$keyField}]->_context);
