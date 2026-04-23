@@ -82,4 +82,12 @@ class TypedProperties
      */
     #[OAT\Property]
     public array $nativeArray;
+
+    /**
+     * A map of string to string.
+     *
+     * @var array<string, string>
+     */
+    #[OAT\Property]
+    public array $stringMap;
 }

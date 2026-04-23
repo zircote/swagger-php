@@ -177,6 +177,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             $staticString,
             $staticNullableString,
             $nativeArray,
+            $stringMap,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -252,6 +253,10 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
         $this->assertName($nativeArray, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($stringMap, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
@@ -348,6 +353,13 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'string',
             $nativeArray->items->type
         );
+        $this->assertName($stringMap, [
+            'property' => 'stringMap',
+            'type' => 'object',
+        ]);
+        $this->assertFalse(Generator::isDefault($stringMap->additionalProperties));
+        $this->assertSame('string', $stringMap->additionalProperties->type);
+        $this->assertTrue(Generator::isDefault($stringMap->items));
     }
 
     protected function assertName(OA\Property $property, array $expectedValues): void

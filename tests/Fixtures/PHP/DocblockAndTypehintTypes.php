@@ -126,6 +126,18 @@ class DocblockAndTypehintTypes
     public array $arrayShape;
 
     /**
+     * @var array<string, string>
+     */
+    #[OAT\Property]
+    public array $stringMap;
+
+    /**
+     * @var array<int, string>
+     */
+    #[OAT\Property]
+    public array $intKeyedMap;
+
+    /**
      * @var int|string
      */
     #[OAT\Property]
