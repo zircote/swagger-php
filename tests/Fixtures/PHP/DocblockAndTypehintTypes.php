@@ -234,4 +234,16 @@ class DocblockAndTypehintTypes
         new OAT\Schema(type: 'string'),
     ]))]
     public array $nestedOneOfWithItems;
+
+    /**
+     * @var array<string, string>
+     */
+    #[OAT\Property]
+    public array $stringMap;
+
+    /**
+     * @var array<int, string>
+     */
+    #[OAT\Property]
+    public array $intKeyedMap;
 }

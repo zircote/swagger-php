@@ -148,19 +148,37 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             } elseif ($type instanceof ExplicitType) {
                 $schema->type = $type->getTypeIdentifier()->value;
             } elseif ($type instanceof CollectionType) {
-                $schema->type = 'array';
+                if ($type->isList() || $type->getCollectionKeyType() instanceof UnionType) {
+                    // list<T>, array<T>, T[] → ordered list
+                    $schema->type = 'array';
 
-                if (Generator::isDefault($schema->items)) {
-                    $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
-                    $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
-                    $this->type2ref($schema->items, $analysis);
-                    $analysis->addAnnotation($schema->items, $schema->items->_context);
-                } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
-                    $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
-                    $this->type2ref($schema->items, $analysis);
+                    if (Generator::isDefault($schema->items)) {
+                        $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
+                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->items, $analysis);
+                        $analysis->addAnnotation($schema->items, $schema->items->_context);
+                    } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->items, $analysis);
+                    }
+
+                    $this->mapNativeType($schema->items, $schema->items->type);
+                } else {
+                    // explicit key type (e.g. array<string, string>) → map
+                    $schema->type = 'object';
+
+                    if (Generator::isDefault($schema->additionalProperties)) {
+                        $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
+                        $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->additionalProperties, $analysis);
+                        $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
+                    } elseif (Generator::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
+                        $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->additionalProperties, $analysis);
+                    }
+
+                    $this->mapNativeType($schema->additionalProperties, $schema->additionalProperties->type);
                 }
-
-                $this->mapNativeType($schema->items, $schema->items->type);
             }
         }
 
