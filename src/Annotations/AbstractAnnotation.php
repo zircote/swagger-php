@@ -35,14 +35,10 @@ abstract class AbstractAnnotation implements \JsonSerializable
      */
     public $attachables = Generator::UNDEFINED;
 
-<<<<<<< HEAD
     /**
-     * @var Context|null
+     * @var Context
      */
     public $_context;
-=======
-    public Context $_context;
->>>>>>> ede7ae7 (Make `AbstractAnnotation::$_context` non-nullable (#2008))
 
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
