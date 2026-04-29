@@ -29,10 +29,6 @@ trait DocblockTrait
      */
     public function isDocblockRoot(OA\AbstractAnnotation $annotation): bool
     {
-        if (!$annotation->_context) {
-            return true;
-        }
-
         if (1 == count($annotation->_context->annotations)) {
             return true;
         }
