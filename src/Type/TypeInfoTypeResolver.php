@@ -32,6 +32,7 @@ use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 class TypeInfoTypeResolver extends AbstractTypeResolver
@@ -138,7 +139,11 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 }
             }
         } else {
-            if ($type instanceof BuiltinType || $type instanceof ObjectType) {
+            if ($type instanceof BuiltinType) {
+                if (!$type->isIdentifiedBy(TypeIdentifier::MIXED)) {
+                    $schema->type = (string) $type;
+                }
+            } elseif ($type instanceof ObjectType) {
                 $schema->type = (string) $type;
             } elseif ($type instanceof IntRangeType) {
                 $schema->type = $type->getTypeIdentifier()->value;

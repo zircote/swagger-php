@@ -76,9 +76,12 @@ class LegacyTypeResolver extends AbstractTypeResolver
     protected function augmentItems(OA\Schema $schema, Analysis $analysis): void
     {
         if (!Generator::isDefault($schema->type)) {
+            // PHP `mixed` is not a valid OpenAPI type; leave items unconstrained
+            $itemType = 'mixed' === $schema->type ? Generator::UNDEFINED : $schema->type;
+
             if (Generator::isDefault($schema->items)) {
                 $schema->items = new OA\Items([
-                    'type' => $schema->type,
+                    'type' => $itemType,
                     '_context' => new Context(['generated' => true], $schema->_context),
                 ]);
 
@@ -91,13 +94,15 @@ class LegacyTypeResolver extends AbstractTypeResolver
                     $schema->ref = Generator::UNDEFINED;
                 }
             } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
-                $schema->items->type = $schema->type;
+                $schema->items->type = $itemType;
 
                 $this->type2ref($schema->items, $analysis);
             }
         }
 
-        $this->mapNativeType($schema->items, $schema->items->type);
+        if (!Generator::isDefault($schema->items)) {
+            $this->mapNativeType($schema->items, $schema->items->type);
+        }
         $schema->type = 'array';
     }
 
