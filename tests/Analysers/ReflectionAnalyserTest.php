@@ -38,9 +38,10 @@ class ReflectionAnalyserTest extends OpenApiTestCase
                 return true;
             }
 
-            public function setGenerator(Generator $generator): void
+            public function setGenerator(Generator $generator): static
             {
                 // noop
+                return $this;
             }
         };
     }
