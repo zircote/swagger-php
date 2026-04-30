@@ -38,7 +38,8 @@ class ReflectionAnalyserTest extends OpenApiTestCase
                 return true;
             }
 
-            public function setGenerator(Generator $generator): static
+            #[\Override]
+            public function setGenerator(Generator $generator)
             {
                 // noop
                 return $this;
