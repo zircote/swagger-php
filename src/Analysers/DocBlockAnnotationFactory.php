@@ -27,7 +27,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         return DocBlockParser::isEnabled();
     }
 
-    public function setGenerator(Generator $generator): self
+    public function setGenerator(Generator $generator): static
     {
         $this->generator = $generator;
 
