@@ -29,6 +29,7 @@ use Symfony\Component\TypeInfo\Type\CompositeTypeInterface;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 class TypeInfoTypeResolver extends AbstractTypeResolver
@@ -103,7 +104,125 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
     }
 
+<<<<<<< HEAD
     /**
+=======
+    protected function setSchemaType(OA\Schema $schema, Type $type, Analysis $analysis, string $sourceClass = OA\Schema::class): OA\Schema
+    {
+        if ($type instanceof CompositeTypeInterface) {
+            $types = $type->getTypes();
+
+            $isNonZeroInt = 2 === count($types) && $types[0] instanceof IntRangeType && $types[1] instanceof IntRangeType;
+
+            if ($isNonZeroInt) {
+                $schema->type = 'int';
+                $schema->not = $schema->_context->isVersion('3.0.x')
+                    ? ['enum' => [0]]
+                    : ['const' => 0];
+            } else {
+                $allBuiltin = array_reduce($types, static fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
+
+                if ($type instanceof UnionType) {
+                    if ($allBuiltin) {
+                        $schema->type = array_map(static fn (Type $t): string => (string) $t, $types);
+                    } else {
+                        $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
+                        $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
+
+                        if ($schema->items instanceof OA\Items) {
+                            // nothing more we can do here
+                            return $schema;
+                        }
+
+                        $schema->type = Generator::UNDEFINED;
+                        $schema->oneOf = [];
+
+                        if ($builtinTypes) {
+                            $schema->oneOf[] = $builtinSchema = new OA\Schema([
+                                'type' => array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
+                                '_context' => new Context(['generated' => true], $schema->_context),
+                            ]);
+                            $this->type2ref($builtinSchema, $analysis);
+                            $analysis->addAnnotation($builtinSchema, $builtinSchema->_context);
+                        }
+
+                        foreach ($otherTypes as $otherType) {
+                            $otherSchema = new OA\Schema([
+                                '_context' => new Context(['generated' => true], $schema->_context),
+                            ]);
+                            $schema->oneOf[] = $this->setSchemaType($otherSchema, $otherType, $analysis);
+                            $this->type2ref($otherSchema, $analysis);
+                            $analysis->addAnnotation($otherSchema, $otherSchema->_context);
+                        }
+                    }
+                } elseif ($type instanceof IntersectionType) {
+                    $schema->type = Generator::UNDEFINED;
+                    $schema->allOf = [];
+
+                    foreach ($types as $intersectionType) {
+                        $intersectionSchema = new OA\Schema([
+                            '_context' => new Context(['generated' => true], $schema->_context),
+                        ]);
+                        $schema->allOf[] = $this->setSchemaType($intersectionSchema, $intersectionType, $analysis);
+                        $this->type2ref($intersectionSchema, $analysis);
+                        $analysis->addAnnotation($intersectionSchema, $intersectionSchema->_context);
+                    }
+                }
+            }
+        } else {
+            if ($type instanceof BuiltinType) {
+                if (!$type->isIdentifiedBy(TypeIdentifier::MIXED)) {
+                    $schema->type = (string) $type;
+                }
+            } elseif ($type instanceof ObjectType) {
+                $schema->type = (string) $type;
+            } elseif ($type instanceof IntRangeType) {
+                $schema->type = $type->getTypeIdentifier()->value;
+
+                $schema->minimum = $type->getFrom();
+                $schema->maximum = $type->getTo();
+            } elseif ($type instanceof ExplicitType) {
+                $schema->type = $type->getTypeIdentifier()->value;
+            } elseif ($type instanceof CollectionType) {
+                if ($type->isList() || $type->getCollectionKeyType() instanceof UnionType) {
+                    // list<T>, array<T>, T[] → ordered list
+                    $schema->type = 'array';
+
+                    if (Generator::isDefault($schema->items)) {
+                        $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
+                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->items, $analysis);
+                        $analysis->addAnnotation($schema->items, $schema->items->_context);
+                    } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->items, $analysis);
+                    }
+
+                    $this->mapNativeType($schema->items, $schema->items->type);
+                } else {
+                    // explicit key type (e.g. array<string, string>) → map
+                    $schema->type = 'object';
+
+                    if (Generator::isDefault($schema->additionalProperties)) {
+                        $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
+                        $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->additionalProperties, $analysis);
+                        $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
+                    } elseif (Generator::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
+                        $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
+                        $this->type2ref($schema->additionalProperties, $analysis);
+                    }
+
+                    $this->mapNativeType($schema->additionalProperties, $schema->additionalProperties->type);
+                }
+            }
+        }
+
+        return $schema;
+    }
+
+    /**645 1050272  02 1268 0026220 00
+>>>>>>> 7bbe87e (fix: prevent PHP "mixed" from being emitted as invalid OpenAPI "type: mixed" (#2011))
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
     protected function getReflectionType(\Reflector $reflector): ?Type

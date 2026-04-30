@@ -83,6 +83,11 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
             $type = $type[0];
         }
 
+        // PHP `mixed` is not a valid OpenAPI type; represent as unconstrained (no type set)
+        if ('mixed' === $type) {
+            return true;
+        }
+
         $schema->type = $type;
 
         return true;

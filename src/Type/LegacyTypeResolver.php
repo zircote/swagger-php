@@ -70,6 +70,42 @@ class LegacyTypeResolver extends AbstractTypeResolver
         }
     }
 
+<<<<<<< HEAD
+=======
+    protected function augmentItems(OA\Schema $schema, Analysis $analysis): void
+    {
+        if (!Generator::isDefault($schema->type)) {
+            // PHP `mixed` is not a valid OpenAPI type; leave items unconstrained
+            $itemType = 'mixed' === $schema->type ? Generator::UNDEFINED : $schema->type;
+
+            if (Generator::isDefault($schema->items)) {
+                $schema->items = new OA\Items([
+                    'type' => $itemType,
+                    '_context' => new Context(['generated' => true], $schema->_context),
+                ]);
+
+                $this->type2ref($schema->items, $analysis);
+
+                $analysis->addAnnotation($schema->items, $schema->items->_context);
+
+                if (!Generator::isDefault($schema->ref)) {
+                    $schema->items->ref = $schema->ref;
+                    $schema->ref = Generator::UNDEFINED;
+                }
+            } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+                $schema->items->type = $itemType;
+
+                $this->type2ref($schema->items, $analysis);
+            }
+        }
+
+        if (!Generator::isDefault($schema->items)) {
+            $this->mapNativeType($schema->items, $schema->items->type);
+        }
+        $schema->type = 'array';
+    }
+
+>>>>>>> 7bbe87e (fix: prevent PHP "mixed" from being emitted as invalid OpenAPI "type: mixed" (#2011))
     protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null, bool $unsupported = false, ?Context $context = null): \stdClass
     {
         $types = array_filter($types, fn (string $t): bool => !in_array($t, ['null', ''], true));
