@@ -8,5 +8,8 @@ namespace OpenApi;
 
 interface GeneratorAwareInterface
 {
-    public function setGenerator(Generator $generator): static;
+    /**
+     * @return static
+     */
+    public function setGenerator(Generator $generator);
 }

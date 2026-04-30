@@ -10,7 +10,8 @@ trait GeneratorAwareTrait
 {
     protected ?Generator $generator = null;
 
-    public function setGenerator(Generator $generator): static
+    #[\Override]
+    public function setGenerator(Generator $generator)
     {
         $this->generator = $generator;
 
