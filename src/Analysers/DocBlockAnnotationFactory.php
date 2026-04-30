@@ -28,7 +28,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
     }
 
     #[\Override]
-    public function setGenerator(Generator $generator)
+    public function setGenerator(Generator $generator): self
     {
         $this->generator = $generator;
 

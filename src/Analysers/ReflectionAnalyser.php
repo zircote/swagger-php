@@ -45,7 +45,7 @@ class ReflectionAnalyser implements AnalyserInterface
     }
 
     #[\Override]
-    public function setGenerator(Generator $generator)
+    public function setGenerator(Generator $generator): self
     {
         $this->generator = $generator;
 
