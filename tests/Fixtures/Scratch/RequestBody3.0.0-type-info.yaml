@@ -43,14 +43,6 @@ paths:
       responses:
         '200':
           description: 'All good'
-  /endpoint/schema-param:
-    post:
-      operationId: e9325a4f940b91d3babe398eeebd8426
-      requestBody:
-        $ref: '#/components/schemas/RequestBodySchema'
-      responses:
-        '200':
-          description: 'All good'
 components:
   schemas:
     RequestBodySchema: {  }

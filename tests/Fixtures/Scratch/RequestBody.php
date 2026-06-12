@@ -89,17 +89,4 @@ class RequestBodyController
     public function postRefFoo(#[OAT\RequestBody] RequestBodyRefFoo $body)
     {
     }
-
-    #[OAT\Post(
-        path: '/endpoint/schema-param',
-        responses: [
-            new OAT\Response(
-                response: 200,
-                description: 'All good'
-            ),
-        ]
-    )]
-    public function postSchemaParam(#[OAT\RequestBody] RequestBodySchema $body)
-    {
-    }
 }
