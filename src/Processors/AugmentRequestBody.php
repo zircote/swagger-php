@@ -58,6 +58,17 @@ class AugmentRequestBody implements GeneratorAwareInterface
                     $requestBody->ref = $schema->ref;
                 }
 
+                // Fall back: resolve parameter type to a Schema ref
+                if (Generator::isDefault($requestBody->ref)) {
+                    $type = $context->reflector->getType();
+                    if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+                        $className = $type->getName();
+                        if ($schemaAnnotation = $analysis->getAnnotationForSource($className, OA\Schema::class)) {
+                            $requestBody->ref = OA\Components::ref($schemaAnnotation);
+                        }
+                    }
+                }
+
                 if (Generator::isDefault($requestBody->required)) {
                     $requestBody->required = !$schema->isNullable();
                 }
