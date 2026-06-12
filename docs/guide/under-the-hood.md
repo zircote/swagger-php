@@ -4,8 +4,7 @@
 
 - The `Generator` iterates over the given sources (Symfony `Finder`, file/directory list, etc.)
 - The configured analyser (`AnalyserInterface`) reads the files and builds an `Analysis` object.
-  Default (as of v4) is the `ReflectionAnalyser`. Alternatively, there is the `TokenAnalyser` which was the default in v3.
-- The legacy `TokenAnalyser` was removed in v5.
+  The default is the `ReflectionAnalyser`.
 - The `Analysis` object and its annotations are then processed by the configured processors.
 - If enabled, the analysis/annotations are validated.
 - The root `OpenApi` annotation then contains all annotations and is serialized into YAML/JSON.
@@ -15,7 +14,7 @@
 Each annotation is associated with a unique `Context` instance. This contains details, collected by the parser/analyser,
 about the PHP context where the annotation was found.
 
-Typically, there will be a processor that uses the data to augment/enrich the annotation.
+Typically, there will be a processor that uses the data to augment the annotation.
 
 **Examples of the data collected:**
   - class/interface/trait/enum names

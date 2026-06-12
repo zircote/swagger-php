@@ -14,3 +14,8 @@ scratch/
 vendor/
 .idea/
 .phpstan/
+<<<<<<< HEAD
+=======
+/.phpunit.cache/test-results
+/.claude/settings.local.json
+>>>>>>> d9b584d (Add domain glossary (CONTEXT.md) (#2016))
