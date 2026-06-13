@@ -50,6 +50,7 @@ class MergeXmlContent
             if ($index !== false) {
                 array_splice($parent->_unmerged, $index, 1);
             }
+            $analysis->removeAnnotation($xmlContent);
         }
     }
 }

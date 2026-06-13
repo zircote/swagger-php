@@ -97,6 +97,21 @@ class Analysis
         }
     }
 
+    public function removeAnnotation(OA\AbstractAnnotation $annotation): void
+    {
+        if ($this->annotations->offsetExists($annotation)) {
+            $context = $this->annotations->offsetGet($annotation);
+            $this->annotations->offsetUnset($annotation);
+
+            if ($context->is('annotations') !== false) {
+                $index = array_search($annotation, $context->annotations, true);
+                if ($index !== false) {
+                    array_splice($context->annotations, $index, 1);
+                }
+            }
+        }
+    }
+
     /**
      * @param list<OA\AbstractAnnotation> $annotations
      */
