@@ -96,6 +96,26 @@ Set by the analyser, inherited via the parent chain.
 1. The `SplObjectStorage`
 2. The context's annotations array (context is retrieved from the SplObjectStorage before removal)
 
+### Creating annotations in a processor
+
+When a processor creates a new annotation, it must register it with the analysis via `addAnnotation()`. This ensures the annotation is discoverable by subsequent processors (via `getAnnotationsOfType()`) and that its context is properly linked into the tree.
+
+```php
+$context = new Context(['nested' => $parent, 'generated' => true], $parent->_context);
+$annotation = new OA\Schema(['_context' => $context, ...]);
+$analysis->addAnnotation($annotation, $context);
+```
+
+Key points:
+
+- **Create a new `Context` for each annotation** — never share a single context instance across multiple annotations. Each annotation needs its own context because `addAnnotation()` appends to `$context->annotations[]`. Sharing a context causes unrelated annotations to appear in each other's context, which confuses validation and cleanup. The context's parent chain provides inheritance of location keys (file, class, method), so per-annotation contexts are lightweight.
+- **Always pass `_context`** with `'generated' => true` and `'nested' => $parent` so the annotation is correctly positioned for validation.
+- **Call `addAnnotation()`** — this registers in both the `SplObjectStorage` (making it findable by type) and `$context->annotations` (linking it to its source location).
+- **Use `$parent->merge([$annotation])`** if the annotation should be nested into the parent's `$_nested` mapping or end up in `_unmerged`. This is the normal path for annotations that the parent "owns".
+- **Call `addAnnotation()` directly** (without merge) when the annotation will be consumed by a later processor (e.g., creating a `JsonContent` that `MergeJsonContent` will transform). The later processor is responsible for cleanup.
+
+If you only call `addAnnotation()` without placing the annotation into the tree (i.e., it's not reachable from the root `OpenApi` object via properties or `_unmerged`), it will be findable via `getAnnotationsOfType()` but won't be validated or serialized.
+
 ### When processors relocate annotations
 
 When a processor transforms an annotation (e.g., JsonContent becomes a Schema inside a MediaType), it must:
