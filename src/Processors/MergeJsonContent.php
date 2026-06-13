@@ -48,6 +48,7 @@ class MergeJsonContent
             $jsonContent->examples = Generator::UNDEFINED;
             /* @phpstan-ignore assign.propertyType */
             $jsonContent->encoding = Generator::UNDEFINED;
+            $jsonContent->_context = new Context(['nested' => $mediaType, 'generated' => true], $mediaType->_context);
 
             $index = array_search($jsonContent, $parent->_unmerged, true);
             if ($index !== false) {

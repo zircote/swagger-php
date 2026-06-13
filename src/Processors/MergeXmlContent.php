@@ -45,6 +45,7 @@ class MergeXmlContent
             }
             $xmlContent->example = Generator::UNDEFINED;
             $xmlContent->examples = Generator::UNDEFINED;
+            $xmlContent->_context = new Context(['nested' => $mediaType, 'generated' => true], $mediaType->_context);
 
             $index = array_search($xmlContent, $parent->_unmerged, true);
             if ($index !== false) {
