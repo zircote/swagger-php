@@ -48,11 +48,13 @@ class MergeJsonContent
             $jsonContent->example = Generator::UNDEFINED;
             $jsonContent->examples = Generator::UNDEFINED;
             $jsonContent->encoding = Generator::UNDEFINED;
+            $jsonContent->_context = new Context(['nested' => $mediaType, 'generated' => true], $mediaType->_context);
 
             $index = array_search($jsonContent, $parent->_unmerged, true);
             if ($index !== false) {
                 array_splice($parent->_unmerged, $index, 1);
             }
+            $analysis->removeAnnotation($jsonContent);
         }
     }
 }
