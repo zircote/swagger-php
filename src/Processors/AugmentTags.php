@@ -104,7 +104,7 @@ class AugmentTags
         foreach ($declaredTags as $tag) {
             if (!in_array($tag->name, $tagsToKeep)) {
                 if (false !== $index = array_search($tag, $analysis->openapi->tags, true)) {
-                    $analysis->annotations->offsetUnset($tag);
+                    $analysis->removeAnnotation($tag);
                     unset($analysis->openapi->tags[$index]);
                     $analysis->openapi->tags = array_values($analysis->openapi->tags);
                 }
