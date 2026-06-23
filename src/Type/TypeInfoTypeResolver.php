@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use OpenApi\TypeResolverInterface;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
@@ -32,7 +33,6 @@ use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
-use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 class TypeInfoTypeResolver extends AbstractTypeResolver
@@ -93,7 +93,11 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
                 if ($type instanceof UnionType) {
                     if ($allBuiltin) {
-                        $schema->type = array_map(static fn (Type $t): string => (string) $t, $types);
+                        $mappableTypes = array_values(array_filter(
+                            array_map(static fn (Type $t): string => (string) $t, $types),
+                            $this->hasOpenApiType(...),
+                        ));
+                        $schema->type = [] === $mappableTypes ? Generator::UNDEFINED : $mappableTypes;
                     } else {
                         $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
                         $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
@@ -140,7 +144,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             }
         } else {
             if ($type instanceof BuiltinType) {
-                if (!$type->isIdentifiedBy(TypeIdentifier::MIXED)) {
+                if ($this->hasOpenApiType((string) $type)) {
                     $schema->type = (string) $type;
                 }
             } elseif ($type instanceof ObjectType) {
@@ -188,6 +192,23 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         return $schema;
+    }
+
+    /**
+     * Checks that the given type has an OpenAPI representation.
+     *
+     * Types such as mixed, callable, resource and iterable have none; callers leave the schema open for those instead of emitting an invalid type.
+     */
+    protected function hasOpenApiType(string $native): bool
+    {
+        $native = strtolower($native);
+
+        // NATIVE_TYPE_MAP maps "mixed" to "mixed", which is not a valid OpenAPI type, so mixed has no representation.
+        if ('mixed' === $native) {
+            return false;
+        }
+
+        return 'null' === $native || array_key_exists($native, TypeResolverInterface::NATIVE_TYPE_MAP);
     }
 
     /**645 1050272  02 1268 0026220 00

@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures;
 
 use OpenApi\Attributes as OAT;
 
-#[OAT\Schema()]
+#[OAT\Schema]
 class TypedProperties
 {
     #[OAT\Property]
@@ -90,4 +90,26 @@ class TypedProperties
      */
     #[OAT\Property]
     public array $stringMap;
+
+    /**
+     * A map whose value type has no OpenAPI representation.
+     *
+     * @var array<string, callable>
+     */
+    #[OAT\Property]
+    public array $unmappableMap;
+
+    /**
+     * A map whose value type is mixed, which has no OpenAPI representation.
+     *
+     * @var array<string, mixed>
+     */
+    #[OAT\Property]
+    public array $mixedMap;
+
+    /**
+     * A mixed value, which has no concrete OpenAPI type and stays an open "any value" schema.
+     */
+    #[OAT\Property]
+    public mixed $mixedValue;
 }
