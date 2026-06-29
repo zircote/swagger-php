@@ -3,6 +3,11 @@
          processIsolation="false" stopOnFailure="false"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd" cacheDirectory=".phpunit.cache"
          backupStaticProperties="false">
+    <groups>
+        <exclude>
+            <group>performance</group>
+        </exclude>
+    </groups>
     <coverage/>
     <testsuites>
         <testsuite name="Swagger PHP Test Suite">

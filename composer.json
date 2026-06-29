@@ -85,6 +85,7 @@
         "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run all PHP, codestyle and rector tests",
+        "performance": "Run performance regression tests",
         "analyse": "Run static analysis (phpstan)",
         "spectral-examples": "Run spectral lint over all .yaml files in the docs/examples folder",
         "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
@@ -107,6 +108,7 @@
             "export XDEBUG_MODE=off && phpunit --display-all-issues",
             "@lint"
         ],
+        "performance": "export XDEBUG_MODE=off && phpunit --group performance",
         "analyse": [
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=3G"
         ],
