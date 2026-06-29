@@ -16,9 +16,9 @@ final class CleanUnusedComponentsTest extends OpenApiTestCase
     {
         $configEnable = ['cleanUnusedComponents' => ['enabled' => true]];
         yield 'var-default' => [[], 'UsingVar.php', 2, 5];
-        yield 'var-clean' => [$configEnable, 'UsingVar.php', 0, 2];
+        yield 'var-clean' => [$configEnable, 'UsingVar.php', 0, 1];
         yield 'unreferenced-default' => [[], 'Unreferenced.php', 2, 14];
-        yield 'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 6];
+        yield 'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 5];
     }
 
     #[DataProvider('countCases')]
