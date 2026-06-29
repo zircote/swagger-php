@@ -138,6 +138,18 @@ class DocblockAndTypehintTypes
     public array $intKeyedMap;
 
     /**
+     * @var list<callable>
+     */
+    #[OAT\Property]
+    public array $unmappableList;
+
+    /**
+     * @var array<string, callable>
+     */
+    #[OAT\Property]
+    public array $unmappableMap;
+
+    /**
      * @var int|string
      */
     #[OAT\Property]

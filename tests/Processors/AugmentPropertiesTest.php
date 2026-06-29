@@ -178,6 +178,9 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             $staticNullableString,
             $nativeArray,
             $stringMap,
+            $unmappableMap,
+            $mixedMap,
+            $mixedValue,
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
@@ -257,6 +260,18 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'type' => Generator::UNDEFINED,
         ]);
         $this->assertName($stringMap, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($unmappableMap, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($mixedMap, [
+            'property' => Generator::UNDEFINED,
+            'type' => Generator::UNDEFINED,
+        ]);
+        $this->assertName($mixedValue, [
             'property' => Generator::UNDEFINED,
             'type' => Generator::UNDEFINED,
         ]);
@@ -360,6 +375,34 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertFalse(Generator::isDefault($stringMap->additionalProperties));
         $this->assertSame('string', $stringMap->additionalProperties->type);
         $this->assertTrue(Generator::isDefault($stringMap->items));
+
+        $this->assertName($unmappableMap, [
+            'property' => 'unmappableMap',
+            'type' => 'object',
+        ]);
+        $this->assertFalse(Generator::isDefault($unmappableMap->additionalProperties));
+        $this->assertTrue(
+            Generator::isDefault($unmappableMap->additionalProperties->type),
+            'callable has no OpenAPI representation, so additionalProperties stays open instead of emitting type: callable',
+        );
+
+        $this->assertName($mixedMap, [
+            'property' => 'mixedMap',
+            'type' => 'object',
+        ]);
+        $this->assertFalse(Generator::isDefault($mixedMap->additionalProperties));
+        $this->assertTrue(
+            Generator::isDefault($mixedMap->additionalProperties->type),
+            'mixed has no OpenAPI representation, so additionalProperties stays open instead of emitting type: mixed',
+        );
+
+        $this->assertName($mixedValue, [
+            'property' => 'mixedValue',
+        ]);
+        $this->assertTrue(
+            Generator::isDefault($mixedValue->type),
+            'mixed is the OpenAPI any value, so the property stays an open schema with no type instead of emitting type: mixed',
+        );
     }
 
     public function testComplexVarTypeDescription(): void
