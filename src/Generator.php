@@ -164,7 +164,6 @@ class Generator
             'pathFilter' => [
                 'tags' => [],
                 'paths' => [],
-                'recurseCleanup' => false,
             ],
             'cleanUnusedComponents' => [
                 'enabled' => false,
