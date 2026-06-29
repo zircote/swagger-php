@@ -45,7 +45,7 @@ class BuildPaths
                         ]);
                     $analysis->addAnnotation($pathItem, $pathItem->_context);
                 }
-                if ($paths[$operation->path]->merge([$operation])) {
+                if ($analysis->mergeAnnotations($paths[$operation->path], [$operation])) {
                     $operation->_context->logger->warning('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);
                 }
             }

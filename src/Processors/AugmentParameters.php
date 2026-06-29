@@ -77,7 +77,7 @@ class AugmentParameters implements GeneratorAwareInterface
 
                 $this->generator->getTypeResolver()->augmentSchemaType($analysis, $schema);
 
-                $parameter->merge([new OA\Schema([
+                $analysis->mergeAnnotations($parameter, [new OA\Schema([
                     'type' => $schema->type,
                     'format' => $schema->format,
                     'items' => $schema->items,
@@ -86,7 +86,7 @@ class AugmentParameters implements GeneratorAwareInterface
                     'anyOf' => $schema->anyOf,
                     'ref' => $schema->ref,
                     '_context' => new Context([
-                        'nested' => $this,
+                        'nested' => null,
                         'comment' => null,
                         'reflector' => $context->reflector,
                     ], $context)]),
