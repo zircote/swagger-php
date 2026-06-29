@@ -156,6 +156,38 @@ END;
     {
         $this->assertSame($expected, $annotation->identity($identityArgs));
     }
+
+    public function testNullKeyFieldSerialize(): void
+    {
+        $response = new OA\Response([
+            'response' => 200,
+            'description' => 'Success',
+            'headers' => [
+                new OA\Header(['header' => null, '_context' => $this->getContext()]),
+                new OA\Header(['header' => 'X-Token', '_context' => $this->getContext()]),
+            ],
+            '_context' => $this->getContext(),
+        ]);
+
+        $json = $response->jsonSerialize();
+        $this->assertObjectHasProperty('headers', $json);
+        $this->assertObjectHasProperty('X-Token', $json->headers);
+    }
+
+    public function testNullKeyFieldValidate(): void
+    {
+        $response = new OA\Response([
+            'response' => 200,
+            'description' => 'Success',
+            'headers' => [
+                new OA\Header(['header' => null, '_context' => $this->getContext()]),
+            ],
+            '_context' => $this->getContext(),
+        ]);
+
+        $this->assertOpenApiLogEntryContains('is missing key-field: "header"');
+        $response->validate();
+    }
 }
 
 class SubSchema extends OA\Schema
