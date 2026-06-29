@@ -25,6 +25,7 @@ use Radebatz\TypeInfoExtras\Type\IntRangeType;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
 use Symfony\Component\TypeInfo\Exception\UnsupportedException;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ArrayShapeType;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\CompositeTypeInterface;
@@ -156,22 +157,13 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 $schema->maximum = $type->getTo();
             } elseif ($type instanceof ExplicitType) {
                 $schema->type = $type->getTypeIdentifier()->value;
+            } elseif ($type instanceof ArrayShapeType && [] !== $type->getShape()) {
+                // array{a: int, b?: string} → object with named properties; array{0: T, 1: U} → positional array
+                $this->setSchemaTypeFromArrayShape($schema, $type, $analysis);
             } elseif ($type instanceof CollectionType) {
                 if ($type->isList() || $type->getCollectionKeyType() instanceof UnionType) {
                     // list<T>, array<T>, T[] → ordered list
-                    $schema->type = 'array';
-
-                    if (Generator::isDefault($schema->items)) {
-                        $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
-                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
-                        $this->type2ref($schema->items, $analysis);
-                        $analysis->addAnnotation($schema->items, $schema->items->_context);
-                    } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
-                        $this->setSchemaType($schema->items, $type->getCollectionValueType(), $analysis);
-                        $this->type2ref($schema->items, $analysis);
-                    }
-
-                    $this->mapNativeType($schema->items, $schema->items->type);
+                    $this->setListSchema($schema, $type->getCollectionValueType(), $analysis);
                 } else {
                     // explicit key type (e.g. array<string, string>) → map
                     $schema->type = 'object';
@@ -192,6 +184,86 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
 
         return $schema;
+    }
+
+    protected function setSchemaTypeFromArrayShape(OA\Schema $schema, ArrayShapeType $type, Analysis $analysis): void
+    {
+        $shape = $type->getShape();
+
+        // A list-shaped array (array{T, U} or array{0: T, 1: U}) is a positional list, not a keyed object.
+        if (array_is_list($shape)) {
+            $this->setListSchema($schema, $type->getCollectionValueType(), $analysis);
+
+            return;
+        }
+
+        $schema->type = 'object';
+
+        $properties = [];
+        $required = [];
+        foreach ($shape as $name => $member) {
+            $propertyName = (string) $name;
+            $property = new OA\Property([
+                'property' => $propertyName,
+                '_context' => new Context(['generated' => true], $schema->_context),
+            ]);
+            $this->setSchemaType($property, $member['type'], $analysis);
+            $this->type2ref($property, $analysis);
+            $this->mapNativeType($property, $property->type);
+            $analysis->addAnnotation($property, $property->_context);
+
+            $properties[] = $property;
+
+            if (!($member['optional'] ?? false)) {
+                $required[] = $propertyName;
+            }
+        }
+
+        $schema->properties = $properties;
+
+        if ([] !== $required) {
+            $schema->required = $required;
+        }
+
+        /*
+         * An unsealed shape permits extra entries.
+         * For example array{a: int, ...} or array{a: int, ...<T>}.
+         * The schema therefore allows additional properties.
+         *
+         * The rest value type (...<T>) is left open, not emitted.
+         * Symfony's type-info resolves it inconsistently across versions.
+         * The same ...<string> comes back as string, int|string, or unresolved.
+         * Emitting it would be unstable and sometimes invalid.
+         *
+         * A sealed shape has a null extra value type.
+         * A non-null one means the shape is open.
+         */
+        if ($type->getExtraValueType() instanceof Type) {
+            $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
+            $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
+        }
+    }
+
+    /**
+     * Emits an ordered-list schema (type: array) whose items resolve from the given value type.
+     *
+     * Used for both collection lists (list<T>, array<T>, T[]) and positional array shapes (array{0: T, 1: U}).
+     */
+    protected function setListSchema(OA\Schema $schema, Type $valueType, Analysis $analysis): void
+    {
+        $schema->type = 'array';
+
+        if (Generator::isDefault($schema->items)) {
+            $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
+            $this->setSchemaType($schema->items, $valueType, $analysis);
+            $this->type2ref($schema->items, $analysis);
+            $analysis->addAnnotation($schema->items, $schema->items->_context);
+        } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+            $this->setSchemaType($schema->items, $valueType, $analysis);
+            $this->type2ref($schema->items, $analysis);
+        }
+
+        $this->mapNativeType($schema->items, $schema->items->type);
     }
 
     /**

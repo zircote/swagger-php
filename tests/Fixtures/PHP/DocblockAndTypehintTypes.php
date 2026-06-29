@@ -126,6 +126,54 @@ class DocblockAndTypehintTypes
     public array $arrayShape;
 
     /**
+     * @var array{foo: bool, bar?: int}
+     */
+    #[OAT\Property]
+    public array $optionalArrayShape;
+
+    /**
+     * @var array{foo: bool, ...<string>}
+     */
+    #[OAT\Property]
+    public array $openArrayShape;
+
+    /**
+     * @var array{0: int, 1: int}
+     */
+    #[OAT\Property]
+    public array $positionalArrayShape;
+
+    /**
+     * @var array{0: int, 1: int}
+     */
+    #[OAT\Property(items: new OAT\Items(example: 42))]
+    public array $positionalArrayShapeExplicit;
+
+    /**
+     * @var array{nested: DocblockAndTypehintTypes, tags: list<string>}
+     */
+    #[OAT\Property]
+    public array $objectArrayShape;
+
+    /**
+     * @var array{a: array{b: int}}
+     */
+    #[OAT\Property]
+    public array $nestedArrayShape;
+
+    /**
+     * @var array{foo: ?string}
+     */
+    #[OAT\Property]
+    public array $nullableMemberArrayShape;
+
+    /**
+     * @var array{}
+     */
+    #[OAT\Property]
+    public array $emptyArrayShape;
+
+    /**
      * @var array<string, string>
      */
     #[OAT\Property]

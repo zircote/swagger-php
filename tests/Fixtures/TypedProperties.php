@@ -92,6 +92,14 @@ class TypedProperties
     public array $stringMap;
 
     /**
+     * An array shape with a required and an optional member.
+     *
+     * @var array{id: int, name?: string}
+     */
+    #[OAT\Property]
+    public array $arrayShape;
+
+    /**
      * A map whose value type has no OpenAPI representation.
      *
      * @var array<string, callable>

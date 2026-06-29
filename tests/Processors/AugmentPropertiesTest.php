@@ -178,6 +178,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             $staticNullableString,
             $nativeArray,
             $stringMap,
+            $arrayShape,
             $unmappableMap,
             $mixedMap,
             $mixedValue,
@@ -375,6 +376,16 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertFalse(Generator::isDefault($stringMap->additionalProperties));
         $this->assertSame('string', $stringMap->additionalProperties->type);
         $this->assertTrue(Generator::isDefault($stringMap->items));
+
+        $this->assertName($arrayShape, [
+            'property' => 'arrayShape',
+            'type' => 'object',
+        ]);
+        $this->assertTrue(Generator::isDefault($arrayShape->additionalProperties));
+        $this->assertSame(['id'], $arrayShape->required);
+        [$id, $name] = $arrayShape->properties;
+        $this->assertName($id, ['property' => 'id', 'type' => 'integer']);
+        $this->assertName($name, ['property' => 'name', 'type' => 'string']);
 
         $this->assertName($unmappableMap, [
             'property' => 'unmappableMap',
