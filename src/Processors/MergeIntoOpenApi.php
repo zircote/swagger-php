@@ -106,6 +106,6 @@ class MergeIntoOpenApi
             }
         }
 
-        $openapi->merge($merge, true);
+        $analysis->mergeAnnotations($openapi, $merge, true);
     }
 }

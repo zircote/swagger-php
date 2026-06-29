@@ -122,6 +122,31 @@ class Analysis
         }
     }
 
+    /**
+     * Merge annotations into a parent and register any new ones in the analysis.
+     *
+     * Combines the tree-structural operation (AbstractAnnotation::merge) with
+     * registry registration (addAnnotation) so callers don't need to handle
+     * both separately.
+     *
+     * @param list<OA\AbstractAnnotation> $annotations
+     * @param bool                        $ignore      Ignore unmerged annotations
+     *
+     * @return list<OA\AbstractAnnotation> The unmerged annotations
+     */
+    public function mergeAnnotations(OA\AbstractAnnotation $parent, array $annotations, bool $ignore = false): array
+    {
+        $unmerged = $parent->merge($annotations, $ignore);
+
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof OA\AbstractAnnotation) {
+                $this->addAnnotation($annotation, $annotation->_context);
+            }
+        }
+
+        return $unmerged;
+    }
+
     public function addClassDefinition(array $definition): void
     {
         $class = $definition['context']->fullyQualifiedName($definition['class']);

@@ -76,7 +76,7 @@ class AugmentTags
             $declatedTagNames = array_keys($declaredTags);
             foreach ($usedTagNames as $tagName) {
                 if (!in_array($tagName, $declatedTagNames)) {
-                    $analysis->openapi->merge([new OA\Tag([
+                    $analysis->mergeAnnotations($analysis->openapi, [new OA\Tag([
                         'name' => $tagName,
                         'description' => $this->withDescription
                             ? $tagName

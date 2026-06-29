@@ -75,7 +75,7 @@ class AugmentSchemas
                             continue;
                         }
 
-                        $annotation->merge([$property], true);
+                        $analysis->mergeAnnotations($annotation, [$property], true);
                         break;
                     }
                 }

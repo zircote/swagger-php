@@ -29,7 +29,7 @@ class MergeIntoComponents
                 && in_array(OA\Components::class, $annotation::$_parents)
                 && false === $annotation->_context->is('nested')) {
                 // A top level annotation.
-                $components->merge([$annotation], true);
+                $analysis->mergeAnnotations($components, [$annotation], true);
                 $analysis->openapi->components = $components;
             }
         }

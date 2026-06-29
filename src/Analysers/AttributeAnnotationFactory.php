@@ -73,7 +73,7 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
                             /** @var OA\Property|OAT\Parameter|OA\RequestBody $instance */
                             $instance = $attribute->newInstance();
                             $instance->_context = new Context([
-                                'nested' => false,
+                                'nested' => null,
                                 'property' => $rp->getName(),
                                 'reflector' => $rp,
                             ], $context);
