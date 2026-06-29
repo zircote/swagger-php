@@ -18,7 +18,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -41,10 +41,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -69,51 +69,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -148,6 +105,14 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -166,13 +131,80 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -209,19 +241,19 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 <dl>
   <dt><strong>schemas</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;|null</span></dt>
   <dd><p>Reusable Schemas.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]|null</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
   <dd><p>Reusable Responses.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
   <dd><p>Reusable Parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>requestBodies</strong> : <span style="font-family: monospace;">RequestBody[]|null</span></dt>
+  <dt><strong>requestBodies</strong> : <span style="font-family: monospace;">list&lt;RequestBody&gt;|null</span></dt>
   <dd><p>Reusable Request Bodies.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;|null</span></dt>
   <dd><p>Reusable Examples.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]|null</span></dt>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;|null</span></dt>
   <dd><p>Reusable Headers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>securitySchemes</strong> : <span style="font-family: monospace;">SecurityScheme[]|null</span></dt>
+  <dt><strong>securitySchemes</strong> : <span style="font-family: monospace;">list&lt;SecurityScheme&gt;|null</span></dt>
   <dd><p>Reusable Security Schemes.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]|null</span></dt>
+  <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;|null</span></dt>
   <dd><p>Reusable Links.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Reusable Callbacks.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -229,7 +261,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -259,7 +291,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -295,7 +327,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
-  <dd><p>This takes 'cookie' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
@@ -358,11 +390,13 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -405,7 +439,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -416,11 +450,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -430,7 +464,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -452,7 +486,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -474,13 +508,13 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 <dl>
   <dt><strong>propertyName</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name of the property in the payload that will hold the discriminator value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
-  <dt><strong>mapping</strong> : <span style="font-family: monospace;">string[]|null</span></dt>
+  <dt><strong>mapping</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>An object to hold mappings between payload values and schema names or references.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -504,7 +538,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>The property name to which the encoding applies.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentType</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The content type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;</span></dt>
   <dd><p>Additional headers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -516,7 +550,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -527,7 +561,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Nested elements
 ---
@@ -567,7 +601,7 @@ The value field and externalValue field are mutually exclusive.</p><table class=
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -595,7 +629,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -639,7 +673,7 @@ A map between the scope name and a short description for it.</p><table class="ta
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -682,7 +716,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -693,11 +727,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -707,7 +741,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -729,7 +763,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -772,7 +806,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -783,11 +817,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -797,7 +831,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -819,7 +853,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -866,7 +900,7 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -902,7 +936,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
-  <dd><p>This takes 'header' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
@@ -965,11 +999,13 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1009,7 +1045,7 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1024,7 +1060,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1047,14 +1083,14 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">array|string|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
@@ -1075,51 +1111,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -1154,6 +1147,14 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -1163,22 +1164,89 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">array|string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1210,12 +1278,8 @@ vs.
 #### Parameters
 ---
 <dl>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
-  <dd><p>Examples of the schema.<br />
-<br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
-The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;</span></dt>
+  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://spec.openapis.org/oas/v3.1.1.html#reference-object">Reference Object</a></td></tr></tbody></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1234,10 +1298,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1262,51 +1326,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -1341,6 +1362,14 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -1359,21 +1388,80 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
-  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1396,7 +1484,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The license name used for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
@@ -1405,7 +1495,7 @@ The <code>url</code> field is mutually exclusive of the <code>identifier</code> 
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1459,7 +1549,7 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1497,7 +1587,7 @@ the example value shall override the example provided by the schema.</p><table c
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;</span></dt>
   <dd><p>A map between a property name and its encoding information.<br />
 <br />
 The key, being the property name, must exist in the schema as a property.<br />
@@ -1508,7 +1598,7 @@ application/x-www-form-urlencoded.</p><table class="table-plain"><tbody><tr><td>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1534,7 +1624,7 @@ A version specified via <code>Generator::setVersion()</code> will overwrite this
 NOTE: This is not related to the API info::version string.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>info</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Info|null</span></dt>
   <dd><p>Provides metadata about the API. The metadata may be used by tooling as required.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
   <dd><p>An array of <code>@Server</code> objects, which provide connectivity information to a target server.<br />
 <br />
 If not provided, or is an empty array, the default value would be a Server Object with an url value of <code>/</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1545,7 +1635,7 @@ The list of values includes alternative security requirement objects that can be
 Only one of the security requirement objects need to be satisfied to authorize a request.<br />
 Individual operations can override this definition.<br />
 To make security optional, an empty security requirement (<code>{}</code>) can be included in the array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">Tag[]|null</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;Tag&gt;|null</span></dt>
   <dd><p>A list of tags used by the specification with additional metadata.<br />
 <br />
 The order of the tags can be used to reflect on their order by the parsing tools.<br />
@@ -1554,17 +1644,19 @@ The tags that are not declared may be organized randomly or based on the tools' 
 Each tag name in the list must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>paths</strong> : <span style="font-family: monospace;">PathItem[]|null</span></dt>
+  <dt><strong>paths</strong> : <span style="font-family: monospace;">array&lt;PathItem&gt;|null</span></dt>
   <dd><p>The available paths and operations for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>components</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Components|null</span></dt>
   <dd><p>An element to hold various components for the specification.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">Webhook[]|null</span></dt>
-  <dd><p>The available webhooks for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>webhooks</strong> : <span style="font-family: monospace;">list&lt;Webhook&gt;|null</span></dt>
+  <dd><p>The available webhooks for the API.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1607,7 +1699,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -1618,11 +1710,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -1632,7 +1724,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -1654,7 +1746,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1755,11 +1847,13 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1802,7 +1896,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -1813,11 +1907,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -1827,7 +1921,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -1849,7 +1943,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1864,7 +1958,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#query">Query</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1893,9 +1987,13 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>A definition of a PATCH operation on this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
   <dd><p>A definition of a TRACE operation on this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
+  <dt><strong>query</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Query|null</span></dt>
+  <dd><p>A definition of a QUERY operation on this path.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
   <dd><p>An alternative server array to service all operations in this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
   <dd><p>A list of parameters that are applicable for all the operations described under this path.<br />
 <br />
 These parameters can be overridden at the operation level, but cannot be removed there.<br />
@@ -1906,7 +2004,7 @@ The list can use the Reference Object to link to parameters that are defined at 
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1942,7 +2040,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
-  <dd><p>This takes 'path' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -2002,11 +2100,13 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2049,7 +2149,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -2060,11 +2160,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -2074,7 +2174,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -2096,7 +2196,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2111,13 +2211,15 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
 <dl>
   <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key into Schema->properties array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Encoding|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://spec.openapis.org/oas/v3.1.1.html#reference-object">Reference Object</a></td></tr></tbody></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -2136,10 +2238,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2164,51 +2266,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -2243,6 +2302,14 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -2261,15 +2328,80 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Encoding|null</span></dt>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
+https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2312,7 +2444,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -2323,11 +2455,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -2337,7 +2469,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -2359,7 +2491,97 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
+  <dd><p>Arbitrary attachables for this annotation.<br />
+These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+</dl>
+
+### [Query](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Query.php)
+
+@since OpenAPI 3.2.0
+
+#### Allowed in
+---
+<a href="#pathitem">PathItem</a>
+
+#### Nested elements
+---
+<a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#response">Response</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#server">Server</a>, <a href="#requestbody">RequestBody</a>, <a href="#attachable">Attachable</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Key in the OpenApi "Paths Object" for this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Unique string used to identify the operation.<br />
+<br />
+The id must be unique among all operations described in the API.<br />
+Tools and libraries may use the operationId to uniquely identify an operation, therefore, it is recommended to<br />
+follow common programming naming conventions.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A verbose explanation of the operation behavior.<br />
+<br />
+CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what the operation does.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>A declaration of which security mechanisms can be used for this operation.<br />
+<br />
+The list of values includes alternative security requirement objects that can be used.<br />
+<br />
+Only one of the security requirement objects need to be satisfied to authorize a request.<br />
+<br />
+This definition overrides any declared top-level security.<br />
+To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
+  <dd><p>An alternative server array to service this operation.<br />
+<br />
+If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
+this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Attributes\RequestBody|null</span></dt>
+  <dd><p>The request body applicable for this operation.<br />
+<br />
+The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
+defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
+by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
+  <dd><p>A list of tags for API documentation control.<br />
+<br />
+Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
+  <dd><p>A list of parameters that are applicable for this operation.<br />
+<br />
+If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
+The list must not include duplicated parameters.<br />
+<br />
+A unique parameter is defined by a combination of a name and location.<br />
+<br />
+The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
+components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
+  <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
+<br />
+The key is a unique identifier for the Callback Object.<br />
+<br />
+Each value in the map is a Callback Object that describes a request that may be initiated by the API provider<br />
+and the expected responses. The key value used to identify the callback object is an expression, evaluated at<br />
+runtime, that identifies a URL to use for the callback operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation for this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Declares this operation to be deprecated.<br />
+<br />
+Consumers should refrain from usage of the declared operation.<br />
+<br />
+Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
+For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
+The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2395,7 +2617,7 @@ This could contain examples of use.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">&#039;query&#039;|&#039;header&#039;|&#039;path&#039;|&#039;cookie&#039;|null</span></dt>
-  <dd><p>This takes 'query' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>This takes 'query' as the default location</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Determines whether this parameter is mandatory.<br />
 <br />
@@ -2458,11 +2680,13 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2506,7 +2730,7 @@ only the most specific key is applicable. e.g. text/plain overrides text/*.</p><
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2536,7 +2760,7 @@ A HTTP status code or <code>default</code>.</p><table class="table-plain"><tbody
   <dd><p>A short description of the response.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>headers</strong> : <span style="font-family: monospace;">Header[]</span></dt>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;</span></dt>
   <dd><p>Maps a header name to its definition.<br />
 <br />
 RFC7230 states header names are case-insensitive.<br />
@@ -2549,7 +2773,7 @@ The key is a media type or media type range and the value describes it.<br />
 <br />
 For responses that match multiple keys, only the most specific key is applicable;<br />
 e.g. <code>text/plain</code> overrides <code>text/*</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>links</strong> : <span style="font-family: monospace;">Link[]</span></dt>
+  <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;</span></dt>
   <dd><p>A map of operations links that can be followed from the response.<br />
 <br />
 The key of the map is a short name for the link, following the naming constraints of the names for Component<br />
@@ -2558,7 +2782,7 @@ Objects.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td s
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2596,10 +2820,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2624,51 +2848,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -2708,7 +2889,9 @@ contain the example with escaping where necessary.</p><table class="table-plain"
 <br />
 Each example should contain a value in the correct format as specified in the parameter encoding.<br />
 The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -2727,21 +2910,80 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2781,13 +3023,13 @@ Bearer tokens are usually generated by an authorization server, so this informat
   <dd><p>The name of the HTTP Authorization scheme.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc7235#section-5.1">RFC7235</a></td></tr></tbody></table></dd>
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>flows</strong> : <span style="font-family: monospace;">Flow[]</span></dt>
+  <dt><strong>flows</strong> : <span style="font-family: monospace;">list&lt;Flow&gt;</span></dt>
   <dd><p>The flow used by the OAuth2 security scheme.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2817,7 +3059,7 @@ Variable substitutions will be made when a variable is named in {brackets}.</p><
   <dd><p>An optional string describing the host designated by the URL.<br />
 <br />
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>variables</strong> : <span style="font-family: monospace;">ServerVariable[]</span></dt>
+  <dt><strong>variables</strong> : <span style="font-family: monospace;">list&lt;ServerVariable&gt;</span></dt>
   <dd><p>A map between a variable name and its value.<br />
 <br />
 The value is used for substitution in the server's URL template.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2825,7 +3067,7 @@ The value is used for substitution in the server's URL template.</p><table class
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2855,7 +3097,7 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />
 Unlike the Schema Object's default, this value must be provided by the consumer.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map between a variable name and its value.<br />
@@ -2865,7 +3107,7 @@ The value is used for substitution in the server's URL template.</p><table class
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2889,13 +3131,25 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>The name of the tag.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short description for the tag. GFM syntax can be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary for display purposes.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>parent</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Name of the parent tag.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>kind</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Machine-readable category.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Attributes\ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation for this tag.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -2938,7 +3192,7 @@ Only one of the security requirement objects need to be satisfied to authorize a
 <br />
 This definition overrides any declared top-level security.<br />
 To remove a top-level security declaration, an empty array can be used.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]</span></dt>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;</span></dt>
   <dd><p>An alternative server array to service this operation.<br />
 <br />
 If an alternative server object is specified at the Path Item Object or Root level, it will be overridden by<br />
@@ -2949,11 +3203,11 @@ this value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><t
 The requestBody is only supported in HTTP methods where the HTTP 1.1 specification RFC7231 has explicitly<br />
 defined semantics for request bodies. In other cases where the HTTP spec is vague, requestBody shall be ignored<br />
 by consumers.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>tags</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>A list of tags for API documentation control.<br />
 <br />
 Tags can be used for logical grouping of operations by resources or any other qualifier.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
   <dd><p>A list of parameters that are applicable for this operation.<br />
 <br />
 If a parameter is already defined at the Path Item, the new definition will override it but can never remove it.<br />
@@ -2963,7 +3217,7 @@ A unique parameter is defined by a combination of a name and location.<br />
 <br />
 The list can use the Reference Object to link to parameters that are defined at the OpenAPI Object's<br />
 components/parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>responses</strong> : <span style="font-family: monospace;">Response[]</span></dt>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
   <dd><p>The list of possible responses as they are returned from executing this operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>A map of possible out-of band callbacks related to the parent operation.<br />
@@ -2985,7 +3239,7 @@ Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -3000,7 +3254,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#query">Query</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -3031,9 +3285,13 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dd><p>A definition of a PATCH operation on this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>trace</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Trace|null</span></dt>
   <dd><p>A definition of a TRACE operation on this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>servers</strong> : <span style="font-family: monospace;">Server[]|null</span></dt>
+  <dt><strong>query</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Query|null</span></dt>
+  <dd><p>A definition of a QUERY operation on this path.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
   <dd><p>An alternative server array to service all operations in this path.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>parameters</strong> : <span style="font-family: monospace;">Parameter[]|null</span></dt>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
   <dd><p>A list of parameters that are applicable for all the operations described under this path.<br />
 <br />
 These parameters can be overridden at the operation level, but cannot be removed there.<br />
@@ -3044,7 +3302,7 @@ The list can use the Reference Object to link to parameters that are defined at 
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -3091,7 +3349,7 @@ Default value is false. The definition takes effect only when defined alongside 
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -3107,12 +3365,8 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 #### Parameters
 ---
 <dl>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
-  <dd><p>Examples of the schema.<br />
-<br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
-The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;</span></dt>
+  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|class-string|object|null</span></dt>
   <dd><p>The relative or absolute path to the endpoint.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://spec.openapis.org/oas/v3.1.1.html#reference-object">Reference Object</a></td></tr></tbody></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -3131,10 +3385,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">Property[]</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -3159,51 +3413,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>discriminator</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Discriminator|null</span></dt>
   <dd><p>Adds support for polymorphism.<br />
 <br />
@@ -3238,6 +3449,14 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dd><p>Examples of the schema.<br />
+<br />
+Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -3256,21 +3475,80 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#anchor64.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>encoding</strong> : <span style="font-family: monospace;">Encoding[]</span></dt>
-  <dd><p>A map between a property name and its encoding information.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.4.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Sets a default value to the parameter.<br />
+<br />
+The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
+<br />
+When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum length of a string property.<br />
+<br />
+A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
+attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The maximum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
+this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>The minimum number of items allowed in an array property.<br />
+<br />
+An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
+of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
+<br />
+If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
+  <dd><p>A list of allowable values for a property.<br />
+<br />
+A property instance is valid against this attribute if its value is one of the values specified in this<br />
+list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">OpenApi\Attributes\AdditionalProperties|bool|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>additionalItems</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>dependencies</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">Attachable[]|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>

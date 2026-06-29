@@ -32,7 +32,7 @@ class RefGenerator extends DocGenerator
                 continue;
             }
             $class = $entry->getBasename('.php');
-            if (in_array($class, ['AbstractAnnotation', 'Operation', 'ParameterTrait', 'OperationTrait'])) {
+            if (in_array($class, ['AbstractAnnotation', 'Operation', 'ParameterTrait', 'OperationTrait', 'JsonSchemaTrait'])) {
                 continue;
             }
             $classes[$class] = [
