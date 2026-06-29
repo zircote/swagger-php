@@ -18,7 +18,7 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 ### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
 
@@ -98,8 +98,8 @@ A <code>@OA\Request</code> cookie parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>in</strong></dt>
-  <dd><p>This takes 'cookie' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
 </dl>
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
@@ -117,7 +117,7 @@ A <code>@OA\Request</code> cookie parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -142,7 +142,7 @@ On top of this subset, there are extensions provided by this specification to al
 <dl>
   <dt><strong>propertyName</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The name of the property in the payload that will hold the discriminator value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
-  <dt><strong>mapping</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>mapping</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;</span></dt>
   <dd><p>An object to hold mappings between payload values and schema names or references.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -188,7 +188,7 @@ A single encoding definition applied to a single schema property.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Nested elements
 ---
@@ -307,7 +307,7 @@ A map between the scope name and a short description for it.</p><table class="ta
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -326,7 +326,7 @@ A map between the scope name and a short description for it.</p><table class="ta
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -387,8 +387,8 @@ A <code>@OA\Request</code> header parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>in</strong></dt>
-  <dd><p>This takes 'header' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
 </dl>
 
 ### [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
@@ -436,7 +436,7 @@ The description of an item in a Schema with type <code>array</code>.
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
 
@@ -480,7 +480,9 @@ License information for the exposed API.
   <dt><strong>name</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The license name used for the API.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>identifier</strong> : <span style="font-family: monospace;">string</span></dt>
-  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dd><p>An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.<br />
+<br />
+@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A URL to the license used for the API. This MUST be in the form of a URL.<br />
 <br />
@@ -537,7 +539,7 @@ The key is the parameter name to be used, whereas the value can be a constant or
 be evaluated and passed to the linked operation.<br />
 The parameter name can be qualified using the parameter location [{in}.]{name} for operations<br />
 that use the same parameter name in different locations (e.g. path.id).</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>requestBody</strong></dt>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A literal value or {expression} to use as a request body when calling the target operation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A description of the link.<br />
@@ -553,6 +555,8 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 
 Each Media Type object provides schema and examples for the media type identified by its key.
 
+Parameter encodings can be set either here, or on nested `Property` annotations directly.
+
 #### Allowed in
 ---
 <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>
@@ -566,7 +570,7 @@ Each Media Type object provides schema and examples for the media type identifie
 <dl>
   <dt><strong>mediaType</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Operation->content array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example object should be in the correct format as specified by the media type.<br />
@@ -627,7 +631,7 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -701,7 +705,7 @@ For all other styles, the default value is false.</p><table class="table-plain">
 This property only applies to parameters with an in value of query.<br />
 <br />
 The default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Example of the media type.<br />
 <br />
 The example should match the specified schema and encoding properties if present.<br />
@@ -713,11 +717,11 @@ To represent examples of media types that cannot naturally be represented in JSO
 <br />
 The key is the media type and the value describes it.<br />
 The map must only contain one entry.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>matrix</strong></dt>
+  <dt><strong>matrix</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Path-style parameters defined by RFC6570.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc6570#section-3.2.7">RFC6570</a></td></tr></tbody></table></dd>
-  <dt><strong>label</strong></dt>
+  <dt><strong>label</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Label style parameters defined by RFC6570.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc6570#section-3.2.5">RFC6570</a></td></tr></tbody></table></dd>
-  <dt><strong>form</strong></dt>
+  <dt><strong>form</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Form style parameters defined by RFC6570.<br />
 <br />
 This option replaces collectionFormat with a csv (when explode is false) or multi (when explode is true) value from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc6570#section-3.2.8">RFC6570</a></td></tr></tbody></table></dd>
@@ -733,7 +737,7 @@ This option replaces collectionFormat equal to ssv from OpenAPI 2.0.</p><table c
   <dd><p>Pipe separated array values.<br />
 <br />
 This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>deepObject</strong></dt>
+  <dt><strong>deepObject</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Provides a simple way of rendering nested objects using form parameters.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -756,7 +760,7 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -773,7 +777,7 @@ The path itself is still exposed to the documentation viewer, but they will not 
 
 #### Nested elements
 ---
-<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#query">Query</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -807,9 +811,9 @@ A <code>@OA\Request</code> path parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>in</strong></dt>
-  <dd><p>This takes 'path' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong></dt>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -828,7 +832,7 @@ A <code>@OA\Request</code> path parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -842,7 +846,7 @@ A <code>@OA\Request</code> path parameter.
 
 #### Nested elements
 ---
-<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
+<a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -866,7 +870,26 @@ A <code>@OA\Request</code> path parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+</dl>
+
+### [Query](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Query.php)
+
+@since OpenAPI 3.2.0
+
+#### Allowed in
+---
+<a href="#pathitem">PathItem</a>
+
+#### Nested elements
+---
+<a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#response">Response</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#server">Server</a>, <a href="#requestbody">RequestBody</a>, <a href="#attachable">Attachable</a>
+
+#### Properties
+---
+<dl>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -885,8 +908,8 @@ A <code>@OA\Request</code> query parameter.
 #### Properties
 ---
 <dl>
-  <dt><strong>in</strong></dt>
-  <dd><p>This takes 'query' as the default location.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>This takes 'query' as the default location</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
 </dl>
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
@@ -995,7 +1018,7 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">string[]</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;</span></dt>
@@ -1017,51 +1040,8 @@ Possible values are:<br />
 - multi: corresponds to multiple parameter instances instead of multiple values for a single instance<br />
 foo=bar&foo=baz. This is valid only for parameters of type <code>query</code> or <code>formData</code>. Default<br />
 value is csv.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>default</strong></dt>
-  <dd><p>Sets a default value to the parameter. The type of the value depends on the defined type.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor101">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The maximum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">bool|int|float</span></dt>
-  <dd><p>A boolean indicating whether the maximum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the maximum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor17">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float</span></dt>
-  <dd><p>The minimum value allowed for a numeric property. This value must be a number.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">bool|int|float</span></dt>
-  <dd><p>A boolean indicating whether the minimum value is excluded from the set of valid values.<br />
-<br />
-When set to true, the minimum value is excluded, and when false or not specified, it is included.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor21">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The maximum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is less than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor26">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The minimum length of a string property.<br />
-<br />
-A string instance is valid against this property if its length is greater than, or equal to, the value of this<br />
-attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor29">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>pattern</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A string instance is considered valid if the regular expression matches the instance successfully.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The maximum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is less than, or equal to, the value of<br />
-this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor42">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int</span></dt>
-  <dd><p>The minimum number of items allowed in an array property.<br />
-<br />
-An array instance is valid against this property if its number of items is greater than, or equal to, the value<br />
-of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor45">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool</span></dt>
-  <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
-<br />
-If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor49">JSON schema validation</a></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum&gt;|class-string</span></dt>
-  <dd><p>A collection of allowable values for a property.<br />
-<br />
-A property instance is valid against this attribute if its value is one of the values specified in this<br />
-collection.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="http://json-schema.org/latest/json-schema-validation.html#anchor76">JSON schema validation</a></td></tr></tbody></table></dd>
   <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float</span></dt>
   <dd><p>A numeric instance is valid against "multipleOf" if the result of the division of the instance by this<br />
 property's value is an integer.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1082,7 +1062,7 @@ Therefore, it may be sent as part of a request but should not be sent as part of
 If the property is marked as writeOnly being true and is in the required list, the required will take effect on<br />
 the request only. A property must not be marked as both readOnly and writeOnly being true. Default value is<br />
 false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>example</strong></dt>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>A free-form property to include an example of an instance for this schema.<br />
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
@@ -1105,20 +1085,6 @@ schema defined by this property's value.</p><table class="table-plain"><tbody><t
   <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|\OpenApi\Attributes\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>not</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.29.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>additionalItems</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.10.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>contains</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.14.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>patternProperties</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.19.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>dependencies</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.21.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>propertyNames</strong></dt>
-  <dd><p>http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.22.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>const</strong></dt>
-  <dd><p>http://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>https://spec.openapis.org/oas/v3.1.0.html#considerations-for-file-uploads<br />
 https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rfc.section.8.3.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1221,7 +1187,7 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array&lt;string|int|float|bool|\UnitEnum&gt;|class-string</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum&gt;|class-string</span></dt>
   <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
@@ -1260,6 +1226,18 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
   <dd><p>The name of the tag.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A short description for the tag. GFM syntax can be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>A short summary for display purposes.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>parent</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>Name of the parent tag.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>kind</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>Machine-readable category.<br />
+<br />
+@since OpenAPI 3.2.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 #### Reference
@@ -1281,7 +1259,7 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 #### Properties
 ---
 <dl>
-  <dt><strong>method</strong></dt>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
@@ -1289,13 +1267,15 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 Acts like a <code>PathItem</code> with the main difference being that it requires <code>webhook</code> instead of <code>path</code>.
 
+@since OpenAPI 3.1.0
+
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>
 
 #### Nested elements
 ---
-<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
+<a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#trace">Trace</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#query">Query</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#server">Server</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---

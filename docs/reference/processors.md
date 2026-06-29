@@ -41,7 +41,8 @@ as on the command line or be broken down into nested arrays.
 Checks if the annotation has a summary and/or description property
 and uses the text in the comment block (above the annotations) as summary and/or description.
 
-Use <code>null</code>, for example: <code>@Annotation(description=null)</code>, if you don't want the annotation to have a description.
+Use <code>null</code>, for example <code>@Annotation(description=null)</code>,
+if you don't want the annotation to have a description.
 ### [MergeIntoOpenApi](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoOpenApi.php)
 
 Merge all <code>@OA\OpenApi</code> annotations into one.
@@ -51,7 +52,7 @@ Merge all <code>@OA\OpenApi</code> annotations into one.
 <br>**default**
 : <span style="font-family: monospace;">false</span>
 
-&nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code>, allow multiple `@OA\Components` annotations to be merged.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code> allow multiple `@OA\Components` annotations to be merged.<br>
 
 
 
@@ -166,6 +167,11 @@ Augments shared and operations parameters from docblock comments.
 ### [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
 
 
+### [AugmentItems](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentItems.php)
+
+Use the Schema context to extract useful information and inject that into the annotation.
+
+Merges properties.
 ### [MergeJsonContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeJsonContent.php)
 
 Split JsonContent into Schema and MediaType.
@@ -213,13 +219,6 @@ All filter (regular) expressions must be enclosed within delimiter characters as
 
 &nbsp;&nbsp;&nbsp;&nbsp;A list of regular expressions to match <code>paths</code> to include.<br>
 
-**pathFilter.recurseCleanup**
-: <span style="font-family: monospace;">bool</span>
-<br>**default**
-: <span style="font-family: monospace;">false</span>
-
-&nbsp;&nbsp;&nbsp;&nbsp;Flag to do a recursive cleanup of unused paths and their nested annotations.<br>
-
 
 
 ### [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)
@@ -245,6 +244,13 @@ Ensures that all tags used on operations also exist in the global <code>tags</co
 : <span style="font-family: monospace;">[]</span>
 
 &nbsp;&nbsp;&nbsp;&nbsp;Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.<br>
+
+**augmentTags.withDescription**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">true</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables generation of default tag descriptions.<br>
 
 
 
