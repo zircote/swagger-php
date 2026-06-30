@@ -28,7 +28,7 @@ final class AttributeAnnotationFactoryTest extends OpenApiTestCase
         $rm = new \ReflectionMethod($instance, 'post');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(Property::class . '::__construct(): Argument #9 ($required) must be of type ?array');
+        $this->expectExceptionMessage(Property::class . '::__construct(): Argument #9 ($required) must be of type array|bool|null');
 
         (new AttributeAnnotationFactory())->build($rm, $this->getContext());
     }

@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
 
 class InvalidPropertyAttribute
 {
-    #[OA\Property(required: true)] // required has to be array or null
+    #[OA\Property(required: 'yes')] // required has to be a bool, array or null
     public function post()
     {
     }
