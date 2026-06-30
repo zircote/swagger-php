@@ -2238,9 +2238,10 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
-  <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
-array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|list&lt;string&gt;</span></dt>
+  <dd><p>A boolean flags the property as required in its parent schema, or a list names the required members when it is an object.<br />
+<br />
+The <code>AugmentRequired</code> processor collects a boolean into the parent <code>Schema::$required</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />

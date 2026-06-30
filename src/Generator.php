@@ -161,6 +161,9 @@ class Generator
             'augmentParameters' => [
                 'augmentOperationParameters' => true,
             ],
+            'augmentRequired' => [
+                'enabled' => false,
+            ],
             'pathFilter' => [
                 'tags' => [],
                 'paths' => [],
@@ -249,6 +252,7 @@ class Generator
                 new Processors\AugmentSchemas(),
                 new Processors\AugmentRequestBody(),
                 new Processors\AugmentProperties(),
+                new Processors\AugmentRequired(),
                 new Processors\AugmentDiscriminators(),
                 new Processors\BuildPaths(),
                 new Processors\AugmentParameters(),

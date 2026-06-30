@@ -138,6 +138,27 @@ Use the property context to extract useful information and inject that into the 
 
 
 
+### [AugmentRequired](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRequired.php)
+
+Populate <code>Schema::$required</code> from its properties.
+
+A property with a boolean <code>required</code> value is always honoured; <code>true</code> adds it to the parent <code>Schema::$required</code> and <code>false</code> removes it.
+The boolean is consumed so it never serialises on the property itself.
+When the <code>augmentRequired.enabled</code> config flag is set, properties without an explicit boolean are inferred: a property backed by a PHP member (property, promoted parameter or method) becomes required when it has a known, non-nullable type.
+Nullable properties, and properties whose type cannot be determined, are left optional.
+Inference is skipped for a schema that already declares a <code>required</code> list, leaving that list as-is.
+
+Inference (the <code>augmentRequired.enabled</code> flag) is off by default; the boolean <code>required</code> handling always runs.
+#### Config settings
+**augmentRequired.enabled**
+: <span style="font-family: monospace;">bool</span>
+<br>**default**
+: <span style="font-family: monospace;">false</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Enables/disables the <code>AugmentRequired</code> processor.<br>
+
+
+
 ### [AugmentDiscriminators](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentDiscriminators.php)
 
 Use the property context to extract useful information and inject that into the annotation.
