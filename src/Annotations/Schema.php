@@ -368,6 +368,9 @@ class Schema extends AbstractAnnotation
                 $data->enum = [$data->const];
                 unset($data->const);
             }
+            if (isset($data->not) && is_array($data->not) && array_key_exists('const', $data->not)) {
+                $data->not = ['enum' => [$data->not['const']]];
+            }
         }
 
         return $data;
