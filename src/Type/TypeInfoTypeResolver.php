@@ -86,9 +86,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
             if ($isNonZeroInt) {
                 $schema->type = 'int';
-                $schema->not = $schema->_context->isVersion('3.0.x')
-                    ? ['enum' => [0]]
-                    : ['const' => 0];
+                $schema->not = ['const' => 0];
             } else {
                 $allBuiltin = array_reduce($types, static fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
 
