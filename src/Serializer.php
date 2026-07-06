@@ -189,7 +189,7 @@ class Serializer
      *
      * @return array|OA\AbstractAnnotation
      */
-    protected function doDeserializeBaseProperty($type, mixed $value, Context $context)
+    protected function doDeserializeBaseProperty(array|string $type, mixed $value, Context $context)
     {
         $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), OA\AbstractAnnotation::class);
 
