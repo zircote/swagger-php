@@ -4,9 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests;
+namespace OpenApi\Tests\Utils;
 
-use OpenApi\Pipeline;
+use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Utils\Pipeline;
 
 final class PipelineTest extends OpenApiTestCase
 {

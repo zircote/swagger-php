@@ -1,8 +1,8 @@
 <?php
 
 use OpenApi\Generator;
-use OpenApi\Pipeline;
 use OpenApi\Processors\BuildPaths;
+use OpenApi\Utils\Pipeline;
 use SchemaQueryParameterProcessor\SchemaQueryParameter;
 
 $classLoader = require __DIR__ . '/../../../vendor/autoload.php';

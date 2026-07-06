@@ -13,6 +13,8 @@ use OpenApi\Analysers\ReflectionAnalyser;
 use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
 use OpenApi\Type\TypeInfoTypeResolver;
+use OpenApi\Utils\Pipeline;
+use OpenApi\Utils\SourceFinder;
 use Psr\Log\LoggerInterface;
 
 /**

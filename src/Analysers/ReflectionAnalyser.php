@@ -12,6 +12,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
+use OpenApi\Utils\TokenScanner;
 
 /**
  * OpenApi analyser using reflection.

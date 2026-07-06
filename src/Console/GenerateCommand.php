@@ -8,7 +8,7 @@ namespace OpenApi\Console;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\SourceFinder;
+use OpenApi\Utils\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\MapInput;
 use Symfony\Component\Console\Logger\ConsoleLogger;
