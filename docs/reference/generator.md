@@ -21,7 +21,7 @@ $finder = \Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in
 $context = new OpenApi\Context();
 
 $openapi = (new \OpenApi\Generator($logger))
-            ->setProcessorPipeline(new \OpenApi\Pipeline($processors))
+            ->setProcessorPipeline(new \OpenApi\Utils\Pipeline($processors))
             ->setAliases(['MY' => 'My\Annotations'])
             ->setNamespaces(['My\\Annotations\\'])
             ->setAnalyser(new \OpenApi\Analysers\ReflectionAnalyser([new OpenApi\Analysers\DocBlockAnnotationFactory(), new OpenApi\Analysers\AttributeAnnotationFactory()]))
@@ -58,5 +58,5 @@ Instead, a custom Symfony `Finder` class (`SourceFinder`) can be used that under
 $exclude = ['tests'];
 $pattern = '*.php';
 
-$openapi = (new \OpenApi\Generator())->generate(new \OpenApi\SourceFinder(__DIR__, $exclude, $pattern));
+$openapi = (new \OpenApi\Generator())->generate(new \OpenApi\Utils\SourceFinder(__DIR__, $exclude, $pattern));
 ```

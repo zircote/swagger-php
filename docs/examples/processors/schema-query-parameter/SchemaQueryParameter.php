@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\Operation;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Schema;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Custom processor to translate the vendor tag `query-args-$ref` into query parameter annotations.
@@ -26,7 +26,7 @@ class SchemaQueryParameter
         $operations = $analysis->getAnnotationsOfType(Operation::class);
 
         foreach ($operations as $operation) {
-            if (!Generator::isDefault($operation->x) && array_key_exists(self::REF, $operation->x)) {
+            if (!Undefined::isDefault($operation->x) && array_key_exists(self::REF, $operation->x)) {
                 if (!is_string($operation->x[self::REF])) {
                     throw new \InvalidArgumentException('Value of `x.' . self::REF . '` must be a string');
                 }
@@ -47,23 +47,23 @@ class SchemaQueryParameter
      */
     private function expandQueryArgs(Operation $operation, Schema $schema): void
     {
-        if (Generator::isDefault($schema->properties) || !$schema->properties) {
+        if (Undefined::isDefault($schema->properties) || !$schema->properties) {
             return;
         }
 
-        $operation->parameters = Generator::isDefault($operation->parameters) ? [] : $operation->parameters;
+        $operation->parameters = Undefined::isDefault($operation->parameters) ? [] : $operation->parameters;
 
         foreach ($schema->properties as $property) {
-            $isNullable = Generator::isDefault($property->nullable) ? false : $property->nullable;
+            $isNullable = Undefined::isDefault($property->nullable) ? false : $property->nullable;
             $schema = new Schema(
-                type: Generator::isDefault($property->format) ? $property->type : $property->format,
+                type: Undefined::isDefault($property->format) ? $property->type : $property->format,
                 nullable: $isNullable
             );
             $schema->_context = $operation->_context; // inherit context from operation, required to pretend to be a parameter
 
             $parameter = new Parameter(
                 name: $property->property,
-                description: Generator::isDefault($property->description) ? null : $property->description,
+                description: Undefined::isDefault($property->description) ? null : $property->description,
                 in: 'query',
                 required: !$isNullable,
                 schema: $schema,
@@ -79,7 +79,7 @@ class SchemaQueryParameter
     {
         unset($operation->x[self::REF]);
         if (!$operation->x) {
-            $operation->x = Generator::UNDEFINED;
+            $operation->x = Undefined::UNDEFINED;
         }
     }
 }
