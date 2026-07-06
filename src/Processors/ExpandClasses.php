@@ -8,7 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Iterate over the chain of ancestors of a schema and:
@@ -32,7 +32,7 @@ class ExpandClasses
                 foreach ($ancestors as $ancestor) {
                     $ancestorSchema = $analysis->getAnnotationForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
                     if ($ancestorSchema) {
-                        $refPath = Generator::isDefault($ancestorSchema->schema) ? $ancestor['class'] : $ancestorSchema->schema;
+                        $refPath = Undefined::isDefault($ancestorSchema->schema) ? $ancestor['class'] : $ancestorSchema->schema;
                         $this->inheritFrom($analysis, $schema, $ancestorSchema, $refPath, $ancestor['context']);
 
                         // one ancestor is enough

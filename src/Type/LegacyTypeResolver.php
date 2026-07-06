@@ -9,8 +9,8 @@ namespace OpenApi\Type;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Undefined;
 
 /**
  * @deprecated use `TypeInfoTypeResolver` instead
@@ -24,14 +24,14 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $reflectionTypeDetails = $this->getReflectionTypeDetails($reflector, $schema->_context);
 
         // we only consider nullable hints if the type is explicitly set
-        if (Generator::isDefault($schema->nullable)
+        if (Undefined::isDefault($schema->nullable)
             && (($docblockDetails->types && $docblockDetails->nullable)
                 || ($reflectionTypeDetails->types && $reflectionTypeDetails->nullable))
         ) {
             $schema->nullable = true;
         }
 
-        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
+        if (Undefined::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockDetails->explicitType || $reflectionTypeDetails->explicitType)) {
             $details = ($docblockDetails->types || $docblockDetails->unsupported) ? $docblockDetails : $reflectionTypeDetails;
 
             // for now
@@ -61,25 +61,25 @@ class LegacyTypeResolver extends AbstractTypeResolver
             $schema->type = 'array';
         }
 
-        if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
+        if (!Undefined::isDefault($schema->const) && Undefined::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {
-                $schema->type = Generator::UNDEFINED;
+                $schema->type = Undefined::UNDEFINED;
             }
         }
 
         // final sanity check
-        if (!Generator::isDefault($schema->type) && !$this->mapNativeType($schema, $schema->type)) {
-            $schema->type = Generator::UNDEFINED;
+        if (!Undefined::isDefault($schema->type) && !$this->mapNativeType($schema, $schema->type)) {
+            $schema->type = Undefined::UNDEFINED;
         }
     }
 
     protected function augmentItems(OA\Schema $schema, Analysis $analysis): void
     {
-        if (!Generator::isDefault($schema->type)) {
+        if (!Undefined::isDefault($schema->type)) {
             // PHP `mixed` is not a valid OpenAPI type; leave items unconstrained
-            $itemType = 'mixed' === $schema->type ? Generator::UNDEFINED : $schema->type;
+            $itemType = 'mixed' === $schema->type ? Undefined::UNDEFINED : $schema->type;
 
-            if (Generator::isDefault($schema->items)) {
+            if (Undefined::isDefault($schema->items)) {
                 $schema->items = new OA\Items([
                     'type' => $itemType,
                     '_context' => new Context(['generated' => true], $schema->_context),
@@ -89,18 +89,18 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
                 $analysis->addAnnotation($schema->items, $schema->items->_context);
 
-                if (!Generator::isDefault($schema->ref)) {
+                if (!Undefined::isDefault($schema->ref)) {
                     $schema->items->ref = $schema->ref;
-                    $schema->ref = Generator::UNDEFINED;
+                    $schema->ref = Undefined::UNDEFINED;
                 }
-            } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+            } elseif (Undefined::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
                 $schema->items->type = $itemType;
 
                 $this->type2ref($schema->items, $analysis);
             }
         }
 
-        if (!Generator::isDefault($schema->items)) {
+        if (!Undefined::isDefault($schema->items)) {
             $this->mapNativeType($schema->items, $schema->items->type);
         }
         $schema->type = 'array';

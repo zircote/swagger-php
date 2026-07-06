@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * @see [Tag Object](https://spec.openapis.org/oas/v3.1.1.html#tag-object)
@@ -20,14 +20,14 @@ class Tag extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = Generator::UNDEFINED;
+    public $name = Undefined::UNDEFINED;
 
     /**
      * A short description for the tag. GFM syntax can be used for rich text representation.
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * A short summary for display purposes.
@@ -35,14 +35,14 @@ class Tag extends AbstractAnnotation
      * @since OpenAPI 3.2.0
      * @var string
      */
-    public $summary = Generator::UNDEFINED;
+    public $summary = Undefined::UNDEFINED;
 
     /**
      * Additional external documentation for this tag.
      *
      * @var ExternalDocumentation
      */
-    public $externalDocs = Generator::UNDEFINED;
+    public $externalDocs = Undefined::UNDEFINED;
 
     /**
      * Name of the parent tag.
@@ -50,7 +50,7 @@ class Tag extends AbstractAnnotation
      * @since OpenAPI 3.2.0
      * @var string
      */
-    public $parent = Generator::UNDEFINED;
+    public $parent = Undefined::UNDEFINED;
 
     /**
      * Machine-readable category.
@@ -58,7 +58,7 @@ class Tag extends AbstractAnnotation
      * @since OpenAPI 3.2.0
      * @var string
      */
-    public $kind = Generator::UNDEFINED;
+    public $kind = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

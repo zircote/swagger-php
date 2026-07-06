@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Configuration details for a supported OAuth flow.
@@ -24,7 +24,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $authorizationUrl = Generator::UNDEFINED;
+    public $authorizationUrl = Undefined::UNDEFINED;
 
     /**
      * The token URL to be used for this flow.
@@ -33,7 +33,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $tokenUrl = Generator::UNDEFINED;
+    public $tokenUrl = Undefined::UNDEFINED;
 
     /**
      * The URL to be used for obtaining refresh tokens.
@@ -42,7 +42,7 @@ class Flow extends AbstractAnnotation
      *
      * @var string
      */
-    public $refreshUrl = Generator::UNDEFINED;
+    public $refreshUrl = Undefined::UNDEFINED;
 
     /**
      * Flow name.
@@ -51,7 +51,7 @@ class Flow extends AbstractAnnotation
      *
      * @var 'authorizationCode'|'clientCredentials'|'implicit'|'password'
      */
-    public $flow = Generator::UNDEFINED;
+    public $flow = Undefined::UNDEFINED;
 
     /**
      * The available scopes for the OAuth2 security scheme.
@@ -60,7 +60,7 @@ class Flow extends AbstractAnnotation
      *
      * @var array
      */
-    public $scopes = Generator::UNDEFINED;
+    public $scopes = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

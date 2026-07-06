@@ -6,11 +6,11 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Generator;
 use OpenApi\Processors\AugmentRequestBody;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class AugmentRequestBodyTest extends OpenApiTestCase
 {
@@ -27,7 +27,7 @@ final class AugmentRequestBodyTest extends OpenApiTestCase
 
         $this->assertCount(1, $analysis->openapi->components->requestBodies);
         $request = $analysis->openapi->components->requestBodies[0];
-        $this->assertSame(Generator::UNDEFINED, $request->request, 'Sanity check. No request was defined');
+        $this->assertSame(Undefined::UNDEFINED, $request->request, 'Sanity check. No request was defined');
 
         $this->processorPipeline([new AugmentRequestBody()])->process($analysis);
 

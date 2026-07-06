@@ -8,10 +8,10 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\GeneratorAwareInterface;
 use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
+use OpenApi\Undefined;
 
 /**
  * Expands PHP enums.
@@ -68,7 +68,7 @@ class ExpandEnums implements GeneratorAwareInterface
         foreach ($schemas as $schema) {
             if ($schema->_context->is('enum')) {
                 $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($schema->_context->enum) ?? '');
-                $schema->schema = Generator::isDefault($schema->schema) ? $re->getShortName() : $schema->schema;
+                $schema->schema = Undefined::isDefault($schema->schema) ? $re->getShortName() : $schema->schema;
 
                 $schemaType = $schema->type;
                 $enumType = null;
@@ -77,12 +77,12 @@ class ExpandEnums implements GeneratorAwareInterface
                 }
 
                 // no (or invalid) schema type means name
-                $useName = Generator::isDefault($schemaType) || ($enumType && $this->generator->getTypeResolver()->native2spec($enumType) != $schemaType);
+                $useName = Undefined::isDefault($schemaType) || ($enumType && $this->generator->getTypeResolver()->native2spec($enumType) != $schemaType);
 
                 $schema->enum = array_map(static fn (\ReflectionEnumUnitCase $case): int|string => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
 
                 if ($this->enumNames !== null && !$useName) {
-                    $schemaX = Generator::isDefault($schema->x) ? [] : $schema->x;
+                    $schemaX = Undefined::isDefault($schema->x) ? [] : $schema->x;
                     $schemaX[$this->enumNames] = array_map(static fn (\ReflectionEnumUnitCase $case): string => $case->name, $re->getCases());
 
                     $schema->x = $schemaX;
@@ -100,7 +100,7 @@ class ExpandEnums implements GeneratorAwareInterface
         $schemas = $analysis->getAnnotationsOfType([OA\Schema::class, OA\ServerVariable::class]);
 
         foreach ($schemas as $schema) {
-            if (Generator::isDefault($schema->enum)) {
+            if (Undefined::isDefault($schema->enum)) {
                 continue;
             }
 

@@ -9,7 +9,7 @@ namespace OpenApi\Processors\Concerns;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Steps:
@@ -24,7 +24,7 @@ trait MergePropertiesTrait
 {
     protected function inheritFrom(Analysis $analysis, OA\Schema $schema, OA\Schema $from, string $refPath, Context $context): void
     {
-        if (Generator::isDefault($schema->allOf)) {
+        if (Undefined::isDefault($schema->allOf)) {
             $schema->allOf = [];
         }
         // merging other properties into allOf is done in the AugmentSchemas processor

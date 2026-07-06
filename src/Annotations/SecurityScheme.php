@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object-0)
@@ -22,49 +22,49 @@ class SecurityScheme extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * The key into OpenApi->security array.
      *
      * @var string
      */
-    public $securityScheme = Generator::UNDEFINED;
+    public $securityScheme = Undefined::UNDEFINED;
 
     /**
      * The type of the security scheme.
      *
      * @var string|non-empty-array<string>
      */
-    public $type = Generator::UNDEFINED;
+    public $type = Undefined::UNDEFINED;
 
     /**
      * A short description for security scheme.
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * The name of the header or query parameter to be used.
      *
      * @var string
      */
-    public $name = Generator::UNDEFINED;
+    public $name = Undefined::UNDEFINED;
 
     /**
      * Required The location of the API key.
      *
      * @var string
      */
-    public $in = Generator::UNDEFINED;
+    public $in = Undefined::UNDEFINED;
 
     /**
      * The flow used by the OAuth2 security scheme.
      *
      * @var list<Flow>
      */
-    public $flows = Generator::UNDEFINED;
+    public $flows = Undefined::UNDEFINED;
 
     /**
      * A hint to the client to identify how the bearer token is formatted.
@@ -73,7 +73,7 @@ class SecurityScheme extends AbstractAnnotation
      *
      * @var string
      */
-    public $bearerFormat = Generator::UNDEFINED;
+    public $bearerFormat = Undefined::UNDEFINED;
 
     /**
      * The name of the HTTP Authorization scheme.
@@ -82,14 +82,14 @@ class SecurityScheme extends AbstractAnnotation
      *
      * @var string
      */
-    public $scheme = Generator::UNDEFINED;
+    public $scheme = Undefined::UNDEFINED;
 
     /**
      * OpenId Connect URL to discover OAuth2 configuration values. This MUST be in the form of a URL.
      *
      * @var string
      */
-    public $openIdConnectUrl = Generator::UNDEFINED;
+    public $openIdConnectUrl = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -130,7 +130,7 @@ class SecurityScheme extends AbstractAnnotation
         $unmerged = parent::merge($annotations, $ignore);
 
         if ($this->type === 'oauth2') {
-            $this->name = Generator::UNDEFINED;
+            $this->name = Undefined::UNDEFINED;
         }
 
         return $unmerged;

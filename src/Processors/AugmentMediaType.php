@@ -8,8 +8,8 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\OpenApiException;
+use OpenApi\Undefined;
 
 /**
  * Augment media type encodings.
@@ -23,16 +23,16 @@ class AugmentMediaType
         foreach ($mediaTypes as $mediaType) {
             $schema = $mediaType->schema;
             if ($schema instanceof OA\Schema) {
-                if (!Generator::isDefault($schema->properties)) {
+                if (!Undefined::isDefault($schema->properties)) {
                     $this->mergePropertyEncodings($mediaType, $schema->properties);
-                } elseif (!Generator::isDefault($schema->ref)) {
+                } elseif (!Undefined::isDefault($schema->ref)) {
                     try {
                         $refSchema = $analysis->openapi->ref($schema->ref);
                     } catch (OpenApiException) {
                         // ignore
                         $refSchema = null;
                     }
-                    if ($refSchema instanceof OA\Schema && !Generator::isDefault($refSchema->properties)) {
+                    if ($refSchema instanceof OA\Schema && !Undefined::isDefault($refSchema->properties)) {
                         $this->mergePropertyEncodings($mediaType, $refSchema->properties);
                     }
                 }

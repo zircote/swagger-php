@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * A single encoding definition applied to a single schema property.
@@ -22,36 +22,36 @@ class Encoding extends AbstractAnnotation
      *
      * @var string
      */
-    public $property = Generator::UNDEFINED;
+    public $property = Undefined::UNDEFINED;
 
     /**
      * The content type.
      *
      * @var string
      */
-    public $contentType = Generator::UNDEFINED;
+    public $contentType = Undefined::UNDEFINED;
 
     /**
      * Additional headers.
      *
      * @var list<Header>
      */
-    public $headers = Generator::UNDEFINED;
+    public $headers = Undefined::UNDEFINED;
 
     /**
      * @var string
      */
-    public $style = Generator::UNDEFINED;
+    public $style = Undefined::UNDEFINED;
 
     /**
      * @var bool
      */
-    public $explode = Generator::UNDEFINED;
+    public $explode = Undefined::UNDEFINED;
 
     /**
      * @var bool
      */
-    public $allowReserved = Generator::UNDEFINED;
+    public $allowReserved = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

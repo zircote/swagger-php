@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * @Annotation
@@ -20,21 +20,21 @@ class Examples extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * The key into <code>#/components/examples</code>.
      *
      * @var string
      */
-    public $example = Generator::UNDEFINED;
+    public $example = Undefined::UNDEFINED;
 
     /**
      * Short description for the example.
      *
      * @var string
      */
-    public $summary = Generator::UNDEFINED;
+    public $summary = Undefined::UNDEFINED;
 
     /**
      * Embedded literal example.
@@ -46,7 +46,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * Embedded literal example.
@@ -58,7 +58,7 @@ class Examples extends AbstractAnnotation
      *
      * @var int|string|array
      */
-    public $value = Generator::UNDEFINED;
+    public $value = Undefined::UNDEFINED;
 
     /**
      * An URL that points to the literal example.
@@ -70,7 +70,7 @@ class Examples extends AbstractAnnotation
      *
      * @var string
      */
-    public $externalValue = Generator::UNDEFINED;
+    public $externalValue = Undefined::UNDEFINED;
 
     public static $_types = [
         'summary' => 'string',

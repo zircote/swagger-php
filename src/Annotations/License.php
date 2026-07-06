@@ -7,7 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Analysis;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * License information for the exposed API.
@@ -23,7 +23,7 @@ class License extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = Generator::UNDEFINED;
+    public $name = Undefined::UNDEFINED;
 
     /**
      * An SPDX license expression for the API. The <code>identifier</code> field is mutually exclusive of the <code>url</code> field.
@@ -31,7 +31,7 @@ class License extends AbstractAnnotation
      * @since OpenAPI 3.1.0
      * @var string
      */
-    public $identifier = Generator::UNDEFINED;
+    public $identifier = Undefined::UNDEFINED;
 
     /**
      * A URL to the license used for the API. This MUST be in the form of a URL.
@@ -40,7 +40,7 @@ class License extends AbstractAnnotation
      *
      * @var string
      */
-    public $url = Generator::UNDEFINED;
+    public $url = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -87,7 +87,7 @@ class License extends AbstractAnnotation
         $isValid = parent::validate($analysis, $version, $context);
 
         if (!OpenApi::versionMatch($version, '3.0.x')) {
-            if (!Generator::isDefault($this->url) && !Generator::isDefault($this->identifier)) {
+            if (!Undefined::isDefault($this->url) && !Undefined::isDefault($this->identifier)) {
                 $this->_context->logger->warning($this->identity() . ' url and identifier are mutually exclusive in ' . $this->_context);
                 $isValid = false;
             }

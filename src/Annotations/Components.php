@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Holds a set of reusable objects for different aspects of the OA.
@@ -34,63 +34,63 @@ class Components extends AbstractAnnotation
      *
      * @var array<Schema|\OpenApi\Attributes\Schema>
      */
-    public $schemas = Generator::UNDEFINED;
+    public $schemas = Undefined::UNDEFINED;
 
     /**
      * Reusable Responses.
      *
      * @var list<Response>
      */
-    public $responses = Generator::UNDEFINED;
+    public $responses = Undefined::UNDEFINED;
 
     /**
      * Reusable Parameters.
      *
      * @var list<Parameter>
      */
-    public $parameters = Generator::UNDEFINED;
+    public $parameters = Undefined::UNDEFINED;
 
     /**
      * Reusable Examples.
      *
      * @var array<Examples>
      */
-    public $examples = Generator::UNDEFINED;
+    public $examples = Undefined::UNDEFINED;
 
     /**
      * Reusable Request Bodies.
      *
      * @var list<RequestBody>
      */
-    public $requestBodies = Generator::UNDEFINED;
+    public $requestBodies = Undefined::UNDEFINED;
 
     /**
      * Reusable Headers.
      *
      * @var list<Header>
      */
-    public $headers = Generator::UNDEFINED;
+    public $headers = Undefined::UNDEFINED;
 
     /**
      * Reusable Security Schemes.
      *
      * @var list<SecurityScheme>
      */
-    public $securitySchemes = Generator::UNDEFINED;
+    public $securitySchemes = Undefined::UNDEFINED;
 
     /**
      * Reusable Links.
      *
      * @var list<Link>
      */
-    public $links = Generator::UNDEFINED;
+    public $links = Undefined::UNDEFINED;
 
     /**
      * Reusable Callbacks.
      *
      * @var array
      */
-    public $callbacks = Generator::UNDEFINED;
+    public $callbacks = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

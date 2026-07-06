@@ -6,11 +6,11 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Generator;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class AugmentSchemasTest extends OpenApiTestCase
 {
@@ -27,8 +27,8 @@ final class AugmentSchemasTest extends OpenApiTestCase
 
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
-        $this->assertSame(Generator::UNDEFINED, $customer->schema, 'Sanity check. No scheme was defined');
-        $this->assertSame(Generator::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
+        $this->assertSame(Undefined::UNDEFINED, $customer->schema, 'Sanity check. No scheme was defined');
+        $this->assertSame(Undefined::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
 
         $this->processorPipeline([new AugmentSchemas()])->process($analysis);
 
@@ -50,7 +50,7 @@ final class AugmentSchemasTest extends OpenApiTestCase
 
         $this->assertCount(1, $analysis->openapi->components->schemas);
         $customer = $analysis->openapi->components->schemas[0];
-        $this->assertSame(Generator::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
+        $this->assertSame(Undefined::UNDEFINED, $customer->properties, 'Sanity check. @OA\Property\'s not yet merged ');
 
         $this->processorPipeline([new AugmentSchemas()])->process($analysis);
 

@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Xml extends OA\Xml
@@ -28,13 +28,13 @@ class Xml extends OA\Xml
         ?array $attachables = null
     ) {
         parent::__construct([
-                'name' => $name ?? Generator::UNDEFINED,
-                'namespace' => $namespace ?? Generator::UNDEFINED,
-                'prefix' => $prefix ?? Generator::UNDEFINED,
-                'attribute' => $attribute ?? Generator::UNDEFINED,
-                'wrapped' => $wrapped ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'name' => $name ?? Undefined::UNDEFINED,
+                'namespace' => $namespace ?? Undefined::UNDEFINED,
+                'prefix' => $prefix ?? Undefined::UNDEFINED,
+                'attribute' => $attribute ?? Undefined::UNDEFINED,
+                'wrapped' => $wrapped ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
             ]);
     }
 }

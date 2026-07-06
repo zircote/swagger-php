@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * The discriminator is a specific object in a schema which is used to inform the consumer of
@@ -27,14 +27,14 @@ class Discriminator extends AbstractAnnotation
      *
      * @var string
      */
-    public $propertyName = Generator::UNDEFINED;
+    public $propertyName = Undefined::UNDEFINED;
 
     /**
      * An object to hold mappings between payload values and schema names or references.
      *
      * @var array<string,string>
      */
-    public $mapping = Generator::UNDEFINED;
+    public $mapping = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

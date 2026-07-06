@@ -6,12 +6,12 @@
 
 namespace OpenApi\Tests\Annotations;
 
-use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class NestedPropertyTest extends OpenApiTestCase
 {
@@ -46,6 +46,6 @@ final class NestedPropertyTest extends OpenApiTestCase
         // verbose not-recommend notations
         $theBabyOfBabyBaby = $theBabyOfBaby->properties[0];
         $this->assertEquals('theBabyOfBabyBaby', $theBabyOfBabyBaby->property);
-        $this->assertSame(Generator::UNDEFINED, $theBabyOfBabyBaby->properties);
+        $this->assertSame(Undefined::UNDEFINED, $theBabyOfBabyBaby->properties);
     }
 }

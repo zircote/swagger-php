@@ -7,7 +7,6 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\ExpandEnums;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumBacked;
@@ -15,6 +14,7 @@ use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumIntegerBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumStringBacked;
 use OpenApi\Tests\Fixtures\PHP\Enums\TypeEnumStringBacked;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ExpandEnumsTest extends OpenApiTestCase
@@ -132,7 +132,7 @@ final class ExpandEnumsTest extends OpenApiTestCase
             'statusEnums' => [
                 ['PHP/ReferencesEnum.php'],
                 'statusEnums',
-                Generator::UNDEFINED,
+                Undefined::UNDEFINED,
             ],
             'itemsStatusEnumStringBacked' => [
                 ['PHP/ReferencesEnum.php'],
@@ -142,7 +142,7 @@ final class ExpandEnumsTest extends OpenApiTestCase
             'statusEnumsMixed' => [
                 ['PHP/ReferencesEnum.php'],
                 'statusEnumsMixed',
-                Generator::UNDEFINED,
+                Undefined::UNDEFINED,
             ],
             'itemsStatusEnumStringBackedMixed' => [
                 ['PHP/ReferencesEnum.php'],

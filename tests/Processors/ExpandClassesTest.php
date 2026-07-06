@@ -8,7 +8,6 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\BuildPaths;
@@ -20,6 +19,7 @@ use OpenApi\Processors\ExpandTraits;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class ExpandClassesTest extends OpenApiTestCase
 {
@@ -108,13 +108,13 @@ final class ExpandClassesTest extends OpenApiTestCase
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedModel', $extendedSchema->schema);
-        $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
+        $this->assertSame(Undefined::UNDEFINED, $extendedSchema->properties);
 
         $this->assertArrayHasKey(0, $extendedSchema->allOf);
         $this->assertEquals('extendedProperty', $extendedSchema->allOf[1]->properties[0]->property);
 
         $includeSchemaWithRef = $schemas[1];
-        $this->assertSame(Generator::UNDEFINED, $includeSchemaWithRef->properties);
+        $this->assertSame(Undefined::UNDEFINED, $includeSchemaWithRef->properties);
     }
 
     /**
@@ -135,7 +135,7 @@ final class ExpandClassesTest extends OpenApiTestCase
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithoutAllOf', $extendedSchema->schema);
-        $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
+        $this->assertSame(Undefined::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
 
@@ -161,7 +161,7 @@ final class ExpandClassesTest extends OpenApiTestCase
 
         $extendedSchema = $schemas[0];
         $this->assertSame('ExtendedWithTwoSchemas', $extendedSchema->schema);
-        $this->assertSame(Generator::UNDEFINED, $extendedSchema->properties);
+        $this->assertSame(Undefined::UNDEFINED, $extendedSchema->properties);
 
         $this->assertCount(2, $extendedSchema->allOf);
         $this->assertEquals(OA\Components::ref('Base'), $extendedSchema->allOf[0]->ref);
@@ -198,24 +198,24 @@ final class ExpandClassesTest extends OpenApiTestCase
         $baseInterface = $schemas[0];
         $this->assertSame('BaseInterface', $baseInterface->schema);
         $this->assertEquals('interfaceProperty', $baseInterface->properties[0]->property);
-        $this->assertEquals(Generator::UNDEFINED, $baseInterface->allOf);
+        $this->assertEquals(Undefined::UNDEFINED, $baseInterface->allOf);
 
         $extendsBaseThatImplements = $schemas[1];
         $this->assertSame('ExtendsBaseThatImplements', $extendsBaseThatImplements->schema);
-        $this->assertEquals(Generator::UNDEFINED, $extendsBaseThatImplements->properties);
-        $this->assertNotEquals(Generator::UNDEFINED, $extendsBaseThatImplements->allOf);
+        $this->assertEquals(Undefined::UNDEFINED, $extendsBaseThatImplements->properties);
+        $this->assertNotEquals(Undefined::UNDEFINED, $extendsBaseThatImplements->allOf);
         // base, trait and own properties
         $this->assertCount(3, $extendsBaseThatImplements->allOf);
 
         $baseThatImplements = $schemas[2];
         $this->assertSame('BaseThatImplements', $baseThatImplements->schema);
-        $this->assertEquals(Generator::UNDEFINED, $baseThatImplements->properties);
-        $this->assertNotEquals(Generator::UNDEFINED, $baseThatImplements->allOf);
+        $this->assertEquals(Undefined::UNDEFINED, $baseThatImplements->properties);
+        $this->assertNotEquals(Undefined::UNDEFINED, $baseThatImplements->allOf);
         $this->assertCount(2, $baseThatImplements->allOf);
 
         $traitUsedByExtendsBaseThatImplements = $schemas[3];
         $this->assertSame('TraitUsedByExtendsBaseThatImplements', $traitUsedByExtendsBaseThatImplements->schema);
         $this->assertEquals('traitProperty', $traitUsedByExtendsBaseThatImplements->properties[0]->property);
-        $this->assertEquals(Generator::UNDEFINED, $traitUsedByExtendsBaseThatImplements->allOf);
+        $this->assertEquals(Undefined::UNDEFINED, $traitUsedByExtendsBaseThatImplements->allOf);
     }
 }

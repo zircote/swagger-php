@@ -118,7 +118,7 @@ class Serializer
             }
 
             if (str_starts_with((string) $property, 'x-')) {
-                if (Generator::isDefault($annotation->x)) {
+                if (Undefined::isDefault($annotation->x)) {
                     $annotation->x = [];
                 }
                 $custom = substr((string) $property, 2);

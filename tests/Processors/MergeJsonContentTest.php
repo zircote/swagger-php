@@ -8,9 +8,9 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\MergeJsonContent;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class MergeJsonContentTest extends OpenApiTestCase
 {
@@ -27,7 +27,7 @@ END;
         $this->assertCount(3, $analysis->annotations);
 
         $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
-        $this->assertSame(Generator::UNDEFINED, $response->content);
+        $this->assertSame(Undefined::UNDEFINED, $response->content);
         $this->assertCount(1, $response->_unmerged);
 
         $this->processorPipeline([new MergeJsonContent()])->process($analysis);
@@ -70,7 +70,7 @@ END;
         $this->assertCount(4, $analysis->annotations);
 
         $parameter = $analysis->getAnnotationsOfType(OA\Parameter::class)[0];
-        $this->assertSame(Generator::UNDEFINED, $parameter->content);
+        $this->assertSame(Undefined::UNDEFINED, $parameter->content);
         $this->assertIsArray($parameter->_unmerged);
         $this->assertCount(1, $parameter->_unmerged);
 

@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\OpenApiException;
+use OpenApi\Undefined;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -25,7 +26,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @var array<string,mixed>
      */
-    public $x = Generator::UNDEFINED;
+    public $x = Undefined::UNDEFINED;
 
     /**
      * Arbitrary attachables for this annotation.
@@ -33,7 +34,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
      *
      * @var array
      */
-    public $attachables = Generator::UNDEFINED;
+    public $attachables = Undefined::UNDEFINED;
 
     public Context $_context;
 
@@ -133,7 +134,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             } elseif (is_object($value)) {
                 $this->merge([$value]);
             } else {
-                if (!Generator::isDefault($value)) {
+                if (!Undefined::isDefault($value)) {
                     $this->_context->logger->warning('Unexpected parameter "' . $property . '" in ' . $this->identity());
                 }
             }
@@ -161,12 +162,12 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 $property = $details->value;
                 if (is_array($property)) {
                     $property = $property[0];
-                    if (Generator::isDefault($this->{$property})) {
+                    if (Undefined::isDefault($this->{$property})) {
                         $this->{$property} = [];
                     }
                     $this->{$property}[] = $this->nested($annotation, $nestedContext);
                     $mapped = true;
-                } elseif (Generator::isDefault($this->{$property})) {
+                } elseif (Undefined::isDefault($this->{$property})) {
                     // ignore duplicate nested if only one expected
                     $this->{$property} = $this->nested($annotation, $nestedContext);
                     $mapped = true;
@@ -198,7 +199,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             if ($property === '_context') {
                 continue;
             }
-            if (Generator::isDefault($currentValues[$property])) {
+            if (Undefined::isDefault($currentValues[$property])) {
                 // Overwrite default values
                 $this->{$property} = $value;
                 continue;
@@ -209,7 +210,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if ($currentValues[$property] !== $value) {
                 // New value is not the same?
-                if (Generator::isDefault($value)) {
+                if (Undefined::isDefault($value)) {
                     continue;
                 }
                 $identity = method_exists($object, 'identity') ? $object->identity() : $object::class;
@@ -253,7 +254,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     {
         $properties = [];
         foreach (get_object_vars($this) as $property => $value) {
-            if (!Generator::isDefault($value)) {
+            if (!Undefined::isDefault($value)) {
                 $properties[$property] = $value;
             }
         }
@@ -267,7 +268,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // Strip undefined values.
         foreach (get_object_vars($this) as $property => $value) {
-            if (!Generator::isDefault($value)) {
+            if (!Undefined::isDefault($value)) {
                 $data->{$property} = $value;
             }
         }
@@ -299,7 +300,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 continue;
             }
             $property = $nested[0];
-            if (Generator::isDefault($this->{$property})) {
+            if (Undefined::isDefault($this->{$property})) {
                 continue;
             }
             $keyField = $nested[1];
@@ -308,8 +309,8 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if (is_numeric($key) === false && is_array($item)) {
                     $object->{$key} = $item;
                 } else {
-                    $key = $item->{$keyField} ?? Generator::UNDEFINED;
-                    if (!Generator::isDefault($key) && empty($object->{$key})) {
+                    $key = $item->{$keyField} ?? Undefined::UNDEFINED;
+                    if (!Undefined::isDefault($key) && empty($object->{$key})) {
                         $object->{$key} = $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
                         unset($object->{$key}->{$keyField});
                     }
@@ -496,7 +497,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 continue;
             }
             $property = $nested[0];
-            if (Generator::isDefault($this->{$property})) {
+            if (Undefined::isDefault($this->{$property})) {
                 continue;
             }
             $keys = [];
@@ -506,7 +507,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
                 if (is_array($item) && !is_numeric($key)) {
                     $this->_context->logger->warning($this->identity() . '->' . $property . ' is an object literal, use nested ' . AbstractAnnotation::shorten($annotationClass) . '() annotation(s) in ' . $this->_context);
                     $keys[$key] = $item;
-                } elseif (Generator::isDefault($item->{$keyField} ?? Generator::UNDEFINED)) {
+                } elseif (Undefined::isDefault($item->{$keyField} ?? Undefined::UNDEFINED)) {
                     $this->_context->logger->error($item->identity() . ' is missing key-field: "' . $keyField . '" in ' . $item->_context);
                 } elseif (isset($keys[$item->{$keyField}])) {
                     $this->_context->logger->error('Multiple ' . $item->identity([]) . ' with the same ' . $keyField . '="' . $item->{$keyField} . "\":\n  " . $item->_context . "\n  " . $keys[$item->{$keyField}]->_context);
@@ -517,7 +518,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         // validate refs
-        if ($analysis?->openapi && property_exists($this, 'ref') && !Generator::isDefault($this->ref) && is_string($this->ref)) {
+        if ($analysis?->openapi && property_exists($this, 'ref') && !Undefined::isDefault($this->ref) && is_string($this->ref)) {
             if (str_starts_with($this->ref, '#/')) {
                 try {
                     $analysis->openapi->ref($this->ref);
@@ -529,9 +530,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         // validate required properties
-        if (!property_exists($this, 'ref') || Generator::isDefault($this->ref) || !is_string($this->ref)) {
+        if (!property_exists($this, 'ref') || Undefined::isDefault($this->ref) || !is_string($this->ref)) {
             foreach ($this::$_required as $property) {
-                if (Generator::isDefault($this->{$property})) {
+                if (Undefined::isDefault($this->{$property})) {
                     $message = 'Missing required field "' . $property . '" for ' . $this->identity() . ' in ' . $this->_context;
                     foreach ($this::$_nested as $class => $nested) {
                         $nestedProperty = is_array($nested) ? $nested[0] : $nested;
@@ -554,7 +555,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         // validate types
         foreach ($this::$_types as $property => $type) {
             $value = $this->{$property};
-            if (Generator::isDefault($value) || $value === null) {
+            if (Undefined::isDefault($value) || $value === null) {
                 continue;
             }
             if (is_string($type)) {
@@ -573,7 +574,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
 
         // validate example/examples
         if (property_exists($this, 'example') && property_exists($this, 'examples')) {
-            if (!Generator::isDefault($this->example) && !Generator::isDefault($this->examples)) {
+            if (!Undefined::isDefault($this->example) && !Undefined::isDefault($this->examples)) {
                 $this->_context->logger->warning($this->identity() . ': "example" and "examples" are mutually exclusive');
 
                 $isValid = false;
@@ -598,7 +599,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             /** @var class-string<AbstractAnnotation> $parent */
             foreach (static::$_parents as $parent) {
                 foreach ($parent::$_nested as $annotationClass => $entry) {
-                    if ($annotationClass === $class && is_array($entry) && !Generator::isDefault($this->{$entry[1]})) {
+                    if ($annotationClass === $class && is_array($entry) && !Undefined::isDefault($this->{$entry[1]})) {
                         $properties[] = $entry[1];
                         break 2;
                     }
@@ -609,7 +610,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         $details = [];
         foreach ($properties as $property) {
             $value = $this->{$property};
-            if ($value !== null && !Generator::isDefault($value)) {
+            if ($value !== null && !Undefined::isDefault($value)) {
                 $details[] = $property . '=' . (is_string($value) ? '"' . $value . '"' : $value);
             }
         }
@@ -687,7 +688,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
         }
 
-        return array_filter($combined, static fn ($value): bool => !Generator::isDefault($value) && $value !== null);
+        return array_filter($combined, static fn ($value): bool => !Undefined::isDefault($value) && $value !== null);
     }
 
     /**

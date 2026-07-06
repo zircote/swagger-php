@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * @see [XML Object](https://spec.openapis.org/oas/v3.1.1.html#xml-object)
@@ -26,21 +26,21 @@ class Xml extends AbstractAnnotation
      *
      * @var string
      */
-    public $name = Generator::UNDEFINED;
+    public $name = Undefined::UNDEFINED;
 
     /**
      * The URL of the namespace definition. Value SHOULD be in the form of a URL.
      *
      * @var string
      */
-    public $namespace = Generator::UNDEFINED;
+    public $namespace = Undefined::UNDEFINED;
 
     /**
      * The prefix to be used for the name.
      *
      * @var string
      */
-    public $prefix = Generator::UNDEFINED;
+    public $prefix = Undefined::UNDEFINED;
 
     /**
      * Declares whether the property definition translates to an attribute instead of an element.
@@ -49,7 +49,7 @@ class Xml extends AbstractAnnotation
      *
      * @var bool
      */
-    public $attribute = Generator::UNDEFINED;
+    public $attribute = Undefined::UNDEFINED;
 
     /**
      * MAY be used only for an array definition.
@@ -61,7 +61,7 @@ class Xml extends AbstractAnnotation
      *
      * @var bool
      */
-    public $wrapped = Generator::UNDEFINED;
+    public $wrapped = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

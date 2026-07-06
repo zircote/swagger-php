@@ -6,7 +6,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Header extends OA\Header
@@ -19,7 +19,7 @@ class Header extends OA\Header
     public function __construct(
         string|object|null $ref = null,
         ?string $header = null,
-        ?string $description = Generator::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?bool $required = null,
         ?Schema $schema = null,
         ?bool $deprecated = null,
@@ -30,14 +30,14 @@ class Header extends OA\Header
         ?array $attachables = null
     ) {
         parent::__construct([
-            'ref' => $ref ?? Generator::UNDEFINED,
-            'header' => $header ?? Generator::UNDEFINED,
+            'ref' => $ref ?? Undefined::UNDEFINED,
+            'header' => $header ?? Undefined::UNDEFINED,
             'description' => $description,
-            'required' => $required ?? Generator::UNDEFINED,
-            'deprecated' => $deprecated ?? Generator::UNDEFINED,
-            'allowEmptyValue' => $allowEmptyValue ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'required' => $required ?? Undefined::UNDEFINED,
+            'deprecated' => $deprecated ?? Undefined::UNDEFINED,
+            'allowEmptyValue' => $allowEmptyValue ?? Undefined::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
             'value' => $this->combine($schema),
         ]);
     }

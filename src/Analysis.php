@@ -454,7 +454,7 @@ class Analysis
         $annotations = [$root];
 
         foreach (get_object_vars($root) as $field => $value) {
-            if (null === $value || Generator::isDefault($value) || is_scalar($value) || in_array($field, $root::$_blacklist)) {
+            if (null === $value || Undefined::isDefault($value) || is_scalar($value) || in_array($field, $root::$_blacklist)) {
                 continue;
             }
 

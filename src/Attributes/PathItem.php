@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class PathItem extends OA\PathItem
@@ -22,8 +22,8 @@ class PathItem extends OA\PathItem
     public function __construct(
         ?string $path = null,
         string|object|null $ref = null,
-        ?string $summary = Generator::UNDEFINED,
-        ?string $description = Generator::UNDEFINED,
+        ?string $summary = Undefined::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?Get $get = null,
         ?Put $put = null,
         ?Post $post = null,
@@ -41,12 +41,12 @@ class PathItem extends OA\PathItem
         ?array $attachables = null
     ) {
         parent::__construct([
-            'path' => $path ?? Generator::UNDEFINED,
-            'ref' => $ref ?? Generator::UNDEFINED,
+            'path' => $path ?? Undefined::UNDEFINED,
+            'ref' => $ref ?? Undefined::UNDEFINED,
             'summary' => $summary,
             'description' => $description,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
             'value' => $this->combine($get, $put, $post, $delete, $options, $head, $patch, $trace, $query, $servers, $parameters),
         ]);
     }

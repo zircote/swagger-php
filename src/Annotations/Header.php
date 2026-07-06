@@ -5,7 +5,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * @see [Header Object](https://spec.openapis.org/oas/v3.1.1.html#header-object)
@@ -21,12 +21,12 @@ class Header extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * @var string
      */
-    public $header = Generator::UNDEFINED;
+    public $header = Undefined::UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -36,26 +36,26 @@ class Header extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * @var bool
      */
-    public $required = Generator::UNDEFINED;
+    public $required = Undefined::UNDEFINED;
 
     /**
      * Schema object.
      *
      * @var Schema
      */
-    public $schema = Generator::UNDEFINED;
+    public $schema = Undefined::UNDEFINED;
 
     /**
      * Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
      *
      * @var bool
      */
-    public $deprecated = Generator::UNDEFINED;
+    public $deprecated = Undefined::UNDEFINED;
 
     /**
      * Sets the ability to pass empty-valued parameters.
@@ -68,7 +68,7 @@ class Header extends AbstractAnnotation
      *
      * @var bool
      */
-    public $allowEmptyValue = Generator::UNDEFINED;
+    public $allowEmptyValue = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

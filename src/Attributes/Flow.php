@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Flow extends OA\Flow
@@ -29,13 +29,13 @@ class Flow extends OA\Flow
         ?array $attachables = null
     ) {
         parent::__construct([
-                'authorizationUrl' => $authorizationUrl ?? Generator::UNDEFINED,
-                'tokenUrl' => $tokenUrl ?? Generator::UNDEFINED,
-                'refreshUrl' => $refreshUrl ?? Generator::UNDEFINED,
-                'flow' => $flow ?? Generator::UNDEFINED,
-                'scopes' => $scopes ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'authorizationUrl' => $authorizationUrl ?? Undefined::UNDEFINED,
+                'tokenUrl' => $tokenUrl ?? Undefined::UNDEFINED,
+                'refreshUrl' => $refreshUrl ?? Undefined::UNDEFINED,
+                'flow' => $flow ?? Undefined::UNDEFINED,
+                'scopes' => $scopes ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
             ]);
     }
 }

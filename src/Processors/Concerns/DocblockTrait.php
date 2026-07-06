@@ -8,7 +8,7 @@ namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
@@ -68,7 +68,7 @@ trait DocblockTrait
      */
     protected function parsePhpDoc(?string $docblock): ?PhpDocNode
     {
-        if (!$docblock || Generator::isDefault($docblock)) {
+        if (!$docblock || Undefined::isDefault($docblock)) {
             return null;
         }
 
@@ -120,7 +120,7 @@ trait DocblockTrait
     {
         $docNode = $this->parsePhpDoc($docblock);
         if (!$docNode) {
-            return Generator::UNDEFINED;
+            return Undefined::UNDEFINED;
         }
 
         // Extract @param tags if requested
@@ -160,7 +160,7 @@ trait DocblockTrait
         $description = preg_replace('/\\\\\n/', '', $description);
 
         return $description === ''
-            ? Generator::UNDEFINED
+            ? Undefined::UNDEFINED
             : $description;
     }
 
@@ -171,8 +171,8 @@ trait DocblockTrait
      */
     public function extractCommentSummary(string $content): string
     {
-        if (Generator::isDefault($content)) {
-            return Generator::UNDEFINED;
+        if (Undefined::isDefault($content)) {
+            return Undefined::UNDEFINED;
         }
 
         $lines = preg_split('/(\n|\r\n)/', $content);
@@ -185,7 +185,7 @@ trait DocblockTrait
         }
         $summary = trim($summary);
         if ($summary === '') {
-            return Generator::UNDEFINED;
+            return Undefined::UNDEFINED;
         }
 
         return $summary;
@@ -198,13 +198,13 @@ trait DocblockTrait
      */
     public function extractCommentDescription(string $content): string
     {
-        if (Generator::isDefault($content)) {
-            return Generator::UNDEFINED;
+        if (Undefined::isDefault($content)) {
+            return Undefined::UNDEFINED;
         }
 
         $summary = $this->extractCommentSummary($content);
-        if (Generator::isDefault($summary)) {
-            return Generator::UNDEFINED;
+        if (Undefined::isDefault($summary)) {
+            return Undefined::UNDEFINED;
         }
 
         $description = '';
@@ -212,7 +212,7 @@ trait DocblockTrait
             $description = trim($substr);
         }
 
-        return $description ?: Generator::UNDEFINED;
+        return $description ?: Undefined::UNDEFINED;
     }
 
     /**
