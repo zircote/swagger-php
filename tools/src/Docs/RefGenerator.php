@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tools\Docs;
 
-use OpenApi\Analysers\TokenScanner;
 use OpenApi\Annotations\AbstractAnnotation;
+use OpenApi\Utils\TokenScanner;
 
 class RefGenerator extends DocGenerator
 {
