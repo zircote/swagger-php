@@ -8,9 +8,9 @@ namespace OpenApi\Tests;
 
 use OpenApi\Attributes\OpenApi;
 use OpenApi\Generator;
-use OpenApi\Pipeline;
 use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Finder\Finder;
 

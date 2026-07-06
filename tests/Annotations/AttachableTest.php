@@ -9,10 +9,10 @@ namespace OpenApi\Tests\Annotations;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Pipeline;
 use OpenApi\Processors\CleanUnusedComponents;
 use OpenApi\Tests\Fixtures\Attributes\CustomAttachable;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Utils\Pipeline;
 
 final class AttachableTest extends OpenApiTestCase
 {

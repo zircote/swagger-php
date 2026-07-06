@@ -7,8 +7,8 @@
 namespace OpenApi\Analysers;
 
 /**
- * @deprecated use {@see \OpenApi\TokenScanner} instead
+ * @deprecated use {@see \OpenApi\Utils\TokenScanner} instead
  */
-class TokenScanner extends \OpenApi\TokenScanner
+class TokenScanner extends \OpenApi\Utils\TokenScanner
 {
 }

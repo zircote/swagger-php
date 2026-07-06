@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi;
+namespace OpenApi\Utils;
 
 use PhpParser\Error;
 use PhpParser\Node\Stmt\Class_;

@@ -8,8 +8,8 @@ namespace OpenApi\Tests;
 
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
-use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Utils\SourceFinder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class GeneratorTest extends OpenApiTestCase

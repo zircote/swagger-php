@@ -4,10 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests;
+namespace OpenApi\Tests\Utils;
 
-use OpenApi\SourceFinder;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Utils\SourceFinder;
 
 final class SourceFinderTest extends OpenApiTestCase
 {

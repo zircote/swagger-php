@@ -44,6 +44,7 @@ return RectorConfig::configure()
             __DIR__ . '/tests/Analysers/TokenScannerTest.php',
             __DIR__ . '/tests/AnalysisTest.php',
             __DIR__ . '/tests/ContextTest.php',
+            __DIR__ . '/tests/Utils/TokenScannerTest.php',
         ],
         WrapEncapsedVariableInCurlyBracesRector::class => [
             __DIR__ . '/src/Type/LegacyTypeResolver.php',

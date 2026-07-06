@@ -4,9 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests;
+namespace OpenApi\Tests\Utils;
 
-use OpenApi\TokenScanner;
+use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Utils\TokenScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TokenScannerTest extends OpenApiTestCase

@@ -10,12 +10,12 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\Pipeline;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\Fixtures\PHP\DocblockAndTypehintTypes;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TypeResolverTest extends OpenApiTestCase
