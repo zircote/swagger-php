@@ -9,8 +9,6 @@ namespace OpenApi\Processors\Concerns;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 use OpenApi\Utils\DocBlockParser;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 trait DocblockTrait
 {
@@ -58,16 +56,6 @@ trait DocblockTrait
         }
 
         return false;
-    }
-
-    protected function parsePhpDoc(?string $docblock): ?PhpDocNode
-    {
-        return $this->docBlockParser()->parsePhpDoc($docblock);
-    }
-
-    protected function formatType(TypeNode $typeNode): string
-    {
-        return $this->docBlockParser()->formatType($typeNode);
     }
 
     public function parseDocblock(?string $docblock, ?array &$tags = null): string
