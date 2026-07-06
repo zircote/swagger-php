@@ -14,7 +14,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Loggers\DefaultLogger;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\Utils\Pipeline;
-use OpenApi\Utils\SourceFinder;
+use OpenApi\Utils\SourceScanner;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -410,23 +410,11 @@ class Generator
     protected function scanSources(iterable $sources, Analysis $analysis, Context $rootContext): void
     {
         $analyser = $this->getAnalyser();
+        $scanner = new SourceScanner($rootContext->logger);
 
-        foreach ($sources as $source) {
-            if (is_iterable($source)) {
-                $this->scanSources($source, $analysis, $rootContext);
-            } else {
-                $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
-                if (!$resolvedSource) {
-                    $rootContext->logger->warning(sprintf('Skipping invalid source: %s', $source));
-                    continue;
-                }
-                if (is_dir($resolvedSource)) {
-                    $this->scanSources(new SourceFinder($resolvedSource), $analysis, $rootContext);
-                } else {
-                    $rootContext->logger->debug(sprintf('Analysing source: %s', $resolvedSource));
-                    $analysis->addAnalysis($analyser->fromFile($resolvedSource, $rootContext));
-                }
-            }
+        foreach ($scanner->scan($sources) as $file) {
+            $rootContext->logger->debug(sprintf('Analysing source: %s', $file));
+            $analysis->addAnalysis($analyser->fromFile($file, $rootContext));
         }
     }
 }
