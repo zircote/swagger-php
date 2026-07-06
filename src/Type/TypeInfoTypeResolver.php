@@ -9,7 +9,6 @@ namespace OpenApi\Type;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\TypeResolverInterface;
 use OpenApi\Undefined;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -264,21 +263,9 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $this->mapNativeType($schema->items, $schema->items->type);
     }
 
-    /**
-     * Checks that the given type has an OpenAPI representation.
-     *
-     * Types such as mixed, callable, resource and iterable have none; callers leave the schema open for those instead of emitting an invalid type.
-     */
     protected function hasOpenApiType(string $native): bool
     {
-        $native = strtolower($native);
-
-        // NATIVE_TYPE_MAP maps "mixed" to "mixed", which is not a valid OpenAPI type, so mixed has no representation.
-        if ('mixed' === $native) {
-            return false;
-        }
-
-        return 'null' === $native || array_key_exists($native, TypeResolverInterface::NATIVE_TYPE_MAP);
+        return $this->typeMapper->hasOpenApiType($native);
     }
 
     /**645 1050272  02 1268 0026220 00
