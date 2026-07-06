@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class SecurityScheme extends OA\SecurityScheme
@@ -23,7 +23,7 @@ class SecurityScheme extends OA\SecurityScheme
         string|object|null $ref = null,
         ?string $securityScheme = null,
         string|array|null $type = null,
-        ?string $description = Generator::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?string $name = null,
         ?string $in = null,
         ?string $bearerFormat = null,
@@ -36,17 +36,17 @@ class SecurityScheme extends OA\SecurityScheme
         ?array $attachables = null
     ) {
         parent::__construct([
-                'ref' => $ref ?? Generator::UNDEFINED,
-                'securityScheme' => $securityScheme ?? Generator::UNDEFINED,
-                'type' => $type ?? Generator::UNDEFINED,
+                'ref' => $ref ?? Undefined::UNDEFINED,
+                'securityScheme' => $securityScheme ?? Undefined::UNDEFINED,
+                'type' => $type ?? Undefined::UNDEFINED,
                 'description' => $description,
-                'name' => $name ?? Generator::UNDEFINED,
-                'in' => $in ?? Generator::UNDEFINED,
-                'bearerFormat' => $bearerFormat ?? Generator::UNDEFINED,
-                'scheme' => $scheme ?? Generator::UNDEFINED,
-                'openIdConnectUrl' => $openIdConnectUrl ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'name' => $name ?? Undefined::UNDEFINED,
+                'in' => $in ?? Undefined::UNDEFINED,
+                'bearerFormat' => $bearerFormat ?? Undefined::UNDEFINED,
+                'scheme' => $scheme ?? Undefined::UNDEFINED,
+                'openIdConnectUrl' => $openIdConnectUrl ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
                 'value' => $this->combine($flows),
             ]);
     }

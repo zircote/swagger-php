@@ -9,8 +9,8 @@ namespace OpenApi\Type;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Undefined;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
@@ -45,7 +45,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $reflectionType = $this->getReflectionType($reflector);
 
         // we only consider nullable hints if the type is explicitly set
-        if (Generator::isDefault($schema->nullable)
+        if (Undefined::isDefault($schema->nullable)
             && (($docblockType && $docblockType->isNullable())
                 || ($reflectionType && $reflectionType->isNullable()))
         ) {
@@ -55,7 +55,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
         $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
 
-        if (Generator::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockType || $reflectionType)) {
+        if (Undefined::isDefault($schema->type, $schema->oneOf, $schema->allOf, $schema->anyOf) && ($docblockType || $reflectionType)) {
             $this->setSchemaType($schema, $docblockType ?? $reflectionType, $analysis, $sourceClass);
         }
 
@@ -65,15 +65,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $schema->type = 'array';
         }
 
-        if (!Generator::isDefault($schema->const) && Generator::isDefault($schema->type)) {
+        if (!Undefined::isDefault($schema->const) && Undefined::isDefault($schema->type)) {
             if (!$this->mapNativeType($schema, gettype($schema->const))) {
-                $schema->type = Generator::UNDEFINED;
+                $schema->type = Undefined::UNDEFINED;
             }
         }
 
         // final sanity check
-        if (!Generator::isDefault($schema->type) && !$this->mapNativeType($schema, $schema->type)) {
-            $schema->type = Generator::UNDEFINED;
+        if (!Undefined::isDefault($schema->type) && !$this->mapNativeType($schema, $schema->type)) {
+            $schema->type = Undefined::UNDEFINED;
         }
     }
 
@@ -98,7 +98,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                             array_map(static fn (Type $t): string => (string) $t, $types),
                             $this->hasOpenApiType(...),
                         ));
-                        $schema->type = [] === $mappableTypes ? Generator::UNDEFINED : $mappableTypes;
+                        $schema->type = [] === $mappableTypes ? Undefined::UNDEFINED : $mappableTypes;
                     } else {
                         $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
                         $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
@@ -108,7 +108,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                             return $schema;
                         }
 
-                        $schema->type = Generator::UNDEFINED;
+                        $schema->type = Undefined::UNDEFINED;
                         $schema->oneOf = [];
 
                         if ($builtinTypes) {
@@ -130,7 +130,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                         }
                     }
                 } elseif ($type instanceof IntersectionType) {
-                    $schema->type = Generator::UNDEFINED;
+                    $schema->type = Undefined::UNDEFINED;
                     $schema->allOf = [];
 
                     foreach ($types as $intersectionType) {
@@ -168,12 +168,12 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     // explicit key type (e.g. array<string, string>) → map
                     $schema->type = 'object';
 
-                    if (Generator::isDefault($schema->additionalProperties)) {
+                    if (Undefined::isDefault($schema->additionalProperties)) {
                         $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
                         $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
                         $this->type2ref($schema->additionalProperties, $analysis);
                         $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
-                    } elseif (Generator::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
+                    } elseif (Undefined::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
                         $this->setSchemaType($schema->additionalProperties, $type->getCollectionValueType(), $analysis);
                         $this->type2ref($schema->additionalProperties, $analysis);
                     }
@@ -253,12 +253,12 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
     {
         $schema->type = 'array';
 
-        if (Generator::isDefault($schema->items)) {
+        if (Undefined::isDefault($schema->items)) {
             $schema->items = new OA\Items(['_context' => new Context(['generated' => true], $schema->_context)]);
             $this->setSchemaType($schema->items, $valueType, $analysis);
             $this->type2ref($schema->items, $analysis);
             $analysis->addAnnotation($schema->items, $schema->items->_context);
-        } elseif (Generator::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
+        } elseif (Undefined::isDefault($schema->items->type, $schema->items->oneOf, $schema->items->allOf, $schema->items->anyOf)) {
             $this->setSchemaType($schema->items, $valueType, $analysis);
             $this->type2ref($schema->items, $analysis);
         }

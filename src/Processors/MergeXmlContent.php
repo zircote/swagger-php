@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Split XmlContent into Schema and MediaType.
@@ -30,7 +30,7 @@ class MergeXmlContent
                 }
                 continue;
             }
-            if (Generator::isDefault($parent->content)) {
+            if (Undefined::isDefault($parent->content)) {
                 $parent->content = [];
             }
             $parent->content['application/xml'] = $mediaType = new OA\MediaType([
@@ -43,8 +43,8 @@ class MergeXmlContent
             if (!$parent instanceof OA\Parameter) {
                 $parent->content['application/xml']->mediaType = 'application/xml';
             }
-            $xmlContent->example = Generator::UNDEFINED;
-            $xmlContent->examples = Generator::UNDEFINED;
+            $xmlContent->example = Undefined::UNDEFINED;
+            $xmlContent->examples = Undefined::UNDEFINED;
             $xmlContent->_context = new Context(['nested' => $mediaType, 'generated' => true], $mediaType->_context);
 
             $index = array_search($xmlContent, $parent->_unmerged, true);

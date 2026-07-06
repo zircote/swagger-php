@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Merge all <code>@OA\OpenApi</code> annotations into one.
@@ -61,9 +61,9 @@ class MergeIntoOpenApi
                 $paths = $annotation->paths;
                 unset($annotation->paths);
                 $openapi->mergeProperties($annotation);
-                if (!Generator::isDefault($paths)) {
+                if (!Undefined::isDefault($paths)) {
                     foreach ($paths as $path) {
-                        if (Generator::isDefault($openapi->paths)) {
+                        if (Undefined::isDefault($openapi->paths)) {
                             $openapi->paths = [];
                         }
                         $openapi->paths[] = $path;
@@ -83,8 +83,8 @@ class MergeIntoOpenApi
             $componentsList = array_filter($merge, static fn (OA\AbstractAnnotation $annotation): bool => $annotation instanceof OA\Components);
             $firstComponents = $openapi->components;
 
-            if ((!Generator::isDefault($firstComponents) && $componentsList !== []) || count($merge) > 1) {
-                if (Generator::isDefault($firstComponents)) {
+            if ((!Undefined::isDefault($firstComponents) && $componentsList !== []) || count($merge) > 1) {
+                if (Undefined::isDefault($firstComponents)) {
                     $firstComponents = array_shift($componentsList);
                 }
 
@@ -92,7 +92,7 @@ class MergeIntoOpenApi
                     foreach (OA\Components::$_nested as $nested) {
                         if (2 == count($nested)) {
                             $property = $nested[0];
-                            if (!Generator::isDefault($components->{$property})) {
+                            if (!Undefined::isDefault($components->{$property})) {
                                 $firstComponents->merge($components->{$property});
                             }
                         }

@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class OpenApi extends OA\OpenApi
@@ -37,9 +37,9 @@ class OpenApi extends OA\OpenApi
     ) {
         parent::__construct([
                 'openapi' => $openapi,
-                'security' => $security ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'security' => $security ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
                 'value' => $this->combine($info, $servers, $tags, $externalDocs, $paths, $components, $webhooks),
             ]);
     }

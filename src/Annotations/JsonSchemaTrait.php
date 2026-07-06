@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Sets a default value to the parameter. The type of the value depends on the defined type.
@@ -22,14 +22,14 @@ trait JsonSchemaTrait
      *
      * @var mixed
      */
-    public $default = Generator::UNDEFINED;
+    public $default = Undefined::UNDEFINED;
 
     /**
      * The maximum value allowed for a numeric property. This value must be a number.
      *
      * @var int|float
      */
-    public $maximum = Generator::UNDEFINED;
+    public $maximum = Undefined::UNDEFINED;
 
     /**
      * A boolean indicating whether the maximum value is excluded from the set of valid values.
@@ -38,14 +38,14 @@ trait JsonSchemaTrait
      *
      * @var bool|int|float
      */
-    public $exclusiveMaximum = Generator::UNDEFINED;
+    public $exclusiveMaximum = Undefined::UNDEFINED;
 
     /**
      * The minimum value allowed for a numeric property. This value must be a number.
      *
      * @var int|float
      */
-    public $minimum = Generator::UNDEFINED;
+    public $minimum = Undefined::UNDEFINED;
 
     /**
      * A boolean indicating whether the minimum value is excluded from the set of valid values.
@@ -54,7 +54,7 @@ trait JsonSchemaTrait
      *
      * @var bool|int|float
      */
-    public $exclusiveMinimum = Generator::UNDEFINED;
+    public $exclusiveMinimum = Undefined::UNDEFINED;
 
     /**
      * The maximum length of a string property.
@@ -64,7 +64,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $maxLength = Generator::UNDEFINED;
+    public $maxLength = Undefined::UNDEFINED;
 
     /**
      * The minimum length of a string property.
@@ -74,7 +74,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $minLength = Generator::UNDEFINED;
+    public $minLength = Undefined::UNDEFINED;
 
     /**
      * The maximum number of items allowed in an array property.
@@ -84,7 +84,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $maxItems = Generator::UNDEFINED;
+    public $maxItems = Undefined::UNDEFINED;
 
     /**
      * The minimum number of items allowed in an array property.
@@ -94,7 +94,7 @@ trait JsonSchemaTrait
      *
      * @var int
      */
-    public $minItems = Generator::UNDEFINED;
+    public $minItems = Undefined::UNDEFINED;
 
     /**
      * A boolean value indicating whether all items in an array property must be unique.
@@ -103,7 +103,7 @@ trait JsonSchemaTrait
      *
      * @var bool
      */
-    public $uniqueItems = Generator::UNDEFINED;
+    public $uniqueItems = Undefined::UNDEFINED;
 
     /**
      * A list of allowable values for a property.
@@ -113,53 +113,53 @@ trait JsonSchemaTrait
      *
      * @var list<string|int|float|bool|\UnitEnum>|class-string
      */
-    public $enum = Generator::UNDEFINED;
+    public $enum = Undefined::UNDEFINED;
 
     /**
      * @var mixed
      */
-    public $not = Generator::UNDEFINED;
+    public $not = Undefined::UNDEFINED;
 
     /**
      * @var bool|AdditionalProperties
      */
-    public $additionalProperties = Generator::UNDEFINED;
+    public $additionalProperties = Undefined::UNDEFINED;
 
     /**
      * @var array
      */
-    public $additionalItems = Generator::UNDEFINED;
+    public $additionalItems = Undefined::UNDEFINED;
 
     /**
      * @var array
      */
-    public $contains = Generator::UNDEFINED;
+    public $contains = Undefined::UNDEFINED;
 
     /**
      * @var array
      */
-    public $patternProperties = Generator::UNDEFINED;
+    public $patternProperties = Undefined::UNDEFINED;
 
     /**
      * @var array
      */
-    public $unevaluatedProperties = Generator::UNDEFINED;
+    public $unevaluatedProperties = Undefined::UNDEFINED;
 
     /**
      * @var mixed
      */
-    public $dependencies = Generator::UNDEFINED;
+    public $dependencies = Undefined::UNDEFINED;
 
     /**
      * @var mixed
      */
-    public $propertyNames = Generator::UNDEFINED;
+    public $propertyNames = Undefined::UNDEFINED;
 
     /**
      * @var mixed
      * @since OpenAPI 3.1.0
      */
-    public $const = Generator::UNDEFINED;
+    public $const = Undefined::UNDEFINED;
 }
 
 /*
@@ -174,7 +174,7 @@ trait JsonSchemaTrait
 ** PARAMETERS:
 
         // JSON Schema
-        mixed $default = Generator::UNDEFINED,
+        mixed $default = Undefined::UNDEFINED,
         int|float|null $maximum = null,
         bool|int|float|null $exclusiveMaximum = null,
         int|float|null $minimum = null,
@@ -185,37 +185,37 @@ trait JsonSchemaTrait
         int|null $minItems = null,
         bool|null $uniqueItems = null,
         array|string|null $enum = null,
-        mixed $not = Generator::UNDEFINED,
+        mixed $not = Undefined::UNDEFINED,
         bool|AdditionalProperties|null $additionalProperties = null,
         array|null $additionalItems = null,
         array|null $contains = null,
         array|null $patternProperties = null,
         array|null $unevaluatedProperties = null,
-        mixed $dependencies = Generator::UNDEFINED,
-        mixed $propertyNames = Generator::UNDEFINED,
-        mixed $const = Generator::UNDEFINED,
+        mixed $dependencies = Undefined::UNDEFINED,
+        mixed $propertyNames = Undefined::UNDEFINED,
+        mixed $const = Undefined::UNDEFINED,
 
 
 ** PARENT-PARAMS:
 
             // JSON Schema
             'default' => $default,
-            'maximum' => $maximum ?? Generator::UNDEFINED,
-            'exclusiveMaximum' => $exclusiveMaximum ?? Generator::UNDEFINED,
-            'minimum' => $minimum ?? Generator::UNDEFINED,
-            'exclusiveMinimum' => $exclusiveMinimum ?? Generator::UNDEFINED,
-            'maxLength' => $maxLength ?? Generator::UNDEFINED,
-            'minLength' => $minLength ?? Generator::UNDEFINED,
-            'maxItems' => $maxItems ?? Generator::UNDEFINED,
-            'minItems' => $minItems ?? Generator::UNDEFINED,
-            'uniqueItems' => $uniqueItems ?? Generator::UNDEFINED,
-            'enum' => $enum ?? Generator::UNDEFINED,
+            'maximum' => $maximum ?? Undefined::UNDEFINED,
+            'exclusiveMaximum' => $exclusiveMaximum ?? Undefined::UNDEFINED,
+            'minimum' => $minimum ?? Undefined::UNDEFINED,
+            'exclusiveMinimum' => $exclusiveMinimum ?? Undefined::UNDEFINED,
+            'maxLength' => $maxLength ?? Undefined::UNDEFINED,
+            'minLength' => $minLength ?? Undefined::UNDEFINED,
+            'maxItems' => $maxItems ?? Undefined::UNDEFINED,
+            'minItems' => $minItems ?? Undefined::UNDEFINED,
+            'uniqueItems' => $uniqueItems ?? Undefined::UNDEFINED,
+            'enum' => $enum ?? Undefined::UNDEFINED,
             'not' => $not,
-            'additionalProperties' => $additionalProperties ?? Generator::UNDEFINED,
-            'additionalItems' => $additionalItems ?? Generator::UNDEFINED,
-            'contains' => $contains ?? Generator::UNDEFINED,
-            'patternProperties' => $patternProperties ?? Generator::UNDEFINED,
-            'unevaluatedProperties' => $unevaluatedProperties ?? Generator::UNDEFINED,
+            'additionalProperties' => $additionalProperties ?? Undefined::UNDEFINED,
+            'additionalItems' => $additionalItems ?? Undefined::UNDEFINED,
+            'contains' => $contains ?? Undefined::UNDEFINED,
+            'patternProperties' => $patternProperties ?? Undefined::UNDEFINED,
+            'unevaluatedProperties' => $unevaluatedProperties ?? Undefined::UNDEFINED,
             'dependencies' => $dependencies,
             'propertyNames' => $propertyNames,
             'const' => $const,

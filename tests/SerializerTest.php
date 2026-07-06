@@ -9,9 +9,9 @@ namespace OpenApi\Tests;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
-use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SerializerTest extends OpenApiTestCase
@@ -199,12 +199,12 @@ JSON;
         foreach ($annotation->components->schemas as $schemaObject) {
             $this->assertIsObject($schemaObject);
             $this->assertTrue(property_exists($schemaObject, 'allOf'));
-            $this->assertNotSame(Generator::UNDEFINED, $schemaObject->allOf);
+            $this->assertNotSame(Undefined::UNDEFINED, $schemaObject->allOf);
             $this->assertIsArray($schemaObject->allOf);
             $allOfItem = current($schemaObject->allOf);
             $this->assertIsObject($allOfItem);
             $this->assertInstanceOf(OA\Schema::class, $allOfItem);
-            $this->assertNotSame(Generator::UNDEFINED, $allOfItem->ref);
+            $this->assertNotSame(Undefined::UNDEFINED, $allOfItem->ref);
             $this->assertSame('#/components/schemas/SomeSchema', $allOfItem->ref);
         }
     }

@@ -8,7 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 class AugmentRefs
 {
@@ -31,10 +31,10 @@ class AugmentRefs
         // ref rewriting
         $updatedRefs = [];
         foreach ($schemas as $schema) {
-            if (!Generator::isDefault($schema->allOf)) {
+            if (!Undefined::isDefault($schema->allOf)) {
                 // do we have to keep track of property refs that need updating?
                 foreach ($schema->allOf as $ii => $allOfSchema) {
-                    if (!Generator::isDefault($allOfSchema->properties)) {
+                    if (!Undefined::isDefault($allOfSchema->properties)) {
                         $updatedRefs[OA\Components::ref($schema->schema . '/properties', false)] = OA\Components::ref($schema->schema . '/allOf/' . $ii . '/properties', false);
                         break;
                     }
@@ -44,7 +44,7 @@ class AugmentRefs
 
         if ($updatedRefs) {
             foreach ($analysis->annotations as $annotation) {
-                if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && $annotation->ref !== null) {
+                if (property_exists($annotation, 'ref') && !Undefined::isDefault($annotation->ref) && $annotation->ref !== null) {
                     foreach ($updatedRefs as $origRef => $updatedRef) {
                         if (str_starts_with((string) $annotation->ref, $origRef)) {
                             $annotation->ref = str_replace($origRef, $updatedRef, (string) $annotation->ref);
@@ -60,7 +60,7 @@ class AugmentRefs
         $annotations = $analysis->getAnnotationsOfType(OA\Components::componentTypes());
 
         foreach ($annotations as $annotation) {
-            if (property_exists($annotation, 'ref') && !Generator::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
+            if (property_exists($annotation, 'ref') && !Undefined::isDefault($annotation->ref) && is_string($annotation->ref) && !$this->isRef($annotation->ref)) {
                 // check if we can resolve the ref to a component
                 $resolved = false;
                 foreach (OA\Components::componentTypes() as $type) {
@@ -81,11 +81,11 @@ class AugmentRefs
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class);
 
         foreach ($schemas as $schema) {
-            if (!Generator::isDefault($schema->allOf)) {
+            if (!Undefined::isDefault($schema->allOf)) {
                 $refs = [];
                 $dupes = [];
                 foreach ($schema->allOf as $ii => $allOfSchema) {
-                    if (!Generator::isDefault($allOfSchema->ref)) {
+                    if (!Undefined::isDefault($allOfSchema->ref)) {
                         if (in_array($allOfSchema->ref, $refs)) {
                             $dupes[] = $allOfSchema->ref;
                             $analysis->removeAnnotation($allOfSchema);

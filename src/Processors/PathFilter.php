@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Allows to filter endpoints based on tags and/or path.
@@ -66,13 +66,13 @@ class PathFilter
 
     public function __invoke(Analysis $analysis): void
     {
-        if (($this->tags || $this->paths) && !Generator::isDefault($analysis->openapi->paths)) {
+        if (($this->tags || $this->paths) && !Undefined::isDefault($analysis->openapi->paths)) {
             $filtered = [];
             foreach ($analysis->openapi->paths as $pathItem) {
                 $matched = null;
                 foreach ($this->tags as $pattern) {
                     foreach ($pathItem->operations() as $operation) {
-                        if (!Generator::isDefault($operation->tags)) {
+                        if (!Undefined::isDefault($operation->tags)) {
                             foreach ($operation->tags as $tag) {
                                 if (preg_match($pattern, $tag)) {
                                     $matched = $pathItem;

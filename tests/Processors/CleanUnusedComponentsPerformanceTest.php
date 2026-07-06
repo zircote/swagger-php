@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -61,7 +62,7 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
                 ->setConfig(['cleanUnusedComponents' => ['enabled' => true]])
                 ->generate([$sourceDir]);
 
-            $schemaCount = Generator::isDefault($openapi->components->schemas)
+            $schemaCount = Undefined::isDefault($openapi->components->schemas)
                 ? 0
                 : count($openapi->components->schemas);
 
@@ -194,6 +195,7 @@ PHP;
 namespace SwaggerPhpPerfTest\Controllers;
 
 use OpenApi\Attributes as OA;
+use OpenApi\Undefined;
 
 class Controller{$c}
 {

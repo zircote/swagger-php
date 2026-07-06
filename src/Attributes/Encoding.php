@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Encoding extends OA\Encoding
@@ -30,13 +30,13 @@ class Encoding extends OA\Encoding
         ?array $attachables = null
     ) {
         parent::__construct([
-            'property' => $property ?? Generator::UNDEFINED,
-            'contentType' => $contentType ?? Generator::UNDEFINED,
-            'style' => $style ?? Generator::UNDEFINED,
-            'explode' => $explode ?? Generator::UNDEFINED,
-            'allowReserved' => $allowReserved ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'property' => $property ?? Undefined::UNDEFINED,
+            'contentType' => $contentType ?? Undefined::UNDEFINED,
+            'style' => $style ?? Undefined::UNDEFINED,
+            'explode' => $explode ?? Undefined::UNDEFINED,
+            'allowReserved' => $allowReserved ?? Undefined::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
             'value' => $this->combine($headers),
         ]);
     }

@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class AugmentTagsTest extends OpenApiTestCase
 {
@@ -71,6 +71,6 @@ final class AugmentTagsTest extends OpenApiTestCase
 
         $this->assertNotEmpty($analysis->openapi->tags);
         $firstTag = $analysis->openapi->tags[0];
-        $this->assertEquals(Generator::UNDEFINED, $firstTag->description);
+        $this->assertEquals(Undefined::UNDEFINED, $firstTag->description);
     }
 }

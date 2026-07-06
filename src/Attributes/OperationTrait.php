@@ -6,7 +6,7 @@
 
 namespace OpenApi\Attributes;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 trait OperationTrait
 {
@@ -21,8 +21,8 @@ trait OperationTrait
     public function __construct(
         ?string $path = null,
         ?string $operationId = null,
-        ?string $description = Generator::UNDEFINED,
-        ?string $summary = Generator::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
+        ?string $summary = Undefined::UNDEFINED,
         ?array $security = null,
         ?array $servers = null,
         ?RequestBody $requestBody = null,
@@ -38,17 +38,17 @@ trait OperationTrait
         ?array $attachables = null
     ) {
         parent::__construct([
-                'path' => $path ?? Generator::UNDEFINED,
-                'operationId' => $operationId ?? Generator::UNDEFINED,
+                'path' => $path ?? Undefined::UNDEFINED,
+                'operationId' => $operationId ?? Undefined::UNDEFINED,
                 'description' => $description,
                 'summary' => $summary,
-                'security' => $security ?? Generator::UNDEFINED,
-                'servers' => $servers ?? Generator::UNDEFINED,
-                'tags' => $tags ?? Generator::UNDEFINED,
-                'callbacks' => $callbacks ?? Generator::UNDEFINED,
-                'deprecated' => $deprecated ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'security' => $security ?? Undefined::UNDEFINED,
+                'servers' => $servers ?? Undefined::UNDEFINED,
+                'tags' => $tags ?? Undefined::UNDEFINED,
+                'callbacks' => $callbacks ?? Undefined::UNDEFINED,
+                'deprecated' => $deprecated ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
                 'value' => $this->combine($requestBody, $responses, $parameters, $externalDocs),
             ]);
     }

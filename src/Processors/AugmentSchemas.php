@@ -9,7 +9,7 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Use the Schema context to extract useful information and inject that into the annotation.
@@ -37,7 +37,7 @@ class AugmentSchemas
             if (!$schema->isRoot(OA\Schema::class)) {
                 continue;
             }
-            if (Generator::isDefault($schema->schema)) {
+            if (Undefined::isDefault($schema->schema)) {
                 if ($schema->_context->is('class')) {
                     $schema->schema = $schema->_context->class;
                 } elseif ($schema->_context->is('interface')) {
@@ -91,7 +91,7 @@ class AugmentSchemas
     protected function augmentType(Analysis $analysis, array $schemas): void
     {
         foreach ($schemas as $schema) {
-            if (Generator::isDefault($schema->type)) {
+            if (Undefined::isDefault($schema->type)) {
                 if (is_array($schema->properties) && $schema->properties !== []) {
                     $schema->type = 'object';
                 } elseif (is_array($schema->additionalProperties) && $schema->additionalProperties !== []) {
@@ -105,9 +105,9 @@ class AugmentSchemas
                 }
             } else {
                 if (is_string($schema->type) && $typeSchema = $analysis->getAnnotationForSource($schema->type)) {
-                    if (Generator::isDefault($schema->format)) {
+                    if (Undefined::isDefault($schema->format)) {
                         $schema->ref = OA\Components::ref($typeSchema);
-                        $schema->type = Generator::UNDEFINED;
+                        $schema->type = Undefined::UNDEFINED;
                     }
                 }
             }
@@ -122,10 +122,10 @@ class AugmentSchemas
     protected function mergeAllOf(Analysis $analysis, array $schemas): void
     {
         foreach ($schemas as $schema) {
-            if (!Generator::isDefault($schema->properties) && !Generator::isDefault($schema->allOf)) {
+            if (!Undefined::isDefault($schema->properties) && !Undefined::isDefault($schema->allOf)) {
                 $allOfPropertiesSchema = null;
                 foreach ($schema->allOf as $allOfSchema) {
-                    if (!Generator::isDefault($allOfSchema->properties)) {
+                    if (!Undefined::isDefault($allOfSchema->properties)) {
                         $allOfPropertiesSchema = $allOfSchema;
                         break;
                     }
@@ -141,7 +141,7 @@ class AugmentSchemas
                 }
                 $allOfPropertiesSchema->properties = array_merge($allOfPropertiesSchema->properties, $schema->properties);
                 /* @phpstan-ignore assign.propertyType */
-                $schema->properties = Generator::UNDEFINED;
+                $schema->properties = Undefined::UNDEFINED;
             }
         }
     }

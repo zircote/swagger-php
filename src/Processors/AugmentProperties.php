@@ -9,9 +9,9 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\Generator;
 use OpenApi\GeneratorAwareInterface;
 use OpenApi\GeneratorAwareTrait;
+use OpenApi\Undefined;
 
 /**
  * Use the property context to extract useful information and inject that into the annotation.
@@ -32,7 +32,7 @@ class AugmentProperties implements GeneratorAwareInterface
             $context = $property->_context;
             $reflector = $context->reflector;
 
-            if (Generator::isDefault($property->property)) {
+            if (Undefined::isDefault($property->property)) {
                 $property->property = $property->_context->property;
             }
 
@@ -40,11 +40,11 @@ class AugmentProperties implements GeneratorAwareInterface
                 $property->encoding->property = $property->property;
             }
 
-            if (Generator::isDefault($property->const) && $reflector instanceof \ReflectionClassConstant) {
+            if (Undefined::isDefault($property->const) && $reflector instanceof \ReflectionClassConstant) {
                 $property->const = $reflector->getValue();
             }
 
-            if (Generator::isDefault($property->description)) {
+            if (Undefined::isDefault($property->description)) {
                 $typeAndDescription = $this->parseVarLine((string) $context->comment);
 
                 if ($typeAndDescription['description']) {
@@ -53,24 +53,24 @@ class AugmentProperties implements GeneratorAwareInterface
                     $property->description = $this->parseDocblock($context->comment);
                 }
             } elseif (null === $property->description) {
-                $property->description = Generator::UNDEFINED;
+                $property->description = Undefined::UNDEFINED;
             }
 
-            if (!Generator::isDefault($property->ref)) {
+            if (!Undefined::isDefault($property->ref)) {
                 continue;
             }
 
-            if (Generator::isDefault($property->type)) {
+            if (Undefined::isDefault($property->type)) {
                 $this->generator->getTypeResolver()->augmentSchemaType($analysis, $property);
             }
 
             $this->generator->getTypeResolver()->mapNativeType($property, $property->type);
 
-            if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
+            if (Undefined::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
                 $property->example = $example;
             }
 
-            if (Generator::isDefault($property->deprecated) && ($deprecated = $this->isDeprecated($context->comment))) {
+            if (Undefined::isDefault($property->deprecated) && ($deprecated = $this->isDeprecated($context->comment))) {
                 $property->deprecated = $deprecated;
             }
         }

@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Each Media Type object provides schema and examples for the media type identified by its key.
@@ -24,14 +24,14 @@ class MediaType extends AbstractAnnotation
      *
      * @var string
      */
-    public $mediaType = Generator::UNDEFINED;
+    public $mediaType = Undefined::UNDEFINED;
 
     /**
      * The schema defining the type used for the request body.
      *
      * @var Schema
      */
-    public $schema = Generator::UNDEFINED;
+    public $schema = Undefined::UNDEFINED;
 
     /**
      * Example of the media type.
@@ -44,7 +44,7 @@ class MediaType extends AbstractAnnotation
      *
      * @var mixed
      */
-    public $example = Generator::UNDEFINED;
+    public $example = Undefined::UNDEFINED;
 
     /**
      * Examples of the media type.
@@ -55,7 +55,7 @@ class MediaType extends AbstractAnnotation
      *
      * @var array<Examples>
      */
-    public $examples = Generator::UNDEFINED;
+    public $examples = Undefined::UNDEFINED;
 
     /**
      * A map between a property name and its encoding information.
@@ -67,7 +67,7 @@ class MediaType extends AbstractAnnotation
      *
      * @var list<Encoding>
      */
-    public $encoding = Generator::UNDEFINED;
+    public $encoding = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

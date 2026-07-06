@@ -8,7 +8,7 @@ namespace OpenApi\Annotations;
 
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\XmlContent;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Describes a single request body.
@@ -26,14 +26,14 @@ class RequestBody extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * The key into Components->requestBodies array.
      *
      * @var string
      */
-    public $request = Generator::UNDEFINED;
+    public $request = Undefined::UNDEFINED;
 
     /**
      * A brief description of the parameter.
@@ -44,7 +44,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * Determines whether this parameter is mandatory.
@@ -54,7 +54,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var bool
      */
-    public $required = Generator::UNDEFINED;
+    public $required = Undefined::UNDEFINED;
 
     /**
      * The content of the request body.
@@ -64,7 +64,7 @@ class RequestBody extends AbstractAnnotation
      *
      * @var array<MediaType|JsonContent|XmlContent>|MediaType|JsonContent|XmlContent|Attachable
      */
-    public $content = Generator::UNDEFINED;
+    public $content = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

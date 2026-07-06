@@ -27,8 +27,8 @@ class Generator
      */
     public static ?Context $context = null;
 
-    /** @var string Magic value to differentiate between null and undefined. */
-    public const UNDEFINED = '@OA\Generator::UNDEFINED🙈';
+    /** @deprecated Use {@see Undefined::UNDEFINED} instead. */
+    public const UNDEFINED = Undefined::UNDEFINED;
 
     /** @var array<string,string> */
     public const DEFAULT_ALIASES = ['oa' => 'OpenApi\\Annotations'];
@@ -71,15 +71,10 @@ class Generator
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
     }
 
+    /** @deprecated Use {@see Undefined::isDefault()} instead. */
     public static function isDefault(...$value): bool
     {
-        foreach ($value as $v) {
-            if ($v !== Generator::UNDEFINED) {
-                return false;
-            }
-        }
-
-        return true;
+        return Undefined::isDefault(...$value);
     }
 
     /**

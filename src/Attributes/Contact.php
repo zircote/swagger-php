@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Contact extends OA\Contact
@@ -26,11 +26,11 @@ class Contact extends OA\Contact
         ?array $attachables = null
     ) {
         parent::__construct([
-            'name' => $name ?? Generator::UNDEFINED,
-            'url' => $url ?? Generator::UNDEFINED,
-            'email' => $email ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'name' => $name ?? Undefined::UNDEFINED,
+            'url' => $url ?? Undefined::UNDEFINED,
+            'email' => $email ?? Undefined::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
         ]);
     }
 }

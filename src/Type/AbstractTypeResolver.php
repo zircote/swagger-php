@@ -8,16 +8,16 @@ namespace OpenApi\Type;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Undefined;
 
 abstract class AbstractTypeResolver implements TypeResolverInterface
 {
     protected function type2ref(OA\Schema $schema, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
-        if (!Generator::isDefault($schema->type) && !is_array($schema->type)) {
+        if (!Undefined::isDefault($schema->type) && !is_array($schema->type)) {
             if ($typeSchema = $analysis->getAnnotationForSource($schema->type, $sourceClass)) {
-                $schema->type = Generator::UNDEFINED;
+                $schema->type = Undefined::UNDEFINED;
                 $schema->ref = OA\Components::ref($typeSchema);
             }
         }
@@ -46,7 +46,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
 
         $type = TypeResolverInterface::NATIVE_TYPE_MAP[$type];
         if (is_array($type)) {
-            if (Generator::isDefault($schema->format)) {
+            if (Undefined::isDefault($schema->format)) {
                 $schema->format = $type[1];
             }
             $type = $type[0];

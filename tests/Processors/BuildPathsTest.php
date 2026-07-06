@@ -8,10 +8,10 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class BuildPathsTest extends OpenApiTestCase
 {
@@ -52,6 +52,6 @@ final class BuildPathsTest extends OpenApiTestCase
         $this->assertInstanceOf(OA\PathItem::class, $path);
         $this->assertInstanceOf(OA\Get::class, $path->get);
         $this->assertInstanceOf(OA\Post::class, $path->post);
-        $this->assertSame(Generator::UNDEFINED, $path->put);
+        $this->assertSame(Undefined::UNDEFINED, $path->put);
     }
 }

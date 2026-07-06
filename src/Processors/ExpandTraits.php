@@ -8,7 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Look at all (direct) traits for a schema and:
@@ -31,7 +31,7 @@ class ExpandTraits
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
+                        $refPath = Undefined::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         $this->mergeMethods($schema, $trait, $existing);
@@ -49,7 +49,7 @@ class ExpandTraits
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
                     if ($traitSchema) {
-                        $refPath = Generator::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
+                        $refPath = Undefined::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
                         $this->mergeMethods($schema, $trait, $existing);

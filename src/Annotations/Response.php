@@ -7,7 +7,7 @@
 namespace OpenApi\Annotations;
 
 use OpenApi\Analysis;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Describes a single response from an API Operation, including design-time,
@@ -26,7 +26,7 @@ class Response extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * The key into Operations->responses array.
@@ -35,7 +35,7 @@ class Response extends AbstractAnnotation
      *
      * @var string|int
      */
-    public $response = Generator::UNDEFINED;
+    public $response = Undefined::UNDEFINED;
 
     /**
      * A short description of the response.
@@ -44,7 +44,7 @@ class Response extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * Maps a header name to its definition.
@@ -57,7 +57,7 @@ class Response extends AbstractAnnotation
      *
      * @var list<Header>
      */
-    public $headers = Generator::UNDEFINED;
+    public $headers = Undefined::UNDEFINED;
 
     /**
      * A map containing descriptions of potential response payloads.
@@ -69,7 +69,7 @@ class Response extends AbstractAnnotation
      *
      * @var MediaType|JsonContent|XmlContent|Attachable|array<MediaType|JsonContent|XmlContent|Attachable>
      */
-    public $content = Generator::UNDEFINED;
+    public $content = Undefined::UNDEFINED;
 
     /**
      * A map of operations links that can be followed from the response.
@@ -79,7 +79,7 @@ class Response extends AbstractAnnotation
      *
      * @var list<Link>
      */
-    public $links = Generator::UNDEFINED;
+    public $links = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc
@@ -119,7 +119,7 @@ class Response extends AbstractAnnotation
     {
         $isValid = parent::validate($analysis, $version, $context);
 
-        if (Generator::isDefault($this->description) && Generator::isDefault($this->ref)) {
+        if (Undefined::isDefault($this->description) && Undefined::isDefault($this->ref)) {
             $this->_context->logger->warning($this->identity() . ' One of description or ref is required in ' . $this->_context);
             $isValid = false;
         }

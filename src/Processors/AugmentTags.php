@@ -8,7 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * Ensures that all tags used on operations also exist in the global <code>tags</code> list.
@@ -52,14 +52,14 @@ class AugmentTags
 
         $usedTagNames = [];
         foreach ($operations as $operation) {
-            if (!Generator::isDefault($operation->tags)) {
+            if (!Undefined::isDefault($operation->tags)) {
                 $usedTagNames = array_merge($usedTagNames, $operation->tags);
             }
         }
         $usedTagNames = array_unique($usedTagNames);
 
         $declaredTags = [];
-        if (!Generator::isDefault($analysis->openapi->tags)) {
+        if (!Undefined::isDefault($analysis->openapi->tags)) {
             foreach ($analysis->openapi->tags as $tag) {
                 if (!empty($tag->name)) {
                     $declaredTags[$tag->name] = $tag;
@@ -80,7 +80,7 @@ class AugmentTags
                         'name' => $tagName,
                         'description' => $this->withDescription
                             ? $tagName
-                            : Generator::UNDEFINED,
+                            : Undefined::UNDEFINED,
                     ])]);
                 }
             }
@@ -89,7 +89,7 @@ class AugmentTags
         // clear invalid parents
         foreach ($declaredTags as $tag) {
             if (!array_key_exists($tag->parent, $declaredTags)) {
-                $tag->parent = Generator::UNDEFINED;
+                $tag->parent = Undefined::UNDEFINED;
             }
         }
 

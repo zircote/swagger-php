@@ -6,7 +6,7 @@
 
 namespace OpenApi\Annotations;
 
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 /**
  * The Link object represents a possible design-time link for a response.
@@ -31,14 +31,14 @@ class Link extends AbstractAnnotation
      *
      * @var string|class-string|object
      */
-    public $ref = Generator::UNDEFINED;
+    public $ref = Undefined::UNDEFINED;
 
     /**
      * The key into MediaType->links array.
      *
      * @var string
      */
-    public $link = Generator::UNDEFINED;
+    public $link = Undefined::UNDEFINED;
 
     /**
      * A relative or absolute reference to an OA operation.
@@ -49,7 +49,7 @@ class Link extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationRef = Generator::UNDEFINED;
+    public $operationRef = Undefined::UNDEFINED;
 
     /**
      * The name of an existing, resolvable OA operation, as defined with a unique <code>operationId</code>.
@@ -58,7 +58,7 @@ class Link extends AbstractAnnotation
      *
      * @var string
      */
-    public $operationId = Generator::UNDEFINED;
+    public $operationId = Undefined::UNDEFINED;
 
     /**
      * A map representing parameters to pass to an operation as specified with operationId or identified via
@@ -71,14 +71,14 @@ class Link extends AbstractAnnotation
      *
      * @var array<string,mixed>
      */
-    public $parameters = Generator::UNDEFINED;
+    public $parameters = Undefined::UNDEFINED;
 
     /**
      * A literal value or {expression} to use as a request body when calling the target operation.
      *
      * @var mixed
      */
-    public $requestBody = Generator::UNDEFINED;
+    public $requestBody = Undefined::UNDEFINED;
 
     /**
      * A description of the link.
@@ -87,14 +87,14 @@ class Link extends AbstractAnnotation
      *
      * @var string
      */
-    public $description = Generator::UNDEFINED;
+    public $description = Undefined::UNDEFINED;
 
     /**
      * A server object to be used by the target operation.
      *
      * @var Server
      */
-    public $server = Generator::UNDEFINED;
+    public $server = Undefined::UNDEFINED;
 
     /**
      * @inheritdoc

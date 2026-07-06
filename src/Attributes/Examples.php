@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Examples extends OA\Examples
@@ -19,8 +19,8 @@ class Examples extends OA\Examples
      */
     public function __construct(
         ?string $example = null,
-        ?string $summary = Generator::UNDEFINED,
-        ?string $description = Generator::UNDEFINED,
+        ?string $summary = Undefined::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         int|string|array|null $value = null,
         ?string $externalValue = null,
         string|object|null $ref = null,
@@ -30,14 +30,14 @@ class Examples extends OA\Examples
         ?array $attachables = null
     ) {
         parent::__construct([
-            'example' => $example ?? Generator::UNDEFINED,
+            'example' => $example ?? Undefined::UNDEFINED,
             'summary' => $summary,
             'description' => $description,
-            'value' => $value ?? Generator::UNDEFINED,
-            'externalValue' => $externalValue ?? Generator::UNDEFINED,
-            'ref' => $ref ?? Generator::UNDEFINED,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'value' => $value ?? Undefined::UNDEFINED,
+            'externalValue' => $externalValue ?? Undefined::UNDEFINED,
+            'ref' => $ref ?? Undefined::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
         ]);
     }
 }

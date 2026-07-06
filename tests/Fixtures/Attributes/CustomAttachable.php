@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Fixtures\Attributes;
 
 use OpenApi\Attributes as OAT;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
 class CustomAttachable extends OAT\Attachable
@@ -15,9 +15,9 @@ class CustomAttachable extends OAT\Attachable
     /**
      * The attribute value.
      */
-    public $value = Generator::UNDEFINED;
+    public $value = Undefined::UNDEFINED;
 
-    public function __construct($value = Generator::UNDEFINED)
+    public function __construct($value = Undefined::UNDEFINED)
     {
         parent::__construct([
             'value' => $value,

@@ -7,12 +7,12 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('Properties')]
@@ -45,31 +45,31 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         ] = $customer->properties;
 
         // Verify no values where defined in the annotation.
-        $this->assertSame(Generator::UNDEFINED, $firstName->property);
-        $this->assertSame(Generator::UNDEFINED, $firstName->description);
-        $this->assertSame(Generator::UNDEFINED, $firstName->type);
+        $this->assertSame(Undefined::UNDEFINED, $firstName->property);
+        $this->assertSame(Undefined::UNDEFINED, $firstName->description);
+        $this->assertSame(Undefined::UNDEFINED, $firstName->type);
 
-        $this->assertSame(Generator::UNDEFINED, $lastName->property);
-        $this->assertSame(Generator::UNDEFINED, $lastName->description);
-        $this->assertSame(Generator::UNDEFINED, $lastName->type);
+        $this->assertSame(Undefined::UNDEFINED, $lastName->property);
+        $this->assertSame(Undefined::UNDEFINED, $lastName->description);
+        $this->assertSame(Undefined::UNDEFINED, $lastName->type);
 
-        $this->assertSame(Generator::UNDEFINED, $tags->property);
-        $this->assertSame(Generator::UNDEFINED, $tags->type);
-        $this->assertSame(Generator::UNDEFINED, $tags->items);
+        $this->assertSame(Undefined::UNDEFINED, $tags->property);
+        $this->assertSame(Undefined::UNDEFINED, $tags->type);
+        $this->assertSame(Undefined::UNDEFINED, $tags->items);
 
-        $this->assertSame(Generator::UNDEFINED, $submittedBy->property);
-        $this->assertSame(Generator::UNDEFINED, $submittedBy->ref);
+        $this->assertSame(Undefined::UNDEFINED, $submittedBy->property);
+        $this->assertSame(Undefined::UNDEFINED, $submittedBy->ref);
 
-        $this->assertSame(Generator::UNDEFINED, $friends->property);
-        $this->assertSame(Generator::UNDEFINED, $friends->type);
+        $this->assertSame(Undefined::UNDEFINED, $friends->property);
+        $this->assertSame(Undefined::UNDEFINED, $friends->type);
 
-        $this->assertSame(Generator::UNDEFINED, $bestFriend->property);
-        $this->assertSame(Generator::UNDEFINED, $bestFriend->nullable);
-        $this->assertSame(Generator::UNDEFINED, $bestFriend->allOf);
+        $this->assertSame(Undefined::UNDEFINED, $bestFriend->property);
+        $this->assertSame(Undefined::UNDEFINED, $bestFriend->nullable);
+        $this->assertSame(Undefined::UNDEFINED, $bestFriend->allOf);
 
-        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->property);
-        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->nullable);
-        $this->assertSame(Generator::UNDEFINED, $endorsedFriends->allOf);
+        $this->assertSame(Undefined::UNDEFINED, $endorsedFriends->property);
+        $this->assertSame(Undefined::UNDEFINED, $endorsedFriends->nullable);
+        $this->assertSame(Undefined::UNDEFINED, $endorsedFriends->allOf);
 
         $this->processorPipeline([new AugmentProperties()])->process($analysis);
 
@@ -103,15 +103,15 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'fourthname',
             'example' => 'Unknown',
             'description' => 'The unknown name of the customer.',
-            'type' => Generator::UNDEFINED,
-            'nullable' => Generator::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
+            'nullable' => Undefined::UNDEFINED,
         ];
         $this->assertName($fourthName, $expectedValues);
 
         $expectedValues = [
             'property' => 'iq',
             'example' => '0.00',
-            'description' => Generator::UNDEFINED,
+            'description' => Undefined::UNDEFINED,
             'type' => 'string',
             'nullable' => false,
         ];
@@ -120,7 +120,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
 
         $expectedValues = [
             'property' => 'lastname',
-            'example' => Generator::UNDEFINED,
+            'example' => Undefined::UNDEFINED,
             'description' => 'the lastname of the customer',
             'type' => 'string',
         ];
@@ -185,96 +185,96 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         ] = $analysis->openapi->components->schemas[0]->properties;
 
         $this->assertName($stringType, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($intType, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($nullableString, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($arrayType, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($dateTime, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($dateTimeTimestamp, [
-            'property' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
             'type' => 'integer',
         ]);
         $this->assertName($qualified, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($namespaced, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($importedNamespace, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($varTrumpsNative, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($annotationTrumpsNative, [
-            'property' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
             'type' => 'integer',
         ]);
         $this->assertName($annotationTrumpsAll, [
-            'property' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
             'type' => 'integer',
         ]);
         $this->assertName($undefined, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($onlyAnnotated, [
-            'property' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
             'type' => 'integer',
         ]);
         $this->assertName($onlyVar, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($staticUndefined, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($staticString, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($staticNullableString, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($nativeArray, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($stringMap, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($unmappableMap, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($mixedMap, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($mixedValue, [
-            'property' => Generator::UNDEFINED,
-            'type' => Generator::UNDEFINED,
+            'property' => Undefined::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
 
         $this->processorPipeline([new AugmentProperties()])->process($analysis);
@@ -337,7 +337,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($undefined, [
             'property' => 'undefined',
-            'type' => Generator::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($onlyAnnotated, [
             'property' => 'onlyAnnotated',
@@ -349,7 +349,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         ]);
         $this->assertName($staticUndefined, [
             'property' => 'staticUndefined',
-            'type' => Generator::UNDEFINED,
+            'type' => Undefined::UNDEFINED,
         ]);
         $this->assertName($staticString, [
             'property' => 'staticString',
@@ -373,15 +373,15 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'stringMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Generator::isDefault($stringMap->additionalProperties));
+        $this->assertFalse(Undefined::isDefault($stringMap->additionalProperties));
         $this->assertSame('string', $stringMap->additionalProperties->type);
-        $this->assertTrue(Generator::isDefault($stringMap->items));
+        $this->assertTrue(Undefined::isDefault($stringMap->items));
 
         $this->assertName($arrayShape, [
             'property' => 'arrayShape',
             'type' => 'object',
         ]);
-        $this->assertTrue(Generator::isDefault($arrayShape->additionalProperties));
+        $this->assertTrue(Undefined::isDefault($arrayShape->additionalProperties));
         $this->assertSame(['id'], $arrayShape->required);
         [$id, $name] = $arrayShape->properties;
         $this->assertName($id, ['property' => 'id', 'type' => 'integer']);
@@ -391,9 +391,9 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'unmappableMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Generator::isDefault($unmappableMap->additionalProperties));
+        $this->assertFalse(Undefined::isDefault($unmappableMap->additionalProperties));
         $this->assertTrue(
-            Generator::isDefault($unmappableMap->additionalProperties->type),
+            Undefined::isDefault($unmappableMap->additionalProperties->type),
             'callable has no OpenAPI representation, so additionalProperties stays open instead of emitting type: callable',
         );
 
@@ -401,9 +401,9 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'mixedMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Generator::isDefault($mixedMap->additionalProperties));
+        $this->assertFalse(Undefined::isDefault($mixedMap->additionalProperties));
         $this->assertTrue(
-            Generator::isDefault($mixedMap->additionalProperties->type),
+            Undefined::isDefault($mixedMap->additionalProperties->type),
             'mixed has no OpenAPI representation, so additionalProperties stays open instead of emitting type: mixed',
         );
 
@@ -411,7 +411,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'mixedValue',
         ]);
         $this->assertTrue(
-            Generator::isDefault($mixedValue->type),
+            Undefined::isDefault($mixedValue->type),
             'mixed is the OpenAPI any value, so the property stays an open schema with no type instead of emitting type: mixed',
         );
     }

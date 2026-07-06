@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class ExternalDocumentation extends OA\ExternalDocumentation
@@ -17,7 +17,7 @@ class ExternalDocumentation extends OA\ExternalDocumentation
      * @param list<Attachable>|null    $attachables
      */
     public function __construct(
-        ?string $description = Generator::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?string $url = null,
 
         // abstract annotation
@@ -26,9 +26,9 @@ class ExternalDocumentation extends OA\ExternalDocumentation
     ) {
         parent::__construct([
                 'description' => $description,
-                'url' => $url ?? Generator::UNDEFINED,
-                'x' => $x ?? Generator::UNDEFINED,
-                'attachables' => $attachables ?? Generator::UNDEFINED,
+                'url' => $url ?? Undefined::UNDEFINED,
+                'x' => $x ?? Undefined::UNDEFINED,
+                'attachables' => $attachables ?? Undefined::UNDEFINED,
             ]);
     }
 }

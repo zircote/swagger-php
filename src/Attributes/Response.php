@@ -7,7 +7,7 @@
 namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends OA\Response
@@ -23,7 +23,7 @@ class Response extends OA\Response
     public function __construct(
         string|object|null $ref = null,
         int|string|null $response = null,
-        ?string $description = Generator::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?array $headers = null,
         MediaType|JsonContent|XmlContent|Attachable|array|null $content = null,
         ?array $links = null,
@@ -33,11 +33,11 @@ class Response extends OA\Response
         ?array $attachables = null
     ) {
         parent::__construct([
-            'ref' => $ref ?? Generator::UNDEFINED,
-            'response' => $response ?? Generator::UNDEFINED,
+            'ref' => $ref ?? Undefined::UNDEFINED,
+            'response' => $response ?? Undefined::UNDEFINED,
             'description' => $description,
-            'x' => $x ?? Generator::UNDEFINED,
-            'attachables' => $attachables ?? Generator::UNDEFINED,
+            'x' => $x ?? Undefined::UNDEFINED,
+            'attachables' => $attachables ?? Undefined::UNDEFINED,
             'value' => $this->combine($headers, $content, $links),
         ]);
     }

@@ -6,8 +6,8 @@
 
 namespace OpenApi\Tests\Processors;
 
-use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class CleanUnusedComponentsTest extends OpenApiTestCase
@@ -31,7 +31,7 @@ final class CleanUnusedComponentsTest extends OpenApiTestCase
         );
 
         if ($expectedSchemaCount === 0) {
-            $this->assertTrue(Generator::isDefault($analysis->openapi->components->schemas));
+            $this->assertTrue(Undefined::isDefault($analysis->openapi->components->schemas));
         } else {
             $this->assertCount($expectedSchemaCount, $analysis->openapi->components->schemas);
         }

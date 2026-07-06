@@ -8,9 +8,9 @@ namespace OpenApi\Tests\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Undefined;
 
 final class MergeIntoComponentsTest extends OpenApiTestCase
 {
@@ -25,7 +25,7 @@ final class MergeIntoComponentsTest extends OpenApiTestCase
             ],
             $this->getContext()
         );
-        $this->assertSame(Generator::UNDEFINED, $openapi->components);
+        $this->assertSame(Undefined::UNDEFINED, $openapi->components);
 
         $this->processorPipeline([new MergeIntoComponents()])->process($analysis);
 
