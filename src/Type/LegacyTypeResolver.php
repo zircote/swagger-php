@@ -9,8 +9,8 @@ namespace OpenApi\Type;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use OpenApi\TypeResolverInterface;
 use OpenApi\Undefined;
+use OpenApi\Utils\TypeMapper;
 
 /**
  * @deprecated use `TypeInfoTypeResolver` instead
@@ -110,7 +110,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
         if ($context) {
             foreach ($types as $ii => $type) {
-                if (!array_key_exists(strtolower((string) $type), TypeResolverInterface::NATIVE_TYPE_MAP) && !class_exists($type)) {
+                if (!array_key_exists(strtolower((string) $type), TypeMapper::NATIVE_TYPE_MAP) && !class_exists($type)) {
                     if (($resolved = $context->fullyQualifiedName($type)) && class_exists($resolved)) {
                         $types[$ii] = ltrim($resolved, '\\');
                     } else {

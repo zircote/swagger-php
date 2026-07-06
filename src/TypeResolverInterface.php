@@ -7,31 +7,12 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Utils\TypeMapper;
 
 interface TypeResolverInterface
 {
-    public const NATIVE_TYPE_MAP = [
-        'mixed' => 'mixed',
-        'string' => 'string',
-        'array' => 'array',
-        'byte' => ['string', 'byte'],
-        'boolean' => 'boolean',
-        'bool' => 'boolean',
-        'int' => 'integer',
-        'integer' => 'integer',
-        'long' => ['integer', 'long'],
-        'float' => ['number', 'float'],
-        'double' => ['number', 'double'],
-        'date' => ['string', 'date'],
-        'datetime' => ['string', 'date-time'],
-        '\\datetime' => ['string', 'date-time'],
-        'datetimeimmutable' => ['string', 'date-time'],
-        '\\datetimeimmutable' => ['string', 'date-time'],
-        'datetimeinterface' => ['string', 'date-time'],
-        '\\datetimeinterface' => ['string', 'date-time'],
-        'number' => 'number',
-        'object' => 'object',
-    ];
+    /** @deprecated Use TypeMapper::NATIVE_TYPE_MAP instead */
+    public const NATIVE_TYPE_MAP = TypeMapper::NATIVE_TYPE_MAP;
 
     public function mapNativeType(OA\Schema $schema, $type): bool;
 
