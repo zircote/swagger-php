@@ -4,10 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Analysers;
+namespace OpenApi\Tests;
 
-use OpenApi\Analysers\TokenScanner;
-use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\TokenScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TokenScannerTest extends OpenApiTestCase
@@ -17,7 +16,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'abstract' => [
             'PHP/AbstractKeyword.php',
             [
-                'OpenApi\Tests\Fixtures\PHP\AbstractKeyword' => [
+                \OpenApi\Tests\Fixtures\PHP\AbstractKeyword::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -33,7 +32,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'references' => [
             'PHP/References.php',
             [
-                'OpenApi\Tests\Fixtures\PHP\References' => [
+                \OpenApi\Tests\Fixtures\PHP\References::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -56,7 +55,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'php8' => [
             'PHP/php8.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\MethodAttr' => [
+                \OpenApi\Tests\Fixtures\PHP\MethodAttr::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -64,7 +63,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => [],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\GenericAttr' => [
+                \OpenApi\Tests\Fixtures\PHP\GenericAttr::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -72,7 +71,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => ['__construct'],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\Decorated' => [
+                \OpenApi\Tests\Fixtures\PHP\Decorated::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -86,7 +85,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'ExtendsClass' => [
             'PHP/Inheritance/ExtendsClass.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Inheritance\\ExtendsClass' => [
+                \OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -100,9 +99,9 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'ExtendsInterface' => [
             'PHP/Inheritance/ExtenedsBaseInterface.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Inheritance\\ExtenedsBaseInterface' => [
+                \OpenApi\Tests\Fixtures\PHP\Inheritance\ExtenedsBaseInterface::class => [
                     'uses' => [],
-                    'interfaces' => ['OpenApi\\Tests\\Fixtures\\PHP\\Inheritance\\BaseInterface'],
+                    'interfaces' => [\OpenApi\Tests\Fixtures\PHP\Inheritance\BaseInterface::class],
                     'traits' => [],
                     'enums' => [],
                     'methods' => [],
@@ -114,7 +113,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'CustomerInterface' => [
             'CustomerInterface.php',
             [
-                'OpenApi\\Tests\\Fixtures\\CustomerInterface' => [
+                \OpenApi\Tests\Fixtures\CustomerInterface::class => [
                     'uses' => ['OAT' => 'OpenApi\\Attributes'],
                     'interfaces' => [],
                     'traits' => [],
@@ -128,12 +127,12 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'AllTraits' => [
             'Parser/AllTraits.php',
             [
-                'OpenApi\\Tests\\Fixtures\\Parser\\AllTraits' => [
+                \OpenApi\Tests\Fixtures\Parser\AllTraits::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [
-                        'OpenApi\\Tests\\Fixtures\\Parser\\AsTrait',
-                        'OpenApi\\Tests\\Fixtures\\Parser\\HelloTrait',
+                        \OpenApi\Tests\Fixtures\Parser\AsTrait::class,
+                        \OpenApi\Tests\Fixtures\Parser\HelloTrait::class,
                     ],
                     'enums' => [],
                     'methods' => [],
@@ -145,14 +144,14 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'User' => [
             'Parser/User.php',
             [
-                'OpenApi\\Tests\\Fixtures\\Parser\\User' => [
+                \OpenApi\Tests\Fixtures\Parser\User::class => [
                     'uses' => [
-                        'Hello' => 'OpenApi\\Tests\\Fixtures\\Parser\\HelloTrait',
-                        'ParentClass' => 'OpenApi\\Tests\\Fixtures\\Parser\\Sub\\SubClass',
+                        'Hello' => \OpenApi\Tests\Fixtures\Parser\HelloTrait::class,
+                        'ParentClass' => \OpenApi\Tests\Fixtures\Parser\Sub\SubClass::class,
                         'OA' => 'OpenApi\Annotations',
                     ],
-                    'interfaces' => ['OpenApi\\Tests\\Fixtures\\Parser\\UserInterface'],
-                    'traits' => ['OpenApi\\Tests\\Fixtures\\Parser\\HelloTrait'],
+                    'interfaces' => [\OpenApi\Tests\Fixtures\Parser\UserInterface::class],
+                    'traits' => [\OpenApi\Tests\Fixtures\Parser\HelloTrait::class],
                     'enums' => [],
                     'methods' => ['getFirstName'],
                     'properties' => [],
@@ -163,15 +162,15 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'HelloTrait' => [
             'Parser/HelloTrait.php',
             [
-                'OpenApi\\Tests\\Fixtures\\Parser\\HelloTrait' => [
+                \OpenApi\Tests\Fixtures\Parser\HelloTrait::class => [
                     'uses' => [
-                        'Aliased' => 'OpenApi\\Tests\\Fixtures\\Parser\\AsTrait',
+                        'Aliased' => \OpenApi\Tests\Fixtures\Parser\AsTrait::class,
                         'OAT' => 'OpenApi\\Attributes',
                     ],
                     'interfaces' => [],
                     'traits' => [
-                        'OpenApi\\Tests\\Fixtures\\Parser\\OtherTrait',
-                        'OpenApi\\Tests\\Fixtures\\Parser\\AsTrait',
+                        \OpenApi\Tests\Fixtures\Parser\OtherTrait::class,
+                        \OpenApi\Tests\Fixtures\Parser\AsTrait::class,
                     ],
                     'enums' => [],
                     'methods' => [],
@@ -183,7 +182,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'Php8PromotedProperties' => [
             'PHP/Php8PromotedProperties.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Php8PromotedProperties' => [
+                \OpenApi\Tests\Fixtures\PHP\Php8PromotedProperties::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                         'OA' => 'OpenApi\Annotations',
@@ -200,7 +199,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'Php8NamedArguments' => [
             'PHP/Php8NamedArguments.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Php8NamedArguments' => [
+                \OpenApi\Tests\Fixtures\PHP\Php8NamedArguments::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -210,7 +209,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => ['useFoo', 'foo'],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\ReservedWordsAttr' => [
+                \OpenApi\Tests\Fixtures\PHP\ReservedWordsAttr::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -220,7 +219,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => ['__construct'],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\UserlandClass' => [
+                \OpenApi\Tests\Fixtures\PHP\UserlandClass::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -236,7 +235,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'AnonymousFunctions' => [
             'PHP/AnonymousFunctions.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\AnonymousFunctions' => [
+                \OpenApi\Tests\Fixtures\PHP\AnonymousFunctions::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -260,7 +259,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'CurlyBrace' => [
             'PHP/MultipleFunctions.php',
             [
-                'OpenApi\Tests\Fixtures\PHP\MultipleFunctions' => [
+                \OpenApi\Tests\Fixtures\PHP\MultipleFunctions::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\Attributes',
                     ],
@@ -279,7 +278,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'namespaces1' => [
             'PHP/namespaces1.php',
             [
-                'Foo\\FooClass' => [
+                \Foo\FooClass::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -287,7 +286,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => [],
                     'properties' => [],
                 ],
-                'Bar\\BarClass' => [
+                \Bar\BarClass::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -301,7 +300,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'namespaces2' => [
             'PHP/namespaces2.php',
             [
-                'Foo\\FooClass' => [
+                \Foo\FooClass::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'enums' => [],
@@ -309,7 +308,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => [],
                     'properties' => [],
                 ],
-                'Bar\\BarClass' => [
+                \Bar\BarClass::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -345,7 +344,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'methods' => [],
                     'properties' => [],
                 ],
-                'OpenApi\\Tests\\Fixtures\\PHP\\MultiNamespace' => [
+                \OpenApi\Tests\Fixtures\PHP\MultiNamespace::class => [
                     'uses' => [],
                     'interfaces' => [],
                     'traits' => [],
@@ -359,7 +358,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'enum' => [
             'PHP/Enums/StatusEnum.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnum' => [
+                \OpenApi\Tests\Fixtures\PHP\Enums\StatusEnum::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                     ],
@@ -375,7 +374,7 @@ final class TokenScannerTest extends OpenApiTestCase
         yield 'enum-backed' => [
             'PHP/Enums/StatusEnumBacked.php',
             [
-                'OpenApi\\Tests\\Fixtures\\PHP\\Enums\\StatusEnumBacked' => [
+                \OpenApi\Tests\Fixtures\PHP\Enums\StatusEnumBacked::class => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                     ],
