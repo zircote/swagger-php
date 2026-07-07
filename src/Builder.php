@@ -25,7 +25,7 @@ class Builder
     protected ?LoggerInterface $logger = null;
 
     /** @var callable|null */
-    protected $generatorConfigurator;
+    protected $generatorHook;
 
     public function addSource(string|iterable $source): static
     {
@@ -59,23 +59,23 @@ class Builder
     }
 
     /**
-     * Configure the underlying Generator for classic mode.
+     * Hook to configure the underlying Generator.
      *
      * The callable receives a default Generator and may either modify it in-place
      * or return a fully configured instance.
      *
-     * @param callable(Generator): ?Generator $configurator
+     * @param callable(Generator): ?Generator $hook
      */
-    public function withGenerator(callable $configurator): static
+    public function withGenerator(callable $hook): static
     {
-        $this->generatorConfigurator = $configurator;
+        $this->generatorHook = $hook;
 
         return $this;
     }
 
     public function build(): Result
     {
-        return $this->buildClassic();
+        return $this->doBuild();
     }
 
     protected function getLogger(): LoggerInterface
@@ -85,7 +85,7 @@ class Builder
         return $this->logger;
     }
 
-    protected function buildClassic(): Result
+    protected function doBuild(): Result
     {
         $collecting = new CollectingLogger($this->getLogger());
         $generator = new Generator($collecting);
@@ -94,8 +94,8 @@ class Builder
             $generator->setVersion($this->version);
         }
 
-        if ($this->generatorConfigurator !== null) {
-            $generator = ($this->generatorConfigurator)($generator) ?? $generator;
+        if ($this->generatorHook !== null) {
+            $generator = ($this->generatorHook)($generator) ?? $generator;
         }
 
         $openApi = $generator->generate($this->sources);
