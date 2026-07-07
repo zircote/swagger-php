@@ -1,0 +1,11 @@
+extends:
+  - minimal
+
+rules:
+  no-unresolved-refs: error
+  no-unused-components: warn
+  spec-components-invalid-map-name: error
+  security-defined: off
+  operation-summary: off
+  operation-2xx-response: off
+  operation-4xx-response: off
