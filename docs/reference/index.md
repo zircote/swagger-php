@@ -12,9 +12,13 @@ However, `swagger-php` offers more.
 
   The 'traditional' way of documenting your API.  
 
+* The [`Builder`](builder.md)
+
+  The `\OpenApi\Builder` class is the recommended entry point for generating OpenAPI documents from PHP code.
+
 * The [`Generator`](generator.md)
 
-  The `\OpenAPI\Generator` class is the main entry point to programmatically generate OpenAPI documents from your code.
+  The `\OpenApi\Generator` class can be used directly for advanced use cases or via the Builder's `withGenerator()` method.
 
 * [Processors](processors.md)
 

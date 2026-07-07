@@ -55,6 +55,7 @@ function getReferenceSidebar() {
     {
       text: 'Api',
       items: [
+        { text: 'Builder', link: '/reference/builder' },
         { text: 'Generator', link: '/reference/generator' },
         { text: 'Processors', link: '/reference/processors' },
       ]
