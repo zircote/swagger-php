@@ -7,6 +7,7 @@
 namespace OpenApi\Builder;
 
 use OpenApi\Annotations\OpenApi;
+use OpenApi\OpenApiException;
 
 /**
  * Result container for a build operation.
@@ -95,5 +96,18 @@ class Result
         }
 
         return $this->openApi->toYaml();
+    }
+
+    public function saveAs(string $filename, string $format = 'auto'): void
+    {
+        if ($format === 'auto') {
+            $format = strtolower(substr($filename, -5)) === '.json' ? 'json' : 'yaml';
+        }
+
+        $content = strtolower($format) === 'json' ? $this->toJson() : $this->toYaml();
+
+        if (file_put_contents($filename, $content) === false) {
+            throw new OpenApiException('Failed to save to "' . $filename . '"');
+        }
     }
 }
