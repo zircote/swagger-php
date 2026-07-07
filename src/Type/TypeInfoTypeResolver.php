@@ -268,7 +268,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         return $this->typeMapper->hasOpenApiType($native);
     }
 
-    /**645 1050272  02 1268 0026220 00
+    /**
      * @param \ReflectionParameter|\ReflectionProperty|\ReflectionMethod $reflector
      */
     protected function getReflectionType(\Reflector $reflector): ?Type
