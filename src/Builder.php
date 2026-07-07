@@ -64,7 +64,7 @@ class Builder
      * The callable receives a default Generator and may either modify it in-place
      * or return a fully configured instance.
      *
-     * @param callable(Generator): ?Generator $hook
+     * @param callable(Generator): (Generator|void) $hook
      */
     public function withGenerator(callable $hook): static
     {
