@@ -1,0 +1,411 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redocly.com/docs/cli/ for more information.
+docs/examples/specs/using-traits/using-traits-3.2.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/CustomName~1Blink'
+docs/examples/specs/using-traits/using-traits-3.1.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/CustomName~1Blink'
+docs/examples/specs/using-traits/using-traits-3.0.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/CustomName~1Blink'
+docs/examples/specs/using-refs/using-refs-3.2.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-refs/using-refs-3.1.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-refs/using-refs-3.0.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-interfaces/using-interfaces-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/using-interfaces/using-interfaces-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/using-interfaces/using-interfaces-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/using-links/using-links-3.2.0.yaml:
+  no-ambiguous-paths:
+    - '#/paths/~12.0~1repositories~1{username}~1{slug}~1pullrequests~1{pid}'
+docs/examples/specs/using-links/using-links-3.1.0.yaml:
+  no-ambiguous-paths:
+    - '#/paths/~12.0~1repositories~1{username}~1{slug}~1pullrequests~1{pid}'
+docs/examples/specs/using-links/using-links-3.0.0.yaml:
+  no-ambiguous-paths:
+    - '#/paths/~12.0~1repositories~1{username}~1{slug}~1pullrequests~1{pid}'
+docs/examples/specs/polymorphism/polymorphism-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/polymorphism/polymorphism-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/polymorphism/polymorphism-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/nesting/nesting-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/nesting/nesting-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/nesting/nesting-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+docs/examples/specs/misc/misc-3.2.0.yaml:
+  tag-description:
+    - '#/tags/0/description'
+  no-invalid-media-type-examples:
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value/success
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value
+docs/examples/specs/misc/misc-3.1.0.yaml:
+  tag-description:
+    - '#/tags/0/description'
+  no-invalid-media-type-examples:
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value/success
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value
+docs/examples/specs/misc/misc-3.0.0.yaml:
+  tag-description:
+    - '#/tags/0/description'
+  no-invalid-media-type-examples:
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value/success
+    - >-
+      #/paths/~1users/post/responses/200/content/application~1json/examples/result/value
+docs/examples/specs/api/api-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/post
+tests/Fixtures/Scratch/Types3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Types'
+tests/Fixtures/Scratch/Types3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Types'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
+tests/Fixtures/Scratch/Tags3.2.0.yaml:
+  tag-description:
+    - '#/tags/2/description'
+tests/Fixtures/Scratch/Tags3.1.0.yaml:
+  tag-description:
+    - '#/tags/2/description'
+tests/Fixtures/Scratch/Tags3.0.0.yaml:
+  tag-description:
+    - '#/tags/2/description'
+tests/Fixtures/Scratch/Security3.2.0.yaml:
+  struct:
+    - '#/components/securitySchemes/store_auth/flows/password'
+    - '#/components/securitySchemes/store_auth/flows/password/authorizationUrl'
+  no-unused-components:
+    - '#/components/securitySchemes/api_key'
+    - '#/components/securitySchemes/store_auth'
+tests/Fixtures/Scratch/Security3.1.0.yaml:
+  struct:
+    - '#/components/securitySchemes/store_auth/flows/password'
+    - '#/components/securitySchemes/store_auth/flows/password/authorizationUrl'
+  no-unused-components:
+    - '#/components/securitySchemes/api_key'
+    - '#/components/securitySchemes/store_auth'
+tests/Fixtures/Scratch/Security3.0.0.yaml:
+  struct:
+    - '#/components/securitySchemes/store_auth/flows/password'
+    - '#/components/securitySchemes/store_auth/flows/password/authorizationUrl'
+  no-unused-components:
+    - '#/components/securitySchemes/api_key'
+    - '#/components/securitySchemes/store_auth'
+tests/Fixtures/Scratch/RequestBody3.2.0-type-info.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/RequestBody3.2.0-legacy.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
+    - '#/components/requestBodies/foo'
+  no-unused-components:
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/RequestBody3.1.0-type-info.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/RequestBody3.1.0-legacy.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
+    - '#/components/requestBodies/foo'
+  no-unused-components:
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/RequestBody3.0.0-type-info.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/RequestBody3.0.0-legacy.yaml:
+  struct:
+    - '#/components/requestBodies/RequestBodyRef'
+    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
+    - '#/components/requestBodies/foo'
+  no-unused-components:
+    - '#/components/requestBodies/foo'
+tests/Fixtures/Scratch/PropertyItems3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PropertyItems'
+tests/Fixtures/Scratch/PropertyItems3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PropertyItems'
+tests/Fixtures/Scratch/PropertyItems3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PropertyItems'
+tests/Fixtures/Scratch/PromotedProperty3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PromotedPropertyDescription'
+tests/Fixtures/Scratch/PromotedProperty3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PromotedPropertyDescription'
+tests/Fixtures/Scratch/PromotedProperty3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/PromotedPropertyDescription'
+tests/Fixtures/Scratch/PathParameter3.2.0.yaml:
+  struct:
+    - '#/paths/~1items~1{item_name}/get/parameters/0'
+    - '#/paths/~1admin~1items~1{item_name}/get/parameters/0'
+tests/Fixtures/Scratch/PathParameter3.1.0.yaml:
+  struct:
+    - '#/paths/~1items~1{item_name}/get/parameters/0'
+    - '#/paths/~1admin~1items~1{item_name}/get/parameters/0'
+tests/Fixtures/Scratch/PathParameter3.0.0.yaml:
+  struct:
+    - '#/paths/~1items~1{item_name}/get/parameters/0'
+    - '#/paths/~1admin~1items~1{item_name}/get/parameters/0'
+tests/Fixtures/Scratch/Nullable3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Nullable'
+tests/Fixtures/Scratch/Nullable3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Nullable'
+tests/Fixtures/Scratch/Nullable3.0.0.yaml:
+  nullable-type-sibling:
+    - '#/components/schemas/Nullable/properties/birthdate/nullable'
+    - '#/components/schemas/Nullable/properties/otherdate/nullable'
+    - '#/components/schemas/Nullable/properties/anotherdate/nullable'
+  no-unused-components:
+    - '#/components/schemas/Nullable'
+tests/Fixtures/Scratch/NullRef3.0.0.yaml:
+  nullable-type-sibling:
+    - >-
+      #/paths/~1api~1refonly/get/responses/200/content/application~1json/schema/nullable
+    - >-
+      #/paths/~1api~1refplus/get/responses/200/content/application~1json/schema/nullable
+tests/Fixtures/Scratch/NestedSchema3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedSchema'
+tests/Fixtures/Scratch/NestedSchema3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedSchema'
+tests/Fixtures/Scratch/NestedSchema3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedSchema'
+tests/Fixtures/Scratch/NestedAdditionalProperties3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedAdditionalAttributes'
+tests/Fixtures/Scratch/NestedAdditionalProperties3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedAdditionalAttributes'
+tests/Fixtures/Scratch/NestedAdditionalProperties3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/NestedAdditionalAttributes'
+tests/Fixtures/Scratch/MultiTypeProperty3.2.0-type-info.yaml:
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/MultiTypeProperty3.2.0-legacy.yaml:
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/MultiTypeProperty3.1.0-type-info.yaml:
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/MultiTypeProperty3.1.0-legacy.yaml:
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/MultiTypeProperty3.0.0-type-info.yaml:
+  nullable-type-sibling:
+    - '#/components/schemas/MultiTypeProperty/properties/value/nullable'
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/MultiTypeProperty3.0.0-legacy.yaml:
+  nullable-type-sibling:
+    - '#/components/schemas/MultiTypeProperty/properties/value/nullable'
+  no-unused-components:
+    - '#/components/schemas/MultiTypeProperty'
+tests/Fixtures/Scratch/ExclusiveMinMax3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/minMaxClass'
+tests/Fixtures/Scratch/ExclusiveMinMax3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/minMaxClass'
+tests/Fixtures/Scratch/ExclusiveMinMax3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/minMaxClass'
+tests/Fixtures/Scratch/Examples3.2.0.yaml:
+  struct:
+    - '#/components/schemas/YoYo/examples'
+tests/Fixtures/Scratch/Examples3.1.0.yaml:
+  struct:
+    - '#/components/schemas/YoYo/examples'
+tests/Fixtures/Scratch/DynamicEnumCase3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DynamicEnumCase'
+tests/Fixtures/Scratch/DynamicEnumCase3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DynamicEnumCase'
+tests/Fixtures/Scratch/DynamicEnumCase3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DynamicEnumCase'
+tests/Fixtures/Scratch/DuplicateRef3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/create-user'
+tests/Fixtures/Scratch/DuplicateRef3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/create-user'
+tests/Fixtures/Scratch/DuplicateRef3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/create-user'
+tests/Fixtures/Scratch/Docblocks3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/Docblocks3.2.0-8.6.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/Docblocks3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/Docblocks3.1.0-8.6.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/Docblocks3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/Docblocks3.0.0-8.6.yaml:
+  no-unused-components:
+    - '#/components/schemas/DocblockSchemaChild'
+tests/Fixtures/Scratch/CustomPropertyAttribute3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CustomPropertyAttribute'
+tests/Fixtures/Scratch/CustomPropertyAttribute3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CustomPropertyAttribute'
+tests/Fixtures/Scratch/CustomPropertyAttribute3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CustomPropertyAttribute'
+tests/Fixtures/Scratch/CustomAttributes3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CAModel'
+tests/Fixtures/Scratch/CustomAttributes3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CAModel'
+tests/Fixtures/Scratch/CustomAttributes3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/CAModel'
+tests/Fixtures/Scratch/CustomAttributeSchema3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/MyClass'
+tests/Fixtures/Scratch/CustomAttributeSchema3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/MyClass'
+tests/Fixtures/Scratch/CustomAttributeSchema3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/MyClass'
+tests/Fixtures/Scratch/Components3.2.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+  struct:
+    - '#/components/requestBodies/first request body'
+  no-unused-components:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+tests/Fixtures/Scratch/Components3.1.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+  struct:
+    - '#/components/requestBodies/first request body'
+  no-unused-components:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+tests/Fixtures/Scratch/Components3.0.0.yaml:
+  spec-components-invalid-map-name:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+  struct:
+    - '#/components/requestBodies/first request body'
+  no-unused-components:
+    - '#/components/schemas/first schema'
+    - '#/components/schemas/second schema'
+    - '#/components/requestBodies/first request body'
+tests/Fixtures/Scratch/AttributeInheritance3.2.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child1'
+    - '#/components/schemas/Child2'
+tests/Fixtures/Scratch/AttributeInheritance3.1.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child1'
+    - '#/components/schemas/Child2'
+tests/Fixtures/Scratch/AttributeInheritance3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child1'
+    - '#/components/schemas/Child2'

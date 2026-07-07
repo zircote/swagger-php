@@ -87,12 +87,7 @@
         "test": "Run all PHP, codestyle and rector tests",
         "performance": "Run performance regression tests",
         "analyse": "Run static analysis (phpstan)",
-        "spectral-examples": "Run spectral lint over all .yaml files in the docs/examples folder",
-        "spectral-scratch": "Run spectral lint over all .yaml files in the tests/Fixtures/Scratch folder",
-        "spectral": "Run all spectral tests",
-        "redocly-examples": "Run redocly lint over all .yaml files in the docs/examples folder",
-        "redocly-scratch": "Run redocly lint over all .yaml files in the tests/Fixtures/Scratch folder",
-        "redocly": "Run all redocly tests",
+        "redocly": "Validate generated specs with Redocly",
         "docs:gen": "Rebuild reference documentation",
         "docs:dev": "Run dev server for local development of gh-pages",
         "docs:build": "Re-build static gh-pages"
@@ -112,18 +107,7 @@
         "analyse": [
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=3G"
         ],
-        "spectral-examples": "for ff in `find docs/examples -name '*.yaml'`; do npm run spectral lint $ff; done",
-        "spectral-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do npm run spectral lint $ff; done",
-        "spectral": [
-            "@spectral-examples",
-            "@spectral-scratch"
-        ],
-        "redocly-examples": "for ff in `find docs/examples -name '*.yaml'`; do npm run redocly lint $ff; done",
-        "redocly-scratch": "for ff in `find tests/Fixtures/Scratch -name '*.yaml'`; do npm run redocly lint $ff; done",
-        "redocly": [
-            "@redocly-examples",
-            "@redocly-scratch"
-        ],
+        "redocly": "npm run redocly -- lint 'docs/examples/specs/**/*.yaml' 'tests/Fixtures/Scratch/*.yaml'",
         "docs:gen": [
             "@php tools/refgen.php",
             "@php tools/procgen.php",
