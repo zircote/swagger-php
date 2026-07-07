@@ -1,0 +1,115 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi;
+
+use OpenApi\Builder\CollectingLogger;
+use OpenApi\Builder\Result;
+use OpenApi\Loggers\DefaultLogger;
+use OpenApi\Utils\SourceScanner;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Unified entry point for generating OpenAPI specs.
+ */
+class Builder
+{
+    /** @var list<string|iterable> */
+    protected array $sources = [];
+
+    protected ?string $version = null;
+
+    protected ?LoggerInterface $logger = null;
+
+    /** @var callable|null */
+    protected $generatorConfigurator;
+
+    public function addSource(string|iterable $source): static
+    {
+        $this->sources[] = $source;
+
+        return $this;
+    }
+
+    /**
+     * @param list<string|iterable> $sources
+     */
+    public function setSources(array $sources): static
+    {
+        $this->sources = $sources;
+
+        return $this;
+    }
+
+    public function setVersion(string $version): static
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    public function setLogger(LoggerInterface $logger): static
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    /**
+     * Configure the underlying Generator for classic mode.
+     *
+     * The callable receives a default Generator and may either modify it in-place
+     * or return a fully configured instance.
+     *
+     * @param callable(Generator): ?Generator $configurator
+     */
+    public function withGenerator(callable $configurator): static
+    {
+        $this->generatorConfigurator = $configurator;
+
+        return $this;
+    }
+
+    public function build(): Result
+    {
+        return $this->buildClassic();
+    }
+
+    protected function getLogger(): LoggerInterface
+    {
+        $this->logger ??= new DefaultLogger();
+
+        return $this->logger;
+    }
+
+    protected function buildClassic(): Result
+    {
+        $collecting = new CollectingLogger($this->getLogger());
+        $generator = new Generator($collecting);
+
+        if ($this->version !== null) {
+            $generator->setVersion($this->version);
+        }
+
+        if ($this->generatorConfigurator !== null) {
+            $generator = ($this->generatorConfigurator)($generator) ?? $generator;
+        }
+
+        $openApi = $generator->generate($this->sources);
+
+        return new Result($this->resolveFiles(), $openApi, $collecting->entries());
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function resolveFiles(): array
+    {
+        $scanner = new SourceScanner($this->getLogger());
+
+        return $scanner->scan($this->sources);
+    }
+}
