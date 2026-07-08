@@ -74,7 +74,10 @@ class Specification
                 $attribute instanceof Spec\SecurityScheme => $this->securitySchemes[] = $attribute,
                 $attribute instanceof Spec\Link => $this->links[] = $attribute,
                 $attribute instanceof Spec\Example => $this->examples[] = $attribute,
-                default => throw new \InvalidArgumentException('Unsupported attribute: ' . $attribute::class),
+                default => throw OpenApiException::fromSource(
+                    'Unsupported root-level attribute: ' . $attribute::class,
+                    $attribute->getSourceLocation(),
+                ),
             };
         }
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Utils\SourceLocation;
+
 /**
  * Most basic form of a spec attribute.
  *
@@ -35,4 +37,6 @@ interface AttributeInterface
     public function getReflector(): ?\Reflector;
 
     public function setReflector(?\Reflector $reflector): static;
+
+    public function getSourceLocation(): SourceLocation;
 }

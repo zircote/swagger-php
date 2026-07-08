@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Utils\DocBlockParser;
+use OpenApi\Utils\SourceLocation;
 
 /**
  * Collects OpenAPI spec attributes from PHP reflectors and assembles them into a Specification.
@@ -133,10 +134,10 @@ class Assembler
                 foreach ($allowedParents as $parentClass) {
                     if ($candidate instanceof $parentClass) {
                         if ($matchingParent instanceof AttributeInterface) {
-                            throw new \LogicException(sprintf(
-                                'Ambiguous nesting: %s matches multiple parents on the same target.',
-                                $instance::class,
-                            ));
+                            throw OpenApiException::fromSource(
+                                sprintf('Ambiguous nesting: %s matches multiple parents on the same target', $instance::class),
+                                $instance->getSourceLocation(),
+                            );
                         }
                         $matchingParent = $candidate;
                     }
@@ -204,11 +205,10 @@ class Assembler
             }
         }
 
-        throw new \LogicException(sprintf(
-            'Cannot nest %s into %s: no matching property found.',
-            $childClass,
-            $parent::class,
-        ));
+        throw OpenApiException::fromSource(
+            sprintf('Cannot nest %s into %s: no matching property found', $childClass, $parent::class),
+            $child->getSourceLocation(),
+        );
     }
 
     /**
@@ -226,7 +226,15 @@ class Assembler
                 continue;
             }
 
-            $instance = $attribute->newInstance();
+            try {
+                $instance = $attribute->newInstance();
+            } catch (\Error $e) {
+                throw OpenApiException::fromSource(
+                    sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
+                    SourceLocation::fromReflector($reflector),
+                    $e,
+                );
+            }
 
             $instance->setReflector($reflector);
 
