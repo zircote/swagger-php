@@ -28,7 +28,9 @@ class CustomProperty extends OAT\Property
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
 class CustomItem extends OAT\Property
 {
-    /** @param class-string $of */
+    /**
+     * @param class-string $of
+     */
     public function __construct(
         string $of,
         ?string $description = null
@@ -44,7 +46,9 @@ class CustomItem extends OAT\Property
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
 class CustomList extends OAT\Property
 {
-    /** @param class-string $of */
+    /**
+     * @param class-string $of
+     */
     public function __construct(string $of, ?string $description = null)
     {
         parent::__construct(

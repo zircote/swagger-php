@@ -98,6 +98,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_alias_tag' => true,
         'phpdoc_param_order' => true,
         'multiline_comment_opening_closing' => true,
+        'phpdoc_line_span' => ['class' => 'multi', 'method' => 'multi', 'property' => null, 'const' => null, 'case' => null, 'function' => null],
 
         'php_unit_attributes' => true,
     ])

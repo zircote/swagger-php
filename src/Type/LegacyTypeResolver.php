@@ -17,7 +17,9 @@ use OpenApi\Utils\TypeMapper;
  */
 class LegacyTypeResolver extends AbstractTypeResolver
 {
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector, string $sourceClass = OA\Schema::class): void
     {
         $docblockDetails = $this->getDocblockTypeDetails($reflector, $schema->_context);

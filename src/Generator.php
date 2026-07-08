@@ -73,7 +73,9 @@ class Generator
         $this->setNamespaces(self::DEFAULT_NAMESPACES);
     }
 
-    /** @deprecated Use {@see Undefined::isDefault()} instead. */
+    /**
+     * @deprecated use {@see Undefined::isDefault()} instead
+     */
     public static function isDefault(...$value): bool
     {
         return Undefined::isDefault(...$value);
