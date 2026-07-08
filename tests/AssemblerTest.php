@@ -1,0 +1,112 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests;
+
+use OpenApi\Assembler;
+use OpenApi\OpenApiException;
+use OpenApi\Spec;
+use PHPUnit\Framework\TestCase;
+
+final class AssemblerTest extends TestCase
+{
+    public function testStackMergeSchemaIntoProperty(): void
+    {
+        $assembler = new Assembler();
+        $attributes = $assembler->instantiate(new \ReflectionProperty(Fixtures\Assembler\SimpleProduct::class, 'name'));
+
+        $this->assertCount(1, $attributes);
+        $this->assertInstanceOf(Spec\Property::class, $attributes[0]);
+        $this->assertEquals('name', $attributes[0]->property);
+        $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
+        $this->assertEquals('The name.', $attributes[0]->schema->description);
+    }
+
+    public function testStackMergeSchemaIntoParameter(): void
+    {
+        $assembler = new Assembler();
+        $attributes = $assembler->instantiate(new \ReflectionParameter(
+            [Fixtures\Assembler\SimpleController::class, 'getProduct'],
+            'product_id',
+        ));
+
+        $this->assertCount(1, $attributes);
+        $this->assertInstanceOf(Spec\Parameter::class, $attributes[0]);
+        $this->assertEquals('product_id', $attributes[0]->name);
+        $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
+        $this->assertEquals('int64', $attributes[0]->schema->format);
+    }
+
+    public function testHierarchyPropertyAbsorbedBySchema(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\SimpleProduct::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(1, $spec->schemas);
+        $this->assertEquals('SimpleProduct', $spec->schemas[0]->schema);
+        $this->assertNotNull($spec->schemas[0]->properties);
+        $this->assertCount(2, $spec->schemas[0]->properties);
+    }
+
+    public function testHierarchyPromotedPropertyAbsorbedBySchema(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\PromotedProduct::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(1, $spec->schemas);
+        $this->assertNotNull($spec->schemas[0]->properties);
+        $this->assertCount(2, $spec->schemas[0]->properties);
+
+        $names = array_map(fn ($p) => $p->property, $spec->schemas[0]->properties);
+        $this->assertContains('quantity', $names);
+        $this->assertContains('brand', $names);
+    }
+
+    public function testHierarchyMethodParametersAbsorbedByOperation(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\SimpleController::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(1, $spec->operations);
+        $this->assertEquals('/products/{product_id}', $spec->operations[0]->path);
+        $this->assertNotNull($spec->operations[0]->parameters);
+        $this->assertCount(1, $spec->operations[0]->parameters);
+        $this->assertEquals('product_id', $spec->operations[0]->parameters[0]->name);
+    }
+
+    public function testOrphanAttributeThrows(): void
+    {
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessageMatches('/Orphan attribute/');
+
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\OrphanProperty::class));
+    }
+
+    public function testAmbiguousMergeThrows(): void
+    {
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessageMatches('/Ambiguous merge/');
+
+        $assembler = new Assembler();
+        $assembler->instantiate(new \ReflectionProperty(Fixtures\Assembler\AmbiguousMerge::class, 'value'));
+    }
+
+    public function testClassConstantAbsorbedBySchema(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\WithConstant::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(1, $spec->schemas);
+        $this->assertNotNull($spec->schemas[0]->properties);
+        $this->assertCount(1, $spec->schemas[0]->properties);
+        $this->assertEquals('kind', $spec->schemas[0]->properties[0]->property);
+    }
+}

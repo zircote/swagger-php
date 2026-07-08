@@ -27,7 +27,7 @@ class Link extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [Response::class];
     }

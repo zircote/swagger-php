@@ -33,8 +33,13 @@ class Header extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [Response::class, Encoding::class];
+    }
+
+    public function contains(): array
+    {
+        return [MediaType::class, Example::class];
     }
 }

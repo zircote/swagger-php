@@ -39,8 +39,13 @@ class Operation extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function isRoot(): bool
     {
-        return [];
+        return true;
+    }
+
+    public function contains(): array
+    {
+        return [Parameter::class, Response::class, RequestBody::class, Server::class];
     }
 }

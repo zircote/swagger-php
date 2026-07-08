@@ -11,6 +11,18 @@ use OpenApi\Utils\SourceLocation;
 
 /**
  * Collects OpenAPI spec attributes from PHP reflectors and assembles them into a Specification.
+ *
+ * The assembler operates in two passes:
+ *
+ * 1. Stack-resolve (resolveNesting): On each reflector, sibling attributes are merged
+ *    using merge() — e.g., a Schema adjacent to a Property on the same parameter
+ *    fills the Property's $schema slot.
+ *
+ * 2. Hierarchical absorb (resolveHierarchy): Attributes from inner reflectors (properties,
+ *    parameters, constants) flow up into enclosing-level containers using contains() —
+ *    e.g., Property instances from class members are absorbed into the class-level Schema.
+ *
+ * After both passes, only root attributes (isRoot() = true) should remain.
  */
 class Assembler
 {
@@ -40,120 +52,148 @@ class Assembler
     }
 
     /**
-     * Instantiate OpenAPI attributes from a single reflector, resolve nesting,
-     * and return the root-level attributes.
+     * Instantiate and resolve OpenAPI attributes from a single reflector.
      *
      * @return list<AttributeInterface>
      */
     public function instantiate(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        $instances = [];
-
-        foreach ($this->readAttributes($reflector) as $instance) {
-            $instances[] = $instance;
-        }
-
         if ($reflector instanceof \ReflectionMethod) {
+            $outer = $this->resolveNesting($this->readAttributesArray($reflector));
+            $inner = [];
             foreach ($reflector->getParameters() as $parameter) {
-                foreach ($this->readAttributes($parameter) as $instance) {
-                    $instances[] = $instance;
-                }
+                array_push($inner, ...$this->resolveNesting($this->readAttributesArray($parameter)));
             }
+
+            return $this->resolveHierarchy($outer, $inner);
         }
 
-        return $this->resolveNesting($instances);
+        return $this->resolveNesting($this->readAttributesArray($reflector));
     }
 
     protected function collectFromReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): void
     {
-        $instances = [];
+        if ($reflector instanceof \ReflectionClass) {
+            $this->collectFromClass($reflector);
 
-        foreach ($this->readAttributes($reflector) as $instance) {
-            $instances[] = $instance;
+            return;
         }
 
         if ($reflector instanceof \ReflectionMethod) {
+            $outer = $this->resolveNesting($this->readAttributesArray($reflector));
+            $inner = [];
             foreach ($reflector->getParameters() as $parameter) {
-                foreach ($this->readAttributes($parameter) as $instance) {
-                    $instances[] = $instance;
-                }
+                array_push($inner, ...$this->resolveNesting($this->readAttributesArray($parameter)));
             }
+            $roots = $this->resolveHierarchy($outer, $inner);
+
+            foreach ($roots as $root) {
+                $this->specification->add($root);
+            }
+
+            return;
         }
 
-        foreach ($this->resolveNesting($instances) as $root) {
+        foreach ($this->resolveNesting($this->readAttributesArray($reflector)) as $root) {
             $this->specification->add($root);
-        }
-
-        if ($reflector instanceof \ReflectionClass) {
-            $this->collectFromClass($reflector);
         }
     }
 
+    /**
+     * Collect attributes from a class: stack-resolve at each structural level,
+     * then hierarchically absorb inner attributes into class-level containers.
+     */
     protected function collectFromClass(\ReflectionClass $class): void
     {
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            $this->collectFromReflector($method);
-        }
+        $outer = $this->resolveNesting($this->readAttributesArray($class));
+
+        $inner = [];
 
         foreach ($class->getProperties() as $property) {
             if ($property->isPromoted()) {
                 continue;
             }
-            $this->collectFromReflector($property);
+            array_push($inner, ...$this->resolveNesting($this->readAttributesArray($property)));
+        }
+
+        $constructor = $class->getConstructor();
+        if ($constructor) {
+            foreach ($constructor->getParameters() as $parameter) {
+                array_push($inner, ...$this->resolveNesting($this->readAttributesArray($parameter)));
+            }
+        }
+
+        foreach ($class->getReflectionConstants() as $constant) {
+            array_push($inner, ...$this->resolveNesting($this->readAttributesArray($constant)));
+        }
+
+        $roots = $this->resolveHierarchy($outer, $inner);
+
+        foreach ($roots as $root) {
+            $this->specification->add($root);
+        }
+
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->isConstructor()) {
+                continue;
+            }
+            $this->collectFromReflector($method);
         }
     }
 
     /**
-     * Resolve nesting among a flat list of attributes from the same target.
-     * Returns only root-level attributes (those not nested into a parent).
+     * Stack-resolve: merge sibling attributes on the same reflector using merge().
      *
-     * @param  list<AttributeInterface> $instances
+     * For each attribute that declares merge targets, find a matching sibling and
+     * nest into it via nestChild(). Returns the remaining unmerged attributes.
+     *
+     * @param  list<AttributeInterface> $attributes
      * @return list<AttributeInterface>
      */
-    protected function resolveNesting(array $instances): array
+    protected function resolveNesting(array $attributes): array
     {
-        if (count($instances) <= 1) {
-            return $instances;
+        if (count($attributes) <= 1) {
+            return $attributes;
         }
 
-        $nested = [];
+        $merged = [];
 
-        foreach ($instances as $index => $instance) {
-            $allowedParents = $instance->allowedParents();
+        foreach ($attributes as $index => $attribute) {
+            $mergeTargets = $attribute->merge();
 
-            if ($allowedParents === null || $allowedParents === []) {
+            if ($mergeTargets === []) {
                 continue;
             }
 
-            $matchingParent = null;
-            foreach ($instances as $candidateIndex => $candidate) {
-                if ($candidateIndex === $index) {
+            $matchingTarget = null;
+            foreach ($attributes as $candidateIndex => $candidate) {
+                if ($candidateIndex === $index || isset($merged[$candidateIndex])) {
                     continue;
                 }
 
-                foreach ($allowedParents as $parentClass) {
-                    if ($candidate instanceof $parentClass) {
-                        if ($matchingParent instanceof AttributeInterface) {
+                foreach ($mergeTargets as $targetClass) {
+                    if ($candidate instanceof $targetClass) {
+                        if ($matchingTarget instanceof AttributeInterface) {
                             throw OpenApiException::fromSource(
-                                sprintf('Ambiguous nesting: %s matches multiple parents on the same target', $instance::class),
-                                $instance->getSourceLocation(),
+                                sprintf('Ambiguous merge: %s matches multiple siblings on the same target', $attribute::class),
+                                $attribute->getSourceLocation(),
                             );
                         }
-                        $matchingParent = $candidate;
+                        $matchingTarget = $candidate;
                     }
                 }
             }
 
-            if ($matchingParent instanceof AttributeInterface) {
-                $this->nestChild($matchingParent, $instance);
-                $nested[$index] = true;
+            if ($matchingTarget instanceof AttributeInterface) {
+                $this->nestChild($matchingTarget, $attribute);
+                $merged[$index] = true;
             }
         }
 
         $roots = [];
-        foreach ($instances as $index => $instance) {
-            if (!isset($nested[$index])) {
-                $roots[] = $instance;
+        foreach ($attributes as $index => $attribute) {
+            if (!isset($merged[$index])) {
+                $roots[] = $attribute;
             }
         }
 
@@ -161,7 +201,73 @@ class Assembler
     }
 
     /**
+     * Hierarchical absorb: outer-level attributes absorb inner-level attributes using contains().
+     *
+     * Each inner attribute is matched to an outer attribute that declares it in contains().
+     * After absorption, validates that only root attributes remain.
+     *
+     * @param  list<AttributeInterface> $outer Attributes from the enclosing reflector (already stack-resolved)
+     * @param  list<AttributeInterface> $inner Attributes from inner reflectors (already stack-resolved per-reflector)
+     * @return list<AttributeInterface>        Final root attributes
+     */
+    protected function resolveHierarchy(array $outer, array $inner): array
+    {
+        foreach ($inner as $innerAttribute) {
+            $matchingContainer = null;
+
+            foreach ($outer as $outerAttribute) {
+                $containsTypes = $outerAttribute->contains();
+                if ($containsTypes === []) {
+                    continue;
+                }
+
+                foreach ($containsTypes as $childClass) {
+                    if ($innerAttribute instanceof $childClass) {
+                        if ($matchingContainer instanceof AttributeInterface) {
+                            throw OpenApiException::fromSource(
+                                sprintf(
+                                    'Ambiguous hierarchy: %s matches multiple containers (%s and %s)',
+                                    $innerAttribute::class,
+                                    $matchingContainer::class,
+                                    $outerAttribute::class,
+                                ),
+                                $innerAttribute->getSourceLocation(),
+                            );
+                        }
+                        $matchingContainer = $outerAttribute;
+                        break;
+                    }
+                }
+            }
+
+            if ($matchingContainer === null) {
+                throw OpenApiException::fromSource(
+                    sprintf('Orphan attribute: %s has no valid container at enclosing level', $innerAttribute::class),
+                    $innerAttribute->getSourceLocation(),
+                );
+            }
+
+            $this->nestChild($matchingContainer, $innerAttribute);
+        }
+
+        // Validate: only roots should remain
+        foreach ($outer as $attribute) {
+            if (!$attribute->isRoot()) {
+                throw OpenApiException::fromSource(
+                    sprintf('Non-root attribute %s remains after resolution — it should have been absorbed by a container', $attribute::class),
+                    $attribute->getSourceLocation(),
+                );
+            }
+        }
+
+        return $outer;
+    }
+
+    /**
      * Nest a child attribute into the appropriate property of its parent.
+     *
+     * First checks public typed properties for a direct type match,
+     * then falls back to constructor docblock annotations for collection types.
      */
     protected function nestChild(AttributeInterface $parent, AttributeInterface $child): void
     {
@@ -180,7 +286,6 @@ class Assembler
             }
         }
 
-        // Fall back: check constructor parameter docblocks for array types
         $constructor = $parentRef->getConstructor();
         if ($constructor) {
             $docComment = $constructor->getDocComment();
@@ -209,6 +314,14 @@ class Assembler
             sprintf('Cannot nest %s into %s: no matching property found', $childClass, $parent::class),
             $child->getSourceLocation(),
         );
+    }
+
+    /**
+     * @return list<AttributeInterface>
+     */
+    protected function readAttributesArray(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
+    {
+        return iterator_to_array($this->readAttributes($reflector), false);
     }
 
     /**

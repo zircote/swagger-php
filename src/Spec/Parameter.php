@@ -37,8 +37,13 @@ class Parameter extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [Operation::class];
+    }
+
+    public function contains(): array
+    {
+        return [MediaType::class, Example::class];
     }
 }

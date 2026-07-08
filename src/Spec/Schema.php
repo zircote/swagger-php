@@ -111,8 +111,18 @@ class Schema extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function isRoot(): bool
     {
-        return [Parameter::class, Header::class, MediaType::class];
+        return true;
+    }
+
+    public function merge(): array
+    {
+        return [Property::class, Parameter::class, Header::class, MediaType::class];
+    }
+
+    public function contains(): array
+    {
+        return [Property::class, self::class];
     }
 }

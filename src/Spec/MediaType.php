@@ -27,8 +27,13 @@ class MediaType extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [Response::class, RequestBody::class, Parameter::class];
+    }
+
+    public function contains(): array
+    {
+        return [Encoding::class, Example::class];
     }
 }

@@ -24,7 +24,7 @@ class Example extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [MediaType::class, Parameter::class, Header::class];
     }

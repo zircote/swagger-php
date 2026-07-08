@@ -9,30 +9,57 @@ namespace OpenApi;
 use OpenApi\Utils\SourceLocation;
 
 /**
- * Most basic form of a spec attribute.
+ * Contract for all OpenAPI spec attributes.
  *
- * With PHP 8.4+ property hooks this interface would become:
+ * The assembler uses three metadata methods to determine how attributes
+ * relate to each other:
  *
- *     interface AttributeInterface
- *     {
- *         public(set) protected ?array $x { get; }
- *         public(set) protected ?\Reflector $reflector { get; set; }
+ * - isRoot(): root attributes are top-level elements that end up in the Specification
+ *   (Schema, Operation, Info, etc.). Non-root attributes must be absorbed by a container.
  *
- *         public function allowedParents(): ?array;
- *     }
+ * - merge(): defines same-reflector composition. When two attributes sit on the
+ *   same PHP reflector (property, parameter, method), merge() declares which sibling
+ *   types this attribute can be nested into. E.g., Schema merges into Property,
+ *   filling its $schema slot.
  *
- * At that point, remaining typehints against AbstractAttribute can be swapped for this interface.
+ * - contains(): defines hierarchical absorption. Attributes from inner reflectors
+ *   flow up into enclosing-level attributes. contains() declares which types a
+ *   container can absorb from the level below. E.g., Operation on a method contains
+ *   RequestBody from a parameter; Schema on a class contains Property from members.
  */
 interface AttributeInterface
 {
     /**
-     * List of parent attribute classes this can be nested into.
-     * Empty array = root-level only (not nestable).
-     * Null = unrestricted (can appear anywhere).
-     *
-     * @return list<class-string>|null
+     * Whether this attribute is a root-level element that goes directly into the Specification.
      */
-    public function allowedParents(): ?array;
+    public function isRoot(): bool;
+
+    /**
+     * Sibling types this attribute can merge into on the same reflector.
+     *
+     * When multiple attributes are declared on the same PHP element, merge() determines
+     * which sibling absorbs this attribute. The assembler finds the first sibling that
+     * is an instance of one of the returned classes and nests this attribute into it.
+     *
+     * Return an empty array if this attribute never merges into siblings.
+     *
+     * @return list<class-string<AttributeInterface>>
+     */
+    public function merge(): array;
+
+    /**
+     * Types this attribute can absorb from inner reflector levels.
+     *
+     * During hierarchical resolution (class absorbs members, method absorbs parameters),
+     * the assembler uses contains() to determine which inner-level attributes flow into
+     * this container. The nestChild() mechanism finds the appropriate slot (typed property
+     * or docblock-typed collection).
+     *
+     * Return an empty array if this attribute does not absorb children.
+     *
+     * @return list<class-string<AttributeInterface>>
+     */
+    public function contains(): array;
 
     public function getReflector(): ?\Reflector;
 

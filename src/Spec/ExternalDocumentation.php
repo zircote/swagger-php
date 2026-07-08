@@ -20,7 +20,7 @@ class ExternalDocumentation extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function merge(): array
     {
         return [Tag::class, Schema::class, Operation::class];
     }

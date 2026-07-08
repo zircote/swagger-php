@@ -23,9 +23,19 @@ abstract class AbstractAttribute implements AttributeInterface
     ) {
     }
 
-    public function allowedParents(): ?array
+    public function isRoot(): bool
     {
-        return null;
+        return false;
+    }
+
+    public function merge(): array
+    {
+        return [];
+    }
+
+    public function contains(): array
+    {
+        return [];
     }
 
     public function getReflector(): ?\Reflector

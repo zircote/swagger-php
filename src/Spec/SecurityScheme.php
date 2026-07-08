@@ -29,8 +29,13 @@ class SecurityScheme extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function allowedParents(): ?array
+    public function isRoot(): bool
     {
-        return [];
+        return true;
+    }
+
+    public function contains(): array
+    {
+        return [Flow::class];
     }
 }
