@@ -66,7 +66,9 @@ class Schema extends OAT\Schema
 )]
 class Collection extends OAT\Property
 {
-    /** @param class-string $of */
+    /**
+     * @param class-string $of
+     */
     public function __construct(
         string $of,
         ?string $description = null
@@ -90,7 +92,9 @@ class Collection extends OAT\Property
 )]
 class Item extends OAT\Property
 {
-    /** @param class-string $of */
+    /**
+     * @param class-string $of
+     */
     public function __construct(
         string $of,
         ?string $description = null
@@ -128,7 +132,9 @@ class Raw extends OAT\Property
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Successful extends OAT\Response
 {
-    /** @param ?class-string $of */
+    /**
+     * @param ?class-string $of
+     */
     public function __construct(
         ?string $of = null,
     ) {
