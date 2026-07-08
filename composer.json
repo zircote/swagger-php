@@ -70,7 +70,6 @@
         }
     },
     "require-dev": {
-        "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.62.0",
         "phpstan/phpstan": "^2.0",
