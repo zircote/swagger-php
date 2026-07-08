@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Spec\Fixtures\Api;
+namespace OpenApi\Examples\Specs\Api\Spec;
 
 use OpenApi\Spec as OA;
 
@@ -30,11 +30,17 @@ class Product
     public function __construct(
         #[OA\Property(property: 'quantity')]
         public int $quantity,
-        #[OA\Property(property: 'brand', schema: new OA\Schema(example: null, default: null))]
+
+        #[OA\Property(property: 'brand')]
+        #[OA\Schema(example: null, default: null)]
         public ?string $brand,
-        #[OA\Property(property: 'colour', schema: new OA\Schema(description: 'The colour'))]
+
+        #[OA\Property(property: 'colour')]
+        #[OA\Schema(description: 'The colour')]
         public Colour $colour,
-        #[OA\Property(property: 'releasedAt', schema: new OA\Schema(type: 'string'))]
+
+        #[OA\Property(property: 'releasedAt')]
+        #[OA\Schema(type: 'string')]
         public \DateTimeInterface $releasedAt,
     ) {
     }
