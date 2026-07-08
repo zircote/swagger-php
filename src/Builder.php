@@ -9,6 +9,7 @@ namespace OpenApi;
 use OpenApi\Builder\CollectingLogger;
 use OpenApi\Builder\Result;
 use OpenApi\Utils\SourceScanner;
+use OpenApi\Utils\TokenScanner;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -25,6 +26,10 @@ class Builder
     protected ?string $version = null;
 
     protected ?LoggerInterface $logger = null;
+
+    protected bool $useSpec = false;
+
+    protected ?CompilerInterface $compiler = null;
 
     /** @var callable|null */
     protected $generatorHook;
@@ -68,6 +73,17 @@ class Builder
     public function setLogger(LoggerInterface $logger): static
     {
         $this->logger = $logger;
+
+        return $this;
+    }
+
+    /**
+     * Switch to the spec attribute pipeline instead of the classic annotation/attribute pipeline.
+     */
+    public function withSpec(?CompilerInterface $compiler = null): static
+    {
+        $this->useSpec = true;
+        $this->compiler = $compiler;
 
         return $this;
     }
@@ -117,7 +133,31 @@ class Builder
 
         $openApi = $generator->generate($this->sources);
 
-        return new Result($this->resolveFiles(), $openApi, $collecting->entries());
+        return Result::fromClassic($this->resolveFiles(), $openApi, $collecting->entries());
+    }
+
+    protected function doBuildSpec(): Result
+    {
+        $files = $this->resolveFiles();
+        $tokenScanner = new TokenScanner();
+        $assembler = new Assembler();
+
+        foreach ($files as $file) {
+            require_once $file;
+            foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
+                if (class_exists($class) || interface_exists($class) || enum_exists($class)) {
+                    $assembler->collect(new \ReflectionClass($class));
+                }
+            }
+        }
+
+        $compiler = $this->compiler ?? new OpenApi31Compiler();
+        $specification = $assembler->getSpecification();
+
+        $diagnostics = $compiler->validate($specification);
+        $output = $compiler->compile($specification);
+
+        return Result::fromSpec($files, $output, $diagnostics);
     }
 
     /**
