@@ -10,7 +10,9 @@ use OpenApi\Undefined;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
@@ -198,5 +200,67 @@ class DocBlockParser
         }
 
         return $docNode->getDeprecatedTagValues() !== [];
+    }
+
+    /**
+     * Extract the item type(s) from a @param with a generic array/list type.
+     *
+     * For `@param list<Foo|Bar>|null $items` returns ['Foo', 'Bar'].
+     *
+     * @return list<string>|null
+     */
+    public function getParamArrayItemTypes(?string $docblock, string $paramName): ?array
+    {
+        $docNode = $this->parsePhpDoc($docblock);
+        if (!$docNode) {
+            return null;
+        }
+
+        foreach ($docNode->getParamTagValues() as $param) {
+            if (ltrim($param->parameterName, '$') !== $paramName) {
+                continue;
+            }
+
+            $type = $param->type;
+
+            // Unwrap nullable: ?list<T>
+            if ($type instanceof NullableTypeNode) {
+                $type = $type->type;
+            }
+
+            // Unwrap union: list<T>|null
+            if ($type instanceof UnionTypeNode) {
+                foreach ($type->types as $member) {
+                    if ($member instanceof GenericTypeNode) {
+                        $type = $member;
+                        break;
+                    }
+                }
+            }
+
+            if (!$type instanceof GenericTypeNode) {
+                return null;
+            }
+
+            $baseName = strtolower((string) $type->type);
+            if ($baseName !== 'list' && $baseName !== 'array') {
+                return null;
+            }
+
+            // Last generic type parameter is the value type (handles array<key, value> too)
+            $valueType = end($type->genericTypes);
+            if (!$valueType) {
+                return null;
+            }
+
+            // If it's a union of item types, expand
+            if ($valueType instanceof UnionTypeNode) {
+                return array_map(strval(...), $valueType->types);
+            }
+
+            return [(string) $valueType];
+        }
+
+        return null;
     }
 }
