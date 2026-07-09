@@ -39,6 +39,8 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
+    protected ?Utils\Pipeline $augmenters = null;
+
     /** @var callable|null */
     protected $generatorHook;
 
@@ -88,6 +90,32 @@ class Builder
     public function setCompiler(CompilerInterface $compiler): static
     {
         $this->compiler = $compiler;
+
+        return $this;
+    }
+
+    public function getAugmenters(): Utils\Pipeline
+    {
+        $this->augmenters ??= new Utils\Pipeline();
+
+        return $this->augmenters;
+    }
+
+    public function setAugmenters(Utils\Pipeline $augmenters): static
+    {
+        $this->augmenters = $augmenters;
+
+        return $this;
+    }
+
+    /**
+     * Configure the augmenter pipeline via callable.
+     *
+     * @param callable(Utils\Pipeline): void $with
+     */
+    public function withAugmenters(callable $with): static
+    {
+        $with($this->getAugmenters());
 
         return $this;
     }
@@ -156,6 +184,9 @@ class Builder
         }
 
         $specification = $assembler->getSpecification();
+
+        $this->getAugmenters()->process($specification);
+
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
         $specification->openapi->version = $version;
         $compiler = $this->compiler ?? $this->resolveCompiler($version);
