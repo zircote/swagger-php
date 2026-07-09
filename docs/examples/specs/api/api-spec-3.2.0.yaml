@@ -17,10 +17,12 @@ paths:
         get:
             tags:
                 - products
+            summary: 'Get a product.'
             operationId: getProducts
             parameters:
                 - name: product_id
                   in: path
+                  description: 'the product id'
                   required: true
             responses:
                 200:
@@ -63,6 +65,7 @@ paths:
             tags:
                 - products
                 - catalog
+            summary: 'Get all.'
             operationId: getAll
             responses:
                 200:
@@ -107,8 +110,10 @@ security:
         bearerAuth: []
 components:
     schemas:
-        Colour: []
+        Colour:
+            description: 'A Colour.'
         NameTrait:
+            description: 'A Name.'
             properties:
                 name:
                     description: 'The name.'
