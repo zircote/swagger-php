@@ -16,7 +16,7 @@ class ScopedLicenseFixer extends AbstractFixer
     use ScopedTrait;
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {

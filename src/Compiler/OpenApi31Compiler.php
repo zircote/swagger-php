@@ -181,7 +181,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\Operation>              $operations
+     * @param  list<OA\Operation>                $operations
      * @return array<string,array<string,mixed>>
      */
     protected function compilePaths(array $operations): array
@@ -201,7 +201,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\Operation>              $operations
+     * @param  list<OA\Operation>                $operations
      * @return array<string,array<string,mixed>>
      */
     protected function compileWebhooks(array $operations): array
@@ -275,7 +275,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\Response> $responses
+     * @param  list<OA\Response>   $responses
      * @return array<string,mixed>
      */
     protected function compileResponses(array $responses): array
@@ -339,7 +339,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\MediaType> $mediaTypes
+     * @param  list<OA\MediaType>  $mediaTypes
      * @return array<string,mixed>
      */
     protected function compileMediaTypes(array $mediaTypes): array
@@ -502,7 +502,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\Property|Spec\Schema> $properties
+     * @param  list<OA\Property|OA\Schema> $properties
      * @return array<string,mixed>
      */
     protected function compileProperties(array $properties): array
@@ -623,7 +623,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param list<Requirement|array<string,list<string>>> $security
+     * @param list<OA\Security\Requirement|array<string,list<string>>> $security
      */
     protected function compileSecurity(array $security): array
     {
@@ -651,7 +651,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param list<Spec\Flow> $flows
+     * @param list<OA\Flow> $flows
      */
     protected function compileFlows(array $flows): array
     {
@@ -687,7 +687,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<Spec\Example>  $examples
+     * @param  list<OA\Example>    $examples
      * @return array<string,mixed>
      */
     protected function compileExamples(array $examples): array
@@ -722,7 +722,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @return list<Spec\Schema>
+     * @return list<OA\Schema>
      */
     protected function collectSchemas(Specification $specification): array
     {
@@ -764,7 +764,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param list<Spec\Schema> $collected
+     * @param list<OA\Schema> $collected
      */
     protected function walkSchema(OA\Schema $schema, array &$collected): void
     {

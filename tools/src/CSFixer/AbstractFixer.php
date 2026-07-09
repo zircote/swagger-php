@@ -13,7 +13,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFixer implements FixerInterface
 {
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     public function isCandidate(Tokens $tokens): bool
     {

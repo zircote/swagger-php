@@ -17,13 +17,13 @@ use OpenApi\Spec as OA;
 class Patch extends OA\Operation
 {
     /**
-     * @param list<string>|null         $tags
-     * @param list<Spec\Parameter>|null $parameters
-     * @param list<Spec\Response>|null  $responses
-     * @param array<string,mixed>|null  $callbacks
-     * @param list<array>|null          $security
-     * @param list<Spec\Server>|null    $servers
-     * @param array<string,mixed>|null  $x
+     * @param list<string>|null        $tags
+     * @param list<OA\Parameter>|null  $parameters
+     * @param list<OA\Response>|null   $responses
+     * @param array<string,mixed>|null $callbacks
+     * @param list<array>|null         $security
+     * @param list<OA\Server>|null     $servers
+     * @param array<string,mixed>|null $x
      */
     public function __construct(
         ?string $path = null,

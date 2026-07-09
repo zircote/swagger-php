@@ -22,6 +22,7 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
     ->withSkipPath(__DIR__ . '/tests/Fixtures')
+    ->withSkipPath(__DIR__ . '/tools')
     ->withSkip([
         NewlineBeforeNewAssignSetRector::class,
         CombineIfRector::class,

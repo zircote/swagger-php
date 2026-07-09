@@ -31,7 +31,7 @@ class Scheme extends OA\AbstractAttribute
      * @param string|null              $scheme           The HTTP authorization scheme (http)
      * @param string|null              $bearerFormat     A hint about the format of the bearer token (http/bearer)
      * @param string|null              $openIdConnectUrl The OpenID Connect URL to discover configuration (openIdConnect)
-     * @param list<Flow>|null          $flows            The available OAuth2 flows (oauth2)
+     * @param list<OA\Flow>|null       $flows            The available OAuth2 flows (oauth2)
      * @param string|null              $ref              A JSON Reference to a reusable security scheme
      * @param array<string,mixed>|null $x                Vendor extensions (x-* properties)
      */

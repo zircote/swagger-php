@@ -17,7 +17,7 @@ use OpenApi\Spec as OA;
 class OAuth2 extends OA\Security\Scheme
 {
     /**
-     * @param list<Flow>|null          $flows
+     * @param list<OA\Flow>|null       $flows
      * @param array<string,mixed>|null $x
      */
     public function __construct(

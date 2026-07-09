@@ -14,7 +14,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 class SpecNamespaceAliasFixer extends AbstractFixer
 {
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
@@ -158,7 +158,7 @@ class SpecNamespaceAliasFixer extends AbstractFixer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     public function isCandidate(Tokens $tokens): bool
     {
@@ -189,7 +189,7 @@ class SpecNamespaceAliasFixer extends AbstractFixer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     protected function clearUseLine(Tokens $tokens, int $start, int $end): void
     {
@@ -201,7 +201,7 @@ class SpecNamespaceAliasFixer extends AbstractFixer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     protected function rewriteShortName(Tokens $tokens, string $shortName, string $qualifiedPath): void
     {
@@ -260,7 +260,7 @@ class SpecNamespaceAliasFixer extends AbstractFixer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     * @param Tokens<Token> $tokens
      */
     protected function findLineStart(Tokens $tokens, int $index): ?int
     {

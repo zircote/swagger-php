@@ -18,9 +18,9 @@ use OpenApi\Undefined;
 class Query extends OA\Parameter
 {
     /**
-     * @param list<Spec\Example>|null   $examples
-     * @param list<Spec\MediaType>|null $content
-     * @param array<string,mixed>|null  $x
+     * @param list<OA\Example>|null    $examples
+     * @param list<OA\MediaType>|null  $content
+     * @param array<string,mixed>|null $x
      */
     public function __construct(
         ?string $parameter = null,
