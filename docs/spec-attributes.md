@@ -109,12 +109,16 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 - Typed subclasses for Parameter, Flow, and Operation
 - One working example (`api`) using spec attributes
 - Pipeline classes tested (Assembler, Compilers, Builder)
+- Augmenter infrastructure: `AugmenterInterface`, Pipeline integration, typed Builder configuration
+- `OperationId` augmenter (generates operationId from reflector context, with `hash` option)
+- PHPStan clean (all docblock type references use `OA\` alias correctly)
+- Rector excludes `tools/` to avoid conflict with cs-fixer FQN shortening
 
 ## What's next
 
 ### Augmenters (critical path)
 
-The pipeline currently requires fully-explicit attributes. To match the classic experience where types, descriptions, and enums are inferred from PHP code, we need augmenters:
+The infrastructure is in place (`AugmenterInterface` + Pipeline + Builder config pattern). Remaining augmenters to implement:
 
 - **TypeResolver** — infer type/format/$ref from PHP type hints
 - **DocblockReader** — fill summary/description from PHPDoc comments
