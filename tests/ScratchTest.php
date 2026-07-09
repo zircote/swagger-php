@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -83,13 +84,16 @@ final class ScratchTest extends OpenApiTestCase
 
         require_once $scratch;
 
-        $openapi = (new Generator($this->getTrackingLogger()))
-            ->setTypeResolver($typeResolver)
+        $result = (new Builder())
+            ->addSource($scratch)
             ->setVersion($version)
-            ->setConfig(['mergeIntoOpenApi' => ['mergeComponents' => true]])
-            ->generate([$scratch]);
+            ->setLogger($this->getTrackingLogger())
+            ->withGenerator(fn (Generator $generator): Generator => $generator
+                ->setTypeResolver($typeResolver)
+                ->setConfig(['mergeIntoOpenApi' => ['mergeComponents' => true]]))
+            ->build();
 
-        // file_put_contents($spec, $openapi->toYaml());
-        $this->assertSpecEquals($openapi, file_get_contents($spec));
+        // file_put_contents($spec, $result->toYaml());
+        $this->assertSpecEquals($result->toYaml(), file_get_contents($spec));
     }
 }
