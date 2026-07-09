@@ -44,7 +44,7 @@ Sets the target OpenAPI version. If not set, defaults to the version declared in
 $builder->setLogger($psrLogger);
 ```
 
-Accepts any PSR-3 logger. Defaults to `DefaultLogger` (which writes warnings to PHP's error log).
+Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command sets its own console logger.
 
 ### Generator configuration
 
