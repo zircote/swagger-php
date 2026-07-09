@@ -20,6 +20,8 @@ class Builder
     /** @var list<string|iterable> */
     protected array $sources = [];
 
+    protected string $mode = 'classic';
+
     protected ?string $version = null;
 
     protected ?LoggerInterface $logger = null;
@@ -40,6 +42,18 @@ class Builder
     public function setSources(array $sources): static
     {
         $this->sources = $sources;
+
+        return $this;
+    }
+
+    /**
+     * Select the processing mode.
+     *
+     * @param string $mode 'classic' (default) or 'spec'
+     */
+    public function setMode(string $mode): static
+    {
+        $this->mode = $mode;
 
         return $this;
     }
@@ -75,7 +89,10 @@ class Builder
 
     public function build(): Result
     {
-        return $this->doBuild();
+        return match ($this->mode) {
+            'classic' => $this->doBuild(),
+            default => throw new OpenApiException("Unsupported mode '{$this->mode}'"),
+        };
     }
 
     protected function getLogger(): LoggerInterface

@@ -70,6 +70,7 @@ class GenerateCommand
     {
         $builder = (new Builder())
             ->addSource(new SourceFinder($input->paths, $input->exclude, $input->pattern))
+            ->setMode($input->mode)
             ->setLogger($this->logger);
 
         if ($input->version !== null) {
