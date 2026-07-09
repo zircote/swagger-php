@@ -106,7 +106,7 @@ class Assembler
         $inner = [];
 
         foreach ($class->getProperties() as $property) {
-            if ($property->isPromoted()) {
+            if ($property->isPromoted() || $property->getDeclaringClass()->getName() !== $class->getName()) {
                 continue;
             }
             array_push($inner, ...$this->resolveNesting($this->readAttributesArray($property)));
@@ -120,6 +120,9 @@ class Assembler
         }
 
         foreach ($class->getReflectionConstants() as $constant) {
+            if ($constant->getDeclaringClass()->getName() !== $class->getName()) {
+                continue;
+            }
             array_push($inner, ...$this->resolveNesting($this->readAttributesArray($constant)));
         }
 
@@ -130,7 +133,7 @@ class Assembler
         }
 
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor()) {
+            if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
                 continue;
             }
             $this->collectFromReflector($method);

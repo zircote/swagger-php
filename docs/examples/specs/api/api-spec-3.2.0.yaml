@@ -108,6 +108,10 @@ security:
 components:
     schemas:
         Colour: []
+        NameTrait:
+            properties:
+                name:
+                    description: 'The name.'
         Product:
             title: Product
             description: 'A Product.'
@@ -132,4 +136,3 @@ components:
             type: http
             description: 'Basic Auth'
             scheme: bearer
-
