@@ -15,6 +15,12 @@ use Psr\Log\NullLogger;
 
 /**
  * Unified entry point for generating OpenAPI specs.
+ *
+ * Version resolution (spec pipeline):
+ *   setVersion() on the builder > #[OpenApi(version: ...)] from source > 3.1.0 fallback
+ *
+ * Compiler resolution:
+ *   withSpec($compiler) explicit instance > auto-resolved from version
  */
 class Builder
 {
@@ -151,13 +157,32 @@ class Builder
             }
         }
 
-        $compiler = $this->compiler ?? new OpenApi31Compiler();
         $specification = $assembler->getSpecification();
+        $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
+        $specification->openapi->version = $version;
+        $compiler = $this->compiler ?? $this->resolveCompiler($version);
 
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
         return Result::fromSpec($files, $output, $diagnostics);
+    }
+
+    protected function resolveCompiler(string $version): CompilerInterface
+    {
+        $compilers = [
+            new Compiler\OpenApi30Compiler(),
+            new Compiler\OpenApi31Compiler(),
+            new Compiler\OpenApi32Compiler(),
+        ];
+
+        foreach ($compilers as $compiler) {
+            if ($compiler->supports($version)) {
+                return $compiler;
+            }
+        }
+
+        throw new OpenApiException("No compiler available for version '{$version}'");
     }
 
     /**
