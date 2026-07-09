@@ -87,7 +87,7 @@ class OpenApi30Compiler implements CompilerInterface
         }
 
         $paths = $this->compilePaths($specification->operations);
-        if ($paths) {
+        if ($paths !== []) {
             $output['paths'] = $paths;
         }
 
@@ -104,7 +104,7 @@ class OpenApi30Compiler implements CompilerInterface
         }
 
         $components = $this->compileComponents($specification);
-        if ($components) {
+        if ($components !== []) {
             $output['components'] = $components;
         }
 

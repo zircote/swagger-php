@@ -68,7 +68,7 @@ class Context implements \Stringable
             return;
         }
 
-        if (!$this->parent) {
+        if (!$this->parent instanceof Context) {
             // use root fallback for these...
             foreach (['logger', 'version'] as $property) {
                 unset($this->{$property});

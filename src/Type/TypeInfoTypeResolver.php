@@ -110,7 +110,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                         $schema->type = Undefined::UNDEFINED;
                         $schema->oneOf = [];
 
-                        if ($builtinTypes) {
+                        if ($builtinTypes !== []) {
                             $schema->oneOf[] = $builtinSchema = new OA\Schema([
                                 'type' => array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
                                 '_context' => new Context(['generated' => true], $schema->_context),

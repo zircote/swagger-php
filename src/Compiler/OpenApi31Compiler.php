@@ -74,12 +74,12 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         $paths = $this->compilePaths($specification->operations);
-        if ($paths) {
+        if ($paths !== []) {
             $output['paths'] = $paths;
         }
 
         $webhooks = $this->compileWebhooks($specification->operations);
-        if ($webhooks) {
+        if ($webhooks !== []) {
             $output['webhooks'] = $webhooks;
         }
 
@@ -96,7 +96,7 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         $components = $this->compileComponents($specification);
-        if ($components) {
+        if ($components !== []) {
             $output['components'] = $components;
         }
 

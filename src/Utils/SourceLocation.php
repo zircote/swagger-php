@@ -87,19 +87,19 @@ final readonly class SourceLocation implements \Stringable
         }
 
         if ($this->method !== null) {
-            $parts[] = ($parts ? '::' : '') . $this->method . '()';
+            $parts[] = ($parts !== [] ? '::' : '') . $this->method . '()';
         }
 
         if ($this->property !== null) {
-            $parts[] = ($parts ? '::$' : '$') . $this->property;
+            $parts[] = ($parts !== [] ? '::$' : '$') . $this->property;
         }
 
         if ($this->parameter !== null) {
-            $parts[] = ($parts ? ' $' : '$') . $this->parameter;
+            $parts[] = ($parts !== [] ? ' $' : '$') . $this->parameter;
         }
 
         if ($this->constant !== null) {
-            $parts[] = ($parts ? '::' : '') . $this->constant;
+            $parts[] = ($parts !== [] ? '::' : '') . $this->constant;
         }
 
         $location = implode('', $parts);

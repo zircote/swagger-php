@@ -97,7 +97,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
         if (isset($properties['_context'])) {
             $this->_context = $properties['_context'];
             unset($properties['_context']);
-        } elseif (Generator::$context) {
+        } elseif (Generator::$context instanceof Context) {
             $this->_context = Generator::$context;
         } else {
             $this->_context = new Context(['generated' => true]);
