@@ -6,12 +6,21 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Describes a single request body.
+ *
+ * @see [Request Body Object](https://spec.openapis.org/oas/v3.1.1.html#request-body-object)
+ */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class RequestBody extends AbstractAttribute
 {
     /**
-     * @param list<MediaType>|null     $content
-     * @param array<string,mixed>|null $x
+     * @param string|null              $request     Reusable request body identifier (component key)
+     * @param string|null              $description A brief description of the request body (CommonMark syntax)
+     * @param bool|null                $required    Whether the request body is required
+     * @param string|null              $ref         A JSON Reference to a reusable request body
+     * @param list<MediaType>|null     $content     The content of the request body
+     * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $request = null,

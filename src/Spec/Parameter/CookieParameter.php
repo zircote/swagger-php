@@ -9,6 +9,11 @@ namespace OpenApi\Spec\Parameter;
 use OpenApi\Spec;
 use OpenApi\Undefined;
 
+/**
+ * A parameter passed via an HTTP cookie.
+ *
+ * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
+ */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class CookieParameter extends Spec\Parameter
 {

@@ -6,14 +6,22 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Describes a single response from an API operation.
+ *
+ * @see [Response Object](https://spec.openapis.org/oas/v3.1.1.html#response-object)
+ */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends AbstractAttribute
 {
     /**
-     * @param list<Header>|null        $headers
-     * @param list<MediaType>|null     $content
-     * @param list<Link>|null          $links
-     * @param array<string,mixed>|null $x
+     * @param string|int|null          $response    The HTTP status code or 'default'
+     * @param string|null              $description A description of the response (CommonMark syntax)
+     * @param string|null              $ref         A JSON Reference to a reusable response
+     * @param list<Header>|null        $headers     Headers sent with the response
+     * @param list<MediaType>|null     $content     Possible response payloads
+     * @param list<Link>|null          $links       Design-time links for the response
+     * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
      */
     public function __construct(
         public string|int|null $response = null,

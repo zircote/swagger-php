@@ -8,6 +8,11 @@ namespace OpenApi\Spec\Flow;
 
 use OpenApi\Spec;
 
+/**
+ * Configuration for the OAuth2 Authorization Code flow.
+ *
+ * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
+ */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class AuthorizationCodeFlow extends Spec\Flow
 {

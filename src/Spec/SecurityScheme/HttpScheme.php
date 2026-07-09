@@ -8,6 +8,11 @@ namespace OpenApi\Spec\SecurityScheme;
 
 use OpenApi\Spec;
 
+/**
+ * An HTTP authentication security scheme (Basic, Bearer, etc.).
+ *
+ * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class HttpScheme extends Spec\SecurityScheme
 {

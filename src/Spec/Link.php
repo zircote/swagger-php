@@ -6,12 +6,24 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Describes a possible design-time link for a response.
+ *
+ * @see [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
+ */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Link extends AbstractAttribute
 {
     /**
-     * @param array<string,mixed>|null $parameters
-     * @param array<string,mixed>|null $x
+     * @param string|null              $link         Reusable link identifier (component key)
+     * @param string|null              $operationRef A relative or absolute URI reference to a linked operation
+     * @param string|null              $operationId  The name of an existing operation (mutually exclusive with operationRef)
+     * @param array<string,mixed>|null $parameters   Values to pass to the linked operation's parameters
+     * @param mixed                    $requestBody  A value to use as the request body for the linked operation
+     * @param string|null              $description  A description of the link (CommonMark syntax)
+     * @param string|null              $ref          A JSON Reference to a reusable link
+     * @param Server|null              $server       A server object to be used by the target operation
+     * @param array<string,mixed>|null $x            Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $link = null,

@@ -8,6 +8,11 @@ namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec;
 
+/**
+ * Shorthand for an HTTP GET operation.
+ *
+ * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
+ */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Get extends Spec\Operation
 {

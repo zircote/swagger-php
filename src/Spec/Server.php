@@ -6,12 +6,19 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Represents a Server.
+ *
+ * @see [Server Object](https://spec.openapis.org/oas/v3.1.1.html#server-object)
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Server extends AbstractAttribute
 {
     /**
-     * @param list<ServerVariable>|null $variables
-     * @param array<string,mixed>|null  $x
+     * @param string|null               $url         A URL to the target host
+     * @param string|null               $description A description of the host (CommonMark syntax)
+     * @param list<ServerVariable>|null $variables   Variables for server URL template substitution
+     * @param array<string,mixed>|null  $x           Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $url = null,

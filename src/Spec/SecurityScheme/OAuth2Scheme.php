@@ -8,6 +8,11 @@ namespace OpenApi\Spec\SecurityScheme;
 
 use OpenApi\Spec;
 
+/**
+ * An OAuth2 security scheme with one or more flows.
+ *
+ * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class OAuth2Scheme extends Spec\SecurityScheme
 {

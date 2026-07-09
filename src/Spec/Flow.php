@@ -6,12 +6,22 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Configuration details for a supported OAuth2 flow.
+ *
+ * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
+ * @see [OAuth Flows Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flows-object)
+ */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Flow extends AbstractAttribute
 {
     /**
-     * @param array<string,string>|null $scopes
-     * @param array<string,mixed>|null  $x
+     * @param string|null               $flow             The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
+     * @param string|null               $authorizationUrl The authorization URL for this flow
+     * @param string|null               $tokenUrl         The token URL for this flow
+     * @param string|null               $refreshUrl       The URL for obtaining refresh tokens
+     * @param array<string,string>|null $scopes           The available scopes for the OAuth2 security scheme
+     * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $flow = null,

@@ -8,6 +8,11 @@ namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec;
 
+/**
+ * Shorthand for an HTTP OPTIONS operation.
+ *
+ * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
+ */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Options extends Spec\Operation
 {

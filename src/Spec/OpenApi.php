@@ -6,11 +6,18 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * The root element of an OpenAPI definition.
+ *
+ * @see [OpenAPI Object](https://spec.openapis.org/oas/v3.1.1.html#openapi-object)
+ */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class OpenApi extends AbstractAttribute
 {
     /**
-     * @param array<string,mixed>|null $x
+     * @param string|null                           $version  The OpenAPI specification version (e.g. '3.1.0')
+     * @param list<array<string,list<string>>>|null $security Default security requirements for the API
+     * @param array<string,mixed>|null              $x        Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $version = null,

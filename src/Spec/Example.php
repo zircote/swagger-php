@@ -6,11 +6,22 @@
 
 namespace OpenApi\Spec;
 
+/**
+ * Describes an example value for a parameter, media type, or schema.
+ *
+ * @see [Example Object](https://spec.openapis.org/oas/v3.1.1.html#example-object)
+ */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Example extends AbstractAttribute
 {
     /**
-     * @param array<string,mixed>|null $x
+     * @param string|null              $example       Reusable example identifier (component key)
+     * @param string|null              $summary       Short description of the example
+     * @param string|null              $description   Long description of the example (CommonMark syntax)
+     * @param mixed                    $value         Embedded literal example value
+     * @param string|null              $externalValue A URI pointing to the literal example
+     * @param string|null              $ref           A JSON Reference to a reusable example
+     * @param array<string,mixed>|null $x             Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $example = null,
