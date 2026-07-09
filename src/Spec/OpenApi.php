@@ -34,4 +34,9 @@ class OpenApi extends AbstractAttribute
     {
         return true;
     }
+
+    public function contains(): array
+    {
+        return [Security\Requirement::class => 'security[]'];
+    }
 }

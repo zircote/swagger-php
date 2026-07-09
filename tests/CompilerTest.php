@@ -415,9 +415,8 @@ final class CompilerTest extends TestCase
     public function testSecuritySchemeCompiled(): void
     {
         $spec = $this->createSpecification('3.1.0');
-        $spec->securitySchemes[] = new Spec\SecurityScheme(
+        $spec->securitySchemes[] = new Spec\Security\Scheme\Http(
             securityScheme: 'bearer',
-            type: 'http',
             scheme: 'bearer',
             bearerFormat: 'JWT',
         );

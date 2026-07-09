@@ -102,6 +102,9 @@ tags:
       description: 'All about products'
     - name: catalog
       description: 'Catalog API'
+security:
+    -
+        bearerAuth: []
 components:
     schemas:
         Colour: []
@@ -125,8 +128,8 @@ components:
                     type: string
                 kind: {}
     securitySchemes:
-        scheme: []
         bearerAuth:
             type: http
             description: 'Basic Auth'
             scheme: bearer
+

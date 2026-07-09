@@ -66,6 +66,7 @@ class Operation extends AbstractAttribute
             Response::class => 'responses[]',
             RequestBody::class => 'requestBody',
             Server::class => 'servers[]',
+            Security\Requirement::class => 'security[]',
         ];
     }
 }

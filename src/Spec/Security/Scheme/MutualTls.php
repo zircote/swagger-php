@@ -4,17 +4,17 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Spec\SecurityScheme;
+namespace OpenApi\Spec\Security\Scheme;
 
-use OpenApi\Spec;
+use OpenApi\Spec\Security\Scheme;
 
 /**
- * An API key security scheme (header, query, or cookie).
+ * A Mutual TLS security scheme.
  *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class ApiKeyScheme extends Spec\SecurityScheme
+class MutualTls extends Scheme
 {
     /**
      * @param array<string,mixed>|null $x
@@ -22,16 +22,12 @@ class ApiKeyScheme extends Spec\SecurityScheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
-        ?string $name = null,
-        ?string $in = null,
         ?array $x = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'apiKey',
+            type: 'mutualTLS',
             description: $description,
-            name: $name,
-            in: $in,
             x: $x,
         );
     }

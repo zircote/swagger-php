@@ -4,15 +4,17 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Spec;
+namespace OpenApi\Spec\Security;
+
+use OpenApi\Spec\AbstractAttribute;
+use OpenApi\Spec\Flow;
 
 /**
  * Defines a security scheme that can be used by the operations.
  *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class SecurityScheme extends AbstractAttribute
+class Scheme extends AbstractAttribute
 {
     /**
      * @param string|null              $securityScheme   Reusable security scheme identifier (component key)

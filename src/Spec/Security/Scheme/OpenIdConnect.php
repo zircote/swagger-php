@@ -4,9 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Spec\SecurityScheme;
+namespace OpenApi\Spec\Security\Scheme;
 
-use OpenApi\Spec;
+use OpenApi\Spec\Security\Scheme;
 
 /**
  * An OpenID Connect Discovery security scheme.
@@ -14,7 +14,7 @@ use OpenApi\Spec;
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class OpenIdConnectScheme extends Spec\SecurityScheme
+class OpenIdConnect extends Scheme
 {
     /**
      * @param array<string,mixed>|null $x

@@ -4,34 +4,34 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Spec\SecurityScheme;
+namespace OpenApi\Spec\Security\Scheme;
 
-use OpenApi\Spec;
+use OpenApi\Spec\Flow;
+use OpenApi\Spec\Security\Scheme;
 
 /**
- * An HTTP authentication security scheme (Basic, Bearer, etc.).
+ * An OAuth2 security scheme with one or more flows.
  *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class HttpScheme extends Spec\SecurityScheme
+class OAuth2 extends Scheme
 {
     /**
+     * @param list<Flow>|null          $flows
      * @param array<string,mixed>|null $x
      */
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
-        ?string $scheme = null,
-        ?string $bearerFormat = null,
+        ?array $flows = null,
         ?array $x = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'http',
+            type: 'oauth2',
             description: $description,
-            scheme: $scheme,
-            bearerFormat: $bearerFormat,
+            flows: $flows,
             x: $x,
         );
     }

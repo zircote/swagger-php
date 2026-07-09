@@ -8,6 +8,7 @@ namespace OpenApi\Compiler;
 
 use OpenApi\CompilerInterface;
 use OpenApi\Spec;
+use OpenApi\Spec\Security\Requirement;
 use OpenApi\Specification;
 use OpenApi\Undefined;
 
@@ -88,7 +89,7 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($specification->openapi->security) {
-            $output['security'] = $specification->openapi->security;
+            $output['security'] = $this->compileSecurity($specification->openapi->security);
         }
 
         if ($specification->externalDocs) {
@@ -233,7 +234,7 @@ class OpenApi31Compiler implements CompilerInterface
             'responses' => $operation->responses ? $this->compileResponses($operation->responses) : null,
             'callbacks' => $operation->callbacks,
             'deprecated' => $operation->deprecated,
-            'security' => $operation->security,
+            'security' => $operation->security ? $this->compileSecurity($operation->security) : null,
             'servers' => $operation->servers ? array_map($this->compileServer(...), $operation->servers) : null,
         ], $operation);
     }
@@ -622,7 +623,21 @@ class OpenApi31Compiler implements CompilerInterface
         return $components;
     }
 
-    protected function compileSecurityScheme(Spec\SecurityScheme $scheme): array
+    /**
+     * @param list<Requirement|array<string,list<string>>> $security
+     */
+    protected function compileSecurity(array $security): array
+    {
+        return array_map(function (array|Requirement $item): array {
+            if ($item instanceof Requirement) {
+                return $item->toArray();
+            }
+
+            return $item;
+        }, $security);
+    }
+
+    protected function compileSecurityScheme(Spec\Security\Scheme $scheme): array
     {
         return $this->filter([
             'type' => $scheme->type,

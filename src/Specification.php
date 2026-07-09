@@ -6,6 +6,8 @@
 
 namespace OpenApi;
 
+use OpenApi\Spec\Security\Scheme;
+
 /**
  * Flat container for all collected spec attributes.
  */
@@ -42,7 +44,7 @@ class Specification
     /** @var list<Spec\Header> */
     public array $headers = [];
 
-    /** @var list<Spec\SecurityScheme> */
+    /** @var list<Scheme> */
     public array $securitySchemes = [];
 
     /** @var list<Spec\Link> */
@@ -71,7 +73,7 @@ class Specification
                 $attribute instanceof Spec\Parameter => $this->parameters[] = $attribute,
                 $attribute instanceof Spec\RequestBody => $this->requestBodies[] = $attribute,
                 $attribute instanceof Spec\Header => $this->headers[] = $attribute,
-                $attribute instanceof Spec\SecurityScheme => $this->securitySchemes[] = $attribute,
+                $attribute instanceof Scheme => $this->securitySchemes[] = $attribute,
                 $attribute instanceof Spec\Link => $this->links[] = $attribute,
                 $attribute instanceof Spec\Example => $this->examples[] = $attribute,
                 default => throw OpenApiException::fromSource(
