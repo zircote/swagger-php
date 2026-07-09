@@ -32,7 +32,7 @@ final class ExamplesTest extends OpenApiTestCase
             'using-traits',
             'webhooks',
         ];
-        $implementations = ['annotations', 'attributes', 'mixed'];
+        $implementations = ['annotations', 'attributes', 'mixed', 'spec'];
         $versions = [
             OA\OpenApi::VERSION_3_0_0,
             OA\OpenApi::VERSION_3_1_0,
@@ -75,6 +75,7 @@ final class ExamplesTest extends OpenApiTestCase
         $specFilename = self::getSpecFilename($name, $implementation, $version);
 
         $result = (new Builder())
+            ->setMode($implementation === 'spec' ? 'spec' : 'classic')
             ->addSource($path)
             ->setVersion($version)
             ->setLogger($this->getTrackingLogger())
