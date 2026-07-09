@@ -19,8 +19,8 @@ trait UsesExamples
     public static function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
     {
         $specs = [
-            "{$name}-{$version}.yaml",
             "{$name}-{$implementation}-{$version}.yaml",
+            "{$name}-{$version}.yaml",
         ];
 
         $basePath = static::examplePath($name);

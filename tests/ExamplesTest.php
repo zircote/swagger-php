@@ -92,6 +92,10 @@ final class ExamplesTest extends OpenApiTestCase
     #[DataProvider('exampleSpecs')]
     public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
     {
+        if ($implementation === 'spec') {
+            $this->markTestSkipped('Spec implementation does not need to be serialized');
+        }
+
         $specFilename = self::getSpecFilename($name, $implementation, $version);
 
         $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();

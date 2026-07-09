@@ -144,9 +144,9 @@ components:
               type: string
             brand:
               type: string
-              default: null
               example: null
               nullable: true
+              default: null
             colour:
               $ref: '#/components/schemas/Colour'
             kind:

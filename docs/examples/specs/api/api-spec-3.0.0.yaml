@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+    title: 'Basic single file API'
+    license:
+        name: MIT
+    version: 1.0.0
+servers:
+    - url: 'https://localhost/api'
+      description: 'API server'
+    - url: 'https://example.localhost'
+      description: 'The local environment.'
+    - url: 'https://example.com'
+      description: 'The production server.'
+paths:
+    '/products/{product_id}':
+        get:
+            tags:
+                - products
+            operationId: getProducts
+            parameters:
+                - name: product_id
+                  in: path
+                  required: true
+            responses:
+                200:
+                    description: 'successful operation'
+                    headers:
+                        X-Rate-Limit:
+                            description: 'calls per hour allowed by the user'
+                            schema:
+                                type: integer
+                                format: int32
+                    content:
+                        application/json:
+                            schema:
+                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+                401:
+                    description: oops
+    /products:
+        post:
+            tags:
+                - products
+            summary: 'Add products'
+            operationId: addProducts
+            requestBody:
+                description: 'New product'
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+                required: true
+            responses:
+                200:
+                    description: 'successful operation'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+        get:
+            tags:
+                - products
+                - catalog
+            operationId: getAll
+            responses:
+                200:
+                    description: 'successful operation'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data: { type: array, items: { $ref: OpenApi\Examples\Specs\Api\Spec\Product } }
+                                required:
+                                    - data
+                401:
+                    description: oops
+    /subscribe:
+        post:
+            tags:
+                - products
+            summary: 'Subscribe to product webhook'
+            operationId: subscribe
+            parameters:
+                - name: callbackUrl
+                  in: query
+            responses:
+                200:
+                    description: 'callbackUrl registered'
+            callbacks:
+                onChange:
+                    '{$request.query.callbackUrl}':
+                        post:
+                            requestBody: null
+                        responses:
+                            200:
+                                description: 'Your server implementation should return this HTTP status code if the data was received successfully'
+tags:
+    - name: products
+      description: 'All about products'
+    - name: catalog
+      description: 'Catalog API'
+components:
+    schemas:
+        Colour: []
+        Product:
+            title: Product
+            description: 'A Product.'
+            properties:
+                id:
+                    format: int64
+                    description: 'The id.'
+                    example: 1
+                name:
+                    description: 'The name.'
+                quantity: {}
+                brand:
+                    default: null
+                    example: null
+                colour:
+                    description: 'The colour'
+                releasedAt:
+                    type: string
+                kind: {}
+    securitySchemes:
+        scheme: []
+        bearerAuth:
+            type: http
+            description: 'Basic Auth'
+            scheme: bearer
