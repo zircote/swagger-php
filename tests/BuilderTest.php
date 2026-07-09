@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Augmenter\OperationId;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -130,5 +131,46 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertNotEmpty($result->warnings());
         $this->assertContains('Required @OA\Info() not found', $result->warnings());
         $this->assertContains('Required @OA\PathItem() not found', $result->warnings());
+    }
+
+    public function testGetAugmentersReturnsDefaultPipeline(): void
+    {
+        $builder = new Builder();
+        $pipeline = $builder->getAugmenters();
+
+        $found = false;
+        $pipeline->walk(function (callable $pipe) use (&$found): void {
+            if ($pipe instanceof OperationId) {
+                $found = true;
+            }
+        });
+
+        $this->assertTrue($found, 'Default augmenters should include OperationId');
+    }
+
+    public function testAugmenterConfigCallsSetters(): void
+    {
+        $builder = new Builder();
+        $builder->augmenterConfig(OperationId::class, hash: false);
+
+        $builder->getAugmenters()->walk(function (callable $pipe): void {
+            if ($pipe instanceof OperationId) {
+                $rc = new \ReflectionProperty($pipe, 'hash');
+                $this->assertFalse($rc->getValue($pipe));
+            }
+        });
+    }
+
+    public function testTypedAugmenterConfigMethod(): void
+    {
+        $builder = new Builder();
+        $builder->operationId(hash: false);
+
+        $builder->getAugmenters()->walk(function (callable $pipe): void {
+            if ($pipe instanceof OperationId) {
+                $rc = new \ReflectionProperty($pipe, 'hash');
+                $this->assertFalse($rc->getValue($pipe));
+            }
+        });
     }
 }
