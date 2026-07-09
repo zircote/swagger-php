@@ -6,76 +6,76 @@
 
 namespace OpenApi;
 
-use OpenApi\Spec\Security\Scheme;
+use OpenApi\Spec as OA;
 
 /**
  * Flat container for all collected spec attributes.
  */
 class Specification
 {
-    public Spec\OpenApi $openapi;
+    public OA\OpenApi $openapi;
 
-    public ?Spec\Info $info = null;
+    public ?OA\Info $info = null;
 
-    /** @var list<Spec\Server> */
+    /** @var list<OA\Server> */
     public array $servers = [];
 
-    /** @var list<Spec\Tag> */
+    /** @var list<OA\Tag> */
     public array $tags = [];
 
-    /** @var list<Spec\ExternalDocumentation> */
+    /** @var list<OA\ExternalDocumentation> */
     public array $externalDocs = [];
 
-    /** @var list<Spec\Operation> */
+    /** @var list<OA\Operation> */
     public array $operations = [];
 
-    /** @var list<Spec\Schema> */
+    /** @var list<OA\Schema> */
     public array $schemas = [];
 
-    /** @var list<Spec\Response> */
+    /** @var list<OA\Response> */
     public array $responses = [];
 
-    /** @var list<Spec\Parameter> */
+    /** @var list<OA\Parameter> */
     public array $parameters = [];
 
-    /** @var list<Spec\RequestBody> */
+    /** @var list<OA\RequestBody> */
     public array $requestBodies = [];
 
-    /** @var list<Spec\Header> */
+    /** @var list<OA\Header> */
     public array $headers = [];
 
-    /** @var list<Scheme> */
+    /** @var list<OA\Security\Scheme> */
     public array $securitySchemes = [];
 
-    /** @var list<Spec\Link> */
+    /** @var list<OA\Link> */
     public array $links = [];
 
-    /** @var list<Spec\Example> */
+    /** @var list<OA\Example> */
     public array $examples = [];
 
     public function __construct()
     {
-        $this->openapi = new Spec\OpenApi();
+        $this->openapi = new OA\OpenApi();
     }
 
     public function add(AttributeInterface ...$attributes): static
     {
         foreach ($attributes as $attribute) {
             match (true) {
-                $attribute instanceof Spec\OpenApi => $this->openapi = $attribute,
-                $attribute instanceof Spec\Info => $this->info = $attribute,
-                $attribute instanceof Spec\Server => $this->servers[] = $attribute,
-                $attribute instanceof Spec\Tag => $this->tags[] = $attribute,
-                $attribute instanceof Spec\ExternalDocumentation => $this->externalDocs[] = $attribute,
-                $attribute instanceof Spec\Operation => $this->operations[] = $attribute,
-                $attribute instanceof Spec\Schema => $this->schemas[] = $attribute,
-                $attribute instanceof Spec\Response => $this->responses[] = $attribute,
-                $attribute instanceof Spec\Parameter => $this->parameters[] = $attribute,
-                $attribute instanceof Spec\RequestBody => $this->requestBodies[] = $attribute,
-                $attribute instanceof Spec\Header => $this->headers[] = $attribute,
-                $attribute instanceof Scheme => $this->securitySchemes[] = $attribute,
-                $attribute instanceof Spec\Link => $this->links[] = $attribute,
-                $attribute instanceof Spec\Example => $this->examples[] = $attribute,
+                $attribute instanceof OA\OpenApi => $this->openapi = $attribute,
+                $attribute instanceof OA\Info => $this->info = $attribute,
+                $attribute instanceof OA\Server => $this->servers[] = $attribute,
+                $attribute instanceof OA\Tag => $this->tags[] = $attribute,
+                $attribute instanceof OA\ExternalDocumentation => $this->externalDocs[] = $attribute,
+                $attribute instanceof OA\Operation => $this->operations[] = $attribute,
+                $attribute instanceof OA\Schema => $this->schemas[] = $attribute,
+                $attribute instanceof OA\Response => $this->responses[] = $attribute,
+                $attribute instanceof OA\Parameter => $this->parameters[] = $attribute,
+                $attribute instanceof OA\RequestBody => $this->requestBodies[] = $attribute,
+                $attribute instanceof OA\Header => $this->headers[] = $attribute,
+                $attribute instanceof OA\Security\Scheme => $this->securitySchemes[] = $attribute,
+                $attribute instanceof OA\Link => $this->links[] = $attribute,
+                $attribute instanceof OA\Example => $this->examples[] = $attribute,
                 default => throw OpenApiException::fromSource(
                     'Unsupported root-level attribute: ' . $attribute::class,
                     $attribute->getSourceLocation(),

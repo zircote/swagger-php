@@ -8,7 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
 use OpenApi\OpenApiException;
-use OpenApi\Spec;
+use OpenApi\Spec as OA;
 use PHPUnit\Framework\TestCase;
 
 final class AssemblerTest extends TestCase
@@ -19,9 +19,9 @@ final class AssemblerTest extends TestCase
         $attributes = $assembler->instantiate(new \ReflectionProperty(Fixtures\Assembler\SimpleProduct::class, 'name'));
 
         $this->assertCount(1, $attributes);
-        $this->assertInstanceOf(Spec\Property::class, $attributes[0]);
+        $this->assertInstanceOf(OA\Property::class, $attributes[0]);
         $this->assertSame('name', $attributes[0]->property);
-        $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
+        $this->assertInstanceOf(OA\Schema::class, $attributes[0]->schema);
         $this->assertSame('The name.', $attributes[0]->schema->description);
     }
 
@@ -34,9 +34,9 @@ final class AssemblerTest extends TestCase
         ));
 
         $this->assertCount(1, $attributes);
-        $this->assertInstanceOf(Spec\Parameter::class, $attributes[0]);
+        $this->assertInstanceOf(OA\Parameter::class, $attributes[0]);
         $this->assertSame('product_id', $attributes[0]->name);
-        $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
+        $this->assertInstanceOf(OA\Schema::class, $attributes[0]->schema);
         $this->assertSame('int64', $attributes[0]->schema->format);
     }
 

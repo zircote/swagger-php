@@ -6,7 +6,7 @@
 
 namespace OpenApi\Spec\Security\Scheme;
 
-use OpenApi\Spec\Security\Scheme;
+use OpenApi\Spec as OA;
 
 /**
  * An API key security scheme (header, query, or cookie).
@@ -14,7 +14,7 @@ use OpenApi\Spec\Security\Scheme;
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class ApiKey extends Scheme
+class ApiKey extends OA\Security\Scheme
 {
     /**
      * @param array<string,mixed>|null $x

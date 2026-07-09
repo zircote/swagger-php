@@ -8,6 +8,7 @@ namespace OpenApi\Tools\CSFixer;
 
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 class ScopedDeclareStrictTypesFixer extends AbstractFixer
@@ -21,6 +22,9 @@ class ScopedDeclareStrictTypesFixer extends AbstractFixer
         $this->declareStrictTypesFixer = new DeclareStrictTypesFixer();
     }
 
+    /**
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->declareStrictTypesFixer->fix($file, $tokens);

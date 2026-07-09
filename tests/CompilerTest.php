@@ -10,7 +10,7 @@ use OpenApi\Compiler\OpenApi30Compiler;
 use OpenApi\Compiler\OpenApi31Compiler;
 use OpenApi\Compiler\OpenApi32Compiler;
 use OpenApi\CompilerInterface;
-use OpenApi\Spec;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -20,13 +20,13 @@ final class CompilerTest extends TestCase
     protected function createSpecification(string $version = '3.1.0'): Specification
     {
         $spec = new Specification();
-        $spec->openapi = new Spec\OpenApi(version: $version);
-        $spec->info = new Spec\Info(title: 'Test API', version: '1.0.0');
+        $spec->openapi = new OA\OpenApi(version: $version);
+        $spec->info = new OA\Info(title: 'Test API', version: '1.0.0');
 
         return $spec;
     }
 
-    protected function compileSchema(CompilerInterface $compiler, Spec\Schema $schema): array
+    protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array
     {
         $spec = $this->createSpecification($compiler->getVersion());
         $spec->schemas[] = $schema;
@@ -64,43 +64,43 @@ final class CompilerTest extends TestCase
     {
         yield '3.0 type array with null → string type + nullable keyword' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'N', type: ['string', 'null']),
+            new OA\Schema(schema: 'N', type: ['string', 'null']),
             ['type' => 'string', 'nullable' => true],
         ];
 
         yield '3.0 explicit nullable flag' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'N', type: 'integer', nullable: true),
+            new OA\Schema(schema: 'N', type: 'integer', nullable: true),
             ['type' => 'integer', 'nullable' => true],
         ];
 
         yield '3.0 non-nullable stays clean' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'N', type: 'string'),
+            new OA\Schema(schema: 'N', type: 'string'),
             ['type' => 'string'],
         ];
 
         yield '3.1 nullable flag → type array' => [
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'N', type: 'string', nullable: true),
+            new OA\Schema(schema: 'N', type: 'string', nullable: true),
             ['type' => ['string', 'null']],
         ];
 
         yield '3.1 type array passthrough' => [
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'N', type: ['string', 'null']),
+            new OA\Schema(schema: 'N', type: ['string', 'null']),
             ['type' => ['string', 'null']],
         ];
 
         yield '3.1 non-nullable stays clean' => [
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'N', type: 'string'),
+            new OA\Schema(schema: 'N', type: 'string'),
             ['type' => 'string'],
         ];
     }
 
     #[DataProvider('nullableProvider')]
-    public function testNullableHandling(CompilerInterface $compiler, Spec\Schema $schema, array $expected): void
+    public function testNullableHandling(CompilerInterface $compiler, OA\Schema $schema, array $expected): void
     {
         $result = $this->compileSchema($compiler, $schema);
 
@@ -120,39 +120,39 @@ final class CompilerTest extends TestCase
     {
         yield '3.0 numeric exclusiveMinimum → minimum + boolean' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', exclusiveMinimum: 5),
+            new OA\Schema(schema: 'B', type: 'integer', exclusiveMinimum: 5),
             ['minimum' => 5, 'exclusiveMinimum' => true],
         ];
 
         yield '3.0 numeric exclusiveMaximum → maximum + boolean' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', exclusiveMaximum: 100),
+            new OA\Schema(schema: 'B', type: 'integer', exclusiveMaximum: 100),
             ['maximum' => 100, 'exclusiveMaximum' => true],
         ];
 
         yield '3.0 boolean exclusiveMinimum passthrough' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', minimum: 0, exclusiveMinimum: true),
+            new OA\Schema(schema: 'B', type: 'integer', minimum: 0, exclusiveMinimum: true),
             ['minimum' => 0, 'exclusiveMinimum' => true],
         ];
 
         yield '3.0 minimum without exclusive stays plain' => [
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', minimum: 0),
+            new OA\Schema(schema: 'B', type: 'integer', minimum: 0),
             ['minimum' => 0],
             ['exclusiveMinimum'],
         ];
 
         yield '3.1 numeric exclusiveMinimum stays numeric' => [
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', exclusiveMinimum: 5),
+            new OA\Schema(schema: 'B', type: 'integer', exclusiveMinimum: 5),
             ['exclusiveMinimum' => 5],
             ['minimum'],
         ];
 
         yield '3.1 numeric exclusiveMaximum stays numeric' => [
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'B', type: 'integer', exclusiveMaximum: 100),
+            new OA\Schema(schema: 'B', type: 'integer', exclusiveMaximum: 100),
             ['exclusiveMaximum' => 100],
             ['maximum'],
         ];
@@ -162,7 +162,7 @@ final class CompilerTest extends TestCase
      * @param list<string> $absent
      */
     #[DataProvider('exclusiveBoundsProvider')]
-    public function testExclusiveBounds(CompilerInterface $compiler, Spec\Schema $schema, array $expected, array $absent = []): void
+    public function testExclusiveBounds(CompilerInterface $compiler, OA\Schema $schema, array $expected, array $absent = []): void
     {
         $result = $this->compileSchema($compiler, $schema);
 
@@ -182,7 +182,7 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi30Compiler(),
-            new Spec\Schema(schema: 'Alias', description: 'Stripped', ref: '#/components/schemas/Original'),
+            new OA\Schema(schema: 'Alias', description: 'Stripped', ref: '#/components/schemas/Original'),
         );
 
         $this->assertEquals('#/components/schemas/Original', $result['$ref']);
@@ -193,7 +193,7 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'Alias', description: 'Kept', ref: '#/components/schemas/Original'),
+            new OA\Schema(schema: 'Alias', description: 'Kept', ref: '#/components/schemas/Original'),
         );
 
         $this->assertEquals('#/components/schemas/Original', $result['$ref']);
@@ -205,38 +205,38 @@ final class CompilerTest extends TestCase
     public static function schemaFeatureProvider(): iterable
     {
         yield 'const' => [
-            new Spec\Schema(schema: 'F', type: 'string', const: 'only'),
+            new OA\Schema(schema: 'F', type: 'string', const: 'only'),
             'const',
             'only',
         ];
 
         yield 'examples array' => [
-            new Spec\Schema(schema: 'F', type: 'string', examples: ['foo', 'bar']),
+            new OA\Schema(schema: 'F', type: 'string', examples: ['foo', 'bar']),
             'examples',
             ['foo', 'bar'],
         ];
 
         yield 'unevaluatedProperties false' => [
-            new Spec\Schema(schema: 'F', type: 'object', unevaluatedProperties: false),
+            new OA\Schema(schema: 'F', type: 'object', unevaluatedProperties: false),
             'unevaluatedProperties',
             false,
         ];
 
         yield 'unevaluatedProperties schema' => [
-            new Spec\Schema(schema: 'F', type: 'object', unevaluatedProperties: new Spec\Schema(type: 'string')),
+            new OA\Schema(schema: 'F', type: 'object', unevaluatedProperties: new OA\Schema(type: 'string')),
             'unevaluatedProperties',
             ['type' => 'string'],
         ];
 
         yield 'prefixItems' => [
-            new Spec\Schema(schema: 'F', type: 'array', items: new Spec\Schema(type: 'integer'), prefixItems: [new Spec\Schema(type: 'string')]),
+            new OA\Schema(schema: 'F', type: 'array', items: new OA\Schema(type: 'integer'), prefixItems: [new OA\Schema(type: 'string')]),
             'prefixItems',
             [['type' => 'string']],
         ];
     }
 
     #[DataProvider('schemaFeatureProvider')]
-    public function test30OmitsSchemaFeature(Spec\Schema $schema, string $key, mixed $expectedIn31): void
+    public function test30OmitsSchemaFeature(OA\Schema $schema, string $key, mixed $expectedIn31): void
     {
         $result = $this->compileSchema(new OpenApi30Compiler(), $schema);
 
@@ -244,7 +244,7 @@ final class CompilerTest extends TestCase
     }
 
     #[DataProvider('schemaFeatureProvider')]
-    public function test31IncludesSchemaFeature(Spec\Schema $schema, string $key, mixed $expectedIn31): void
+    public function test31IncludesSchemaFeature(OA\Schema $schema, string $key, mixed $expectedIn31): void
     {
         $result = $this->compileSchema(new OpenApi31Compiler(), $schema);
 
@@ -256,11 +256,11 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi30Compiler(),
-            new Spec\Schema(
+            new OA\Schema(
                 schema: 'Cond',
-                if: new Spec\Schema(properties: [new Spec\Property(property: 'type')]),
-                then: new Spec\Schema(required: ['value']),
-                else: new Spec\Schema(required: ['other']),
+                if: new OA\Schema(properties: [new OA\Property(property: 'type')]),
+                then: new OA\Schema(required: ['value']),
+                else: new OA\Schema(required: ['other']),
             ),
         );
 
@@ -273,10 +273,10 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi31Compiler(),
-            new Spec\Schema(
+            new OA\Schema(
                 schema: 'Cond',
-                if: new Spec\Schema(properties: [new Spec\Property(property: 'type')]),
-                then: new Spec\Schema(required: ['value']),
+                if: new OA\Schema(properties: [new OA\Property(property: 'type')]),
+                then: new OA\Schema(required: ['value']),
             ),
         );
 
@@ -289,7 +289,7 @@ final class CompilerTest extends TestCase
     public function test30OmitsWebhooks(): void
     {
         $spec = $this->createSpecification('3.0.0');
-        $spec->operations[] = new Spec\Operation(webhook: 'onEvent', method: 'post', operationId: 'onEvent');
+        $spec->operations[] = new OA\Operation(webhook: 'onEvent', method: 'post', operationId: 'onEvent');
 
         $output = (new OpenApi30Compiler())->compile($spec);
 
@@ -299,7 +299,7 @@ final class CompilerTest extends TestCase
     public function test31IncludesWebhooks(): void
     {
         $spec = $this->createSpecification('3.1.0');
-        $spec->operations[] = new Spec\Operation(webhook: 'onEvent', method: 'post', operationId: 'onEvent');
+        $spec->operations[] = new OA\Operation(webhook: 'onEvent', method: 'post', operationId: 'onEvent');
 
         $output = (new OpenApi31Compiler())->compile($spec);
 
@@ -312,10 +312,10 @@ final class CompilerTest extends TestCase
     public function test30LicenseStripsIdentifier(): void
     {
         $spec = $this->createSpecification('3.0.0');
-        $spec->info = new Spec\Info(
+        $spec->info = new OA\Info(
             title: 'Test',
             version: '1.0',
-            license: new Spec\License(name: 'MIT', identifier: 'MIT', url: 'https://mit.edu'),
+            license: new OA\License(name: 'MIT', identifier: 'MIT', url: 'https://mit.edu'),
         );
 
         $output = (new OpenApi30Compiler())->compile($spec);
@@ -328,10 +328,10 @@ final class CompilerTest extends TestCase
     public function test31LicenseIncludesIdentifier(): void
     {
         $spec = $this->createSpecification('3.1.0');
-        $spec->info = new Spec\Info(
+        $spec->info = new OA\Info(
             title: 'Test',
             version: '1.0',
-            license: new Spec\License(name: 'MIT', identifier: 'MIT'),
+            license: new OA\License(name: 'MIT', identifier: 'MIT'),
         );
 
         $output = (new OpenApi31Compiler())->compile($spec);
@@ -344,28 +344,28 @@ final class CompilerTest extends TestCase
     public static function defaultAndExampleProvider(): iterable
     {
         yield 'string default emitted' => [
-            new Spec\Schema(schema: 'D', type: 'string', default: 'hello'),
+            new OA\Schema(schema: 'D', type: 'string', default: 'hello'),
             'default', 'hello',
         ];
 
         yield 'null default emitted' => [
-            new Spec\Schema(schema: 'D', type: ['string', 'null'], default: null),
+            new OA\Schema(schema: 'D', type: ['string', 'null'], default: null),
             'default', null,
         ];
 
         yield 'false default emitted' => [
-            new Spec\Schema(schema: 'D', type: 'boolean', default: false),
+            new OA\Schema(schema: 'D', type: 'boolean', default: false),
             'default', false,
         ];
 
         yield 'example emitted' => [
-            new Spec\Schema(schema: 'D', type: 'string', example: 'sample'),
+            new OA\Schema(schema: 'D', type: 'string', example: 'sample'),
             'example', 'sample',
         ];
     }
 
     #[DataProvider('defaultAndExampleProvider')]
-    public function testDefaultAndExampleEmitted(Spec\Schema $schema, string $key, mixed $expected): void
+    public function testDefaultAndExampleEmitted(OA\Schema $schema, string $key, mixed $expected): void
     {
         $result = $this->compileSchema(new OpenApi31Compiler(), $schema);
 
@@ -375,7 +375,7 @@ final class CompilerTest extends TestCase
 
     public function testUndefinedDefaultNotEmitted(): void
     {
-        $result = $this->compileSchema(new OpenApi31Compiler(), new Spec\Schema(schema: 'X', type: 'string'));
+        $result = $this->compileSchema(new OpenApi31Compiler(), new OA\Schema(schema: 'X', type: 'string'));
 
         $this->assertArrayNotHasKey('default', $result);
         $this->assertArrayNotHasKey('example', $result);
@@ -398,9 +398,9 @@ final class CompilerTest extends TestCase
     public function testOperationsGroupedByPath(): void
     {
         $spec = $this->createSpecification('3.1.0');
-        $spec->operations[] = new Spec\Operation(path: '/users', method: 'get', operationId: 'listUsers');
-        $spec->operations[] = new Spec\Operation(path: '/users', method: 'post', operationId: 'createUser');
-        $spec->operations[] = new Spec\Operation(path: '/users/{id}', method: 'get', operationId: 'getUser');
+        $spec->operations[] = new OA\Operation(path: '/users', method: 'get', operationId: 'listUsers');
+        $spec->operations[] = new OA\Operation(path: '/users', method: 'post', operationId: 'createUser');
+        $spec->operations[] = new OA\Operation(path: '/users/{id}', method: 'get', operationId: 'getUser');
 
         $output = (new OpenApi31Compiler())->compile($spec);
 
@@ -415,7 +415,7 @@ final class CompilerTest extends TestCase
     public function testSecuritySchemeCompiled(): void
     {
         $spec = $this->createSpecification('3.1.0');
-        $spec->securitySchemes[] = new Spec\Security\Scheme\Http(
+        $spec->securitySchemes[] = new OA\Security\Scheme\Http(
             securityScheme: 'bearer',
             scheme: 'bearer',
             bearerFormat: 'JWT',
@@ -434,9 +434,9 @@ final class CompilerTest extends TestCase
     public static function validationProvider(): iterable
     {
         $specWithWebhook = new Specification();
-        $specWithWebhook->openapi = new Spec\OpenApi(version: '3.0.0');
-        $specWithWebhook->info = new Spec\Info(title: 'T', version: '1.0');
-        $specWithWebhook->operations[] = new Spec\Operation(webhook: 'ev', method: 'post');
+        $specWithWebhook->openapi = new OA\OpenApi(version: '3.0.0');
+        $specWithWebhook->info = new OA\Info(title: 'T', version: '1.0');
+        $specWithWebhook->operations[] = new OA\Operation(webhook: 'ev', method: 'post');
 
         yield '3.0 webhooks unsupported' => [
             new OpenApi30Compiler(),
@@ -445,8 +445,8 @@ final class CompilerTest extends TestCase
         ];
 
         $specWithIdentifier = new Specification();
-        $specWithIdentifier->openapi = new Spec\OpenApi(version: '3.0.0');
-        $specWithIdentifier->info = new Spec\Info(title: 'T', version: '1.0', license: new Spec\License(name: 'MIT', identifier: 'MIT'));
+        $specWithIdentifier->openapi = new OA\OpenApi(version: '3.0.0');
+        $specWithIdentifier->info = new OA\Info(title: 'T', version: '1.0', license: new OA\License(name: 'MIT', identifier: 'MIT'));
 
         yield '3.0 license identifier' => [
             new OpenApi30Compiler(),
@@ -455,7 +455,7 @@ final class CompilerTest extends TestCase
         ];
 
         $specNoInfo = new Specification();
-        $specNoInfo->openapi = new Spec\OpenApi(version: '3.1.0');
+        $specNoInfo->openapi = new OA\OpenApi(version: '3.1.0');
 
         yield '3.1 missing info' => [
             new OpenApi31Compiler(),
@@ -464,9 +464,9 @@ final class CompilerTest extends TestCase
         ];
 
         $specArrayNoItems = new Specification();
-        $specArrayNoItems->openapi = new Spec\OpenApi(version: '3.0.0');
-        $specArrayNoItems->info = new Spec\Info(title: 'T', version: '1.0');
-        $specArrayNoItems->schemas[] = new Spec\Schema(schema: 'Bad', type: 'array');
+        $specArrayNoItems->openapi = new OA\OpenApi(version: '3.0.0');
+        $specArrayNoItems->info = new OA\Info(title: 'T', version: '1.0');
+        $specArrayNoItems->schemas[] = new OA\Schema(schema: 'Bad', type: 'array');
 
         yield '3.0 array without items' => [
             new OpenApi30Compiler(),
@@ -490,7 +490,7 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi31Compiler(),
-            new Spec\Schema(schema: 'Ext', type: 'object', x: ['custom' => 'value', 'flag' => true]),
+            new OA\Schema(schema: 'Ext', type: 'object', x: ['custom' => 'value', 'flag' => true]),
         );
 
         $this->assertEquals('value', $result['x-custom']);
@@ -503,11 +503,11 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi31Compiler(),
-            new Spec\Schema(
+            new OA\Schema(
                 schema: 'Dog',
                 allOf: [
-                    new Spec\Schema(ref: '#/components/schemas/Pet'),
-                    new Spec\Schema(type: 'object', properties: [new Spec\Property(property: 'breed', schema: new Spec\Schema(type: 'string'))]),
+                    new OA\Schema(ref: '#/components/schemas/Pet'),
+                    new OA\Schema(type: 'object', properties: [new OA\Property(property: 'breed', schema: new OA\Schema(type: 'string'))]),
                 ],
             ),
         );
@@ -523,13 +523,13 @@ final class CompilerTest extends TestCase
     {
         $result = $this->compileSchema(
             new OpenApi31Compiler(),
-            new Spec\Schema(
+            new OA\Schema(
                 schema: 'Pet',
                 oneOf: [
-                    new Spec\Schema(ref: '#/components/schemas/Dog'),
-                    new Spec\Schema(ref: '#/components/schemas/Cat'),
+                    new OA\Schema(ref: '#/components/schemas/Dog'),
+                    new OA\Schema(ref: '#/components/schemas/Cat'),
                 ],
-                discriminator: new Spec\Discriminator(propertyName: 'petType', mapping: ['dog' => '#/components/schemas/Dog']),
+                discriminator: new OA\Discriminator(propertyName: 'petType', mapping: ['dog' => '#/components/schemas/Dog']),
             ),
         );
 

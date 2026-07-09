@@ -7,8 +7,7 @@
 namespace OpenApi\Compiler;
 
 use OpenApi\CompilerInterface;
-use OpenApi\Spec;
-use OpenApi\Spec\Security\Requirement;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
 
@@ -33,14 +32,14 @@ class OpenApi31Compiler implements CompilerInterface
     {
         $diagnostics = [];
 
-        if (!$specification->info instanceof Spec\Info) {
+        if (!$specification->info instanceof OA\Info) {
             $diagnostics[] = ['level' => 'error', 'message' => 'info is required'];
         } elseif ($specification->info->title === null) {
             $diagnostics[] = ['level' => 'error', 'message' => 'info.title is required'];
         }
 
-        $hasPaths = (bool) array_filter($specification->operations, fn (Spec\Operation $op): bool => $op->path !== null);
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (Spec\Operation $op): bool => $op->webhook !== null);
+        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
+        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
         $hasComponents = $specification->schemas || $specification->responses
             || $specification->parameters || $specification->requestBodies
             || $specification->headers || $specification->securitySchemes
@@ -50,7 +49,7 @@ class OpenApi31Compiler implements CompilerInterface
             $diagnostics[] = ['level' => 'warning', 'message' => 'At least one of paths, webhooks, or components is required'];
         }
 
-        if ($specification->info?->license instanceof Spec\License) {
+        if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->url !== null && $license->identifier !== null) {
                 $diagnostics[] = ['level' => 'warning', 'message' => 'License url and identifier are mutually exclusive'];
@@ -66,7 +65,7 @@ class OpenApi31Compiler implements CompilerInterface
     {
         $output = ['openapi' => $specification->openapi->version ?? '3.1.0'];
 
-        if ($specification->info instanceof Spec\Info) {
+        if ($specification->info instanceof OA\Info) {
             $output['info'] = $this->compileInfo($specification->info);
         }
 
@@ -104,20 +103,20 @@ class OpenApi31Compiler implements CompilerInterface
         return $output;
     }
 
-    protected function compileInfo(Spec\Info $info): array
+    protected function compileInfo(OA\Info $info): array
     {
         return $this->filter([
             'title' => $info->title,
             'description' => $info->description,
             'termsOfService' => $info->termsOfService,
-            'contact' => $info->contact instanceof Spec\Contact ? $this->compileContact($info->contact) : null,
-            'license' => $info->license instanceof Spec\License ? $this->compileLicense($info->license) : null,
+            'contact' => $info->contact instanceof OA\Contact ? $this->compileContact($info->contact) : null,
+            'license' => $info->license instanceof OA\License ? $this->compileLicense($info->license) : null,
             'summary' => $info->summary,
             'version' => $info->version,
         ], $info);
     }
 
-    protected function compileContact(Spec\Contact $contact): array
+    protected function compileContact(OA\Contact $contact): array
     {
         return $this->filter([
             'name' => $contact->name,
@@ -126,7 +125,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $contact);
     }
 
-    protected function compileLicense(Spec\License $license): array
+    protected function compileLicense(OA\License $license): array
     {
         return $this->filter([
             'name' => $license->name,
@@ -135,7 +134,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $license);
     }
 
-    protected function compileServer(Spec\Server $server): array
+    protected function compileServer(OA\Server $server): array
     {
         $variables = null;
         if ($server->variables) {
@@ -155,7 +154,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $server);
     }
 
-    protected function compileServerVariable(Spec\ServerVariable $variable): array
+    protected function compileServerVariable(OA\ServerVariable $variable): array
     {
         return $this->filter([
             'default' => $variable->default,
@@ -164,16 +163,16 @@ class OpenApi31Compiler implements CompilerInterface
         ], $variable);
     }
 
-    protected function compileTag(Spec\Tag $tag): array
+    protected function compileTag(OA\Tag $tag): array
     {
         return $this->filter([
             'name' => $tag->name,
             'description' => $tag->description,
-            'externalDocs' => $tag->externalDocs instanceof Spec\ExternalDocumentation ? $this->compileExternalDocs($tag->externalDocs) : null,
+            'externalDocs' => $tag->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($tag->externalDocs) : null,
         ], $tag);
     }
 
-    protected function compileExternalDocs(Spec\ExternalDocumentation $docs): array
+    protected function compileExternalDocs(OA\ExternalDocumentation $docs): array
     {
         return $this->filter([
             'url' => $docs->url,
@@ -221,16 +220,16 @@ class OpenApi31Compiler implements CompilerInterface
         return $webhooks;
     }
 
-    protected function compileOperation(Spec\Operation $operation): array
+    protected function compileOperation(OA\Operation $operation): array
     {
         return $this->filter([
             'tags' => $operation->tags,
             'summary' => $operation->summary,
             'description' => $operation->description,
-            'externalDocs' => $operation->externalDocs instanceof Spec\ExternalDocumentation ? $this->compileExternalDocs($operation->externalDocs) : null,
+            'externalDocs' => $operation->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($operation->externalDocs) : null,
             'operationId' => $operation->operationId,
             'parameters' => $operation->parameters ? array_map($this->compileParameter(...), $operation->parameters) : null,
-            'requestBody' => $operation->requestBody instanceof Spec\RequestBody ? $this->compileRequestBody($operation->requestBody) : null,
+            'requestBody' => $operation->requestBody instanceof OA\RequestBody ? $this->compileRequestBody($operation->requestBody) : null,
             'responses' => $operation->responses ? $this->compileResponses($operation->responses) : null,
             'callbacks' => $operation->callbacks,
             'deprecated' => $operation->deprecated,
@@ -239,7 +238,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $operation);
     }
 
-    protected function compileParameter(Spec\Parameter $parameter): array
+    protected function compileParameter(OA\Parameter $parameter): array
     {
         if ($parameter->ref !== null) {
             return ['$ref' => $parameter->ref];
@@ -255,14 +254,14 @@ class OpenApi31Compiler implements CompilerInterface
             'style' => $parameter->style,
             'explode' => $parameter->explode,
             'allowReserved' => $parameter->allowReserved,
-            'schema' => $parameter->schema instanceof Spec\Schema ? $this->compileSchema($parameter->schema) : null,
+            'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
             'example' => $parameter->example,
             'examples' => $parameter->examples !== null ? $this->compileExamples($parameter->examples) : null,
             'content' => $parameter->content !== null ? $this->compileMediaTypes($parameter->content) : null,
         ], $parameter);
     }
 
-    protected function compileRequestBody(Spec\RequestBody $body): array
+    protected function compileRequestBody(OA\RequestBody $body): array
     {
         if ($body->ref !== null) {
             return ['$ref' => $body->ref];
@@ -291,7 +290,7 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
-    protected function compileResponse(Spec\Response $response): array
+    protected function compileResponse(OA\Response $response): array
     {
         if ($response->ref !== null) {
             return ['$ref' => $response->ref];
@@ -325,7 +324,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $response);
     }
 
-    protected function compileHeader(Spec\Header $header): array
+    protected function compileHeader(OA\Header $header): array
     {
         if ($header->ref !== null) {
             return ['$ref' => $header->ref];
@@ -335,7 +334,7 @@ class OpenApi31Compiler implements CompilerInterface
             'description' => $header->description,
             'required' => $header->required,
             'deprecated' => $header->deprecated,
-            'schema' => $header->schema instanceof Spec\Schema ? $this->compileSchema($header->schema) : null,
+            'schema' => $header->schema instanceof OA\Schema ? $this->compileSchema($header->schema) : null,
         ], $header);
     }
 
@@ -355,7 +354,7 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
-    protected function compileMediaType(Spec\MediaType $mediaType): array
+    protected function compileMediaType(OA\MediaType $mediaType): array
     {
         $encoding = null;
         if ($mediaType->encoding) {
@@ -366,14 +365,14 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         return $this->filter([
-            'schema' => $mediaType->schema instanceof Spec\Schema ? $this->compileSchema($mediaType->schema) : null,
+            'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
             'example' => $mediaType->example,
             'examples' => $mediaType->examples !== null ? $this->compileExamples($mediaType->examples) : null,
             'encoding' => $encoding,
         ], $mediaType);
     }
 
-    protected function compileEncoding(Spec\Encoding $encoding): array
+    protected function compileEncoding(OA\Encoding $encoding): array
     {
         return $this->filter([
             'contentType' => $encoding->contentType,
@@ -383,7 +382,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $encoding);
     }
 
-    protected function compileLink(Spec\Link $link): array
+    protected function compileLink(OA\Link $link): array
     {
         if ($link->ref !== null) {
             return ['$ref' => $link->ref];
@@ -395,11 +394,11 @@ class OpenApi31Compiler implements CompilerInterface
             'parameters' => $link->parameters,
             'requestBody' => $link->requestBody,
             'description' => $link->description,
-            'server' => $link->server instanceof Spec\Server ? $this->compileServer($link->server) : null,
+            'server' => $link->server instanceof OA\Server ? $this->compileServer($link->server) : null,
         ], $link);
     }
 
-    protected function compileSchema(Spec\Schema|string $schema): array
+    protected function compileSchema(OA\Schema|string $schema): array
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -460,7 +459,7 @@ class OpenApi31Compiler implements CompilerInterface
             'minProperties' => $schema->minProperties,
             'maxProperties' => $schema->maxProperties,
             'unevaluatedProperties' => $schema->unevaluatedProperties !== null ? (is_bool($schema->unevaluatedProperties) ? $schema->unevaluatedProperties : $this->compileSchema($schema->unevaluatedProperties)) : null,
-            'propertyNames' => $schema->propertyNames instanceof Spec\Schema ? $this->compileSchema($schema->propertyNames) : null,
+            'propertyNames' => $schema->propertyNames instanceof OA\Schema ? $this->compileSchema($schema->propertyNames) : null,
             'dependentRequired' => $schema->dependentRequired,
             'dependentSchemas' => $schema->dependentSchemas !== null ? array_map($this->compileSchema(...), $schema->dependentSchemas) : null,
 
@@ -468,12 +467,12 @@ class OpenApi31Compiler implements CompilerInterface
             'allOf' => $schema->allOf !== null ? array_map($this->compileSchema(...), $schema->allOf) : null,
             'anyOf' => $schema->anyOf !== null ? array_map($this->compileSchema(...), $schema->anyOf) : null,
             'oneOf' => $schema->oneOf !== null ? array_map($this->compileSchema(...), $schema->oneOf) : null,
-            'not' => $schema->not instanceof Spec\Schema ? $this->compileSchema($schema->not) : null,
+            'not' => $schema->not instanceof OA\Schema ? $this->compileSchema($schema->not) : null,
 
             // Conditional
-            'if' => $schema->if instanceof Spec\Schema ? $this->compileSchema($schema->if) : null,
-            'then' => $schema->then instanceof Spec\Schema ? $this->compileSchema($schema->then) : null,
-            'else' => $schema->else instanceof Spec\Schema ? $this->compileSchema($schema->else) : null,
+            'if' => $schema->if instanceof OA\Schema ? $this->compileSchema($schema->if) : null,
+            'then' => $schema->then instanceof OA\Schema ? $this->compileSchema($schema->then) : null,
+            'else' => $schema->else instanceof OA\Schema ? $this->compileSchema($schema->else) : null,
 
             // Examples
             'examples' => $schema->examples,
@@ -484,9 +483,9 @@ class OpenApi31Compiler implements CompilerInterface
             'writeOnly' => $schema->writeOnly,
 
             // OpenAPI extensions on schema
-            'discriminator' => $schema->discriminator instanceof Spec\Discriminator ? $this->compileDiscriminator($schema->discriminator) : null,
-            'externalDocs' => $schema->externalDocs instanceof Spec\ExternalDocumentation ? $this->compileExternalDocs($schema->externalDocs) : null,
-            'xml' => $schema->xml instanceof Spec\Xml ? $this->compileXml($schema->xml) : null,
+            'discriminator' => $schema->discriminator instanceof OA\Discriminator ? $this->compileDiscriminator($schema->discriminator) : null,
+            'externalDocs' => $schema->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($schema->externalDocs) : null,
+            'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
         ], $schema);
 
         if ($schema->default !== Undefined::UNDEFINED) {
@@ -511,12 +510,12 @@ class OpenApi31Compiler implements CompilerInterface
         $result = [];
 
         foreach ($properties as $property) {
-            if ($property instanceof Spec\Property) {
+            if ($property instanceof OA\Property) {
                 $name = $property->property ?? 'unknown';
-                $result[$name] = $property->schema instanceof Spec\Schema
+                $result[$name] = $property->schema instanceof OA\Schema
                     ? $this->compileSchema($property->schema)
                     : new \stdClass();
-            } elseif ($property instanceof Spec\Schema) {
+            } elseif ($property instanceof OA\Schema) {
                 $name = $property->schema ?? $property->title ?? 'unknown';
                 $result[$name] = $this->compileSchema($property);
             }
@@ -525,7 +524,7 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
-    protected function compileDiscriminator(Spec\Discriminator $discriminator): array
+    protected function compileDiscriminator(OA\Discriminator $discriminator): array
     {
         return $this->filter([
             'propertyName' => $discriminator->propertyName,
@@ -533,7 +532,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $discriminator);
     }
 
-    protected function compileXml(Spec\Xml $xml): array
+    protected function compileXml(OA\Xml $xml): array
     {
         return $this->filter([
             'name' => $xml->name,
@@ -628,8 +627,8 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileSecurity(array $security): array
     {
-        return array_map(function (array|Requirement $item): array {
-            if ($item instanceof Requirement) {
+        return array_map(function (array|OA\Security\Requirement $item): array {
+            if ($item instanceof OA\Security\Requirement) {
                 return $item->toArray();
             }
 
@@ -637,7 +636,7 @@ class OpenApi31Compiler implements CompilerInterface
         }, $security);
     }
 
-    protected function compileSecurityScheme(Spec\Security\Scheme $scheme): array
+    protected function compileSecurityScheme(OA\Security\Scheme $scheme): array
     {
         return $this->filter([
             'type' => $scheme->type,
@@ -667,7 +666,7 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
-    protected function compileFlow(Spec\Flow $flow): array
+    protected function compileFlow(OA\Flow $flow): array
     {
         return $this->filter([
             'authorizationUrl' => $flow->authorizationUrl,
@@ -677,7 +676,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $flow);
     }
 
-    protected function compileExample(Spec\Example $example): array
+    protected function compileExample(OA\Example $example): array
     {
         return $this->filter([
             'summary' => $example->summary,
@@ -767,20 +766,20 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * @param list<Spec\Schema> $collected
      */
-    protected function walkSchema(Spec\Schema $schema, array &$collected): void
+    protected function walkSchema(OA\Schema $schema, array &$collected): void
     {
         $collected[] = $schema;
 
         if ($schema->properties) {
             foreach ($schema->properties as $prop) {
-                if ($prop instanceof Spec\Property && $prop->schema instanceof Spec\Schema) {
+                if ($prop instanceof OA\Property && $prop->schema instanceof OA\Schema) {
                     $this->walkSchema($prop->schema, $collected);
-                } elseif ($prop instanceof Spec\Schema) {
+                } elseif ($prop instanceof OA\Schema) {
                     $this->walkSchema($prop, $collected);
                 }
             }
         }
-        if ($schema->items instanceof Spec\Schema) {
+        if ($schema->items instanceof OA\Schema) {
             $this->walkSchema($schema->items, $collected);
         }
         if ($schema->allOf) {
@@ -803,7 +802,7 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Remove null entries and apply x- extensions.
      */
-    protected function filter(array $result, Spec\AbstractAttribute $attribute): array
+    protected function filter(array $result, OA\AbstractAttribute $attribute): array
     {
         $result = array_filter($result, fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
 

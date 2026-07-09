@@ -6,7 +6,7 @@
 
 namespace OpenApi\Spec\Parameter;
 
-use OpenApi\Spec;
+use OpenApi\Spec as OA;
 use OpenApi\Undefined;
 
 /**
@@ -15,7 +15,7 @@ use OpenApi\Undefined;
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class Query extends Spec\Parameter
+class Query extends OA\Parameter
 {
     /**
      * @param list<Spec\Example>|null   $examples
@@ -33,7 +33,7 @@ class Query extends Spec\Parameter
         ?string $style = null,
         ?bool $explode = null,
         ?bool $allowReserved = null,
-        ?Spec\Schema $schema = null,
+        ?OA\Schema $schema = null,
         mixed $example = Undefined::UNDEFINED,
         ?array $examples = null,
         ?array $content = null,

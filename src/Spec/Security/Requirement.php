@@ -6,9 +6,7 @@
 
 namespace OpenApi\Spec\Security;
 
-use OpenApi\Spec\AbstractAttribute;
-use OpenApi\Spec\OpenApi;
-use OpenApi\Spec\Operation;
+use OpenApi\Spec as OA;
 
 /**
  * A security requirement declaring which security schemes apply.
@@ -19,7 +17,7 @@ use OpenApi\Spec\Operation;
  * @see [Security Requirement Object](https://spec.openapis.org/oas/v3.1.1.html#security-requirement-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Requirement extends AbstractAttribute
+class Requirement extends OA\AbstractAttribute
 {
     /**
      * @param string|null                     $scheme  Single scheme name (shorthand for simple requirements)
@@ -38,7 +36,7 @@ class Requirement extends AbstractAttribute
 
     public function merge(): array
     {
-        return [OpenApi::class => 'security[]', Operation::class => 'security[]'];
+        return [OA\OpenApi::class => 'security[]', OA\Operation::class => 'security[]'];
     }
 
     /**

@@ -18,9 +18,9 @@ class ExampleGenerator extends DocGenerator
         $content = $this->renderer->preamble('Example', $this->snippetContent('example'));
 
         foreach ($this->examples as $name) {
-            $exampleFolder = $this->examplePath("specs/$name");
-            $readme = file_exists("$exampleFolder/Readme.md")
-                ? file_get_contents("$exampleFolder/Readme.md")
+            $exampleFolder = $this->examplePath("specs/{$name}");
+            $readme = file_exists("{$exampleFolder}/Readme.md")
+                ? file_get_contents("{$exampleFolder}/Readme.md")
                 : null;
 
             $files = $this->collectExampleFiles($name);
@@ -42,7 +42,7 @@ class ExampleGenerator extends DocGenerator
     {
         $typeFiles = [];
         foreach (['annotations', 'attributes'] as $type) {
-            $typeFolder = $this->examplePath("specs/$name/$type");
+            $typeFolder = $this->examplePath("specs/{$name}/{$type}");
             $typeFiles[$type] = $this->collectFiles($typeFolder, '*.php');
         }
 

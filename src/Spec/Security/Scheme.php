@@ -6,8 +6,7 @@
 
 namespace OpenApi\Spec\Security;
 
-use OpenApi\Spec\AbstractAttribute;
-use OpenApi\Spec\Flow;
+use OpenApi\Spec as OA;
 
 /**
  * Defines a security scheme that can be used by the operations.
@@ -21,7 +20,7 @@ use OpenApi\Spec\Flow;
  *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
-class Scheme extends AbstractAttribute
+class Scheme extends OA\AbstractAttribute
 {
     /**
      * @param string|null              $securityScheme   Reusable security scheme identifier (component key)
@@ -59,6 +58,6 @@ class Scheme extends AbstractAttribute
 
     public function contains(): array
     {
-        return [Flow::class => 'flows[]'];
+        return [OA\Flow::class => 'flows[]'];
     }
 }

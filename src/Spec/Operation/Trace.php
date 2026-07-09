@@ -6,7 +6,7 @@
 
 namespace OpenApi\Spec\Operation;
 
-use OpenApi\Spec;
+use OpenApi\Spec as OA;
 
 /**
  * Shorthand for an HTTP TRACE operation.
@@ -14,7 +14,7 @@ use OpenApi\Spec;
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Trace extends Spec\Operation
+class Trace extends OA\Operation
 {
     /**
      * @param list<string>|null         $tags
@@ -32,13 +32,13 @@ class Trace extends Spec\Operation
         ?string $description = null,
         ?array $tags = null,
         ?array $parameters = null,
-        ?Spec\RequestBody $requestBody = null,
+        ?OA\RequestBody $requestBody = null,
         ?array $responses = null,
         ?array $callbacks = null,
         ?bool $deprecated = null,
         ?array $security = null,
         ?array $servers = null,
-        ?Spec\ExternalDocumentation $externalDocs = null,
+        ?OA\ExternalDocumentation $externalDocs = null,
         ?array $x = null,
     ) {
         parent::__construct(

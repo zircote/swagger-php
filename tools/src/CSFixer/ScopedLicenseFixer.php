@@ -15,11 +15,14 @@ class ScopedLicenseFixer extends AbstractFixer
 {
     use ScopedTrait;
 
+    /**
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
+     */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $token) {
             if ($token->isComment()) {
-                if (false !== strpos($token->getContent(), '@license')) {
+                if (str_contains($token->getContent(), '@license')) {
                     return;
                 }
             }

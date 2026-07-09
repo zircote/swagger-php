@@ -6,7 +6,7 @@
 
 namespace OpenApi\Compiler;
 
-use OpenApi\Spec\Operation;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
 
 /**
@@ -27,8 +27,8 @@ class OpenApi32Compiler extends OpenApi31Compiler
     {
         $diagnostics = parent::validate($specification);
 
-        $hasPaths = (bool) array_filter($specification->operations, fn (Operation $op): bool => $op->path !== null);
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (Operation $op): bool => $op->webhook !== null);
+        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
+        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
         $hasComponents = $specification->schemas || $specification->responses
             || $specification->parameters || $specification->requestBodies
             || $specification->headers || $specification->securitySchemes

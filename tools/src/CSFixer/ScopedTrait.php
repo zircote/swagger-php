@@ -25,7 +25,7 @@ trait ScopedTrait
     public function isScoped(\SplFileInfo $file): bool
     {
         foreach ($this->scopes as $scope) {
-            if (false !== strpos($file->getPath(), $scope)) {
+            if (str_contains($file->getPath(), (string) $scope)) {
                 return true;
             }
         }
