@@ -8,9 +8,9 @@ namespace OpenApi;
 
 use OpenApi\Builder\CollectingLogger;
 use OpenApi\Builder\Result;
-use OpenApi\Loggers\DefaultLogger;
 use OpenApi\Utils\SourceScanner;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Unified entry point for generating OpenAPI specs.
@@ -80,7 +80,7 @@ class Builder
 
     protected function getLogger(): LoggerInterface
     {
-        $this->logger ??= new DefaultLogger();
+        $this->logger ??= new NullLogger();
 
         return $this->logger;
     }
