@@ -107,11 +107,7 @@
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=3G"
         ],
         "redocly": "npm run redocly -- lint 'docs/examples/specs/**/*.yaml' 'tests/Fixtures/Scratch/*.yaml'",
-        "docs:gen": [
-            "@php tools/refgen.php",
-            "@php tools/procgen.php",
-            "@php tools/examplegen.php"
-        ],
+        "docs:gen": "@php tools/docgen.php",
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
             "@docs:gen",

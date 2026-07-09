@@ -8,9 +8,8 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 In addition to this page, there are also a number of [examples](https://github.com/zircote/swagger-php/tree/master/docs/examples#readme) which might help you out.
 
 ## Annotations
+
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
-
-
 
 #### Allowed in
 ---
@@ -21,7 +20,6 @@ In addition to this page, there are also a number of [examples](https://github.c
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 ### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
-
 A container for custom data to be attached to an annotation.
 
 These will be ignored by `swagger-php` but can be used for custom processing.
@@ -31,7 +29,6 @@ These will be ignored by `swagger-php` but can be used for custom processing.
 <a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
 
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
-
 Holds a set of reusable objects for different aspects of the OA.
 
 All objects defined within the components object will have no effect on the API unless they are explicitly
@@ -57,7 +54,6 @@ referenced from properties outside the components object.
 - [Components Object](https://spec.openapis.org/oas/v3.1.1.html#components-object)
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
-
 Contact information for the exposed API.
 
 #### Allowed in
@@ -84,7 +80,6 @@ Contact information for the exposed API.
 - [Contact Object](https://spec.openapis.org/oas/v3.1.1.html#components-object)
 
 ### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
-
 A <code>@OA\Request</code> cookie parameter.
 
 #### Allowed in
@@ -104,8 +99,6 @@ A <code>@OA\Request</code> cookie parameter.
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -122,7 +115,6 @@ A <code>@OA\Request</code> cookie parameter.
 </dl>
 
 ### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
-
 The discriminator is a specific object in a schema which is used to inform the consumer of
 the specification of an alternative schema based on the value associated with it.
 
@@ -152,7 +144,6 @@ On top of this subset, there are extensions provided by this specification to al
 - [JSON Schema](http://json-schema.org/)
 
 ### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Encoding.php)
-
 A single encoding definition applied to a single schema property.
 
 #### Allowed in
@@ -183,8 +174,6 @@ A single encoding definition applied to a single schema property.
 - [Encoding Object](https://spec.openapis.org/oas/v3.1.0.html#encoding-object)
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
-
-
 
 #### Allowed in
 ---
@@ -227,7 +216,6 @@ The value field and externalValue field are mutually exclusive.</p><table class=
 </dl>
 
 ### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ExternalDocumentation.php)
-
 Allows referencing an external resource for extended documentation.
 
 #### Allowed in
@@ -252,7 +240,6 @@ Allows referencing an external resource for extended documentation.
 - [External Documentation Object](https://spec.openapis.org/oas/v3.1.1.html#external-documentation-object)
 
 ### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
-
 Configuration details for a supported OAuth flow.
 
 #### Allowed in
@@ -294,8 +281,6 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -313,8 +298,6 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -331,8 +314,6 @@ A map between the scope name and a short description for it.</p><table class="ta
 </dl>
 
 ### [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
-
-
 
 #### Allowed in
 ---
@@ -373,7 +354,6 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 - [Header Object](https://spec.openapis.org/oas/v3.1.1.html#header-object)
 
 ### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
-
 A <code>@OA\Request</code> header parameter.
 
 #### Allowed in
@@ -392,7 +372,6 @@ A <code>@OA\Request</code> header parameter.
 </dl>
 
 ### [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
-
 The object provides metadata about the API.
 
 The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
@@ -427,7 +406,6 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
 - [Info Object](https://spec.openapis.org/oas/v3.1.1.html#info-object)
 
 ### [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
-
 The description of an item in a Schema with type <code>array</code>.
 
 #### Allowed in
@@ -439,7 +417,6 @@ The description of an item in a Schema with type <code>array</code>.
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
-
 Shorthand for a json response.
 
 Example:
@@ -463,7 +440,6 @@ vs.
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
-
 License information for the exposed API.
 
 #### Allowed in
@@ -494,7 +470,6 @@ The <code>url</code> field is mutually exclusive of the <code>identifier</code> 
 - [License Object](https://spec.openapis.org/oas/v3.1.1.html#license-object)
 
 ### [Link](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Link.php)
-
 The Link object represents a possible design-time link for a response.
 
 The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known
@@ -552,7 +527,6 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 - [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
 
 ### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Annotations/MediaType.php)
-
 Each Media Type object provides schema and examples for the media type identified by its key.
 
 Parameter encodings can be set either here, or on nested `Property` annotations directly.
@@ -585,7 +559,6 @@ the example value shall override the example provided by the schema.</p><table c
 - [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
 
 ### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Annotations/OpenApi.php)
-
 This is the root document object for the API specification.
 
 #### Nested elements
@@ -618,8 +591,6 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 
 ### [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -636,7 +607,6 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 </dl>
 
 ### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
-
 Describes a single operation parameter.
 
 A unique parameter is defined by a combination of a name and location.
@@ -747,8 +717,6 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 
 ### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -765,7 +733,6 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 </dl>
 
 ### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
-
 Describes the operations available on a single path.
 
 A Path Item may be empty, due to ACL constraints.
@@ -797,7 +764,6 @@ The path itself is still exposed to the documentation viewer, but they will not 
 - [Path Item Object](https://spec.openapis.org/oas/v3.1.1.html#path-item-object)
 
 ### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
-
 A <code>@OA\Request</code> path parameter.
 
 #### Allowed in
@@ -819,8 +785,6 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -837,8 +801,6 @@ A <code>@OA\Request</code> path parameter.
 </dl>
 
 ### [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
-
-
 
 #### Allowed in
 ---
@@ -857,8 +819,6 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -875,7 +835,6 @@ A <code>@OA\Request</code> path parameter.
 </dl>
 
 ### [Query](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Query.php)
-
 @since OpenAPI 3.2.0
 
 #### Allowed in
@@ -894,7 +853,6 @@ A <code>@OA\Request</code> path parameter.
 </dl>
 
 ### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
-
 A <code>@OA\Request</code> query parameter.
 
 #### Allowed in
@@ -913,7 +871,6 @@ A <code>@OA\Request</code> query parameter.
 </dl>
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
-
 Describes a single request body.
 
 #### Allowed in
@@ -949,7 +906,6 @@ Otherwise, the property may be included and its default value is false.</p><tabl
 - [Request Body Object](https://spec.openapis.org/oas/v3.1.1.html#request-body-object)
 
 ### [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
-
 Describes a single response from an API Operation, including design-time,
 static links to operations based on the response.
 
@@ -981,7 +937,6 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 - [Response Object](https://spec.openapis.org/oas/v3.1.1.html#response-object)
 
 ### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Schema.php)
-
 The definition of input and output data types.
 
 These types can be objects, but also primitives and arrays.
@@ -1100,8 +1055,6 @@ https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rf
 
 ### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
-
-
 #### Allowed in
 ---
 <a href="#components">Components</a>
@@ -1140,7 +1093,6 @@ Bearer tokens are usually generated by an authorization server, so this informat
 - [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object-0)
 
 ### [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
-
 An object representing a server.
 
 #### Allowed in
@@ -1171,7 +1123,6 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 - [Server Object](https://spec.openapis.org/oas/v3.1.1.html#server-object)
 
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
-
 An object representing a server variable for server URL template substitution.
 
 #### Allowed in
@@ -1209,8 +1160,6 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
-
-
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>
@@ -1246,8 +1195,6 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
-
-
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -1264,7 +1211,6 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 </dl>
 
 ### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
-
 Acts like a <code>PathItem</code> with the main difference being that it requires <code>webhook</code> instead of <code>path</code>.
 
 @since OpenAPI 3.1.0
@@ -1285,8 +1231,6 @@ Acts like a <code>PathItem</code> with the main difference being that it require
 </dl>
 
 ### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
-
-
 
 #### Allowed in
 ---
@@ -1329,7 +1273,6 @@ Default value is false. The definition takes effect only when defined alongside 
 - [XML Object](https://spec.openapis.org/oas/v3.1.1.html#xml-object)
 
 ### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/XmlContent.php)
-
 Shorthand for a xml response.
 
 Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaType</code>-><code>'application/xml'</code> will be generated.
@@ -1337,4 +1280,3 @@ Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaTyp
 #### Nested elements
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
-
