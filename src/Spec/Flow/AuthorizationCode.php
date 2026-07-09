@@ -14,7 +14,7 @@ use OpenApi\Spec;
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
-class AuthorizationCodeFlow extends Spec\Flow
+class AuthorizationCode extends Spec\Flow
 {
     /**
      * @param array<string,string>|null $scopes

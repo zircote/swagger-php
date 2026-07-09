@@ -12,6 +12,13 @@ use OpenApi\Spec\Flow;
 /**
  * Defines a security scheme that can be used by the operations.
  *
+ * Typed subtypes are available for each security scheme type:
+ * - `OA\Security\Scheme\Http` - HTTP authentication (Basic, Bearer, etc.)
+ * - `OA\Security\Scheme\ApiKey` - API key in header, query, or cookie
+ * - `OA\Security\Scheme\OAuth2` - OAuth2 with one or more flows
+ * - `OA\Security\Scheme\OpenIdConnect` - OpenID Connect discovery
+ * - `OA\Security\Scheme\MutualTls` - Mutual TLS authentication
+ *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 class Scheme extends AbstractAttribute

@@ -10,12 +10,12 @@ use OpenApi\Spec;
 use OpenApi\Undefined;
 
 /**
- * A parameter passed via an HTTP header.
+ * A parameter passed via the URL path (always required).
  *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class HeaderParameter extends Spec\Parameter
+class Path extends Spec\Parameter
 {
     /**
      * @param list<Spec\Example>|null   $examples
@@ -26,9 +26,9 @@ class HeaderParameter extends Spec\Parameter
         ?string $parameter = null,
         ?string $name = null,
         ?string $description = null,
-        ?bool $required = null,
         ?bool $deprecated = null,
         ?string $ref = null,
+        ?string $style = null,
         ?bool $explode = null,
         ?Spec\Schema $schema = null,
         mixed $example = Undefined::UNDEFINED,
@@ -39,12 +39,12 @@ class HeaderParameter extends Spec\Parameter
         parent::__construct(
             parameter: $parameter,
             name: $name,
-            in: 'header',
+            in: 'path',
             description: $description,
-            required: $required,
+            required: true,
             deprecated: $deprecated,
             ref: $ref,
-            style: 'simple',
+            style: $style,
             explode: $explode,
             schema: $schema,
             example: $example,

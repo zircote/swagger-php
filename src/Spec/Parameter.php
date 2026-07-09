@@ -11,6 +11,12 @@ use OpenApi\Undefined;
 /**
  * Describes a single operation parameter.
  *
+ * Typed subtypes are available for each parameter location:
+ * - `OA\Parameter\Path` - path parameters (in: path, required: true)
+ * - `OA\Parameter\Query` - query string parameters (in: query)
+ * - `OA\Parameter\Header` - header parameters (in: header)
+ * - `OA\Parameter\Cookie` - cookie parameters (in: cookie)
+ *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]

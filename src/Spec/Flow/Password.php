@@ -9,26 +9,26 @@ namespace OpenApi\Spec\Flow;
 use OpenApi\Spec;
 
 /**
- * Configuration for the OAuth2 Implicit flow.
+ * Configuration for the OAuth2 Resource Owner Password flow.
  *
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
-class ImplicitFlow extends Spec\Flow
+class Password extends Spec\Flow
 {
     /**
      * @param array<string,string>|null $scopes
      * @param array<string,mixed>|null  $x
      */
     public function __construct(
-        ?string $authorizationUrl = null,
+        ?string $tokenUrl = null,
         ?string $refreshUrl = null,
         ?array $scopes = null,
         ?array $x = null,
     ) {
         parent::__construct(
-            flow: 'implicit',
-            authorizationUrl: $authorizationUrl,
+            flow: 'password',
+            tokenUrl: $tokenUrl,
             refreshUrl: $refreshUrl,
             scopes: $scopes,
             x: $x,
