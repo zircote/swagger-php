@@ -94,9 +94,42 @@ class Builder
         return $this;
     }
 
+    /**
+     * Configure any augmenter in the pipeline by class name.
+     *
+     * Named arguments are mapped to setters on the augmenter instance
+     * (e.g. `hash: false` calls `setHash(false)`).
+     *
+     * Works for both default and custom augmenters once they are in the pipeline.
+     *
+     * @param class-string<AugmenterInterface> $class
+     */
+    public function augmenterConfig(string $class, mixed ...$config): static
+    {
+        $this->getAugmenters()->walk(function (callable $pipe) use ($class, $config): void {
+            if (!$pipe instanceof $class) {
+                return;
+            }
+            foreach ($config as $name => $value) {
+                $setter = 'set' . ucfirst($name);
+                $pipe->{$setter}($value);
+            }
+        });
+
+        return $this;
+    }
+
+    /**
+     * Configure the OperationId augmenter.
+     */
+    public function operationId(bool $hash = true): static
+    {
+        return $this->augmenterConfig(Augmenter\OperationId::class, hash: $hash);
+    }
+
     public function getAugmenters(): Utils\Pipeline
     {
-        $this->augmenters ??= new Utils\Pipeline();
+        $this->augmenters ??= new Utils\Pipeline($this->getDefaultAugmenters());
 
         return $this->augmenters;
     }
@@ -212,6 +245,16 @@ class Builder
         }
 
         throw new OpenApiException("No compiler available for version '{$version}'");
+    }
+
+    /**
+     * @return list<AugmenterInterface>
+     */
+    protected function getDefaultAugmenters(): array
+    {
+        return [
+            new Augmenter\OperationId(),
+        ];
     }
 
     /**
