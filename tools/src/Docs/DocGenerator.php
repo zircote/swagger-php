@@ -10,11 +10,14 @@ abstract class DocGenerator
 {
     public const NO_DETAILS_AVAILABLE = 'No details available.';
 
-    protected $projectRoot;
+    protected string $projectRoot;
 
-    public function __construct($projectRoot)
+    protected Renderer $renderer;
+
+    public function __construct(string $projectRoot, ?Renderer $renderer = null)
     {
         $this->projectRoot = realpath($projectRoot);
+        $this->renderer = $renderer ?? new Renderer();
     }
 
     public function docPath(string $relativeName): string
@@ -22,50 +25,19 @@ abstract class DocGenerator
         return $this->projectRoot . '/docs/' . $relativeName;
     }
 
-    public function formatClassHeader(string $name, string $namespace): string
+    public function snippetContent(string $type): ?string
     {
-        return <<< EOT
-### [$name](https://github.com/zircote/swagger-php/tree/master/src/$namespace/$name.php)
+        $path = $this->docPath('snippets' . DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
 
-
-EOT;
+        return file_exists($path) ? file_get_contents($path) : null;
     }
 
-    public function preamble(string $type): string
-    {
-        $title = rtrim($type, 's');
+    abstract public function generate(): array;
 
-        $preamble = <<< EOT
-# $title Reference
-
-This page is generated automatically from the `swagger-php` sources.
-
-For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
-
-
-EOT;
-
-        $preambleSnippet = $this->docPath('snippets' . DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
-
-        if (file_exists($preambleSnippet)) {
-            $preamble .= file_get_contents($preambleSnippet);
-        }
-
-        $preamble .= <<< EOT
-
-EOT;
-
-        return $preamble;
-    }
-
-    protected function linkFromMarkup(string $see): ?string
-    {
-        preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
-
-        return 3 == count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
-    }
-
-    protected function extractDocumentation($docblock): array
+    /**
+     * @return array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>}
+     */
+    public function parseDocblock(string|false|null $docblock): array
     {
         if (!$docblock) {
             return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
@@ -74,8 +46,8 @@ EOT;
         $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
-        $i = count($comment) - 1;
-        $comment[$i] = preg_replace('/\*\/[ \t]*$/', '', $comment[$i]); // strip '*/'
+        $lastIndex = count($comment) - 1;
+        $comment[$lastIndex] = preg_replace('/\*\/[ \t]*$/', '', $comment[$lastIndex]); // strip '*/'
 
         $see = [];
         $var = '';
@@ -109,8 +81,8 @@ EOT;
             }
 
             if ($append) {
-                $i = count($contentLines) - 1;
-                $contentLines[$i] = substr($contentLines[$i], 0, -1) . $line;
+                $lastIndex = count($contentLines) - 1;
+                $contentLines[$lastIndex] = substr($contentLines[$lastIndex], 0, -1) . $line;
             } else {
                 $contentLines[] = $line;
             }
