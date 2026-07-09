@@ -853,6 +853,10 @@ A <code>@OA\Request</code> path parameter.
 <dl>
   <dt><strong>property</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Schema->properties array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|list&lt;string&gt;</span></dt>
+  <dd><p>A boolean flags the property as required in its parent schema, or a list names the required members when it is an object.<br />
+<br />
+The <code>AugmentRequired</code> processor collects a boolean into the parent <code>Schema::$required</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
