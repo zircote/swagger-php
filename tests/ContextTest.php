@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Builder;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\Customer;
@@ -17,11 +18,14 @@ final class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName(): void
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = (new Generator($this->getTrackingLogger()))
-            ->setAnalyser($this->getAnalyzer())
-            ->setTypeResolver($this->getTypeResolver())
-            ->generate([$this->fixture('Customer.php')]);
-        $context = $openapi->components->schemas[0]->_context;
+        $result = (new Builder())
+            ->addSource($this->fixture('Customer.php'))
+            ->setLogger($this->getTrackingLogger())
+            ->withGenerator(fn (Generator $generator): Generator => $generator
+                ->setAnalyser($this->getAnalyzer())
+                ->setTypeResolver($this->getTypeResolver()))
+            ->build();
+        $context = $result->openApi()->components->schemas[0]->_context;
         // resolve with namespace
         $this->assertSame('\\FullyQualified', $context->fullyQualifiedName('\FullyQualified'));
         $this->assertSame('\\OpenApi\\Tests\\Fixtures\\Unqualified', $context->fullyQualifiedName('Unqualified'));
@@ -54,11 +58,13 @@ final class ContextTest extends OpenApiTestCase
     public function testDebugLocation(): void
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $openapi = (new Generator($this->getTrackingLogger()))
-            ->setTypeResolver($this->getTypeResolver())
-            ->generate([$this->fixture('Customer.php')]);
+        $result = (new Builder())
+            ->addSource($this->fixture('Customer.php'))
+            ->setLogger($this->getTrackingLogger())
+            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))
+            ->build();
 
-        $customerSchema = $openapi->components->schemas[0];
+        $customerSchema = $result->openApi()->components->schemas[0];
         $this->assertStringContainsString(
             'Fixtures' . DIRECTORY_SEPARATOR . 'Customer.php on line ',
             $customerSchema->_context->getDebugLocation()

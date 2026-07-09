@@ -33,6 +33,11 @@ class Result
         return $this->files;
     }
 
+    public function openApi(): ?OpenApi
+    {
+        return $this->openApi;
+    }
+
     public function isValid(): bool
     {
         return $this->openApi instanceof OpenApi;

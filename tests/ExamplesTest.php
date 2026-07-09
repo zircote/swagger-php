@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -73,13 +74,15 @@ final class ExamplesTest extends OpenApiTestCase
         $path = self::examplePath("{$name}/{$implementation}");
         $specFilename = self::getSpecFilename($name, $implementation, $version);
 
-        $openapi = (new Generator($this->getTrackingLogger()))
+        $result = (new Builder())
+            ->addSource($path)
             ->setVersion($version)
-            ->setTypeResolver($typeResolver)
-            ->generate([$path]);
-        // file_put_contents($specFilename, $openapi->toYaml());
+            ->setLogger($this->getTrackingLogger())
+            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
+            ->build();
+        // file_put_contents($specFilename, $result->toYaml());
         $this->assertSpecEquals(
-            $openapi,
+            $result->toYaml(),
             file_get_contents($specFilename),
             "Example: {$name}/{$implementation}/" . basename($specFilename)
         );
