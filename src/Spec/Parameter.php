@@ -39,11 +39,14 @@ class Parameter extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Operation::class];
+        return [Operation::class => 'parameters[]'];
     }
 
     public function contains(): array
     {
-        return [MediaType::class, Example::class];
+        return [
+            MediaType::class => 'content[]',
+            Example::class => 'examples[]',
+        ];
     }
 }

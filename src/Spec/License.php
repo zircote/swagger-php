@@ -23,6 +23,6 @@ class License extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Info::class];
+        return [Info::class => 'license'];
     }
 }

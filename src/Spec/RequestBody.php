@@ -26,11 +26,11 @@ class RequestBody extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Operation::class];
+        return [Operation::class => 'requestBody'];
     }
 
     public function contains(): array
     {
-        return [MediaType::class];
+        return [MediaType::class => 'content[]'];
     }
 }

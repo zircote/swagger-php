@@ -26,6 +26,6 @@ class Flow extends AbstractAttribute
 
     public function merge(): array
     {
-        return [SecurityScheme::class];
+        return [SecurityScheme::class => 'flows[]'];
     }
 }

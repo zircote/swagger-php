@@ -29,6 +29,6 @@ class Link extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Response::class];
+        return [Response::class => 'links[]'];
     }
 }

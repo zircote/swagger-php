@@ -25,6 +25,6 @@ class ServerVariable extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Server::class];
+        return [Server::class => 'variables[]'];
     }
 }

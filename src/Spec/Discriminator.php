@@ -23,6 +23,6 @@ class Discriminator extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Schema::class];
+        return [Schema::class => 'discriminator'];
     }
 }

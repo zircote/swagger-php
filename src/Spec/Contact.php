@@ -23,6 +23,6 @@ class Contact extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Info::class];
+        return [Info::class => 'contact'];
     }
 }

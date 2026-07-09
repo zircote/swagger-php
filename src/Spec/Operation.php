@@ -46,6 +46,11 @@ class Operation extends AbstractAttribute
 
     public function contains(): array
     {
-        return [Parameter::class, Response::class, RequestBody::class, Server::class];
+        return [
+            Parameter::class => 'parameters[]',
+            Response::class => 'responses[]',
+            RequestBody::class => 'requestBody',
+            Server::class => 'servers[]',
+        ];
     }
 }

@@ -29,11 +29,18 @@ class MediaType extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Response::class, RequestBody::class, Parameter::class];
+        return [
+            Response::class => 'content[]',
+            RequestBody::class => 'content[]',
+            Parameter::class => 'content[]',
+        ];
     }
 
     public function contains(): array
     {
-        return [Encoding::class, Example::class];
+        return [
+            Encoding::class => 'encoding[]',
+            Example::class => 'examples[]',
+        ];
     }
 }

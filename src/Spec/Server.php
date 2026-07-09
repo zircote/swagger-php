@@ -29,6 +29,6 @@ class Server extends AbstractAttribute
 
     public function contains(): array
     {
-        return [ServerVariable::class];
+        return [ServerVariable::class => 'variables[]'];
     }
 }

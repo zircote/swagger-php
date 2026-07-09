@@ -36,6 +36,6 @@ class SecurityScheme extends AbstractAttribute
 
     public function contains(): array
     {
-        return [Flow::class];
+        return [Flow::class => 'flows[]'];
     }
 }

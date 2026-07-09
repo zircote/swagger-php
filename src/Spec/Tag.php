@@ -28,6 +28,6 @@ class Tag extends AbstractAttribute
 
     public function contains(): array
     {
-        return [ExternalDocumentation::class];
+        return [ExternalDocumentation::class => 'externalDocs'];
     }
 }

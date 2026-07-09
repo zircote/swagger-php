@@ -22,6 +22,10 @@ class ExternalDocumentation extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Tag::class, Schema::class, Operation::class];
+        return [
+            Tag::class => 'externalDocs',
+            Schema::class => 'externalDocs',
+            Operation::class => 'externalDocs',
+        ];
     }
 }

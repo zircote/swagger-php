@@ -38,12 +38,15 @@ interface AttributeInterface
      * Sibling types this attribute can merge into on the same reflector.
      *
      * When multiple attributes are declared on the same PHP element, merge() determines
-     * which sibling absorbs this attribute. The assembler finds the first sibling that
-     * is an instance of one of the returned classes and nests this attribute into it.
+     * which sibling absorbs this attribute. Keys are the target class, values are the
+     * property name on the target where this attribute will be placed.
+     *
+     * Use '[]' suffix for collection slots (append): 'parameters[]'
+     * Omit suffix for scalar slots (set): 'schema'
      *
      * Return an empty array if this attribute never merges into siblings.
      *
-     * @return list<class-string<AttributeInterface>>
+     * @return array<class-string<AttributeInterface>, string>
      */
     public function merge(): array;
 
@@ -52,12 +55,15 @@ interface AttributeInterface
      *
      * During hierarchical resolution (class absorbs members, method absorbs parameters),
      * the assembler uses contains() to determine which inner-level attributes flow into
-     * this container. The nestChild() mechanism finds the appropriate slot (typed property
-     * or docblock-typed collection).
+     * this container. Keys are the child class, values are the property name on this
+     * attribute where the child will be placed.
+     *
+     * Use '[]' suffix for collection slots (append): 'properties[]'
+     * Omit suffix for scalar slots (set): 'requestBody'
      *
      * Return an empty array if this attribute does not absorb children.
      *
-     * @return list<class-string<AttributeInterface>>
+     * @return array<class-string<AttributeInterface>, string>
      */
     public function contains(): array;
 

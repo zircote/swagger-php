@@ -32,6 +32,9 @@ class Info extends AbstractAttribute
 
     public function contains(): array
     {
-        return [Contact::class, License::class];
+        return [
+            Contact::class => 'contact',
+            License::class => 'license',
+        ];
     }
 }

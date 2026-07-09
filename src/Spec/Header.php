@@ -35,11 +35,17 @@ class Header extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Response::class, Encoding::class];
+        return [
+            Response::class => 'headers[]',
+            Encoding::class => 'headers[]',
+        ];
     }
 
     public function contains(): array
     {
-        return [MediaType::class, Example::class];
+        return [
+            MediaType::class => 'content[]',
+            Example::class => 'examples[]',
+        ];
     }
 }

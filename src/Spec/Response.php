@@ -29,11 +29,15 @@ class Response extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Operation::class];
+        return [Operation::class => 'responses[]'];
     }
 
     public function contains(): array
     {
-        return [Header::class, MediaType::class, Link::class];
+        return [
+            Header::class => 'headers[]',
+            MediaType::class => 'content[]',
+            Link::class => 'links[]',
+        ];
     }
 }

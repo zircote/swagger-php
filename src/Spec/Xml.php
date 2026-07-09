@@ -25,6 +25,6 @@ class Xml extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Schema::class, Property::class];
+        return [Schema::class => 'xml'];
     }
 }

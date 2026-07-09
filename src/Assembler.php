@@ -6,7 +6,6 @@
 
 namespace OpenApi;
 
-use OpenApi\Utils\DocBlockParser;
 use OpenApi\Utils\SourceLocation;
 
 /**
@@ -26,12 +25,9 @@ use OpenApi\Utils\SourceLocation;
  */
 class Assembler
 {
-    protected DocBlockParser $docBlockParser;
-
     public function __construct(
         protected Specification $specification = new Specification(),
     ) {
-        $this->docBlockParser = new DocBlockParser();
     }
 
     public function getSpecification(): Specification
@@ -166,12 +162,13 @@ class Assembler
             }
 
             $matchingTarget = null;
+            $matchingSlot = null;
             foreach ($attributes as $candidateIndex => $candidate) {
                 if ($candidateIndex === $index || isset($merged[$candidateIndex])) {
                     continue;
                 }
 
-                foreach ($mergeTargets as $targetClass) {
+                foreach ($mergeTargets as $targetClass => $slot) {
                     if ($candidate instanceof $targetClass) {
                         if ($matchingTarget instanceof AttributeInterface) {
                             throw OpenApiException::fromSource(
@@ -180,12 +177,13 @@ class Assembler
                             );
                         }
                         $matchingTarget = $candidate;
+                        $matchingSlot = $slot;
                     }
                 }
             }
 
             if ($matchingTarget instanceof AttributeInterface) {
-                $this->nestChild($matchingTarget, $attribute);
+                $this->nestChild($matchingTarget, $attribute, $matchingSlot);
                 $merged[$index] = true;
             }
         }
@@ -214,6 +212,7 @@ class Assembler
     {
         foreach ($inner as $innerAttribute) {
             $matchingContainer = null;
+            $matchingSlot = null;
 
             foreach ($outer as $outerAttribute) {
                 $containsTypes = $outerAttribute->contains();
@@ -221,7 +220,7 @@ class Assembler
                     continue;
                 }
 
-                foreach ($containsTypes as $childClass) {
+                foreach ($containsTypes as $childClass => $slot) {
                     if ($innerAttribute instanceof $childClass) {
                         if ($matchingContainer instanceof AttributeInterface) {
                             throw OpenApiException::fromSource(
@@ -235,6 +234,7 @@ class Assembler
                             );
                         }
                         $matchingContainer = $outerAttribute;
+                        $matchingSlot = $slot;
                         break;
                     }
                 }
@@ -247,7 +247,7 @@ class Assembler
                 );
             }
 
-            $this->nestChild($matchingContainer, $innerAttribute);
+            $this->nestChild($matchingContainer, $innerAttribute, $matchingSlot);
         }
 
         // Validate: only roots should remain
@@ -264,56 +264,18 @@ class Assembler
     }
 
     /**
-     * Nest a child attribute into the appropriate property of its parent.
-     *
-     * First checks public typed properties for a direct type match,
-     * then falls back to constructor docblock annotations for collection types.
+     * Nest a child attribute into the named property of its parent.
      */
-    protected function nestChild(AttributeInterface $parent, AttributeInterface $child): void
+    protected function nestChild(AttributeInterface $parent, AttributeInterface $child, string $slot): void
     {
-        $childClass = $child::class;
-        $parentRef = new \ReflectionObject($parent);
-
-        foreach ($parentRef->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-            $type = $prop->getType();
-
-            if ($type instanceof \ReflectionNamedType) {
-                if (!$type->isBuiltin() && ($childClass === $type->getName() || is_a($childClass, $type->getName(), true))) {
-                    $prop->setValue($parent, $child);
-
-                    return;
-                }
-            }
+        if (str_ends_with($slot, '[]')) {
+            $property = substr($slot, 0, -2);
+            $current = $parent->{$property} ?? [];
+            $current[] = $child;
+            $parent->{$property} = $current;
+        } else {
+            $parent->{$slot} = $child;
         }
-
-        $constructor = $parentRef->getConstructor();
-        if ($constructor) {
-            $docComment = $constructor->getDocComment();
-            if ($docComment) {
-                foreach ($constructor->getParameters() as $param) {
-                    $paramName = $param->getName();
-                    $itemTypes = $this->docBlockParser->getParamArrayItemTypes($docComment, $paramName);
-                    if ($itemTypes === null) {
-                        continue;
-                    }
-                    foreach ($itemTypes as $itemType) {
-                        $fqcn = str_contains($itemType, '\\') ? $itemType : 'OpenApi\\Spec\\' . $itemType;
-                        if ($childClass === $fqcn || is_a($childClass, $fqcn, true)) {
-                            $current = $parent->{$paramName} ?? [];
-                            $current[] = $child;
-                            $parent->{$paramName} = $current;
-
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-
-        throw OpenApiException::fromSource(
-            sprintf('Cannot nest %s into %s: no matching property found', $childClass, $parent::class),
-            $child->getSourceLocation(),
-        );
     }
 
     /**

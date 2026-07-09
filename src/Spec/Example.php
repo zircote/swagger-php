@@ -26,6 +26,10 @@ class Example extends AbstractAttribute
 
     public function merge(): array
     {
-        return [MediaType::class, Parameter::class, Header::class];
+        return [
+            MediaType::class => 'examples[]',
+            Parameter::class => 'examples[]',
+            Header::class => 'examples[]',
+        ];
     }
 }

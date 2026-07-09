@@ -118,11 +118,19 @@ class Schema extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Property::class, Parameter::class, Header::class, MediaType::class];
+        return [
+            Property::class => 'schema',
+            Parameter::class => 'schema',
+            Header::class => 'schema',
+            MediaType::class => 'schema',
+        ];
     }
 
     public function contains(): array
     {
-        return [Property::class, self::class];
+        return [
+            Property::class => 'properties[]',
+            self::class => 'properties[]',
+        ];
     }
 }
