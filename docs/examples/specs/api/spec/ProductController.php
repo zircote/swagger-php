@@ -64,13 +64,13 @@ class ProductController
             mediaType: 'application/json',
             schema: new OA\Schema(
                 type: 'object',
-                required: ['data'],
                 properties: [
                     new OA\Property(
                         property: 'data',
                         schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Product::class)),
                     ),
                 ],
+                required: ['data'],
             ),
         )],
     )]

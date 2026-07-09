@@ -208,7 +208,7 @@ class Assembler
      *
      * @param  list<AttributeInterface> $outer Attributes from the enclosing reflector (already stack-resolved)
      * @param  list<AttributeInterface> $inner Attributes from inner reflectors (already stack-resolved per-reflector)
-     * @return list<AttributeInterface>        Final root attributes
+     * @return list<AttributeInterface> Final root attributes
      */
     protected function resolveHierarchy(array $outer, array $inner): array
     {

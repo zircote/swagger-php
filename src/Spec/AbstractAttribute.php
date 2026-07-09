@@ -53,8 +53,8 @@ abstract class AbstractAttribute implements AttributeInterface
 
     public function getSourceLocation(): SourceLocation
     {
-        if ($this->sourceLocation === null) {
-            $this->sourceLocation = $this->reflector !== null
+        if (!$this->sourceLocation instanceof SourceLocation) {
+            $this->sourceLocation = $this->reflector instanceof \Reflector
                 ? SourceLocation::fromReflector($this->reflector)
                 : new SourceLocation();
         }

@@ -6,17 +6,17 @@
 
 namespace OpenApi\Utils;
 
-final class SourceLocation
+final readonly class SourceLocation implements \Stringable
 {
     public function __construct(
-        public readonly ?string $filename = null,
-        public readonly ?int $line = null,
-        public readonly ?string $namespace = null,
-        public readonly ?string $class = null,
-        public readonly ?string $method = null,
-        public readonly ?string $property = null,
-        public readonly ?string $parameter = null,
-        public readonly ?string $constant = null,
+        public ?string $filename = null,
+        public ?int $line = null,
+        public ?string $namespace = null,
+        public ?string $class = null,
+        public ?string $method = null,
+        public ?string $property = null,
+        public ?string $parameter = null,
+        public ?string $constant = null,
     ) {
     }
 

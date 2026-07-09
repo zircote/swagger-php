@@ -20,9 +20,9 @@ final class AssemblerTest extends TestCase
 
         $this->assertCount(1, $attributes);
         $this->assertInstanceOf(Spec\Property::class, $attributes[0]);
-        $this->assertEquals('name', $attributes[0]->property);
+        $this->assertSame('name', $attributes[0]->property);
         $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
-        $this->assertEquals('The name.', $attributes[0]->schema->description);
+        $this->assertSame('The name.', $attributes[0]->schema->description);
     }
 
     public function testStackMergeSchemaIntoParameter(): void
@@ -35,9 +35,9 @@ final class AssemblerTest extends TestCase
 
         $this->assertCount(1, $attributes);
         $this->assertInstanceOf(Spec\Parameter::class, $attributes[0]);
-        $this->assertEquals('product_id', $attributes[0]->name);
+        $this->assertSame('product_id', $attributes[0]->name);
         $this->assertInstanceOf(Spec\Schema::class, $attributes[0]->schema);
-        $this->assertEquals('int64', $attributes[0]->schema->format);
+        $this->assertSame('int64', $attributes[0]->schema->format);
     }
 
     public function testHierarchyPropertyAbsorbedBySchema(): void

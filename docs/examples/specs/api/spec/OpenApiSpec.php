@@ -12,7 +12,7 @@ use OpenApi\Spec as OA;
  * The Spec.
  */
 #[OA\OpenApi(version: '3.1.0')]
-#[OA\SecurityScheme()]
+#[OA\SecurityScheme]
 #[OA\Info(
     title: 'Basic single file API',
     version: '1.0.0',
