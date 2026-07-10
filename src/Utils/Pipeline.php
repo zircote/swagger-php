@@ -53,6 +53,24 @@ class Pipeline
     }
 
     /**
+     * @template P
+     *
+     * @param class-string<P> $class
+     *
+     * @return P|null
+     */
+    public function get(string $class): mixed
+    {
+        foreach ($this->pipes as $pipe) {
+            if ($pipe instanceof $class) {
+                return $pipe;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param callable|class-string|null $pipe
      */
     public function remove($pipe = null, ?callable $matcher = null): Pipeline

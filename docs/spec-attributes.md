@@ -16,16 +16,17 @@ The spec attributes pipeline introduces a clean separation of concerns with expl
 
 ## Architecture
 
-### Four-stage pipeline
+### Five-stage pipeline
 
 ```
-Source files → Assembler → Specification → Compiler → OpenAPI document
+Source files → Assembler → Specification → Augmenters → Compiler → OpenAPI document
 ```
 
 1. **Assembler** scans source files, instantiates attributes from reflection, and resolves nesting
 2. **Specification** is a flat, typed container holding all collected attributes
-3. **Compiler** transforms the specification into a versioned OpenAPI document array
-4. **Builder** is the unified entry point that orchestrates the pipeline
+3. **Augmenters** enrich the specification with inferred data (types, descriptions, refs, tags) via a grouped pipeline (resolve → reduce → augment)
+4. **Compiler** transforms the specification into a versioned OpenAPI document array
+5. **Builder** is the unified entry point that orchestrates the pipeline
 
 ### Key design decisions
 
@@ -109,8 +110,10 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 - Typed subclasses for Parameter, Flow, and Operation
 - One working example (`api`) using spec attributes
 - Pipeline classes tested (Assembler, Compilers, Builder)
-- Augmenter infrastructure: `AugmenterInterface`, Pipeline integration, typed Builder configuration
+- Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
+- `Docblock` augmenter (summary, description, deprecated from PHPDoc)
 - `OperationId` augmenter (generates operationId from reflector context, with `hash` option)
+- `Tag` augmenter (auto-generates global tags from operation usage)
 - PHPStan clean (all docblock type references use `OA\` alias correctly)
 - Rector excludes `tools/` to avoid conflict with cs-fixer FQN shortening
 
@@ -118,12 +121,13 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 
 ### Augmenters (critical path)
 
-The infrastructure is in place (`AugmenterInterface` + Pipeline + Builder config pattern). Remaining augmenters to implement:
+The infrastructure is in place (`PipeInterface` + grouped Pipeline + `Pipeline::get()` for config). Remaining augmenters to implement:
 
-- **TypeResolver** — infer type/format/$ref from PHP type hints
-- **DocblockReader** — fill summary/description from PHPDoc comments
-- **Inheritance** — build allOf/property merging from class hierarchies
-- **EnumValues** — populate enum from PHP backed enum cases
+- **TypeInference** — infer schema/property type, format, nullable from PHP type declarations
+- **Parameter** — infer name, `in`, required, type from reflection
+- **RequestBody** — wrap loose MediaType/Schema into requestBody
+- **Ref** — resolve `$ref` from schema names
+- **Discriminator** — build discriminator mappings from inheritance
 
 ### Specification helpers (needed by augmenters)
 

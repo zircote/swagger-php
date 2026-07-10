@@ -148,29 +148,16 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertTrue($found, 'Default augmenters should include OperationId');
     }
 
-    public function testAugmenterConfigCallsSetters(): void
+    public function testPipelineGetReturnsTypedInstance(): void
     {
         $builder = new Builder();
-        $builder->augmenterConfig(OperationId::class, hash: false);
+        $operationId = $builder->getAugmenters()->get(OperationId::class);
 
-        $builder->getAugmenters()->walk(function (callable $pipe): void {
-            if ($pipe instanceof OperationId) {
-                $rc = new \ReflectionProperty($pipe, 'hash');
-                $this->assertFalse($rc->getValue($pipe));
-            }
-        });
-    }
+        $this->assertInstanceOf(OperationId::class, $operationId);
 
-    public function testTypedAugmenterConfigMethod(): void
-    {
-        $builder = new Builder();
-        $builder->operationId(hash: false);
+        $operationId->setHash(false);
 
-        $builder->getAugmenters()->walk(function (callable $pipe): void {
-            if ($pipe instanceof OperationId) {
-                $rc = new \ReflectionProperty($pipe, 'hash');
-                $this->assertFalse($rc->getValue($pipe));
-            }
-        });
+        $rc = new \ReflectionProperty($operationId, 'hash');
+        $this->assertFalse($rc->getValue($operationId));
     }
 }

@@ -96,57 +96,6 @@ class Builder
     }
 
     /**
-     * Configure any augmenter in the pipeline by class name.
-     *
-     * Named arguments are mapped to setters on the augmenter instance
-     * (e.g. `hash: false` calls `setHash(false)`).
-     *
-     * Works for both default and custom augmenters once they are in the pipeline.
-     *
-     * @param class-string<PipeInterface> $class
-     */
-    public function augmenterConfig(string $class, mixed ...$config): static
-    {
-        $this->getAugmenters()->walk(function (callable $pipe) use ($class, $config): void {
-            if (!$pipe instanceof $class) {
-                return;
-            }
-            foreach ($config as $name => $value) {
-                $setter = 'set' . ucfirst($name);
-                $pipe->{$setter}($value);
-            }
-        });
-
-        return $this;
-    }
-
-    /**
-     * Configure the OperationId augmenter.
-     */
-    public function operationId(bool $hash = true): static
-    {
-        return $this->augmenterConfig(Augmenter\OperationId::class, hash: $hash);
-    }
-
-    /**
-     * Configure the Tag augmenter.
-     *
-     * @param list<string>|null $whitelist Tags to keep even if unused ('*' keeps all)
-     */
-    public function tags(?array $whitelist = null, ?bool $withDescription = null): static
-    {
-        $config = [];
-        if ($whitelist !== null) {
-            $config['whitelist'] = $whitelist;
-        }
-        if ($withDescription !== null) {
-            $config['withDescription'] = $withDescription;
-        }
-
-        return $this->augmenterConfig(Augmenter\Tag::class, ...$config);
-    }
-
-    /**
      * @return Utils\Pipeline<Specification>
      */
     public function getAugmenters(): Utils\Pipeline
