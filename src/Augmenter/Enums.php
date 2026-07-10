@@ -62,9 +62,7 @@ class Enums implements PipeInterface
 
             $reflector = new \ReflectionEnum($reflector->getName());
 
-            if ($schema->schema === null) {
-                $schema->schema = $reflector->getShortName();
-            }
+            $schema->schema ??= $reflector->getShortName();
 
             $useName = $this->shouldUseName($schema, $reflector);
 

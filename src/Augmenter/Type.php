@@ -134,9 +134,7 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($property->property === null) {
-            $property->property = $reflector->getName();
-        }
+        $property->property ??= $reflector->getName();
 
         if ($reflector instanceof \ReflectionClassConstant) {
             return;
@@ -176,9 +174,7 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($parameter->name === null) {
-            $parameter->name = $reflector->getName();
-        }
+        $parameter->name ??= $reflector->getName();
 
         if ($parameter->schema instanceof OA\Schema && $parameter->schema->ref !== null) {
             return;
@@ -199,9 +195,7 @@ class Type implements PipeInterface
             $this->mergeIntoSchema($parameter->schema, $resolved);
         }
 
-        if ($parameter->required === null) {
-            $parameter->required = $resolved->nullable !== true;
-        }
+        $parameter->required ??= $resolved->nullable !== true;
     }
 
     protected function schemaTypeToSchema(SchemaType $schemaType): OA\Schema
@@ -251,19 +245,13 @@ class Type implements PipeInterface
 
         if ($schemaType->items instanceof SchemaType) {
             $schema->type = 'array';
-            if ($schema->items === null) {
-                $schema->items = $this->schemaTypeToSchema($schemaType->items);
-            }
+            $schema->items ??= $this->schemaTypeToSchema($schemaType->items);
         }
 
         if ($schemaType->additionalProperties instanceof SchemaType) {
-            if ($schema->additionalProperties === null) {
-                $schema->additionalProperties = $this->schemaTypeToSchema($schemaType->additionalProperties);
-            }
+            $schema->additionalProperties ??= $this->schemaTypeToSchema($schemaType->additionalProperties);
         } elseif ($schemaType->additionalProperties === true) {
-            if ($schema->additionalProperties === null) {
-                $schema->additionalProperties = true;
-            }
+            $schema->additionalProperties ??= true;
         }
 
         if ($schemaType->oneOf !== null) {
