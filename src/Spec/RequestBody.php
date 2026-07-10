@@ -33,6 +33,11 @@ class RequestBody extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
+    public function isRoot(): bool
+    {
+        return $this->request !== null;
+    }
+
     public function merge(): array
     {
         return [Operation::class => 'requestBody'];

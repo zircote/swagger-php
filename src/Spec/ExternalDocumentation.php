@@ -27,12 +27,8 @@ class ExternalDocumentation extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
-    public function merge(): array
+    public function isRoot(): bool
     {
-        return [
-            Tag::class => 'externalDocs',
-            Schema::class => 'externalDocs',
-            Operation::class => 'externalDocs',
-        ];
+        return true;
     }
 }
