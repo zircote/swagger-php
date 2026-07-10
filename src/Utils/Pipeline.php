@@ -9,10 +9,13 @@ namespace OpenApi\Utils;
 use OpenApi\OpenApiException;
 use OpenApi\PipeInterface;
 
+/**
+ * @template T
+ */
 class Pipeline
 {
     /**
-     * @var array<callable>
+     * @var array<callable(T): (T|null)>
      */
     protected $pipes = [];
 
@@ -126,7 +129,9 @@ class Pipeline
     }
 
     /**
-     * @return mixed
+     * @param T $payload
+     *
+     * @return T
      */
     public function process(mixed $payload)
     {

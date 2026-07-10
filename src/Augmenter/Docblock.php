@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\AttributeInterface;
 use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Undefined;
 use OpenApi\Utils\DocBlockParser;
 
@@ -18,6 +19,8 @@ use OpenApi\Utils\DocBlockParser;
  * Walks all attributes in the specification that have summary/description
  * properties and populates them from the reflector's docblock when not
  * explicitly set.
+ *
+ * @implements PipeInterface<Specification>
  */
 class Docblock implements PipeInterface
 {

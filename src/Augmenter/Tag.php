@@ -8,12 +8,15 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 
 /**
  * Ensures all tags used on operations exist in the global tags list.
  *
  * Adds missing Tag objects for any tag name referenced by operations.
  * Removes unused declared tags unless whitelisted.
+ *
+ * @implements PipeInterface<Specification>
  */
 class Tag implements PipeInterface
 {

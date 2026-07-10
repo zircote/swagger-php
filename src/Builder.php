@@ -39,6 +39,7 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
+    /** @var Utils\Pipeline<Specification>|null */
     protected ?Utils\Pipeline $augmenters = null;
 
     /** @var callable|null */
@@ -145,6 +146,9 @@ class Builder
         return $this->augmenterConfig(Augmenter\Tag::class, ...$config);
     }
 
+    /**
+     * @return Utils\Pipeline<Specification>
+     */
     public function getAugmenters(): Utils\Pipeline
     {
         $this->augmenters ??= new Utils\Pipeline(

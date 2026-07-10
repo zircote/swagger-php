@@ -8,9 +8,12 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 
 /**
  * Generates operationId for operations that don't have one explicitly set.
+ *
+ * @implements PipeInterface<Specification>
  */
 class OperationId implements PipeInterface
 {

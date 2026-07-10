@@ -10,6 +10,8 @@ namespace OpenApi;
  * Optional interface for pipeline pipes that support grouping.
  *
  * Pipes without this interface are placed in the pipeline's default group.
+ *
+ * @template T
  */
 interface PipeInterface
 {
@@ -18,5 +20,10 @@ interface PipeInterface
      */
     public function group(): string|\BackedEnum;
 
+    /**
+     * @param T $payload
+     *
+     * @return T|null
+     */
     public function __invoke(mixed $payload): mixed;
 }
