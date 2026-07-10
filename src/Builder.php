@@ -234,6 +234,8 @@ class Builder
             new Augmenter\Enums(),
             new Augmenter\Type(),
             new Augmenter\Ref(),
+            new Augmenter\PathFilter(),
+            new Augmenter\CleanUnused(),
             new Augmenter\Docblock(),
             new Augmenter\OperationId(),
             new Augmenter\Tag(),

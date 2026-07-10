@@ -120,11 +120,6 @@ components:
                 - GREEN
                 - BLUE
                 - RED
-        NameTrait:
-            description: 'A Name.'
-            properties:
-                name:
-                    description: 'The name.'
         Product:
             title: Product
             description: 'A Product.'
