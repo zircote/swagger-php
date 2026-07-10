@@ -42,6 +42,7 @@ class Type implements PipeInterface
     public function __invoke(mixed $payload): mixed
     {
         foreach ($payload->schemas as $schema) {
+            $this->inferSchemaType($schema);
             $this->walkSchema($schema);
         }
 
@@ -63,6 +64,17 @@ class Type implements PipeInterface
         }
 
         return null;
+    }
+
+    protected function inferSchemaType(OA\Schema $schema): void
+    {
+        if ($schema->type !== null) {
+            return;
+        }
+
+        if ($schema->properties || $schema->additionalProperties || $schema->patternProperties) {
+            $schema->type = 'object';
+        }
     }
 
     protected function walkSchema(?OA\Schema $schema): void

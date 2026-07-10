@@ -231,11 +231,48 @@ class OpenApi31Compiler implements CompilerInterface
             'parameters' => $operation->parameters ? array_map($this->compileParameter(...), $operation->parameters) : null,
             'requestBody' => $operation->requestBody instanceof OA\RequestBody ? $this->compileRequestBody($operation->requestBody) : null,
             'responses' => $operation->responses ? $this->compileResponses($operation->responses) : null,
-            'callbacks' => $operation->callbacks,
+            'callbacks' => $operation->callbacks !== null ? $this->compileCallbacks($operation->callbacks) : null,
             'deprecated' => $operation->deprecated,
             'security' => $operation->security ? $this->compileSecurity($operation->security) : null,
             'servers' => $operation->servers ? array_map($this->compileServer(...), $operation->servers) : null,
         ], $operation);
+    }
+
+    /**
+     * Recursively compile callback structures, resolving any DTO objects found within.
+     */
+    protected function compileCallbacks(array $callbacks): array
+    {
+        $result = [];
+
+        foreach ($callbacks as $key => $value) {
+            $result[$key] = $this->compileCallbackValue($value);
+        }
+
+        return $result;
+    }
+
+    protected function compileCallbackValue(mixed $value): mixed
+    {
+        if ($value instanceof OA\RequestBody) {
+            return $this->compileRequestBody($value);
+        }
+        if ($value instanceof OA\Response) {
+            return $this->compileResponse($value);
+        }
+        if ($value instanceof OA\Schema) {
+            return $this->compileSchema($value);
+        }
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $k => $v) {
+                $result[$k] = $this->compileCallbackValue($v);
+            }
+
+            return $result;
+        }
+
+        return $value;
     }
 
     protected function compileParameter(OA\Parameter $parameter): array
