@@ -177,17 +177,30 @@ class Docblock implements PipeInterface
 
     protected function augmentProperties(OA\Schema $schema): void
     {
-        if (!$schema->properties) {
-            return;
+        $properties = $schema->properties ?? [];
+
+        // Also walk properties inside allOf entries (placed there by ExpandHierarchy)
+        foreach ($schema->allOf ?? [] as $entry) {
+            if ($entry->properties) {
+                array_push($properties, ...$entry->properties);
+            }
         }
 
-        foreach ($schema->properties as $property) {
+        foreach ($properties as $property) {
             if (!$property instanceof OA\Property) {
                 continue;
             }
 
-            if ($property->schema instanceof OA\Schema) {
-                $this->augmentDescription($property->schema);
+            if ($property->schema instanceof OA\Schema && $property->schema->description === null) {
+                // Schema may have its own reflector (inline), otherwise fall back to
+                // the property's reflector (e.g. class constants where schema is synthetic)
+                $doc = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
+                if ($doc !== null) {
+                    $content = $this->parser->parseDocblock($doc);
+                    if ($content !== '' && !Undefined::isDefault($content)) {
+                        $property->schema->description = $content;
+                    }
+                }
             }
         }
     }

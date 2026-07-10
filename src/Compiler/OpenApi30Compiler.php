@@ -272,6 +272,10 @@ class OpenApi30Compiler extends OpenApi31Compiler
         if ($schema->example !== Undefined::UNDEFINED) {
             $result['example'] = $schema->example;
         }
+        // const is not supported in 3.0 — fall back to enum
+        if ($schema->const !== Undefined::UNDEFINED && !isset($result['enum'])) {
+            $result['enum'] = [$schema->const];
+        }
 
         return $result;
     }

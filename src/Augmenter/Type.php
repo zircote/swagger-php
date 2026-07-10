@@ -10,6 +10,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeResolver;
+use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -72,7 +73,7 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($schema->properties || $schema->additionalProperties || $schema->patternProperties) {
+        if ($schema->properties || $schema->allOf || $schema->additionalProperties || $schema->patternProperties) {
             $schema->type = 'object';
         }
     }
@@ -149,6 +150,8 @@ class Type implements PipeInterface
         $property->property ??= $reflector->getName();
 
         if ($reflector instanceof \ReflectionClassConstant) {
+            $this->augmentConstantProperty($property, $reflector);
+
             return;
         }
 
@@ -166,6 +169,25 @@ class Type implements PipeInterface
         } else {
             $this->mergeIntoSchema($property->schema, $resolved);
         }
+    }
+
+    protected function augmentConstantProperty(OA\Property $property, \ReflectionClassConstant $reflector): void
+    {
+        $value = $reflector->getValue();
+
+        $schema = $property->schema ?? new OA\Schema();
+        // Can't use ??= here — const defaults to Undefined::UNDEFINED, not null
+        if (Undefined::isDefault($schema->const)) {
+            $schema->const = $value;
+        }
+        $schema->type ??= match (true) {
+            is_string($value) => 'string',
+            is_int($value) => 'integer',
+            is_float($value) => 'number',
+            is_bool($value) => 'boolean',
+            default => null,
+        };
+        $property->schema = $schema;
     }
 
     protected function augmentOperationParameters(OA\Operation $operation): void
