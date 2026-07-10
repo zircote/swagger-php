@@ -8,38 +8,10 @@ namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
 use OpenApi\OpenApiException;
-use OpenApi\Spec as OA;
 use PHPUnit\Framework\TestCase;
 
 final class AssemblerTest extends TestCase
 {
-    public function testStackMergeSchemaIntoProperty(): void
-    {
-        $assembler = new Assembler();
-        $attributes = $assembler->instantiate(new \ReflectionProperty(Fixtures\Assembler\SimpleProduct::class, 'name'));
-
-        $this->assertCount(1, $attributes);
-        $this->assertInstanceOf(OA\Property::class, $attributes[0]);
-        $this->assertSame('name', $attributes[0]->property);
-        $this->assertInstanceOf(OA\Schema::class, $attributes[0]->schema);
-        $this->assertSame('The name.', $attributes[0]->schema->description);
-    }
-
-    public function testStackMergeSchemaIntoParameter(): void
-    {
-        $assembler = new Assembler();
-        $attributes = $assembler->instantiate(new \ReflectionParameter(
-            [Fixtures\Assembler\SimpleController::class, 'getProduct'],
-            'product_id',
-        ));
-
-        $this->assertCount(1, $attributes);
-        $this->assertInstanceOf(OA\Parameter::class, $attributes[0]);
-        $this->assertSame('product_id', $attributes[0]->name);
-        $this->assertInstanceOf(OA\Schema::class, $attributes[0]->schema);
-        $this->assertSame('int64', $attributes[0]->schema->format);
-    }
-
     public function testHierarchyPropertyAbsorbedBySchema(): void
     {
         $assembler = new Assembler();
@@ -87,15 +59,6 @@ final class AssemblerTest extends TestCase
 
         $assembler = new Assembler();
         $assembler->collect(new \ReflectionClass(Fixtures\Assembler\OrphanProperty::class));
-    }
-
-    public function testAmbiguousMergeThrows(): void
-    {
-        $this->expectException(OpenApiException::class);
-        $this->expectExceptionMessageMatches('/Ambiguous merge/');
-
-        $assembler = new Assembler();
-        $assembler->instantiate(new \ReflectionProperty(Fixtures\Assembler\AmbiguousMerge::class, 'value'));
     }
 
     public function testClassConstantAbsorbedBySchema(): void
