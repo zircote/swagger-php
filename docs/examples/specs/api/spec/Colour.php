@@ -11,7 +11,8 @@ use OpenApi\Spec as OA;
 /**
  * A Colour.
  */
-#[OA\Schema(schema: 'Colour')]
+// schema name inferred from enum name
+#[OA\Schema]
 enum Colour
 {
     case GREEN;

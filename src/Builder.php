@@ -230,6 +230,7 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
+            new Augmenter\InferNames(),
             new Augmenter\Enums(),
             new Augmenter\Type(),
             new Augmenter\Ref(),
