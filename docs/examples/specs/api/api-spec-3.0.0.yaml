@@ -114,34 +114,41 @@ security:
 components:
     schemas:
         Colour:
-            description: 'A Colour.'
             type: string
+            description: 'A Colour.'
             enum:
                 - GREEN
                 - BLUE
                 - RED
+        NameTrait:
+            description: 'A Name.'
+            properties:
+                name:
+                    description: 'The name.'
         Product:
             title: Product
             description: 'A Product.'
-            properties:
-                id:
-                    format: int64
-                    description: 'The id.'
-                    example: 1
-                name:
-                    description: 'The name.'
-                quantity:
-                    type: integer
-                brand:
-                    type: string
-                    nullable: true
-                    default: null
-                    example: null
-                colour:
-                    $ref: '#/components/schemas/Colour'
-                releasedAt:
-                    type: string
-                kind: {}
+            allOf:
+                - $ref: '#/components/schemas/NameTrait'
+                -
+                    type: object
+                    properties:
+                        id:
+                            format: int64
+                            description: 'The id.'
+                            example: 1
+                        quantity:
+                            type: integer
+                        brand:
+                            type: string
+                            nullable: true
+                            default: null
+                            example: null
+                        colour:
+                            $ref: '#/components/schemas/Colour'
+                        releasedAt:
+                            type: string
+                        kind: {}
     securitySchemes:
         bearerAuth:
             type: http

@@ -73,14 +73,21 @@ class Assembler
     protected function collectFromClass(\ReflectionClass $class): void
     {
         $outer = $this->factory->fromReflector($class);
-        $inner = $this->factory->membersOf($class);
 
-        $roots = $this->factory->resolveHierarchy($outer, $inner);
+        if ($outer !== []) {
+            // Only collect own members when the class has a root attribute (e.g. Schema).
+            // Classes without root attributes (plain parents/traits) are handled later
+            // by ExpandHierarchy which merges their members into the child schema.
+            $inner = $this->factory->membersOf($class);
+            $roots = $this->factory->resolveHierarchy($outer, $inner);
 
-        foreach ($roots as $root) {
-            $this->specification->add($root);
+            foreach ($roots as $root) {
+                $this->specification->add($root);
+            }
         }
 
+        // Methods are always processed — a controller may have operations without
+        // any class-level schema attribute.
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
                 continue;

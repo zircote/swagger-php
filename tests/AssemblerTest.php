@@ -7,7 +7,6 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
-use OpenApi\OpenApiException;
 use PHPUnit\Framework\TestCase;
 
 final class AssemblerTest extends TestCase
@@ -52,13 +51,13 @@ final class AssemblerTest extends TestCase
         $this->assertEquals('product_id', $spec->operations[0]->parameters[0]->name);
     }
 
-    public function testOrphanAttributeThrows(): void
+    public function testClassWithoutRootAttributeSkipped(): void
     {
-        $this->expectException(OpenApiException::class);
-        $this->expectExceptionMessageMatches('/Orphan attribute/');
-
         $assembler = new Assembler();
         $assembler->collect(new \ReflectionClass(Fixtures\Assembler\OrphanProperty::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(0, $spec->schemas);
     }
 
     public function testClassConstantAbsorbedBySchema(): void
