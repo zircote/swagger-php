@@ -124,16 +124,19 @@ class ApiInfo
 PHP);
 
         // Schema models
+        // Half of the used schemas are only referenced via JsonContent (no cross-ref Property),
+        // exercising the nested annotation traversal in CleanUnusedComponents.
+        $jsonContentOnlyCount = (int) floor($usedCount / 2);
         foreach ($allSchemas as $idx => $schemaName) {
             $properties = [
                 "        new OA\Property(property: 'id', type: 'integer'),",
                 "        new OA\Property(property: 'name', type: 'string'),",
             ];
 
-            // Used schemas cross-reference other used schemas
-            if ($idx < $usedCount) {
-                $refIdx = ($idx + 1) % $usedCount;
-                $refSchema = $usedSchemas[$refIdx];
+            // Only the second half of used schemas cross-reference each other
+            if ($idx >= $jsonContentOnlyCount && $idx < $usedCount) {
+                $refIdx = $jsonContentOnlyCount + (($idx - $jsonContentOnlyCount + 1) % ($usedCount - $jsonContentOnlyCount));
+                $refSchema = $allSchemas[$refIdx];
                 $properties[] = "        new OA\Property(property: 'related', ref: '#/components/schemas/{$refSchema}'),";
             }
 
