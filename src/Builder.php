@@ -228,6 +228,7 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
+            new Augmenter\Type(),
             new Augmenter\Ref(),
             new Augmenter\Docblock(),
             new Augmenter\OperationId(),

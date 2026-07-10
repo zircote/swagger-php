@@ -26,9 +26,7 @@ paths:
                     description: 'the product id'
                     required: true
                     schema:
-                        type:
-                            - integer
-                            - 'null'
+                        type: integer
             responses:
                 200:
                     description: 'successful operation'
@@ -49,6 +47,7 @@ paths:
             tags:
                 - products
             summary: 'Add products'
+            description: 'Add a product.'
             operationId: addProducts
             requestBody:
                 description: 'New product'

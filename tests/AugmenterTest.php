@@ -194,4 +194,78 @@ final class AugmenterTest extends TestCase
         $tagNames = array_map(fn (OA\Tag $t): ?string => $t->name, $spec->tags);
         $this->assertContains('unused', $tagNames);
     }
+
+    // --- Type ---
+
+    public function testTypeInfersPropertyTypes(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);
+
+        (new Augmenter\Type())($spec);
+
+        $schema = $spec->schemas[0];
+        $this->assertSame('TypeSchema', $schema->schema);
+
+        $props = [];
+        foreach ($schema->properties as $property) {
+            $props[$property->property] = $property->schema;
+        }
+
+        $this->assertSame('integer', $props['id']->type);
+        $this->assertSame('string', $props['name']->type);
+        $this->assertSame('number', $props['score']->type);
+        $this->assertTrue($props['score']->nullable);
+        $this->assertSame('boolean', $props['active']->type);
+        $this->assertSame('array', $props['tags']->type);
+        $this->assertSame('string', $props['tags']->items->type);
+    }
+
+    public function testTypeInfersParameterSchema(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
+
+        (new Augmenter\Type())($spec);
+
+        $params = $spec->operations[0]->parameters;
+        $this->assertSame('integer', $params[0]->schema->type);
+        $this->assertTrue($params[0]->required);
+
+        $this->assertSame('string', $params[1]->schema->type);
+        $this->assertTrue($params[1]->schema->nullable);
+        $this->assertFalse($params[1]->required);
+    }
+
+    public function testTypeInfersParameterName(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
+
+        (new Augmenter\Type())($spec);
+
+        $this->assertSame('filter', $spec->operations[0]->parameters[1]->name);
+    }
+
+    public function testTypeSkipsExplicitSchema(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
+        $spec->operations[0]->parameters[0]->schema = new OA\Schema(type: 'string');
+
+        (new Augmenter\Type())($spec);
+
+        $this->assertSame('string', $spec->operations[0]->parameters[0]->schema->type);
+    }
+
+    public function testTypeResolvesRefFromObjectType(): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\RefTarget::class,
+            Fixtures\Augmenter\RefController::class,
+        );
+
+        (new Augmenter\Type())($spec);
+
+        // Type augmenter doesn't resolve refs to #/components/... — that's Ref's job
+        // But it should leave the FQCN ref from the attribute as-is
+        $schema = $spec->operations[0]->responses[0]->content[0]->schema;
+        $this->assertSame(Fixtures\Augmenter\RefTarget::class, $schema->ref);
+    }
 }

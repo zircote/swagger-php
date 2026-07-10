@@ -19,10 +19,13 @@ paths:
             summary: 'Get a product.'
             operationId: getProducts
             parameters:
-                - name: product_id
-                  in: path
-                  description: 'the product id'
-                  required: true
+                -
+                    name: product_id
+                    in: path
+                    description: 'the product id'
+                    required: true
+                    schema:
+                        type: integer
             responses:
                 200:
                     description: 'successful operation'
@@ -43,6 +46,7 @@ paths:
             tags:
                 - products
             summary: 'Add products'
+            description: 'Add a product.'
             operationId: addProducts
             requestBody:
                 description: 'New product'
@@ -126,12 +130,15 @@ components:
                     example: 1
                 name:
                     description: 'The name.'
-                quantity: {}
+                quantity:
+                    type: integer
                 brand:
+                    type: string
+                    nullable: true
                     default: null
                     example: null
                 colour:
-                    description: 'The colour'
+                    $ref: '#/components/schemas/Colour'
                 releasedAt:
                     type: string
                 kind: {}
