@@ -131,7 +131,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             return ['$ref' => $parameter->ref];
         }
 
-        $result = $this->filter([
+        return $this->filter([
             'name' => $parameter->name,
             'in' => $parameter->in,
             'description' => $parameter->description,
@@ -142,17 +142,10 @@ class OpenApi30Compiler extends OpenApi31Compiler
             'explode' => $parameter->explode,
             'allowReserved' => $parameter->allowReserved,
             'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
+            'example' => $parameter->example,
+            'examples' => $parameter->examples !== null ? $this->compileExamples($parameter->examples) : null,
             'content' => $parameter->content !== null ? $this->compileMediaTypes($parameter->content) : null,
         ], $parameter);
-
-        if ($parameter->example !== Undefined::UNDEFINED) {
-            $result['example'] = $parameter->example;
-        }
-        if ($parameter->examples !== null) {
-            $result['examples'] = $this->compileExamples($parameter->examples);
-        }
-
-        return $result;
     }
 
     protected function compileMediaType(OA\MediaType $mediaType): array
@@ -165,17 +158,12 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
         }
 
-        $result = $this->filter([
+        return $this->filter([
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
+            'example' => $mediaType->example,
             'examples' => $mediaType->examples !== null ? $this->compileExamples($mediaType->examples) : null,
             'encoding' => $encoding,
         ], $mediaType);
-
-        if ($mediaType->example !== Undefined::UNDEFINED) {
-            $result['example'] = $mediaType->example;
-        }
-
-        return $result;
     }
 
     /**
@@ -348,14 +336,5 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 ];
             }
         }
-    }
-
-    protected function walkSchema(OA\Schema|string $schema, array &$collected): void
-    {
-        if (is_string($schema)) {
-            return;
-        }
-
-        parent::walkSchema($schema, $collected);
     }
 }

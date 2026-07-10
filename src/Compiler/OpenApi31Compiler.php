@@ -724,76 +724,11 @@ class OpenApi31Compiler implements CompilerInterface
     protected function collectSchemas(Specification $specification): array
     {
         $schemas = [];
-
-        foreach ($specification->schemas as $schema) {
-            $this->walkSchema($schema, $schemas);
-        }
-
-        foreach ($specification->operations as $operation) {
-            if ($operation->parameters) {
-                foreach ($operation->parameters as $param) {
-                    if ($param->schema !== null) {
-                        $this->walkSchema($param->schema, $schemas);
-                    }
-                }
-            }
-            if ($operation->requestBody?->content) {
-                foreach ($operation->requestBody->content as $mediaType) {
-                    if ($mediaType->schema !== null) {
-                        $this->walkSchema($mediaType->schema, $schemas);
-                    }
-                }
-            }
-            if ($operation->responses) {
-                foreach ($operation->responses as $response) {
-                    if ($response->content) {
-                        foreach ($response->content as $mediaType) {
-                            if ($mediaType->schema !== null) {
-                                $this->walkSchema($mediaType->schema, $schemas);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        $specification->eachSchema(function (OA\Schema $schema) use (&$schemas): void {
+            $schemas[] = $schema;
+        });
 
         return $schemas;
-    }
-
-    /**
-     * @param list<OA\Schema> $collected
-     */
-    protected function walkSchema(OA\Schema $schema, array &$collected): void
-    {
-        $collected[] = $schema;
-
-        if ($schema->properties) {
-            foreach ($schema->properties as $prop) {
-                if ($prop instanceof OA\Property && $prop->schema instanceof OA\Schema) {
-                    $this->walkSchema($prop->schema, $collected);
-                } elseif ($prop instanceof OA\Schema) {
-                    $this->walkSchema($prop, $collected);
-                }
-            }
-        }
-        if ($schema->items instanceof OA\Schema) {
-            $this->walkSchema($schema->items, $collected);
-        }
-        if ($schema->allOf) {
-            foreach ($schema->allOf as $sub) {
-                $this->walkSchema($sub, $collected);
-            }
-        }
-        if ($schema->anyOf) {
-            foreach ($schema->anyOf as $sub) {
-                $this->walkSchema($sub, $collected);
-            }
-        }
-        if ($schema->oneOf) {
-            foreach ($schema->oneOf as $sub) {
-                $this->walkSchema($sub, $collected);
-            }
-        }
     }
 
     /**
