@@ -127,6 +127,24 @@ class Builder
         return $this->augmenterConfig(Augmenter\OperationId::class, hash: $hash);
     }
 
+    /**
+     * Configure the Tag augmenter.
+     *
+     * @param list<string>|null $whitelist Tags to keep even if unused ('*' keeps all)
+     */
+    public function tags(?array $whitelist = null, ?bool $withDescription = null): static
+    {
+        $config = [];
+        if ($whitelist !== null) {
+            $config['whitelist'] = $whitelist;
+        }
+        if ($withDescription !== null) {
+            $config['withDescription'] = $withDescription;
+        }
+
+        return $this->augmenterConfig(Augmenter\Tag::class, ...$config);
+    }
+
     public function getAugmenters(): Utils\Pipeline
     {
         $this->augmenters ??= new Utils\Pipeline(
@@ -259,6 +277,7 @@ class Builder
         return [
             new Augmenter\Docblock(),
             new Augmenter\OperationId(),
+            new Augmenter\Tag(),
         ];
     }
 

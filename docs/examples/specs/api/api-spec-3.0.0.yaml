@@ -103,7 +103,7 @@ tags:
     - name: products
       description: 'All about products'
     - name: catalog
-      description: 'Catalog API'
+      description: catalog
 security:
     -
         bearerAuth: []
