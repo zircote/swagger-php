@@ -11,7 +11,7 @@ namespace OpenApi\Spec;
  *
  * @see [Request Body Object](https://spec.openapis.org/oas/v3.1.1.html#request-body-object)
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class RequestBody extends AbstractAttribute
 {
     /**

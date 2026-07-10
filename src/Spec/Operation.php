@@ -12,7 +12,7 @@ namespace OpenApi\Spec;
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  * @see [Path Item Object](https://spec.openapis.org/oas/v3.1.1.html#path-item-object)
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Operation extends AbstractAttribute
 {
     /**

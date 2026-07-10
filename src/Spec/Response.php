@@ -11,7 +11,7 @@ namespace OpenApi\Spec;
  *
  * @see [Response Object](https://spec.openapis.org/oas/v3.1.1.html#response-object)
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends AbstractAttribute
 {
     /**
