@@ -111,11 +111,50 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 - One working example (`api`) using spec attributes
 - Pipeline classes tested (Assembler, Compilers, Builder)
 - Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
+- `Type` augmenter (infers schema type, format, nullable, items, refs from PHP type declarations and docblocks)
+- `Ref` augmenter (resolves FQCN `$ref` values to JSON Reference paths, including discriminator mappings)
 - `Docblock` augmenter (summary, description, deprecated from PHPDoc)
 - `OperationId` augmenter (generates operationId from reflector context, with `hash` option)
 - `Tag` augmenter (auto-generates global tags from operation usage)
+- Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Type` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
 - PHPStan clean (all docblock type references use `OA\` alias correctly)
 - Rector excludes `tools/` to avoid conflict with cs-fixer FQN shortening
+
+## Classic processor mapping
+
+How each classic processor maps to the new pipeline:
+
+| Classic Processor | Spec-Attributes Equivalent | Stage | Status |
+|---|---|---|---|
+| ExpandClasses | Assembler (`contains()` maps) | assembly | Needs BC check |
+| ExpandTraits | Assembler (`contains()` maps) | assembly | Needs BC check |
+| ExpandInterfaces | Assembler (`contains()` maps) | assembly | Needs BC check |
+| ExpandEnums | — | augment | TODO |
+| MergeIntoOpenApi | Assembler (builds Specification) | assembly | Done |
+| MergeIntoComponents | Compiler (groups into components) | compile | Done |
+| MergeJsonContent | N/A — attribute eliminated | — | N/A |
+| MergeXmlContent | N/A — attribute eliminated | — | N/A |
+| BuildPaths | Compiler (groups by path) | compile | Done |
+| AugmentSchemas | Split (see below) | mixed | Partial |
+| AugmentProperties | `Type` (type/format/nullable + property name) | resolve | Done |
+| AugmentParameters | `Type` (type/name/required inference) | resolve | Done |
+| AugmentItems | `Type` (array items via SchemaType.items) | resolve | Done |
+| AugmentRequestBody | `Type` (required inference from nullable) | resolve | Done |
+| AugmentRefs | `Ref` (FQCN → JSON reference) | resolve | Done |
+| AugmentDiscriminators | `Ref` (discriminator mapping resolution) | resolve | Done |
+| AugmentTags | `Tag` (auto-generate tags from operations) | augment | Done |
+| AugmentMediaType | — (encoding augmentation) | augment | TODO |
+| DocBlockDescriptions | `Docblock` (summary/description/deprecated) | augment | Done |
+| OperationId | `OperationId` | augment | Done |
+| CleanUnmerged | Assembler (orphan validation in resolveHierarchy) | assembly | Done |
+| CleanUnusedComponents | `CleanUnused` | reduce | TODO |
+| PathFilter | `PathFilter` | reduce | TODO |
+
+**AugmentSchemas split:** This processor's responsibilities are distributed across four concerns:
+1. Schema naming from class/trait/interface/enum → `InferNames` (TODO)
+2. `type: object` inference when properties present → `Type` (done)
+3. Property merging into parent schema → Assembler via `merge()`/`contains()` (done)
+4. allOf merge when both properties + allOf exist → Compiler (done)
 
 ## What's next
 
@@ -123,11 +162,11 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 
 The infrastructure is in place (`PipeInterface` + grouped Pipeline + `Pipeline::get()` for config). Remaining augmenters to implement:
 
-- **TypeInference** — infer schema/property type, format, nullable from PHP type declarations
-- **Parameter** — infer name, `in`, required, type from reflection
-- **RequestBody** — wrap loose MediaType/Schema into requestBody
-- **Ref** — resolve `$ref` from schema names
-- **Discriminator** — build discriminator mappings from inheritance
+- **CleanUnused** — remove unreferenced schemas/responses/parameters from components
+- **InferNames** — auto-name component keys (schema, parameter, header, requestBody) from reflector class/context when not explicitly set
+- **ExpandEnums** — resolve PHP enum backing types into schema enum/type values
+- **AugmentMediaType** — auto-fill encoding properties from schema property names
+- **PathFilter** — filter operations by tag/path regex patterns (reduce group)
 
 ### Specification helpers (needed by augmenters)
 
