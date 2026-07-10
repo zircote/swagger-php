@@ -15,14 +15,14 @@ namespace OpenApi\Spec;
 class OpenApi extends AbstractAttribute
 {
     /**
-     * @param string|null                           $version  The OpenAPI specification version (e.g. '3.1.0')
-     * @param list<array<string,list<string>>>|null $security Default security requirements for the API
-     * @param array<string,mixed>|null              $x        Vendor extensions (x-* properties)
+     * @param string|null                     $version  The OpenAPI specification version (e.g. '3.1.0')
+     * @param list<Security\Requirement>|null $security Default security requirements for the API
+     * @param array<string,mixed>|null        $x        Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $version = null,
         /**
-         * @var list<array<string,list<string>>>|null
+         * @var list<Security\Requirement>|null
          */
         public ?array $security = null,
         ?array $x = null,

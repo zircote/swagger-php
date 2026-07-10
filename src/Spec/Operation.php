@@ -16,22 +16,22 @@ namespace OpenApi\Spec;
 class Operation extends AbstractAttribute
 {
     /**
-     * @param string|null                $path         The URL path for the operation
-     * @param string|null                $webhook      The webhook name (mutually exclusive with path)
-     * @param string|null                $method       The HTTP method (get, post, put, delete, etc.)
-     * @param string|null                $operationId  Unique identifier for the operation
-     * @param string|null                $summary      A short summary of what the operation does
-     * @param string|null                $description  A verbose explanation of the operation (CommonMark syntax)
-     * @param list<string>|null          $tags         Tags for API documentation grouping
-     * @param list<Parameter>|null       $parameters   Parameters applicable to this operation
-     * @param RequestBody|null           $requestBody  The request body applicable to this operation
-     * @param list<Response>|null        $responses    The list of possible responses
-     * @param array<string,mixed>|null   $callbacks    Possible out-of-band callbacks related to the operation
-     * @param bool|null                  $deprecated   Whether the operation is deprecated
-     * @param list<array>|null           $security     Security mechanisms that can be used for this operation
-     * @param list<Server>|null          $servers      Alternative servers for this operation
-     * @param ExternalDocumentation|null $externalDocs Additional external documentation
-     * @param array<string,mixed>|null   $x            Vendor extensions (x-* properties)
+     * @param string|null                     $path         The URL path for the operation
+     * @param string|null                     $webhook      The webhook name (mutually exclusive with path)
+     * @param string|null                     $method       The HTTP method (get, post, put, delete, etc.)
+     * @param string|null                     $operationId  Unique identifier for the operation
+     * @param string|null                     $summary      A short summary of what the operation does
+     * @param string|null                     $description  A verbose explanation of the operation (CommonMark syntax)
+     * @param list<string>|null               $tags         Tags for API documentation grouping
+     * @param list<Parameter>|null            $parameters   Parameters applicable to this operation
+     * @param RequestBody|null                $requestBody  The request body applicable to this operation
+     * @param list<Response>|null             $responses    The list of possible responses
+     * @param array<string,mixed>|null        $callbacks    Possible out-of-band callbacks related to the operation
+     * @param bool|null                       $deprecated   Whether the operation is deprecated
+     * @param list<Security\Requirement>|null $security     Security mechanisms that can be used for this operation
+     * @param list<Server>|null               $servers      Alternative servers for this operation
+     * @param ExternalDocumentation|null      $externalDocs Additional external documentation
+     * @param array<string,mixed>|null        $x            Vendor extensions (x-* properties)
      */
     public function __construct(
         public ?string $path = null,

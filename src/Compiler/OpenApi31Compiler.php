@@ -625,15 +625,12 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * @param list<OA\Security\Requirement|array<string,list<string>>> $security
      */
+    /**
+     * @param list<OA\Security\Requirement> $security
+     */
     protected function compileSecurity(array $security): array
     {
-        return array_map(function (array|OA\Security\Requirement $item): array {
-            if ($item instanceof OA\Security\Requirement) {
-                return $item->toArray();
-            }
-
-            return $item;
-        }, $security);
+        return array_map(static fn (OA\Security\Requirement $item): array => $item->toArray(), $security);
     }
 
     protected function compileSecurityScheme(OA\Security\Scheme $scheme): array
