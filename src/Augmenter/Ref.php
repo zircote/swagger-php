@@ -209,6 +209,7 @@ class Ref implements PipeInterface
     protected function resolveSchemaTree(OA\Schema $schema, array $refMap): void
     {
         $this->resolveRef($schema, $refMap);
+        $this->resolveDiscriminatorMapping($schema, $refMap);
 
         if ($schema->items instanceof OA\Schema) {
             $this->resolveSchemaTree($schema->items, $refMap);
@@ -243,6 +244,25 @@ class Ref implements PipeInterface
 
         if ($schema->additionalProperties instanceof OA\Schema) {
             $this->resolveSchemaTree($schema->additionalProperties, $refMap);
+        }
+    }
+
+    /**
+     * @param array<string, string> $refMap
+     */
+    protected function resolveDiscriminatorMapping(OA\Schema $schema, array $refMap): void
+    {
+        if (!$schema->discriminator instanceof OA\Discriminator || $schema->discriminator->mapping === null) {
+            return;
+        }
+
+        foreach ($schema->discriminator->mapping as $value => $type) {
+            if (str_starts_with($type, '#/')) {
+                continue;
+            }
+            if (isset($refMap[$type])) {
+                $schema->discriminator->mapping[$value] = $refMap[$type];
+            }
         }
     }
 
