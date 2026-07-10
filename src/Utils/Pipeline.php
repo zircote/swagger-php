@@ -7,7 +7,6 @@
 namespace OpenApi\Utils;
 
 use OpenApi\OpenApiException;
-use OpenApi\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

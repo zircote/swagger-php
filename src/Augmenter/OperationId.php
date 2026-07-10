@@ -6,9 +6,9 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
 
 /**
  * Generates operationId for operations that don't have one explicitly set.

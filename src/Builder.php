@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Builder\CollectingLogger;
 use OpenApi\Builder\Result;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
 use OpenApi\Utils\TokenScanner;
 use Psr\Log\LoggerInterface;

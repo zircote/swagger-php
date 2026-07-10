@@ -6,9 +6,9 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
 
 /**
  * Ensures all tags used on operations exist in the global tags list.

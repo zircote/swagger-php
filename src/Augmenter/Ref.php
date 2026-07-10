@@ -6,9 +6,9 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

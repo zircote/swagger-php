@@ -8,8 +8,8 @@ namespace OpenApi\Tests\Utils;
 
 use OpenApi\Augmenter;
 use OpenApi\Augmenter\Tag;
-use OpenApi\PipeInterface;
 use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\TestCase;
 

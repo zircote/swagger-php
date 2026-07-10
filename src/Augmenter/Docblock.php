@@ -7,11 +7,11 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\AttributeInterface;
-use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
 use OpenApi\Utils\DocBlockParser;
+use OpenApi\Utils\PipeInterface;
 
 /**
  * Fills summary, description, and deprecated from PHP docblock comments.

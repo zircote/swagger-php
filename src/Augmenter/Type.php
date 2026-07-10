@@ -6,11 +6,11 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeResolver;
+use OpenApi\Utils\PipeInterface;
 
 /**
  * Infers schema type, format, nullable, items, etc. from PHP type declarations and docblocks.
