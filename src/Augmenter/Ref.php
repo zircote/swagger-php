@@ -9,6 +9,8 @@ namespace OpenApi\Augmenter;
 use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Resolves FQCN-based $ref values to JSON Reference paths.
@@ -18,8 +20,10 @@ use OpenApi\Specification;
  *
  * @implements PipeInterface<Specification>
  */
-class Ref implements PipeInterface
+class Ref implements PipeInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
@@ -33,12 +37,25 @@ class Ref implements PipeInterface
             return null;
         }
 
-        $this->resolveOperationRefs($payload, $refMap);
-        $this->resolveSchemaRefs($payload, $refMap);
-        $this->resolveParameterRefs($payload, $refMap);
-        $this->resolveResponseRefs($payload, $refMap);
-        $this->resolveHeaderRefs($payload, $refMap);
-        $this->resolveRequestBodyRefs($payload, $refMap);
+        $unresolved = [];
+        $payload->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
+            if (str_starts_with($attribute->ref, '#/')) {
+                return;
+            }
+            if (isset($refMap[$attribute->ref])) {
+                $attribute->ref = $refMap[$attribute->ref];
+            } else {
+                $unresolved[$attribute->ref] = true;
+            }
+        });
+
+        foreach (array_keys($unresolved) as $ref) {
+            $this->logger?->warning('Ref: unresolved reference "{ref}" — no matching component found', [
+                'ref' => $ref,
+            ]);
+        }
+
+        $this->resolveDiscriminatorMappings($payload, $refMap);
 
         return null;
     }
@@ -98,189 +115,21 @@ class Ref implements PipeInterface
     /**
      * @param array<string, string> $refMap
      */
-    protected function resolveOperationRefs(Specification $specification, array $refMap): void
-    {
-        foreach ($specification->operations as $operation) {
-            if ($operation->parameters) {
-                foreach ($operation->parameters as $parameter) {
-                    $this->resolveRef($parameter, $refMap);
-                    if ($parameter->schema instanceof OA\Schema) {
-                        $this->resolveSchemaTree($parameter->schema, $refMap);
-                    }
-                }
-            }
-
-            if ($operation->requestBody instanceof OA\RequestBody) {
-                $this->resolveRef($operation->requestBody, $refMap);
-                $this->resolveMediaTypeRefs($operation->requestBody->content, $refMap);
-            }
-
-            if ($operation->responses) {
-                foreach ($operation->responses as $response) {
-                    $this->resolveRef($response, $refMap);
-                    $this->resolveMediaTypeRefs($response->content, $refMap);
-                    if ($response->headers) {
-                        foreach ($response->headers as $header) {
-                            $this->resolveRef($header, $refMap);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveSchemaRefs(Specification $specification, array $refMap): void
+    protected function resolveDiscriminatorMappings(Specification $specification, array $refMap): void
     {
         foreach ($specification->schemas as $schema) {
-            $this->resolveSchemaTree($schema, $refMap);
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveParameterRefs(Specification $specification, array $refMap): void
-    {
-        foreach ($specification->parameters as $parameter) {
-            $this->resolveRef($parameter, $refMap);
-            if ($parameter->schema instanceof OA\Schema) {
-                $this->resolveSchemaTree($parameter->schema, $refMap);
-            }
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveResponseRefs(Specification $specification, array $refMap): void
-    {
-        foreach ($specification->responses as $response) {
-            $this->resolveRef($response, $refMap);
-            $this->resolveMediaTypeRefs($response->content, $refMap);
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveHeaderRefs(Specification $specification, array $refMap): void
-    {
-        foreach ($specification->headers as $header) {
-            $this->resolveRef($header, $refMap);
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveRequestBodyRefs(Specification $specification, array $refMap): void
-    {
-        foreach ($specification->requestBodies as $body) {
-            $this->resolveRef($body, $refMap);
-            $this->resolveMediaTypeRefs($body->content, $refMap);
-        }
-    }
-
-    /**
-     * @param list<OA\MediaType>|null $mediaTypes
-     * @param array<string, string>   $refMap
-     */
-    protected function resolveMediaTypeRefs(?array $mediaTypes, array $refMap): void
-    {
-        if ($mediaTypes === null) {
-            return;
-        }
-
-        foreach ($mediaTypes as $mediaType) {
-            if ($mediaType->schema instanceof OA\Schema) {
-                $this->resolveSchemaTree($mediaType->schema, $refMap);
-            }
-        }
-    }
-
-    /**
-     * Recursively resolve refs in a schema and its subschemas.
-     *
-     * @param array<string, string> $refMap
-     */
-    protected function resolveSchemaTree(OA\Schema $schema, array $refMap): void
-    {
-        $this->resolveRef($schema, $refMap);
-        $this->resolveDiscriminatorMapping($schema, $refMap);
-
-        if ($schema->items instanceof OA\Schema) {
-            $this->resolveSchemaTree($schema->items, $refMap);
-        }
-
-        if ($schema->properties) {
-            foreach ($schema->properties as $property) {
-                if ($property instanceof OA\Property && $property->schema instanceof OA\Schema) {
-                    $this->resolveSchemaTree($property->schema, $refMap);
-                }
-            }
-        }
-
-        if ($schema->allOf) {
-            foreach ($schema->allOf as $sub) {
-                $this->resolveSchemaTree($sub, $refMap);
-            }
-        }
-        if ($schema->anyOf) {
-            foreach ($schema->anyOf as $sub) {
-                $this->resolveSchemaTree($sub, $refMap);
-            }
-        }
-        if ($schema->oneOf) {
-            foreach ($schema->oneOf as $sub) {
-                $this->resolveSchemaTree($sub, $refMap);
-            }
-        }
-        if ($schema->not instanceof OA\Schema) {
-            $this->resolveSchemaTree($schema->not, $refMap);
-        }
-
-        if ($schema->additionalProperties instanceof OA\Schema) {
-            $this->resolveSchemaTree($schema->additionalProperties, $refMap);
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveDiscriminatorMapping(OA\Schema $schema, array $refMap): void
-    {
-        if (!$schema->discriminator instanceof OA\Discriminator || $schema->discriminator->mapping === null) {
-            return;
-        }
-
-        foreach ($schema->discriminator->mapping as $value => $type) {
-            if (str_starts_with($type, '#/')) {
+            if (!$schema->discriminator instanceof OA\Discriminator || $schema->discriminator->mapping === null) {
                 continue;
             }
-            if (isset($refMap[$type])) {
-                $schema->discriminator->mapping[$value] = $refMap[$type];
+
+            foreach ($schema->discriminator->mapping as $value => $type) {
+                if (str_starts_with($type, '#/')) {
+                    continue;
+                }
+                if (isset($refMap[$type])) {
+                    $schema->discriminator->mapping[$value] = $refMap[$type];
+                }
             }
-        }
-    }
-
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveRef(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme $attribute, array $refMap): void
-    {
-        if ($attribute->ref === null) {
-            return;
-        }
-
-        if (str_starts_with($attribute->ref, '#/')) {
-            return;
-        }
-
-        if (isset($refMap[$attribute->ref])) {
-            $attribute->ref = $refMap[$attribute->ref];
         }
     }
 

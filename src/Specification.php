@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Spec as OA;
+use OpenApi\Utils\SpecificationWalker;
 
 /**
  * Flat container for all collected spec attributes.
@@ -84,5 +85,25 @@ class Specification
         }
 
         return $this;
+    }
+
+    /**
+     * Walk every Schema in the specification, recursively into nested schemas.
+     *
+     * @param callable(OA\Schema): void $visitor
+     */
+    public function eachSchema(callable $visitor): void
+    {
+        SpecificationWalker::eachSchema($this, $visitor);
+    }
+
+    /**
+     * Walk every ref-bearing attribute in the specification.
+     *
+     * @param callable(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme): void $visitor
+     */
+    public function eachRef(callable $visitor): void
+    {
+        SpecificationWalker::eachRef($this, $visitor);
     }
 }

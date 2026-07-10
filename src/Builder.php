@@ -104,6 +104,7 @@ class Builder
             $this->getDefaultAugmenters(),
             groups: [Augmenter\Group::Resolve, Augmenter\Group::Reduce, Augmenter\Group::Augment],
             defaultGroup: Augmenter\Group::Augment,
+            logger: $this->getLogger(),
         );
 
         return $this->augmenters;

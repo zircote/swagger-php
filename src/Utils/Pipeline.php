@@ -8,6 +8,9 @@ namespace OpenApi\Utils;
 
 use OpenApi\OpenApiException;
 use OpenApi\PipeInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @template T
@@ -26,13 +29,16 @@ class Pipeline
 
     protected ?string $defaultGroup = null;
 
+    protected LoggerInterface $logger;
+
     /**
      * @param list<string|\BackedEnum>|null $groups       Ordered group names/enums. When set, process() executes pipes in group order.
      * @param string|\BackedEnum|null       $defaultGroup Group for pipes without PipeInterface. Must be in $groups if groups are set.
      */
-    public function __construct(array $pipes = [], ?array $groups = null, string|\BackedEnum|null $defaultGroup = null)
+    public function __construct(array $pipes = [], ?array $groups = null, string|\BackedEnum|null $defaultGroup = null, ?LoggerInterface $logger = null)
     {
         $this->pipes = $pipes;
+        $this->logger = $logger ?? new NullLogger();
 
         if ($groups !== null) {
             $this->groups = array_map(self::groupKey(...), $groups);
@@ -154,6 +160,9 @@ class Pipeline
     public function process(mixed $payload)
     {
         foreach ($this->ordered() as $pipe) {
+            if ($pipe instanceof LoggerAwareInterface) {
+                $pipe->setLogger($this->logger);
+            }
             $payload = $pipe($payload) ?: $payload;
         }
 

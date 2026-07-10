@@ -1,0 +1,64 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests\Augmenter;
+
+use OpenApi\Assembler;
+use OpenApi\Augmenter;
+use OpenApi\Specification;
+use OpenApi\Tests\Fixtures;
+use PHPUnit\Framework\TestCase;
+
+final class DocblockTest extends TestCase
+{
+    protected function assemble(string ...$classes): Specification
+    {
+        $assembler = new Assembler();
+        foreach ($classes as $class) {
+            $assembler->collect(new \ReflectionClass($class));
+        }
+
+        return $assembler->getSpecification();
+    }
+
+    public function testAugmentsOperationSummaryAndDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
+
+        (new Augmenter\Docblock())($spec);
+
+        $this->assertSame('Get a thing.', $spec->operations[0]->summary);
+        $this->assertSame('Returns the thing by ID.', $spec->operations[0]->description);
+    }
+
+    public function testAugmentsDeprecated(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
+
+        (new Augmenter\Docblock())($spec);
+
+        $this->assertTrue($spec->operations[0]->deprecated);
+    }
+
+    public function testAugmentsSchemaDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\DocblockSchema::class);
+
+        (new Augmenter\Docblock())($spec);
+
+        $this->assertSame('A documented schema.', $spec->schemas[0]->description);
+        $this->assertTrue($spec->schemas[0]->deprecated);
+    }
+
+    public function testAugmentsParameterDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
+
+        (new Augmenter\Docblock())($spec);
+
+        $this->assertSame('the thing identifier', $spec->operations[0]->parameters[0]->description);
+    }
+}
