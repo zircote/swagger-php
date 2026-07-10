@@ -26,16 +26,9 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
 
     protected const MAX_ITERATIONS = 10;
 
-    protected bool $enabled;
-
-    public function __construct(bool $enabled = true)
-    {
-        $this->enabled = $enabled;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
+    public function __construct(
+        protected bool $enabled = true,
+    ) {
     }
 
     public function setEnabled(bool $enabled): static

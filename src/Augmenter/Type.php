@@ -22,11 +22,16 @@ use OpenApi\Utils\PipeInterface;
  */
 class Type implements PipeInterface
 {
-    protected TypeResolver $typeResolver;
+    public function __construct(
+        protected TypeResolver $typeResolver = new TypeResolver(),
+    ) {
+    }
 
-    public function __construct(?TypeResolver $typeResolver = null)
+    public function setTypeResolver(TypeResolver $typeResolver): static
     {
-        $this->typeResolver = $typeResolver ?? new TypeResolver();
+        $this->typeResolver = $typeResolver;
+
+        return $this;
     }
 
     public function group(): string|\BackedEnum

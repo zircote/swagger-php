@@ -20,18 +20,13 @@ use OpenApi\Utils\PipeInterface;
  */
 class Tag implements PipeInterface
 {
-    /** @var list<string> */
-    protected array $whitelist = [];
-
-    protected bool $withDescription = true;
-
     /**
      * @param list<string> $whitelist
      */
-    public function __construct(array $whitelist = [], bool $withDescription = true)
-    {
-        $this->whitelist = $whitelist;
-        $this->withDescription = $withDescription;
+    public function __construct(
+        protected array $whitelist = [],
+        protected bool $withDescription = true,
+    ) {
     }
 
     /**

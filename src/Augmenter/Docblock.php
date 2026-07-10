@@ -24,11 +24,16 @@ use OpenApi\Utils\PipeInterface;
  */
 class Docblock implements PipeInterface
 {
-    protected DocBlockParser $parser;
+    public function __construct(
+        protected DocBlockParser $parser = new DocBlockParser(),
+    ) {
+    }
 
-    public function __construct()
+    public function setParser(DocBlockParser $parser): static
     {
-        $this->parser = new DocBlockParser();
+        $this->parser = $parser;
+
+        return $this;
     }
 
     public function group(): string|\BackedEnum
