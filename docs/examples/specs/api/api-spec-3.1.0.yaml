@@ -116,6 +116,11 @@ components:
     schemas:
         Colour:
             description: 'A Colour.'
+            type: string
+            enum:
+                - GREEN
+                - BLUE
+                - RED
         NameTrait:
             description: 'A Name.'
             properties:
