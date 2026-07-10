@@ -73,11 +73,13 @@ class Docblock implements PipeInterface
             return;
         }
 
-        if ($operation->summary === null) {
+        if ($operation->summary === null && $operation->description === null) {
             $operation->summary = $this->extractSummary($content);
-        }
-        if ($operation->description === null) {
             $operation->description = $this->extractDescription($content);
+        } elseif ($operation->summary === null) {
+            $operation->summary = $content;
+        } elseif ($operation->description === null) {
+            $operation->description = $content;
         }
     }
 
