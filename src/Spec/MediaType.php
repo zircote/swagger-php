@@ -21,7 +21,7 @@ class MediaType extends AbstractAttribute
      * @param Schema|null                 $schema    The schema defining the content
      * @param mixed                       $example   Example of the media type content
      * @param list<Example>|null          $examples  Examples of the media type content
-     * @param array<string,Encoding>|null $encoding  Encoding information for specific properties
+     * @param list<Encoding>|array<string,Encoding>|null $encoding  Encoding information for specific properties
      * @param array<string,mixed>|null    $x         Vendor extensions (x-* properties)
      */
     public function __construct(
