@@ -102,7 +102,7 @@ class Builder
      *
      * Works for both default and custom augmenters once they are in the pipeline.
      *
-     * @param class-string<AugmenterInterface> $class
+     * @param class-string<PipeInterface> $class
      */
     public function augmenterConfig(string $class, mixed ...$config): static
     {
@@ -129,7 +129,11 @@ class Builder
 
     public function getAugmenters(): Utils\Pipeline
     {
-        $this->augmenters ??= new Utils\Pipeline($this->getDefaultAugmenters());
+        $this->augmenters ??= new Utils\Pipeline(
+            $this->getDefaultAugmenters(),
+            groups: [Augmenter\Group::Resolve, Augmenter\Group::Reduce, Augmenter\Group::Augment],
+            defaultGroup: Augmenter\Group::Augment,
+        );
 
         return $this->augmenters;
     }
@@ -248,7 +252,7 @@ class Builder
     }
 
     /**
-     * @return list<AugmenterInterface>
+     * @return list<PipeInterface>
      */
     protected function getDefaultAugmenters(): array
     {

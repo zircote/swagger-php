@@ -7,9 +7,8 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\AttributeInterface;
-use OpenApi\AugmenterInterface;
+use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
-use OpenApi\Specification;
 use OpenApi\Undefined;
 use OpenApi\Utils\DocBlockParser;
 
@@ -20,7 +19,7 @@ use OpenApi\Utils\DocBlockParser;
  * properties and populates them from the reflector's docblock when not
  * explicitly set.
  */
-class Docblock implements AugmenterInterface
+class Docblock implements PipeInterface
 {
     protected DocBlockParser $parser;
 
@@ -29,23 +28,30 @@ class Docblock implements AugmenterInterface
         $this->parser = new DocBlockParser();
     }
 
-    public function __invoke(Specification $specification): void
+    public function group(): string|\BackedEnum
     {
-        foreach ($specification->operations as $operation) {
+        return Group::Augment;
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        foreach ($payload->operations as $operation) {
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
         }
 
-        foreach ($specification->schemas as $schema) {
+        foreach ($payload->schemas as $schema) {
             $this->augmentDescription($schema);
             $this->augmentDeprecated($schema);
             $this->augmentProperties($schema);
         }
 
-        foreach ($specification->parameters as $parameter) {
+        foreach ($payload->parameters as $parameter) {
             $this->augmentParameterDescription($parameter);
         }
+
+        return null;
     }
 
     protected function augmentSummaryAndDescription(OA\Operation $operation): void

@@ -6,14 +6,13 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\AugmenterInterface;
+use OpenApi\PipeInterface;
 use OpenApi\Spec as OA;
-use OpenApi\Specification;
 
 /**
  * Generates operationId for operations that don't have one explicitly set.
  */
-class OperationId implements AugmenterInterface
+class OperationId implements PipeInterface
 {
     /**
      * @param bool $hash If set to true, generate ids (md5) instead of clear text operation ids
@@ -30,9 +29,14 @@ class OperationId implements AugmenterInterface
         return $this;
     }
 
-    public function __invoke(Specification $specification): void
+    public function group(): string|\BackedEnum
     {
-        foreach ($specification->operations as $operation) {
+        return Group::Augment;
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        foreach ($payload->operations as $operation) {
             if ($operation->operationId !== null) {
                 continue;
             }
@@ -42,6 +46,8 @@ class OperationId implements AugmenterInterface
                 $operation->operationId = $this->hash ? md5($operationId) : $operationId;
             }
         }
+
+        return null;
     }
 
     protected function generateId(OA\Operation $operation): ?string
