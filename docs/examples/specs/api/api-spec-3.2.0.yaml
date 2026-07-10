@@ -36,7 +36,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+                                $ref: '#/components/schemas/Product'
                 401:
                     description: oops
     /products:
@@ -52,7 +52,7 @@ paths:
                         schema:
                             type: array
                             items:
-                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+                                $ref: '#/components/schemas/Product'
                 required: true
             responses:
                 200:
@@ -60,7 +60,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: OpenApi\Examples\Specs\Api\Spec\Product
+                                $ref: '#/components/schemas/Product'
         get:
             tags:
                 - products
@@ -75,7 +75,7 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    data: { type: array, items: { $ref: OpenApi\Examples\Specs\Api\Spec\Product } }
+                                    data: { type: array, items: { $ref: '#/components/schemas/Product' } }
                                 required:
                                     - data
                 401:
