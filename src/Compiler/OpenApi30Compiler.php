@@ -68,41 +68,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
         return $diagnostics;
     }
 
-    public function compile(Specification $specification): array
+    protected function compileWebhooks(array $operations): array
     {
-        $output = ['openapi' => $specification->openapi->version ?? '3.0.0'];
-
-        if ($specification->info instanceof OA\Info) {
-            $output['info'] = $this->compileInfo($specification->info);
-        }
-
-        if ($specification->servers) {
-            $output['servers'] = array_map($this->compileServer(...), $specification->servers);
-        }
-
-        $paths = $this->compilePaths($specification->operations);
-        if ($paths !== []) {
-            $output['paths'] = $paths;
-        }
-
-        if ($specification->tags) {
-            $output['tags'] = array_map($this->compileTag(...), $specification->tags);
-        }
-
-        if ($specification->openapi->security) {
-            $output['security'] = $this->compileSecurity($specification->openapi->security);
-        }
-
-        if ($specification->externalDocs) {
-            $output['externalDocs'] = $this->compileExternalDocs($specification->externalDocs[0]);
-        }
-
-        $components = $this->compileComponents($specification);
-        if ($components !== []) {
-            $output['components'] = $components;
-        }
-
-        return $output;
+        return [];
     }
 
     protected function compileInfo(OA\Info $info): array

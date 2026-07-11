@@ -63,7 +63,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     public function compile(Specification $specification): array
     {
-        $output = ['openapi' => $specification->openapi->version ?? '3.1.0'];
+        $output = ['openapi' => $specification->openapi->version ?? $this->getVersion()];
 
         if ($specification->info instanceof OA\Info) {
             $output['info'] = $this->compileInfo($specification->info);

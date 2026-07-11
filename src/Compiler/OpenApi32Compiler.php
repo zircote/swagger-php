@@ -40,12 +40,4 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
         return $diagnostics;
     }
-
-    public function compile(Specification $specification): array
-    {
-        $output = parent::compile($specification);
-        $output['openapi'] = $specification->openapi->version ?? '3.2.0';
-
-        return $output;
-    }
 }
