@@ -118,7 +118,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 
 ## What's done
 
-- All core spec DTOs (OpenApi, Info, Server, Tag, Operation, Schema, Parameter, Response, Header, etc.)
+- All core spec DTOs (OpenApi, Info, Server, Tag, Operation, Schema, Parameter, Response, Header, PathItem, etc.)
 - Assembler with two-pass nesting resolution
 - `AttributeFactory` extracted from Assembler for standalone attribute instantiation
 - Three compilers (3.0, 3.1, 3.2) with version-specific handling and shared inheritance
@@ -150,6 +150,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 | `MediaType` | augment | Re-keys encoding by property name | Done |
 | `CleanUnused` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
 | `PathFilter` | reduce | Filters operations by tag/path regex patterns | Done |
+| `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Planned |
 
 ## Example coverage
 
@@ -164,15 +165,15 @@ All 10 example specs now have spec-attribute versions. Most produce identical ou
 | polymorphism | ✓ | — | oneOf/allOf/discriminator |
 | using-interfaces | ✓ | — | Interface-based allOf composition |
 | using-links | ✓ | — | Response links |
-| using-refs | — | — | Known gap: PathItem not yet supported |
+| using-refs | — | ✓ | PathItem works; hybrid excluded due to ref-path difference |
 | using-traits | — | ✓ | Bug fix: explicit type inference |
 | webhooks | ✓ | — | 3.1+ webhooks |
 
-### Documented gaps
+### Spec-specific fixture notes
 
-**using-refs** — Path-level parameters (`PathItem`) are not yet supported in the spec or hybrid pipelines. The classic pipeline resolves `$ref` on path parameters via its processor chain; in spec/hybrid mode these must be declared per-operation. This is a known gap pending PathItem support.
+**using-refs** — PathItem spec support is implemented (path-level parameters emitted correctly). The example is excluded from hybrid tests due to an unrelated ref-path difference: classic emits `Product/allOf/1/properties/id` while hybrid emits `Product/properties/id` (hybrid puts properties directly rather than in an allOf wrapper).
 
-**using-traits** — The spec/hybrid pipeline infers types more thoroughly than classic (bug fix, not a BC issue):
+**using-traits** — Not a gap; intentional improvement. The spec/hybrid pipeline infers types more thoroughly than classic (bug fix):
 - Explicit `type` inferred from PHP declarations on all property schemas
 - Trait properties merged directly into consuming schemas
 - Spec-specific fixtures document the corrected output
@@ -283,10 +284,15 @@ Output paths:
 
 ### Hybrid mode hardening
 
-- ~~Validate hybrid output matches classic output for the full example suite~~ — done (all pass except using-refs PathItem gap)
+- ~~Validate hybrid output matches classic output for the full example suite~~ — done (all pass except using-refs ref-path difference)
 - Dedicated test coverage for `HybridBridge` (currently exercised only indirectly via examples)
 - Migrate scratch tests and doc snippet tests to run in spec and/or hybrid modes
-- PathItem support (path-level parameters shared across operations)
+- ~~PathItem spec support (path-level parameters, summary, description, servers)~~ — done
+
+### PathItem controller features
+
+- `PathItemResolve` augmenter — prefix composition via class hierarchy, clone-down of tags/security/responses to operations, path inference from contained operations
+- Warning for PathItems with path-level properties but no matching operations
 
 ### Testing
 
@@ -296,14 +302,13 @@ Output paths:
 ### Documentation
 
 - Add docblocks to augmenter pipes describing their configuration options (for generated reference docs)
-- Add class-level docblocks to DTOs with polymorphic subclasses (Operation, Parameter, Flow, Security\Scheme) showing common usage of specialized variants
+- ~~Add class-level docblocks to DTOs with polymorphic subclasses (Operation, Parameter, Flow, Security\Scheme) showing common usage of specialized variants~~ — done
 
 ### Integration
 
 - **AttributeEnricher** — extension point for frameworks (e.g. Nelmio) to translate non-OA attributes (like Symfony `#[Assert\*]`) into spec DTOs during assembly
 - CompilerExtension support for vendor output (Attachable)
 - Attributes inspired by openapi-extras (e.g. polymorphism helpers, additional validation keywords)
-- PathItem support (path-level parameters shared across operations)
 
 ### Shipping
 
