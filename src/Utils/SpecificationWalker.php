@@ -14,54 +14,43 @@ use OpenApi\Specification;
  */
 class SpecificationWalker
 {
+    public function __construct(
+        protected readonly Specification $specification,
+    ) {
+    }
+
     /**
      * Walk every Schema in the specification, recursively into nested schemas.
      *
      * @param callable(OA\Schema): void $visitor
      */
-    public static function eachSchema(Specification $specification, callable $visitor): void
+    public function eachSchema(callable $visitor): void
     {
-        foreach ($specification->schemas as $schema) {
-            self::walkSchemaTree($schema, $visitor);
+        foreach ($this->specification->schemas as $schema) {
+            $this->walkSchemaTree($schema, $visitor);
         }
 
-        foreach ($specification->operations as $operation) {
-            if ($operation->parameters) {
-                foreach ($operation->parameters as $parameter) {
-                    if ($parameter->schema instanceof OA\Schema) {
-                        self::walkSchemaTree($parameter->schema, $visitor);
-                    }
-                }
-            }
-
-            if ($operation->requestBody instanceof OA\RequestBody) {
-                self::walkMediaTypeSchemas($operation->requestBody->content, $visitor);
-            }
-
-            if ($operation->responses) {
-                foreach ($operation->responses as $response) {
-                    self::walkMediaTypeSchemas($response->content, $visitor);
-                }
-            }
+        foreach ($this->specification->operations as $operation) {
+            $this->walkOperationSchemas($operation, $visitor);
         }
 
-        foreach ($specification->parameters as $parameter) {
+        foreach ($this->specification->parameters as $parameter) {
             if ($parameter->schema instanceof OA\Schema) {
-                self::walkSchemaTree($parameter->schema, $visitor);
+                $this->walkSchemaTree($parameter->schema, $visitor);
             }
         }
 
-        foreach ($specification->requestBodies as $body) {
-            self::walkMediaTypeSchemas($body->content, $visitor);
+        foreach ($this->specification->requestBodies as $body) {
+            $this->walkMediaTypeSchemas($body->content, $visitor);
         }
 
-        foreach ($specification->responses as $response) {
-            self::walkMediaTypeSchemas($response->content, $visitor);
+        foreach ($this->specification->responses as $response) {
+            $this->walkResponseSchemas($response, $visitor);
         }
 
-        foreach ($specification->headers as $header) {
+        foreach ($this->specification->headers as $header) {
             if ($header->schema instanceof OA\Schema) {
-                self::walkSchemaTree($header->schema, $visitor);
+                $this->walkSchemaTree($header->schema, $visitor);
             }
         }
     }
@@ -69,182 +58,220 @@ class SpecificationWalker
     /**
      * Walk every ref-bearing attribute in the specification.
      *
-     * The visitor receives an attribute that has a non-null `$ref` property.
-     * It may modify the ref in place.
-     *
      * @param callable(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme): void $visitor
      */
-    public static function eachRef(Specification $specification, callable $visitor): void
+    public function eachRef(callable $visitor): void
     {
-        foreach ($specification->schemas as $schema) {
-            self::walkSchemaTreeRefs($schema, $visitor);
+        foreach ($this->specification->schemas as $schema) {
+            $this->walkSchemaTreeRefs($schema, $visitor);
         }
 
-        foreach ($specification->operations as $operation) {
-            if ($operation->parameters) {
-                foreach ($operation->parameters as $parameter) {
-                    self::visitRef($parameter, $visitor);
-                    if ($parameter->schema instanceof OA\Schema) {
-                        self::walkSchemaTreeRefs($parameter->schema, $visitor);
-                    }
-                    self::walkExampleRefs($parameter->examples, $visitor);
-                }
-            }
-
-            if ($operation->requestBody instanceof OA\RequestBody) {
-                self::visitRef($operation->requestBody, $visitor);
-                self::walkMediaTypeRefs($operation->requestBody->content, $visitor);
-            }
-
-            if ($operation->responses) {
-                foreach ($operation->responses as $response) {
-                    self::visitRef($response, $visitor);
-                    self::walkMediaTypeRefs($response->content, $visitor);
-                    if ($response->headers) {
-                        foreach ($response->headers as $header) {
-                            self::visitRef($header, $visitor);
-                            if ($header->schema instanceof OA\Schema) {
-                                self::walkSchemaTreeRefs($header->schema, $visitor);
-                            }
-                            self::walkExampleRefs($header->examples, $visitor);
-                        }
-                    }
-                    if ($response->links) {
-                        foreach ($response->links as $link) {
-                            self::visitRef($link, $visitor);
-                        }
-                    }
-                }
-            }
-
-            if ($operation->security) {
-                self::walkSecurityRefs($operation->security, $visitor);
-            }
+        foreach ($this->specification->operations as $operation) {
+            $this->walkOperationRefs($operation, $visitor);
         }
 
-        foreach ($specification->parameters as $parameter) {
-            self::visitRef($parameter, $visitor);
+        foreach ($this->specification->parameters as $parameter) {
+            $this->visitRef($parameter, $visitor);
             if ($parameter->schema instanceof OA\Schema) {
-                self::walkSchemaTreeRefs($parameter->schema, $visitor);
+                $this->walkSchemaTreeRefs($parameter->schema, $visitor);
             }
-            self::walkExampleRefs($parameter->examples, $visitor);
+            $this->walkExampleRefs($parameter->examples, $visitor);
         }
 
-        foreach ($specification->requestBodies as $body) {
-            self::visitRef($body, $visitor);
-            self::walkMediaTypeRefs($body->content, $visitor);
+        foreach ($this->specification->requestBodies as $body) {
+            $this->visitRef($body, $visitor);
+            $this->walkMediaTypeRefs($body->content, $visitor);
         }
 
-        foreach ($specification->responses as $response) {
-            self::visitRef($response, $visitor);
-            self::walkMediaTypeRefs($response->content, $visitor);
-            if ($response->headers) {
-                foreach ($response->headers as $header) {
-                    self::visitRef($header, $visitor);
-                    if ($header->schema instanceof OA\Schema) {
-                        self::walkSchemaTreeRefs($header->schema, $visitor);
-                    }
-                    self::walkExampleRefs($header->examples, $visitor);
-                }
-            }
+        foreach ($this->specification->responses as $response) {
+            $this->visitRef($response, $visitor);
+            $this->walkMediaTypeRefs($response->content, $visitor);
+            $this->walkResponseHeaderRefs($response, $visitor);
             if ($response->links) {
                 foreach ($response->links as $link) {
-                    self::visitRef($link, $visitor);
+                    $this->visitRef($link, $visitor);
                 }
             }
         }
 
-        foreach ($specification->headers as $header) {
-            self::visitRef($header, $visitor);
+        foreach ($this->specification->headers as $header) {
+            $this->visitRef($header, $visitor);
             if ($header->schema instanceof OA\Schema) {
-                self::walkSchemaTreeRefs($header->schema, $visitor);
+                $this->walkSchemaTreeRefs($header->schema, $visitor);
             }
-            self::walkExampleRefs($header->examples, $visitor);
+            $this->walkExampleRefs($header->examples, $visitor);
         }
 
-        foreach ($specification->links as $link) {
-            self::visitRef($link, $visitor);
+        foreach ($this->specification->links as $link) {
+            $this->visitRef($link, $visitor);
         }
 
-        foreach ($specification->examples as $example) {
-            self::visitRef($example, $visitor);
+        foreach ($this->specification->examples as $example) {
+            $this->visitRef($example, $visitor);
         }
 
-        if ($specification->openapi->security) {
-            self::walkSecurityRefs($specification->openapi->security, $visitor);
+        if ($this->specification->openapi->security) {
+            $this->walkSecurityRefs($this->specification->openapi->security, $visitor);
         }
     }
 
     /**
      * @param callable(OA\Schema): void $visitor
      */
-    protected static function walkSchemaTree(OA\Schema $schema, callable $visitor): void
+    protected function walkSchemaTree(OA\Schema $schema, callable $visitor): void
     {
         $visitor($schema);
 
         if ($schema->properties) {
             foreach ($schema->properties as $property) {
                 if ($property instanceof OA\Property && $property->schema instanceof OA\Schema) {
-                    self::walkSchemaTree($property->schema, $visitor);
+                    $this->walkSchemaTree($property->schema, $visitor);
                 }
             }
         }
 
         if ($schema->items instanceof OA\Schema) {
-            self::walkSchemaTree($schema->items, $visitor);
+            $this->walkSchemaTree($schema->items, $visitor);
         }
         if ($schema->additionalProperties instanceof OA\Schema) {
-            self::walkSchemaTree($schema->additionalProperties, $visitor);
+            $this->walkSchemaTree($schema->additionalProperties, $visitor);
         }
         foreach ($schema->allOf ?? [] as $child) {
-            self::walkSchemaTree($child, $visitor);
+            $this->walkSchemaTree($child, $visitor);
         }
         foreach ($schema->anyOf ?? [] as $child) {
-            self::walkSchemaTree($child, $visitor);
+            $this->walkSchemaTree($child, $visitor);
         }
         foreach ($schema->oneOf ?? [] as $child) {
-            self::walkSchemaTree($child, $visitor);
+            $this->walkSchemaTree($child, $visitor);
         }
         if ($schema->not instanceof OA\Schema) {
-            self::walkSchemaTree($schema->not, $visitor);
+            $this->walkSchemaTree($schema->not, $visitor);
         }
     }
 
-    protected static function walkSchemaTreeRefs(OA\Schema $schema, callable $visitor): void
+    protected function walkSchemaTreeRefs(OA\Schema $schema, callable $visitor): void
     {
-        self::visitRef($schema, $visitor);
+        $this->walkSchemaTree($schema, function (OA\Schema $schema) use ($visitor): void {
+            $this->visitRef($schema, $visitor);
 
-        if ($schema->discriminator instanceof OA\Discriminator && $schema->discriminator->mapping !== null) {
-            foreach ($schema->discriminator->mapping as $ref) {
-                $visitor(new OA\Schema(ref: $ref));
+            if ($schema->discriminator instanceof OA\Discriminator && $schema->discriminator->mapping !== null) {
+                foreach ($schema->discriminator->mapping as $ref) {
+                    $visitor(new OA\Schema(ref: $ref));
+                }
             }
-        }
+        });
+    }
 
-        if ($schema->properties) {
-            foreach ($schema->properties as $property) {
-                if ($property instanceof OA\Property && $property->schema instanceof OA\Schema) {
-                    self::walkSchemaTreeRefs($property->schema, $visitor);
+    /**
+     * @param callable(OA\Schema): void $visitor
+     */
+    protected function walkOperationSchemas(OA\Operation $operation, callable $visitor): void
+    {
+        if ($operation->parameters) {
+            foreach ($operation->parameters as $parameter) {
+                if ($parameter->schema instanceof OA\Schema) {
+                    $this->walkSchemaTree($parameter->schema, $visitor);
                 }
             }
         }
 
-        if ($schema->items instanceof OA\Schema) {
-            self::walkSchemaTreeRefs($schema->items, $visitor);
+        if ($operation->requestBody instanceof OA\RequestBody) {
+            $this->walkMediaTypeSchemas($operation->requestBody->content, $visitor);
         }
-        if ($schema->additionalProperties instanceof OA\Schema) {
-            self::walkSchemaTreeRefs($schema->additionalProperties, $visitor);
+
+        if ($operation->responses) {
+            foreach ($operation->responses as $response) {
+                $this->walkResponseSchemas($response, $visitor);
+            }
         }
-        foreach ($schema->allOf ?? [] as $child) {
-            self::walkSchemaTreeRefs($child, $visitor);
+
+        if ($operation->callbacks) {
+            foreach ($operation->callbacks as $callback) {
+                if (is_array($callback)) {
+                    array_walk_recursive($callback, function (mixed $value) use ($visitor): void {
+                        if ($value instanceof OA\Operation) {
+                            $this->walkOperationSchemas($value, $visitor);
+                        }
+                    });
+                }
+            }
         }
-        foreach ($schema->anyOf ?? [] as $child) {
-            self::walkSchemaTreeRefs($child, $visitor);
+    }
+
+    protected function walkOperationRefs(OA\Operation $operation, callable $visitor): void
+    {
+        if ($operation->parameters) {
+            foreach ($operation->parameters as $parameter) {
+                $this->visitRef($parameter, $visitor);
+                if ($parameter->schema instanceof OA\Schema) {
+                    $this->walkSchemaTreeRefs($parameter->schema, $visitor);
+                }
+                $this->walkExampleRefs($parameter->examples, $visitor);
+            }
         }
-        foreach ($schema->oneOf ?? [] as $child) {
-            self::walkSchemaTreeRefs($child, $visitor);
+
+        if ($operation->requestBody instanceof OA\RequestBody) {
+            $this->visitRef($operation->requestBody, $visitor);
+            $this->walkMediaTypeRefs($operation->requestBody->content, $visitor);
         }
-        if ($schema->not instanceof OA\Schema) {
-            self::walkSchemaTreeRefs($schema->not, $visitor);
+
+        if ($operation->responses) {
+            foreach ($operation->responses as $response) {
+                $this->visitRef($response, $visitor);
+                $this->walkMediaTypeRefs($response->content, $visitor);
+                $this->walkResponseHeaderRefs($response, $visitor);
+                if ($response->links) {
+                    foreach ($response->links as $link) {
+                        $this->visitRef($link, $visitor);
+                    }
+                }
+            }
+        }
+
+        if ($operation->security) {
+            $this->walkSecurityRefs($operation->security, $visitor);
+        }
+
+        if ($operation->callbacks) {
+            foreach ($operation->callbacks as $callback) {
+                if (is_array($callback)) {
+                    array_walk_recursive($callback, function (mixed $value) use ($visitor): void {
+                        if ($value instanceof OA\Operation) {
+                            $this->walkOperationRefs($value, $visitor);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * @param callable(OA\Schema): void $visitor
+     */
+    protected function walkResponseSchemas(OA\Response $response, callable $visitor): void
+    {
+        $this->walkMediaTypeSchemas($response->content, $visitor);
+
+        if ($response->headers) {
+            foreach ($response->headers as $header) {
+                if ($header->schema instanceof OA\Schema) {
+                    $this->walkSchemaTree($header->schema, $visitor);
+                }
+            }
+        }
+    }
+
+    protected function walkResponseHeaderRefs(OA\Response $response, callable $visitor): void
+    {
+        if ($response->headers) {
+            foreach ($response->headers as $header) {
+                $this->visitRef($header, $visitor);
+                if ($header->schema instanceof OA\Schema) {
+                    $this->walkSchemaTreeRefs($header->schema, $visitor);
+                }
+                $this->walkExampleRefs($header->examples, $visitor);
+            }
         }
     }
 
@@ -252,7 +279,7 @@ class SpecificationWalker
      * @param list<OA\MediaType>|null   $mediaTypes
      * @param callable(OA\Schema): void $visitor
      */
-    protected static function walkMediaTypeSchemas(?array $mediaTypes, callable $visitor): void
+    protected function walkMediaTypeSchemas(?array $mediaTypes, callable $visitor): void
     {
         if (!$mediaTypes) {
             return;
@@ -260,7 +287,7 @@ class SpecificationWalker
 
         foreach ($mediaTypes as $mediaType) {
             if ($mediaType->schema instanceof OA\Schema) {
-                self::walkSchemaTree($mediaType->schema, $visitor);
+                $this->walkSchemaTree($mediaType->schema, $visitor);
             }
         }
     }
@@ -268,7 +295,7 @@ class SpecificationWalker
     /**
      * @param list<OA\MediaType>|null $mediaTypes
      */
-    protected static function walkMediaTypeRefs(?array $mediaTypes, callable $visitor): void
+    protected function walkMediaTypeRefs(?array $mediaTypes, callable $visitor): void
     {
         if (!$mediaTypes) {
             return;
@@ -276,30 +303,30 @@ class SpecificationWalker
 
         foreach ($mediaTypes as $mediaType) {
             if ($mediaType->schema instanceof OA\Schema) {
-                self::walkSchemaTreeRefs($mediaType->schema, $visitor);
+                $this->walkSchemaTreeRefs($mediaType->schema, $visitor);
             }
-            self::walkExampleRefs($mediaType->examples, $visitor);
+            $this->walkExampleRefs($mediaType->examples, $visitor);
         }
     }
 
     /**
      * @param list<OA\Example>|null $examples
      */
-    protected static function walkExampleRefs(?array $examples, callable $visitor): void
+    protected function walkExampleRefs(?array $examples, callable $visitor): void
     {
         if (!$examples) {
             return;
         }
 
         foreach ($examples as $example) {
-            self::visitRef($example, $visitor);
+            $this->visitRef($example, $visitor);
         }
     }
 
     /**
      * @param list<OA\Security\Requirement> $security
      */
-    protected static function walkSecurityRefs(array $security, callable $visitor): void
+    protected function walkSecurityRefs(array $security, callable $visitor): void
     {
         foreach ($security as $requirement) {
             foreach (array_keys($requirement->toArray()) as $schemeName) {
@@ -308,7 +335,7 @@ class SpecificationWalker
         }
     }
 
-    protected static function visitRef(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme $attribute, callable $visitor): void
+    protected function visitRef(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme $attribute, callable $visitor): void
     {
         if ($attribute->ref !== null) {
             $visitor($attribute);

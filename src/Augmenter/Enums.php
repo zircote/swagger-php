@@ -106,7 +106,7 @@ class Enums implements PipeInterface
 
     protected function resolveEnumValues(Specification $specification): void
     {
-        $specification->eachSchema(function (OA\Schema $schema): void {
+        $specification->getWalker()->eachSchema(function (OA\Schema $schema): void {
             if ($schema->enum === null) {
                 return;
             }

@@ -65,7 +65,7 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
     protected function cleanup(Specification $specification): bool
     {
         $usedRefs = [];
-        $specification->eachRef(static function (OA\AbstractAttribute $attribute) use (&$usedRefs): void {
+        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $attribute) use (&$usedRefs): void {
             $usedRefs[$attribute->ref] = true;
         });
 

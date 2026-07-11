@@ -38,7 +38,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
         }
 
         $unresolved = [];
-        $payload->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
+        $payload->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
             if (str_starts_with($attribute->ref, '#/')) {
                 return;
             }
