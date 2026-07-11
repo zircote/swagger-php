@@ -108,7 +108,7 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 - Builder with dual-mode support and CLI integration
 - Security namespace (Scheme subclasses + Requirement)
 - Typed subclasses for Parameter, Flow, and Operation
-- One working example (`api`) using spec attributes
+- All examples ported to spec attributes (see table below)
 - Pipeline classes tested (Assembler, Compilers, Builder)
 - Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
 - `Type` augmenter (infers schema type, format, nullable, items, refs from PHP type declarations and docblocks)
@@ -116,9 +116,40 @@ The `Builder` class supports both pipelines via `setMode('classic'|'spec')`. In 
 - `Docblock` augmenter (summary, description, deprecated from PHPDoc)
 - `OperationId` augmenter (generates operationId from reflector context, with `hash` option)
 - `Tag` augmenter (auto-generates global tags from operation usage)
+- `ExpandHierarchy` augmenter (trait/interface allOf composition, non-schema interface member merging)
 - Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Type` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
 - PHPStan clean (all docblock type references use `OA\` alias correctly)
 - Rector excludes `tools/` to avoid conflict with cs-fixer FQN shortening
+
+## Example coverage
+
+All 10 example specs now have spec-attribute versions. Most produce identical output to classic (shared yaml fixtures); two have spec-specific fixtures documenting current behavioral gaps.
+
+| Example | Shared fixture | Spec-specific fixture | Notes |
+|---|---|---|---|
+| api | ✓ | — | Original spec example |
+| misc | ✓ | — | Callbacks, security, enums |
+| nesting | ✓ | — | Multi-level class inheritance |
+| petstore | ✓ | — | Classic CRUD example |
+| polymorphism | ✓ | — | oneOf/allOf/discriminator |
+| using-interfaces | ✓ | — | Interface-based allOf composition |
+| using-links | ✓ | — | Response links |
+| using-refs | — | ✓ | See gaps below |
+| using-traits | — | ✓ | See gaps below |
+| webhooks | ✓ | — | 3.1+ webhooks |
+
+### Documented gaps (spec-specific fixtures)
+
+**using-refs** — Path-level parameters (`PathItem`) are not yet supported in the spec pipeline. The classic pipeline resolves `$ref` on path parameters via its processor chain; in spec mode these must be declared per-operation. The spec fixture documents this difference with a TODO comment.
+
+**using-traits** — Trait property handling differs from classic:
+- Trait properties are merged directly into consuming schemas (e.g. Product gets `colour`, `plating`, `whistle` as own properties in addition to the allOf ref)
+- BellsAndWhistles includes `bell`/`whistle` from sub-traits directly in its own allOf fragment
+- No `example` values on standalone trait schema properties (only on explicitly annotated ones)
+- `CustomName/Blink` uses literal slash in schema name (classic uses `~1` JSON pointer escaping)
+- Explicit `type` on all property schemas
+
+These gaps represent the current state, not intentional design choices. The trait-merging differences touch on broader extension/sharing features that would be good to consider together. PathItem support may be straightforward to add since it's a first-class spec concept, but both areas are deferred for now. The spec-specific fixtures serve as regression tests and migration reference.
 
 ## Classic processor mapping
 
@@ -126,9 +157,9 @@ How each classic processor maps to the new pipeline:
 
 | Classic Processor | Spec-Attributes Equivalent | Stage | Status |
 |---|---|---|---|
-| ExpandClasses | Assembler (`contains()` maps) | assembly | Needs BC check |
-| ExpandTraits | Assembler (`contains()` maps) | assembly | Needs BC check |
-| ExpandInterfaces | Assembler (`contains()` maps) | assembly | Needs BC check |
+| ExpandClasses | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandTraits | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandInterfaces | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
 | ExpandEnums | — | augment | TODO |
 | MergeIntoOpenApi | Assembler (builds Specification) | assembly | Done |
 | MergeIntoComponents | Compiler (groups into components) | compile | Done |
@@ -181,7 +212,7 @@ The infrastructure is in place (`PipeInterface` + grouped Pipeline + `Pipeline::
 ### Shipping
 
 - Migration guide and dual-tab documentation
-- Remaining examples ported (petstore, polymorphism, webhooks, etc.)
+- ~~Remaining examples ported~~ — All 10 examples now have spec versions
 - Mark spec attributes as beta during v6 to allow iteration
 - Deprecation path for classic annotations in v7
 
