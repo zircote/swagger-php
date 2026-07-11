@@ -6,62 +6,101 @@
 
 namespace OpenApi\Tests\Augmenter;
 
-use OpenApi\Assembler;
 use OpenApi\Augmenter;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class PathItemResolveTest extends TestCase
 {
-    protected function assemble(string ...$classes): Specification
-    {
-        $assembler = new Assembler();
-        foreach ($classes as $class) {
-            $assembler->collect(new \ReflectionClass($class));
-        }
+    use AssemblesSpecification;
 
-        return $assembler->getSpecification();
+    private function resolve(Specification $spec): Specification
+    {
+        (new Augmenter\PathItemResolve())($spec);
+
+        return $spec;
     }
 
-    public function testPrefixComposition(): void
+    private function findPathItemByClass(Specification $spec, string $class): ?OA\PathItem
     {
-        $spec = $this->assemble(
-            Fixtures\Augmenter\PathItemBaseController::class,
-            Fixtures\Augmenter\PathItemUserController::class,
-        );
+        foreach ($spec->pathItems as $pi) {
+            $reflector = $pi->getReflector();
+            if ($reflector instanceof \ReflectionClass && $reflector->getName() === $class) {
+                return $pi;
+            }
+        }
 
-        (new Augmenter\PathItemResolve())($spec);
+        return null;
+    }
+
+    private function findOperationByMethod(Specification $spec, string $method): ?OA\Operation
+    {
+        foreach ($spec->operations as $operation) {
+            if ($operation->method === $method) {
+                return $operation;
+            }
+        }
+
+        return null;
+    }
+
+    public static function prefixCompositionProvider(): \Generator
+    {
+        yield '2-level' => [
+            [Fixtures\Augmenter\PathItemBaseController::class, Fixtures\Augmenter\PathItemUserController::class],
+            ['/api/v1/users/list', '/api/v1/users/{id}'],
+        ];
+
+        yield '3-level' => [
+            [Fixtures\Augmenter\PathItemGrandparentController::class, Fixtures\Augmenter\PathItemMiddleController::class, Fixtures\Augmenter\PathItemLeafController::class],
+            ['/api/v2/orders', '/api/v2/orders/{id}'],
+        ];
+    }
+
+    #[DataProvider('prefixCompositionProvider')]
+    public function testPrefixComposition(array $classes, array $expectedPaths): void
+    {
+        $spec = $this->resolve($this->assemble(...$classes));
 
         $paths = array_map(fn (OA\Operation $op): ?string => $op->path, $spec->operations);
         sort($paths);
 
-        $this->assertSame(['/api/v1/users/list', '/api/v1/users/{id}'], $paths);
+        $this->assertSame($expectedPaths, $paths);
     }
 
-    public function testTagsClonedToOperations(): void
+    public static function tagsProvider(): \Generator
     {
-        $spec = $this->assemble(
-            Fixtures\Augmenter\PathItemBaseController::class,
-            Fixtures\Augmenter\PathItemUserController::class,
-        );
+        yield 'direct' => [
+            [Fixtures\Augmenter\PathItemBaseController::class, Fixtures\Augmenter\PathItemUserController::class],
+            ['Users'],
+        ];
 
-        (new Augmenter\PathItemResolve())($spec);
+        yield 'inherited from middle' => [
+            [Fixtures\Augmenter\PathItemGrandparentController::class, Fixtures\Augmenter\PathItemMiddleController::class, Fixtures\Augmenter\PathItemLeafController::class],
+            ['V2'],
+        ];
+    }
+
+    #[DataProvider('tagsProvider')]
+    public function testTagsClonedToOperations(array $classes, array $expectedTags): void
+    {
+        $spec = $this->resolve($this->assemble(...$classes));
 
         foreach ($spec->operations as $operation) {
-            $this->assertSame(['Users'], $operation->tags);
+            $this->assertSame($expectedTags, $operation->tags);
         }
     }
 
     public function testSecurityClonedToOperations(): void
     {
-        $spec = $this->assemble(
+        $spec = $this->resolve($this->assemble(
             Fixtures\Augmenter\PathItemBaseController::class,
             Fixtures\Augmenter\PathItemUserController::class,
-        );
-
-        (new Augmenter\PathItemResolve())($spec);
+        ));
 
         foreach ($spec->operations as $operation) {
             $this->assertNotNull($operation->security);
@@ -76,27 +115,21 @@ final class PathItemResolveTest extends TestCase
             Fixtures\Augmenter\PathItemBaseController::class,
             Fixtures\Augmenter\PathItemUserController::class,
         );
-
         $spec->operations[0]->tags = ['Custom'];
 
-        (new Augmenter\PathItemResolve())($spec);
+        $this->resolve($spec);
 
         $this->assertSame(['Custom', 'Users'], $spec->operations[0]->tags);
     }
 
     public function testPathItemPathResolved(): void
     {
-        $spec = $this->assemble(
+        $spec = $this->resolve($this->assemble(
             Fixtures\Augmenter\PathItemBaseController::class,
             Fixtures\Augmenter\PathItemUserController::class,
-        );
+        ));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        $pathItemsWithPath = array_filter(
-            $spec->pathItems,
-            fn (OA\PathItem $pi): bool => $pi->path !== null,
-        );
+        $pathItemsWithPath = array_filter($spec->pathItems, fn (OA\PathItem $pi): bool => $pi->path !== null);
 
         $this->assertNotEmpty($pathItemsWithPath);
         foreach ($pathItemsWithPath as $pi) {
@@ -106,16 +139,12 @@ final class PathItemResolveTest extends TestCase
 
     public function testPathItemWithSummaryGetsPath(): void
     {
-        $spec = $this->assemble(Fixtures\Augmenter\PathItemPlainController::class);
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemPlainController::class));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        $pathItemsWithPath = array_filter(
-            $spec->pathItems,
-            fn (OA\PathItem $pi): bool => $pi->path !== null,
+        $paths = array_map(
+            fn (OA\PathItem $pi): string => $pi->path,
+            array_values(array_filter($spec->pathItems, fn (OA\PathItem $pi): bool => $pi->path !== null)),
         );
-
-        $paths = array_map(fn (OA\PathItem $pi): string => $pi->path, array_values($pathItemsWithPath));
         sort($paths);
 
         $this->assertSame(['/products', '/products/{id}'], $paths);
@@ -126,69 +155,27 @@ final class PathItemResolveTest extends TestCase
         $spec = new Specification();
         $spec->operations[] = new OA\Operation(path: '/test', method: 'get');
 
-        (new Augmenter\PathItemResolve())($spec);
+        $this->resolve($spec);
 
         $this->assertSame('/test', $spec->operations[0]->path);
     }
 
-    public function testThreeLevelPrefixComposition(): void
-    {
-        $spec = $this->assemble(
-            Fixtures\Augmenter\PathItemGrandparentController::class,
-            Fixtures\Augmenter\PathItemMiddleController::class,
-            Fixtures\Augmenter\PathItemLeafController::class,
-        );
-
-        (new Augmenter\PathItemResolve())($spec);
-
-        $paths = array_map(fn (OA\Operation $op): ?string => $op->path, $spec->operations);
-        sort($paths);
-
-        $this->assertSame(['/api/v2/orders', '/api/v2/orders/{id}'], $paths);
-    }
-
-    public function testTagsInheritedFromMiddleLevel(): void
-    {
-        $spec = $this->assemble(
-            Fixtures\Augmenter\PathItemGrandparentController::class,
-            Fixtures\Augmenter\PathItemMiddleController::class,
-            Fixtures\Augmenter\PathItemLeafController::class,
-        );
-
-        (new Augmenter\PathItemResolve())($spec);
-
-        foreach ($spec->operations as $operation) {
-            $this->assertSame(['V2'], $operation->tags);
-        }
-    }
-
     public function testSharedResponsesCloned(): void
     {
-        $spec = $this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class);
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        $postOp = null;
-        foreach ($spec->operations as $operation) {
-            if ($operation->method === 'post') {
-                $postOp = $operation;
-                break;
-            }
-        }
-
+        $postOp = $this->findOperationByMethod($spec, 'post');
         $this->assertInstanceOf(OA\Operation::class, $postOp);
+
         $codes = array_map(fn (OA\Response $r): string => (string) $r->response, $postOp->responses);
         sort($codes);
 
-        // 201 from operation + 401 and 500 from PathItem
         $this->assertSame(['201', '401', '500'], $codes);
     }
 
     public function testSharedSecurityCloned(): void
     {
-        $spec = $this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class);
-
-        (new Augmenter\PathItemResolve())($spec);
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
 
         foreach ($spec->operations as $operation) {
             $this->assertNotNull($operation->security);
@@ -199,14 +186,9 @@ final class PathItemResolveTest extends TestCase
 
     public function testSharedParametersEmittedAtPathLevel(): void
     {
-        $spec = $this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class);
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        $pathItemsWithPath = array_filter(
-            $spec->pathItems,
-            fn (OA\PathItem $pi): bool => $pi->path !== null,
-        );
+        $pathItemsWithPath = array_filter($spec->pathItems, fn (OA\PathItem $pi): bool => $pi->path !== null);
 
         $this->assertNotEmpty($pathItemsWithPath);
         foreach ($pathItemsWithPath as $pi) {
@@ -218,48 +200,24 @@ final class PathItemResolveTest extends TestCase
 
     public function testSharedResponseNotOverriddenWhenCodeExists(): void
     {
-        $spec = $this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class);
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        $getOp = null;
-        foreach ($spec->operations as $operation) {
-            if ($operation->method === 'get') {
-                $getOp = $operation;
-                break;
-            }
-        }
-
+        $getOp = $this->findOperationByMethod($spec, 'get');
         $this->assertInstanceOf(OA\Operation::class, $getOp);
 
-        // Operation has its own 401 — PathItem's 401 should NOT override it
-        $responses401 = array_filter(
-            $getOp->responses,
-            fn (OA\Response $r): bool => (string) $r->response === '401',
-        );
+        $responses401 = array_filter($getOp->responses, fn (OA\Response $r): bool => (string) $r->response === '401');
         $this->assertCount(1, $responses401);
         $this->assertSame('Custom unauthorized', array_values($responses401)[0]->description);
     }
 
     public function testReusablePathItemNoPath(): void
     {
-        $spec = $this->assemble(
+        $spec = $this->resolve($this->assemble(
             Fixtures\Augmenter\PathItemReusable::class,
             Fixtures\Augmenter\PathItemRefController::class,
-        );
+        ));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        // Reusable PathItem (no operations) keeps path as null — it's a component
-        $reusable = null;
-        foreach ($spec->pathItems as $pi) {
-            $reflector = $pi->getReflector();
-            if ($reflector instanceof \ReflectionClass && $reflector->getName() === Fixtures\Augmenter\PathItemReusable::class) {
-                $reusable = $pi;
-                break;
-            }
-        }
-
+        $reusable = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemReusable::class);
         $this->assertInstanceOf(OA\PathItem::class, $reusable);
         $this->assertNull($reusable->path);
         $this->assertNotNull($reusable->parameters);
@@ -268,46 +226,24 @@ final class PathItemResolveTest extends TestCase
 
     public function testRefPathItemGetsPathFromOperations(): void
     {
-        $spec = $this->assemble(
+        $spec = $this->resolve($this->assemble(
             Fixtures\Augmenter\PathItemReusable::class,
             Fixtures\Augmenter\PathItemRefController::class,
-        );
+        ));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        // The referencing PathItem gets its path resolved from its operation
-        $refPi = null;
-        foreach ($spec->pathItems as $pi) {
-            $reflector = $pi->getReflector();
-            if ($reflector instanceof \ReflectionClass && $reflector->getName() === Fixtures\Augmenter\PathItemRefController::class) {
-                $refPi = $pi;
-                break;
-            }
-        }
-
+        $refPi = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemRefController::class);
         $this->assertInstanceOf(OA\PathItem::class, $refPi);
         $this->assertSame(Fixtures\Augmenter\PathItemReusable::class, $refPi->ref);
     }
 
     public function testPrefixOnlyPathItemNoPathSet(): void
     {
-        $spec = $this->assemble(
+        $spec = $this->resolve($this->assemble(
             Fixtures\Augmenter\PathItemBaseController::class,
             Fixtures\Augmenter\PathItemUserController::class,
-        );
+        ));
 
-        (new Augmenter\PathItemResolve())($spec);
-
-        // BaseController has only prefix, no spec properties — should not get a path
-        $basePathItem = null;
-        foreach ($spec->pathItems as $pi) {
-            $reflector = $pi->getReflector();
-            if ($reflector instanceof \ReflectionClass && $reflector->getName() === Fixtures\Augmenter\PathItemBaseController::class) {
-                $basePathItem = $pi;
-                break;
-            }
-        }
-
+        $basePathItem = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemBaseController::class);
         $this->assertInstanceOf(OA\PathItem::class, $basePathItem);
         $this->assertNull($basePathItem->path);
     }

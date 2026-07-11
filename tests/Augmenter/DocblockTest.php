@@ -6,23 +6,14 @@
 
 namespace OpenApi\Tests\Augmenter;
 
-use OpenApi\Assembler;
 use OpenApi\Augmenter;
-use OpenApi\Specification;
+use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
 final class DocblockTest extends TestCase
 {
-    protected function assemble(string ...$classes): Specification
-    {
-        $assembler = new Assembler();
-        foreach ($classes as $class) {
-            $assembler->collect(new \ReflectionClass($class));
-        }
-
-        return $assembler->getSpecification();
-    }
+    use AssemblesSpecification;
 
     public function testAugmentsOperationSummaryAndDescription(): void
     {

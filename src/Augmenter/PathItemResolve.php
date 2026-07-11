@@ -185,7 +185,7 @@ class PathItemResolve implements PipeInterface
      * Collect merged metadata walking up the class hierarchy.
      * All collections merge additively — tags, security, and responses accumulate from all ancestors.
      *
-     * @param  array<class-string, OA\PathItem>                                                                                  $classToPathItem
+     * @param  array<class-string, OA\PathItem>                                                                                $classToPathItem
      * @return array{tags: list<string>|null, security: list<OA\Security\Requirement>|null, responses: list<OA\Response>|null}
      */
     protected function collectMergedMetadata(OA\PathItem $pathItem, array $classToPathItem): array
