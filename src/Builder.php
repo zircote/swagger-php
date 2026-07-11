@@ -250,7 +250,7 @@ class Builder
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
-        return Result::fromSpec($this->resolveFiles(), $output, $diagnostics);
+        return Result::fromSpec($this->resolveFiles(), $output, array_merge($collecting->entries(), $diagnostics));
     }
 
     protected function resolveCompiler(string $version): CompilerInterface
