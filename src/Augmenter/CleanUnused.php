@@ -65,179 +65,52 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
     protected function cleanup(Specification $specification): bool
     {
         $usedRefs = [];
-        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $attribute) use (&$usedRefs): void {
-            $usedRefs[$attribute->ref] = true;
+        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $a) use (&$usedRefs): void {
+            $usedRefs[$a->ref] = true;
         });
 
-        $results = [
-            $this->removeUnusedSchemas($specification, $usedRefs),
-            $this->removeUnusedResponses($specification, $usedRefs),
-            $this->removeUnusedParameters($specification, $usedRefs),
-            $this->removeUnusedRequestBodies($specification, $usedRefs),
-            $this->removeUnusedHeaders($specification, $usedRefs),
-            $this->removeUnusedSecuritySchemes($specification, $usedRefs),
-            $this->removeUnusedLinks($specification, $usedRefs),
-            $this->removeUnusedExamples($specification, $usedRefs),
+        $removed = false;
+        foreach ($this->componentDescriptors() as [$field, $refPrefix, $nameExtractor]) {
+            if ($this->removeUnused($specification, $field, $refPrefix, $nameExtractor, $usedRefs)) {
+                $removed = true;
+            }
+        }
+
+        return $removed;
+    }
+
+    /**
+     * @return list<array{string, string, \Closure}>
+     */
+    protected function componentDescriptors(): array
+    {
+        return [
+            ['schemas', 'schemas', static fn (OA\Schema $s): ?string => $s->schema ?? $s->title],
+            ['responses', 'responses', static fn (OA\Response $r): ?string => $r->response],
+            ['parameters', 'parameters', static fn (OA\Parameter $p): ?string => $p->parameter ?? $p->name],
+            ['requestBodies', 'requestBodies', static fn (OA\RequestBody $b): ?string => $b->request],
+            ['headers', 'headers', static fn (OA\Header $h): ?string => $h->header],
+            ['securitySchemes', 'securitySchemes', static fn (OA\Security\Scheme $s): ?string => $s->securityScheme],
+            ['links', 'links', static fn (OA\Link $l): ?string => $l->link],
+            ['examples', 'examples', static fn (OA\Example $e): ?string => $e->example],
         ];
-
-        return in_array(true, $results, true);
     }
 
     /**
      * @param array<string, true> $usedRefs
      */
-    protected function removeUnusedSchemas(Specification $specification, array $usedRefs): bool
+    protected function removeUnused(Specification $specification, string $field, string $refPrefix, \Closure $nameExtractor, array $usedRefs): bool
     {
         $removed = false;
-        foreach ($specification->schemas as $index => $schema) {
-            $name = $schema->schema ?? $schema->title;
-            if ($name !== null && !isset($usedRefs['#/components/schemas/' . $name])) {
-                unset($specification->schemas[$index]);
+        foreach ($specification->{$field} as $index => $item) {
+            $name = $nameExtractor($item);
+            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name])) {
+                unset($specification->{$field}[$index]);
                 $removed = true;
             }
         }
         if ($removed) {
-            $specification->schemas = array_values($specification->schemas);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedResponses(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->responses as $index => $response) {
-            $name = $response->response;
-            if ($name !== null && !isset($usedRefs['#/components/responses/' . $name])) {
-                unset($specification->responses[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->responses = array_values($specification->responses);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedParameters(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->parameters as $index => $parameter) {
-            $name = $parameter->parameter ?? $parameter->name;
-            if ($name !== null && !isset($usedRefs['#/components/parameters/' . $name])) {
-                unset($specification->parameters[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->parameters = array_values($specification->parameters);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedRequestBodies(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->requestBodies as $index => $body) {
-            $name = $body->request;
-            if ($name !== null && !isset($usedRefs['#/components/requestBodies/' . $name])) {
-                unset($specification->requestBodies[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->requestBodies = array_values($specification->requestBodies);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedHeaders(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->headers as $index => $header) {
-            $name = $header->header;
-            if ($name !== null && !isset($usedRefs['#/components/headers/' . $name])) {
-                unset($specification->headers[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->headers = array_values($specification->headers);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedSecuritySchemes(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->securitySchemes as $index => $scheme) {
-            $name = $scheme->securityScheme;
-            if ($name !== null && !isset($usedRefs['#/components/securitySchemes/' . $name])) {
-                unset($specification->securitySchemes[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->securitySchemes = array_values($specification->securitySchemes);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedLinks(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->links as $index => $link) {
-            $name = $link->link;
-            if ($name !== null && !isset($usedRefs['#/components/links/' . $name])) {
-                unset($specification->links[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->links = array_values($specification->links);
-        }
-
-        return $removed;
-    }
-
-    /**
-     * @param array<string, true> $usedRefs
-     */
-    protected function removeUnusedExamples(Specification $specification, array $usedRefs): bool
-    {
-        $removed = false;
-        foreach ($specification->examples as $index => $example) {
-            $name = $example->example;
-            if ($name !== null && !isset($usedRefs['#/components/examples/' . $name])) {
-                unset($specification->examples[$index]);
-                $removed = true;
-            }
-        }
-        if ($removed) {
-            $specification->examples = array_values($specification->examples);
+            $specification->{$field} = array_values($specification->{$field});
         }
 
         return $removed;
