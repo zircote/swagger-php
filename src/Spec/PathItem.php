@@ -25,16 +25,27 @@ namespace OpenApi\Spec;
  * The path in the output is inferred from the operations — no need to declare it
  * on PathItem, avoiding duplication.
  *
- * Prefix composition (TODO):
+ * Prefix composition with inherited metadata:
  *
  *   #[PathItem(prefix: '/api/v1')]
  *   class BaseController {}
  *
- *   #[PathItem(prefix: '/users', tags: ['Users'])]
+ *   #[PathItem(prefix: '/users', tags: ['Users'], security: [new Security\Requirement(scheme: 'bearerAuth')])]
+ *   #[Response(response: 401, description: 'Unauthorized')]
+ *   #[Response(response: 500, description: 'Server error')]
  *   class UserController extends BaseController {
- *       #[Operation\Get(path: '/list')]       // resolved: /api/v1/users/list
+ *       #[Operation\Get(path: '/list')]       // resolved: /api/v1/users/list, tags: ['Users']
  *       public function list() {}
+ *
+ *       #[Operation\Get(path: '/{id}')]       // resolved: /api/v1/users/{id}, tags: ['Users']
+ *       public function get() {}
  *   }
+ *
+ * Prefixes compose by walking the class hierarchy — each ancestor PathItem contributes
+ * its prefix segment. All collection properties merge additively: tags, security,
+ * responses, and parameters accumulate from the full ancestor chain. Deduplication
+ * is by value (tags), by scheme (security), by status code (responses), and by
+ * name+in (parameters).
  *
  * @see [Path Item Object](https://spec.openapis.org/oas/v3.1.1.html#path-item-object)
  */

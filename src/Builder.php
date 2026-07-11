@@ -274,6 +274,7 @@ class Builder
             new Augmenter\ExpandHierarchy(),
             new Augmenter\InferNames(),
             new Augmenter\Enums(),
+            new Augmenter\PathItemResolve(),
             new Augmenter\Type(),
             new Augmenter\Ref(),
             new Augmenter\PathFilter(),

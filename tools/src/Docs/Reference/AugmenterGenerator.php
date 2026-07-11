@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tools\Docs\Reference;
 
-use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Tools\Docs\DocGenerator;
 

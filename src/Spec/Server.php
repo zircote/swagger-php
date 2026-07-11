@@ -34,6 +34,11 @@ class Server extends AbstractAttribute
         return true;
     }
 
+    public function merge(): array
+    {
+        return [PathItem::class => 'servers[]', Operation::class => 'servers[]'];
+    }
+
     public function contains(): array
     {
         return [ServerVariable::class => 'variables[]'];

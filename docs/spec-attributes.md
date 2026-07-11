@@ -40,6 +40,14 @@ Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for sc
 1. Sibling merge — attributes on the same reflector compose via `merge()` maps
 2. Hierarchy resolution — attributes from inner reflectors (method → class, property → class) are absorbed via `contains()` maps
 
+After both passes, only root attributes remain and are added to the `Specification`.
+
+**`isRoot()` as validation, not routing.** The `merge()` and `contains()` maps drive all nesting decisions — `isRoot()` does not control routing. Its role is purely a post-resolution assertion: after the two-pass assembly, every remaining attribute must return `isRoot() === true` or the assembler throws an error. This catches mis-placed attributes early (e.g. a Parameter on a class without a sibling PathItem or Operation).
+
+Most DTOs return a constant (`true` for Schema, Operation, PathItem; `false` for MediaType, Example). Conditional root-ness is used where the same class can be either a component or a nested child — for example `Parameter::isRoot()` returns `true` only when `$this->parameter !== null` (has a component key).
+
+Custom DTOs should declare `merge()` targets to specify where they nest, and `isRoot()` to indicate whether they can land in a `Specification` bucket independently.
+
 **Immutable-style attributes.** Spec attributes use constructor-promoted public properties. They carry no serialization logic — that responsibility belongs exclusively to compilers.
 
 **Version-aware compilers.** Each OpenAPI version (3.0, 3.1, 3.2) has its own compiler that handles version-specific differences (nullable handling, exclusive min/max, webhooks, etc.) rather than branching inside a single serializer.
@@ -147,7 +155,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 | `MediaType` | augment | Re-keys encoding by property name | Done |
 | `CleanUnused` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
 | `PathFilter` | reduce | Filters operations by tag/path regex patterns | Done |
-| `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Planned |
+| `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
 
 ## Example coverage
 
@@ -285,13 +293,18 @@ Output paths:
 
 ### PathItem controller features
 
-- `PathItemResolve` augmenter — prefix composition via class hierarchy, clone-down of tags/security/responses to operations, path inference from contained operations
-- Warning for PathItems with path-level properties but no matching operations
+- ~~`PathItemResolve` augmenter — prefix composition via class hierarchy, clone-down of tags/security/responses to operations, path inference from contained operations~~ — done
 
 ### Testing
 
 - Adopt more tests for the spec pipeline: scratch tests, snippet tests, and edge-case scenarios currently only exercised via classic mode
 - Ensure augmenter interactions are covered end-to-end (not just unit-level)
+- Augmenter tests should persist expected YAML fixtures (or validate generated specs with redocly as a separate pass)
+
+### Refactoring
+
+- Extract reflector helper methods (declaring class, promoted property detection, etc.) into `AbstractAttribute` — many augmenters duplicate this lookup logic; overridable helpers would reduce coupling
+- Extract shared test helpers (e.g. `assemble()`) into traits in `tests/Concerns` — currently duplicated across 8+ augmenter tests
 
 ### Documentation
 

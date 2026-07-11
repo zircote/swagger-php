@@ -36,7 +36,7 @@ class Requirement extends OA\AbstractAttribute
 
     public function merge(): array
     {
-        return [OA\OpenApi::class => 'security[]', OA\Operation::class => 'security[]'];
+        return [OA\OpenApi::class => 'security[]', OA\Operation::class => 'security[]', OA\PathItem::class => 'security[]'];
     }
 
     /**

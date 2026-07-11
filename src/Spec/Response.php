@@ -42,7 +42,7 @@ class Response extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Operation::class => 'responses[]'];
+        return [Operation::class => 'responses[]', PathItem::class => 'responses[]'];
     }
 
     public function contains(): array

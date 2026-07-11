@@ -14,7 +14,7 @@ use OpenApi\Undefined;
  *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Path extends OA\Parameter
 {
     /**

@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
+use OpenApi\OpenApiException;
 use PHPUnit\Framework\TestCase;
 
 final class AssemblerTest extends TestCase
@@ -70,5 +71,23 @@ final class AssemblerTest extends TestCase
         $this->assertNotNull($spec->schemas[0]->properties);
         $this->assertCount(1, $spec->schemas[0]->properties);
         $this->assertEquals('kind', $spec->schemas[0]->properties[0]->property);
+    }
+
+    public function testParameterOnClassWithoutPathItemThrows(): void
+    {
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessageMatches('/Non-root attribute.*Parameter.*remains after resolution/');
+
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Augmenter\PathItemOrphanParameter::class));
+    }
+
+    public function testSecurityRequirementOnClassWithoutPathItemThrows(): void
+    {
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessageMatches('/Non-root attribute.*Requirement.*remains after resolution/');
+
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Augmenter\PathItemOrphanSecurity::class));
     }
 }
