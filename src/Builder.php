@@ -223,10 +223,6 @@ class Builder
         $generator->setProcessorPipeline(new Utils\Pipeline([
             new Processors\MergeIntoOpenApi(),
             new Processors\MergeIntoComponents(),
-            new Processors\ExpandClasses(),
-            new Processors\ExpandInterfaces(),
-            new Processors\ExpandTraits(),
-            new Processors\ExpandEnums(),
             new Processors\BuildPaths(),
             new Processors\MergeJsonContent(),
             new Processors\MergeXmlContent(),
