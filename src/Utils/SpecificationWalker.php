@@ -34,6 +34,21 @@ class SpecificationWalker
             $this->walkOperationSchemas($operation, $visitor);
         }
 
+        foreach ($this->specification->pathItems as $pathItem) {
+            if ($pathItem->parameters) {
+                foreach ($pathItem->parameters as $parameter) {
+                    if ($parameter->schema instanceof OA\Schema) {
+                        $this->walkSchemaTree($parameter->schema, $visitor);
+                    }
+                }
+            }
+            if ($pathItem->responses) {
+                foreach ($pathItem->responses as $response) {
+                    $this->walkResponseSchemas($response, $visitor);
+                }
+            }
+        }
+
         foreach ($this->specification->parameters as $parameter) {
             if ($parameter->schema instanceof OA\Schema) {
                 $this->walkSchemaTree($parameter->schema, $visitor);
@@ -68,6 +83,30 @@ class SpecificationWalker
 
         foreach ($this->specification->operations as $operation) {
             $this->walkOperationRefs($operation, $visitor);
+        }
+
+        foreach ($this->specification->pathItems as $pathItem) {
+            if ($pathItem->parameters) {
+                foreach ($pathItem->parameters as $parameter) {
+                    $this->visitRef($parameter, $visitor);
+                    if ($parameter->schema instanceof OA\Schema) {
+                        $this->walkSchemaTreeRefs($parameter->schema, $visitor);
+                    }
+                    $this->walkExampleRefs($parameter->examples, $visitor);
+                }
+            }
+            if ($pathItem->responses) {
+                foreach ($pathItem->responses as $response) {
+                    $this->visitRef($response, $visitor);
+                    $this->walkMediaTypeRefs($response->content, $visitor);
+                    $this->walkResponseHeaderRefs($response, $visitor);
+                    if ($response->links) {
+                        foreach ($response->links as $link) {
+                            $this->visitRef($link, $visitor);
+                        }
+                    }
+                }
+            }
         }
 
         foreach ($this->specification->parameters as $parameter) {

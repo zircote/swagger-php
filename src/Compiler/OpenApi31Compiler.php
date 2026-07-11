@@ -73,7 +73,7 @@ class OpenApi31Compiler implements CompilerInterface
             $output['servers'] = array_map($this->compileServer(...), $specification->servers);
         }
 
-        $paths = $this->compilePaths($specification->operations);
+        $paths = $this->compilePaths($specification->operations, $specification->pathItems);
         if ($paths !== []) {
             $output['paths'] = $paths;
         }
@@ -182,9 +182,10 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * @param  list<OA\Operation>                $operations
+     * @param  list<OA\PathItem>                 $pathItems
      * @return array<string,array<string,mixed>>
      */
-    protected function compilePaths(array $operations): array
+    protected function compilePaths(array $operations, array $pathItems = []): array
     {
         $paths = [];
 
@@ -197,7 +198,35 @@ class OpenApi31Compiler implements CompilerInterface
             $paths[$operation->path][$operation->method] = $this->compileOperation($operation);
         }
 
+        foreach ($pathItems as $pathItem) {
+            if ($pathItem->path === null) {
+                continue;
+            }
+
+            $paths[$pathItem->path] ??= [];
+            $this->mergePathItem($paths[$pathItem->path], $pathItem);
+        }
+
         return $paths;
+    }
+
+    protected function mergePathItem(array &$pathEntry, OA\PathItem $pathItem): void
+    {
+        if ($pathItem->summary !== null) {
+            $pathEntry['summary'] = $pathItem->summary;
+        }
+
+        if ($pathItem->description !== null) {
+            $pathEntry['description'] = $pathItem->description;
+        }
+
+        if ($pathItem->parameters) {
+            $pathEntry['parameters'] = array_map($this->compileParameter(...), $pathItem->parameters);
+        }
+
+        if ($pathItem->servers) {
+            $pathEntry['servers'] = array_map($this->compileServer(...), $pathItem->servers);
+        }
     }
 
     /**

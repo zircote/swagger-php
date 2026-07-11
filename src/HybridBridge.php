@@ -32,6 +32,7 @@ class HybridBridge
                 $annotation instanceof Annotations\Server => $spec->servers[] = $this->convertServer($annotation),
                 $annotation instanceof Annotations\Tag => $spec->tags[] = $this->convertTag($annotation),
                 $annotation instanceof Annotations\SecurityScheme => $spec->securitySchemes[] = $this->convertSecurityScheme($annotation),
+                $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $spec->pathItems[] = $this->convertPathItem($annotation),
                 $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $spec),
                 $annotation instanceof Annotations\Operation => $spec->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()] = $annotation,
@@ -282,6 +283,32 @@ class HybridBridge
                 $spec->operations[] = $operation;
             }
         }
+    }
+
+    protected function convertPathItem(Annotations\PathItem $pathItem): Spec\PathItem
+    {
+        $parameters = null;
+        if (!Undefined::isDefault($pathItem->parameters)) {
+            $parameters = [];
+            foreach ($pathItem->parameters as $param) {
+                $parameters[] = $this->convertParameter($param);
+            }
+        }
+
+        $result = new Spec\PathItem(
+            ref: $this->val($pathItem->ref),
+            summary: $this->val($pathItem->summary),
+            description: $this->val($pathItem->description),
+            parameters: $parameters,
+            servers: Undefined::isDefault($pathItem->servers)
+                ? null
+                : array_map($this->convertServer(...), $pathItem->servers),
+            x: $this->extensions($pathItem),
+        );
+        $result->path = $this->val($pathItem->path);
+        $this->copyReflector($pathItem, $result);
+
+        return $result;
     }
 
     protected function convertOperation(Annotations\Operation $op, ?string $path, string $method): Spec\Operation

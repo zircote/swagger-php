@@ -65,6 +65,7 @@ OA\AbstractAttribute
 │   ├── OA\Operation\Head
 │   ├── OA\Operation\Options
 │   └── OA\Operation\Trace
+├── OA\PathItem
 ├── OA\Schema
 │   └── OA\Property
 ├── OA\Parameter
@@ -95,6 +96,18 @@ OA\AbstractAttribute
         ├── OA\Security\Scheme\OpenIdConnect
         └── OA\Security\Scheme\MutualTls
 ```
+
+### Reflectors as relationship glue
+
+Every root DTO carries its originating reflector (`ReflectionClass`, `ReflectionMethod`, etc.). This is the fundamental mechanism for resolving cross-bucket relationships at augmentation time — the assembler is intentionally "dumb" (just collects into buckets), and augmenters use reflectors to reconnect what belongs together.
+
+Key applications:
+- **PathItem ↔ Operation binding** — PathItem is placed on a class; operations on methods of that class. The augmenter walks `ReflectionMethod::getDeclaringClass()` to find which PathItem governs an operation.
+- **Prefix composition via inheritance** — PathItems on parent classes contribute prefixes. The augmenter walks `ReflectionClass::getParentClass()` to compose the full path prefix chain.
+- **CleanUnused** — components with a reflector are explicitly declared in source and should not be removed, even when unreferenced (the reflector proves "the user wrote this").
+- **OperationId generation** — the reflector provides class/method name context for auto-generated identifiers.
+
+This design keeps the assembler simple and makes cross-cutting relationships resolvable without coupling DTOs to each other.
 
 ### Tri-mode Builder
 
@@ -211,6 +224,60 @@ How each classic processor maps to the new pipeline:
 2. `type: object` inference when properties present → `Type` (done)
 3. Property merging into parent schema → Assembler via `merge()`/`contains()` (done)
 4. allOf merge when both properties + allOf exist → Compiler (done)
+
+## PathItem design
+
+PathItem is both an OpenAPI spec concept (path-level parameters, summary, description, servers) and a controller-grouping mechanism (prefix composition, shared tags/security). The DTO unifies both roles.
+
+### DTO: `OA\PathItem`
+
+Class-level only. No `path` property — path is always inferred from the operations the PathItem governs.
+
+| Property | OpenAPI output | Controller role |
+|---|---|---|
+| `prefix` | — (resolved away) | Composable path prefix, inherited via class hierarchy |
+| `parameters[]` | Path-level parameters | Shared parameters for all operations |
+| `summary` | Path-level summary | — |
+| `description` | Path-level description | — |
+| `servers[]` | Path-level servers | — |
+| `tags[]` | — (cloned to operations) | Shared tags for all operations |
+| `security[]` | — (cloned to operations) | Shared security for all operations |
+| `responses[]` | — (cloned to operations) | Shared responses for all operations |
+
+### Augmenter: `PathItemResolve` (resolve group, early)
+
+1. **Index** — map each PathItem to its declaring class via reflector
+2. **Compose prefixes** — walk `ReflectionClass::getParentClass()` chain, collect ancestor PathItems, compose full prefix
+3. **Resolve operation paths** — for each operation, find declaring class, walk up to find governing PathItem, prepend composed prefix to operation path
+4. **Clone metadata** — push PathItem tags/security/responses down to operations that don't already declare them
+5. **Emit path-level entries** — for each unique resolved path with PathItem parameters/summary/description/servers, set `pathItem->path` (derived) and keep in bucket. Remove prefix-only PathItems with no path-level output.
+6. **Warning** — log when a PathItem has path-level properties but no operations match
+
+### Compiler integration
+
+The compiler emits PathItem properties (parameters, summary, description, servers) at path level in the `paths` output, alongside the operation entries grouped by method.
+
+### Example
+
+```php
+#[OA\PathItem(prefix: '/api/v1')]
+class BaseController {}
+
+#[OA\PathItem(prefix: '/users', tags: ['Users'], parameters: [
+    new OA\Parameter\Path(name: 'tenant', schema: new OA\Schema(type: 'string')),
+])]
+class UserController extends BaseController {
+    #[OA\Operation\Get(path: '/list')]
+    public function list() {}
+
+    #[OA\Operation\Get(path: '/{id}')]
+    public function get($id) {}
+}
+```
+
+Output paths:
+- `/api/v1/users/list` — get operation, tags: ['Users'], path-level parameter: tenant
+- `/api/v1/users/{id}` — get operation, tags: ['Users'], path-level parameter: tenant
 
 ## What's next
 

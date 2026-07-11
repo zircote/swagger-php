@@ -27,6 +27,9 @@ class Specification
     /** @var list<OA\ExternalDocumentation> */
     public array $externalDocs = [];
 
+    /** @var list<OA\PathItem> */
+    public array $pathItems = [];
+
     /** @var list<OA\Operation> */
     public array $operations = [];
 
@@ -68,6 +71,7 @@ class Specification
                 $attribute instanceof OA\Server => $this->servers[] = $attribute,
                 $attribute instanceof OA\Tag => $this->tags[] = $attribute,
                 $attribute instanceof OA\ExternalDocumentation => $this->externalDocs[] = $attribute,
+                $attribute instanceof OA\PathItem => $this->pathItems[] = $attribute,
                 $attribute instanceof OA\Operation => $this->operations[] = $attribute,
                 $attribute instanceof OA\Schema => $this->schemas[] = $attribute,
                 $attribute instanceof OA\Response => $this->responses[] = $attribute,
