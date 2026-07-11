@@ -44,7 +44,6 @@ class Cookie extends OA\Parameter
             required: $required,
             deprecated: $deprecated,
             ref: $ref,
-            style: 'form',
             explode: $explode,
             schema: $schema,
             example: $example,

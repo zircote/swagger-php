@@ -219,7 +219,11 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($parameter->required === true) {
+        $isNullable = $resolved->nullable === true;
+
+        // PHP nullable type on a parameter means "can be omitted" (required: false),
+        // not "accepts null when present" — suppress nullable on the schema
+        if ($parameter->required === true || $isNullable) {
             $resolved->nullable = null;
         }
 
@@ -229,7 +233,7 @@ class Type implements PipeInterface
             $this->mergeIntoSchema($parameter->schema, $resolved);
         }
 
-        $parameter->required ??= $resolved->nullable !== true;
+        $parameter->required ??= !$isNullable;
     }
 
     protected function schemaTypeToSchema(SchemaType $schemaType): OA\Schema

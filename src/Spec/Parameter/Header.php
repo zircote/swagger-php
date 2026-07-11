@@ -44,7 +44,6 @@ class Header extends OA\Parameter
             required: $required,
             deprecated: $deprecated,
             ref: $ref,
-            style: 'simple',
             explode: $explode,
             schema: $schema,
             example: $example,

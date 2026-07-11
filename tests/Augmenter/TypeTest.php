@@ -59,7 +59,7 @@ final class TypeTest extends TestCase
         $this->assertTrue($params[0]->required);
 
         $this->assertSame('string', $params[1]->schema->type);
-        $this->assertTrue($params[1]->schema->nullable);
+        $this->assertNull($params[1]->schema->nullable);
         $this->assertFalse($params[1]->required);
     }
 

@@ -11,7 +11,7 @@ namespace OpenApi\Spec;
  *
  * @see [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Link extends AbstractAttribute
 {
     /**
@@ -37,6 +37,11 @@ class Link extends AbstractAttribute
         ?array $x = null,
     ) {
         parent::__construct(x: $x);
+    }
+
+    public function isRoot(): bool
+    {
+        return $this->link !== null && $this->ref === null;
     }
 
     public function merge(): array
