@@ -146,7 +146,7 @@ All 10 example specs now have spec-attribute versions. Most produce identical ou
 - Trait properties are merged directly into consuming schemas (e.g. Product gets `colour`, `plating`, `whistle` as own properties in addition to the allOf ref)
 - BellsAndWhistles includes `bell`/`whistle` from sub-traits directly in its own allOf fragment
 - No `example` values on standalone trait schema properties (only on explicitly annotated ones)
-- `CustomName/Blink` uses literal slash in schema name (classic uses `~1` JSON pointer escaping)
+- `CustomName-Blink` uses hyphen in schema name (previously used invalid `/` slash)
 - Explicit `type` on all property schemas
 
 These gaps represent the current state, not intentional design choices. The trait-merging differences touch on broader extension/sharing features that would be good to consider together. PathItem support may be straightforward to add since it's a first-class spec concept, but both areas are deferred for now. The spec-specific fixtures serve as regression tests and migration reference.

@@ -2,7 +2,6 @@
 # - Trait properties are merged directly into consuming schemas (e.g. Product gets colour, plating, whistle)
 # - BellsAndWhistles includes bell/whistle from sub-traits directly
 # - No example values on trait schema properties
-# - CustomName/Blink uses literal slash (classic uses ~1 JSON pointer escaping)
 # - Explicit type on all property schemas
 openapi: 3.1.0
 info:
@@ -73,7 +72,7 @@ components:
                         whistle:
                             type: string
                             description: 'The bell.'
-        CustomName/Blink:
+        CustomName-Blink:
             type: object
             title: 'Blink trait'
             properties:
@@ -149,7 +148,7 @@ components:
             title: 'TrickyProduct model'
             allOf:
                 - $ref: '#/components/schemas/SimpleProduct'
-                - $ref: '#/components/schemas/CustomName/Blink'
+                - $ref: '#/components/schemas/CustomName-Blink'
                 -
                     type: object
                     properties:

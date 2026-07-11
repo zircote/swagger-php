@@ -8,13 +8,7 @@ namespace OpenApi\Examples\Specs\UsingRefs\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(
-    schema: 'product_status',
-    type: 'string',
-    description: 'The status of a product',
-    default: 'available',
-    enum: ['available', 'discontinued'],
-)]
+#[OA\Schema(schema: 'product_status', description: 'The status of a product', type: 'string', enum: ['available', 'discontinued'], default: 'available')]
 class ProductStatus
 {
 }

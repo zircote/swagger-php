@@ -20,11 +20,12 @@ use Psr\Log\NullLogger;
  * Mode:
  *   setMode('classic') — annotation/attribute pipeline via Generator (default)
  *   setMode('spec')    — spec attribute pipeline via Assembler + Compiler
+ *   setMode('hybrid')  — classic pipeline → HybridBridge → spec Compiler
  *
- * Version resolution (spec pipeline):
+ * Version resolution (spec/hybrid pipeline):
  *   setVersion() > #[OpenApi(version: ...)] from source > '3.1.0' fallback
  *
- * Compiler resolution (spec pipeline):
+ * Compiler resolution (spec/hybrid pipeline):
  *   setCompiler() explicit > auto-resolved from version
  */
 class Builder
@@ -66,7 +67,7 @@ class Builder
     /**
      * Select the processing mode.
      *
-     * @param string $mode 'classic' (default) or 'spec'
+     * @param string $mode 'classic' (default), 'spec', or 'hybrid'
      */
     public function setMode(string $mode): static
     {
@@ -149,6 +150,7 @@ class Builder
     {
         return match ($this->mode) {
             'spec' => $this->doBuildSpec(),
+            'hybrid' => $this->doBuildHybrid(),
             default => $this->doBuild(),
         };
     }
@@ -205,6 +207,54 @@ class Builder
         $output = $compiler->compile($specification);
 
         return Result::fromSpec($files, $output, $diagnostics);
+    }
+
+    protected function doBuildHybrid(): Result
+    {
+        $collecting = new CollectingLogger($this->getLogger());
+        $generator = new Generator($collecting);
+
+        if ($this->version !== null) {
+            $generator->setVersion($this->version);
+        }
+
+        // Structural processors only — produce a bare tree for the bridge.
+        // Augmentation (types, refs, descriptions) is left to the spec compiler.
+        $generator->setProcessorPipeline(new Utils\Pipeline([
+            new Processors\MergeIntoOpenApi(),
+            new Processors\MergeIntoComponents(),
+            new Processors\ExpandClasses(),
+            new Processors\ExpandInterfaces(),
+            new Processors\ExpandTraits(),
+            new Processors\ExpandEnums(),
+            new Processors\BuildPaths(),
+            new Processors\MergeJsonContent(),
+            new Processors\MergeXmlContent(),
+        ]));
+
+        if ($this->generatorHook !== null) {
+            $generator = ($this->generatorHook)($generator) ?? $generator;
+        }
+
+        $openApi = $generator->generate($this->sources, validate: false);
+
+        if ($openApi === null) {
+            return Result::fromClassic($this->resolveFiles(), null, $collecting->entries());
+        }
+
+        $bridge = new HybridBridge();
+        $specification = $bridge->convert($openApi);
+
+        $this->getAugmenters()->process($specification);
+
+        $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
+        $specification->openapi->version = $version;
+        $compiler = $this->compiler ?? $this->resolveCompiler($version);
+
+        $diagnostics = $compiler->validate($specification);
+        $output = $compiler->compile($specification);
+
+        return Result::fromSpec($this->resolveFiles(), $output, $diagnostics);
     }
 
     protected function resolveCompiler(string $version): CompilerInterface

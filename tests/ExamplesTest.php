@@ -46,17 +46,22 @@ final class ExamplesTest extends OpenApiTestCase
                         continue;
                     }
 
-                    foreach ($versions as $version) {
-                        if (!file_exists(self::getSpecFilename($example, $implementation, $version))) {
-                            continue;
-                        }
+                    $modes = $implementation === 'spec' ? ['spec'] : ['classic', 'hybrid'];
 
-                        yield "{$example}:{$resolverName}-{$implementation}-{$version}" => [
-                            $typeResolver,
-                            $example,
-                            $implementation,
-                            $version,
-                        ];
+                    foreach ($modes as $mode) {
+                        foreach ($versions as $version) {
+                            if (!file_exists(self::getSpecFilename($example, $implementation, $version))) {
+                                continue;
+                            }
+
+                            yield "{$example}:{$resolverName}-{$implementation}-{$mode}-{$version}" => [
+                                $typeResolver,
+                                $example,
+                                $implementation,
+                                $mode,
+                                $version,
+                            ];
+                        }
                     }
                 }
             }
@@ -67,7 +72,7 @@ final class ExamplesTest extends OpenApiTestCase
      * Validate openapi definitions of the included examples.
      */
     #[DataProvider('exampleSpecs')]
-    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
+    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $mode, string $version): void
     {
         $this->registerExampleClassloader($name, $implementation);
 
@@ -75,7 +80,7 @@ final class ExamplesTest extends OpenApiTestCase
         $specFilename = self::getSpecFilename($name, $implementation, $version);
 
         $result = (new Builder())
-            ->setMode($implementation === 'spec' ? 'spec' : 'classic')
+            ->setMode($mode)
             ->addSource($path)
             ->setVersion($version)
             ->setLogger($this->getTrackingLogger())
@@ -85,15 +90,15 @@ final class ExamplesTest extends OpenApiTestCase
         $this->assertSpecEquals(
             $result->toYaml(),
             file_get_contents($specFilename),
-            "Example: {$name}/{$implementation}/" . basename($specFilename)
+            "Example: {$name}/{$implementation}/{$mode}/" . basename($specFilename)
         );
     }
 
     #[DataProvider('exampleSpecs')]
-    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
+    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $mode, string $version): void
     {
-        if ($implementation === 'spec') {
-            $this->markTestSkipped('Spec implementation does not need to be serialized');
+        if ($mode !== 'classic') {
+            $this->markTestSkipped('Serializer test only applies to classic mode');
         }
 
         $specFilename = self::getSpecFilename($name, $implementation, $version);
