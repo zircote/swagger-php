@@ -222,7 +222,8 @@ class Docblock implements PipeInterface
         }
 
         if ($reflector instanceof \ReflectionParameter && $reflector->isPromoted()) {
-            $class = $reflector->getDeclaringFunction()->getDeclaringClass();
+            $function = $reflector->getDeclaringFunction();
+            $class = $function instanceof \ReflectionMethod ? $function->getDeclaringClass() : null;
             if ($class?->hasProperty($reflector->getName())) {
                 $reflector = $class->getProperty($reflector->getName());
             }
