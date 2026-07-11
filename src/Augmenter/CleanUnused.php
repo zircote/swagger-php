@@ -86,7 +86,7 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
     {
         return [
             ['schemas', 'schemas', static fn (OA\Schema $s): ?string => $s->schema ?? $s->title],
-            ['responses', 'responses', static fn (OA\Response $r): ?string => $r->response],
+            ['responses', 'responses', static fn (OA\Response $r): ?string => $r->response !== null ? (string) $r->response : null],
             ['parameters', 'parameters', static fn (OA\Parameter $p): ?string => $p->parameter ?? $p->name],
             ['requestBodies', 'requestBodies', static fn (OA\RequestBody $b): ?string => $b->request],
             ['headers', 'headers', static fn (OA\Header $h): ?string => $h->header],

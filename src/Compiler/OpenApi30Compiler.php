@@ -125,47 +125,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
         ], $license);
     }
 
-    protected function compileParameter(OA\Parameter $parameter): array
-    {
-        if ($parameter->ref !== null) {
-            return ['$ref' => $parameter->ref];
-        }
-
-        return $this->filter([
-            'name' => $parameter->name,
-            'in' => $parameter->in,
-            'description' => $parameter->description,
-            'required' => $parameter->required,
-            'deprecated' => $parameter->deprecated,
-            'allowEmptyValue' => $parameter->allowEmptyValue,
-            'style' => $parameter->style,
-            'explode' => $parameter->explode,
-            'allowReserved' => $parameter->allowReserved,
-            'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
-            'example' => $parameter->example,
-            'examples' => $parameter->examples !== null ? $this->compileExamples($parameter->examples) : null,
-            'content' => $parameter->content !== null ? $this->compileMediaTypes($parameter->content) : null,
-        ], $parameter);
-    }
-
-    protected function compileMediaType(OA\MediaType $mediaType): array
-    {
-        $encoding = null;
-        if ($mediaType->encoding) {
-            $encoding = [];
-            foreach ($mediaType->encoding as $name => $enc) {
-                $encoding[$name] = $this->compileEncoding($enc);
-            }
-        }
-
-        return $this->filter([
-            'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
-            'example' => $mediaType->example,
-            'examples' => $mediaType->examples !== null ? $this->compileExamples($mediaType->examples) : null,
-            'encoding' => $encoding,
-        ], $mediaType);
-    }
-
     /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      */
