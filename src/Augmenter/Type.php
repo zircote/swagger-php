@@ -60,6 +60,10 @@ class Type implements PipeInterface
             $this->walkMediaTypes($requestBody->content);
         }
 
+        foreach ($payload->responses as $response) {
+            $this->walkMediaTypes($response->content);
+        }
+
         foreach ($payload->headers as $header) {
             $this->walkSchema($header->schema);
         }
@@ -73,7 +77,7 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($schema->properties || $schema->allOf || $schema->additionalProperties || $schema->patternProperties) {
+        if ($schema->properties || $schema->allOf || $schema->patternProperties) {
             $schema->type = 'object';
         }
     }
@@ -83,6 +87,8 @@ class Type implements PipeInterface
         if (!$schema instanceof OA\Schema) {
             return;
         }
+
+        $this->inferSchemaType($schema);
 
         if ($schema->properties) {
             foreach ($schema->properties as $property) {
@@ -198,6 +204,7 @@ class Type implements PipeInterface
 
         foreach ($operation->parameters as $parameter) {
             $this->augmentParameter($parameter);
+            $this->walkMediaTypes($parameter->content);
         }
     }
 

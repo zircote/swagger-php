@@ -161,11 +161,15 @@ class ExpandHierarchy implements PipeInterface
     protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class): void
     {
         $members = $this->factory->membersOf($class);
+        $merged = [];
         foreach ($members as $member) {
             if ($member instanceof OA\Property) {
-                $schema->properties ??= [];
-                $schema->properties[] = $member;
+                $merged[] = $member;
             }
+        }
+
+        if ($merged !== []) {
+            $schema->properties = [...$merged, ...($schema->properties ?? [])];
         }
     }
 

@@ -47,6 +47,6 @@ trait UsesExamples
         $classloader = new ClassLoader();
         $classloader->addPsr4($namerspaceBase, $basePath);
         $classloader->addPsr4($implementationNamerspaceBase, $path);
-        $classloader->register();
+        $classloader->register(true);
     }
 }

@@ -35,6 +35,11 @@ class Response extends AbstractAttribute
         parent::__construct(x: $x);
     }
 
+    public function isRoot(): bool
+    {
+        return $this->ref === null && $this->response !== null;
+    }
+
     public function merge(): array
     {
         return [Operation::class => 'responses[]'];
