@@ -254,6 +254,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function compileCallbackValue(mixed $value): mixed
     {
+        if ($value instanceof OA\Operation) {
+            return $this->compileOperation($value);
+        }
         if ($value instanceof OA\RequestBody) {
             return $this->compileRequestBody($value);
         }
