@@ -11,8 +11,28 @@ use OpenApi\Undefined;
 /**
  * Defines the structure and validation rules for a data type.
  *
- * Based on JSON Schema with OpenAPI-specific extensions. Can represent objects,
- * primitives, and arrays.
+ * On a class — becomes a reusable component schema (name inferred from class):
+ *
+ *   #[OA\Schema]
+ *   class Pet {
+ *       #[OA\Property]
+ *       public string $name;
+ *       #[OA\Property]
+ *       public ?int $age;
+ *   }
+ *
+ * Produces:
+ *   components:
+ *     schemas:
+ *       Pet:
+ *         type: object
+ *         properties:
+ *           name: { type: string }
+ *           age: { type: integer, nullable: true }
+ *
+ * Inline — used within parameters, responses, or other schemas:
+ *
+ *   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
  *
  * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  * @see [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation)

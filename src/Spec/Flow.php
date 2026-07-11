@@ -9,11 +9,32 @@ namespace OpenApi\Spec;
 /**
  * Configuration details for a supported OAuth2 flow.
  *
- * Typed subtypes are available for each OAuth2 flow type:
+ * Typed subtypes pre-fill the flow type:
  * - `OA\Flow\Implicit` - implicit grant (authorizationUrl required)
  * - `OA\Flow\Password` - resource owner password credentials (tokenUrl required)
  * - `OA\Flow\ClientCredentials` - client credentials grant (tokenUrl required)
  * - `OA\Flow\AuthorizationCode` - authorization code grant (authorizationUrl + tokenUrl required)
+ *
+ *   #[OA\Security\Scheme\OAuth2(securityScheme: 'oauth2', flows: [
+ *       new OA\Flow\AuthorizationCode(
+ *           authorizationUrl: 'https://example.com/oauth/authorize',
+ *           tokenUrl: 'https://example.com/oauth/token',
+ *           scopes: ['read:pets' => 'Read pets', 'write:pets' => 'Write pets'],
+ *       ),
+ *   ])]
+ *
+ * Produces:
+ *   components:
+ *     securitySchemes:
+ *       oauth2:
+ *         type: oauth2
+ *         flows:
+ *           authorizationCode:
+ *             authorizationUrl: https://example.com/oauth/authorize
+ *             tokenUrl: https://example.com/oauth/token
+ *             scopes:
+ *               read:pets: Read pets
+ *               write:pets: Write pets
  *
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  * @see [OAuth Flows Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flows-object)

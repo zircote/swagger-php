@@ -11,11 +11,31 @@ use OpenApi\Undefined;
 /**
  * Describes a single operation parameter.
  *
- * Typed subtypes are available for each parameter location:
+ * Typed subtypes pre-fill `in` (and `required` for path):
  * - `OA\Parameter\Path` - path parameters (in: path, required: true)
  * - `OA\Parameter\Query` - query string parameters (in: query)
  * - `OA\Parameter\Header` - header parameters (in: header)
  * - `OA\Parameter\Cookie` - cookie parameters (in: cookie)
+ *
+ * Inline on an operation:
+ *
+ *   #[OA\Operation\Get(path: '/pets', parameters: [
+ *       new OA\Parameter\Query(name: 'status', schema: new OA\Schema(type: 'string', enum: ['active', 'sold'])),
+ *   ])]
+ *
+ * Or as a reusable component (set `parameter` for the component key):
+ *
+ *   #[OA\Parameter\Path(parameter: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
+ *
+ * Produces:
+ *   components:
+ *     parameters:
+ *       petId:
+ *         name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
  *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */

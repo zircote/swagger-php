@@ -9,7 +9,34 @@ namespace OpenApi\Spec;
 /**
  * Describes a single API operation on a path.
  *
+ * Typed subclasses pre-fill the HTTP method — use them instead of specifying method manually:
+ *
+ *   #[OA\Operation\Get(path: '/pets/{id}', responses: [
+ *       new OA\Response(response: 200, description: 'A pet', content: [
+ *           new OA\MediaType(schema: new OA\Schema(ref: Pet::class)),
+ *       ]),
+ *   ])]
+ *   public function show(int $id) {}
+ *
+ * Produces:
+ *   paths:
+ *     /pets/{id}:
+ *       get:
+ *         operationId: show
+ *         responses:
+ *           '200':
+ *             description: A pet
+ *             content:
+ *               application/json:
+ *                 schema:
+ *                   $ref: '#/components/schemas/Pet'
+ *
+ * For webhooks, use `webhook` instead of `path`:
+ *
+ *   #[OA\Operation\Post(webhook: 'petAdopted', responses: [...])]
+ *
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
+ * @see [Webhooks](https://spec.openapis.org/oas/v3.1.1.html#fixed-fields)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Operation extends AbstractAttribute
