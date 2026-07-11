@@ -19,6 +19,7 @@ final class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $result = (new Builder())
+            ->setMode('classic')
             ->addSource($this->fixture('Customer.php'))
             ->setLogger($this->getTrackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator
@@ -59,6 +60,7 @@ final class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $result = (new Builder())
+            ->setMode('classic')
             ->addSource($this->fixture('Customer.php'))
             ->setLogger($this->getTrackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))

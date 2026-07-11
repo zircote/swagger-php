@@ -32,6 +32,7 @@ final class AugmentParametersTest extends OpenApiTestCase
                 ->setTypeResolver($this->getTypeResolver()))
             ->build();
         $openapi = $result->openApi();
+        $this->assertNotNull($openapi);
         $this->assertCount(1, $openapi->components->parameters, 'OpenApi contains 1 reusable parameter specification');
         $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @OA\Parameter()->parameter is specified, use @OA\Parameter()->name');
     }
