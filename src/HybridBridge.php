@@ -32,6 +32,7 @@ class HybridBridge
                 $annotation instanceof Annotations\Server => $spec->servers[] = $this->convertServer($annotation),
                 $annotation instanceof Annotations\Tag => $spec->tags[] = $this->convertTag($annotation),
                 $annotation instanceof Annotations\SecurityScheme => $spec->securitySchemes[] = $this->convertSecurityScheme($annotation),
+                $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $spec),
                 $annotation instanceof Annotations\Operation => $spec->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()] = $annotation,
                 $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
@@ -112,12 +113,23 @@ class HybridBridge
                 break;
             }
             $classes[] = $parent->getName();
+            foreach ($parent->getTraits() as $trait) {
+                if (!isset($classSchemas[$trait->getName()])) {
+                    $classes[] = $trait->getName();
+                }
+            }
             $parent = $parent->getParentClass();
         }
 
         foreach ($ref->getInterfaces() as $interface) {
             if (!isset($classSchemas[$interface->getName()])) {
                 $classes[] = $interface->getName();
+            }
+        }
+
+        foreach ($ref->getTraits() as $trait) {
+            if (!isset($classSchemas[$trait->getName()])) {
+                $classes[] = $trait->getName();
             }
         }
 
@@ -178,57 +190,6 @@ class HybridBridge
             $op instanceof Annotations\Trace => 'trace',
             default => strtolower($this->val($op->method) ?? 'get'),
         };
-    }
-
-    public function convert(Annotations\OpenApi $openApi): Specification
-    {
-        $spec = new Specification();
-
-        $spec->openapi = new Spec\OpenApi(
-            version: $openApi->openapi,
-        );
-
-        if (!Undefined::isDefault($openApi->security)) {
-            $spec->openapi->security = $this->convertSecurityRequirements($openApi->security);
-        }
-
-        if (!Undefined::isDefault($openApi->info)) {
-            $spec->info = $this->convertInfo($openApi->info);
-        }
-
-        if (!Undefined::isDefault($openApi->servers)) {
-            foreach ($openApi->servers as $server) {
-                $spec->servers[] = $this->convertServer($server);
-            }
-        }
-
-        if (!Undefined::isDefault($openApi->tags)) {
-            foreach ($openApi->tags as $tag) {
-                $spec->tags[] = $this->convertTag($tag);
-            }
-        }
-
-        if (!Undefined::isDefault($openApi->externalDocs)) {
-            $spec->externalDocs[] = $this->convertExternalDocs($openApi->externalDocs);
-        }
-
-        if (!Undefined::isDefault($openApi->paths)) {
-            foreach ($openApi->paths as $pathItem) {
-                $this->convertPathItem($pathItem, $spec);
-            }
-        }
-
-        if (!Undefined::isDefault($openApi->webhooks)) {
-            foreach ($openApi->webhooks as $webhook) {
-                $this->convertWebhook($webhook, $spec);
-            }
-        }
-
-        if (!Undefined::isDefault($openApi->components)) {
-            $this->convertComponents($openApi->components, $spec);
-        }
-
-        return $spec;
     }
 
     protected function convertInfo(Annotations\Info $info): Spec\Info
@@ -305,17 +266,6 @@ class HybridBridge
             description: $this->val($docs->description),
             x: $this->extensions($docs),
         );
-    }
-
-    protected function convertPathItem(Annotations\PathItem $pathItem, Specification $spec): void
-    {
-        $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-
-        foreach ($methods as $method) {
-            if (!Undefined::isDefault($pathItem->{$method})) {
-                $spec->operations[] = $this->convertOperation($pathItem->{$method}, $pathItem->path, $method);
-            }
-        }
     }
 
     protected function convertWebhook(Annotations\PathItem $webhook, Specification $spec): void
@@ -497,7 +447,7 @@ class HybridBridge
 
     protected function convertHeader(Annotations\Header $header): Spec\Header
     {
-        return new Spec\Header(
+        $result = new Spec\Header(
             header: $this->val($header->header),
             description: $this->val($header->description),
             required: $this->val($header->required),
@@ -506,11 +456,14 @@ class HybridBridge
             schema: Undefined::isDefault($header->schema) ? null : $this->convertSchema($header->schema),
             x: $this->extensions($header),
         );
+        $this->copyReflector($header, $result);
+
+        return $result;
     }
 
     protected function convertLink(Annotations\Link $link): Spec\Link
     {
-        return new Spec\Link(
+        $result = new Spec\Link(
             link: $this->val($link->link),
             operationRef: $this->val($link->operationRef),
             operationId: $this->val($link->operationId),
@@ -521,6 +474,9 @@ class HybridBridge
             server: Undefined::isDefault($link->server) ? null : $this->convertServer($link->server),
             x: $this->extensions($link),
         );
+        $this->copyReflector($link, $result);
+
+        return $result;
     }
 
     protected function convertEncoding(Annotations\Encoding $encoding): Spec\Encoding
@@ -652,7 +608,7 @@ class HybridBridge
             }
         }
 
-        return new Spec\Security\Scheme(
+        $result = new Spec\Security\Scheme(
             securityScheme: $this->val($scheme->securityScheme),
             type: $this->val($scheme->type),
             description: $this->val($scheme->description),
@@ -665,6 +621,9 @@ class HybridBridge
             ref: $this->val($scheme->ref),
             x: $this->extensions($scheme),
         );
+        $this->copyReflector($scheme, $result);
+
+        return $result;
     }
 
     protected function convertFlow(Annotations\Flow $flow): Spec\Flow
@@ -683,7 +642,7 @@ class HybridBridge
     {
         $key = $this->val($example->example);
 
-        return new Spec\Example(
+        $result = new Spec\Example(
             example: $key !== null ? (string) $key : null,
             summary: $this->val($example->summary),
             description: $this->val($example->description),
@@ -692,6 +651,9 @@ class HybridBridge
             ref: $this->val($example->ref),
             x: $this->extensions($example),
         );
+        $this->copyReflector($example, $result);
+
+        return $result;
     }
 
     /**

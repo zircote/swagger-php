@@ -7,9 +7,11 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Augmenter\CleanUnused;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
+use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ScratchTest extends OpenApiTestCase
@@ -59,15 +61,18 @@ final class ScratchTest extends OpenApiTestCase
             'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
         ];
 
-        foreach ($scratchIterator() as $scratchName => $scratch) {
-            foreach ($specIterator($scratchName) as $caseName => $details) {
-                yield $caseName => [
-                    $details['typeResolver'],
-                    $scratch,
-                    $details['spec'],
-                    $details['version'],
-                    array_key_exists($caseName, $expectedLogs) ? $expectedLogs[$caseName] : [],
-                ];
+        foreach (['classic'] as $mode) {
+            foreach ($scratchIterator() as $scratchName => $scratch) {
+                foreach ($specIterator($scratchName) as $caseName => $details) {
+                    yield "$caseName-$mode" => [
+                        $details['typeResolver'],
+                        $scratch,
+                        $mode,
+                        $details['spec'],
+                        $details['version'],
+                        array_key_exists($caseName, $expectedLogs) ? $expectedLogs[$caseName] : [],
+                    ];
+                }
             }
         }
     }
@@ -76,7 +81,7 @@ final class ScratchTest extends OpenApiTestCase
      * Test scratch fixtures.
      */
     #[DataProvider('scratchTestCases')]
-    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, string $spec, string $version, array $expectedLogs): void
+    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, string $mode, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {
             $this->assertOpenApiLogEntryContains($logLine);
@@ -85,9 +90,15 @@ final class ScratchTest extends OpenApiTestCase
         require_once $scratch;
 
         $result = (new Builder())
+            ->setMode($mode)
             ->addSource($scratch)
             ->setVersion($version)
             ->setLogger($this->getTrackingLogger())
+            ->withAugmenters(function(Pipeline $pipeline) use ($mode) {
+                if ($mode === 'hybrid') {
+                    $pipeline->get(CleanUnused::class)->setEnabled(false);
+                }
+            })
             ->withGenerator(fn (Generator $generator): Generator => $generator
                 ->setTypeResolver($typeResolver)
                 ->setConfig(['mergeIntoOpenApi' => ['mergeComponents' => true]]))

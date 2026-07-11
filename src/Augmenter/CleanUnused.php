@@ -104,7 +104,7 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
         $removed = false;
         foreach ($specification->{$field} as $index => $item) {
             $name = $nameExtractor($item);
-            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name])) {
+            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name]) && !$this->isExplicit($item)) {
                 unset($specification->{$field}[$index]);
                 $removed = true;
             }
@@ -114,5 +114,10 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
         }
 
         return $removed;
+    }
+
+    protected function isExplicit(OA\AbstractAttribute $item): bool
+    {
+        return $item->getReflector() instanceof \Reflector;
     }
 }

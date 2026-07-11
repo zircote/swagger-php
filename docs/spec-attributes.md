@@ -164,6 +164,18 @@ All 10 example specs now have spec-attribute versions. Most produce identical ou
 - Trait properties merged directly into consuming schemas
 - Spec-specific fixtures document the corrected output
 
+### Behavioral differences from classic
+
+Intentional improvements or corrections in the spec/hybrid pipeline that produce different output from classic:
+
+| Difference | Classic | Spec/Hybrid | Rationale |
+|---|---|---|---|
+| Empty `tags` | Always emits `tags: []` | Omits when empty | Per OpenAPI spec, optional fields should be omitted when empty |
+| Empty flow `scopes` | Emits `scopes: {}` | Was omitting empty scopes | Bug fix in compiler — scopes is required per OpenAPI spec |
+| Type inference on traits | Types often omitted | Explicit types from PHP declarations | Bug fix — classic failed to resolve types on trait properties |
+| Docblock on parameters | Only from `@param` on ReflectionParameter | Also matches by parameter name | More thorough — resolves descriptions for non-reflection parameters |
+| Promoted property descriptions | Not resolved in spec pipeline | Resolved via ReflectionProperty fallback | Bug fix — docblocks on promoted properties now found |
+
 ## Classic processor mapping
 
 How each classic processor maps to the new pipeline:

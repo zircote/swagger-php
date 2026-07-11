@@ -218,6 +218,13 @@ class Docblock implements PipeInterface
             return null;
         }
 
+        if ($reflector instanceof \ReflectionParameter && $reflector->isPromoted()) {
+            $class = $reflector->getDeclaringFunction()->getDeclaringClass();
+            if ($class?->hasProperty($reflector->getName())) {
+                $reflector = $class->getProperty($reflector->getName());
+            }
+        }
+
         if (!method_exists($reflector, 'getDocComment')) {
             return null;
         }
