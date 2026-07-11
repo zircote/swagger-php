@@ -32,6 +32,9 @@ class Enums implements PipeInterface
     ) {
     }
 
+    /**
+     * If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).
+     */
     public function setEnumNames(?string $enumNames): static
     {
         $this->enumNames = $enumNames;

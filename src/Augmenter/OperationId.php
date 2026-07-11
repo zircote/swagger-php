@@ -25,6 +25,9 @@ class OperationId implements PipeInterface
     ) {
     }
 
+    /**
+     * If set to <code>true</code> generate ids (md5) instead of clear text operation ids.
+     */
     public function setHash(bool $hash): static
     {
         $this->hash = $hash;

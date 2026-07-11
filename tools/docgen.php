@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Tools\Docs\Reference\AttributeGenerator;
+use OpenApi\Tools\Docs\Reference\AugmenterGenerator;
 use OpenApi\Tools\Docs\Reference\ExampleGenerator;
 use OpenApi\Tools\Docs\Reference\ProcessorGenerator;
 
@@ -11,6 +12,7 @@ $projectRoot = __DIR__ . '/../';
 $generators = [
     'ref' => new AttributeGenerator($projectRoot),
     'proc' => new ProcessorGenerator($projectRoot),
+    'aug' => new AugmenterGenerator($projectRoot),
     'example' => new ExampleGenerator($projectRoot),
 ];
 
@@ -23,6 +25,7 @@ $outputMap = [
     'annotations' => 'reference/annotations.md',
     'attributes' => 'reference/attributes.md',
     'processors' => 'reference/processors.md',
+    'augmenters' => 'reference/augmenters.md',
     'examples' => 'guide/examples.md',
 ];
 

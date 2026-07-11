@@ -29,6 +29,9 @@ class Docblock implements PipeInterface
     ) {
     }
 
+    /**
+     * Override the docblock parser used to extract summaries and descriptions.
+     */
     public function setParser(DocBlockParser $parser): static
     {
         $this->parser = $parser;

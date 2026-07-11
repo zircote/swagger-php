@@ -31,6 +31,9 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
     ) {
     }
 
+    /**
+     * Enables/disables removal of unreferenced components.
+     */
     public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;
@@ -104,7 +107,7 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
         $removed = false;
         foreach ($specification->{$field} as $index => $item) {
             $name = $nameExtractor($item);
-            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name]) && !$this->isExplicit($item)) {
+            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name])) {
                 unset($specification->{$field}[$index]);
                 $removed = true;
             }
@@ -114,10 +117,5 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
         }
 
         return $removed;
-    }
-
-    protected function isExplicit(OA\AbstractAttribute $item): bool
-    {
-        return $item->getReflector() instanceof \Reflector;
     }
 }

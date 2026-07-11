@@ -28,6 +28,9 @@ class Type implements PipeInterface
     ) {
     }
 
+    /**
+     * Override the type resolver used to infer schema types from PHP type declarations.
+     */
     public function setTypeResolver(TypeResolver $typeResolver): static
     {
         $this->typeResolver = $typeResolver;
