@@ -18,6 +18,7 @@ class ApiController
 {
     #[OA\Operation\Get(
         path: '/entity/{id}',
+        operationId: 'getEntity',
         description: 'Get the entity',
         tags: ['api'],
         parameters: [

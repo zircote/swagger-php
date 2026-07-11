@@ -8,6 +8,7 @@ namespace OpenApi\Utils;
 
 use OpenApi\AttributeInterface;
 use OpenApi\OpenApiException;
+use OpenApi\Spec as OA;
 
 /**
  * Creates spec attribute instances from PHP reflectors.
@@ -74,6 +75,18 @@ class AttributeFactory
             array_push($inner, ...$this->resolveNesting($this->readAttributes($constant)));
         }
 
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
+                continue;
+            }
+            $resolved = $this->resolveNesting($this->readAttributes($method));
+            foreach ($resolved as $attribute) {
+                if ($attribute instanceof OA\Property) {
+                    $inner[] = $attribute;
+                }
+            }
+        }
+
         return $inner;
     }
 
@@ -83,6 +96,25 @@ class AttributeFactory
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
         return $reflector->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF) !== [];
+    }
+
+    /**
+     * Check whether a method only produces Property attributes (no operations).
+     */
+    public function hasOnlyProperties(\ReflectionMethod $method): bool
+    {
+        $attributes = $this->readAttributes($method);
+        if ($attributes === []) {
+            return false;
+        }
+
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof OA\Property && !$attribute instanceof OA\Schema) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

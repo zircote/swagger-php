@@ -134,6 +134,8 @@ class ExpandHierarchy implements PipeInterface
         foreach ($ownInterfaces as $interface) {
             if (isset($schemaMap[$interface->getName()])) {
                 $this->addAllOfRef($schema, $schemaMap[$interface->getName()]);
+            } else {
+                $this->mergeMembers($schema, $interface);
             }
         }
     }
@@ -141,8 +143,7 @@ class ExpandHierarchy implements PipeInterface
     protected function addAllOfRef(OA\Schema $schema, OA\Schema $referenced): void
     {
         $schema->allOf ??= [];
-        // InferNames hasn't run yet, so fall back to the reflector short name
-        $name = $referenced->schema ?? $referenced->title ?? $this->inferName($referenced);
+        $name = $referenced->schema ?? $this->inferName($referenced);
         if ($name !== null) {
             $schema->allOf[] = new OA\Schema(ref: '#/components/schemas/' . $name);
         }

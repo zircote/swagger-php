@@ -7,14 +7,14 @@ paths:
     get:
       tags:
         - Products
-      operationId: f5eb54ff316bd7b5255abc39c03636c3
+      operationId: getProduct
       responses:
         default:
           $ref: '#/components/responses/product'
     patch:
       tags:
         - Products
-      operationId: 8324867747a5d4de63ad0910f1e69188
+      operationId: updateProduct
       requestBody:
         $ref: '#/components/requestBodies/product_in_body'
       responses:
@@ -27,7 +27,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 94496bbfc18b0bb7d67302b6bafd6548
+      operationId: doStuff
       parameters:
         -
           $ref: '#/components/schemas/Product/allOf/1/properties/id'

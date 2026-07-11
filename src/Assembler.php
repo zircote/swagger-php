@@ -87,12 +87,18 @@ class Assembler
         }
 
         // Methods are always processed — a controller may have operations without
-        // any class-level schema attribute.
+        // any class-level schema attribute. Properties on methods are handled via
+        // membersOf() (absorbed into class schema) or ExpandHierarchy (non-schema interfaces).
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
                 continue;
             }
-            $this->collectFromReflector($method);
+            if ($this->factory->hasOnlyProperties($method)) {
+                continue;
+            }
+            foreach ($this->factory->fromReflector($method) as $root) {
+                $this->specification->add($root);
+            }
         }
     }
 }

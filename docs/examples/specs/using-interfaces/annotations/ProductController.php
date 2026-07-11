@@ -14,6 +14,7 @@ class ProductController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/{id}",
+     *     operationId="getProduct",
      *     description="Get product in any colour for id",
      *     tags={"api"},
      *     @OA\Parameter(
@@ -40,6 +41,7 @@ class ProductController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/green/{id}",
+     *     operationId="getGreenProduct",
      *     description="Get green products",
      *     tags={"api"},
      *     @OA\Parameter(
