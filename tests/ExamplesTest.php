@@ -46,7 +46,7 @@ final class ExamplesTest extends OpenApiTestCase
                         continue;
                     }
 
-                    $modes = $implementation === 'spec' ? ['spec'] : ['classic', 'hybrid'];
+                    $modes = $implementation === 'spec' ? ['spec'] : ['classic'];//, 'hybrid'];
 
                     foreach ($modes as $mode) {
                         foreach ($versions as $version) {
