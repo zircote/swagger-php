@@ -7,24 +7,34 @@
 namespace OpenApi\Spec;
 
 /**
- * Path-level grouping and controller-level metadata.
+ * Describes shared metadata for all operations under a path.
  *
- * Place on a class whose methods carry Operation attributes. The path is inferred
- * from the operations it contains — no need to declare it explicitly (unlike classic
- * annotations where PathItem carries its own path). Shared parameters, servers,
- * summary and description are emitted at path level in the OpenAPI output.
+ * Place on a controller class — the path is inferred from its operations.
+ * Parameters, summary, description and servers are emitted at path level in the
+ * OpenAPI output. Prefix, tags, security and responses are controller-level features
+ * that compose via class hierarchy and apply to all contained operations.
  *
- * Usage:
- *   #[PathItem(parameters: [new Parameter\Path(name: 'id', ...)])]
+ * Shared path-level properties (parameters, summary, description, servers per OpenAPI spec):
+ *
+ *   #[PathItem(parameters: [new Parameter\Path(name: 'id', schema: new Schema(type: 'integer'))])]
  *   class ProductController {
  *       #[Operation\Get(path: '/products/{id}')]
  *       public function get() {}
  *   }
  *
- * The augmenter groups operations by resolved path, then associates this PathItem's
- * spec-level properties (parameters, summary, description, servers) with each path.
- * Controller-level properties (prefix, tags, security, responses) are resolved via
- * class hierarchy and cloned down to operations before compilation.
+ * The path in the output is inferred from the operations — no need to declare it
+ * on PathItem, avoiding duplication.
+ *
+ * Prefix composition (TODO):
+ *
+ *   #[PathItem(prefix: '/api/v1')]
+ *   class BaseController {}
+ *
+ *   #[PathItem(prefix: '/users', tags: ['Users'])]
+ *   class UserController extends BaseController {
+ *       #[Operation\Get(path: '/list')]       // resolved: /api/v1/users/list
+ *       public function list() {}
+ *   }
  *
  * @see [Path Item Object](https://spec.openapis.org/oas/v3.1.1.html#path-item-object)
  */
