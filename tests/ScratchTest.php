@@ -64,7 +64,7 @@ final class ScratchTest extends OpenApiTestCase
         foreach (['classic'] as $mode) {
             foreach ($scratchIterator() as $scratchName => $scratch) {
                 foreach ($specIterator($scratchName) as $caseName => $details) {
-                    yield "$caseName-$mode" => [
+                    yield "{$caseName}-{$mode}" => [
                         $details['typeResolver'],
                         $scratch,
                         $mode,
@@ -94,7 +94,7 @@ final class ScratchTest extends OpenApiTestCase
             ->addSource($scratch)
             ->setVersion($version)
             ->setLogger($this->getTrackingLogger())
-            ->withAugmenters(function(Pipeline $pipeline) use ($mode) {
+            ->withAugmenters(function (Pipeline $pipeline) use ($mode): void {
                 if ($mode === 'hybrid') {
                     $pipeline->get(CleanUnused::class)->setEnabled(false);
                 }
