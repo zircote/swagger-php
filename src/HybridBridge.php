@@ -7,13 +7,179 @@
 namespace OpenApi;
 
 /**
- * Converts a structurally-assembled classic OA\OpenApi annotation tree into a Specification.
+ * Converts classic annotations into a Specification by iterating the Analysis directly.
  *
- * This is the hybrid bridge: classic pipeline → Specification → Compiler.
- * Expects post-structural-processor annotations (merged into OpenApi, paths built).
+ * Expects only MergeJsonContent/MergeXmlContent to have run (unwraps pseudo-annotations).
+ * All enrichment (types, refs, descriptions, hierarchy) is left to the spec augmenter chain.
  */
 class HybridBridge
 {
+    public function fromAnalysis(Analysis $analysis): Specification
+    {
+        $spec = new Specification();
+
+        $classSchemas = [];
+        $memberProperties = [];
+
+        foreach ($analysis->annotations as $annotation) {
+            if (!$annotation->_context->reflector instanceof \Reflector) {
+                continue;
+            }
+
+            match (true) {
+                $annotation instanceof Annotations\OpenApi => $this->convertOpenApiMeta($annotation, $spec),
+                $annotation instanceof Annotations\Info => $spec->info = $this->convertInfo($annotation),
+                $annotation instanceof Annotations\Server => $spec->servers[] = $this->convertServer($annotation),
+                $annotation instanceof Annotations\Tag => $spec->tags[] = $this->convertTag($annotation),
+                $annotation instanceof Annotations\SecurityScheme => $spec->securitySchemes[] = $this->convertSecurityScheme($annotation),
+                $annotation instanceof Annotations\Operation => $spec->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
+                $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()] = $annotation,
+                $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
+                $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $spec->responses[] = $this->convertResponse($annotation),
+                $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->request) => $spec->requestBodies[] = $this->convertRequestBody($annotation),
+                $annotation instanceof Annotations\Parameter && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->parameter) => $spec->parameters[] = $this->convertParameter($annotation),
+                $annotation instanceof Annotations\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $spec->headers[] = $this->convertHeader($annotation),
+                $annotation instanceof Annotations\Link && !$annotation->_context->is('nested') => $spec->links[] = $this->convertLink($annotation),
+                $annotation instanceof Annotations\ExternalDocumentation && !$annotation->_context->is('nested') => $spec->externalDocs[] = $this->convertExternalDocs($annotation),
+                default => null,
+            };
+        }
+
+        foreach ($classSchemas as $className => $schema) {
+            $converted = $this->convertSchemaWithMembers($schema, $className, $classSchemas, $memberProperties);
+            $spec->schemas[] = $converted;
+        }
+
+        $spec->openapi ??= new Spec\OpenApi();
+
+        return $spec;
+    }
+
+    protected function isClassMember(Annotations\Property $property): bool
+    {
+        $reflector = $property->_context->reflector;
+
+        return $reflector instanceof \ReflectionProperty
+            || $reflector instanceof \ReflectionParameter
+            || $reflector instanceof \ReflectionClassConstant
+            || $reflector instanceof \ReflectionMethod;
+    }
+
+    /**
+     * @param array<string, Annotations\Schema> $classSchemas
+     * @param list<Annotations\Property>        $allMembers
+     */
+    protected function convertSchemaWithMembers(Annotations\Schema $schema, string $className, array $classSchemas, array $allMembers): Spec\Schema
+    {
+        $converted = $this->convertSchema($schema);
+
+        $ownClasses = $this->getOwnClasses($className, $classSchemas);
+        $ownProperties = [];
+        foreach ($allMembers as $property) {
+            $declarer = $this->getDeclaringClass($property);
+            if ($declarer !== null && in_array($declarer, $ownClasses, true)) {
+                $ownProperties[] = $this->convertProperty($property);
+            }
+        }
+
+        if ($ownProperties !== []) {
+            $converted->properties = [...$ownProperties, ...($converted->properties ?? [])];
+        }
+
+        return $converted;
+    }
+
+    /**
+     * Get the class itself plus non-schema ancestors and interfaces (they contribute properties to this schema).
+     *
+     * @param array<string, Annotations\Schema> $classSchemas
+     *
+     * @return list<string>
+     */
+    protected function getOwnClasses(string $className, array $classSchemas): array
+    {
+        $classes = [$className];
+
+        if (!class_exists($className) && !interface_exists($className) && !trait_exists($className)) {
+            return $classes;
+        }
+
+        $ref = new \ReflectionClass($className);
+
+        $parent = $ref->getParentClass();
+        while ($parent !== false) {
+            if (isset($classSchemas[$parent->getName()])) {
+                break;
+            }
+            $classes[] = $parent->getName();
+            $parent = $parent->getParentClass();
+        }
+
+        foreach ($ref->getInterfaces() as $interface) {
+            if (!isset($classSchemas[$interface->getName()])) {
+                $classes[] = $interface->getName();
+            }
+        }
+
+        return $classes;
+    }
+
+    protected function getDeclaringClass(Annotations\Property $property): ?string
+    {
+        $reflector = $property->_context->reflector;
+
+        if ($reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionClassConstant) {
+            return $reflector->getDeclaringClass()->getName();
+        }
+        if ($reflector instanceof \ReflectionMethod) {
+            return $reflector->getDeclaringClass()->getName();
+        }
+        if ($reflector instanceof \ReflectionParameter) {
+            $method = $reflector->getDeclaringFunction();
+            if ($method instanceof \ReflectionMethod) {
+                return $method->getDeclaringClass()->getName();
+            }
+        }
+
+        return null;
+    }
+
+    protected function convertOpenApiMeta(Annotations\OpenApi $openApi, Specification $spec): void
+    {
+        $spec->openapi = new Spec\OpenApi(
+            version: $this->val($openApi->openapi),
+        );
+
+        if (!Undefined::isDefault($openApi->security)) {
+            $spec->openapi->security = $this->convertSecurityRequirements($openApi->security);
+        }
+
+        if (!Undefined::isDefault($openApi->externalDocs)) {
+            $spec->externalDocs[] = $this->convertExternalDocs($openApi->externalDocs);
+        }
+
+        if (!Undefined::isDefault($openApi->webhooks)) {
+            foreach ($openApi->webhooks as $webhook) {
+                $this->convertWebhook($webhook, $spec);
+            }
+        }
+    }
+
+    protected function methodFromAnnotation(Annotations\Operation $op): string
+    {
+        return match (true) {
+            $op instanceof Annotations\Get => 'get',
+            $op instanceof Annotations\Post => 'post',
+            $op instanceof Annotations\Put => 'put',
+            $op instanceof Annotations\Delete => 'delete',
+            $op instanceof Annotations\Patch => 'patch',
+            $op instanceof Annotations\Head => 'head',
+            $op instanceof Annotations\Options => 'options',
+            $op instanceof Annotations\Trace => 'trace',
+            default => strtolower($this->val($op->method) ?? 'get'),
+        };
+    }
+
     public function convert(Annotations\OpenApi $openApi): Specification
     {
         $spec = new Specification();
@@ -155,11 +321,14 @@ class HybridBridge
     protected function convertWebhook(Annotations\PathItem $webhook, Specification $spec): void
     {
         $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+        $name = $webhook instanceof Annotations\Webhook
+            ? $this->val($webhook->webhook)
+            : $this->val($webhook->path);
 
         foreach ($methods as $method) {
             if (!Undefined::isDefault($webhook->{$method})) {
                 $operation = $this->convertOperation($webhook->{$method}, null, $method);
-                $operation->webhook = $this->val($webhook->path);
+                $operation->webhook = $name;
                 $spec->operations[] = $operation;
             }
         }
@@ -271,7 +440,7 @@ class HybridBridge
             }
         }
 
-        return new Spec\Response(
+        $result = new Spec\Response(
             response: $this->val($response->response),
             description: $this->val($response->description),
             ref: $this->val($response->ref),
@@ -282,11 +451,14 @@ class HybridBridge
             links: $links,
             x: $this->extensions($response),
         );
+        $this->copyReflector($response, $result);
+
+        return $result;
     }
 
     protected function convertRequestBody(Annotations\RequestBody $body): Spec\RequestBody
     {
-        return new Spec\RequestBody(
+        $result = new Spec\RequestBody(
             request: $this->val($body->request),
             description: $this->val($body->description),
             required: $this->val($body->required),
@@ -296,6 +468,9 @@ class HybridBridge
                 : array_map($this->convertMediaType(...), $body->content),
             x: $this->extensions($body),
         );
+        $this->copyReflector($body, $result);
+
+        return $result;
     }
 
     protected function convertMediaType(Annotations\MediaType $mediaType): Spec\MediaType
@@ -374,8 +549,8 @@ class HybridBridge
             schema: $this->val($schema->schema),
             title: $this->val($schema->title),
             description: $this->val($schema->description),
-            ref: $this->val($schema->ref),
-            type: Undefined::isDefault($schema->type) ? null : $schema->type,
+            ref: $this->val($schema->ref) ?? $this->typeAsRef($schema->type),
+            type: Undefined::isDefault($schema->type) ? null : $this->filterType($schema->type),
             format: $this->val($schema->format),
             nullable: $this->val($schema->nullable),
             minLength: $this->val($schema->minLength),
@@ -424,10 +599,13 @@ class HybridBridge
     {
         $schema = $this->convertSchema($prop);
 
-        return new Spec\Property(
+        $result = new Spec\Property(
             property: $this->val($prop->property),
             schema: $schema,
         );
+        $this->copyReflector($prop, $result);
+
+        return $result;
     }
 
     protected function convertAdditionalProperties(Annotations\Schema $schema): Spec\Schema|bool|null
@@ -585,24 +763,77 @@ class HybridBridge
     protected function convertCallbacks(array $callbacks): array
     {
         $result = [];
-        foreach ($callbacks as $callback) {
-            if ($callback instanceof Annotations\PathItem) {
-                $path = $this->val($callback->path);
+        foreach ($callbacks as $key => $value) {
+            if ($value instanceof Annotations\PathItem) {
+                $path = $this->val($value->path);
                 $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
                 foreach ($methods as $method) {
-                    if (!Undefined::isDefault($callback->{$method})) {
-                        $result[$path][$method] = $this->convertOperation($callback->{$method}, $path, $method);
+                    if (!Undefined::isDefault($value->{$method})) {
+                        $result[$key][$path][$method] = $this->convertOperation($value->{$method}, $path, $method);
                     }
                 }
+            } else {
+                $result[$key] = $this->convertCallbackValue($value);
             }
         }
 
         return $result;
     }
 
+    protected function convertCallbackValue(mixed $value): mixed
+    {
+        if ($value instanceof Annotations\Operation) {
+            return $this->convertOperation($value, null, $this->methodFromAnnotation($value));
+        }
+        if ($value instanceof Annotations\RequestBody) {
+            return $this->convertRequestBody($value);
+        }
+        if ($value instanceof Annotations\Response) {
+            return $this->convertResponse($value);
+        }
+        if ($value instanceof Annotations\Schema) {
+            return $this->convertSchema($value);
+        }
+        if ($value instanceof Annotations\MediaType) {
+            return $this->convertMediaType($value);
+        }
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $k => $v) {
+                $result[$k] = $this->convertCallbackValue($v);
+            }
+
+            return $result;
+        }
+
+        return $value;
+    }
+
     protected function val(mixed $value): mixed
     {
         return Undefined::isDefault($value) ? null : $value;
+    }
+
+    protected function typeAsRef(mixed $type): ?string
+    {
+        if (is_string($type) && !Undefined::isDefault($type) && str_contains($type, '\\')) {
+            return $type;
+        }
+
+        return null;
+    }
+
+    protected function filterType(mixed $type): string|array|null
+    {
+        if (Undefined::isDefault($type)) {
+            return null;
+        }
+
+        if (is_string($type) && str_contains($type, '\\')) {
+            return null;
+        }
+
+        return $type;
     }
 
     /**

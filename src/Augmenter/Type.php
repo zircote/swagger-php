@@ -77,7 +77,9 @@ class Type implements PipeInterface
             return;
         }
 
-        if ($schema->properties || $schema->allOf || $schema->patternProperties) {
+        if ($schema->items instanceof OA\Schema) {
+            $schema->type = 'array';
+        } elseif ($schema->properties || $schema->allOf || $schema->patternProperties) {
             $schema->type = 'object';
         }
     }
@@ -146,6 +148,12 @@ class Type implements PipeInterface
     protected function augmentProperty(OA\Property $property): void
     {
         $reflector = $property->getReflector();
+        if ($reflector instanceof \ReflectionMethod) {
+            $this->augmentMethodProperty($property, $reflector);
+
+            return;
+        }
+
         if (!$reflector instanceof \ReflectionProperty
             && !$reflector instanceof \ReflectionParameter
             && !$reflector instanceof \ReflectionClassConstant
@@ -194,6 +202,24 @@ class Type implements PipeInterface
             default => null,
         };
         $property->schema = $schema;
+    }
+
+    protected function augmentMethodProperty(OA\Property $property, \ReflectionMethod $method): void
+    {
+        if ($property->schema instanceof OA\Schema && $property->schema->ref !== null) {
+            return;
+        }
+
+        $resolved = $this->typeResolver->resolve($method);
+        if (!$resolved instanceof SchemaType) {
+            return;
+        }
+
+        if (!$property->schema instanceof OA\Schema) {
+            $property->schema = new OA\Schema();
+        }
+
+        $this->applySchemaType($property->schema, $resolved);
     }
 
     protected function augmentOperationParameters(OA\Operation $operation): void

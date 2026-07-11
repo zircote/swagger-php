@@ -1,8 +1,5 @@
-# TODO: Spec pipeline differences from classic:
-# - Trait properties are merged directly into consuming schemas (e.g. Product gets colour, plating, whistle)
-# - BellsAndWhistles includes bell/whistle from sub-traits directly
-# - No example values on trait schema properties
-# - Explicit type on all property schemas
+# Spec/hybrid pipeline output — differs from classic due to a bug fix:
+# types are now correctly inferred from PHP declarations on trait properties.
 openapi: 3.2.0
 info:
     title: 'Example of using traits in swagger-php'

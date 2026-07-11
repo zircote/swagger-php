@@ -172,6 +172,12 @@ class Docblock implements PipeInterface
                     }
                 }
             }
+
+            return;
+        }
+
+        if ($parameter->name !== null && isset($parentParamTags[$parameter->name]) && $parentParamTags[$parameter->name]['description'] !== null) {
+            $parameter->description = $parentParamTags[$parameter->name]['description'];
         }
     }
 

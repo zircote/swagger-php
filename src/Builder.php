@@ -211,19 +211,14 @@ class Builder
 
     protected function doBuildHybrid(): Result
     {
-        $collecting = new CollectingLogger($this->getLogger());
-        $generator = new Generator($collecting);
+        $collectingLogger = new CollectingLogger($this->getLogger());
+        $generator = new Generator($collectingLogger);
 
         if ($this->version !== null) {
             $generator->setVersion($this->version);
         }
 
-        // Structural processors only — produce a bare tree for the bridge.
-        // Augmentation (types, refs, descriptions) is left to the spec compiler.
         $generator->setProcessorPipeline(new Utils\Pipeline([
-            new Processors\MergeIntoOpenApi(),
-            new Processors\MergeIntoComponents(),
-            new Processors\BuildPaths(),
             new Processors\MergeJsonContent(),
             new Processors\MergeXmlContent(),
         ]));
@@ -232,14 +227,14 @@ class Builder
             $generator = ($this->generatorHook)($generator) ?? $generator;
         }
 
-        $openApi = $generator->generate($this->sources, validate: false);
-
-        if ($openApi === null) {
-            return Result::fromClassic($this->resolveFiles(), null, $collecting->entries());
-        }
+        $analysis = new Analysis([], new Context([
+            'version' => $generator->getVersion(),
+            'logger' => $collectingLogger,
+        ]));
+        $generator->generate($this->sources, $analysis, validate: false);
 
         $bridge = new HybridBridge();
-        $specification = $bridge->convert($openApi);
+        $specification = $bridge->fromAnalysis($analysis);
 
         $this->getAugmenters()->process($specification);
 
@@ -250,7 +245,7 @@ class Builder
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
-        return Result::fromSpec($this->resolveFiles(), $output, array_merge($collecting->entries(), $diagnostics));
+        return Result::fromSpec($this->resolveFiles(), $output, array_merge($collectingLogger->entries(), $diagnostics));
     }
 
     protected function resolveCompiler(string $version): CompilerInterface

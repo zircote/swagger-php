@@ -101,7 +101,7 @@ OA\AbstractAttribute
 The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')`:
 - **classic** — delegates to the existing `Generator` pipeline
 - **spec** — runs the new spec attributes pipeline end-to-end
-- **hybrid** — uses the classic `Generator` for scanning/annotation processing, then converts the result via `HybridBridge` into a `Specification` and runs it through the spec augmenters and compilers
+- **hybrid** — uses the classic `Generator` for scanning only (MergeJsonContent/MergeXmlContent), then iterates the `Analysis` annotations directly via `HybridBridge` into a `Specification` and runs it through the full spec augmenter chain and compilers
 
 ## What's done
 
@@ -110,7 +110,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 - `AttributeFactory` extracted from Assembler for standalone attribute instantiation
 - Three compilers (3.0, 3.1, 3.2) with version-specific handling and shared inheritance
 - Builder with tri-mode support (classic/spec/hybrid) and CLI integration
-- `HybridBridge` converts classic `OpenApi` annotation tree into `Specification` DTOs
+- `HybridBridge` iterates `Analysis` annotations directly into `Specification` DTOs (no tree assembly needed)
 - Security namespace (Scheme subclasses + Requirement)
 - Typed subclasses for Parameter, Flow, and Operation
 - All examples ported to spec attributes (see table below)
@@ -140,7 +140,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 
 ## Example coverage
 
-All 10 example specs now have spec-attribute versions. Most produce identical output to classic (shared yaml fixtures); two have spec-specific fixtures documenting current behavioral gaps.
+All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (PathItem gap).
 
 | Example | Shared fixture | Spec-specific fixture | Notes |
 |---|---|---|---|
@@ -151,22 +151,18 @@ All 10 example specs now have spec-attribute versions. Most produce identical ou
 | polymorphism | ✓ | — | oneOf/allOf/discriminator |
 | using-interfaces | ✓ | — | Interface-based allOf composition |
 | using-links | ✓ | — | Response links |
-| using-refs | — | ✓ | See gaps below |
-| using-traits | — | ✓ | See gaps below |
+| using-refs | — | — | Known gap: PathItem not yet supported |
+| using-traits | — | ✓ | Bug fix: explicit type inference |
 | webhooks | ✓ | — | 3.1+ webhooks |
 
-### Documented gaps (spec-specific fixtures)
+### Documented gaps
 
-**using-refs** — Path-level parameters (`PathItem`) are not yet supported in the spec pipeline. The classic pipeline resolves `$ref` on path parameters via its processor chain; in spec mode these must be declared per-operation. The spec fixture documents this difference with a TODO comment.
+**using-refs** — Path-level parameters (`PathItem`) are not yet supported in the spec or hybrid pipelines. The classic pipeline resolves `$ref` on path parameters via its processor chain; in spec/hybrid mode these must be declared per-operation. This is a known gap pending PathItem support.
 
-**using-traits** — Trait property handling differs from classic:
-- Trait properties are merged directly into consuming schemas (e.g. Product gets `colour`, `plating`, `whistle` as own properties in addition to the allOf ref)
-- BellsAndWhistles includes `bell`/`whistle` from sub-traits directly in its own allOf fragment
-- No `example` values on standalone trait schema properties (only on explicitly annotated ones)
-- `CustomName-Blink` uses hyphen in schema name (previously used invalid `/` slash)
-- Explicit `type` on all property schemas
-
-These gaps represent the current state, not intentional design choices. The trait-merging differences touch on broader extension/sharing features that would be good to consider together. PathItem support may be straightforward to add since it's a first-class spec concept, but both areas are deferred for now. The spec-specific fixtures serve as regression tests and migration reference.
+**using-traits** — The spec/hybrid pipeline infers types more thoroughly than classic (bug fix, not a BC issue):
+- Explicit `type` inferred from PHP declarations on all property schemas
+- Trait properties merged directly into consuming schemas
+- Spec-specific fixtures document the corrected output
 
 ## Classic processor mapping
 
@@ -208,9 +204,10 @@ How each classic processor maps to the new pipeline:
 
 ### Hybrid mode hardening
 
+- ~~Validate hybrid output matches classic output for the full example suite~~ — done (all pass except using-refs PathItem gap)
 - Dedicated test coverage for `HybridBridge` (currently exercised only indirectly via examples)
 - Migrate scratch tests and doc snippet tests to run in spec and/or hybrid modes
-- Validate hybrid output matches classic output for the full example suite
+- PathItem support (path-level parameters shared across operations)
 
 ### Testing
 
