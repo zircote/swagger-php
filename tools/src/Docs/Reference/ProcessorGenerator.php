@@ -56,7 +56,8 @@ of the processor name (starting lowercase) and  option name separated by a dot (
 EOT;
 
         $out .= "\n### Programmatically with PHP\n";
-        $out .= <<<'EOT'
+
+        return $out . <<<'EOT'
 Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
 as on the command line or be broken down into nested arrays.
 
@@ -74,8 +75,6 @@ as on the command line or be broken down into nested arrays.
 ```
 
 EOT;
-
-        return $out;
     }
 
     /**
@@ -88,14 +87,14 @@ EOT;
 
         (new Generator())
             ->getProcessorPipeline()
-            ->walk(function ($processor) use (&$processors, &$defaultProcessors) {
+            ->walk(function ($processor) use (&$processors, &$defaultProcessors): void {
                 $rc = new \ReflectionClass($processor);
                 $defaultProcessors[] = $rc->getName();
                 $processors[] = $this->collectProcessorData($rc);
             });
 
         $processorsDir = dirname((new \ReflectionClass(MergeIntoOpenApi::class))->getFileName());
-        foreach (glob("$processorsDir/*.php") as $processor) {
+        foreach (glob("{$processorsDir}/*.php") as $processor) {
             $class = 'OpenApi\\Processors\\' . pathinfo($processor, PATHINFO_FILENAME);
             if (!in_array($class, $defaultProcessors)) {
                 $rc = new \ReflectionClass($class);
@@ -128,13 +127,13 @@ EOT;
         $options = [];
 
         foreach ($rc->getMethods() as $method) {
-            if (0 !== strpos($method->getName(), 'set')) {
+            if (!str_starts_with($method->getName(), 'set')) {
                 continue;
             }
 
             $pname = lcfirst(substr($method->getName(), 3));
             $type = 'n/a';
-            if (1 == count($method->getParameters())) {
+            if (1 === count($method->getParameters())) {
                 if ($rt = $method->getParameters()[0]->getType()) {
                     $type = $rt->getName();
                 }

@@ -10,7 +10,7 @@ class Renderer
 {
     public function preamble(string $title, ?string $snippetContent = null): string
     {
-        $out = "# $title Reference\n";
+        $out = "# {$title} Reference\n";
         $out .= "\n";
         $out .= "This page is generated automatically from the `swagger-php` sources.\n";
         $out .= "\n";
@@ -25,12 +25,12 @@ class Renderer
 
     public function sectionHeader(string $title, int $level = 2): string
     {
-        return str_repeat('#', $level) . " $title\n";
+        return str_repeat('#', $level) . " {$title}\n";
     }
 
     public function classHeader(string $name, string $namespace): string
     {
-        return "### [$name](https://github.com/zircote/swagger-php/tree/master/src/$namespace/$name.php)\n";
+        return "### [{$name}](https://github.com/zircote/swagger-php/tree/master/src/{$namespace}/{$name}.php)\n";
     }
 
     public function classDescription(string $content): string
@@ -54,12 +54,11 @@ class Renderer
         $out = "#### Allowed in\n";
         $out .= "---\n";
         $links = array_map(
-            fn (array $p) => '<a href="#' . $p['anchor'] . '">' . $p['name'] . '</a>',
+            fn (array $p): string => '<a href="#' . $p['anchor'] . '">' . $p['name'] . '</a>',
             $parents,
         );
-        $out .= implode(', ', $links) . "\n";
 
-        return $out;
+        return $out . (implode(', ', $links) . "\n");
     }
 
     /**
@@ -74,12 +73,11 @@ class Renderer
         $out = "#### Nested elements\n";
         $out .= "---\n";
         $links = array_map(
-            fn (array $n) => '<a href="#' . $n['anchor'] . '">' . $n['name'] . '</a>',
+            fn (array $n): string => '<a href="#' . $n['anchor'] . '">' . $n['name'] . '</a>',
             $nested,
         );
-        $out .= implode(', ', $links) . "\n";
 
-        return $out;
+        return $out . (implode(', ', $links) . "\n");
     }
 
     /**
@@ -91,7 +89,7 @@ class Renderer
             return '';
         }
 
-        $out = "#### $heading\n";
+        $out = "#### {$heading}\n";
         $out .= "---\n";
         $out .= "<dl>\n";
 
@@ -126,9 +124,7 @@ class Renderer
             $out .= "</dd>\n";
         }
 
-        $out .= "</dl>\n";
-
-        return $out;
+        return $out . "</dl>\n";
     }
 
     /**
@@ -176,11 +172,7 @@ class Renderer
 
     public function exampleSection(string $name, ?string $readme, array $files): string
     {
-        if ($readme) {
-            $out = rtrim($readme) . "\n";
-        } else {
-            $out = '## ' . $name . "\n";
-        }
+        $out = $readme ? rtrim($readme) . "\n" : '## ' . $name . "\n";
 
         foreach ($files as $relFilename => $details) {
             $out .= "\n";
@@ -210,7 +202,7 @@ class Renderer
     {
         preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
 
-        return 3 == count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
+        return 3 === count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
     }
 
     protected function indentedBr(string $text): string
@@ -228,7 +220,7 @@ class Renderer
                 $processed[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . $line . '<br>';
             } else {
                 $processed[] = $line;
-                if ('```' == $line) {
+                if ('```' === $line) {
                     $inBlock = false;
                 }
             }

@@ -28,7 +28,7 @@ class AttributeGenerator extends DocGenerator
 
         foreach ($this->types() as $type) {
             $content = $this->renderer->preamble(
-                rtrim($type, 's'),
+                rtrim((string) $type, 's'),
                 $this->snippetContent($type),
             );
             $content .= "\n" . $this->renderer->sectionHeader($type);
@@ -42,7 +42,7 @@ class AttributeGenerator extends DocGenerator
                 $content .= $this->renderClassDetails($data, $paramHeading);
             }
 
-            $output[strtolower($type)] = $content;
+            $output[strtolower((string) $type)] = $content;
         }
 
         return $output;
@@ -58,7 +58,7 @@ class AttributeGenerator extends DocGenerator
         $classes = [];
         $dir = new \DirectoryIterator($this->projectRoot . '/src/' . $type);
         foreach ($dir as $entry) {
-            if (!$entry->isFile() || $entry->getExtension() != 'php') {
+            if (!$entry->isFile() || $entry->getExtension() !== 'php') {
                 continue;
             }
             $class = $entry->getBasename('.php');
@@ -122,9 +122,7 @@ class AttributeGenerator extends DocGenerator
         $classDoc = $this->parseDocblock($rc->getDocComment());
 
         $nestedProps = $this->getNestedProperties($fqdn);
-        $properties = array_filter($details[$fqdn]['properties'], function ($property) use ($fqdn, $nestedProps) {
-            return !in_array($property, $fqdn::$_blacklist) && $property[0] != '_' && !in_array($property, $nestedProps);
-        });
+        $properties = array_filter($details[$fqdn]['properties'], fn (string $property): bool => !in_array($property, $fqdn::$_blacklist) && $property[0] != '_' && !in_array($property, $nestedProps));
 
         $parameters = [];
         foreach ($properties as $property) {
@@ -179,7 +177,7 @@ class AttributeGenerator extends DocGenerator
             return [];
         }
 
-        return array_map(function (string $parent) {
+        return array_map(function (string $parent): array {
             $shortName = $this->shortName($parent);
 
             return ['name' => $shortName, 'anchor' => strtolower($shortName)];
@@ -195,7 +193,7 @@ class AttributeGenerator extends DocGenerator
             return [];
         }
 
-        return array_map(function (string $nested) {
+        return array_map(function (string $nested): array {
             $shortName = $this->shortName($nested);
 
             return ['name' => $shortName, 'anchor' => strtolower($shortName)];
@@ -208,7 +206,7 @@ class AttributeGenerator extends DocGenerator
         $class = str_replace('Attributes', 'Annotations', $fqdn);
         try {
             $rp = new \ReflectionProperty($class, $name);
-        } catch (\ReflectionException $re) {
+        } catch (\ReflectionException) {
             $rp = null;
         }
 
@@ -259,6 +257,6 @@ class AttributeGenerator extends DocGenerator
             $var = array_merge($var, explode('|', $def));
         }
 
-        return implode('|', array_map(fn ($item) => htmlentities($item), array_unique($var)));
+        return implode('|', array_map(htmlentities(...), array_unique($var)));
     }
 }
