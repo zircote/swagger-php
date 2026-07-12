@@ -17,6 +17,14 @@ echo $result->toYaml();
 
 ## API
 
+### Mode
+
+```php
+$builder->setMode('classic');
+```
+
+Sets the processing mode. Currently the only mode is `classic`, which scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline. This is the default.
+
 ### Sources
 
 ```php

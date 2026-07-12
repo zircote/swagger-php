@@ -13,12 +13,10 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * Unified entry point for generating OpenAPI specs.
+ * Unified entry point for generating OpenAPI documents.
  *
  * Mode:
  *   setMode('classic') — annotation/attribute pipeline via Generator (default)
- *
- * Subclasses may add additional modes (e.g. 'spec', 'hybrid').
  */
 class Builder
 {
@@ -53,6 +51,10 @@ class Builder
 
     /**
      * Select the processing mode.
+     *
+     * Available modes:
+     *   - 'classic': scans source files for annotations/attributes and assembles
+     *                the OpenAPI document via Generator (default)
      *
      * @param string $mode 'classic' (default)
      */

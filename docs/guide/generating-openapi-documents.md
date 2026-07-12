@@ -50,6 +50,7 @@ Options:
   --add-processor (-a)        Register an additional processor (allows multiple).
   --remove-processor (-r)     Remove an existing processor (allows multiple).
   --format (-f)               Force yaml or json.
+  --mode (-m)                 Processing mode; "classic" uses the annotation/attribute pipeline.
   --debug (-d)                Show additional error information.
   --version                   The OpenAPI version; defaults to 3.0.0.
   --help (-h)                 Display this help message.
