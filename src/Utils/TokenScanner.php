@@ -25,14 +25,14 @@ class TokenScanner
     /**
      * Scan a given file for all classes, interfaces, and traits.
      *
-     * @return array{
-     *     'uses': array<string, class-string>,
-     *     'interfaces': list<class-string>,
-     *     'traits': list<class-string>,
-     *     'enums': list<class-string>,
-     *     'methods': list<string>,
-     *     'properties': list<string>,
-     * } File details
+     * @return array<class-string, array{
+     *     uses: array<string, class-string>,
+     *     interfaces: list<class-string>,
+     *     traits: list<class-string>,
+     *     enums: list<class-string>,
+     *     methods: list<string>,
+     *     properties: list<string>,
+     * }>
      */
     public function scanFile(string $filename): array
     {
