@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
+use OpenApi\Annotations\Schema;
 use OpenApi\Undefined;
 
 /**
@@ -21,7 +21,7 @@ class ExpandTraits
 
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         // do regular trait inheritance / merge
         foreach ($schemas as $schema) {
@@ -30,7 +30,7 @@ class ExpandTraits
                 $existing = [];
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
-                    if ($traitSchema) {
+                    if ($traitSchema instanceof Schema) {
                         $refPath = Undefined::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
@@ -48,7 +48,7 @@ class ExpandTraits
                 $existing = [];
                 foreach ($traits as $trait) {
                     $traitSchema = $analysis->getAnnotationForSource($trait['context']->fullyQualifiedName($trait['trait']));
-                    if ($traitSchema) {
+                    if ($traitSchema instanceof Schema) {
                         $refPath = Undefined::isDefault($traitSchema->schema) ? $trait['trait'] : $traitSchema->schema;
                         $this->inheritFrom($analysis, $schema, $traitSchema, $refPath, $trait['context']);
                     } else {
@@ -62,7 +62,7 @@ class ExpandTraits
                 $existing = [];
                 foreach ($ancestors as $ancestor) {
                     $ancestorSchema = $analysis->getAnnotationForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
-                    if ($ancestorSchema) {
+                    if ($ancestorSchema instanceof Schema) {
                         // stop here as we inherit everything above
                         break;
                     } else {

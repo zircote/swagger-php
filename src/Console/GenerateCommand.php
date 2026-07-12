@@ -6,7 +6,8 @@
 
 namespace OpenApi\Console;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Builder;
+use OpenApi\Builder\Result;
 use OpenApi\Generator;
 use OpenApi\Utils\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -45,13 +46,13 @@ class GenerateCommand
             return 0;
         }
 
-        $openapi = $this->generate($input);
+        $result = $this->generate($input);
 
         if (!$input->output) {
             if ($input->format->isJson()) {
-                echo $openapi->toJson();
+                echo $result->toJson();
             } else {
-                echo $openapi->toYaml();
+                echo $result->toYaml();
             }
             echo "\n";
         } else {
@@ -59,36 +60,48 @@ class GenerateCommand
             if (is_dir($outputPath)) {
                 $outputPath .= '/openapi.yaml';
             }
-            $openapi->saveAs($outputPath, $input->format->value);
+            $result->saveAs($outputPath, $input->format->value);
         }
 
         return $this->logger->hasErrored() ? 1 : 0;
     }
 
-    private function generate(GenerateInput $input): OA\OpenApi
+    protected function generate(GenerateInput $input): Result
     {
-        $generator = new Generator($this->logger);
+        $builder = (new Builder())
+            ->addSource(new SourceFinder($input->paths, $input->exclude, $input->pattern))
+            ->setMode($input->mode)
+            ->setLogger($this->logger);
 
-        foreach ($input->addProcessor as $processor) {
-            $class = '\OpenApi\Processors\\' . ucfirst((string) $processor);
-            if (class_exists($class)) {
-                $processor = new $class();
-            } elseif (class_exists($processor)) {
-                $processor = new $processor();
-            }
-            $generator->getProcessorPipeline()->add($processor);
+        if ($input->version !== null) {
+            $builder->setVersion($input->version);
         }
 
-        foreach ($input->removeProcessor as $processor) {
-            $class = class_exists($processor)
-                ? $processor
-                : '\OpenApi\Processors\\' . ucfirst((string) $processor);
-            $generator->getProcessorPipeline()->remove($class);
+        if ($input->config || $input->addProcessor || $input->removeProcessor) {
+            $builder->withGenerator(function (Generator $generator) use ($input): void {
+                if ($input->config) {
+                    $generator->setConfig($input->config);
+                }
+
+                foreach ($input->addProcessor as $processor) {
+                    $class = '\OpenApi\Processors\\' . ucfirst((string) $processor);
+                    if (class_exists($class)) {
+                        $processor = new $class();
+                    } elseif (class_exists($processor)) {
+                        $processor = new $processor();
+                    }
+                    $generator->getProcessorPipeline()->add($processor);
+                }
+
+                foreach ($input->removeProcessor as $processor) {
+                    $class = class_exists($processor)
+                        ? $processor
+                        : '\OpenApi\Processors\\' . ucfirst((string) $processor);
+                    $generator->getProcessorPipeline()->remove($class);
+                }
+            });
         }
 
-        return $generator
-            ->setVersion($input->version)
-            ->setConfig($input->config)
-            ->generate(new SourceFinder($input->paths, $input->exclude, $input->pattern));
+        return $builder->build();
     }
 }

@@ -50,6 +50,7 @@ Options:
   --add-processor (-a)        Register an additional processor (allows multiple).
   --remove-processor (-r)     Remove an existing processor (allows multiple).
   --format (-f)               Force yaml or json.
+  --mode (-m)                 Processing mode; "classic" uses the annotation/attribute pipeline.
   --debug (-d)                Show additional error information.
   --version                   The OpenAPI version; defaults to 3.0.0.
   --help (-h)                 Display this help message.
@@ -59,13 +60,60 @@ Options:
 
 Depending on your use case, PHP code can also be used to generate OpenAPI documents in a more dynamic way.
 
-In its simplest form this may look something like
+### Using the Builder
+
+The `Builder` class is the recommended entry point for generating OpenAPI documents from PHP code.
 
 ```php
 <?php
 require('vendor/autoload.php');
 
-$openapi = (new \OpenApi\Generator)->generate(['/path/to/project']);
+$result = (new \OpenApi\Builder())
+    ->addSource('/path/to/project')
+    ->build();
+
+header('Content-Type: application/x-yaml');
+echo $result->toYaml();
+```
+
+The result object provides access to the generated spec in multiple formats, the list of scanned
+files, and any validation warnings or errors collected during generation.
+
+```php
+$result->toYaml();      // YAML string
+$result->toJson();      // JSON string
+$result->toArray();     // PHP array
+$result->files();       // list of scanned files
+$result->warnings();    // validation warnings
+$result->errors();      // validation errors
+$result->isValid();     // true if spec was generated
+```
+
+For advanced Generator configuration (custom analysers, processors, aliases, etc.), use the
+`withGenerator()` hook:
+
+```php
+$result = (new \OpenApi\Builder())
+    ->addSource('/path/to/project')
+    ->setVersion('3.1.0')
+    ->withGenerator(function (\OpenApi\Generator $generator) {
+        $generator->setConfig(['operationId.hash' => false]);
+        $generator->withProcessorPipeline(function ($pipeline) {
+            $pipeline->add(new MyCustomProcessor());
+        });
+    })
+    ->build();
+```
+
+### Using the Generator directly
+
+The `Generator` class can also be used directly:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$openapi = (new \OpenApi\Generator())->generate(['/path/to/project']);
 
 header('Content-Type: application/x-yaml');
 echo $openapi->toYaml();

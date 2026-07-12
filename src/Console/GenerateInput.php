@@ -45,6 +45,9 @@ class GenerateInput
     #[Option('The OpenAPI version')]
     public ?string $version = null;
 
+    #[Option('Processing mode; "classic" uses the annotation/attribute pipeline', shortcut: 'm')]
+    public string $mode = 'classic';
+
     #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
 

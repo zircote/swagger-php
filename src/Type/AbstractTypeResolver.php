@@ -7,6 +7,7 @@
 namespace OpenApi\Type;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use OpenApi\TypeResolverInterface;
 use OpenApi\Undefined;
@@ -24,7 +25,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
     protected function type2ref(OA\Schema $schema, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
         if (!Undefined::isDefault($schema->type) && !is_array($schema->type)) {
-            if ($typeSchema = $analysis->getAnnotationForSource($schema->type, $sourceClass)) {
+            if (($typeSchema = $analysis->getAnnotationForSource($schema->type, $sourceClass)) instanceof AbstractAnnotation) {
                 $schema->type = Undefined::UNDEFINED;
                 $schema->ref = OA\Components::ref($typeSchema);
             }

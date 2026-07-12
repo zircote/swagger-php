@@ -7,6 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
+use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
@@ -42,7 +43,7 @@ class AugmentRefs
             }
         }
 
-        if ($updatedRefs) {
+        if ($updatedRefs !== []) {
             foreach ($analysis->annotations as $annotation) {
                 if (property_exists($annotation, 'ref') && !Undefined::isDefault($annotation->ref) && $annotation->ref !== null) {
                     foreach ($updatedRefs as $origRef => $updatedRef) {
@@ -64,7 +65,7 @@ class AugmentRefs
                 // check if we can resolve the ref to a component
                 $resolved = false;
                 foreach (OA\Components::componentTypes() as $type) {
-                    if ($refSchema = $analysis->getAnnotationForSource($annotation->ref, $type)) {
+                    if (($refSchema = $analysis->getAnnotationForSource($annotation->ref, $type)) instanceof AbstractAnnotation) {
                         $resolved = true;
                         $annotation->ref = OA\Components::ref($refSchema);
                     }
@@ -95,7 +96,7 @@ class AugmentRefs
                         $refs[] = $allOfSchema->ref;
                     }
                 }
-                if ($dupes) {
+                if ($dupes !== []) {
                     $schema->allOf = array_values($schema->allOf);
                 }
             }

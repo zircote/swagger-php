@@ -8,6 +8,7 @@ namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use OpenApi\Undefined;
 
@@ -41,9 +42,9 @@ class MergeIntoOpenApi
     public function __invoke(Analysis $analysis): void
     {
         // Auto-create the OpenApi annotation.
-        if (!$analysis->openapi) {
+        if (!$analysis->openapi instanceof OpenApi) {
             $context = new Context(['generated' => true], $analysis->context);
-            $analysis->addAnnotation(new OA\OpenApi(['_context' => $context]), $context);
+            $analysis->addAnnotation(new OpenApi(['_context' => $context]), $context);
         }
 
         $openapi = $analysis->openapi;
@@ -57,7 +58,7 @@ class MergeIntoOpenApi
                 continue;
             }
 
-            if ($annotation instanceof OA\OpenApi) {
+            if ($annotation instanceof OpenApi) {
                 $paths = $annotation->paths;
                 unset($annotation->paths);
                 $openapi->mergeProperties($annotation);
@@ -70,7 +71,7 @@ class MergeIntoOpenApi
                     }
                 }
             } elseif ($annotation instanceof OA\AbstractAnnotation
-                && in_array(OA\OpenApi::class, $annotation::$_parents)
+                && in_array(OpenApi::class, $annotation::$_parents)
                 && false === $annotation->_context->is('nested')) {
                 // A top-level annotation.
                 $merge[] = $annotation;

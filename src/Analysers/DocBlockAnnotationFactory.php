@@ -38,13 +38,13 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 
     public function build(\Reflector $reflector, Context $context): array
     {
-        $aliases = $this->generator ? $this->generator->getAliases() : [];
+        $aliases = $this->generator instanceof Generator ? $this->generator->getAliases() : [];
 
         if (method_exists($reflector, 'getShortName') && method_exists($reflector, 'getName')) {
             $aliases[strtolower((string) $reflector->getShortName())] = $reflector->getName();
         }
 
-        if ($context->with('scanned')) {
+        if ($context->with('scanned') instanceof Context) {
             $details = $context->scanned;
             foreach ($details['uses'] as $alias => $name) {
                 $aliasKey = strtolower((string) $alias);

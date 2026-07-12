@@ -91,11 +91,11 @@ final class AttributesSyncTest extends OpenApiTestCase
             }
         }
 
-        if ($missing) {
+        if ($missing !== []) {
             $this->fail('Missing parameters: ' . implode(', ', $missing));
         }
 
-        if ($typeMismatch) {
+        if ($typeMismatch !== []) {
             var_dump($typeMismatch);
             $this->fail('Type mismatch: ' . count($typeMismatch));
         }
@@ -206,7 +206,7 @@ final class AttributesSyncTest extends OpenApiTestCase
             }
         }
 
-        if ($stale) {
+        if ($stale !== []) {
             $this->fail('Stale parameters: ' . implode(', ', $stale));
         }
     }

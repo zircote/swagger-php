@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
+use OpenApi\Annotations\Schema;
 use OpenApi\Undefined;
 
 /**
@@ -21,7 +21,7 @@ class ExpandInterfaces
 
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
@@ -41,7 +41,7 @@ class ExpandInterfaces
                 foreach ($interfaces as $interface) {
                     $interfaceName = $interface['context']->fullyQualifiedName($interface['interface']);
                     $interfaceSchema = $analysis->getAnnotationForSource($interfaceName);
-                    if ($interfaceSchema) {
+                    if ($interfaceSchema instanceof Schema) {
                         $refPath = Undefined::isDefault($interfaceSchema->schema) ? $interface['interface'] : $interfaceSchema->schema;
                         $this->inheritFrom($analysis, $schema, $interfaceSchema, $refPath, $interface['context']);
                     } else {

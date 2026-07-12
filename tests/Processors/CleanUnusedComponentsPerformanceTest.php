@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Processors;
 
+use OpenApi\Builder;
+use OpenApi\Builder\Result;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Undefined;
@@ -58,10 +60,13 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
         try {
             $usedCount = (int) round(self::SCHEMA_COUNT * (1 - self::UNUSED_RATIO));
 
-            $openapi = (new Generator())
-                ->setConfig(['cleanUnusedComponents' => ['enabled' => true]])
-                ->generate([$sourceDir]);
+            $result = (new Builder())
+                ->addSource($sourceDir)
+                ->withGenerator(fn (Generator $generator): Generator => $generator
+                    ->setConfig(['cleanUnusedComponents' => ['enabled' => true]]))
+                ->build();
 
+            $openapi = $result->openApi();
             $schemaCount = Undefined::isDefault($openapi->components->schemas)
                 ? 0
                 : count($openapi->components->schemas);
@@ -74,15 +79,17 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
 
     private function measureGeneration(string $sourceDir, bool $cleanup): float
     {
+        $build = fn (): Result => (new Builder())
+            ->addSource($sourceDir)
+            ->withGenerator(fn (Generator $generator): Generator => $generator
+                ->setConfig(['cleanUnusedComponents' => ['enabled' => $cleanup]]))
+            ->build();
+
         // Warmup run to eliminate autoloading variance
-        (new Generator())
-            ->setConfig(['cleanUnusedComponents' => ['enabled' => $cleanup]])
-            ->generate([$sourceDir]);
+        $build();
 
         $start = microtime(true);
-        (new Generator())
-            ->setConfig(['cleanUnusedComponents' => ['enabled' => $cleanup]])
-            ->generate([$sourceDir]);
+        $build();
 
         return microtime(true) - $start;
     }

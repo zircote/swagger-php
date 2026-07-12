@@ -7,7 +7,7 @@
 namespace OpenApi\Processors;
 
 use OpenApi\Analysis;
-use OpenApi\Annotations as OA;
+use OpenApi\Annotations\Schema;
 use OpenApi\Undefined;
 
 /**
@@ -23,7 +23,7 @@ class ExpandClasses
 
     public function __invoke(Analysis $analysis): void
     {
-        $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
+        $schemas = $analysis->getAnnotationsOfType(Schema::class, true);
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('class')) {
@@ -31,7 +31,7 @@ class ExpandClasses
                 $existing = [];
                 foreach ($ancestors as $ancestor) {
                     $ancestorSchema = $analysis->getAnnotationForSource($ancestor['context']->fullyQualifiedName($ancestor['class']));
-                    if ($ancestorSchema) {
+                    if ($ancestorSchema instanceof Schema) {
                         $refPath = Undefined::isDefault($ancestorSchema->schema) ? $ancestor['class'] : $ancestorSchema->schema;
                         $this->inheritFrom($analysis, $schema, $ancestorSchema, $refPath, $ancestor['context']);
 
