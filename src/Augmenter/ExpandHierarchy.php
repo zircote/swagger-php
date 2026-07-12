@@ -40,8 +40,8 @@ class ExpandHierarchy implements PipeInterface
         $schemaMap = $this->buildSchemaMap($payload);
 
         foreach ($payload->schemas as $schema) {
-            $reflector = $schema->getReflector();
-            if (!$reflector instanceof \ReflectionClass) {
+            $reflector = $schema->getClassReflector();
+            if ($reflector === null) {
                 continue;
             }
 
@@ -61,9 +61,9 @@ class ExpandHierarchy implements PipeInterface
     {
         $map = [];
         foreach ($specification->schemas as $schema) {
-            $reflector = $schema->getReflector();
-            if ($reflector instanceof \ReflectionClass) {
-                $map[$reflector->getName()] = $schema;
+            $className = $schema->getClassName();
+            if ($className !== null) {
+                $map[$className] = $schema;
             }
         }
 
@@ -143,20 +143,10 @@ class ExpandHierarchy implements PipeInterface
     protected function addAllOfRef(OA\Schema $schema, OA\Schema $referenced): void
     {
         $schema->allOf ??= [];
-        $name = $referenced->schema ?? $this->inferName($referenced);
+        $name = $referenced->schema ?? $referenced->getShortClassName();
         if ($name !== null) {
             $schema->allOf[] = new OA\Schema(ref: '#/components/schemas/' . $name);
         }
-    }
-
-    protected function inferName(OA\Schema $schema): ?string
-    {
-        $reflector = $schema->getReflector();
-        if ($reflector instanceof \ReflectionClass) {
-            return $reflector->getShortName();
-        }
-
-        return null;
     }
 
     protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class): void

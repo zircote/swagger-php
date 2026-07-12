@@ -303,8 +303,8 @@ Output paths:
 
 ### Refactoring
 
-- Extract reflector helper methods (declaring class, promoted property detection, etc.) into `AbstractAttribute` — many augmenters duplicate this lookup logic; overridable helpers would reduce coupling
-- Extract shared test helpers (e.g. `assemble()`) into traits in `tests/Concerns` — currently duplicated across 8+ augmenter tests
+- ~~Extract reflector helper methods (declaring class, promoted property detection, etc.) into `AbstractAttribute`~~ — done (`getClassReflector()`, `getClassName()`, `getShortClassName()` on `AttributeInterface`/`AbstractAttribute`)
+- ~~Extract shared test helpers (e.g. `assemble()`) into traits in `tests/Concerns`~~ — done (`AssemblesSpecification` trait)
 
 ### Documentation
 

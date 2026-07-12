@@ -60,14 +60,12 @@ class OperationId implements PipeInterface
     {
         $reflector = $operation->getReflector();
 
-        $source = null;
-        if ($reflector instanceof \ReflectionMethod) {
-            $source = $reflector->getDeclaringClass()->getName() . '::' . $reflector->getName();
-        } elseif ($reflector instanceof \ReflectionFunction) {
-            $source = $reflector->getName();
-        } elseif ($reflector instanceof \ReflectionClass) {
-            $source = $reflector->getName();
-        }
+        $source = match (true) {
+            $reflector instanceof \ReflectionMethod => $operation->getClassName() . '::' . $reflector->getName(),
+            $reflector instanceof \ReflectionFunction => $reflector->getName(),
+            $reflector instanceof \ReflectionClass => $reflector->getName(),
+            default => null,
+        };
 
         if ($source === null) {
             return null;

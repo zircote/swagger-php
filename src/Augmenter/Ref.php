@@ -71,7 +71,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
 
         foreach ($specification->schemas as $schema) {
             $name = $schema->schema ?? $schema->title;
-            $fqcn = $this->getClassName($schema);
+            $fqcn = $schema->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/schemas/' . $name;
             }
@@ -79,7 +79,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
 
         foreach ($specification->responses as $response) {
             $name = $response->response;
-            $fqcn = $this->getClassName($response);
+            $fqcn = $response->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/responses/' . $name;
             }
@@ -87,7 +87,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
 
         foreach ($specification->requestBodies as $body) {
             $name = $body->request;
-            $fqcn = $this->getClassName($body);
+            $fqcn = $body->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/requestBodies/' . $name;
             }
@@ -95,7 +95,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
 
         foreach ($specification->headers as $header) {
             $name = $header->header;
-            $fqcn = $this->getClassName($header);
+            $fqcn = $header->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/headers/' . $name;
             }
@@ -103,7 +103,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
 
         foreach ($specification->parameters as $parameter) {
             $name = $parameter->parameter ?? $parameter->name;
-            $fqcn = $this->getClassName($parameter);
+            $fqcn = $parameter->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/parameters/' . $name;
             }
@@ -131,15 +131,5 @@ class Ref implements PipeInterface, LoggerAwareInterface
                 }
             }
         }
-    }
-
-    protected function getClassName(OA\AbstractAttribute $attribute): ?string
-    {
-        $reflector = $attribute->getReflector();
-        if ($reflector instanceof \ReflectionClass) {
-            return $reflector->getName();
-        }
-
-        return null;
     }
 }

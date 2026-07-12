@@ -71,5 +71,11 @@ interface AttributeInterface
 
     public function setReflector(?\Reflector $reflector): static;
 
+    public function getClassReflector(): ?\ReflectionClass;
+
+    public function getClassName(): ?string;
+
+    public function getShortClassName(): ?string;
+
     public function getSourceLocation(): SourceLocation;
 }

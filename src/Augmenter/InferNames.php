@@ -35,10 +35,7 @@ class InferNames implements PipeInterface
     protected function inferSchemaNames(Specification $specification): void
     {
         foreach ($specification->schemas as $schema) {
-            $reflector = $schema->getReflector();
-            if ($reflector instanceof \ReflectionClass) {
-                $schema->schema ??= $reflector->getShortName();
-            }
+            $schema->schema ??= $schema->getShortClassName();
         }
     }
 

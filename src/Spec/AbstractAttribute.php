@@ -43,6 +43,37 @@ abstract class AbstractAttribute implements AttributeInterface
         return $this->reflector;
     }
 
+    public function getClassReflector(): ?\ReflectionClass
+    {
+        $reflector = $this->reflector;
+
+        if ($reflector instanceof \ReflectionClass) {
+            return $reflector;
+        }
+
+        if ($reflector instanceof \ReflectionMethod || $reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionClassConstant) {
+            return $reflector->getDeclaringClass();
+        }
+
+        if ($reflector instanceof \ReflectionParameter) {
+            $function = $reflector->getDeclaringFunction();
+
+            return $function instanceof \ReflectionMethod ? $function->getDeclaringClass() : null;
+        }
+
+        return null;
+    }
+
+    public function getClassName(): ?string
+    {
+        return $this->getClassReflector()?->getName();
+    }
+
+    public function getShortClassName(): ?string
+    {
+        return $this->getClassReflector()?->getShortName();
+    }
+
     public function setReflector(?\Reflector $reflector): static
     {
         $this->reflector = $reflector;

@@ -38,7 +38,7 @@ class PathItemResolve implements PipeInterface
         $prefixCache = [];
 
         foreach ($payload->operations as $operation) {
-            $className = $this->getDeclaringClass($operation);
+            $className = $operation->getClassName();
             if ($className === null) {
                 continue;
             }
@@ -70,9 +70,9 @@ class PathItemResolve implements PipeInterface
         $map = [];
 
         foreach ($specification->pathItems as $pathItem) {
-            $reflector = $pathItem->getReflector();
-            if ($reflector instanceof \ReflectionClass) {
-                $map[$reflector->getName()] = $pathItem;
+            $className = $pathItem->getClassName();
+            if ($className !== null) {
+                $map[$className] = $pathItem;
             }
         }
 
@@ -85,7 +85,7 @@ class PathItemResolve implements PipeInterface
      */
     protected function resolvePrefix(OA\PathItem $pathItem, array $classToPathItem, array &$cache): string
     {
-        $reflector = $pathItem->getReflector();
+        $reflector = $pathItem->getClassReflector();
         if (!$reflector instanceof \ReflectionClass) {
             return $pathItem->prefix ?? '';
         }
@@ -190,7 +190,7 @@ class PathItemResolve implements PipeInterface
      */
     protected function collectMergedMetadata(OA\PathItem $pathItem, array $classToPathItem): array
     {
-        $reflector = $pathItem->getReflector();
+        $reflector = $pathItem->getClassReflector();
         if (!$reflector instanceof \ReflectionClass) {
             return [
                 'tags' => $pathItem->tags,
@@ -225,21 +225,6 @@ class PathItemResolve implements PipeInterface
             'security' => $security !== [] ? $security : null,
             'responses' => $responses !== [] ? $responses : null,
         ];
-    }
-
-    protected function getDeclaringClass(OA\Operation $operation): ?string
-    {
-        $reflector = $operation->getReflector();
-
-        if ($reflector instanceof \ReflectionMethod) {
-            return $reflector->getDeclaringClass()->getName();
-        }
-
-        if ($reflector instanceof \ReflectionClass) {
-            return $reflector->getName();
-        }
-
-        return null;
     }
 
     /**
@@ -278,7 +263,7 @@ class PathItemResolve implements PipeInterface
      */
     protected function mergeAncestorParameters(OA\PathItem $pathItem, array $classToPathItem): void
     {
-        $reflector = $pathItem->getReflector();
+        $reflector = $pathItem->getClassReflector();
         if (!$reflector instanceof \ReflectionClass) {
             return;
         }
@@ -317,7 +302,7 @@ class PathItemResolve implements PipeInterface
      */
     protected function findOperationPaths(OA\PathItem $pathItem, Specification $specification, array $classToPathItem): array
     {
-        if (!$pathItem->getReflector() instanceof \ReflectionClass) {
+        if (!$pathItem->getClassReflector() instanceof \ReflectionClass) {
             return [];
         }
 
@@ -328,7 +313,7 @@ class PathItemResolve implements PipeInterface
                 continue;
             }
 
-            $opClass = $this->getDeclaringClass($operation);
+            $opClass = $operation->getClassName();
             if ($opClass === null) {
                 continue;
             }
