@@ -48,13 +48,13 @@ final class ExamplesTest extends OpenApiTestCase
 
                     $modes = match (true) {
                         $implementation === 'spec' => ['spec'],
-                        $example === 'using-refs' => ['classic'],
                         default => ['classic', 'hybrid'],
                     };
 
                     foreach ($modes as $mode) {
                         foreach ($versions as $version) {
-                            if (!file_exists(self::getSpecFilename($example, $implementation, $version))) {
+                            $fixtureImpl = $mode === 'hybrid' ? 'hybrid' : $implementation;
+                            if (!file_exists(self::getSpecFilename($example, $fixtureImpl, $version))) {
                                 continue;
                             }
 
@@ -81,7 +81,8 @@ final class ExamplesTest extends OpenApiTestCase
         $this->registerExampleClassloader($name, $implementation);
 
         $path = self::examplePath("{$name}/{$implementation}");
-        $specFilename = self::getSpecFilename($name, $implementation, $version);
+        $fixtureImpl = $mode === 'hybrid' ? 'hybrid' : $implementation;
+        $specFilename = self::getSpecFilename($name, $fixtureImpl, $version);
 
         $result = (new Builder())
             ->setMode($mode)

@@ -42,9 +42,16 @@ Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for sc
 
 After both passes, only root attributes remain and are added to the `Specification`.
 
-**`isRoot()` as validation, not routing.** The `merge()` and `contains()` maps drive all nesting decisions — `isRoot()` does not control routing. Its role is purely a post-resolution assertion: after the two-pass assembly, every remaining attribute must return `isRoot() === true` or the assembler throws an error. This catches mis-placed attributes early (e.g. a Parameter on a class without a sibling PathItem or Operation).
+**Root attributes.** A "root" attribute is one that can exist independently in the Specification — it has its own bucket and doesn't require a parent container. After the two-pass assembly (merge + hierarchy resolution), every remaining attribute must satisfy `isRoot() === true` or the assembler throws an error.
 
-Most DTOs return a constant (`true` for Schema, Operation, PathItem; `false` for MediaType, Example). Conditional root-ness is used where the same class can be either a component or a nested child — for example `Parameter::isRoot()` returns `true` only when `$this->parameter !== null` (has a component key).
+Root DTOs have a corresponding bucket in `Specification` and are collected directly by the assembler:
+- Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`
+- Conditionally root: `Response` (when `response` key is set), `RequestBody` (when `request` key is set)
+- Never root: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property`, etc.
+
+Non-root DTOs must be nested inside a parent (via `merge()`/`contains()` maps) or wrapped in a `Components` container. This is what makes `Components` necessary — it provides a root-level home for DTOs like Parameter and Header that cannot stand alone at class level.
+
+**`isRoot()` is validation, not routing.** The `merge()` and `contains()` maps drive all nesting decisions — `isRoot()` does not control where an attribute ends up. Its role is purely a post-resolution assertion that catches mis-placed attributes early (e.g. a Parameter on a class without a sibling PathItem or Operation).
 
 Custom DTOs should declare `merge()` targets to specify where they nest, and `isRoot()` to indicate whether they can land in a `Specification` bucket independently.
 
@@ -56,6 +63,7 @@ Custom DTOs should declare `merge()` targets to specify where they nest, and `is
 
 ```
 OA\AbstractAttribute
+├── OA\Components
 ├── OA\OpenApi
 ├── OA\Info
 │   ├── OA\Contact
@@ -159,7 +167,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 
 ## Example coverage
 
-All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (PathItem gap).
+All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (ref-path difference).
 
 | Example | Shared fixture | Spec-specific fixture | Notes |
 |---|---|---|---|
@@ -176,7 +184,7 @@ All 10 example specs now have spec-attribute versions. Most produce identical ou
 
 ### Spec-specific fixture notes
 
-**using-refs** — PathItem spec support is implemented (path-level parameters emitted correctly). The example is excluded from hybrid tests due to an unrelated ref-path difference: classic emits `Product/allOf/1/properties/id` while hybrid emits `Product/properties/id` (hybrid puts properties directly rather than in an allOf wrapper).
+**using-refs** — PathItem with path-level parameters works correctly. The spec example uses `#[OA\PathItem(parameters: [...])]` to emit parameters at path level. The example uses a spec-specific fixture due to a ref-path difference: classic emits `Product/allOf/1/properties/id` while spec/hybrid emits `Product/properties/id` (spec puts properties directly rather than in an allOf wrapper).
 
 **using-traits** — Not a gap; intentional improvement. The spec/hybrid pipeline infers explicit types from PHP declarations more thoroughly than classic.
 
@@ -191,6 +199,7 @@ Intentional improvements or corrections in the spec/hybrid pipeline that produce
 | Type inference on traits | Types often omitted | Explicit types from PHP declarations | Bug fix — classic failed to resolve types on trait properties |
 | Docblock on parameters | Only from `@param` on ReflectionParameter | Also matches by parameter name | More thorough — resolves descriptions for non-reflection parameters |
 | Promoted property descriptions | Resolved via constructor parameter context | Resolved via ReflectionProperty fallback | Different mechanism, same result |
+| Schema property refs | `Product/allOf/1/properties/id` | `Product/properties/id` | Spec pipeline places properties directly on the schema rather than wrapping in allOf — both specs are internally consistent, but `$ref` paths into schema internals differ |
 
 ## Classic processor mapping
 
@@ -281,6 +290,44 @@ class UserController extends BaseController {
 Output paths:
 - `/api/v1/users/list` — get operation, tags: ['Users'], path-level parameter: tenant
 - `/api/v1/users/{id}` — get operation, tags: ['Users'], path-level parameter: tenant
+
+## Components container
+
+`#[OA\Components]` is a class-level attribute that acts as a container for reusable component definitions that cannot stand on their own as root attributes.
+
+The Components attribute itself is never emitted in the output. During assembly, its children are promoted directly into the Specification's top-level buckets, just as if they had been collected from a Schema or PathItem class.
+
+### When to use
+
+The primary use case is for DTOs that are **not roots** and therefore cannot be declared at class level on their own:
+
+- **Parameter** — shared path/query/header parameters (pagination, tenant ID)
+- **Header** — shared response headers (rate limiting, correlation IDs)
+- **Link** — reusable link definitions
+- **Example** — shared examples
+
+Other types (Schema, PathItem, SecurityScheme, named Response, named RequestBody) are already roots and can be declared directly on a class without needing a Components wrapper. They are accepted by Components for completeness but don't require it.
+
+### Example
+
+```php
+#[OA\Components]
+class SharedComponents {
+    #[OA\Parameter(parameter: 'page', name: 'page', in: 'query', schema: new OA\Schema(type: 'integer'))]
+    public int $page;
+
+    #[OA\Parameter(parameter: 'per_page', name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer'))]
+    public int $perPage;
+
+    #[OA\Header(header: 'X-Rate-Limit', description: 'Requests remaining', schema: new OA\Schema(type: 'integer'))]
+    public string $rateLimit;
+
+    #[OA\Example(example: 'dog', summary: 'A dog example', value: ['name' => 'Fido'])]
+    public string $dogExample;
+}
+```
+
+These components can then be referenced via `$ref` from operations, PathItems, or other DTOs.
 
 ## What's next
 

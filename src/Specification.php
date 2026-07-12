@@ -65,6 +65,12 @@ class Specification
     public function add(AttributeInterface ...$attributes): static
     {
         foreach ($attributes as $attribute) {
+            if ($attribute instanceof OA\Components) {
+                $this->addComponentsChildren($attribute);
+
+                continue;
+            }
+
             match (true) {
                 $attribute instanceof OA\OpenApi => $this->openapi = $attribute,
                 $attribute instanceof OA\Info => $this->info = $attribute,
@@ -89,6 +95,19 @@ class Specification
         }
 
         return $this;
+    }
+
+    private function addComponentsChildren(OA\Components $components): void
+    {
+        array_push($this->schemas, ...$components->schemas);
+        array_push($this->parameters, ...$components->parameters);
+        array_push($this->responses, ...$components->responses);
+        array_push($this->requestBodies, ...$components->requestBodies);
+        array_push($this->headers, ...$components->headers);
+        array_push($this->securitySchemes, ...$components->securitySchemes);
+        array_push($this->links, ...$components->links);
+        array_push($this->examples, ...$components->examples);
+        array_push($this->pathItems, ...$components->pathItems);
     }
 
     public function getWalker(): SpecificationWalker

@@ -1,0 +1,74 @@
+openapi: 3.1.0
+info:
+    title: Polymorphism
+    description: 'Polymorphism example'
+    contact:
+        name: 'Swagger API Team'
+    version: '1'
+servers:
+    - url: 'https://example.localhost'
+      description: 'API server'
+paths:
+    /test:
+        get:
+            tags:
+                - api
+            description: 'Get test'
+            operationId: test
+            responses:
+                200:
+                    description: Polymorphism
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Request'
+tags:
+    - name: api
+      description: 'API operations'
+components:
+    schemas:
+        Responsible:
+            type: object
+            properties:
+                type:
+                    type: string
+                    enum:
+                        - employee
+                        - assignee
+                        - fl
+            oneOf:
+                - $ref: '#/components/schemas/FlResponsible'
+                - $ref: '#/components/schemas/EmployeeResponsible'
+            discriminator:
+                propertyName: type
+                mapping:
+                    fl: '#/components/schemas/FlResponsible'
+                    employee: '#/components/schemas/EmployeeResponsible'
+        EmployeeResponsible:
+            type: object
+            allOf:
+                - $ref: '#/components/schemas/Responsible'
+                -
+                    type: object
+                    properties:
+                        property2:
+                            type: string
+                        type:
+                            type: string
+                            const: Virtual
+        FlResponsible:
+            type: object
+            allOf:
+                - $ref: '#/components/schemas/Responsible'
+                -
+                    type: object
+                    properties:
+                        property3:
+                            type:
+                                - string
+                                - 'null'
+        Request:
+            type: object
+            properties:
+                payload:
+                    $ref: '#/components/schemas/Responsible'

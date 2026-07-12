@@ -1,5 +1,3 @@
-# Spec pipeline output — differs from classic due to missing PathItem support:
-# path-level parameters are not yet resolved (pending PathItem implementation).
 openapi: 3.0.0
 info:
     title: 'Example of using references in swagger-php'
@@ -10,8 +8,6 @@ paths:
             tags:
                 - Products
             operationId: getProduct
-            parameters:
-                - $ref: '#/components/parameters/product_id_in_path_required'
             responses:
                 default:
                     $ref: '#/components/responses/product'
@@ -19,13 +15,13 @@ paths:
             tags:
                 - Products
             operationId: updateProduct
-            parameters:
-                - $ref: '#/components/parameters/product_id_in_path_required'
             requestBody:
                 $ref: '#/components/requestBodies/product_in_body'
             responses:
                 default:
                     $ref: '#/components/responses/product'
+        parameters:
+            - $ref: '#/components/parameters/product_id_in_path_required'
     '/products/{product_id}/do-other-stuff':
         get:
             tags:
@@ -83,6 +79,15 @@ components:
                         $ref: '#/components/schemas/Product'
         todo:
             description: 'This API call has no documentated response (yet)'
+    parameters:
+        product_id_in_path_required:
+            name: product_id
+            in: path
+            description: 'The ID of the product'
+            required: true
+            schema:
+                type: integer
+                format: int64
     requestBodies:
         product_in_body:
             description: product_request

@@ -8,6 +8,7 @@ namespace OpenApi\Examples\Specs\UsingRefs\Spec;
 
 use OpenApi\Spec as OA;
 
+#[OA\Components]
 class ProductParameter
 {
     #[OA\Parameter(
