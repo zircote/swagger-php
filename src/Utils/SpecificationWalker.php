@@ -243,6 +243,8 @@ class SpecificationWalker
             foreach ($schema->properties as $property) {
                 if ($property instanceof OA\Property && $property->schema instanceof OA\Schema) {
                     $this->walkSchemaTree($property->schema, $schemaVisitor, $refVisitor);
+                } elseif ($property instanceof OA\Schema) {
+                    $this->walkSchemaTree($property, $schemaVisitor, $refVisitor);
                 }
             }
         }
