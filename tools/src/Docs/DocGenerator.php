@@ -43,11 +43,11 @@ abstract class DocGenerator
             return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
         }
 
-        $comment = preg_split('/(\n|\r\n)/', (string) $docblock);
+        $comment = preg_split('/(\n|\r\n)/', $docblock);
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $lastIndex = count($comment) - 1;
-        $comment[$lastIndex] = preg_replace('/\*\/[ \t]*$/', '', $comment[$lastIndex]); // strip '*/'
+        $comment[$lastIndex] = preg_replace('/\*\/[ \t]*$/', '', (string) $comment[$lastIndex]); // strip '*/'
 
         $see = [];
         $var = '';
@@ -55,38 +55,38 @@ abstract class DocGenerator
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
-            $line = preg_replace('/^\s+\* ?/', '', $line);
-            if (substr($line, 0, 1) === '@') {
-                if (substr($line, 0, 5) === '@see ') {
-                    $see[] = trim(substr($line, 5));
+            $line = preg_replace('/^\s+\* ?/', '', (string) $line);
+            if (str_starts_with((string) $line, '@')) {
+                if (str_starts_with((string) $line, '@see ')) {
+                    $see[] = trim(substr((string) $line, 5));
                     continue;
                 }
-                if (substr($line, 0, 5) === '@var ') {
-                    $var = trim(substr($line, 5));
+                if (str_starts_with((string) $line, '@var ')) {
+                    $var = trim(substr((string) $line, 5));
                     continue;
                 }
-                if (substr($line, 0, 7) === '@param ') {
-                    preg_match('/^([^\$]+)\$([^\s]+)(.*)$/', trim(substr($line, 7)), $match);
+                if (str_starts_with((string) $line, '@param ')) {
+                    preg_match('/^([^\$]+)\$([^\s]+)(.*)$/', trim(substr((string) $line, 7)), $match);
                     if (count($match) >= 3) {
                         $params[trim($match[2])] = [
                             'type' => trim($match[1]),
-                            'content' => 4 == count($match) ? $match[3] : null,
+                            'content' => 4 === count($match) ? $match[3] : null,
                         ];
                         continue;
                     }
                 }
-                if (in_array(substr($line, 0), ['@Annotation', '@inheritdoc'])) {
+                if (in_array(substr((string) $line, 0), ['@Annotation', '@inheritdoc'], true)) {
                     continue;
                 }
             }
 
             if ($append) {
                 $lastIndex = count($contentLines) - 1;
-                $contentLines[$lastIndex] = substr($contentLines[$lastIndex], 0, -1) . $line;
+                $contentLines[$lastIndex] = substr((string) $contentLines[$lastIndex], 0, -1) . $line;
             } else {
                 $contentLines[] = $line;
             }
-            $append = (substr($line, -1) === '\\');
+            $append = (str_ends_with((string) $line, '\\'));
         }
 
         $content = trim(implode("\n", $contentLines));

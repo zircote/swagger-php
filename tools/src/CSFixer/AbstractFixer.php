@@ -7,10 +7,14 @@
 namespace OpenApi\Tools\CSFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 abstract class AbstractFixer implements FixerInterface
 {
+    /**
+     * @param Tokens<Token> $tokens
+     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
@@ -23,6 +27,6 @@ abstract class AbstractFixer implements FixerInterface
 
     public function supports(\SplFileInfo $file): bool
     {
-        return $file->getExtension() == 'php';
+        return $file->getExtension() === 'php';
     }
 }

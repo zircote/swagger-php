@@ -27,11 +27,11 @@ $outputMap = [
 ];
 
 foreach ($generators as $name => $generator) {
-    echo "Running $name generator...\n";
+    echo "Running {$name} generator...\n";
 
     foreach ($generator->generate() as $key => $content) {
         if (!isset($outputMap[$key])) {
-            echo "  Warning: unknown output key '$key'\n";
+            echo "  Warning: unknown output key '{$key}'\n";
             continue;
         }
 
