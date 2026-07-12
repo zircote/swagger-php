@@ -10,7 +10,7 @@ use OpenApi\Analysers\AnalyserInterface;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Analysers\DocBlockAnnotationFactory;
 use OpenApi\Analysers\ReflectionAnalyser;
-use OpenApi\Annotations as OA;
+use OpenApi\Annotations\OpenApi;
 use OpenApi\Loggers\DefaultLogger;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\Utils\Pipeline;
@@ -297,7 +297,7 @@ class Generator
             }
         };
 
-        if ($this->processorPipeline) {
+        if ($this->processorPipeline instanceof Pipeline) {
             $this->processorPipeline->walk($walker);
         }
 
@@ -379,7 +379,7 @@ class Generator
      * @param null|Analysis $analysis custom analysis instance
      * @param bool          $validate flag to enable/disable validation of the returned spec
      */
-    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OA\OpenApi
+    public function generate(iterable $sources, ?Analysis $analysis = null, bool $validate = true): ?OpenApi
     {
         $rootContext = new Context([
             'version' => $this->getVersion(),
@@ -394,7 +394,7 @@ class Generator
         // post-processing
         $this->getProcessorPipeline()->process($analysis);
 
-        if ($analysis->openapi) {
+        if ($analysis->openapi instanceof OpenApi) {
             // overwrite default/annotated version
             $analysis->openapi->openapi = $this->getVersion() ?: $analysis->openapi->openapi;
             // update context to provide the same to validation/serialisation code

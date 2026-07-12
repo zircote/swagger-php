@@ -67,7 +67,7 @@ class DocBlockParser
     public function parseDocblock(?string $docblock, ?array &$tags = null): string
     {
         $docNode = $this->parsePhpDoc($docblock);
-        if (!$docNode) {
+        if (!$docNode instanceof PhpDocNode) {
             return Undefined::UNDEFINED;
         }
 
@@ -158,12 +158,12 @@ class DocBlockParser
         $result = ['type' => null, 'description' => null];
 
         $docNode = $this->parsePhpDoc($docblock);
-        if (!$docNode) {
+        if (!$docNode instanceof PhpDocNode) {
             return $result;
         }
 
         $varTags = $docNode->getVarTagValues();
-        if ($varTags) {
+        if ($varTags !== []) {
             $varTag = reset($varTags);
             $type = $this->formatType($varTag->type);
 
@@ -177,7 +177,7 @@ class DocBlockParser
     public function extractExampleDescription(string $docblock): ?string
     {
         $docNode = $this->parsePhpDoc($docblock);
-        if (!$docNode) {
+        if (!$docNode instanceof PhpDocNode) {
             return null;
         }
 
@@ -193,7 +193,7 @@ class DocBlockParser
     public function isDeprecated(?string $docblock): bool
     {
         $docNode = $this->parsePhpDoc($docblock);
-        if (!$docNode) {
+        if (!$docNode instanceof PhpDocNode) {
             return false;
         }
 

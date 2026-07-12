@@ -26,7 +26,7 @@ class ComposerAutoloaderScanner
     public function scan(array $namespaces): array
     {
         $units = [];
-        if ($autoloader = static::getComposerAutoloader()) {
+        if (($autoloader = static::getComposerAutoloader()) instanceof ClassLoader) {
             foreach (array_keys($autoloader->getClassMap()) as $unit) {
                 foreach ($namespaces as $namespace) {
                     if (str_starts_with($unit, $namespace)) {

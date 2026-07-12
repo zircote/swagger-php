@@ -110,7 +110,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
     {
         $types = array_filter($types, static fn (string $t): bool => !in_array($t, ['null', ''], strict: true));
 
-        if ($context) {
+        if ($context instanceof Context) {
             foreach ($types as $ii => $type) {
                 if (!array_key_exists(strtolower((string) $type), TypeMapper::NATIVE_TYPE_MAP) && !class_exists($type)) {
                     if (($resolved = $context->fullyQualifiedName($type)) && class_exists($resolved)) {
@@ -125,7 +125,7 @@ class LegacyTypeResolver extends AbstractTypeResolver
             $types = array_values($types);
         }
 
-        $explicitType = $explicitType ?: ($types ? $types[0] : null);
+        $explicitType = $explicitType ?: ($types !== [] ? $types[0] : null);
 
         return (object) [
             'explicitType' => $explicitType,

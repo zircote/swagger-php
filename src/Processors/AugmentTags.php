@@ -66,13 +66,13 @@ class AugmentTags
                 }
             }
         }
-        if ($declaredTags) {
+        if ($declaredTags !== []) {
             // last one wins
             $analysis->openapi->tags = array_values($declaredTags);
         }
 
         // Add a tag for each tag that is used in operations but not declared in the global tags
-        if ($usedTagNames) {
+        if ($usedTagNames !== []) {
             $declatedTagNames = array_keys($declaredTags);
             foreach ($usedTagNames as $tagName) {
                 if (!in_array($tagName, $declatedTagNames)) {

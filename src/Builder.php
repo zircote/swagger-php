@@ -14,6 +14,11 @@ use Psr\Log\NullLogger;
 
 /**
  * Unified entry point for generating OpenAPI specs.
+ *
+ * Mode:
+ *   setMode('classic') — annotation/attribute pipeline via Generator (default)
+ *
+ * Subclasses may add additional modes (e.g. 'spec', 'hybrid').
  */
 class Builder
 {
@@ -49,7 +54,7 @@ class Builder
     /**
      * Select the processing mode.
      *
-     * @param string $mode 'classic' (default) or 'spec'
+     * @param string $mode 'classic' (default)
      */
     public function setMode(string $mode): static
     {
@@ -90,8 +95,7 @@ class Builder
     public function build(): Result
     {
         return match ($this->mode) {
-            'classic' => $this->doBuild(),
-            default => throw new OpenApiException("Unsupported mode '{$this->mode}'"),
+            default => $this->doBuild(),
         };
     }
 
@@ -117,7 +121,7 @@ class Builder
 
         $openApi = $generator->generate($this->sources);
 
-        return new Result($this->resolveFiles(), $openApi, $collecting->entries());
+        return Result::fromClassic($this->resolveFiles(), $openApi, $collecting->entries());
     }
 
     /**

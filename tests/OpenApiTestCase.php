@@ -222,7 +222,7 @@ class OpenApiTestCase extends TestCase
     {
         $fixtures = static::fixtures([$file]);
 
-        return $fixtures ? $fixtures[0] : null;
+        return $fixtures !== [] ? $fixtures[0] : null;
     }
 
     /**

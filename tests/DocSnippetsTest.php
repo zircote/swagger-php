@@ -57,7 +57,7 @@ final class DocSnippetsTest extends OpenApiTestCase
                 ->setTypeResolver($this->getTypeResolver())
                  ->withProcessorPipeline(fn (Pipeline $processorPipeline): Pipeline => $processorPipeline->remove(OperationId::class))
                 ->generate([$tmp], null, false);
-            if ($lastSpec) {
+            if ($lastSpec instanceof \OpenApi\Annotations\OpenApi) {
                 $this->assertSpecEquals(
                     $openapi,
                     $lastSpec,

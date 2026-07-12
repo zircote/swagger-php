@@ -18,11 +18,20 @@ class Result
      * @param list<string>                                $files
      * @param list<array{level: string, message: string}> $log
      */
-    public function __construct(
+    protected function __construct(
         protected array $files,
         protected ?OpenApi $openApi,
         protected array $log = [],
     ) {
+    }
+
+    /**
+     * @param list<string>                                $files
+     * @param list<array{level: string, message: string}> $log
+     */
+    public static function fromClassic(array $files, ?OpenApi $openApi, array $log = []): self
+    {
+        return new self($files, $openApi, $log);
     }
 
     /**
@@ -74,7 +83,7 @@ class Result
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string,mixed>
      */
     public function toArray(): array
     {
