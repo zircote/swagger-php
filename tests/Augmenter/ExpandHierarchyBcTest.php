@@ -67,7 +67,7 @@ final class ExpandHierarchyBcTest extends TestCase
     protected static function buildClassic(string $directory): array
     {
         $result = (new Builder())
-            ->setMode('classic')
+            ->setMode(Builder\Mode::CLASSIC)
             ->addSource($directory)
             ->setVersion('3.1.0')
             ->build();

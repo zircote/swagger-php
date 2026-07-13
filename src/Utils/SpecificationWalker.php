@@ -222,10 +222,10 @@ class SpecificationWalker
 
     protected function walkSchemaTree(OA\Schema $schema, ?callable $schemaVisitor, ?callable $refVisitor): void
     {
-        if ($this->visited->contains($schema)) {
+        if ($this->visited->offsetExists($schema)) {
             return;
         }
-        $this->visited->attach($schema);
+        $this->visited->offsetSet($schema);
 
         if ($schemaVisitor) {
             $schemaVisitor($schema);

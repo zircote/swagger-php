@@ -17,7 +17,7 @@ enum GenerateFormat: string
         return $this === GenerateFormat::JSON;
     }
 
-    public function isYAML(): bool
+    public function isYaml(): bool
     {
         return $this === GenerateFormat::YAML;
     }

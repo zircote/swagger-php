@@ -30,7 +30,7 @@ use OpenApi\Utils\SourceLocation;
 interface AttributeInterface
 {
     /**
-     * Whether this attribute is a root-level element that goes directly into the Specification.
+     * Whether this attribute is a root-level element that goes directly into the `Specification`.
      */
     public function isRoot(): bool;
 
