@@ -99,15 +99,12 @@ class Specification
 
     private function addComponentsChildren(OA\Components $components): void
     {
-        array_push($this->schemas, ...$components->schemas);
-        array_push($this->parameters, ...$components->parameters);
-        array_push($this->responses, ...$components->responses);
-        array_push($this->requestBodies, ...$components->requestBodies);
-        array_push($this->headers, ...$components->headers);
-        array_push($this->securitySchemes, ...$components->securitySchemes);
-        array_push($this->links, ...$components->links);
-        array_push($this->examples, ...$components->examples);
-        array_push($this->pathItems, ...$components->pathItems);
+        foreach ($components->contains() as $slot) {
+            $property = rtrim($slot, '[]');
+            if (property_exists($this, $property) && property_exists($components, $property)) {
+                array_push($this->{$property}, ...$components->{$property});
+            }
+        }
     }
 
     public function getWalker(): SpecificationWalker

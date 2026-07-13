@@ -6,29 +6,50 @@
 
 namespace OpenApi\Tests\Utils;
 
-use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
+use PHPUnit\Framework\TestCase;
 
-final class PipelineTest extends OpenApiTestCase
+final class PipelineTest extends TestCase
 {
-    public function __invoke(string $payload): string
+    protected function pipe(string $add): callable
     {
-        return $payload . 'x';
+        return fn (string $payload): string => $payload . $add;
     }
 
-    protected function pipe(string $add): object
+    protected function namedPipe(string $name): object
     {
-        return new class ($add) {
-            protected string $add;
-
-            public function __construct(string $add)
+        return new class ($name) {
+            public function __construct(public readonly string $name)
             {
-                $this->add = $add;
             }
 
-            public function __invoke(string $payload): string
+            public function __invoke(mixed $payload): mixed
             {
-                return $payload . $this->add;
+                return null;
+            }
+        };
+    }
+
+    protected function groupedPipe(string $group, array &$log): PipeInterface
+    {
+        return new class ($group, $log) implements PipeInterface {
+            public function __construct(
+                protected string $group,
+                protected array &$log,
+            ) {
+            }
+
+            public function group(): string
+            {
+                return $this->group;
+            }
+
+            public function __invoke(mixed $payload): mixed
+            {
+                $this->log[] = $this->group;
+
+                return null;
             }
         };
     }
@@ -36,79 +57,179 @@ final class PipelineTest extends OpenApiTestCase
     public function testProcess(): void
     {
         $pipeline = new Pipeline([$this->pipe('x')]);
-        $result = $pipeline->process('');
 
-        $this->assertEquals('x', $result);
+        $this->assertSame('x', $pipeline->process(''));
     }
 
     public function testAdd(): void
     {
         $pipeline = new Pipeline();
-
         $pipeline->add($this->pipe('a'));
-        $this->assertEquals('a', $pipeline->process(''));
-
         $pipeline->add($this->pipe('b'));
-        $this->assertEquals('ab', $pipeline->process(''));
+
+        $this->assertSame('ab', $pipeline->process(''));
     }
 
-    public function testRemoveStrict(): void
+    public function testRemoveByInstance(): void
     {
-        $pipeline = new Pipeline();
+        $a = $this->pipe('a');
+        $b = $this->pipe('b');
+        $pipeline = new Pipeline([$a, $b]);
 
-        $pipeline->add($pipec = $this->pipe('c'));
-        $pipeline->add($this->pipe('d'));
-        $this->assertEquals('cd', $pipeline->process(''));
+        $pipeline->remove($a);
 
-        $pipeline->remove($pipec);
-        $this->assertEquals('d', $pipeline->process(''));
+        $this->assertSame('b', $pipeline->process(''));
     }
 
-    public function testRemoveMatcher(): void
+    public function testRemoveByMatcher(): void
     {
-        $pipeline = new Pipeline();
+        $keep = $this->namedPipe('keep');
+        $remove = $this->namedPipe('remove');
+        $pipeline = new Pipeline([$keep, $remove]);
 
-        $pipeline->add($pipec = $this->pipe('c'));
-        $pipeline->add($this->pipe('d'));
-        $this->assertEquals('cd', $pipeline->process(''));
+        $pipeline->remove(null, fn ($pipe): bool => $pipe->name !== 'remove');
 
-        $pipeline->remove(null, fn ($pipe): bool => $pipe !== $pipec);
-        $this->assertEquals('d', $pipeline->process(''));
+        $found = [];
+        $pipeline->walk(function ($pipe) use (&$found): void {
+            $found[] = $pipe->name;
+        });
+        $this->assertSame(['keep'], $found);
     }
 
-    public function testRemoveClassString(): void
+    public function testRemoveByClassString(): void
     {
-        $pipeline = new Pipeline();
+        $a = $this->pipe('a');
+        $b = new PipelineTestMarkerPipe('b');
+        $pipeline = new Pipeline([$a, $b]);
 
-        $pipeline->add($this->pipe('c'));
-        $pipeline->add($this);
-        $this->assertEquals('cx', $pipeline->process(''));
+        $pipeline->remove(PipelineTestMarkerPipe::class);
 
-        $pipeline->remove(self::class);
-        $this->assertEquals('c', $pipeline->process(''));
+        $this->assertSame('a', $pipeline->process(''));
     }
 
-    public function testInsertMatcher(): void
+    public function testInsertByClassString(): void
     {
-        $pipeline = new Pipeline();
+        $a = $this->pipe('a');
+        $b = new PipelineTestMarkerPipe('b');
+        $pipeline = new Pipeline([$a, $b]);
 
-        $pipeline->add($this->pipe('x'));
-        $pipeline->add($this->pipe('z'));
-        $this->assertEquals('xz', $pipeline->process(''));
+        $c = $this->pipe('c');
+        $pipeline->insert($c, PipelineTestMarkerPipe::class);
 
-        $pipeline->insert($this->pipe('y'), fn ($pipes): int => 1);
-        $this->assertEquals('xyz', $pipeline->process(''));
+        $this->assertSame('acb', $pipeline->process(''));
     }
 
-    public function testInsertClassString(): void
+    public function testInsertByMatcher(): void
     {
-        $pipeline = new Pipeline();
+        $pipeline = new Pipeline([$this->pipe('a'), $this->pipe('c')]);
 
-        $pipeline->add($this);
-        $pipeline->add($this->pipe('y'));
-        $this->assertEquals('xy', $pipeline->process(''));
+        $pipeline->insert($this->pipe('b'), fn ($pipes): int => 1);
 
-        $pipeline->insert($this->pipe('a'), self::class);
-        $this->assertEquals('axy', $pipeline->process(''));
+        $this->assertSame('abc', $pipeline->process(''));
+    }
+
+    public function testWalk(): void
+    {
+        $a = $this->namedPipe('a');
+        $b = $this->namedPipe('b');
+        $pipeline = new Pipeline([$a, $b]);
+
+        $names = [];
+        $pipeline->walk(function ($pipe) use (&$names): void {
+            $names[] = $pipe->name;
+        });
+
+        $this->assertSame(['a', 'b'], $names);
+    }
+
+    // --- Grouping ---
+
+    public function testGroupOrderOverridesInsertionOrder(): void
+    {
+        $log = [];
+
+        $resolve = $this->groupedPipe('resolve', $log);
+        $augment = $this->groupedPipe('augment', $log);
+
+        $pipeline = new Pipeline(
+            [$augment, $resolve],
+            groups: ['resolve', 'reduce', 'augment'],
+            defaultGroup: 'augment',
+        );
+
+        $pipeline->process('ignored');
+
+        $this->assertSame(['resolve', 'augment'], $log);
+    }
+
+    public function testDefaultGroupForPlainCallables(): void
+    {
+        $log = [];
+
+        $pipeline = new Pipeline(
+            [function ($p) use (&$log): void {
+                $log[] = 'plain';
+            }],
+            groups: ['first', 'default'],
+            defaultGroup: 'default',
+        );
+
+        $pipeline->process('x');
+
+        $this->assertSame(['plain'], $log);
+    }
+
+    public function testEnumGroupsWork(): void
+    {
+        $log = [];
+
+        $pipeline = new Pipeline(
+            [$this->groupedPipe('resolve', $log), $this->groupedPipe('augment', $log)],
+            groups: ['resolve', 'reduce', 'augment'],
+            defaultGroup: 'augment',
+        );
+
+        $result = $pipeline->process('payload');
+
+        $this->assertSame('payload', $result);
+        $this->assertSame(['resolve', 'augment'], $log);
+    }
+
+    // --- get() ---
+
+    public function testGetReturnsMatchingPipe(): void
+    {
+        $a = $this->namedPipe('a');
+        $pipeline = new Pipeline([$a]);
+
+        $this->assertSame($a, $pipeline->get($a::class));
+    }
+
+    public function testGetReturnsNullForMissing(): void
+    {
+        $pipeline = new Pipeline([$this->pipe('x')]);
+
+        $this->assertNotInstanceOf(\stdClass::class, $pipeline->get(\stdClass::class));
+    }
+
+    // --- No groups (BC) ---
+
+    public function testNoGroupsUsesInsertionOrder(): void
+    {
+        $pipeline = new Pipeline([$this->pipe('a'), $this->pipe('b'), $this->pipe('c')]);
+
+        $this->assertSame('abc', $pipeline->process(''));
+    }
+}
+
+class PipelineTestMarkerPipe
+{
+    public function __construct(private readonly string $add)
+    {
+    }
+
+    public function __invoke(string $payload): string
+    {
+        return $payload . $this->add;
     }
 }
