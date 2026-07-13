@@ -1,0 +1,39 @@
+name: spec-validation
+
+on:
+  push:
+    branches:
+      - master
+      - 5.x
+  pull_request:
+    branches:
+      - master
+      - 5.x
+
+jobs:
+  spec-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        name: Checkout repository
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: 'highest'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Validate specs
+        run: composer redocly
