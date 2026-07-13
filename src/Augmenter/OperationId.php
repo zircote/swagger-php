@@ -1,0 +1,79 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Augmenter;
+
+use OpenApi\Spec as OA;
+use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
+
+/**
+ * Generates operationId for operations that don't have one explicitly set.
+ *
+ * @implements PipeInterface<Specification>
+ */
+class OperationId implements PipeInterface
+{
+    /**
+     * @param bool $hash If set to true, generate ids (md5) instead of clear text operation ids
+     */
+    public function __construct(
+        protected bool $hash = true,
+    ) {
+    }
+
+    /**
+     * If set to <code>true</code> generate ids (md5) instead of clear text operation ids.
+     */
+    public function setHash(bool $hash): static
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Augment;
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        foreach ($payload->operations as $operation) {
+            if ($operation->operationId !== null) {
+                continue;
+            }
+
+            $operationId = $this->generateId($operation);
+            if ($operationId !== null) {
+                $operation->operationId = $this->hash ? md5($operationId) : $operationId;
+            }
+        }
+
+        return null;
+    }
+
+    protected function generateId(OA\Operation $operation): ?string
+    {
+        $reflector = $operation->getReflector();
+
+        $source = match (true) {
+            $reflector instanceof \ReflectionMethod => $operation->getClassName() . '::' . $reflector->getName(),
+            $reflector instanceof \ReflectionFunction => $reflector->getName(),
+            $reflector instanceof \ReflectionClass => $reflector->getName(),
+            default => null,
+        };
+
+        if ($source === null) {
+            return null;
+        }
+
+        $method = strtoupper($operation->method ?? 'GET');
+        $path = $operation->path ?? '';
+
+        return $method . '::' . $path . '::' . $source;
+    }
+}
