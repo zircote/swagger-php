@@ -22,6 +22,17 @@ function getGuideSidebar() {
       ]
     },
     {
+      text: '🧪 Spec Attributes',
+      collapsed: false,
+      items: [
+        { text: 'Processing Modes', link: '/guide/modes' },
+        { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
+        { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
+        { text: 'Augmenters Reference', link: '/reference/augmenters' },
+        { text: 'Architecture', link: '/reference/architecture' },
+      ]
+    },
+    {
       text: 'Upgrading',
       items: [
         { text: 'Migration from 5.x to 6.x', link: '/guide/migrating-to-v6' },
@@ -48,6 +59,7 @@ function getReferenceSidebar() {
     {
       text: 'Reference',
       items: [
+        { text: '🧪 Spec Attributes', link: '/reference/spec-attributes' },
         { text: 'Attributes', link: '/reference/attributes' },
         { text: 'Annotations', link: '/reference/annotations' },
       ]
@@ -58,6 +70,8 @@ function getReferenceSidebar() {
         { text: 'Builder', link: '/reference/builder' },
         { text: 'Generator', link: '/reference/generator' },
         { text: 'Processors', link: '/reference/processors' },
+        { text: '🧪 Augmenters', link: '/reference/augmenters' },
+        { text: '🧪 Architecture', link: '/reference/architecture' },
       ]
     },
   ]

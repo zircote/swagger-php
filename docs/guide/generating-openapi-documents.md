@@ -15,6 +15,12 @@ the tool will use the file extension to determine the format.
 The `--format` option can be used to force a specific format.
 :::
 
+To use spec mode from the CLI, pass `--mode spec`:
+
+```shell
+> ./vendor/bin/openapi app --mode spec -o openapi.yaml
+```
+
 ::: tip Bootstrap
 The bootstrap option `-b` is useful when trying to use `swagger-php` without proper autoloading.
 
@@ -105,9 +111,28 @@ $result = (new \OpenApi\Builder())
     ->build();
 ```
 
+### Using spec mode
+
+To use the new spec attributes pipeline (beta), set the mode to `spec`:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$result = (new \OpenApi\Builder())
+    ->setMode(\OpenApi\Builder\Mode::SPEC)
+    ->addSource('/path/to/project')
+    ->build();
+
+header('Content-Type: application/x-yaml');
+echo $result->toYaml();
+```
+
+Spec mode uses attributes from the `OpenApi\Spec` namespace. See [Using Spec Attributes](/guide/spec-attributes) for details on the attribute API and [Processing Modes](/guide/modes) for a comparison of all modes.
+
 ### Using the Generator directly
 
-The `Generator` class can also be used directly:
+The `Generator` class can also be used directly (classic mode only):
 
 ```php
 <?php

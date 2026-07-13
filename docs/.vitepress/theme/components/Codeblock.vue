@@ -7,6 +7,9 @@
       <tab :id="anId" name="Annotations">
         <slot name="an"></slot>
       </tab>
+      <tab v-if="hasSpec" :id="specId" name="🧪 Spec Attributes">
+        <slot name="spec"></slot>
+      </tab>
     </tabs>
   </div>
 </template>
@@ -25,6 +28,12 @@ export default {
     },
     atId() {
       return this.id + '-at'
+    },
+    specId() {
+      return this.id + '-spec'
+    },
+    hasSpec() {
+      return !!this.$slots.spec
     }
   }
 }
