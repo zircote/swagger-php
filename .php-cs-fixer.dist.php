@@ -2,6 +2,7 @@
 
 use OpenApi\Tools\CSFixer\ScopedDeclareStrictTypesFixer;
 use OpenApi\Tools\CSFixer\ScopedLicenseFixer;
+use OpenApi\Tools\CSFixer\SpecNamespaceAliasFixer;
 
 $finder = PhpCsFixer\Finder::create()
     ->path('src')->name('*.php')
@@ -31,12 +32,14 @@ return (new PhpCsFixer\Config())
     ->registerCustomFixers([
         (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/docs/examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
+        new SpecNamespaceAliasFixer(),
     ])
     ->setRules([
         '@PSR12' => true,
         '@DoctrineAnnotation' => true,
         'OpenApi/license' => true,
         'OpenApi/declare_strict_types' => true,
+        'OpenApi/spec_namespace_alias' => true,
         'blank_line_after_opening_tag' => false,
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => true,
