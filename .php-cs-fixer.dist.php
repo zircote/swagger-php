@@ -32,7 +32,7 @@ return (new PhpCsFixer\Config())
     ->registerCustomFixers([
         (new ScopedLicenseFixer())->scope(['/src/', '/tests/', '/docs/examples/']),
         (new ScopedDeclareStrictTypesFixer())->scope(['/src/', '/tests/']),
-        new SpecNamespaceAliasFixer(),
+        (new SpecNamespaceAliasFixer())->scope(['/src/', '/tests/', '/docs/examples/']),
     ])
     ->setRules([
         '@PSR12' => true,

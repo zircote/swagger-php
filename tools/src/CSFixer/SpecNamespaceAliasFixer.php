@@ -8,6 +8,8 @@ namespace OpenApi\Tools\CSFixer;
 
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -16,51 +18,35 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 class SpecNamespaceAliasFixer extends AbstractFixer
 {
+    use ScopedTrait;
+
+    protected const SPEC_NAMESPACE = 'OpenApi\Spec';
+
     /**
      * @param Tokens<Token> $tokens
      */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $useAnalyzer = new NamespaceUsesAnalyzer();
+        $declarations = $useAnalyzer->getDeclarationsFromTokens($tokens);
+
         $hasAlias = false;
         $namespaceImport = null;
         $individualImports = [];
 
-        for ($i = 0, $count = $tokens->count(); $i < $count; $i++) {
-            if (!$tokens[$i]->isGivenKind(T_USE)) {
+        foreach ($declarations as $declaration) {
+            if (!$declaration->isClass()) {
                 continue;
             }
 
-            $prev = $tokens->getPrevMeaningfulToken($i);
-            if ($prev !== null && $tokens[$prev]->equals(')')) {
-                continue;
-            }
+            $fullName = $declaration->getFullName();
 
-            $semicolonIndex = $tokens->getNextTokenOfKind($i, [';']);
-            if ($semicolonIndex === null) {
-                continue;
-            }
-
-            $content = '';
-            for ($j = $i + 1; $j < $semicolonIndex; $j++) {
-                $content .= $tokens[$j]->getContent();
-            }
-            $content = trim($content);
-
-            if ($content === 'OpenApi\Spec as OA') {
+            if ($fullName === static::SPEC_NAMESPACE && $declaration->isAliased() && $declaration->getShortName() === 'OA') {
                 $hasAlias = true;
-            } elseif ($content === 'OpenApi\Spec') {
-                $namespaceImport = ['start' => $i, 'end' => $semicolonIndex];
-            } elseif (str_starts_with($content, 'OpenApi\Spec\\')) {
-                $relative = substr($content, strlen('OpenApi\Spec\\'));
-                $shortName = str_contains($relative, '\\')
-                    ? substr($relative, strrpos($relative, '\\') + 1)
-                    : $relative;
-                $individualImports[] = [
-                    'start' => $i,
-                    'end' => $semicolonIndex,
-                    'relative' => $relative,
-                    'shortName' => $shortName,
-                ];
+            } elseif ($fullName === static::SPEC_NAMESPACE && !$declaration->isAliased()) {
+                $namespaceImport = $declaration;
+            } elseif (str_starts_with($fullName, static::SPEC_NAMESPACE . '\\')) {
+                $individualImports[] = $declaration;
             }
         }
 
@@ -71,73 +57,35 @@ class SpecNamespaceAliasFixer extends AbstractFixer
             return;
         }
 
-        // Step 1: Rewrite short name references for individual imports → OA\relative\path
-        // Do this BEFORE modifying use statements so token positions are stable for name lookups
+        $useStatementIndices = $this->collectUseStatementIndices($declarations);
+
+        // Rewrite short name references for individual imports → OA\relative\path
         foreach ($individualImports as $import) {
-            $this->rewriteShortName($tokens, $import['shortName'], 'OA\\' . $import['relative']);
+            $relative = substr($import->getFullName(), strlen(static::SPEC_NAMESPACE) + 1);
+            $this->rewriteReferences($tokens, $import->getShortName(), 'OA\\' . $relative, $useStatementIndices);
         }
 
-        // Step 2: Rewrite bare `Spec\` references → `OA\` (from namespace import)
+        // Rewrite bare `Spec\` references → `OA\` (from namespace import)
         if ($namespaceImport !== null) {
-            $count = $tokens->count();
-            for ($i = 0; $i < $count; $i++) {
-                if (!$tokens[$i]->isGivenKind(T_STRING) || $tokens[$i]->getContent() !== 'Spec') {
-                    continue;
-                }
-                $prev = $tokens->getPrevMeaningfulToken($i);
-                if ($prev !== null && $tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
-                    continue;
-                }
-                // Skip namespace/use declarations
-                $lineStart = $this->findLineStart($tokens, $i);
-                if ($lineStart !== null && ($tokens[$lineStart]->isGivenKind(T_USE) || $tokens[$lineStart]->isGivenKind(T_NAMESPACE))) {
-                    continue;
-                }
-                $next = $tokens->getNextMeaningfulToken($i);
-                if ($next !== null && $tokens[$next]->isGivenKind(T_NS_SEPARATOR)) {
-                    $tokens[$i] = new Token([T_STRING, 'OA']);
-                }
-            }
+            $this->rewriteSpecPrefix($tokens, $useStatementIndices);
         }
 
-        // Step 3: Remove individual import lines (reverse order to keep indices valid)
-        foreach (array_reverse($individualImports) as $import) {
-            $this->clearUseLine($tokens, $import['start'], $import['end']);
+        // Remove individual import lines (reverse order to keep indices valid)
+        $sortedImports = $individualImports;
+        usort($sortedImports, fn ($aa, $bb) => $bb->getStartIndex() - $aa->getStartIndex());
+        foreach ($sortedImports as $import) {
+            $this->removeUseStatement($tokens, $import);
         }
 
-        // Step 4: Replace or insert the alias
+        // Replace or insert the alias
         if (!$hasAlias) {
             if ($namespaceImport !== null) {
-                $this->clearUseLine($tokens, $namespaceImport['start'], $namespaceImport['end']);
-                $tokens->insertAt($namespaceImport['start'], [
-                    new Token([T_USE, 'use']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_STRING, 'OpenApi']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Spec']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_AS, 'as']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_STRING, 'OA']),
-                    new Token(';'),
-                    new Token([T_WHITESPACE, "\n"]),
-                ]);
+                $insertAt = $namespaceImport->getStartIndex();
+                $this->removeUseStatement($tokens, $namespaceImport);
+                $this->insertAliasImport($tokens, $insertAt);
             } else {
-                // Find position of first removed import to insert alias there
-                $insertAt = $individualImports[count($individualImports) - 1]['start'];
-                $tokens->insertAt($insertAt, [
-                    new Token([T_USE, 'use']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_STRING, 'OpenApi']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Spec']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_AS, 'as']),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_STRING, 'OA']),
-                    new Token(';'),
-                    new Token([T_WHITESPACE, "\n"]),
-                ]);
+                $lastImport = $sortedImports[0];
+                $this->insertAliasImport($tokens, $lastImport->getStartIndex());
             }
         }
     }
@@ -169,110 +117,168 @@ class SpecNamespaceAliasFixer extends AbstractFixer
             return false;
         }
 
-        // Skip files in the OpenApi\Spec namespace itself (they can't alias their own namespace)
-        for ($i = 0, $count = $tokens->count(); $i < $count; $i++) {
-            if (!$tokens[$i]->isGivenKind(T_NAMESPACE)) {
-                continue;
-            }
+        if (!$tokens->isTokenKindFound(T_USE)) {
+            return false;
+        }
 
-            $semicolonIndex = $tokens->getNextTokenOfKind($i, [';', '{']);
-            if ($semicolonIndex === null) {
-                return true;
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
+            if ($namespace->getFullName() === static::SPEC_NAMESPACE || str_starts_with($namespace->getFullName(), static::SPEC_NAMESPACE . '\\')) {
+                return false;
             }
-
-            $content = '';
-            for ($j = $i + 1; $j < $semicolonIndex; $j++) {
-                $content .= $tokens[$j]->getContent();
-            }
-
-            return trim($content) !== 'OpenApi\Spec';
         }
 
         return true;
     }
 
     /**
-     * @param Tokens<Token> $tokens
+     * @param Tokens<Token>   $tokens
+     * @param array<int, int> $useStatementIndices
      */
-    protected function clearUseLine(Tokens $tokens, int $start, int $end): void
-    {
-        $clearEnd = $end;
-        if (isset($tokens[$clearEnd + 1]) && $tokens[$clearEnd + 1]->isGivenKind(T_WHITESPACE)) {
-            $clearEnd++;
-        }
-        $tokens->clearRange($start, $clearEnd);
-    }
-
-    /**
-     * @param Tokens<Token> $tokens
-     */
-    protected function rewriteShortName(Tokens $tokens, string $shortName, string $qualifiedPath): void
+    protected function rewriteReferences(Tokens $tokens, string $shortName, string $qualifiedPath, array $useStatementIndices): void
     {
         $count = $tokens->count();
-        for ($i = 0; $i < $count; $i++) {
-            if (!$tokens[$i]->isGivenKind(T_STRING) || $tokens[$i]->getContent() !== $shortName) {
+        for ($ii = 0; $ii < $count; $ii++) {
+            if (isset($useStatementIndices[$ii])) {
+                $ii = $useStatementIndices[$ii];
                 continue;
             }
 
-            // Skip if part of a qualified name (preceded by \)
-            $prev = $tokens->getPrevMeaningfulToken($i);
-            if ($prev !== null && $tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$tokens[$ii]->isGivenKind(T_STRING) || $tokens[$ii]->getContent() !== $shortName) {
                 continue;
             }
 
-            // Skip namespace and use statements
-            $lineStart = $this->findLineStart($tokens, $i);
-            if ($lineStart !== null && ($tokens[$lineStart]->isGivenKind(T_USE) || $tokens[$lineStart]->isGivenKind(T_NAMESPACE))) {
+            $prev = $tokens->getPrevMeaningfulToken($ii);
+            if ($prev !== null && $tokens[$prev]->isGivenKind([T_NS_SEPARATOR, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE])) {
+                continue;
+            }
+            if ($prev !== null && $tokens[$prev]->isObjectOperator()) {
                 continue;
             }
 
-            $next = $tokens->getNextMeaningfulToken($i);
+            $next = $tokens->getNextMeaningfulToken($ii);
             if ($next === null) {
                 continue;
             }
 
-            $isClassUsage = $tokens[$next]->equals('(')
-                || $tokens[$next]->isGivenKind(T_DOUBLE_COLON)
-                || $tokens[$next]->isGivenKind(T_DOUBLE_ARROW)
-                || $tokens[$next]->isGivenKind(T_VARIABLE)
-                || $tokens[$next]->equals(',')
-                || $tokens[$next]->equals(')')
-                || $tokens[$next]->equals(';')
-                || $tokens[$next]->equals('{')
-                || $tokens[$next]->equals('|')
-                || $tokens[$next]->isGivenKind(T_NS_SEPARATOR)
-                || $tokens[$next]->isGivenKind(T_ELLIPSIS);
-
-            if (!$isClassUsage) {
+            if (!$this->isClassUsageContext($tokens, $next)) {
                 continue;
             }
 
             $parts = explode('\\', $qualifiedPath);
             $replacement = [];
-            foreach ($parts as $k => $part) {
-                if ($k > 0) {
+            foreach ($parts as $kk => $part) {
+                if ($kk > 0) {
                     $replacement[] = new Token([T_NS_SEPARATOR, '\\']);
                 }
                 $replacement[] = new Token([T_STRING, $part]);
             }
 
-            $tokens->clearAt($i);
-            $tokens->insertAt($i, $replacement);
+            $tokens->clearAt($ii);
+            $tokens->insertAt($ii, $replacement);
             $count = $tokens->count();
+        }
+    }
+
+    /**
+     * @param Tokens<Token>   $tokens
+     * @param array<int, int> $useStatementIndices
+     */
+    protected function rewriteSpecPrefix(Tokens $tokens, array $useStatementIndices): void
+    {
+        $count = $tokens->count();
+        for ($ii = 0; $ii < $count; $ii++) {
+            if (isset($useStatementIndices[$ii])) {
+                $ii = $useStatementIndices[$ii];
+                continue;
+            }
+
+            if (!$tokens[$ii]->isGivenKind(T_STRING) || $tokens[$ii]->getContent() !== 'Spec') {
+                continue;
+            }
+
+            $prev = $tokens->getPrevMeaningfulToken($ii);
+            if ($prev !== null && $tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            $next = $tokens->getNextMeaningfulToken($ii);
+            if ($next !== null && $tokens[$next]->isGivenKind(T_NS_SEPARATOR)) {
+                $tokens[$ii] = new Token([T_STRING, 'OA']);
+            }
         }
     }
 
     /**
      * @param Tokens<Token> $tokens
      */
-    protected function findLineStart(Tokens $tokens, int $index): ?int
+    protected function removeUseStatement(Tokens $tokens, NamespaceUseAnalysis $useAnalysis): void
     {
-        for ($i = $index - 1; $i >= 0; $i--) {
-            if ($tokens[$i]->isGivenKind(T_WHITESPACE) && str_contains($tokens[$i]->getContent(), "\n")) {
-                return $tokens->getNextMeaningfulToken($i);
+        $start = $useAnalysis->getStartIndex();
+        $end = $useAnalysis->getEndIndex();
+
+        $tokens->clearRange($start, $end);
+        if (isset($tokens[$end + 1]) && $tokens[$end + 1]->isGivenKind(T_WHITESPACE)) {
+            $whitespace = $tokens[$end + 1]->getContent();
+            $newlinePos = strpos($whitespace, "\n");
+            if ($newlinePos !== false) {
+                $remaining = substr($whitespace, $newlinePos + 1);
+                if ($remaining !== '') {
+                    $tokens[$end + 1] = new Token([T_WHITESPACE, $remaining]);
+                } else {
+                    $tokens->clearAt($end + 1);
+                }
             }
         }
+    }
 
-        return null;
+    /**
+     * @param Tokens<Token> $tokens
+     */
+    protected function insertAliasImport(Tokens $tokens, int $insertAt): void
+    {
+        $tokens->insertAt($insertAt, [
+            new Token([T_USE, 'use']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_STRING, 'OpenApi']),
+            new Token([T_NS_SEPARATOR, '\\']),
+            new Token([T_STRING, 'Spec']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_AS, 'as']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_STRING, 'OA']),
+            new Token(';'),
+            new Token([T_WHITESPACE, "\n"]),
+        ]);
+    }
+
+    /**
+     * @param Tokens<Token> $tokens
+     */
+    protected function isClassUsageContext(Tokens $tokens, int $nextIndex): bool
+    {
+        return $tokens[$nextIndex]->equals('(')
+            || $tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)
+            || $tokens[$nextIndex]->isGivenKind(T_VARIABLE)
+            || $tokens[$nextIndex]->equals(',')
+            || $tokens[$nextIndex]->equals(')')
+            || $tokens[$nextIndex]->equals(';')
+            || $tokens[$nextIndex]->equals('{')
+            || $tokens[$nextIndex]->equals('|')
+            || $tokens[$nextIndex]->isGivenKind(T_NS_SEPARATOR)
+            || $tokens[$nextIndex]->isGivenKind(T_ELLIPSIS);
+    }
+
+    /**
+     * @param  list<NamespaceUseAnalysis> $declarations
+     * @return array<int, int>
+     */
+    protected function collectUseStatementIndices(array $declarations): array
+    {
+        $indices = [];
+        foreach ($declarations as $declaration) {
+            $indices[$declaration->getStartIndex()] = $declaration->getEndIndex();
+        }
+
+        return $indices;
     }
 }
