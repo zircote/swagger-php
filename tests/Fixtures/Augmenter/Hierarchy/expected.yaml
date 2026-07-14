@@ -1,0 +1,40 @@
+# Expected schema structure for the Hierarchy fixtures.
+# Both spec and classic pipelines should produce this composition.
+# Compared by: schema names, allOf refs, and property names (order-independent).
+#
+# allOf: list of $ref strings pointing to referenced schemas
+# properties: list of property names owned by this schema (inside allOf inline entry if allOf present)
+
+ChildOfParentWithSchema:
+    allOf:
+        - '#/components/schemas/ParentWithSchema'
+    properties:
+        - childProp
+
+ChildOfPlainParent:
+    properties:
+        - parentProp
+        - childProp
+
+ClassUsingPlainTrait:
+    properties:
+        - traitProp
+        - ownProp
+
+ClassUsingTraitWithSchema:
+    allOf:
+        - '#/components/schemas/NameTrait'
+    properties:
+        - age
+
+NameTrait:
+    properties:
+        - name
+
+ParentWithSchema:
+    properties:
+        - baseProp
+
+StandaloneSchema:
+    properties:
+        - value
