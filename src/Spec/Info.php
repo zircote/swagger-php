@@ -23,6 +23,7 @@ class Info extends AbstractAttribute
      * @param License|null             $license        License information for the API
      * @param string|null              $summary        A short summary of the API
      * @param array<string,mixed>|null $x              Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables    Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $title = null,
@@ -33,8 +34,9 @@ class Info extends AbstractAttribute
         public ?License $license = null,
         public ?string $summary = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

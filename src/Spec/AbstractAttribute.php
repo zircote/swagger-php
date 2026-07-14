@@ -17,9 +17,11 @@ abstract class AbstractAttribute implements AttributeInterface
 
     /**
      * @param array<string,mixed>|null $x
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?array $x = null,
+        public ?array $attachables = null,
     ) {
     }
 

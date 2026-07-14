@@ -239,12 +239,27 @@ class AttributeFactory
 
     protected function nestChild(AttributeInterface $parent, AttributeInterface $child, string $slot): void
     {
+        $validateSlot = function (AttributeInterface $parent, AttributeInterface $child, string $slot): void {
+            if (!property_exists($parent, $slot)) {
+                throw OpenApiException::fromSource(
+                    sprintf('Invalid slot: "%s" not found in %s for child %s', $slot, $parent::class, $child::class),
+                    $child->getSourceLocation(),
+                );
+            }
+
+        };
+
         if (str_ends_with($slot, '[]')) {
             $property = substr($slot, 0, -2);
+
+            $validateSlot($parent, $child, $property);
+
             $current = $parent->{$property} ?? [];
             $current[] = $child;
             $parent->{$property} = $current;
         } else {
+            $validateSlot($parent, $child, $slot);
+
             if ($parent->{$slot} instanceof AttributeInterface) {
                 throw OpenApiException::fromSource(
                     sprintf('Duplicate merge: %s already has a %s in slot "%s"', $parent::class, $parent->{$slot}::class, $slot),

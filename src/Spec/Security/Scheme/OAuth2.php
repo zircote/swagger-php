@@ -19,12 +19,14 @@ class OAuth2 extends OA\Security\Scheme
     /**
      * @param list<OA\Flow>|null       $flows
      * @param array<string,mixed>|null $x
+     * @param list<OA\Attachable>|null $attachables
      */
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
         ?array $flows = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
@@ -32,6 +34,7 @@ class OAuth2 extends OA\Security\Scheme
             description: $description,
             flows: $flows,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

@@ -63,6 +63,7 @@ class PathItem extends AbstractAttribute
      * @param list<Security\Requirement>|null $security    Security requirements to clone to contained operations
      * @param list<Response>|null             $responses   Shared responses to clone to contained operations
      * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $ref = null,
@@ -75,8 +76,9 @@ class PathItem extends AbstractAttribute
         public ?array $security = null,
         public ?array $responses = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     /** Resolved path — set by augmenter or HybridBridge, not user-authored. */

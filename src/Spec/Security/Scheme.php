@@ -34,6 +34,7 @@ class Scheme extends OA\AbstractAttribute
      * @param list<OA\Flow>|null       $flows            The available OAuth2 flows (oauth2)
      * @param string|null              $ref              A JSON Reference to a reusable security scheme
      * @param array<string,mixed>|null $x                Vendor extensions (x-* properties)
+     * @param list<OA\Attachable>|null $attachables      Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $securityScheme = null,
@@ -47,8 +48,9 @@ class Scheme extends OA\AbstractAttribute
         public ?array $flows = null,
         public ?string $ref = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

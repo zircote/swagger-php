@@ -22,6 +22,7 @@ class Response extends AbstractAttribute
      * @param list<MediaType>|null     $content     Possible response payloads
      * @param list<Link>|null          $links       Design-time links for the response
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public string|int|null $response = null,
@@ -31,8 +32,9 @@ class Response extends AbstractAttribute
         public ?array $content = null,
         public ?array $links = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

@@ -20,6 +20,7 @@ class ServerVariable extends AbstractAttribute
      * @param string|null              $description    A description of the server variable (CommonMark syntax)
      * @param list<string>|null        $enum           Enumeration of allowed string values for substitution
      * @param array<string,mixed>|null $x              Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables    Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $serverVariable = null,
@@ -27,8 +28,9 @@ class ServerVariable extends AbstractAttribute
         public ?string $description = null,
         public ?array $enum = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

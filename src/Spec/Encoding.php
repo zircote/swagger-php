@@ -22,6 +22,7 @@ class Encoding extends AbstractAttribute
      * @param bool|null                $explode       Whether arrays/objects generate separate parameters
      * @param bool|null                $allowReserved Whether reserved characters are allowed without encoding
      * @param array<string,mixed>|null $x             Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables   Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $encoding = null,
@@ -31,8 +32,9 @@ class Encoding extends AbstractAttribute
         public ?bool $explode = null,
         public ?bool $allowReserved = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

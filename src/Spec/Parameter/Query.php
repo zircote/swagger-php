@@ -21,6 +21,7 @@ class Query extends OA\Parameter
      * @param list<OA\Example>|null    $examples
      * @param list<OA\MediaType>|null  $content
      * @param array<string,mixed>|null $x
+     * @param list<OA\Attachable>|null $attachables
      */
     public function __construct(
         ?string $parameter = null,
@@ -38,6 +39,7 @@ class Query extends OA\Parameter
         ?array $examples = null,
         ?array $content = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             parameter: $parameter,
@@ -56,6 +58,7 @@ class Query extends OA\Parameter
             examples: $examples,
             content: $content,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

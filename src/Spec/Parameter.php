@@ -59,6 +59,7 @@ class Parameter extends AbstractAttribute
      * @param list<Example>|null       $examples        Examples of the parameter's value
      * @param list<MediaType>|null     $content         Content-type based parameter serialization
      * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $parameter = null,
@@ -77,8 +78,9 @@ class Parameter extends AbstractAttribute
         public ?array $examples = null,
         public ?array $content = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

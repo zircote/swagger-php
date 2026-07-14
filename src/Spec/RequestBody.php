@@ -21,6 +21,7 @@ class RequestBody extends AbstractAttribute
      * @param string|null              $ref         A JSON Reference to a reusable request body
      * @param list<MediaType>|null     $content     The content of the request body
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $request = null,
@@ -29,8 +30,9 @@ class RequestBody extends AbstractAttribute
         public ?string $ref = null,
         public ?array $content = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

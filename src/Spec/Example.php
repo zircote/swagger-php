@@ -22,6 +22,7 @@ class Example extends AbstractAttribute
      * @param string|null              $externalValue A URI pointing to the literal example
      * @param string|null              $ref           A JSON Reference to a reusable example
      * @param array<string,mixed>|null $x             Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables   Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $example = null,
@@ -31,8 +32,9 @@ class Example extends AbstractAttribute
         public ?string $externalValue = null,
         public ?string $ref = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

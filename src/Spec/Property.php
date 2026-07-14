@@ -15,16 +15,18 @@ namespace OpenApi\Spec;
 class Property extends AbstractAttribute
 {
     /**
-     * @param string|null              $property The property name
-     * @param Schema|null              $schema   The schema defining the property type and constraints
-     * @param array<string,mixed>|null $x        Vendor extensions (x-* properties)
+     * @param string|null              $property    The property name
+     * @param Schema|null              $schema      The schema defining the property type and constraints
+     * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $property = null,
         public ?Schema $schema = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array
