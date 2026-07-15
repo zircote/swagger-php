@@ -10,6 +10,7 @@ use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentParameters;
 use OpenApi\Processors\BuildPaths;
@@ -26,6 +27,7 @@ final class AugmentParametersTest extends OpenApiTestCase
     public function testAugmentParameter(): void
     {
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('UsingRefs.php'))
             ->withGenerator(fn (Generator $generator): Generator => $generator
                 ->setAnalyser($this->getAnalyzer())
