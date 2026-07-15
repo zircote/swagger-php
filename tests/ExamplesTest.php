@@ -6,11 +6,12 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -32,12 +33,10 @@ final class ExamplesTest extends OpenApiTestCase
             'using-traits',
             'webhooks',
         ];
-        $implementations = ['annotations', 'attributes', 'mixed'];
-        $versions = [
-            OA\OpenApi::VERSION_3_0_0,
-            OA\OpenApi::VERSION_3_1_0,
-            OA\OpenApi::VERSION_3_2_0,
-        ];
+        // actual implementation folders that might exist
+        $implementations = ['annotations', 'attributes', 'mixed', 'spec'];
+        $versions = ['3.0.0', '3.1.0', '3.2.0'];
+        $modes = [Mode::CLASSIC, Mode::HYBRID, Mode::SPEC];
 
         foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
@@ -47,16 +46,27 @@ final class ExamplesTest extends OpenApiTestCase
                     }
 
                     foreach ($versions as $version) {
-                        if (!file_exists(self::getSpecFilename($example, $implementation, $version))) {
-                            continue;
-                        }
+                        foreach ($modes as $mode) {
+                            if (
+                                $mode === Mode::SPEC && $implementation !== 'spec'
+                                || ($typeResolver instanceof LegacyTypeResolver && $mode === Mode::HYBRID)
+                            ) {
+                                continue;
+                            }
 
-                        yield "{$example}:{$resolverName}-{$implementation}-{$version}" => [
-                            $typeResolver,
-                            $example,
-                            $implementation,
-                            $version,
-                        ];
+                            if (!file_exists(self::getSpecFilename($example, $implementation, $version, $mode))) {
+                                continue;
+                            }
+
+                            $key = "{$example}:{$resolverName}-{$implementation}-{$mode->value}-{$version}";
+                            yield $key => [
+                                $typeResolver,
+                                $example,
+                                $implementation,
+                                $version,
+                                $mode,
+                            ];
+                        }
                     }
                 }
             }
@@ -67,14 +77,15 @@ final class ExamplesTest extends OpenApiTestCase
      * Validate openapi definitions of the included examples.
      */
     #[DataProvider('exampleSpecs')]
-    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
+    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
     {
         $this->registerExampleClassloader($name, $implementation);
 
         $path = self::examplePath("{$name}/{$implementation}");
-        $specFilename = self::getSpecFilename($name, $implementation, $version);
+        $specFilename = self::getSpecFilename($name, $implementation, $version, $mode);
 
         $result = (new Builder())
+            ->setMode($mode)
             ->addSource($path)
             ->setVersion($version)
             ->setLogger($this->getTrackingLogger())
@@ -89,8 +100,12 @@ final class ExamplesTest extends OpenApiTestCase
     }
 
     #[DataProvider('exampleSpecs')]
-    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version): void
+    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
     {
+        if ($mode === Mode::SPEC) {
+            $this->markTestSkipped('Serializer tests are not supported for spec mode');
+        }
+
         $specFilename = self::getSpecFilename($name, $implementation, $version);
 
         $reserialized = (new Serializer())->deserializeFile($specFilename)->toYaml();

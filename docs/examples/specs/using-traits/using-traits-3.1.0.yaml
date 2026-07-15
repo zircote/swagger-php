@@ -58,7 +58,7 @@ components:
               description: 'The plating.'
               example: gold
           type: object
-    'CustomName-Blink':
+    CustomName-Blink:
       title: 'Blink trait'
       properties:
         frequency:
