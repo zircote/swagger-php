@@ -57,6 +57,9 @@ class Specification
     /** @var list<OA\Example> */
     public array $examples = [];
 
+    /** @var list<OA\Attachable> */
+    public array $attachables = [];
+
     public function __construct()
     {
         $this->openapi = new OA\OpenApi();
@@ -87,6 +90,7 @@ class Specification
                 $attribute instanceof OA\Security\Scheme => $this->securitySchemes[] = $attribute,
                 $attribute instanceof OA\Link => $this->links[] = $attribute,
                 $attribute instanceof OA\Example => $this->examples[] = $attribute,
+                $attribute instanceof OA\Attachable => $this->attachables[] = $attribute,
                 default => throw OpenApiException::fromSource(
                     'Unsupported root-level attribute: ' . $attribute::class,
                     $attribute->getSourceLocation(),

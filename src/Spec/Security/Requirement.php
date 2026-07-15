@@ -20,18 +20,20 @@ use OpenApi\Spec as OA;
 class Requirement extends OA\AbstractAttribute
 {
     /**
-     * @param string|null                     $scheme  Single scheme name (shorthand for simple requirements)
-     * @param list<string>|null               $scopes  Scopes for the single scheme (OAuth2/OpenIdConnect)
-     * @param array<string,list<string>>|null $schemes Map of scheme names to scopes (for AND logic with multiple schemes)
-     * @param array<string,mixed>|null        $x       Vendor extensions (x-* properties)
+     * @param string|null                     $scheme      Single scheme name (shorthand for simple requirements)
+     * @param list<string>|null               $scopes      Scopes for the single scheme (OAuth2/OpenIdConnect)
+     * @param array<string,list<string>>|null $schemes     Map of scheme names to scopes (for AND logic with multiple schemes)
+     * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
+     * @param list<OA\Attachable>|null        $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $scheme = null,
         public ?array $scopes = null,
         public ?array $schemes = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

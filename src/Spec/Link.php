@@ -24,6 +24,7 @@ class Link extends AbstractAttribute
      * @param string|null              $ref          A JSON Reference to a reusable link
      * @param Server|null              $server       A server object to be used by the target operation
      * @param array<string,mixed>|null $x            Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables  Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $link = null,
@@ -35,8 +36,9 @@ class Link extends AbstractAttribute
         public ?string $ref = null,
         public ?Server $server = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

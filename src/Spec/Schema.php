@@ -96,6 +96,7 @@ class Schema extends AbstractAttribute
      * @param ExternalDocumentation|null                                              $externalDocs          Additional external documentation
      * @param Xml|null                                                                $xml                   XML representation metadata
      * @param array<string,mixed>|null                                                $x                     Vendor extensions (x-* properties)
+     * @param list<Attachable>|null                                                   $attachables           Reusable custom attachable attributes
      */
     public function __construct(
         // Identity
@@ -178,8 +179,9 @@ class Schema extends AbstractAttribute
         public ?ExternalDocumentation $externalDocs = null,
         public ?Xml $xml = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

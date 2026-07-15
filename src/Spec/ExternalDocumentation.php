@@ -18,13 +18,15 @@ class ExternalDocumentation extends AbstractAttribute
      * @param string|null              $url         The URL for the target documentation
      * @param string|null              $description A description of the target documentation (CommonMark syntax)
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $url = null,
         public ?string $description = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

@@ -18,17 +18,20 @@ class MutualTls extends OA\Security\Scheme
 {
     /**
      * @param array<string,mixed>|null $x
+     * @param list<OA\Attachable>|null $attachables
      */
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
             type: 'mutualTLS',
             description: $description,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

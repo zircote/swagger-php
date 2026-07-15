@@ -45,7 +45,7 @@ After both passes, only root attributes remain and are added to the `Specificati
 **Root attributes.** A "root" attribute is one that can exist independently in the Specification — it has its own bucket and doesn't require a parent container. After the two-pass assembly (merge + hierarchy resolution), every remaining attribute must satisfy `isRoot() === true` or the assembler throws an error.
 
 Root DTOs have a corresponding bucket in `Specification` and are collected directly by the assembler:
-- Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`
+- Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`, `Attachable`
 - Conditionally root: `Response` (when `response` key is set), `RequestBody` (when `request` key is set)
 - Never root: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property`, etc.
 
@@ -103,14 +103,15 @@ OA\AbstractAttribute
 │   ├── OA\Flow\Password
 │   ├── OA\Flow\ClientCredentials
 │   └── OA\Flow\AuthorizationCode
-└── OA\Security
-    ├── OA\Security\Requirement
-    └── OA\Security\Scheme
-        ├── OA\Security\Scheme\Http
-        ├── OA\Security\Scheme\ApiKey
-        ├── OA\Security\Scheme\OAuth2
-        ├── OA\Security\Scheme\OpenIdConnect
-        └── OA\Security\Scheme\MutualTls
+├── OA\Security
+│   ├── OA\Security\Requirement
+│   └── OA\Security\Scheme
+│       ├── OA\Security\Scheme\Http
+│       ├── OA\Security\Scheme\ApiKey
+│       ├── OA\Security\Scheme\OAuth2
+│       ├── OA\Security\Scheme\OpenIdConnect
+│       └── OA\Security\Scheme\MutualTls
+└── OA\Attachable
 ```
 
 ### Reflectors as relationship glue
@@ -147,6 +148,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 - `SpecificationWalker` — instance-based tree traversal with unified schema descent
 - All augmenters implemented (see table below)
 - Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Type` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
+- `Attachable` DTO with `Specification::$attachables` bucket, inline `$attachables` parameter on all DTOs, slot validation in `AttributeFactory::nestChild()`
 
 ### Augmenter status
 
@@ -355,7 +357,7 @@ Three extension points to implement:
 
 - **`AttributeEnricher`** — hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase.
 - **`CompilerExtension`** — lets custom `Attachable` DTOs produce spec output. Extensions declare which Attachable class(es) they handle and return key-value pairs merged into the parent's compiled output. Unhandled Attachables are silently omitted.
-- **`Attachable` DTO** — an empty class extending `AbstractAttribute`. Gets its own `Specification` bucket by default (unless inlined via `merge()`). Ignored by the standard pipeline — custom augmenter pipes can process them however they want. Mirrors the existing `Attachable` pattern from the classic pipeline.
+- ~~**`Attachable` DTO**~~ — **Done.** `OA\Attachable` extends `AbstractAttribute`, is repeatable on any target, and `isRoot() === true` by default (gets its own `Specification::$attachables` bucket). Can also be inlined into any attribute via the `$attachables` constructor parameter or nested via custom `merge()` maps. Slot validation in `AttributeFactory::nestChild()` catches invalid merge targets early. Custom attachables subclass `OA\Attachable` and override `merge()` to specify where they nest.
 
 These extension systems should also address downstream integration needs (e.g. Nelmio translating Symfony metadata, framework route annotations) without requiring those projects to couple to pipeline internals.
 

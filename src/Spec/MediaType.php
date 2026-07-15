@@ -17,12 +17,13 @@ use OpenApi\Undefined;
 class MediaType extends AbstractAttribute
 {
     /**
-     * @param string|null                                $mediaType The media type identifier (e.g. 'application/json')
-     * @param Schema|null                                $schema    The schema defining the content
-     * @param mixed                                      $example   Example of the media type content
-     * @param list<Example>|null                         $examples  Examples of the media type content
-     * @param list<Encoding>|array<string,Encoding>|null $encoding  Encoding information for specific properties
-     * @param array<string,mixed>|null                   $x         Vendor extensions (x-* properties)
+     * @param string|null                                $mediaType   The media type identifier (e.g. 'application/json')
+     * @param Schema|null                                $schema      The schema defining the content
+     * @param mixed                                      $example     Example of the media type content
+     * @param list<Example>|null                         $examples    Examples of the media type content
+     * @param list<Encoding>|array<string,Encoding>|null $encoding    Encoding information for specific properties
+     * @param array<string,mixed>|null                   $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null                      $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $mediaType = null,
@@ -31,8 +32,9 @@ class MediaType extends AbstractAttribute
         public ?array $examples = null,
         public ?array $encoding = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

@@ -24,6 +24,7 @@ class Patch extends OA\Operation
      * @param list<OA\Security\Requirement>|null $security
      * @param list<OA\Server>|null               $servers
      * @param array<string,mixed>|null           $x
+     * @param list<OA\Attachable>|null           $attachables
      */
     public function __construct(
         ?string $path = null,
@@ -41,6 +42,7 @@ class Patch extends OA\Operation
         ?array $servers = null,
         ?OA\ExternalDocumentation $externalDocs = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             path: $path,
@@ -59,6 +61,7 @@ class Patch extends OA\Operation
             servers: $servers,
             externalDocs: $externalDocs,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

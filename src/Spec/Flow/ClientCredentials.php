@@ -19,12 +19,14 @@ class ClientCredentials extends OA\Flow
     /**
      * @param array<string,string>|null $scopes
      * @param array<string,mixed>|null  $x
+     * @param list<OA\Attachable>|null  $attachables
      */
     public function __construct(
         ?string $tokenUrl = null,
         ?string $refreshUrl = null,
         ?array $scopes = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             flow: 'clientCredentials',
@@ -32,6 +34,7 @@ class ClientCredentials extends OA\Flow
             refreshUrl: $refreshUrl,
             scopes: $scopes,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

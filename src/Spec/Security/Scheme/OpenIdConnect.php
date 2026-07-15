@@ -18,12 +18,14 @@ class OpenIdConnect extends OA\Security\Scheme
 {
     /**
      * @param array<string,mixed>|null $x
+     * @param list<OA\Attachable>|null $attachables
      */
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
         ?string $openIdConnectUrl = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
@@ -31,6 +33,7 @@ class OpenIdConnect extends OA\Security\Scheme
             description: $description,
             openIdConnectUrl: $openIdConnectUrl,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

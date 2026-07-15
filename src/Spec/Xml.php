@@ -15,12 +15,13 @@ namespace OpenApi\Spec;
 class Xml extends AbstractAttribute
 {
     /**
-     * @param string|null              $name      Replaces the name of the element/attribute
-     * @param string|null              $namespace The URI of the XML namespace
-     * @param string|null              $prefix    The namespace prefix to use
-     * @param bool|null                $attribute Whether the property translates to an XML attribute
-     * @param bool|null                $wrapped   Whether array items are wrapped in an additional element
-     * @param array<string,mixed>|null $x         Vendor extensions (x-* properties)
+     * @param string|null              $name        Replaces the name of the element/attribute
+     * @param string|null              $namespace   The URI of the XML namespace
+     * @param string|null              $prefix      The namespace prefix to use
+     * @param bool|null                $attribute   Whether the property translates to an XML attribute
+     * @param bool|null                $wrapped     Whether array items are wrapped in an additional element
+     * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $name = null,
@@ -29,8 +30,9 @@ class Xml extends AbstractAttribute
         public ?bool $attribute = null,
         public ?bool $wrapped = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function merge(): array

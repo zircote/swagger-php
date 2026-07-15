@@ -90,4 +90,25 @@ final class AssemblerTest extends TestCase
         $assembler = new Assembler();
         $assembler->collect(new \ReflectionClass(Fixtures\Assembler\OrphanSecurity::class));
     }
+
+    public function testAttachablesAreRootsAndDontMergeByDefault(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\WithAttachables::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(2, $spec->attachables);
+        $this->assertNotNull($spec->schemas[0]->attachables);
+        $this->assertCount(1, $spec->schemas[0]->attachables);
+        $this->assertCount(2, $spec->schemas[0]->properties[0]->attachables);
+    }
+
+    public function testInvalidSlotValidation(): void
+    {
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessageMatches('/Invalid slot: "badSlot"/');
+
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\WithInvalidAttachables::class));
+    }
 }

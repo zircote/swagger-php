@@ -15,9 +15,10 @@ namespace OpenApi\Spec;
 class OpenApi extends AbstractAttribute
 {
     /**
-     * @param string|null                     $version  The OpenAPI specification version (e.g. '3.1.0')
-     * @param list<Security\Requirement>|null $security Default security requirements for the API
-     * @param array<string,mixed>|null        $x        Vendor extensions (x-* properties)
+     * @param string|null                     $version     The OpenAPI specification version (e.g. '3.1.0')
+     * @param list<Security\Requirement>|null $security    Default security requirements for the API
+     * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $version = null,
@@ -26,8 +27,9 @@ class OpenApi extends AbstractAttribute
          */
         public ?array $security = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool

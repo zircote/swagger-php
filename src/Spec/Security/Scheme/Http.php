@@ -18,6 +18,7 @@ class Http extends OA\Security\Scheme
 {
     /**
      * @param array<string,mixed>|null $x
+     * @param list<OA\Attachable>|null $attachables
      */
     public function __construct(
         ?string $securityScheme = null,
@@ -25,6 +26,7 @@ class Http extends OA\Security\Scheme
         ?string $scheme = null,
         ?string $bearerFormat = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
@@ -33,6 +35,7 @@ class Http extends OA\Security\Scheme
             scheme: $scheme,
             bearerFormat: $bearerFormat,
             x: $x,
+            attachables: $attachables,
         );
     }
 }

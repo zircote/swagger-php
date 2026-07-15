@@ -19,14 +19,16 @@ class Server extends AbstractAttribute
      * @param string|null               $description A description of the host (CommonMark syntax)
      * @param list<ServerVariable>|null $variables   Variables for server URL template substitution
      * @param array<string,mixed>|null  $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null     $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $url = null,
         public ?string $description = null,
         public ?array $variables = null,
         ?array $x = null,
+        ?array $attachables = null,
     ) {
-        parent::__construct(x: $x);
+        parent::__construct(x: $x, attachables: $attachables);
     }
 
     public function isRoot(): bool
