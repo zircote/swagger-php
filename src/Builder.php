@@ -279,6 +279,7 @@ class Builder
             new Augmenter\Docblock(),
             new Augmenter\OperationId(),
             new Augmenter\Tag(),
+            new Augmenter\EnumDescriptions(),
         ];
     }
 
