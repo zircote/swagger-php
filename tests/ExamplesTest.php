@@ -33,10 +33,22 @@ final class ExamplesTest extends OpenApiTestCase
             'using-traits',
             'webhooks',
         ];
-        // actual implementation folders that might exist
-        $implementations = ['annotations', 'attributes', 'mixed', 'spec'];
-        $versions = ['3.0.0', '3.1.0', '3.2.0'];
-        $modes = [Mode::CLASSIC, Mode::HYBRID, Mode::SPEC];
+        $implementations = [
+            'annotations',
+            'attributes',
+            'mixed', // classic annotations + attributes
+            'spec',
+        ];
+        $versions = [
+            '3.0.0',
+            '3.1.0',
+            '3.2.0',
+        ];
+        $modes = [
+            Mode::CLASSIC,
+            Mode::HYBRID,
+            Mode::SPEC,
+        ];
 
         foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
             foreach ($examples as $example) {
@@ -48,7 +60,9 @@ final class ExamplesTest extends OpenApiTestCase
                     foreach ($versions as $version) {
                         foreach ($modes as $mode) {
                             if (
-                                $mode === Mode::SPEC && $implementation !== 'spec'
+                                ($implementation !== 'spec' && $mode === Mode::SPEC)
+                                /* @phpstan-ignore function.alreadyNarrowedType */
+                                || ($implementation === 'spec' && in_array($mode, [Mode::CLASSIC, Mode::HYBRID, Mode::SPEC], true))
                                 || ($typeResolver instanceof LegacyTypeResolver && $mode === Mode::HYBRID)
                             ) {
                                 continue;
