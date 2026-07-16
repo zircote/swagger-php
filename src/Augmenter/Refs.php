@@ -58,7 +58,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
 
         foreach (array_keys($unresolved) as $ref) {
-            $this->logger?->warning('Ref: unresolved reference "' . $ref . '" — no matching component found');
+            $this->logger?->warning('Ref: unresolved FQCN reference "' . $ref . '" — no matching component found');
         }
 
     }
