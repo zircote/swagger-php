@@ -19,7 +19,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class MediaType implements PipeInterface
+class MediaTypes implements PipeInterface
 {
     public function group(): string|\BackedEnum
     {

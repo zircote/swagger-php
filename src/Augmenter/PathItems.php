@@ -20,7 +20,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class PathItemResolve implements PipeInterface
+class PathItems implements PipeInterface
 {
     public function group(): string|\BackedEnum
     {

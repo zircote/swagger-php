@@ -14,13 +14,13 @@ use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class PathItemResolveTest extends TestCase
+final class PathItemsTest extends TestCase
 {
     use AssemblesSpecification;
 
     private function resolve(Specification $spec): Specification
     {
-        (new Augmenter\PathItemResolve())($spec);
+        (new Augmenter\PathItems())($spec);
 
         return $spec;
     }

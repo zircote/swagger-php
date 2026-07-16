@@ -13,7 +13,7 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-final class RefTest extends TestCase
+final class RefsTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -24,7 +24,7 @@ final class RefTest extends TestCase
             Fixtures\Augmenter\RefController::class,
         );
 
-        (new Augmenter\Ref())($spec);
+        (new Augmenter\Refs())($spec);
 
         $schema = $spec->operations[0]->responses[0]->content[0]->schema;
         $this->assertSame('#/components/schemas/RefTarget', $schema->ref);
@@ -44,7 +44,7 @@ final class RefTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\Ref())($spec);
+        (new Augmenter\Refs())($spec);
 
         $this->assertSame('#/components/schemas/Foo', $response->content[0]->schema->ref);
     }
@@ -56,7 +56,7 @@ final class RefTest extends TestCase
             Fixtures\Augmenter\DiscriminatorSchema::class,
         );
 
-        (new Augmenter\Ref())($spec);
+        (new Augmenter\Refs())($spec);
 
         $discriminatorSchema = null;
         foreach ($spec->schemas as $schema) {

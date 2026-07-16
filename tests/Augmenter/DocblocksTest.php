@@ -11,7 +11,7 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-final class DocblockTest extends TestCase
+final class DocblocksTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -19,7 +19,7 @@ final class DocblockTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
 
-        (new Augmenter\Docblock())($spec);
+        (new Augmenter\Docblocks())($spec);
 
         $this->assertSame('Get a thing.', $spec->operations[0]->summary);
         $this->assertSame('Returns the thing by ID.', $spec->operations[0]->description);
@@ -29,7 +29,7 @@ final class DocblockTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
 
-        (new Augmenter\Docblock())($spec);
+        (new Augmenter\Docblocks())($spec);
 
         $this->assertTrue($spec->operations[0]->deprecated);
     }
@@ -38,7 +38,7 @@ final class DocblockTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\DocblockSchema::class);
 
-        (new Augmenter\Docblock())($spec);
+        (new Augmenter\Docblocks())($spec);
 
         $this->assertSame('A documented schema.', $spec->schemas[0]->description);
         $this->assertTrue($spec->schemas[0]->deprecated);
@@ -48,7 +48,7 @@ final class DocblockTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
 
-        (new Augmenter\Docblock())($spec);
+        (new Augmenter\Docblocks())($spec);
 
         $this->assertSame('the thing identifier', $spec->operations[0]->parameters[0]->description);
     }

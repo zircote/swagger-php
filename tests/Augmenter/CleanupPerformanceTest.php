@@ -13,12 +13,12 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Performance regression test for CleanUnused augmenter.
+ * Performance regression test for Cleanup augmenter.
  *
  * Run with: phpunit --group performance
  */
 #[Group('performance')]
-final class CleanUnusedPerformanceTest extends TestCase
+final class CleanupPerformanceTest extends TestCase
 {
     protected const SCHEMA_COUNT = 300;
 
@@ -32,17 +32,17 @@ final class CleanUnusedPerformanceTest extends TestCase
 
         // Warmup
         $warmup = clone $spec;
-        (new Augmenter\CleanUnused())($warmup);
+        (new Augmenter\Cleanup())($warmup);
 
         // Measure
         $start = microtime(true);
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
         $elapsed = (microtime(true) - $start) * 1000;
 
         $this->assertLessThan(
             self::MAX_CLEANUP_OVERHEAD_MS,
             $elapsed,
-            sprintf('CleanUnused took %.1fms, max allowed: %dms', $elapsed, self::MAX_CLEANUP_OVERHEAD_MS),
+            sprintf('Cleanup took %.1fms, max allowed: %dms', $elapsed, self::MAX_CLEANUP_OVERHEAD_MS),
         );
     }
 
@@ -51,7 +51,7 @@ final class CleanUnusedPerformanceTest extends TestCase
         $spec = $this->buildLargeSpec();
         $usedCount = (int) round(self::SCHEMA_COUNT * (1 - self::UNUSED_RATIO));
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount($usedCount, $spec->schemas, 'All unused schemas should be removed');
     }
