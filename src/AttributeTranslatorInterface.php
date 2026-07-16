@@ -6,21 +6,23 @@
 
 namespace OpenApi;
 
-use ReflectionAttribute;
-use Reflector;
-
 /**
  * Contract for creating raw attributes and translating them into `AttributeInterface` instances.
  */
 interface AttributeTranslatorInterface
 {
     /**
-     * @return array<ReflectionAttribute>
+     * Get attributes to load from the given reflector.
+     *
+     * @return array<\ReflectionAttribute>
      */
-    public function getAttributes(Reflector $reflector): array;
+    public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;
 
     /**
+     * Translates the given list of attributes into `AttributeInterface` instances.
+     *
+     * @param  array<object>             $attributes
      * @return array<AttributeInterface>
      */
-    public function translate(object $instance): array;
+    public function translate(array $attributes): array;
 }

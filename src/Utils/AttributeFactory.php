@@ -6,6 +6,7 @@
 
 namespace OpenApi\Utils;
 
+use OpenApi\Assembler\DefaultAttributeTranslator;
 use OpenApi\AttributeInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
@@ -275,32 +276,33 @@ class AttributeFactory
      */
     protected function readAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        $attributes = $reflector->getAttributes(
-            AttributeInterface::class,
-            \ReflectionAttribute::IS_INSTANCEOF,
-        );
+        $translators = [
+            new DefaultAttributeTranslator(),
+        ];
 
-        $result = [];
-        foreach ($attributes as $attribute) {
-            if (!class_exists($attribute->getName())) {
-                continue;
+        $attributes = [];
+        foreach ($translators as $translator) {
+            foreach ($translator->getAttributes($reflector) as $attribute) {
+                try {
+                    $instance = $attribute->newInstance();
+                } catch (\Error $e) {
+                    throw OpenApiException::fromSource(
+                        sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
+                        SourceLocation::fromReflector($reflector),
+                        $e,
+                    );
+                }
+
+                if ($instance instanceof AttributeInterface) {
+                    $instance->setReflector($reflector);
+                }
+
+                $attributes[] = $instance;
             }
 
-            try {
-                $instance = $attribute->newInstance();
-            } catch (\Error $e) {
-                throw OpenApiException::fromSource(
-                    sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
-                    SourceLocation::fromReflector($reflector),
-                    $e,
-                );
-            }
-
-            $instance->setReflector($reflector);
-
-            $result[] = $instance;
+            $attributes = $translator->translate($attributes);
         }
 
-        return $result;
+        return $attributes;
     }
 }
