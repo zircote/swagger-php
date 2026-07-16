@@ -278,7 +278,7 @@ class Builder
             new Augmenter\MediaType(),
             new Augmenter\Docblock(),
             new Augmenter\OperationId(),
-            new Augmenter\Tag(),
+            new Augmenter\Tags(),
             new Augmenter\EnumDescriptions(),
         ];
     }

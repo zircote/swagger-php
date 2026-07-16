@@ -18,7 +18,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Tag implements PipeInterface
+class Tags implements PipeInterface
 {
     /**
      * @param list<string> $whitelist
