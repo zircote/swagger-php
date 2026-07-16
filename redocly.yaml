@@ -5,6 +5,7 @@ rules:
   no-unresolved-refs: error
   no-unused-components: warn
   no-empty-servers: off
+  no-server-example.com: off
   spec-components-invalid-map-name: error
   security-defined: off
   operation-summary: off
