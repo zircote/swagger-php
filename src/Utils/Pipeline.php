@@ -13,14 +13,11 @@ use Psr\Log\NullLogger;
 
 /**
  * @template T
+ *
+ * @extends TypedList<callable(T): (T|null)>
  */
-class Pipeline
+class Pipeline extends TypedList
 {
-    /**
-     * @var array<callable(T): (T|null)>
-     */
-    protected $pipes = [];
-
     /**
      * @var list<string>|null ordered group keys; null means no grouping (insertion order only)
      */
@@ -36,7 +33,7 @@ class Pipeline
      */
     public function __construct(array $pipes = [], ?array $groups = null, string|\BackedEnum|null $defaultGroup = null, ?LoggerInterface $logger = null)
     {
-        $this->pipes = $pipes;
+        parent::__construct($pipes);
         $this->logger = $logger ?? new NullLogger();
 
         if ($groups !== null) {
@@ -56,99 +53,7 @@ class Pipeline
         }
     }
 
-    public function add(callable $pipe): Pipeline
-    {
-        $this->pipes[] = $pipe;
-
-        return $this;
-    }
-
-    /**
-     * @template P
-     *
-     * @param class-string<P> $class
-     *
-     * @return P|null
-     */
-    public function get(string $class): mixed
-    {
-        foreach ($this->pipes as $pipe) {
-            if ($pipe instanceof $class) {
-                return $pipe;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param callable|class-string|null $pipe
-     */
-    public function remove($pipe = null, ?callable $matcher = null): Pipeline
-    {
-        if (!$pipe && !$matcher) {
-            throw new OpenApiException('pipe or callable must not be empty');
-        }
-
-        // allow matching on class name if $pipe in a string
-        if (is_string($pipe) && !$matcher) {
-            $pipeClass = $pipe;
-            $matcher = (static fn ($pipe): bool => !$pipe instanceof $pipeClass);
-        }
-
-        if ($matcher) {
-            $tmp = [];
-            foreach ($this->pipes as $pipe) {
-                if ($matcher($pipe)) {
-                    $tmp[] = $pipe;
-                }
-            }
-
-            $this->pipes = $tmp;
-        } else {
-            if (false === ($key = array_search($pipe, $this->pipes, true))) {
-                return $this;
-            }
-
-            unset($this->pipes[$key]);
-
-            $this->pipes = array_values($this->pipes);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param callable|class-string $matcher used to determine the position to insert
-     *                                       either an <code>int</code> from a callable or, in the case of <code>$matcher</code> being
-     *                                       a <code>class-string</code>, the position before the first pipe of that class
-     */
-    public function insert(callable $pipe, $matcher): Pipeline
-    {
-        if (is_string($matcher)) {
-            $before = $matcher;
-            $matcher = static function (array $pipes) use ($before): int|string|null {
-                foreach ($pipes as $ii => $current) {
-                    if ($current instanceof $before) {
-                        return $ii;
-                    }
-                }
-
-                return null;
-            };
-        }
-
-        $index = $matcher($this->pipes);
-        if (null === $index || $index < 0 || $index > count($this->pipes)) {
-            throw new OpenApiException('Matcher result out of range');
-        }
-
-        array_splice($this->pipes, $index, 0, [$pipe]);
-
-        return $this;
-    }
-
-    public function walk(callable $walker): Pipeline
+    public function walk(callable $walker): static
     {
         foreach ($this->ordered() as $pipe) {
             $walker($pipe);
@@ -182,12 +87,12 @@ class Pipeline
     protected function ordered(): array
     {
         if ($this->groups === null) {
-            return $this->pipes;
+            return $this->items;
         }
 
         $buckets = array_fill_keys($this->groups, []);
 
-        foreach ($this->pipes as $pipe) {
+        foreach ($this->items as $pipe) {
             $group = $pipe instanceof PipeInterface
                 ? self::groupKey($pipe->group())
                 : $this->defaultGroup;
