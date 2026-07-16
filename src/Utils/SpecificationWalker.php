@@ -51,6 +51,22 @@ class SpecificationWalker
                 if (isset($attribute->ref)) {
                     $visitor($attribute);
                 }
+
+                // special case
+                if ($attribute instanceof OA\Schema) {
+                    if ($attribute->discriminator instanceof OA\Discriminator && $attribute->discriminator->mapping !== null) {
+                        foreach ($attribute->discriminator->mapping as $ref) {
+                            $visitor(new OA\Schema(ref: $ref));
+                        }
+                    }
+                }
+            }
+
+            // special case
+            if ($attribute instanceof OA\Security\Requirement) {
+                foreach (array_keys($attribute->toArray()) as $schemeName) {
+                    $visitor(new OA\Security\Scheme(ref: '#/components/securitySchemes/' . $schemeName));
+                }
             }
         });
     }
@@ -64,7 +80,7 @@ class SpecificationWalker
     public function visit(string $visitee, callable $visitor): void
     {
         foreach (get_object_vars($this->specification) as $buckets) {
-            $this->walk($visitee, $visitor, (array) $buckets);
+            $this->walk($visitee, $visitor, $buckets instanceof AttributeInterface ? [$buckets] : (array) $buckets);
         }
     }
 
