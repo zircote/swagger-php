@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Builder;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\Attributes\Group;
@@ -20,29 +21,51 @@ use PHPUnit\Framework\TestCase;
 #[Group('performance')]
 final class CleanupPerformanceTest extends TestCase
 {
-    protected const SCHEMA_COUNT = 300;
+    protected const SCHEMA_COUNT = 3300;
 
     protected const UNUSED_RATIO = 0.4;
 
-    protected const MAX_CLEANUP_OVERHEAD_MS = 50;
+    protected const MAX_CLEANUP_OVERHEAD_RATIO = 4.0;
 
     public function testCleanupPerformance(): void
     {
         $spec = $this->buildLargeSpec();
 
-        // Warmup
-        $warmup = clone $spec;
-        (new Augmenter\Cleanup())($warmup);
+        $withPipeline = (new Builder())->getAugmenters();
+        $withoutPipeline = (new Builder())
+            ->withAugmenters(fn ($p) => $p->remove(Augmenter\Cleanup::class))
+            ->getAugmenters();
 
-        // Measure
+        // Warmup
+        $withPipeline->process(clone $spec);
+        $withoutPipeline->process(clone $spec);
+
+        // Measure without
         $start = microtime(true);
-        (new Augmenter\Cleanup())($spec);
-        $elapsed = (microtime(true) - $start) * 1000;
+        $withoutPipeline->process(clone $spec);
+        $withoutMs = (microtime(true) - $start) * 1000;
+
+        // Measure with
+        $start = microtime(true);
+        $withPipeline->process(clone $spec);
+        $withMs = (microtime(true) - $start) * 1000;
+
+        $ratio = $withoutMs > 0 ? $withMs / $withoutMs : 0;
+
+        fwrite(STDERR, sprintf(
+            "\n  Augmenters: %.1fms with Cleanup / %.1fms without = %.2fx overhead (%d schemas, %d%% unused, max: %.1fx)\n",
+            $withMs,
+            $withoutMs,
+            $ratio,
+            self::SCHEMA_COUNT,
+            self::UNUSED_RATIO * 100,
+            self::MAX_CLEANUP_OVERHEAD_RATIO,
+        ));
 
         $this->assertLessThan(
-            self::MAX_CLEANUP_OVERHEAD_MS,
-            $elapsed,
-            sprintf('Cleanup took %.1fms, max allowed: %dms', $elapsed, self::MAX_CLEANUP_OVERHEAD_MS),
+            self::MAX_CLEANUP_OVERHEAD_RATIO,
+            $ratio,
+            sprintf('Cleanup overhead too high: %.1fx (with: %.1fms, without: %.1fms)', $ratio, $withMs, $withoutMs),
         );
     }
 
