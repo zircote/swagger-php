@@ -37,9 +37,15 @@ class Refs implements PipeInterface, LoggerAwareInterface
         }
 
         $this->resolveRefFQCNs($payload, $refMap);
+        $this->resolveAllOfRefs();
         $this->resolveDiscriminatorMappings($payload, $refMap);
 
         return null;
+    }
+
+    protected function resolveAllOfRefs(): void
+    {
+//todo
     }
 
     protected function resolveRefFQCNs(Specification $specification, array $refMap): void
@@ -58,7 +64,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
 
         foreach (array_keys($unresolved) as $ref) {
-            $this->logger?->debug('Ref: unresolved FQCN reference "' . $ref . '" — no matching component found');
+            $this->logger?->warning('Ref: unresolved FQCN reference "' . $ref . '" — no matching component found');
         }
 
     }
