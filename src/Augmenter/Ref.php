@@ -32,13 +32,20 @@ class Ref implements PipeInterface, LoggerAwareInterface
     public function __invoke(mixed $payload): mixed
     {
         $refMap = $this->buildRefMap($payload);
-
         if ($refMap === []) {
             return null;
         }
 
+        $this->verifyAllRefs($payload, $refMap);
+        $this->resolveDiscriminatorMappings($payload, $refMap);
+
+        return null;
+    }
+
+    protected function verifyAllRefs(Specification $specification, array $refMap): void
+    {
         $unresolved = [];
-        $payload->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
             if (str_starts_with($attribute->ref, '#/')) {
                 return;
             }
@@ -55,9 +62,6 @@ class Ref implements PipeInterface, LoggerAwareInterface
             ]);
         }
 
-        $this->resolveDiscriminatorMappings($payload, $refMap);
-
-        return null;
     }
 
     /**
