@@ -113,6 +113,30 @@ final class CleanUnusedTest extends TestCase
         $this->assertCount(2, $spec->schemas);
     }
 
+    public function testKeepsSchemaReferencedViaDiscriminatorMapping(): void
+    {
+        $spec = new Specification();
+
+        $catSchema = new OA\Schema(schema: 'Cat');
+        $dogSchema = new OA\Schema(schema: 'Dog');
+        $petSchema = new OA\Schema(schema: 'Pet', discriminator: new OA\Discriminator(propertyName: 'type', mapping: [
+            'cat' => '#/components/schemas/Cat',
+            'dog' => '#/components/schemas/Dog',
+        ]));
+        $spec->schemas = [$catSchema, $dogSchema, $petSchema];
+
+        $operation = new OA\Operation(path: '/pets', method: 'get');
+        $response = new OA\Response(response: 200, description: 'OK', content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: '#/components/schemas/Pet')),
+        ]);
+        $operation->responses = [$response];
+        $spec->operations[] = $operation;
+
+        (new Augmenter\CleanUnused())($spec);
+
+        $this->assertCount(3, $spec->schemas);
+    }
+
     public function testRemovesUnusedResponse(): void
     {
         $spec = new Specification();

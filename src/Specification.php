@@ -68,12 +68,6 @@ class Specification
     public function add(AttributeInterface ...$attributes): static
     {
         foreach ($attributes as $attribute) {
-            if ($attribute instanceof OA\Components) {
-                $this->addComponentsChildren($attribute);
-
-                continue;
-            }
-
             match (true) {
                 $attribute instanceof OA\OpenApi => $this->openapi = $attribute,
                 $attribute instanceof OA\Info => $this->info = $attribute,
@@ -91,6 +85,7 @@ class Specification
                 $attribute instanceof OA\Link => $this->links[] = $attribute,
                 $attribute instanceof OA\Example => $this->examples[] = $attribute,
                 $attribute instanceof OA\Attachable => $this->attachables[] = $attribute,
+                $attribute instanceof OA\Components => $this->addComponentsChildren($attribute),
                 default => throw OpenApiException::fromSource(
                     'Unsupported root-level attribute: ' . $attribute::class,
                     $attribute->getSourceLocation(),
@@ -101,7 +96,12 @@ class Specification
         return $this;
     }
 
-    private function addComponentsChildren(OA\Components $components): void
+    public function getWalker(): SpecificationWalker
+    {
+        return new SpecificationWalker($this);
+    }
+
+    protected function addComponentsChildren(OA\Components $components): void
     {
         foreach ($components->contains() as $slot) {
             $property = rtrim($slot, '[]');
@@ -109,10 +109,5 @@ class Specification
                 array_push($this->{$property}, ...$components->{$property});
             }
         }
-    }
-
-    public function getWalker(): SpecificationWalker
-    {
-        return new SpecificationWalker($this);
     }
 }
