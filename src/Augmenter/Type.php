@@ -43,7 +43,7 @@ class Type implements PipeInterface
         return Group::Resolve;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         foreach ($payload->schemas as $schema) {
             $this->inferSchemaType($schema);

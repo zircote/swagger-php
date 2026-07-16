@@ -44,7 +44,7 @@ class Docblock implements PipeInterface
         return Group::Augment;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         foreach ($payload->operations as $operation) {
             $this->augmentSummaryAndDescription($operation);

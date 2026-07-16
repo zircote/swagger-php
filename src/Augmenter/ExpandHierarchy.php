@@ -35,7 +35,7 @@ class ExpandHierarchy implements PipeInterface
         return Group::Resolve;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         $schemaMap = $this->buildSchemaMap($payload);
 

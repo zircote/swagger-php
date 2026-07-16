@@ -20,7 +20,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * @implements PipeInterface<Specification>
  */
-class Ref implements PipeInterface, LoggerAwareInterface
+class Refs implements PipeInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -29,26 +29,27 @@ class Ref implements PipeInterface, LoggerAwareInterface
         return Group::Resolve;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         $refMap = $this->buildRefMap($payload);
         if ($refMap === []) {
             return null;
         }
 
-        $this->verifyAllRefs($payload, $refMap);
+        $this->resolveRefFQCNs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
 
         return null;
     }
 
-    protected function verifyAllRefs(Specification $specification, array $refMap): void
+    protected function resolveRefFQCNs(Specification $specification, array $refMap): void
     {
         $unresolved = [];
         $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
             if (str_starts_with($attribute->ref, '#/')) {
                 return;
             }
+
             if (isset($refMap[$attribute->ref])) {
                 $attribute->ref = $refMap[$attribute->ref];
             } else {
@@ -57,9 +58,7 @@ class Ref implements PipeInterface, LoggerAwareInterface
         });
 
         foreach (array_keys($unresolved) as $ref) {
-            $this->logger?->warning('Ref: unresolved reference "{ref}" — no matching component found', [
-                'ref' => $ref,
-            ]);
+            $this->logger?->warning('Ref: unresolved reference "' . $ref . '" — no matching component found');
         }
 
     }
@@ -71,49 +70,15 @@ class Ref implements PipeInterface, LoggerAwareInterface
      */
     protected function buildRefMap(Specification $specification): array
     {
-        $map = [];
+        $refMap = [];
 
-        foreach ($specification->schemas as $schema) {
-            $name = $schema->schema ?? $schema->title;
-            $fqcn = $schema->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/schemas/' . $name;
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use (&$refMap): void {
+            if ($attribute->ref !== null) {
+                $refMap[$attribute->getClassName()] = $attribute->ref;
             }
-        }
+        });
 
-        foreach ($specification->responses as $response) {
-            $name = $response->response;
-            $fqcn = $response->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/responses/' . $name;
-            }
-        }
-
-        foreach ($specification->requestBodies as $body) {
-            $name = $body->request;
-            $fqcn = $body->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/requestBodies/' . $name;
-            }
-        }
-
-        foreach ($specification->headers as $header) {
-            $name = $header->header;
-            $fqcn = $header->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/headers/' . $name;
-            }
-        }
-
-        foreach ($specification->parameters as $parameter) {
-            $name = $parameter->parameter ?? $parameter->name;
-            $fqcn = $parameter->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/parameters/' . $name;
-            }
-        }
-
-        return $map;
+        return $refMap;
     }
 
     /**

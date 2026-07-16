@@ -47,7 +47,7 @@ class Enums implements PipeInterface
         return Group::Resolve;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         $this->expandEnumSchemas($payload);
         $this->resolveEnumValues($payload);

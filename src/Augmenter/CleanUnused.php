@@ -46,7 +46,7 @@ class CleanUnused implements PipeInterface, LoggerAwareInterface
         return Group::Reduce;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         if (!$this->enabled) {
             return null;

@@ -272,7 +272,7 @@ class Builder
             new Augmenter\Enums(),
             new Augmenter\PathItemResolve(),
             new Augmenter\Type(),
-            new Augmenter\Ref(),
+            new Augmenter\Refs(),
             new Augmenter\PathFilter(),
             new Augmenter\CleanUnused(),
             new Augmenter\MediaType(),

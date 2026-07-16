@@ -59,7 +59,7 @@ class PathFilter implements PipeInterface
         return Group::Reduce;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         if (!$this->tags && !$this->paths) {
             return null;

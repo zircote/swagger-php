@@ -26,7 +26,7 @@ class MediaType implements PipeInterface
         return Group::Augment;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         $this->processMediaTypes($payload);
 

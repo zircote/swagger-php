@@ -56,7 +56,7 @@ final class ExpandHierarchyBcTest extends TestCase
         (new Augmenter\ExpandHierarchy())($specification);
         (new Augmenter\InferNames())($specification);
         (new Augmenter\Type())($specification);
-        (new Augmenter\Ref())($specification);
+        (new Augmenter\Refs())($specification);
 
         $compiler = new OpenApi31Compiler();
         $output = $compiler->compile($specification);

@@ -36,7 +36,7 @@ class EnumDescriptions implements PipeInterface
         return Group::Augment;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         if (!$this->enabled) {
             return null;

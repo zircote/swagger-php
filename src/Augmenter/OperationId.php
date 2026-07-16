@@ -40,7 +40,7 @@ class OperationId implements PipeInterface
         return Group::Augment;
     }
 
-    public function __invoke(mixed $payload): mixed
+    public function __invoke(mixed $payload): null
     {
         foreach ($payload->operations as $operation) {
             if ($operation->operationId !== null) {
