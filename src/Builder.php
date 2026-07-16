@@ -7,8 +7,11 @@
 namespace OpenApi;
 
 use OpenApi\Builder\CollectingLogger;
+use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
+use OpenApi\Utils\TokenScanner;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -16,18 +19,31 @@ use Psr\Log\NullLogger;
  * Unified entry point for generating OpenAPI documents.
  *
  * Mode:
- *   setMode('classic') — annotation/attribute pipeline via Generator (default)
+ *   setMode(Builder\Mode::CLASSIC) — annotation/attribute pipeline via Generator (default)
+ *   setMode(Builder\Mode::SPEC)    — spec attribute pipeline via Assembler + Compiler
+ *   setMode(Builder\Mode::HYBRID)  — reduced classic pipeline → HybridBridge → spec Compiler
+ *
+ * Version resolution (spec/hybrid pipeline):
+ *   setVersion() > #[OpenApi(version: ...)] from source > '3.1.0' fallback
+ *
+ * Compiler resolution (spec/hybrid pipeline):
+ *   setCompiler() explicit > auto-resolved from version
  */
 class Builder
 {
     /** @var list<string|iterable> */
     protected array $sources = [];
 
-    protected string $mode = 'classic';
+    protected Mode $mode = Mode::CLASSIC;
 
     protected ?string $version = null;
 
     protected ?LoggerInterface $logger = null;
+
+    protected ?CompilerInterface $compiler = null;
+
+    /** @var Utils\Pipeline<Specification>|null */
+    protected ?Utils\Pipeline $augmenters = null;
 
     /** @var callable|null */
     protected $generatorHook;
@@ -49,18 +65,9 @@ class Builder
         return $this;
     }
 
-    /**
-     * Select the processing mode.
-     *
-     * Available modes:
-     *   - 'classic': scans source files for annotations/attributes and assembles
-     *                the OpenAPI document via Generator (default)
-     *
-     * @param string $mode 'classic' (default)
-     */
-    public function setMode(string $mode): static
+    public function setMode(string|Mode $mode): static
     {
-        $this->mode = $mode;
+        $this->mode = $mode instanceof Mode ? $mode : Mode::from($mode);
 
         return $this;
     }
@@ -75,6 +82,47 @@ class Builder
     public function setLogger(LoggerInterface $logger): static
     {
         $this->logger = $logger;
+
+        return $this;
+    }
+
+    public function setCompiler(CompilerInterface $compiler): static
+    {
+        $this->compiler = $compiler;
+
+        return $this;
+    }
+
+    /**
+     * @return Utils\Pipeline<Specification>
+     */
+    public function getAugmenters(): Utils\Pipeline
+    {
+        $this->augmenters ??= new Utils\Pipeline(
+            $this->getDefaultAugmenters(),
+            groups: [Augmenter\Group::Resolve, Augmenter\Group::Reduce, Augmenter\Group::Augment],
+            defaultGroup: Augmenter\Group::Augment,
+            logger: $this->getLogger(),
+        );
+
+        return $this->augmenters;
+    }
+
+    public function setAugmenters(Utils\Pipeline $augmenters): static
+    {
+        $this->augmenters = $augmenters;
+
+        return $this;
+    }
+
+    /**
+     * Configure the augmenter pipeline via callable.
+     *
+     * @param callable(Utils\Pipeline): void $hook
+     */
+    public function withAugmenters(callable $hook): static
+    {
+        $hook($this->getAugmenters());
 
         return $this;
     }
@@ -97,7 +145,9 @@ class Builder
     public function build(): Result
     {
         return match ($this->mode) {
-            default => $this->doBuild(),
+            Mode::SPEC => $this->doBuildSpec(),
+            Mode::HYBRID => $this->doBuildHybrid(),
+            default => $this->doBuildClassic(),
         };
     }
 
@@ -108,7 +158,7 @@ class Builder
         return $this->logger;
     }
 
-    protected function doBuild(): Result
+    protected function doBuildClassic(): Result
     {
         $collecting = new CollectingLogger($this->getLogger());
         $generator = new Generator($collecting);
@@ -124,6 +174,113 @@ class Builder
         $openApi = $generator->generate($this->sources);
 
         return Result::fromClassic($this->resolveFiles(), $openApi, $collecting->entries());
+    }
+
+    protected function doBuildSpec(): Result
+    {
+        $files = $this->resolveFiles();
+        $tokenScanner = new TokenScanner();
+        $assembler = new Assembler();
+
+        foreach ($files as $file) {
+            require_once $file;
+            foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
+                if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
+                    $assembler->collect(new \ReflectionClass($class));
+                }
+            }
+        }
+
+        $specification = $assembler->getSpecification();
+
+        $this->getAugmenters()->process($specification);
+
+        $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
+        $specification->openapi->version = $version;
+        $compiler = $this->compiler ?? $this->resolveCompiler($version);
+
+        $diagnostics = $compiler->validate($specification);
+        $output = $compiler->compile($specification);
+
+        return Result::fromSpec($files, $output, $diagnostics);
+    }
+
+    protected function doBuildHybrid(): Result
+    {
+        $collectingLogger = new CollectingLogger($this->getLogger());
+        $generator = new Generator($collectingLogger);
+
+        if ($this->version !== null) {
+            $generator->setVersion($this->version);
+        }
+
+        $generator->setProcessorPipeline(new Utils\Pipeline([
+            new Processors\MergeJsonContent(),
+            new Processors\MergeXmlContent(),
+        ]));
+
+        if ($this->generatorHook !== null) {
+            $generator = ($this->generatorHook)($generator) ?? $generator;
+        }
+
+        $analysis = new Analysis([], new Context([
+            'version' => $generator->getVersion(),
+            'logger' => $collectingLogger,
+        ]));
+        $generator->generate($this->sources, $analysis, validate: false);
+
+        $bridge = new HybridBridge();
+        $specification = $bridge->fromAnalysis($analysis);
+
+        $this->getAugmenters()->process($specification);
+
+        $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
+        $specification->openapi->version = $version;
+        $compiler = $this->compiler ?? $this->resolveCompiler($version);
+
+        $diagnostics = $compiler->validate($specification);
+        $output = $compiler->compile($specification);
+
+        return Result::fromSpec($this->resolveFiles(), $output, array_merge($collectingLogger->entries(), $diagnostics));
+    }
+
+    protected function resolveCompiler(string $version): CompilerInterface
+    {
+        $compilers = [
+            new Compiler\OpenApi30Compiler(),
+            new Compiler\OpenApi31Compiler(),
+            new Compiler\OpenApi32Compiler(),
+        ];
+
+        foreach ($compilers as $compiler) {
+            if ($compiler->supports($version)) {
+                return $compiler;
+            }
+        }
+
+        throw new OpenApiException("No compiler available for version '{$version}'");
+    }
+
+    /**
+     * @return list<PipeInterface>
+     */
+    protected function getDefaultAugmenters(): array
+    {
+        return [
+            new Augmenter\ExpandHierarchy(),
+            new Augmenter\InferNames(),
+            new Augmenter\Enums(),
+            new Augmenter\PathItemResolve(),
+            new Augmenter\Type(),
+            new Augmenter\Ref(),
+            new Augmenter\PathFilter(),
+            new Augmenter\CleanUnused(),
+            new Augmenter\MediaType(),
+            new Augmenter\Docblock(),
+            new Augmenter\OperationId(),
+            new Augmenter\Tag(),
+            new Augmenter\EnumDescriptions(),
+        ];
     }
 
     /**

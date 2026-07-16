@@ -165,6 +165,7 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 | `MediaType` | augment | Re-keys encoding by property name | Done |
 | `CleanUnused` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
 | `PathFilter` | reduce | Filters operations by tag/path regex patterns | Done |
+| `EnumDescriptions` | augment | Generates descriptions for enum-based properties (BETA, disabled by default) | Done |
 | `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
 
 ## Example coverage
@@ -374,7 +375,7 @@ Need to document the general pattern for shortcut attributes: how they participa
 
 ### Additional augmenter pipes
 
-- **`EnumDescription`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescription::class)->setEnabled(true)`.
+None planned at this time.
 
 ### Design decisions
 

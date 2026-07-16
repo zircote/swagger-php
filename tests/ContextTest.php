@@ -8,6 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Tests\Fixtures\Customer;
@@ -19,6 +20,7 @@ final class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))
             ->setLogger($this->getTrackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator
@@ -59,6 +61,7 @@ final class ContextTest extends OpenApiTestCase
     {
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))
             ->setLogger($this->getTrackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))

@@ -6,6 +6,7 @@
 
 namespace OpenApi\Console;
 
+use OpenApi\Builder\Mode;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -45,8 +46,8 @@ class GenerateInput
     #[Option('The OpenAPI version')]
     public ?string $version = null;
 
-    #[Option('Processing mode; "classic" uses the annotation/attribute pipeline', shortcut: 'm')]
-    public string $mode = 'classic';
+    #[Option('Set mode classic, hybrid or spec', shortcut: 'm')]
+    public Mode $mode = Mode::CLASSIC;
 
     #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
