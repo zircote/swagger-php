@@ -10,6 +10,7 @@ use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Serializer;
+use OpenApi\Tests\Concerns\AssertsBuilderResult;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\TypeResolverInterface;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ExamplesTest extends OpenApiTestCase
 {
+    use AssertsBuilderResult;
     use UsesExamples;
 
     public static function exampleSpecs(): iterable
@@ -106,6 +108,7 @@ final class ExamplesTest extends OpenApiTestCase
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
             ->build();
         // file_put_contents($specFilename, $result->toYaml());
+        $this->assertBuilderResult($result);
         $this->assertSpecEquals(
             $result->toYaml(),
             file_get_contents($specFilename),
