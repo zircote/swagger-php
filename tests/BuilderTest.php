@@ -8,6 +8,7 @@ namespace OpenApi\Tests;
 
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Utils\SourceFinder;
@@ -47,6 +48,7 @@ final class BuilderTest extends OpenApiTestCase
             ->generate([$sourceDir]);
 
         $builderResult = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource($sourceDir)
             ->withGenerator(function (Generator $generator): void {
                 $generator->setAnalyser($this->getAnalyzer());
@@ -114,6 +116,7 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
 
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->setSources([])
             ->setLogger($this->getTrackingLogger())
             ->build();
@@ -124,6 +127,7 @@ final class BuilderTest extends OpenApiTestCase
     public function testBuildCollectsWarnings(): void
     {
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->setSources([])
             ->setLogger(new NullLogger())
             ->build();
