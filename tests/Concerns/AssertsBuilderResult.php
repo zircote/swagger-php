@@ -10,16 +10,38 @@ use OpenApi\Builder\Result;
 
 trait AssertsBuilderResult
 {
-    public function assertBuilderResult(Result $result, int $warnCount = -1, int $errorCount = 0): void
+    protected array $warningExcludes = [];
+
+    protected array $errorExcludes = [];
+
+    public function expectResultWarnings(array $warnings): void
+    {
+        $this->warningExcludes = $warnings;
+    }
+
+    public function expectResultErrors(array $errors): void
+    {
+        $this->errorExcludes = $errors;
+    }
+
+    public function assertBuilderResult(Result $result): void
     {
         $this->assertTrue($result->isValid());
 
-        if ($warnCount > -1) {
-            $this->assertCount($warnCount, $result->warnings(), '[Warning] ' . implode("\n[Warning] ", $result->warnings()));
-        }
+        $filterByContains = (fn(array $list, array $patterns): array => array_filter($list, function (string $item) use ($patterns): bool {
+            foreach ($patterns as $pattern) {
+                if (str_contains($item, $pattern)) {
+                    return false;
+                }
+            }
 
-        if ($errorCount > -1) {
-            $this->assertCount($errorCount, $result->errors(), '[Error] ' . implode("\n[Error] ", $result->errors()));
-        }
+            return true;
+        }));
+
+        $warnings = $filterByContains($result->warnings(), $this->warningExcludes);
+        $errors = $filterByContains($result->errors(), $this->errorExcludes);
+
+        $this->assertCount(0, $warnings, '[Warning] ' . implode("\n[Warning] ", $result->warnings()));
+        $this->assertCount(0, $errors, '[Error] ' . implode("\n[Error] ", $result->errors()));
     }
 }
