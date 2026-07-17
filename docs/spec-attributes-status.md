@@ -147,26 +147,26 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 - Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
 - `SpecificationWalker` — instance-based tree traversal with unified schema descent
 - All augmenters implemented (see table below)
-- Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Type` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
+- Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Types` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
 - `Attachable` DTO with `Specification::$attachables` bucket, inline `$attachables` parameter on all DTOs, slot validation in `AttributeFactory::nestChild()`
 
 ### Augmenter status
 
 | Augmenter | Group | Description | Status |
 |---|---|---|---|
-| `Type` | resolve | Infers schema type, format, nullable, items, refs from PHP types and docblocks | Done |
-| `Ref` | resolve | Resolves FQCN `$ref` values to JSON Reference paths, including discriminator mappings | Done |
-| `Docblock` | augment | Summary, description, deprecated from PHPDoc | Done |
-| `OperationId` | augment | Generates operationId from reflector context, with `hash` option | Done |
-| `Tag` | augment | Auto-generates global tags from operation usage | Done |
-| `ExpandHierarchy` | augment | Trait/interface allOf composition, non-schema interface member merging | Done |
+| `Types` | resolve | Infers schema type, format, nullable, items, refs from PHP types and docblocks | Done |
+| `Refs` | resolve | Resolves FQCN `$ref` values to JSON Reference paths, including discriminator mappings | Done |
+| `Docblocks` | augment | Summary, description, deprecated from PHPDoc | Done |
+| `OperationIds` | augment | Generates operationId from reflector context, with `hash` option | Done |
+| `Tags` | augment | Auto-generates global tags from operation usage | Done |
+| `Inheritance` | augment | Trait/interface allOf composition, non-schema interface member merging | Done |
 | `Enums` | augment | Resolves PHP enum backing types into schema enum/type values | Done |
-| `InferNames` | augment | Auto-names component keys from reflector class/context | Done |
-| `MediaType` | augment | Re-keys encoding by property name | Done |
-| `CleanUnused` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
+| `Names` | augment | Auto-names component keys from reflector class/context | Done |
+| `MediaTypes` | augment | Re-keys encoding by property name | Done |
+| `Cleanup` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
 | `PathFilter` | reduce | Filters operations by tag/path regex patterns | Done |
 | `EnumDescriptions` | augment | Generates descriptions for enum-based properties (BETA, disabled by default) | Done |
-| `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
+| `PathItems` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
 
 ## Example coverage
 
@@ -210,9 +210,9 @@ How each classic processor maps to the new pipeline:
 
 | Classic Processor | Spec-Attributes Equivalent | Stage | Status |
 |---|---|---|---|
-| ExpandClasses | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
-| ExpandTraits | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
-| ExpandInterfaces | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandClasses | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandTraits | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandInterfaces | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
 | ExpandEnums | `Enums` | augment | Done |
 | MergeIntoOpenApi | Assembler (builds Specification) | assembly | Done |
 | MergeIntoComponents | Compiler (groups into components) | compile | Done |
@@ -220,23 +220,23 @@ How each classic processor maps to the new pipeline:
 | MergeXmlContent | N/A — attribute eliminated | — | N/A |
 | BuildPaths | Compiler (groups by path) | compile | Done |
 | AugmentSchemas | Split (see below) | mixed | Done |
-| AugmentProperties | `Type` (type/format/nullable + property name) | resolve | Done |
-| AugmentParameters | `Type` (type/name/required inference) | resolve | Done |
-| AugmentItems | `Type` (array items via SchemaType.items) | resolve | Done |
-| AugmentRequestBody | `Type` (required inference from nullable) | resolve | Done |
-| AugmentRefs | `Ref` (FQCN → JSON reference) | resolve | Done |
-| AugmentDiscriminators | `Ref` (discriminator mapping resolution) | resolve | Done |
-| AugmentTags | `Tag` (auto-generate tags from operations) | augment | Done |
-| AugmentMediaType | `MediaType` (re-key encoding by property name) | augment | Done |
-| DocBlockDescriptions | `Docblock` (summary/description/deprecated) | augment | Done |
-| OperationId | `OperationId` | augment | Done |
+| AugmentProperties | `Types` (type/format/nullable + property name) | resolve | Done |
+| AugmentParameters | `Types` (type/name/required inference) | resolve | Done |
+| AugmentItems | `Types` (array items via SchemaType.items) | resolve | Done |
+| AugmentRequestBody | `Types` (required inference from nullable) | resolve | Done |
+| AugmentRefs | `Refs` (FQCN → JSON reference) | resolve | Done |
+| AugmentDiscriminators | `Refs` (discriminator mapping resolution) | resolve | Done |
+| AugmentTags | `Tags` (auto-generate tags from operations) | augment | Done |
+| AugmentMediaType | `MediaTypes` (re-key encoding by property name) | augment | Done |
+| DocBlockDescriptions | `Docblocks` (summary/description/deprecated) | augment | Done |
+| OperationId | `OperationIds` | augment | Done |
 | CleanUnmerged | Assembler (orphan validation in resolveHierarchy) | assembly | Done |
-| CleanUnusedComponents | `CleanUnused` (iterative, handles nested deps) | reduce | Done |
+| CleanUnusedComponents | `Cleanup` (iterative, handles nested deps) | reduce | Done |
 | PathFilter | `PathFilter` | reduce | Done |
 
 **AugmentSchemas split:** This processor's responsibilities are distributed across four concerns:
-1. Schema naming from class/trait/interface/enum → `InferNames` (done)
-2. `type: object` inference when properties present → `Type` (done)
+1. Schema naming from class/trait/interface/enum → `Names` (done)
+2. `type: object` inference when properties present → `Types` (done)
 3. Property merging into parent schema → Assembler via `merge()`/`contains()` (done)
 4. allOf merge when both properties + allOf exist → Compiler (done)
 
@@ -259,7 +259,7 @@ Class-level only. No `path` property — path is always inferred from the operat
 | `security[]` | — (cloned to operations) | Shared security for all operations |
 | `responses[]` | — (cloned to operations) | Shared responses for all operations |
 
-### Augmenter: `PathItemResolve` (resolve group, early)
+### Augmenter: `PathItems` (resolve group, early)
 
 1. **Index** — map each PathItem to its declaring class via reflector
 2. **Compose prefixes** — walk `ReflectionClass::getParentClass()` chain, collect ancestor PathItems, compose full prefix
