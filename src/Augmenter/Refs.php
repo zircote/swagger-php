@@ -37,8 +37,17 @@ class Refs implements PipeInterface, LoggerAwareInterface
             return null;
         }
 
+        $this->resolveFQCNRefs($payload, $refMap);
+        $this->resolveDiscriminatorMappings($payload, $refMap);
+
+        return null;
+    }
+
+    protected function resolveFQCNRefs(Specification $specification, array &$refMap): array
+    {
         $unresolved = [];
-        $payload->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
+
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use ($refMap, &$unresolved): void {
             if (str_starts_with($attribute->ref, '#/')) {
                 return;
             }
@@ -55,9 +64,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             ]);
         }
 
-        $this->resolveDiscriminatorMappings($payload, $refMap);
-
-        return null;
+        return $refMap;
     }
 
     /**
