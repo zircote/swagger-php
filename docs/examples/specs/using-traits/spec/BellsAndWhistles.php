@@ -18,5 +18,5 @@ trait BellsAndWhistles
      * The plating.
      */
     #[OA\Property]
-    public string $plating;
+    public $plating;
 }
