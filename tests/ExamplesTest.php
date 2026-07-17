@@ -47,8 +47,8 @@ final class ExamplesTest extends OpenApiTestCase
             '3.2.0',
         ];
         $modes = [
-            //Mode::CLASSIC,
-            //Mode::HYBRID,
+            Mode::CLASSIC,
+            Mode::HYBRID,
             Mode::SPEC,
         ];
 
@@ -118,8 +118,8 @@ final class ExamplesTest extends OpenApiTestCase
     #[DataProvider('exampleSpecs')]
     public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
     {
-        if ($mode === Mode::SPEC) {
-            $this->markTestSkipped('Serializer tests are not supported for spec mode');
+        if ($mode !== Mode::HYBRID) {
+            return;
         }
 
         $specFilename = self::getSpecFilename($name, $implementation, $version);

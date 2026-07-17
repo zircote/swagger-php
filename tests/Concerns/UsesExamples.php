@@ -48,8 +48,18 @@ trait UsesExamples
         $implementationNamerspaceBase = sprintf("{$namerspaceBase}%s\\", ucfirst($implementation));
 
         $classloader = new ClassLoader();
-        $classloader->addPsr4($namerspaceBase, $basePath);
         $classloader->addPsr4($implementationNamerspaceBase, $path);
+
+        $sharedFiles = glob("{$basePath}/*.php");
+        if ($sharedFiles) {
+            $classMap = [];
+            foreach ($sharedFiles as $file) {
+                $className = $namerspaceBase . pathinfo($file, PATHINFO_FILENAME);
+                $classMap[$className] = $file;
+            }
+            $classloader->addClassMap($classMap);
+        }
+
         $classloader->register();
     }
 }
