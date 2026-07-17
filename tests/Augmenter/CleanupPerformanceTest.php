@@ -10,6 +10,7 @@ use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,8 @@ final class CleanupPerformanceTest extends TestCase
 
         $withPipeline = (new Builder())->getAugmenters();
         $withoutPipeline = (new Builder())
-            ->withAugmenters(fn ($p) => $p->remove(Augmenter\Cleanup::class))
+            /** @phpstan-ignore argument.type */
+            ->withAugmenters(fn (Pipeline $pipeline) => $pipeline->remove(Augmenter\Cleanup::class))
             ->getAugmenters();
 
         // Warmup
