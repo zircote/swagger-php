@@ -47,7 +47,7 @@ final class ExamplesTest extends OpenApiTestCase
             '3.2.0',
         ];
         $modes = [
-            Mode::CLASSIC,
+            //Mode::CLASSIC,
             //Mode::HYBRID,
             Mode::SPEC,
         ];

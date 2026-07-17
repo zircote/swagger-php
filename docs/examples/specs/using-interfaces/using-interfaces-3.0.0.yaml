@@ -15,7 +15,7 @@ paths:
       tags:
         - api
       description: 'Get product in any colour for id'
-      operationId: 0787cf008b6d08a91ee494a88d16a4cd
+      operationId: getProduct
       parameters:
         -
           name: id
@@ -36,7 +36,7 @@ paths:
       tags:
         - api
       description: 'Get green products'
-      operationId: 3e21c50a909c7623a326e8ae9848f40a
+      operationId: getGreenProduct
       parameters:
         -
           name: id
