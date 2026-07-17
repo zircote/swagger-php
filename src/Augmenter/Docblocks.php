@@ -22,7 +22,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Docblock implements PipeInterface
+class Docblocks implements PipeInterface
 {
     public function __construct(
         protected DocBlockParser $parser = new DocBlockParser(),

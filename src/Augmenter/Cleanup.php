@@ -20,7 +20,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * @implements PipeInterface<Specification>
  */
-class CleanUnused implements PipeInterface, LoggerAwareInterface
+class Cleanup implements PipeInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

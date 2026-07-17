@@ -11,7 +11,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\TestCase;
 
-final class MediaTypeTest extends TestCase
+final class MediaTypesTest extends TestCase
 {
     public function testRekeysEncodingsByPropertyName(): void
     {
@@ -32,7 +32,7 @@ final class MediaTypeTest extends TestCase
             requestBody: new OA\RequestBody(content: [$mediaType]),
         );
 
-        (new Augmenter\MediaType())($spec);
+        (new Augmenter\MediaTypes())($spec);
 
         $this->assertArrayHasKey('metadata', $mediaType->encoding);
         $this->assertArrayHasKey('avatar', $mediaType->encoding);
@@ -55,7 +55,7 @@ final class MediaTypeTest extends TestCase
             requestBody: new OA\RequestBody(content: [$mediaType]),
         );
 
-        (new Augmenter\MediaType())($spec);
+        (new Augmenter\MediaTypes())($spec);
 
         $this->assertNull($mediaType->encoding);
     }
@@ -78,7 +78,7 @@ final class MediaTypeTest extends TestCase
             requestBody: new OA\RequestBody(content: [$mediaType]),
         );
 
-        (new Augmenter\MediaType())($spec);
+        (new Augmenter\MediaTypes())($spec);
 
         $this->assertNull($mediaType->encoding);
     }
@@ -100,7 +100,7 @@ final class MediaTypeTest extends TestCase
             responses: [new OA\Response(response: '200', description: 'OK', content: [$mediaType])],
         );
 
-        (new Augmenter\MediaType())($spec);
+        (new Augmenter\MediaTypes())($spec);
 
         $this->assertArrayHasKey('file', $mediaType->encoding);
     }
@@ -118,7 +118,7 @@ final class MediaTypeTest extends TestCase
 
         $spec->requestBodies[] = new OA\RequestBody(content: [$mediaType]);
 
-        (new Augmenter\MediaType())($spec);
+        (new Augmenter\MediaTypes())($spec);
 
         $this->assertArrayHasKey('doc', $mediaType->encoding);
     }

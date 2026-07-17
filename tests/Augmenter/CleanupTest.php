@@ -11,7 +11,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\TestCase;
 
-final class CleanUnusedTest extends TestCase
+final class CleanupTest extends TestCase
 {
     public function testRemovesUnreferencedSchema(): void
     {
@@ -28,7 +28,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(1, $spec->schemas);
         $this->assertSame('Used', $spec->schemas[0]->schema);
@@ -51,7 +51,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(2, $spec->schemas);
     }
@@ -74,7 +74,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(1, $spec->schemas);
         $this->assertSame('Used', $spec->schemas[0]->schema);
@@ -85,7 +85,7 @@ final class CleanUnusedTest extends TestCase
         $spec = new Specification();
         $spec->schemas = [new OA\Schema(schema: 'Orphan')];
 
-        $augmenter = new Augmenter\CleanUnused(enabled: false);
+        $augmenter = new Augmenter\Cleanup(enabled: false);
         $augmenter($spec);
 
         $this->assertCount(1, $spec->schemas);
@@ -108,7 +108,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(2, $spec->schemas);
     }
@@ -132,7 +132,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [$response];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(3, $spec->schemas);
     }
@@ -149,7 +149,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [new OA\Response(response: 200, description: 'OK')];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(0, $spec->responses);
     }
@@ -167,7 +167,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [new OA\Response(response: 200, description: 'OK')];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(1, $spec->securitySchemes);
         $this->assertSame('bearerAuth', $spec->securitySchemes[0]->securityScheme);
@@ -185,7 +185,7 @@ final class CleanUnusedTest extends TestCase
         $operation->responses = [new OA\Response(response: 200, description: 'OK')];
         $spec->operations[] = $operation;
 
-        (new Augmenter\CleanUnused())($spec);
+        (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(1, $spec->securitySchemes);
     }

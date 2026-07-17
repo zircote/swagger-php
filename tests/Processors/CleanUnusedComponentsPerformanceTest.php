@@ -37,6 +37,16 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
 
             $ratio = $timeWith / $timeWithout;
 
+            fwrite(STDERR, sprintf(
+                "\n  CleanUnusedComponents: %.1fms with / %.1fms without = %.2fx overhead (%d schemas, %d%% unused, max: %.1fx)\n",
+                $timeWith * 1000,
+                $timeWithout * 1000,
+                $ratio,
+                self::SCHEMA_COUNT,
+                self::UNUSED_RATIO * 100,
+                self::MAX_CLEANUP_OVERHEAD_RATIO,
+            ));
+
             $this->assertLessThan(
                 self::MAX_CLEANUP_OVERHEAD_RATIO,
                 $ratio,

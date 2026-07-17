@@ -7,7 +7,7 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Augmenter\CleanUnused;
+use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\TypeResolverInterface;
@@ -96,7 +96,7 @@ final class ScratchTest extends OpenApiTestCase
             ->setLogger($this->getTrackingLogger())
             ->withAugmenters(function (Pipeline $pipeline) use ($mode): void {
                 if ($mode->isHybrid()) {
-                    $pipeline->get(CleanUnused::class)->setEnabled(false);
+                    $pipeline->get(Cleanup::class)->setEnabled(false);
                 }
             })
             ->withGenerator(fn (Generator $generator): Generator => $generator

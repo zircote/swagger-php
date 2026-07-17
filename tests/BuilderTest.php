@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Augmenter\OperationId;
+use OpenApi\Augmenter\OperationIds;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -140,7 +140,7 @@ final class BuilderTest extends OpenApiTestCase
 
         $found = false;
         $pipeline->walk(function (callable $pipe) use (&$found): void {
-            if ($pipe instanceof OperationId) {
+            if ($pipe instanceof OperationIds) {
                 $found = true;
             }
         });
@@ -151,9 +151,9 @@ final class BuilderTest extends OpenApiTestCase
     public function testPipelineGetReturnsTypedInstance(): void
     {
         $builder = new Builder();
-        $operationId = $builder->getAugmenters()->get(OperationId::class);
+        $operationId = $builder->getAugmenters()->get(OperationIds::class);
 
-        $this->assertInstanceOf(OperationId::class, $operationId);
+        $this->assertInstanceOf(OperationIds::class, $operationId);
 
         $operationId->setHash(false);
 

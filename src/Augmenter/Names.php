@@ -17,7 +17,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class InferNames implements PipeInterface
+class Names implements PipeInterface
 {
     public function group(): string|\BackedEnum
     {

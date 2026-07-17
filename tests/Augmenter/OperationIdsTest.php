@@ -12,7 +12,7 @@ use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class OperationIdTest extends TestCase
+final class OperationIdsTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -21,7 +21,7 @@ final class OperationIdTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
 
-        $augmenter = new Augmenter\OperationId(hash: $hash);
+        $augmenter = new Augmenter\OperationIds(hash: $hash);
         $augmenter($spec);
 
         $operationId = $spec->operations[0]->operationId;
@@ -45,7 +45,7 @@ final class OperationIdTest extends TestCase
         $spec = $this->assemble(Fixtures\Augmenter\DocblockController::class);
         $spec->operations[0]->operationId = 'custom';
 
-        (new Augmenter\OperationId())($spec);
+        (new Augmenter\OperationIds())($spec);
 
         $this->assertSame('custom', $spec->operations[0]->operationId);
     }

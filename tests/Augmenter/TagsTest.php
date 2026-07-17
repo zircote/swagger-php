@@ -12,7 +12,7 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-final class TagTest extends TestCase
+final class TagsTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -20,7 +20,7 @@ final class TagTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\TagController::class);
 
-        (new Augmenter\Tag())($spec);
+        (new Augmenter\Tags())($spec);
 
         $tagNames = array_map(fn (OA\Tag $t): ?string => $t->name, $spec->tags);
         $this->assertContains('alpha', $tagNames);
@@ -32,7 +32,7 @@ final class TagTest extends TestCase
         $spec = $this->assemble(Fixtures\Augmenter\TagController::class);
         $spec->tags[] = new OA\Tag(name: 'unused');
 
-        (new Augmenter\Tag())($spec);
+        (new Augmenter\Tags())($spec);
 
         $tagNames = array_map(fn (OA\Tag $t): ?string => $t->name, $spec->tags);
         $this->assertNotContains('unused', $tagNames);
@@ -43,7 +43,7 @@ final class TagTest extends TestCase
         $spec = $this->assemble(Fixtures\Augmenter\TagController::class);
         $spec->tags[] = new OA\Tag(name: 'unused');
 
-        $augmenter = new Augmenter\Tag(whitelist: ['*']);
+        $augmenter = new Augmenter\Tags(whitelist: ['*']);
         $augmenter($spec);
 
         $tagNames = array_map(fn (OA\Tag $t): ?string => $t->name, $spec->tags);

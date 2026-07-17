@@ -15,7 +15,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class OperationId implements PipeInterface
+class OperationIds implements PipeInterface
 {
     /**
      * @param bool $hash If set to true, generate ids (md5) instead of clear text operation ids

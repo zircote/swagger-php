@@ -267,18 +267,18 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
-            new Augmenter\ExpandHierarchy(),
-            new Augmenter\InferNames(),
+            new Augmenter\Inheritance(),
+            new Augmenter\Names(),
             new Augmenter\Enums(),
-            new Augmenter\PathItemResolve(),
-            new Augmenter\Type(),
-            new Augmenter\Ref(),
+            new Augmenter\PathItems(),
+            new Augmenter\Types(),
+            new Augmenter\Refs(),
             new Augmenter\PathFilter(),
-            new Augmenter\CleanUnused(),
-            new Augmenter\MediaType(),
-            new Augmenter\Docblock(),
-            new Augmenter\OperationId(),
-            new Augmenter\Tag(),
+            new Augmenter\Cleanup(),
+            new Augmenter\MediaTypes(),
+            new Augmenter\Docblocks(),
+            new Augmenter\OperationIds(),
+            new Augmenter\Tags(),
             new Augmenter\EnumDescriptions(),
         ];
     }

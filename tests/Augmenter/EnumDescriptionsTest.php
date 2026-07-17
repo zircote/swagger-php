@@ -19,7 +19,7 @@ final class EnumDescriptionsTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\EnumProperties::class);
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
         (new Augmenter\EnumDescriptions(enabled: true))($spec);
 
         $this->assertCount(1, $spec->schemas);

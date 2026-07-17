@@ -23,7 +23,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class ExpandHierarchy implements PipeInterface
+class Inheritance implements PipeInterface
 {
     public function __construct(
         protected AttributeFactory $factory = new AttributeFactory(),

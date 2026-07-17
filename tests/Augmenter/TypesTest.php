@@ -12,7 +12,7 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-final class TypeTest extends TestCase
+final class TypesTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -20,7 +20,7 @@ final class TypeTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
 
         $schema = $spec->schemas[0];
         $this->assertSame('TypeSchema', $schema->schema);
@@ -43,7 +43,7 @@ final class TypeTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
 
         $params = $spec->operations[0]->parameters;
         $this->assertSame('integer', $params[0]->schema->type);
@@ -58,7 +58,7 @@ final class TypeTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
 
         $this->assertSame('filter', $spec->operations[0]->parameters[1]->name);
     }
@@ -68,7 +68,7 @@ final class TypeTest extends TestCase
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);
         $spec->operations[0]->parameters[0]->schema = new OA\Schema(type: 'string');
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
 
         $this->assertSame('string', $spec->operations[0]->parameters[0]->schema->type);
     }
@@ -80,7 +80,7 @@ final class TypeTest extends TestCase
             Fixtures\Augmenter\RefController::class,
         );
 
-        (new Augmenter\Type())($spec);
+        (new Augmenter\Types())($spec);
 
         $schema = $spec->operations[0]->responses[0]->content[0]->schema;
         $this->assertSame(Fixtures\Augmenter\RefTarget::class, $schema->ref);

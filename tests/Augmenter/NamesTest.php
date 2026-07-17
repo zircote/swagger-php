@@ -13,7 +13,7 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-final class InferNamesTest extends TestCase
+final class NamesTest extends TestCase
 {
     use AssemblesSpecification;
 
@@ -21,7 +21,7 @@ final class InferNamesTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);
 
-        (new Augmenter\InferNames())($spec);
+        (new Augmenter\Names())($spec);
 
         $this->assertSame('TypeSchema', $spec->schemas[0]->schema);
     }
@@ -30,7 +30,7 @@ final class InferNamesTest extends TestCase
     {
         $spec = $this->assemble(Fixtures\Augmenter\BasicEnum::class);
 
-        (new Augmenter\InferNames())($spec);
+        (new Augmenter\Names())($spec);
 
         $this->assertSame('BasicEnum', $spec->schemas[0]->schema);
     }
@@ -40,7 +40,7 @@ final class InferNamesTest extends TestCase
         $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);
         $spec->schemas[0]->schema = 'CustomName';
 
-        (new Augmenter\InferNames())($spec);
+        (new Augmenter\Names())($spec);
 
         $this->assertSame('CustomName', $spec->schemas[0]->schema);
     }
@@ -51,7 +51,7 @@ final class InferNamesTest extends TestCase
         $param = new OA\Parameter(name: 'page', in: 'query');
         $spec->parameters[] = $param;
 
-        (new Augmenter\InferNames())($spec);
+        (new Augmenter\Names())($spec);
 
         $this->assertSame('page', $param->parameter);
     }
@@ -62,7 +62,7 @@ final class InferNamesTest extends TestCase
         $param = new OA\Parameter(parameter: 'custom', name: 'page', in: 'query');
         $spec->parameters[] = $param;
 
-        (new Augmenter\InferNames())($spec);
+        (new Augmenter\Names())($spec);
 
         $this->assertSame('custom', $param->parameter);
     }

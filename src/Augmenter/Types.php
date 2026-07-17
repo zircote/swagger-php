@@ -21,7 +21,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Type implements PipeInterface
+class Types implements PipeInterface
 {
     public function __construct(
         protected TypeResolver $typeResolver = new TypeResolver(),
