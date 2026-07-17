@@ -14,6 +14,7 @@ class PropertyRefController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/{product_id}/do-other-stuff",
+     *     operationId="doStuff",
      *     @OA\Parameter(ref="#/components/schemas/Product/properties/id"),
      *     @OA\Response(
      *         response="default",
