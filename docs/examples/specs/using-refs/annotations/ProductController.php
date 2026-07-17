@@ -20,6 +20,7 @@ class ProductController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/{product_id}",
+     *     operationId="getProduct",
      *     @OA\Response(
      *         response="default",
      *         ref="#/components/responses/product"
@@ -34,6 +35,7 @@ class ProductController
      * @OA\Patch(
      *     tags={"Products"},
      *     path="/products/{product_id}",
+     *     operationId="updateProduct",
      *     @OA\RequestBody(ref="#/components/requestBodies/product_in_body"),
      *     @OA\Response(
      *         response="default",

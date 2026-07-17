@@ -19,6 +19,7 @@ class ProductController
      * @OA\Get(
      *     tags={"Products"},
      *     path="/products/{product_id}",
+     *     operationId="getProduct",
      *     @OA\Parameter(
      *         description="ID of product to return",
      *         in="path",
