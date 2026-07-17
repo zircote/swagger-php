@@ -15,7 +15,7 @@ paths:
       tags:
         - api
       description: 'Get the entity'
-      operationId: 7b9aa57df112f7e2940c95632a59f78d
+      operationId: getEntity
       parameters:
         -
           name: id

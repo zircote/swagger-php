@@ -23,7 +23,7 @@ paths:
     get:
       tags:
         - Products
-      operationId: 800a772c33d928e6e783311ad2797c9e
+      operationId: getProduct
       parameters:
         -
           name: product_id
