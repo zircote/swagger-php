@@ -84,7 +84,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 foreach ($details['attributes'] as $attribute) {
                     $attribute->ref = str_replace(
                         "{$details['name']}/{$details['propertyPath']}",
-                        "{$details['name']}/allOf/1/{$details['propertyPath']}",
+                        // own properties are always first
+                        "{$details['name']}/allOf/0/{$details['propertyPath']}",
                         $attribute->ref
                     );
                 }

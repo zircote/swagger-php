@@ -171,13 +171,13 @@ class Inheritance implements PipeInterface
         }
 
         $traitPropertyNames = array_map(
-            fn (\ReflectionProperty $p): string => $p->getName(),
+            fn (\ReflectionProperty $property): string => $property->getName(),
             $trait->getProperties(),
         );
 
         $schema->properties = array_values(array_filter(
             $schema->properties,
-            fn (OA\Property $p): bool => !in_array($p->property, $traitPropertyNames, true),
+            fn (OA\Property $property): bool => !in_array($property->property, $traitPropertyNames, true),
         ));
 
         if ($schema->properties === []) {
@@ -186,8 +186,10 @@ class Inheritance implements PipeInterface
     }
 
     /**
-     * When allOf refs were added but the schema also has own properties, wrap them
+     * When allOf refs were added, but the schema also has own properties, wrap them
      * in a dedicated allOf entry so the final output is a pure allOf composition.
+     *
+     * Own properties are always first.
      */
     protected function mergeAllOf(OA\Schema $schema): void
     {
@@ -195,7 +197,7 @@ class Inheritance implements PipeInterface
             return;
         }
 
-        $schema->allOf[] = new OA\Schema(type: 'object', properties: $schema->properties);
+        array_unshift($schema->allOf,new OA\Schema(type: 'object', properties: $schema->properties));
         $schema->properties = null;
     }
 
@@ -211,12 +213,12 @@ class Inheritance implements PipeInterface
         $parent = $class->getParentClass();
         if ($parent !== false) {
             $parentTraitNames = array_map(
-                fn (\ReflectionClass $t): string => $t->getName(),
+                fn (\ReflectionClass $trait): string => $trait->getName(),
                 $parent->getTraits(),
             );
             $traits = array_filter(
                 $traits,
-                fn (\ReflectionClass $t): bool => !in_array($t->getName(), $parentTraitNames, true),
+                fn (\ReflectionClass $trait): bool => !in_array($trait->getName(), $parentTraitNames, true),
             );
         }
 
@@ -235,12 +237,12 @@ class Inheritance implements PipeInterface
         $parent = $class->getParentClass();
         if ($parent !== false) {
             $parentInterfaceNames = array_map(
-                fn (\ReflectionClass $i): string => $i->getName(),
+                fn (\ReflectionClass $interface): string => $interface->getName(),
                 $parent->getInterfaces(),
             );
             $interfaces = array_filter(
                 $interfaces,
-                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
+                fn (\ReflectionClass $interface): bool => !in_array($interface->getName(), $parentInterfaceNames, true),
             );
         }
 
