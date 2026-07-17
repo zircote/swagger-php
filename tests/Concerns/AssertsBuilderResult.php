@@ -28,7 +28,7 @@ trait AssertsBuilderResult
     {
         $this->assertTrue($result->isValid());
 
-        $filterByContains = (fn(array $list, array $patterns): array => array_filter($list, function (string $item) use ($patterns): bool {
+        $filterByContains = (fn (array $list, array $patterns): array => array_filter($list, function (string $item) use ($patterns): bool {
             foreach ($patterns as $pattern) {
                 if (str_contains($item, $pattern)) {
                     return false;

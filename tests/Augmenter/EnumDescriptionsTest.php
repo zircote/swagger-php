@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Spec as OA;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,7 @@ final class EnumDescriptionsTest extends TestCase
 
         $this->assertCount(2, $schema->properties);
         $properties = array_combine(
-            array_map(fn ($item) => $item->property, $schema->properties),
+            array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties),
             $schema->properties,
         );
 

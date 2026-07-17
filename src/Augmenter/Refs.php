@@ -40,7 +40,60 @@ class Refs implements PipeInterface, LoggerAwareInterface
         $this->resolveFQCNRefs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
 
+        $schemaPropertyRefMap = $this->getSchemaPropertyRefMap($payload);
+
+        if ($schemaPropertyRefMap === []) {
+            return null;
+        }
+
+        $this->verifySchemaPropertyRefs($payload, $schemaPropertyRefMap);
+
         return null;
+    }
+
+    protected function getSchemaPropertyRefMap(Specification $specification): array
+    {
+        $refMap = [];
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute) use (&$refMap): void {
+            preg_match('/#\/components\/schemas\/([^\/]+)\/(properties\/.+)/', $attribute->ref, $matches);
+            if (count($matches) !== 3) {
+                return;
+            }
+
+            $refMap[$attribute->ref] ??= [
+                'attributes' => [],
+                'name' => $matches[1],
+                'propertyPath' => $matches[2],
+            ];
+            $refMap[$attribute->ref]['attributes'][] = $attribute;
+        });
+
+        return $refMap;
+    }
+
+    protected function verifySchemaPropertyRefs(Specification $specification, array $schemaPropertyRefMap): void
+    {
+        $schemaLookup = array_combine(
+            array_map(fn (OA\Schema $schema): ?string => $schema->schema, $specification->schemas),
+            $specification->schemas,
+        );
+
+        foreach ($schemaPropertyRefMap as $ref => $details) {
+            $schema = $schemaLookup[$details['name']] ?? null;
+            if ($schema?->allOf !== null) {
+                foreach ($details['attributes'] as $attribute) {
+                    $attribute->ref = str_replace(
+                        "{$details['name']}/{$details['propertyPath']}",
+                        "{$details['name']}/allOf/1/{$details['propertyPath']}",
+                        $attribute->ref
+                    );
+                }
+            } else {
+                $this->logger?->warning('Ref: unresolved reference "{ref}" — no matching component found', [
+                    'ref' => $ref,
+                ]);
+            }
+        }
     }
 
     protected function resolveFQCNRefs(Specification $specification, array &$refMap): array
