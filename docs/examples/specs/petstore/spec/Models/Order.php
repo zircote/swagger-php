@@ -14,7 +14,9 @@ use OpenApi\Spec as OA;
 #[OA\Schema(title: 'Order model', description: 'Order model')]
 class Order
 {
-    #[OA\Property(property: 'id')]
+    protected string $unrelated;
+
+    #[OA\Property]
     #[OA\Schema(title: 'ID', description: 'ID', format: 'int64', default: 1)]
     private int $id;
 

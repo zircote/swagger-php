@@ -16,6 +16,8 @@ use OpenApi\Attributes as OAT;
 #[OAT\Schema(title: 'Order model', description: 'Order model')]
 class Order
 {
+    protected string $unrelated;
+
     #[OAT\Property(title: 'ID', description: 'ID', format: 'int64', default: 1)]
     private int $id;
 

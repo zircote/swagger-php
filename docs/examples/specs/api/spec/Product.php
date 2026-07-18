@@ -32,6 +32,7 @@ class Product
 
     public function __construct(
         #[OA\Property(property: 'quantity')]
+        #[OA\Schema]
         public int $quantity,
         #[OA\Property(property: 'brand')]
         #[OA\Schema(example: null, default: null)]
