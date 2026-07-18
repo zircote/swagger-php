@@ -200,22 +200,22 @@ class Docblocks implements PipeInterface
                 continue;
             }
 
-            if ($property->schema instanceof OA\Schema) {
-                // Schema may have its own reflector (inline), otherwise fall back to
-                // the property's reflector (e.g. class constants where schema is synthetic)
-                $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
+            $property->schema ??= new OA\Schema();
 
-                if ($docblock) {
-                    if ($property->schema->description === null) {
-                        $content = $this->parser->parseDocblock($docblock);
-                        if ($content !== '' && !Undefined::isDefault($content)) {
-                            $property->schema->description = $content;
-                        }
-                    }
+            // Schema may have its own reflector (inline), otherwise fall back to
+            // the property's reflector (e.g. class constants where schema is synthetic)
+            $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
 
-                    if (Undefined::isDefault($property->schema->example)) {
-                        $property->schema->example = $this->parser->extractExample($docblock) ?? Undefined::UNDEFINED;
+            if ($docblock) {
+                if ($property->schema->description === null) {
+                    $content = $this->parser->parseDocblock($docblock);
+                    if ($content !== '' && !Undefined::isDefault($content)) {
+                        $property->schema->description = $content;
                     }
+                }
+
+                if (Undefined::isDefault($property->schema->example)) {
+                    $property->schema->example = $this->parser->extractExample($docblock) ?? Undefined::UNDEFINED;
                 }
             }
         }
