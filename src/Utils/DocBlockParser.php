@@ -174,7 +174,7 @@ class DocBlockParser
         return $result;
     }
 
-    public function extractExampleDescription(string $docblock): ?string
+    public function extractExample(string $docblock): ?string
     {
         $docNode = $this->parsePhpDoc($docblock);
         if (!$docNode instanceof PhpDocNode) {

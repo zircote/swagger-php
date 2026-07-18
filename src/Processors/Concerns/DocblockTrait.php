@@ -83,7 +83,7 @@ trait DocblockTrait
 
     public function extractExampleDescription(string $docblock): ?string
     {
-        return $this->docBlockParser()->extractExampleDescription($docblock);
+        return $this->docBlockParser()->extractExample($docblock);
     }
 
     public function isDeprecated(?string $docblock): bool

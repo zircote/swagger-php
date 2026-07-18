@@ -22,9 +22,11 @@ class Product
     #[OA\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
-    #[OA\Property(property: 'id', schema: new OA\Schema(description: 'The id.', format: 'int64', example: 1))]
+    #[OA\Property(property: 'id', schema: new OA\Schema(description: 'The id.', format: 'int64'))]
     /**
      * The id.
+     *
+     * @example 1
      */
     public $id;
 

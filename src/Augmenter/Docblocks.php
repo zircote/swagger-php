@@ -200,14 +200,21 @@ class Docblocks implements PipeInterface
                 continue;
             }
 
-            if ($property->schema instanceof OA\Schema && $property->schema->description === null) {
+            if ($property->schema instanceof OA\Schema) {
                 // Schema may have its own reflector (inline), otherwise fall back to
                 // the property's reflector (e.g. class constants where schema is synthetic)
-                $doc = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
-                if ($doc !== null) {
-                    $content = $this->parser->parseDocblock($doc);
-                    if ($content !== '' && !Undefined::isDefault($content)) {
-                        $property->schema->description = $content;
+                $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
+
+                if ($docblock) {
+                    if ($property->schema->description === null) {
+                        $content = $this->parser->parseDocblock($docblock);
+                        if ($content !== '' && !Undefined::isDefault($content)) {
+                            $property->schema->description = $content;
+                        }
+                    }
+
+                    if (Undefined::isDefault($property->schema->example)) {
+                        $property->schema->example = $this->parser->extractExample($docblock) ?? Undefined::UNDEFINED;
                     }
                 }
             }
