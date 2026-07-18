@@ -16,6 +16,8 @@ trait BellsAndWhistles
 
     /**
      * The plating.
+     *
+     * @example gold
      */
     #[OA\Property]
     public $plating;
