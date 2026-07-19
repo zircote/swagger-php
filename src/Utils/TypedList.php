@@ -11,7 +11,7 @@ use OpenApi\OpenApiException;
 /**
  * @template T
  */
-class TypedList
+class TypedList implements \IteratorAggregate
 {
     /**
      * @var list<T>
@@ -24,6 +24,11 @@ class TypedList
     public function __construct(array $items = [])
     {
         $this->items = $items;
+    }
+
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->items);
     }
 
     /**

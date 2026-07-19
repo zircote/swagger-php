@@ -291,12 +291,8 @@ class AttributeFactory
      */
     protected function readAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        $translators = [
-            new DefaultAttributeTranslator(),
-        ];
-
         $attributes = [];
-        foreach ($translators as $translator) {
+        foreach ($this->translators as $translator) {
             foreach ($translator->getAttributes($reflector) as $attribute) {
                 try {
                     $instance = $attribute->newInstance();
