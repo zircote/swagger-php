@@ -42,7 +42,9 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
-    /** @var Utils\Pipeline<Specification>|null */
+    /**
+     * @var Utils\Pipeline<Specification>|null
+     */
     protected ?Utils\Pipeline $augmenters = null;
 
     /** @var callable|null */
@@ -108,6 +110,9 @@ class Builder
         return $this->augmenters;
     }
 
+    /**
+     * @param Utils\Pipeline<Specification> $augmenters
+     */
     public function setAugmenters(Utils\Pipeline $augmenters): static
     {
         $this->augmenters = $augmenters;
@@ -118,7 +123,7 @@ class Builder
     /**
      * Configure the augmenter pipeline via callable.
      *
-     * @param callable(Utils\Pipeline): void $hook
+     * @param callable(Utils\Pipeline<Specification>): void $hook
      */
     public function withAugmenters(callable $hook): static
     {

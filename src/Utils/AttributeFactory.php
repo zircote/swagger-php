@@ -8,6 +8,7 @@ namespace OpenApi\Utils;
 
 use OpenApi\Assembler\DefaultAttributeTranslator;
 use OpenApi\AttributeInterface;
+use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 
@@ -21,6 +22,20 @@ use OpenApi\Spec as OA;
  */
 class AttributeFactory
 {
+    /**
+     * @var TypedList<AttributeTranslatorInterface>
+     */
+    protected TypedList $translators;
+
+    public function __construct()
+    {
+        /** @var list<AttributeTranslatorInterface> $translators */
+        $translators = [
+            new DefaultAttributeTranslator(),
+        ];
+        $this->translators = new TypedList($translators);
+    }
+
     /**
      * Read and resolve attributes from a single member reflector.
      *

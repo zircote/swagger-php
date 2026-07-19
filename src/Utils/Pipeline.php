@@ -14,7 +14,7 @@ use Psr\Log\NullLogger;
 /**
  * @template T
  *
- * @extends TypedList<callable(T): (T|null)>
+ * @extends TypedList<PipeInterface|callable>
  */
 class Pipeline extends TypedList
 {
@@ -28,6 +28,7 @@ class Pipeline extends TypedList
     protected LoggerInterface $logger;
 
     /**
+     * @param list<PipeInterface|callable>                       $pipes
      * @param list<string|\BackedEnum>|null $groups       Ordered group names/enums. When set, process() executes pipes in group order.
      * @param string|\BackedEnum|null       $defaultGroup Group for pipes without PipeInterface. Must be in $groups if groups are set.
      */

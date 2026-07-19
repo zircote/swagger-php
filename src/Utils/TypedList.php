@@ -37,9 +37,11 @@ class TypedList
     }
 
     /**
-     * @param class-string<T> $class
+     * @template P of object
      *
-     * @return T|null
+     * @param class-string<P> $class
+     *
+     * @return P|null
      */
     public function get(string $class): mixed
     {
