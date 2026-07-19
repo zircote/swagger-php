@@ -23,7 +23,6 @@ trait UsesExamples
             "{$name}-{$implementation}-{$version}.yaml",
             "{$name}-{$mode->value}-{$version}.yaml",
             "{$name}-{$version}.yaml",
-            "{$name}-{$implementation}-{$version}.yaml",
         ];
 
         $basePath = static::examplePath($name);
