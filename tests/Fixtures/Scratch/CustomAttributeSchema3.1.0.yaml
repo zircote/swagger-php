@@ -12,4 +12,4 @@ paths:
           description: OK
 components:
   schemas:
-    MyClass: {  }
+    MyClass: {}

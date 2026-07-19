@@ -29,11 +29,11 @@ components:
       properties:
         type:
           type: string
+          nullable: false
           enum:
             - employee
             - assignee
             - fl
-          nullable: false
       type: object
       discriminator:
         propertyName: type

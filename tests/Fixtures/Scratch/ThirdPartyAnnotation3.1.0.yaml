@@ -11,7 +11,7 @@ paths:
           description: 'successful operation'
 components:
   schemas:
-    SomeParent: {  }
+    SomeParent: {}
     Child:
       allOf:
         -

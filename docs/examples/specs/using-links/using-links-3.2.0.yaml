@@ -188,6 +188,8 @@ components:
   schemas:
     pullrequest:
       properties:
+        state:
+          $ref: '#/components/schemas/State'
         id:
           type: integer
         title:
@@ -196,8 +198,6 @@ components:
           $ref: '#/components/schemas/repository'
         author:
           $ref: '#/components/schemas/user'
-        state:
-          $ref: '#/components/schemas/State'
       type: object
     repository:
       properties:

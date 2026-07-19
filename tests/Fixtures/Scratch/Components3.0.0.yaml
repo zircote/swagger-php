@@ -11,7 +11,7 @@ paths:
           description: 'All good'
 components:
   schemas:
-    'first schema': {  }
-    'second schema': {  }
+    'first schema': {}
+    'second schema': {}
   requestBodies:
-    'first request body': {  }
+    'first request body': {}

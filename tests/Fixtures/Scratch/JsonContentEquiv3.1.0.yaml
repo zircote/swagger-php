@@ -25,4 +25,4 @@ paths:
                 $ref: '#/components/schemas/JsonContentEquiv'
 components:
   schemas:
-    JsonContentEquiv: {  }
+    JsonContentEquiv: {}

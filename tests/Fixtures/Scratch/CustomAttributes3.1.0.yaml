@@ -12,7 +12,7 @@ paths:
           description: OK
 components:
   schemas:
-    CAItemModel: {  }
+    CAItemModel: {}
     CAModel:
       properties:
         name:

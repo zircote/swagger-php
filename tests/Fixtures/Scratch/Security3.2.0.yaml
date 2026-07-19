@@ -20,7 +20,7 @@ components:
       flows:
         implicit:
           authorizationUrl: 'http://store.local/oauth/dialog'
-          scopes: {  }
+          scopes: {}
         password:
           authorizationUrl: 'http://store.local/login'
           scopes:

@@ -69,8 +69,8 @@ paths:
           description: 'successful operation'
 components:
   schemas:
-    NestedSchemaOne: {  }
-    NestedSchemaTwo: {  }
+    NestedSchemaOne: {}
+    NestedSchemaTwo: {}
     MultipleOneOf:
       properties:
         values:
