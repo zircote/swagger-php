@@ -31,8 +31,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ItemDto'
-          minItems: 2
           nullable: true
+          minItems: 2
         list2:
           description: 'With docblock'
           type: array

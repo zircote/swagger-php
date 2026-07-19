@@ -200,7 +200,10 @@ class Inheritance implements PipeInterface
     }
 
     /**
-     * Get traits directly used by a class (not inherited via parents).
+     * Get traits directly used by a class (not inherited via parents or other traits).
+     *
+     * PHP's ReflectionClass::getTraits() flattens the entire trait tree, so we
+     * must exclude traits that come from a parent class or from another trait's use.
      *
      * @return list<\ReflectionClass>
      */

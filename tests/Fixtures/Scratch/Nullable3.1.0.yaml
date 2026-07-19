@@ -59,9 +59,9 @@ components:
           type:
             - string
             - 'null'
+          example: Choice1
           enum:
             - Choice1
             - Choice2
             - null
-          example: Choice1
       type: object

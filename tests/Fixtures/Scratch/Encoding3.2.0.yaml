@@ -71,8 +71,8 @@ paths:
           multipart-form-data:
             schema:
               properties:
-                encname: {  }
-                other: {  }
+                encname: {}
+                other: {}
               type: object
             encoding:
               encname:
@@ -84,7 +84,7 @@ paths:
           description: OK
 components:
   schemas:
-    EncodingMetadata: {  }
+    EncodingMetadata: {}
     MultipartFormData:
       properties:
         name:
@@ -92,5 +92,5 @@ components:
           format: uuid
         metadata:
           $ref: '#/components/schemas/EncodingMetadata'
-        avatar: {  }
+        avatar: {}
       type: object

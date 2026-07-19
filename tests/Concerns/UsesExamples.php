@@ -7,7 +7,7 @@
 namespace OpenApi\Tests\Concerns;
 
 use Composer\Autoload\ClassLoader;
-use OpenApi\Attributes\OpenApi;
+use OpenApi\Builder\Mode;
 
 trait UsesExamples
 {
@@ -16,9 +16,12 @@ trait UsesExamples
         return sprintf('%s/docs/examples/specs/%s', dirname(__DIR__, 2), $name);
     }
 
-    public static function getSpecFilename(string $name, string $implementation = 'annotations', string $version = OpenApi::VERSION_3_0_0): string
+    public static function getSpecFilename(string $name, string $implementation = 'annotations', string $version = '3.0.0', Mode $mode = Mode::CLASSIC): string
     {
         $specs = [
+            "{$name}-{$implementation}-{$mode->value}-{$version}.yaml",
+            "{$name}-{$implementation}-{$version}.yaml",
+            "{$name}-{$mode->value}-{$version}.yaml",
             "{$name}-{$version}.yaml",
             "{$name}-{$implementation}-{$version}.yaml",
         ];
@@ -45,8 +48,18 @@ trait UsesExamples
         $implementationNamerspaceBase = sprintf("{$namerspaceBase}%s\\", ucfirst($implementation));
 
         $classloader = new ClassLoader();
-        $classloader->addPsr4($namerspaceBase, $basePath);
         $classloader->addPsr4($implementationNamerspaceBase, $path);
+
+        $sharedFiles = glob("{$basePath}/*.php");
+        if ($sharedFiles) {
+            $classMap = [];
+            foreach ($sharedFiles as $file) {
+                $className = $namerspaceBase . pathinfo($file, PATHINFO_FILENAME);
+                $classMap[$className] = $file;
+            }
+            $classloader->addClassMap($classMap);
+        }
+
         $classloader->register();
     }
 }

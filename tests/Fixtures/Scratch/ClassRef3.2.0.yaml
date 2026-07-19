@@ -15,4 +15,4 @@ paths:
                 $ref: '#/components/schemas/YoYo'
 components:
   schemas:
-    YoYo: {  }
+    YoYo: {}

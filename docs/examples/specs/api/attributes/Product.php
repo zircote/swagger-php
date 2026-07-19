@@ -23,9 +23,11 @@ class Product implements ProductInterface
     #[OAT\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
-    #[OAT\Property(description: 'The id.', format: 'int64', example: 1)]
+    #[OAT\Property(description: 'The id.', format: 'int64')]
     /**
      * The id.
+     *
+     * @example 1
      */
     public $id;
 

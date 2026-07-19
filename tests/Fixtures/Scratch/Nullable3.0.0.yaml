@@ -53,10 +53,10 @@ components:
           nullable: true
         choice:
           type: string
+          example: Choice1
+          nullable: true
           enum:
             - Choice1
             - Choice2
             - null
-          example: Choice1
-          nullable: true
       type: object

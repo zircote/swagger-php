@@ -128,7 +128,7 @@ class Result
         return $this->openApi->toJson();
     }
 
-    public function toYaml(int $inline = 10, int $indent = 4): string
+    public function toYaml(int $inline = 10, int $indent = 2): string
     {
         if ($this->specOutput !== null) {
             return Yaml::dump($this->specOutput, $inline, $indent, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);

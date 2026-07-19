@@ -30,4 +30,4 @@ paths:
                 description: 'The repository'
 components:
   schemas:
-    repository: {  }
+    repository: {}

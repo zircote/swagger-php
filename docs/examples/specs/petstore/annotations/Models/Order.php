@@ -20,6 +20,8 @@ use OpenApi\Annotations as OA;
  */
 class Order
 {
+    protected string $unrelated;
+
     /**
      * @OA\Property(
      *     format="int64",

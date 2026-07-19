@@ -33,6 +33,7 @@ class ApiController
      *     tags={"api"},
      *     path="/entity/{id}",
      *     description="Get the entity",
+     *     operationId="getEntity",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

@@ -327,10 +327,10 @@ paths:
         '200':
           description: 'successful operation'
           content:
-            application/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/Order'
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Order'
         '400':
@@ -421,10 +421,10 @@ paths:
                 type: string
                 format: datetime
           content:
-            application/xml:
+            application/json:
               schema:
                 type: string
-            application/json:
+            application/xml:
               schema:
                 type: string
         '400':
@@ -453,10 +453,10 @@ paths:
         '200':
           description: 'successful operation'
           content:
-            application/xml:
+            application/json:
               schema:
                 $ref: '#/components/schemas/User'
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
