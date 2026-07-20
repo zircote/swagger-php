@@ -6,9 +6,9 @@
 
 namespace OpenApi;
 
-use OpenApi\Builder\CollectingLogger;
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
 use OpenApi\Utils\TokenScanner;

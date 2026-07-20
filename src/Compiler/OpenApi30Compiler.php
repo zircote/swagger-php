@@ -38,28 +38,28 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
     public function validate(Specification $specification): array
     {
-        $diagnostics = parent::validate($specification);
+        parent::validate($specification);
 
         $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
         if (!$hasPaths) {
-            $diagnostics[] = ['level' => 'warning', 'message' => 'paths is required in OpenAPI 3.0'];
+            $this->logger->warning('paths is required in OpenAPI 3.0');
         }
 
         $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
         if ($hasWebhooks) {
-            $diagnostics[] = ['level' => 'warning', 'message' => 'webhooks are not supported in OpenAPI 3.0 and will be omitted'];
+            $this->logger->warning('webhooks are not supported in OpenAPI 3.0 and will be omitted');
         }
 
         if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->identifier !== null) {
-                $diagnostics[] = ['level' => 'warning', 'message' => 'License identifier is not supported in OpenAPI 3.0, use url instead'];
+                $this->logger->warning('License identifier is not supported in OpenAPI 3.0, use url instead');
             }
         }
 
-        $this->validateSchemas($specification, $diagnostics);
+        $this->validateSchemas($specification);
 
-        return $diagnostics;
+        return $this->logger->entries();
     }
 
     protected function compileWebhooks(array $operations): array
@@ -203,7 +203,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         return $result;
     }
 
-    protected function validateSchemas(Specification $specification, array &$diagnostics): void
+    protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
 
@@ -215,52 +215,31 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             if ($type === 'array' && $schema->items === null) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items');
             }
 
             if ($schema->prefixItems !== null) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': prefixItems is not supported in OpenAPI 3.0',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': prefixItems is not supported in OpenAPI 3.0');
             }
 
             if ($schema->unevaluatedProperties !== null) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': unevaluatedProperties is not supported in OpenAPI 3.0',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': unevaluatedProperties is not supported in OpenAPI 3.0');
             }
 
             if ($schema->unevaluatedItems !== null) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': unevaluatedItems is not supported in OpenAPI 3.0',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': unevaluatedItems is not supported in OpenAPI 3.0');
             }
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': if/then/else is not supported in OpenAPI 3.0',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': if/then/else is not supported in OpenAPI 3.0');
             }
 
             if ($schema->const !== Undefined::UNDEFINED) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': const is not supported in OpenAPI 3.0, using enum fallback',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': const is not supported in OpenAPI 3.0, using enum fallback');
             }
 
             if ($schema->examples !== null) {
-                $diagnostics[] = [
-                    'level' => 'warning',
-                    'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': examples array is not supported in OpenAPI 3.0, using first value as example',
-                ];
+                $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': examples array is not supported in OpenAPI 3.0, using first value as example');
             }
         }
     }
