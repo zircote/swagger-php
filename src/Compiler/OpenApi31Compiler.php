@@ -10,6 +10,8 @@ use OpenApi\CompilerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
+use OpenApi\Utils\CollectingLogger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Compiles a Specification into an OpenAPI 3.1.x document array.
@@ -17,6 +19,13 @@ use OpenApi\Undefined;
 class OpenApi31Compiler implements CompilerInterface
 {
     protected const VERSIONS = ['3.1.0', '3.1.1', '3.1.2'];
+
+    protected CollectingLogger $logger;
+
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = new CollectingLogger($logger);
+    }
 
     public function getVersion(): string
     {
@@ -30,12 +39,10 @@ class OpenApi31Compiler implements CompilerInterface
 
     public function validate(Specification $specification): array
     {
-        $diagnostics = [];
-
         if (!$specification->info instanceof OA\Info) {
-            $diagnostics[] = ['level' => 'error', 'message' => 'info is required'];
+            $this->logger->error('info is required');
         } elseif ($specification->info->title === null) {
-            $diagnostics[] = ['level' => 'error', 'message' => 'info.title is required'];
+            $this->logger->error('info.title is required');
         }
 
         $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
@@ -46,19 +53,19 @@ class OpenApi31Compiler implements CompilerInterface
             || $specification->links || $specification->examples;
 
         if (!$hasPaths && !$hasWebhooks && !$hasComponents) {
-            $diagnostics[] = ['level' => 'warning', 'message' => 'At least one of paths, webhooks, or components is required'];
+            $this->logger->warning('At least one of paths, webhooks, or components is required');
         }
 
         if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->url !== null && $license->identifier !== null) {
-                $diagnostics[] = ['level' => 'warning', 'message' => 'License url and identifier are mutually exclusive'];
+                $this->logger->warning('License url and identifier are mutually exclusive');
             }
         }
 
-        $this->validateSchemas($specification, $diagnostics);
+        $this->validateSchemas($specification);
 
-        return $diagnostics;
+        return $this->logger->entries();
     }
 
     public function compile(Specification $specification): array
@@ -272,13 +279,8 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileCallbacks(array $callbacks): array
     {
-        $result = [];
 
-        foreach ($callbacks as $key => $value) {
-            $result[$key] = $this->compileCallbackValue($value);
-        }
-
-        return $result;
+        return array_map($this->compileCallbackValue(...), $callbacks);
     }
 
     protected function compileCallbackValue(mixed $value): mixed
@@ -296,12 +298,7 @@ class OpenApi31Compiler implements CompilerInterface
             return $this->compileSchema($value);
         }
         if (is_array($value)) {
-            $result = [];
-            foreach ($value as $k => $v) {
-                $result[$k] = $this->compileCallbackValue($v);
-            }
-
-            return $result;
+            return array_map($this->compileCallbackValue(...), $value);
         }
 
         return $value;
@@ -793,20 +790,14 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
-    /**
-     * @param list<array{level: string, message: string}> $diagnostics
-     */
-    protected function validateSchemas(Specification $specification, array &$diagnostics): void
+    protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
 
         foreach ($allSchemas as $schema) {
             if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
                 if ($schema->items === null) {
-                    $diagnostics[] = [
-                        'level' => 'warning',
-                        'message' => 'Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items',
-                    ];
+                    $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items');
                 }
             }
         }
