@@ -21,9 +21,4 @@ class OpenApi32Compiler extends OpenApi31Compiler
     {
         return '3.2.0';
     }
-
-    public function validate(Specification $specification): array
-    {
-        return parent::validate($specification);
-    }
 }
