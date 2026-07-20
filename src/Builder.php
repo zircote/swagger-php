@@ -98,7 +98,7 @@ class Builder
         return $this;
     }
 
-    public function getAttributeFactory(): ?AttributeFactory
+    public function getAttributeFactory(): AttributeFactory
     {
         $this->attributeFactory ??= new AttributeFactory();
 
@@ -113,7 +113,7 @@ class Builder
     }
 
     /**
-     * Configure the attribut factory via callable.
+     * Configure the attribute factory via callable.
      *
      * @param callable(AttributeFactory): void $hook
      */

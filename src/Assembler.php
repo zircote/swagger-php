@@ -84,7 +84,7 @@ class Assembler
         if ($outer !== []) {
             // Only collect own members when the class has a root attribute (e.g. Schema).
             // Classes without root attributes (plain parents/traits) are handled later
-            // by ExpandHierarchy which merges their members into the child schema.
+            // by the `Inheritance` augmenter, which merges their members into the child schema.
             $inner = $this->attributeFactory->membersOf($class);
             $roots = $this->attributeFactory->resolveHierarchy($outer, $inner);
 

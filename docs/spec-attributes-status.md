@@ -132,19 +132,74 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 - **spec** — runs the new spec attributes pipeline end-to-end
 - **hybrid** — uses the classic `Generator` for scanning only (MergeJsonContent/MergeXmlContent), then iterates the `Analysis` annotations directly via `HybridBridge` into a `Specification` and runs it through the full spec augmenter chain and compilers
 
+### Full programmatic Builder example
+
+```php
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
+use OpenApi\Utils\AttributeFactory;
+use OpenApi\Augmenter;
+
+$result = (new Builder())
+    ->setMode(Mode::SPEC)
+    ->setVersion('3.1.0')
+    ->addSource('src/Api')
+
+    // Configure the attribute factory — add custom translators
+    ->withAttributeFactory(function (AttributeFactory $factory): void {
+        // Add a translator that converts Symfony validation attributes
+        // into OpenAPI schema constraints
+        $factory->getTranslators()->add(new SymfonyValidationTranslator());
+    })
+
+    // Configure the augmenter pipeline — add/remove/reorder pipes
+    ->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline): void {
+        // Disable cleanup (keep all components even if unreferenced)
+        $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
+
+        // Configure operationId generation to use hashing
+        $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
+
+        // Filter to only specific paths/tags
+        $pipeline->get(Augmenter\PathFilter::class)
+            ?->setPathFilter('/^\/api\/v2/')
+            ?->setTagFilter('/^(Users|Products)$/');
+
+        // Insert a custom augmenter before Inheritance
+        $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);
+
+        // Remove an augmenter entirely
+        $pipeline->remove(Augmenter\EnumDescriptions::class);
+    })
+
+    // Classic-mode only: configure the underlying Generator
+    // ->withGenerator(function (\OpenApi\Generator $generator): void {
+    //     $generator->setProcessors([...]);
+    // })
+
+    ->build();
+
+// Access results
+$openapi = $result->openapi;     // compiled OpenAPI array
+$yaml = $result->toYaml();       // YAML string
+$json = $result->toJson();       // JSON string
+$warnings = $result->warnings(); // any non-fatal issues
+```
+
 ## What's done
 
 - All core spec DTOs (OpenApi, Info, Server, Tag, Operation, Schema, Parameter, Response, Header, PathItem, etc.)
 - Assembler with two-pass nesting resolution
-- `AttributeFactory` extracted from Assembler for standalone attribute instantiation
+- `AttributeFactory` extracted from Assembler for standalone attribute instantiation, with `TypedList<AttributeTranslatorInterface>` translators and `withTranslators()` hook
+- `TypedList<T>` generic collection (implements `IteratorAggregate`) — base class for `Pipeline`, also used for translator management
 - Three compilers (3.0, 3.1, 3.2) with version-specific handling and shared inheritance
-- Builder with tri-mode support (classic/spec/hybrid) and CLI integration
+- Builder with tri-mode support (classic/spec/hybrid), CLI integration, and callable hooks (`withAttributeFactory()`, `withAugmenters()`, `withGenerator()`)
 - `HybridBridge` iterates `Analysis` annotations directly into `Specification` DTOs (no tree assembly needed)
 - Security namespace (Scheme subclasses + Requirement)
 - Typed subclasses for Parameter, Flow, and Operation
 - All examples ported to spec attributes (see table below)
 - Pipeline classes tested (Assembler, Compilers, Builder)
-- Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
+- Augmenter infrastructure: `PipeInterface` with `@template` generics, `Pipeline` (extends `TypedList`) with grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
 - `SpecificationWalker` — instance-based tree traversal with unified schema descent
 - All augmenters implemented (see table below)
 - Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Types` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
@@ -434,9 +489,9 @@ These components can then be referenced via `$ref` from operations, PathItems, o
 
 ### Extension systems
 
-Three extension points to implement:
+Three extension points:
 
-- **`AttributeEnricher`** — hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase.
+- ~~**`AttributeTranslatorInterface`**~~ — **Done.** (Originally named `AttributeEnricher` in planning.) Hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase. Translators are registered on `AttributeFactory` via `getTranslators()->add()` or `withTranslators()`. Each translator implements two methods: `getAttributes()` (collect `ReflectionAttribute` instances from a reflector) and `translate()` (transform the cumulative list of instantiated objects into `AttributeInterface` instances). The default `DefaultAttributeTranslator` handles native OA attributes; custom translators are appended and receive the accumulated result from prior translators.
 - **`CompilerExtension`** — lets custom `Attachable` DTOs produce spec output. Extensions declare which Attachable class(es) they handle and return key-value pairs merged into the parent's compiled output. Unhandled Attachables are silently omitted.
 - ~~**`Attachable` DTO**~~ — **Done.** `OA\Attachable` extends `AbstractAttribute`, is repeatable on any target, and `isRoot() === true` by default (gets its own `Specification::$attachables` bucket). Can also be inlined into any attribute via the `$attachables` constructor parameter or nested via custom `merge()` maps. Slot validation in `AttributeFactory::nestChild()` catches invalid merge targets early. Custom attachables subclass `OA\Attachable` and override `merge()` to specify where they nest.
 
@@ -449,7 +504,7 @@ Re-evaluate support for convenience attributes that reduce boilerplate in common
 - **`Items`** — shorthand for array item schema declaration
 - **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type
 
-These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly) or as extension examples using `AttributeEnricher` + `CompilerExtension`. The latter approach would serve as both useful functionality and documentation of how the extension systems work in practice.
+These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly) or as extension examples using `AttributeTranslatorInterface` + `CompilerExtension`. The latter approach would serve as both useful functionality and documentation of how the extension systems work in practice.
 
 Need to document the general pattern for shortcut attributes: how they participate in nesting (via `merge()`), when they expand (assembly vs augmentation), and how custom shortcuts can be added by users.
 
