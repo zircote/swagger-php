@@ -21,7 +21,12 @@ interface AttributeTranslatorInterface
     /**
      * Translates the given list of attributes into `AttributeInterface` instances.
      *
-     * @param  array<object>             $attributes
+     * When multiple translators are chained, each receives the cumulative result
+     * from prior translators — a mix of already-resolved `AttributeInterface`
+     * instances and newly instantiated objects from the current translator's
+     * `getAttributes()` call.
+     *
+     * @param  array<object|AttributeInterface> $attributes
      * @return array<AttributeInterface>
      */
     public function translate(array $attributes): array;

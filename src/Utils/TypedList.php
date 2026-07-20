@@ -31,6 +31,11 @@ class TypedList implements \IteratorAggregate
         return new \ArrayIterator($this->items);
     }
 
+    public function count(): int
+    {
+        return count($this->items);
+    }
+
     /**
      * @param T $item
      */

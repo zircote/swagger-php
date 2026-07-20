@@ -139,7 +139,7 @@ class AttributeFactory
      */
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
-        return $reflector->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF) !== [];
+        return $this->readAttributes($reflector) !== [];
     }
 
     /**
@@ -147,14 +147,13 @@ class AttributeFactory
      */
     public function hasOnlyProperties(\ReflectionMethod $method): bool
     {
-        $reflectionAttributes = $method->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF);
-        if ($reflectionAttributes === []) {
+        $attributes = $this->readAttributes($method);
+        if ($attributes === []) {
             return false;
         }
 
-        foreach ($reflectionAttributes as $reflectionAttribute) {
-            $name = $reflectionAttribute->getName();
-            if (!is_a($name, OA\Property::class, true) && !is_a($name, OA\Schema::class, true)) {
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof OA\Property && !$attribute instanceof OA\Schema) {
                 return false;
             }
         }
@@ -342,6 +341,6 @@ class AttributeFactory
             $attributes = $translator->translate($attributes);
         }
 
-        return $attributes;
+        return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
     }
 }
