@@ -113,6 +113,18 @@ class Builder
     }
 
     /**
+     * Configure the attribut factory via callable.
+     *
+     * @param callable(AttributeFactory): void $hook
+     */
+    public function withAttributeFactory(callable $hook): static
+    {
+        $hook($this->getAttributeFactory());
+
+        return $this;
+    }
+
+    /**
      * @return Utils\Pipeline<Specification>
      */
     public function getAugmenters(): Utils\Pipeline

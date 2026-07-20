@@ -37,6 +37,34 @@ class AttributeFactory
     }
 
     /**
+     * @return TypedList<AttributeTranslatorInterface>
+     */
+    public function getTranslators(): TypedList
+    {
+        return $this->translators;
+    }
+
+    /**
+     * @param TypedList<AttributeTranslatorInterface> $translators
+     */
+    public function setTranslators(TypedList $translators): static
+    {
+        $this->translators = $translators;
+
+        return $this;
+    }
+
+    /**
+     * @param callable(TypedList<AttributeTranslatorInterface>): void $hook
+     */
+    public function withTranslators(callable $hook): static
+    {
+        $hook($this->translators);
+
+        return $this;
+    }
+
+    /**
      * Read and resolve attributes from a single member reflector.
      *
      * For methods, also resolves parameter-level attributes into the method-level ones.
