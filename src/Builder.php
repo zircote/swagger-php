@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
@@ -41,6 +42,8 @@ class Builder
     protected ?LoggerInterface $logger = null;
 
     protected ?CompilerInterface $compiler = null;
+
+    protected ?AttributeFactory $attributeFactory = null;
 
     /**
      * @var Utils\Pipeline<Specification>|null
@@ -91,6 +94,20 @@ class Builder
     public function setCompiler(CompilerInterface $compiler): static
     {
         $this->compiler = $compiler;
+
+        return $this;
+    }
+
+    public function getAttributeFactory(): ?AttributeFactory
+    {
+        $this->attributeFactory ??= new AttributeFactory();
+
+        return $this->attributeFactory;
+    }
+
+    public function setAttributeFactory(AttributeFactory $attributeFactory): static
+    {
+        $this->attributeFactory = $attributeFactory;
 
         return $this;
     }
@@ -185,7 +202,11 @@ class Builder
     {
         $files = $this->resolveFiles();
         $tokenScanner = new TokenScanner();
-        $assembler = new Assembler(tokenScanner: $tokenScanner);
+        $assembler = new Assembler(attributeFactory: $this->getAttributeFactory());
+        $assembler = new Assembler(
+            attributeFactory: $this->getAttributeFactory(),
+            tokenScanner: $tokenScanner,
+        );
 
         foreach ($files as $file) {
             require_once $file;
@@ -274,7 +295,7 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
-            new Augmenter\Inheritance(),
+            new Augmenter\Inheritance(attributeFactory: $this->getAttributeFactory()),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\PathItems(),

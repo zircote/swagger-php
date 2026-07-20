@@ -28,7 +28,7 @@ class Assembler
 {
     public function __construct(
         protected Specification $specification = new Specification(),
-        protected AttributeFactory $factory = new AttributeFactory(),
+        protected AttributeFactory $attributeFactory = new AttributeFactory(),
         protected TokenScanner $tokenScanner = new TokenScanner(),
     ) {
     }
@@ -38,9 +38,9 @@ class Assembler
         return $this->specification;
     }
 
-    public function getFactory(): AttributeFactory
+    public function getAttributeFactory(): AttributeFactory
     {
-        return $this->factory;
+        return $this->attributeFactory;
     }
 
     public function getTokenScanner(): TokenScanner
@@ -68,7 +68,7 @@ class Assembler
             return;
         }
 
-        foreach ($this->factory->fromReflector($reflector) as $root) {
+        foreach ($this->attributeFactory->fromReflector($reflector) as $root) {
             $this->specification->add($root);
         }
     }
@@ -79,14 +79,14 @@ class Assembler
      */
     protected function collectFromClass(\ReflectionClass $class): void
     {
-        $outer = $this->factory->fromReflector($class);
+        $outer = $this->attributeFactory->fromReflector($class);
 
         if ($outer !== []) {
             // Only collect own members when the class has a root attribute (e.g. Schema).
             // Classes without root attributes (plain parents/traits) are handled later
             // by ExpandHierarchy which merges their members into the child schema.
-            $inner = $this->factory->membersOf($class);
-            $roots = $this->factory->resolveHierarchy($outer, $inner);
+            $inner = $this->attributeFactory->membersOf($class);
+            $roots = $this->attributeFactory->resolveHierarchy($outer, $inner);
 
             foreach ($roots as $root) {
                 $this->specification->add($root);
@@ -100,10 +100,10 @@ class Assembler
             if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
                 continue;
             }
-            if ($this->factory->hasOnlyProperties($method)) {
+            if ($this->attributeFactory->hasOnlyProperties($method)) {
                 continue;
             }
-            foreach ($this->factory->fromReflector($method) as $root) {
+            foreach ($this->attributeFactory->fromReflector($method) as $root) {
                 $this->specification->add($root);
             }
         }
