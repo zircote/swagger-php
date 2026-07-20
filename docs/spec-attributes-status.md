@@ -227,24 +227,18 @@ $warnings = $result->warnings(); // any non-fatal issues
 
 All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (ref-path difference).
 
-| Example | Shared fixture | Spec-specific fixture | Notes |
-|---|---|---|---|
-| api | ✓ | — | Original spec example |
-| misc | ✓ | — | Callbacks, security, enums |
-| nesting | ✓ | — | Multi-level class inheritance |
-| petstore | ✓ | — | Classic CRUD example |
-| polymorphism | ✓ | — | oneOf/allOf/discriminator |
-| using-interfaces | ✓ | — | Interface-based allOf composition |
-| using-links | ✓ | — | Response links |
-| using-refs | — | ✓ | PathItem works; hybrid excluded due to ref-path difference |
-| using-traits | — | ✓ | Bug fix: explicit type inference |
-| webhooks | ✓ | — | 3.1+ webhooks |
-
-### Spec-specific fixture notes
-
-**using-refs** — PathItem with path-level parameters works correctly. The spec example uses `#[OA\PathItem(parameters: [...])]` to emit parameters at path level. The example uses a spec-specific fixture due to a ref-path difference: classic emits `Product/allOf/1/properties/id` while spec/hybrid emits `Product/properties/id` (spec puts properties directly rather than in an allOf wrapper).
-
-**using-traits** — Not a gap; intentional improvement. The spec/hybrid pipeline infers explicit types from PHP declarations more thoroughly than classic.
+| Example | Shared fixture | Spec-specific fixture | Notes                                                                                     |
+|---|---|---|-------------------------------------------------------------------------------------------|
+| api | ✓ | — | Original spec example                                                                     |
+| misc | ✓ | — | Callbacks, security, enums                                                                |
+| nesting | ✓ | — | Multi-level class inheritance                                                             |
+| petstore | ✓ | — | Classic CRUD example                                                                      |
+| polymorphism | ✓ | — | oneOf/allOf/discriminator                                                                 |
+| using-interfaces | ✓ | — | Interface-based allOf composition                                                         |
+| using-links | ✓ | — | Response links                                                                            |
+| using-refs | — | ✓ | Resolving of property refs that got moved into allOf still needs resolving                |
+| using-traits | — | ✓ | Trait inheritance needs to be refactored since reflection is too limited as only solution |
+| webhooks | ✓ | — | 3.1+ webhooks                                                                             |
 
 ### Behavioral differences from classic
 
@@ -254,10 +248,6 @@ Intentional improvements or corrections in the spec/hybrid pipeline that produce
 |---|---|---|---|
 | Empty `tags` | Always emits `tags: []` | Omits when empty | Per OpenAPI spec, optional fields should be omitted when empty |
 | Empty flow `scopes` | Emits `scopes: {}` | Was omitting empty scopes | Bug fix in compiler — scopes is required per OpenAPI spec |
-| Type inference on traits | Types often omitted | Explicit types from PHP declarations | Bug fix — classic failed to resolve types on trait properties |
-| Docblock on parameters | Only from `@param` on ReflectionParameter | Also matches by parameter name | More thorough — resolves descriptions for non-reflection parameters |
-| Promoted property descriptions | Resolved via constructor parameter context | Resolved via ReflectionProperty fallback | Different mechanism, same result |
-| Schema property refs | `Product/allOf/1/properties/id` | `Product/properties/id` | Spec pipeline places properties directly on the schema rather than wrapping in allOf — both specs are internally consistent, but `$ref` paths into schema internals differ |
 
 ## Classic processor mapping
 
@@ -429,7 +419,7 @@ Output paths:
 - `/api/v1/users/list` — get operation, tags: ['Users'], path-level parameter: tenant
 - `/api/v1/users/{id}` — get operation, tags: ['Users'], path-level parameter: tenant
 
-## Components container
+## DTO: `OA\Components`
 
 `#[OA\Components]` is a class-level attribute that acts as a container for reusable component definitions that cannot stand on their own as root attributes.
 
@@ -467,6 +457,24 @@ class SharedComponents {
 
 These components can then be referenced via `$ref` from operations, PathItems, or other DTOs.
 
+## DTO: `OA\Schema`
+
+The spec version of `OA\Schema` is a fully standalone attribute. No other attributes inherits from it - its all down to composition.
+Side effect is that `OA\Schema` now can be stacked next to other attributes (as long as it is not ambiguous).
+
+Inline nesting works also, as before.
+
+### Example
+
+```php
+#[OA\Schema]
+class Model {
+    #[OA\Property]
+    #[OA\Schema(type: 'integer')]
+    public int $page;
+}
+```
+
 ## What's next
 
 ### Hybrid mode hardening
@@ -491,9 +499,9 @@ These components can then be referenced via `$ref` from operations, PathItems, o
 
 Three extension points:
 
-- ~~**`AttributeTranslatorInterface`**~~ — **Done.** (Originally named `AttributeEnricher` in planning.) Hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase. Translators are registered on `AttributeFactory` via `getTranslators()->add()` or `withTranslators()`. Each translator implements two methods: `getAttributes()` (collect `ReflectionAttribute` instances from a reflector) and `translate()` (transform the cumulative list of instantiated objects into `AttributeInterface` instances). The default `DefaultAttributeTranslator` handles native OA attributes; custom translators are appended and receive the accumulated result from prior translators.
-- **`CompilerExtension`** — lets custom `Attachable` DTOs produce spec output. Extensions declare which Attachable class(es) they handle and return key-value pairs merged into the parent's compiled output. Unhandled Attachables are silently omitted.
+- ~~**`AttributeTranslatorInterface`**~~ — **Done.** Hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase. Translators are registered on `AttributeFactory` via `getTranslators()->add()` or `withTranslators()`. Each translator implements two methods: `getAttributes()` (collect `ReflectionAttribute` instances from a reflector) and `translate()` (transform the cumulative list of instantiated objects into `AttributeInterface` instances). The default `DefaultAttributeTranslator` handles native OA attributes; custom translators are appended and receive the accumulated result from prior translators.
 - ~~**`Attachable` DTO**~~ — **Done.** `OA\Attachable` extends `AbstractAttribute`, is repeatable on any target, and `isRoot() === true` by default (gets its own `Specification::$attachables` bucket). Can also be inlined into any attribute via the `$attachables` constructor parameter or nested via custom `merge()` maps. Slot validation in `AttributeFactory::nestChild()` catches invalid merge targets early. Custom attachables subclass `OA\Attachable` and override `merge()` to specify where they nest.
+- ~~**`CompilerExtension`**~~ — Abandoned for now. Since compiler can easiy be extended/swapped it feels overkill with the more powerfull alternatives of attribute translation and `OA\Attribute`
 
 These extension systems should also address downstream integration needs (e.g. Nelmio translating Symfony metadata, framework route annotations) without requiring those projects to couple to pipeline internals.
 
@@ -504,18 +512,13 @@ Re-evaluate support for convenience attributes that reduce boilerplate in common
 - **`Items`** — shorthand for array item schema declaration
 - **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type
 
-These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly) or as extension examples using `AttributeTranslatorInterface` + `CompilerExtension`. The latter approach would serve as both useful functionality and documentation of how the extension systems work in practice.
+These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly). This would serve as both useful functionality and documentation of how the extension systems work in practice.
 
 Need to document the general pattern for shortcut attributes: how they participate in nesting (via `merge()`), when they expand (assembly vs augmentation), and how custom shortcuts can be added by users.
 
 ### Additional augmenter pipes
 
 None planned at this time.
-
-### Design decisions
-
-- **Error vs warning strategy** — currently the assembler throws `OpenApiException` for all validation issues. Some issues (orphan attributes, unknown Attachable types, duplicate attributes where last-wins is acceptable) could be warnings via PSR logger instead. Need to decide the boundary: structural issues that prevent valid output remain exceptions; issues that don't block compilation become warnings surfaced via `Result::warnings()`.
-- **Untyped pipe configuration** — currently pipes are configured via typed setters (`setHash(bool)`, `setEnabled(bool)`). Tools that load config from files (YAML/JSON) only have untyped arrays. Consider a generic `configure(array $options)` method on `PipeInterface` so external tooling can pass arbitrary key-value config without needing to know the typed API. Typed setters remain the primary API for programmatic use.
 
 ### Shipping
 
