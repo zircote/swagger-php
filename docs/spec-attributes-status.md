@@ -509,8 +509,8 @@ These extension systems should also address downstream integration needs (e.g. N
 
 Re-evaluate support for convenience attributes that reduce boilerplate in common patterns:
 
-- **`Items`** — shorthand for array item schema declaration
-- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type
+- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.
+- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type; a new `AttributeTranslatorInterface` should be implemented to handle the translation of these attributes.
 
 These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly). This would serve as both useful functionality and documentation of how the extension systems work in practice.
 
