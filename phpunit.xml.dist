@@ -13,6 +13,9 @@
         <testsuite name="Swagger PHP Test Suite">
             <directory>tests</directory>
         </testsuite>
+        <testsuite name="Tools Test Suite">
+            <directory>tools/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
