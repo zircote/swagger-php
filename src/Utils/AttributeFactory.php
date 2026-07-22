@@ -27,12 +27,13 @@ class AttributeFactory
      */
     protected TypedList $translators;
 
-    public function __construct()
+    public function __construct(protected TokenScanner $tokenScanner = new TokenScanner())
     {
         /** @var list<AttributeTranslatorInterface> $translators */
         $translators = [
             new DefaultAttributeTranslator(),
         ];
+
         $this->translators = new TypedList($translators);
     }
 
@@ -94,14 +95,15 @@ class AttributeFactory
      *
      * @return list<AttributeInterface>
      */
-    public function membersOf(\ReflectionClass $class, ?array $scannerDetails = null): array
+    public function membersOf(\ReflectionClass $class): array
     {
         $inner = [];
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
 
         foreach ($class->getProperties() as $property) {
             if ($property->isPromoted()
                 || $property->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($property->getName(), $scannerDetails['properties']))
+                || ($scannerDetails && !in_array($property->getName(), $scannerDetails['properties'], true))
             ) {
                 continue;
             }
@@ -118,7 +120,7 @@ class AttributeFactory
 
         foreach ($class->getReflectionConstants() as $constant) {
             if ($constant->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($constant->getName(), $scannerDetails['consts']))
+                || ($scannerDetails && !in_array($constant->getName(), $scannerDetails['consts'], true))
             ) {
                 continue;
             }
@@ -129,7 +131,7 @@ class AttributeFactory
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isConstructor()
                 || $method->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods']))
+                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
             ) {
                 continue;
             }

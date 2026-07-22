@@ -32,14 +32,18 @@ class Inheritance implements PipeInterface
     ) {
     }
 
-    public function setAttributeFactory(AttributeFactory $attributeFactory): void
+    public function setAttributeFactory(AttributeFactory $attributeFactory): static
     {
         $this->attributeFactory = $attributeFactory;
+
+        return $this;
     }
 
-    public function setTokenScanner(TokenScanner $tokenScanner): void
+    public function setTokenScanner(TokenScanner $tokenScanner): static
     {
         $this->tokenScanner = $tokenScanner;
+
+        return $this;
     }
 
     public function group(): string|\BackedEnum

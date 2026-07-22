@@ -22,7 +22,7 @@ use PhpParser\ParserFactory;
  */
 class TokenScanner
 {
-    /** @var array<string, array<class-string, array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}>> */
+    /** @var array<string, array<class-string, array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>, consts: list<string>}>> */
     protected array $cache = [];
 
     /**
@@ -37,6 +37,7 @@ class TokenScanner
      *     enums: list<class-string>,
      *     methods: list<string>,
      *     properties: list<string>,
+     *     consts: list<string>,
      * }>
      */
     public function scanFile(string $filename): array
@@ -72,7 +73,7 @@ class TokenScanner
      *
      * Scans the file on demand if not already cached.
      *
-     * @return array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}|null
+     * @return array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>,consts: list<string>}|null
      */
     public function detailsFor(\ReflectionClass $class): ?array
     {

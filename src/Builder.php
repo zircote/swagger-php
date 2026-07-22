@@ -214,7 +214,6 @@ class Builder
     {
         $files = $this->resolveFiles();
         $tokenScanner = new TokenScanner();
-        $assembler = new Assembler(attributeFactory: $this->getAttributeFactory());
         $assembler = new Assembler(
             attributeFactory: $this->getAttributeFactory(),
             tokenScanner: $tokenScanner,
@@ -232,7 +231,9 @@ class Builder
         $specification = $assembler->getSpecification();
 
         // share the token scanner cache ...
-        $this->getAugmenters()->get(Augmenter\Inheritance::class)?->setTokenScanner($tokenScanner);
+        $this->getAugmenters()->get(Augmenter\Inheritance::class)
+            ?->setTokenScanner($tokenScanner)
+            ->setAttributeFactory($attributeFactory);
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
