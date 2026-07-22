@@ -193,6 +193,8 @@ class Builder
 
         $specification = $assembler->getSpecification();
 
+        // share the token scanner cache ...
+        $this->getAugmenters()->get(Augmenter\Inheritance::class)?->setTokenScanner($tokenScanner);
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
