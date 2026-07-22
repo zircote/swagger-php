@@ -97,12 +97,18 @@ class Assembler
         // any class-level schema attribute. Properties on methods are handled via
         // membersOf() (absorbed into class schema) or ExpandHierarchy (non-schema interfaces).
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
+            $scannerDetails = $this->tokenScanner->detailsFor($class);
+            if ($method->isConstructor()
+                || $method->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
+            ) {
                 continue;
             }
+
             if ($this->attributeFactory->hasOnlyProperties($method)) {
                 continue;
             }
+
             foreach ($this->attributeFactory->fromReflector($method) as $root) {
                 $this->specification->add($root);
             }

@@ -57,9 +57,10 @@ class Inheritance implements PipeInterface
                 continue;
             }
 
-            $this->expandParents($schema, $reflector, $schemaMap);
-            $this->expandTraits($schema, $reflector, $schemaMap);
-            $this->expandInterfaces($schema, $reflector, $schemaMap);
+            $existingProperties = array_map(fn (OA\Property $p): ?string => $p->property, $schema->properties ?? []);
+            $this->expandParents($schema, $reflector, $schemaMap, $existingProperties);
+            $this->expandTraits($schema, $reflector, $schemaMap, $existingProperties);
+            $this->expandInterfaces($schema, $reflector, $schemaMap, $existingProperties);
             $this->mergeAllOf($schema);
         }
 
@@ -85,7 +86,7 @@ class Inheritance implements PipeInterface
     /**
      * @param array<string, OA\Schema> $schemaMap
      */
-    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap): void
+    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
     {
         // Walk up the inheritance chain; stop at the first ancestor that has its own schema
         // (it becomes a $ref). Non-schema ancestors have their members inlined.
@@ -96,7 +97,7 @@ class Inheritance implements PipeInterface
                 break;
             }
 
-            $this->mergeMembers($schema, $parent);
+            $this->mergeMembers($schema, $parent, $existingProperties);
             $parent = $parent->getParentClass();
         }
     }
@@ -104,21 +105,16 @@ class Inheritance implements PipeInterface
     /**
      * @param array<string, OA\Schema> $schemaMap
      */
-    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap): void
+    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
     {
-        // PHP reports trait properties as declared by the using class, so the
-        // assembler already collected them as own properties. For traits with a
-        // schema we add an allOf $ref and strip those properties; for traits
-        // without a schema we leave them in place (already present, no merge needed).
         foreach ($this->getDirectTraits($reflector) as $trait) {
             if (isset($schemaMap[$trait->getName()])) {
                 $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
-                $this->stripTraitProperties($schema, $trait);
+            } else {
+                $this->mergeMembers($schema, $trait, $existingProperties);
             }
         }
 
-        // Traits from non-schema ancestors also belong to this schema (the ancestor
-        // itself was inlined in expandParents, but its traits weren't covered there).
         $parent = $reflector->getParentClass();
         while ($parent !== false) {
             if (isset($schemaMap[$parent->getName()])) {
@@ -128,7 +124,6 @@ class Inheritance implements PipeInterface
             foreach ($this->getDirectTraits($parent) as $trait) {
                 if (isset($schemaMap[$trait->getName()])) {
                     $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
-                    $this->stripTraitProperties($schema, $trait);
                 }
             }
 
@@ -139,7 +134,7 @@ class Inheritance implements PipeInterface
     /**
      * @param array<string, OA\Schema> $schemaMap
      */
-    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap): void
+    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
     {
         $ownInterfaces = $this->getDirectInterfaces($reflector);
 
@@ -147,7 +142,7 @@ class Inheritance implements PipeInterface
             if (isset($schemaMap[$interface->getName()])) {
                 $this->addAllOfRef($schema, $schemaMap[$interface->getName()]);
             } else {
-                $this->mergeMembers($schema, $interface);
+                $this->mergeMembers($schema, $interface, $existingProperties);
             }
         }
     }
@@ -161,39 +156,19 @@ class Inheritance implements PipeInterface
         }
     }
 
-    protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class): void
+    protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class, array &$existingProperties): void
     {
         $members = $this->attributeFactory->membersOf($class);
         $merged = [];
         foreach ($members as $member) {
-            if ($member instanceof OA\Property) {
+            if ($member instanceof OA\Property && !in_array($member->property, $existingProperties, true)) {
+                $existingProperties[] = $member->property;
                 $merged[] = $member;
             }
         }
 
         if ($merged !== []) {
             $schema->properties = [...$merged, ...($schema->properties ?? [])];
-        }
-    }
-
-    protected function stripTraitProperties(OA\Schema $schema, \ReflectionClass $trait): void
-    {
-        if ($schema->properties === null) {
-            return;
-        }
-
-        $traitPropertyNames = array_map(
-            fn (\ReflectionProperty $p): string => $p->getName(),
-            $trait->getProperties(),
-        );
-
-        $schema->properties = array_values(array_filter(
-            $schema->properties,
-            fn (OA\Property $p): bool => !in_array($p->property, $traitPropertyNames, true),
-        ));
-
-        if ($schema->properties === []) {
-            $schema->properties = null;
         }
     }
 
@@ -221,21 +196,18 @@ class Inheritance implements PipeInterface
      */
     protected function getDirectTraits(\ReflectionClass $class): array
     {
-        $traits = $class->getTraits();
-        // Exclude traits inherited from parent
-        $parent = $class->getParentClass();
-        if ($parent !== false) {
-            $parentTraitNames = array_map(
-                fn (\ReflectionClass $t): string => $t->getName(),
-                $parent->getTraits(),
-            );
-            $traits = array_filter(
-                $traits,
-                fn (\ReflectionClass $t): bool => !in_array($t->getName(), $parentTraitNames, true),
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
+
+        if ($scannerDetails !== null) {
+            return array_filter(
+                array_map(
+                    fn (string $name): ?\ReflectionClass => class_exists($name) || trait_exists($name) ? new \ReflectionClass($name) : null,
+                    $scannerDetails['traits'],
+                ),
             );
         }
 
-        return array_values($traits);
+        return [];
     }
 
     /**

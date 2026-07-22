@@ -94,14 +94,18 @@ class AttributeFactory
      *
      * @return list<AttributeInterface>
      */
-    public function membersOf(\ReflectionClass $class): array
+    public function membersOf(\ReflectionClass $class, ?array $scannerDetails = null): array
     {
         $inner = [];
 
         foreach ($class->getProperties() as $property) {
-            if ($property->isPromoted() || $property->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($property->isPromoted()
+                || $property->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($property->getName(), $scannerDetails['properties']))
+            ) {
                 continue;
             }
+
             array_push($inner, ...$this->resolveNesting($this->readAttributes($property)));
         }
 
@@ -113,16 +117,23 @@ class AttributeFactory
         }
 
         foreach ($class->getReflectionConstants() as $constant) {
-            if ($constant->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($constant->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($constant->getName(), $scannerDetails['consts']))
+            ) {
                 continue;
             }
+
             array_push($inner, ...$this->resolveNesting($this->readAttributes($constant)));
         }
 
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($method->isConstructor()
+                || $method->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods']))
+            ) {
                 continue;
             }
+
             $resolved = $this->resolveNesting($this->readAttributes($method));
             foreach ($resolved as $attribute) {
                 if ($attribute instanceof OA\Property) {
