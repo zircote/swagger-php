@@ -61,13 +61,13 @@ final class ExamplesTest extends OpenApiTestCase
 
                     foreach ($versions as $version) {
                         foreach ($modes as $mode) {
-                             if (
+                            if (
                                 ($implementation === 'spec' && in_array($mode, [Mode::CLASSIC, Mode::HYBRID], true))
                                 || ($implementation !== 'spec' && $mode === Mode::SPEC)
                                 || ($typeResolver instanceof LegacyTypeResolver && $mode !== Mode::CLASSIC)
-                             ) {
+                            ) {
                                 continue;
-                             }
+                            }
 
                             if (!file_exists(self::getSpecFilename($example, $implementation, $version, $mode))) {
                                 continue;
