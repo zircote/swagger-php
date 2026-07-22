@@ -39,6 +39,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         $this->resolveFQCNRefs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
+        $this->resolveAllOfPropertyRefs($payload);
 
         return null;
     }
@@ -138,5 +139,39 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 }
             }
         }
+    }
+
+    /**
+     * Adjust refs pointing to schema properties that got merged into `allOf` during inheritance processing.
+     */
+    protected function resolveAllOfPropertyRefs(Specification $specification): void
+    {
+        $candidates = [];
+
+        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema) use (&$candidates): void {
+            if ($schema->allOf !== null && $schema->properties === null) {
+                foreach ($schema->allOf as $index => $allOf) {
+                    if ($allOf instanceof OA\Schema && $allOf->properties !== null) {
+                        $name = $schema->schema ?? $schema->title;
+                        $candidates[$name] = $index;
+                    }
+                }
+            }
+        });
+
+        $specification->getWalker()->eachRef(function (OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme $attribute) use (&$candidates): void {
+            preg_match('/#\/components\/schemas\/([^\/]+)\/(properties\/.+)/', (string) $attribute->ref, $matches);
+
+            if (count($matches) !== 3) {
+                return;
+            }
+
+            $name = $matches[1];
+            $path = $matches[2];
+            if (array_key_exists($name, $candidates)) {
+                $index = $candidates[$name];
+                $attribute->ref = "#/components/schemas/{$name}/allOf/{$index}/{$path}";
+            }
+        });
     }
 }
