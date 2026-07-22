@@ -180,7 +180,7 @@ class Builder
     {
         $files = $this->resolveFiles();
         $tokenScanner = new TokenScanner();
-        $assembler = new Assembler();
+        $assembler = new Assembler(tokenScanner: $tokenScanner);
 
         foreach ($files as $file) {
             require_once $file;

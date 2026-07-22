@@ -22,8 +22,13 @@ use PhpParser\ParserFactory;
  */
 class TokenScanner
 {
+    /** @var array<string, array<class-string, array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}>> */
+    protected array $cache = [];
+
     /**
      * Scan a given file for all classes, interfaces, and traits.
+     *
+     * Results are cached by filename — repeated calls with the same path return the cached result.
      *
      * @return array<class-string, array{
      *     uses: array<string, class-string>,
@@ -36,6 +41,10 @@ class TokenScanner
      */
     public function scanFile(string $filename): array
     {
+        if (isset($this->cache[$filename])) {
+            return $this->cache[$filename];
+        }
+
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {
             $stmts = $parser->parse(file_get_contents($filename));
@@ -53,7 +62,28 @@ class TokenScanner
             }
         }
 
+        $this->cache[$filename] = $result;
+
         return $result;
+    }
+
+    /**
+     * Look up scan details for a specific FQDN.
+     *
+     * Scans the file on demand if not already cached.
+     *
+     * @return array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}|null
+     */
+    public function detailsFor(\ReflectionClass $class): ?array
+    {
+        $filename = $class->getFileName();
+        if ($filename === false) {
+            return null;
+        }
+
+        $results = $this->scanFile($filename);
+
+        return $results[$class->getName()] ?? null;
     }
 
     protected function collect_stmts(array $stmts, string $namespace): array
